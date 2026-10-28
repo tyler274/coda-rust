@@ -1,9 +1,7 @@
 {
   "unit": "unit-1895",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"multivitamin with minerals Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001895",
@@ -757,6 +755,7 @@
             },
             {
               "drug_text": "multivitamin with minerals Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet (multivitamin with zinc) by mouth daily",
               "frequency": "DAILY",
@@ -1515,7 +1514,7 @@
         "code": "282402",
         "display": "ascorbic acid 500 MG Oral Tablet",
         "ingredient": "ascorbic",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "psyllium husk 3.4 GM Oral Powder": {
         "code": "824586",
@@ -1530,9 +1529,6 @@
         "display": "Bacteria [Presence] in Urine sediment by Light microscopy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"multivitamin with minerals Oral Tablet\""
-    ]
+    }
   }
 }

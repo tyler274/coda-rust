@@ -1,0 +1,636 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002069",
+      "given": "Neil",
+      "family": "Winslow",
+      "birth_date": "1977-08-08",
+      "address_line": "14 Kings Highway Road",
+      "phone": "+1-646-555-0156",
+      "email": "neil.winslow@example.test",
+      "marital_status": "single",
+      "summary": "Unemployed man in his mid-40s living alone in Westhampton with severe alcohol use disorder, chronic calcific pancreatitis and thiamine deficiency who joins in 2021. Over 2023 he has a hernia repair complicated by delirium tremens, parotid sialadenosis, high-output and then alcoholic systolic heart failure from a femoral AV fistula and cardiomyopathy, and a pancreatic cyst; later a pseudocyst and Wernicke encephalopathy reach the chart only as outside records.",
+      "events": [
+        {
+          "id": "2021-09-08a",
+          "kind": "telephone",
+          "start": "2021-09-08T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient request",
+              "author": "front desk",
+              "date": "2021-09-08T10:20",
+              "body": "Caller wants to establish with us. Says he hasn't had a regular doctor in years, was in the hospital a while back for his pancreas and was given a few prescriptions at discharge. Medicaid card verified. New patient slot booked for 9/14 at 1:40. Asked him to bring all pill bottles and any hospital paperwork he still has."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T13:40",
+          "end": "2021-09-14T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Alcohol use disorder, severe, with physiological dependence",
+              "icd10": "F10.20",
+              "action": "diagnosed",
+              "onset": "2003-06-01",
+              "note": "about 6 beers daily for many years"
+            },
+            {
+              "label": "Chronic pancreatitis",
+              "action": "history",
+              "onset": "2020-03-01",
+              "note": "chronic calcific pancreatitis with recurrent acute attacks; prior admission with NG tube"
+            },
+            {
+              "label": "Thiamine deficiency",
+              "icd10": "E51.9",
+              "action": "history",
+              "onset": "2020-03-01",
+              "note": "found at prior pancreatitis admission"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "2005-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth with each meal",
+              "dose": {
+                "value": 1,
+                "unit": "capsule"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic pancreatitis"
+            },
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            },
+            {
+              "drug_text": "thiamine 100 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "thiamine deficiency"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "About 6 beers daily"
+            },
+            {
+              "item": "Occupation",
+              "value": "Unemployed"
+            },
+            {
+              "item": "Housing status",
+              "value": "Lives alone"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T14:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2021-09-14T14:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T14:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2021-09-14T14:40",
+              "body": "44M new to the practice. No regular physician for several years.\n\nHistory: Drinks about six beers a day and has for roughly eighteen years. Has tried to cut down more than once on his own, never lasted. No seizures or DTs that he knows of. Was admitted at an outside hospital for pancreatitis; told there it was the chronic calcified kind with repeat flares, had a tube through the nose for a few days, and was told his B1 was low. Brought the discharge sheet, which lists pancrelipase with meals, omeprazole, thiamine and a multivitamin. Admits he takes them when he remembers, enzymes maybe half of meals. No belly pain now. Smokes a pack a day, started in his late twenties. Used IV drugs years ago, nothing in a long time. Unemployed, lives by himself.\n\nPSH: NG tube during the pancreatitis stay. No operations.\nFamily: father had a drinking problem and cirrhosis. Mother has high blood pressure and type 2 diabetes. An uncle on his father's side had a heart attack young.\nMeds: pancrelipase 36,000 lipase-unit capsule with meals, omeprazole 20 daily, thiamine 100 daily, OTC multivitamin daily.\nAllergies: none to medications.\n\nExam: pleasant, smells of smoke. Vitals in flowsheet. HEENT unremarkable. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. No edema. Neuro grossly nonfocal, gait steady.\n\nScreens: AUDIT-C 10. PHQ-2 1.\n\nA/P\n1. Alcohol use disorder, severe. Talked about where this leads given his pancreas and his father. Offered addiction medicine referral; he would like to try on his own first. Told him never to stop cold at home without calling us.\n2. Chronic calcific pancreatitis. Quiet today. Enzymes with every meal and snack, not just when he feels like it. Continue PPI.\n3. Thiamine deficiency history. Keep taking B1 and the multivitamin.\n4. Tobacco. Not ready to quit. Will keep asking.\n5. Health maintenance: hep C antibody today given past IV use. CMP, CBC.\nFollow up 3-4 months. Flu shot next month when stock arrives."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-09-16T16:05",
+              "body": "Hi Neil, your blood counts, kidney and liver numbers came back fine, and the hepatitis C test was negative. Keep up the enzymes and the B1. See you in a few months."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T09:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2021-10-19T09:30",
+              "body": "Here for flu vaccine. No fever today, no prior reaction to vaccines. Quadrivalent given L deltoid IM, VIS provided. Waited 15 min, no issues. Left ambulatory."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-03a",
+          "kind": "pharmacy",
+          "start": "2021-12-03T11:40",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Refill request - pancrelipase",
+              "author": "MA",
+              "date": "2021-12-03T11:40",
+              "body": "Pharmacy fax requesting refill of pancrelipase 36,000 unit capsules, 1 with each meal. Last fill per pharmacy was over 2 months ago for a 30 day supply. Routed to PCP. Approved x 90 days with 1 refill. PCP comment: he is running out slowly, which means he is skipping doses. Will raise at next visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-25a",
+          "kind": "office_visit",
+          "start": "2022-01-25T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, pancreatitis and alcohol",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2022-01-25T10:35"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-01-25T10:30",
+              "results": [
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-01-25T10:30",
+              "results": [
+                {
+                  "test": "Magnesium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-01-25T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-01-25T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-01-25T10:40",
+              "body": "Return visit. No abdominal pain flares since joining, bowel movements formed most days. Still drinking daily, about the same amount, maybe one fewer on some days. Holidays were rough. Taking enzymes more often since we talked, he thinks two meals out of three.\n\nExam: vitals reviewed. Alert, no tremor. Abdomen soft, nontender. Lungs clear. Heart regular.\n\nA/P: Chronic pancreatitis, stable; enzyme adherence improving. AUD unchanged, again offered a referral, declines. Smoking, same. PCV20 today given alcohol and tobacco. CMP and magnesium today. Back in 4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Magnesium": 1.9
+            }
+          }
+        },
+        {
+          "id": "2022-01-27a",
+          "kind": "portal_message",
+          "start": "2022-01-27T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "author": "PCP",
+              "date": "2022-01-27T08:50",
+              "body": "Labs from Tuesday look good, magnesium included. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "office_visit",
+          "start": "2022-05-17T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "No-show",
+              "author": "front desk",
+              "date": "2022-05-17T15:00",
+              "body": "Did not arrive for 2:20 appt. Called the number on file, no answer, voicemail full."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-18a",
+          "kind": "telephone",
+          "start": "2022-05-18T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rescheduled",
+              "author": "front desk",
+              "date": "2022-05-18T11:10",
+              "body": "Pt called back, says he forgot yesterday. Rebooked 6/14 at 9:00. He needs omeprazole refill, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-06-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2022-06-14T09:30",
+              "body": "Missed May. No interval ER visits. Pancreas quiet. Drinking unchanged, 5-6 cans most days. Smoking a pack. Eating okay.\n\nExam: NAD, vitals in chart. Abdomen soft, nontender. No edema.\n\nPlan: refilled omeprazole, thiamine and enzymes for 90 days. Alcohol talk again, short. He knows. Physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "annual_physical",
+          "start": "2022-09-27T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preventive visit",
+          "conditions": [
+            {
+              "label": "Inguinal hernia",
+              "action": "diagnosed",
+              "onset": "2022-08-01",
+              "note": "left, reducible"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 10
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-27T09:10"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T09:12"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-27T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-27T09:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab"
+            },
+            {
+              "id": "gs-referral",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "left inguinal hernia"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-27T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive Visit",
+              "author": "PCP",
+              "date": "2022-09-27T09:20",
+              "body": "45 y/o for his yearly visit. Feels at baseline. Mentions a lump in the left groin for maybe two months, pops out when he lifts or coughs and goes back when he lies down. No pain to speak of, no nausea, bowels normal.\n\nSocial: same drinking, same pack a day. Lives alone.\nScreens: AUDIT-C 10, PHQ-2 0.\n\nExam: general well. Eyes, ears, throat normal. Neck supple, no nodes. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender. Left inguinal bulge with cough, reduces easily, nontender, no skin change. Right side without hernia. Testes normal. Extremities without edema. Skin unremarkable.\n\nAssessment/plan:\n- Left inguinal hernia, reducible. Surgery referral for repair. Went over warning signs (stuck, painful, vomiting) that mean ER.\n- Colon cancer screening at 45: FIT kit given.\n- Tdap and flu given.\n- AUD and tobacco: counseled; no change in readiness.\n- Labs: CMP, CBC.\nRTC after surgical consult."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "lab_only",
+          "start": "2022-10-11T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-10-06T08:00",
+              "resulted": "2022-10-11T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "done",
+              "date": "2022-10-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "PCP",
+              "date": "2022-10-11T14:15",
+              "body": "FIT negative. Repeat in one year. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "outside_records",
+          "start": "2022-11-08T09:00",
+          "orders": [
+            {
+              "id": "gs-referral",
+              "action": "done",
+              "date": "2022-11-08T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Consultation",
+              "author": "general surgery",
+              "date": "2022-11-08T09:00",
+              "body": "Outside general surgery group. Date of visit: 11/01/2022.\nReferred for: left groin bulge.\n\nHPI: 45 year old man with a left groin bulge for several months, worse with straining, reduces on its own. No obstructive symptoms.\nPMH per referral: chronic pancreatitis. Meds: pancrelipase, omeprazole, thiamine, multivitamin. Allergies: NKDA. Smokes.\n\nExam: reducible left inguinal hernia, no tenderness, no signs of incarceration. Right groin normal.\n\nImpression: symptomatic reducible left inguinal hernia.\nPlan: open left inguinal hernia repair with mesh. Scheduling to contact the patient with a date. Smoking cessation advised before surgery.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "office_visit",
+          "start": "2022-12-13T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "cheek swelling",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "bilateral painless parotid-area swelling"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-13T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-12-13T15:35",
+              "body": "Came in because his face looks puffy to him. Says both cheeks have filled out over about four months, mostly in front of the ears. Not painful, doesn't change with meals. No fever. No dental pain. Hernia surgery is booked for early February with the surgeons.\n\nExam: symmetric fullness over both parotid areas, soft, nontender, no warmth or redness. Mouth without lesions. No neck nodes. Thyroid normal.\n\nA/P: bilateral painless parotid enlargement. In a heavy drinker this is most often benign gland enlargement, but it deserves an ENT look. Referral placed. Discussed again how alcohol plays into this. Wished him well with the surgery; told him to be honest with the surgeons about how much he drinks."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,648 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002537",
+      "events": [
+        {
+          "id": "2025-02-19a",
+          "kind": "pharmacy",
+          "start": "2025-02-19T10:45",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "author": "RN",
+              "date": "2025-02-19T10:45",
+              "body": "Pharmacy fax for sertraline 50 mg #90. Seen 12/10. Approved with 1 refill. Pharmacy profile also showed an old allopurinol script; called and asked them to inactivate it, pharmacist confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "ed_visit",
+          "start": "2025-05-13T14:50",
+          "end": "2025-05-13T19:10",
+          "service": "Emergency Medicine",
+          "reason": "high-voltage electrical injury, left arm pain",
+          "conditions": [
+            {
+              "label": "Electrocution, initial encounter",
+              "icd10": "T75.4XXA",
+              "action": "diagnosed",
+              "onset": "2025-05-13"
+            },
+            {
+              "label": "Traumatic compartment syndrome of left upper extremity, initial encounter",
+              "icd10": "T79.A12A",
+              "action": "diagnosed",
+              "onset": "2025-05-13",
+              "note": "forearm and hand"
+            },
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "diagnosed",
+              "onset": "2025-05-13"
+            },
+            {
+              "label": "Acute kidney failure, unspecified",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2025-05-13",
+              "note": "with rhabdomyolysis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-05-13T14:55",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 110,
+              "rr": 18,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-13T15:05",
+              "resulted": "2025-05-13T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.5
+                },
+                {
+                  "test": "Calcium",
+                  "value": 7.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-13T15:05",
+              "resulted": "2025-05-13T15:50",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 6.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-13T15:05",
+              "resulted": "2025-05-13T16:05",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 20000
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-13T15:30",
+              "resulted": "2025-05-13T16:10",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-05-13T15:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-13T14:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-05-15T08:20",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT, physician record\nArrival 05/13/2025 14:50 by ambulance from a job site.\n\nHPI: 29 y/o male construction worker. Per EMS and coworkers, his left arm contacted an overhead power line while he was moving equipment. No fall from height reported. Awake, alert and oriented on arrival. Severe pain in the left arm, which is swollen and red. Hx depression, hyperuricemia, kidney injury last fall attributed to allopurinol.\nHome meds (per patient/old list): sertraline 50 mg daily, allopurinol 300 mg daily.\nAllergies: NKDA. Former smoker, social alcohol.\n\nVitals: BP 135/85, HR 110, RR 18, T 37.2 C.\nExam: Alert, GCS 15, in distress from pain. Left forearm tense and tender throughout, swollen and erythematous; passively extending the fingers produces severe pain. Radial pulse palpable. Right arm, chest and legs without injury. Heart tachycardic, regular. Lungs clear.\nECG: sinus tachycardia, no arrhythmia.\n\nLabs: creatinine 1.8 (no baseline available to us), K 5.5, Ca 7.9, phos 6.2, CK 20,000. Urine dip 3+ blood, microscopy without RBCs.\n\nAssessment: High-voltage electrical injury with compartment syndrome of the left forearm and hand. Rhabdomyolysis with myoglobinuria and acute kidney injury, mild hyperkalemia.\nPlan: Aggressive IV fluids targeting urine output. Cardiac monitoring. Hyperkalemia treated per protocol. Tdap updated. Hand surgery at bedside, to OR emergently for fasciotomy. Admit to surgery.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13b",
+          "kind": "hospital_admission",
+          "start": "2025-05-13T19:10",
+          "end": "2025-05-20T12:30",
+          "service": "Hand Surgery",
+          "reason": "compartment syndrome left forearm and hand after electrical injury",
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-fasciotomy pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-20T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-20T05:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 1850
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Fasciotomy forearm",
+              "snomed": "178071007",
+              "performed": "2025-05-13T20:15"
+            },
+            {
+              "procedure": "Division of fascia of hand",
+              "snomed": "397737001",
+              "performed": "2025-05-13T20:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-05-13T19:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report: Fasciotomy",
+              "author": "hand surgery",
+              "date": "2025-05-21T09:00",
+              "body": "REGIONAL HOSPITAL, operative report\nDate of surgery: 05/13/2025\nPreoperative and postoperative diagnosis: Compartment syndrome, left forearm and hand, after high-voltage electrical injury.\nProcedure: Fasciotomy of the left forearm, volar and dorsal; decompression of the hand compartments.\nAnesthesia: General.\nFindings: Tense volar and dorsal forearm compartments. Muscle swollen, pink and contractile after release. Hand compartments tight, released. No muscle debridement needed.\nEBL minimal. Wounds left open with negative pressure dressing. Condition to PACU stable.\nPlan: Return for wound closure in 3-5 days."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hand surgery",
+              "date": "2025-05-21T09:05",
+              "body": "REGIONAL HOSPITAL, discharge summary\nAdmitted 05/13/2025, discharged 05/20/2025.\n\nDiagnoses: High-voltage electrical injury. Compartment syndrome left forearm and hand, s/p fasciotomy. Rhabdomyolysis with acute kidney injury, resolved.\n\nCourse: Taken to the OR the evening of arrival for fasciotomy (see op note). IV fluids with close urine output monitoring; potassium normal by the next morning and creatinine back to normal within days. CK fell steadily. Returned to the OR 05/17 for delayed primary closure of the fasciotomy wounds, closed without graft. Started hand therapy in the hospital. Telemetry without arrhythmia.\n\nDischarge labs 05/20: creatinine 1.0, CK 1,850.\nDischarge exam: wounds clean and closed, sutures in. Fingers warm, sensation intact, motion limited by stiffness.\n\nDischarge medications: acetaminophen-oxycodone 325/5 mg every 6 hours as needed, short supply. Home: sertraline 50 mg daily, allopurinol 300 mg daily.\nAllergies: NKDA.\n\nFollow-up: hand surgery clinic in 3 weeks, suture removal at 2 weeks, outpatient occupational therapy twice weekly. Off work until cleared by hand surgery. PCP within 1-2 weeks; recheck BMP and CK."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "telephone",
+          "start": "2025-05-21T10:30",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-05-21T10:45",
+              "body": "Called after discharge summary arrived. Home since yesterday, staying with his parents for the week. Pain 5/10, taking the oxycodone pill about twice a day, plus nothing else. Dressing dry. Urine normal color now. Sertraline taking. Reviewed d/c med list with him: he is NOT on allopurinol, the hospital carried it from an old list. Appt 5/27 with PCP confirmed. Knows to go to ED for numbness, cold fingers, fever or wound drainage."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "office_visit",
+          "start": "2025-05-27T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute kidney failure, unspecified",
+              "icd10": "N17.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Electrocution, initial encounter",
+              "icd10": "T75.4XXA",
+              "action": "resolved"
+            },
+            {
+              "label": "Traumatic compartment syndrome of left upper extremity, initial encounter",
+              "icd10": "T79.A12A",
+              "action": "resolved",
+              "note": "s/p fasciotomy 5/13/2025"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-27T14:20",
+              "resulted": "2025-05-27T17:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-27T14:20",
+              "resulted": "2025-05-27T17:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 240
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-05-27T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-05-27T14:35",
+              "body": "S: Two weeks out from the power line injury. Discharge summary, op note and ED record reviewed. Sutures came out at hand surgery on Friday. Pain 3/10, down to one oxycodone at night and stopping. Hand stiff, starts OT twice a week next week. Sleeping poorly the first few nights, replaying it; better now. Mood a bit down being off work, PHQ-9 6. No SI. Workers' comp case opened by his employer.\n\nMeds: sertraline 50 daily. Not on allopurinol (reconciled by RN 5/21).\n\nO: Vitals as charted. Left forearm volar and dorsal incisions closed, clean, no erythema. Hand: mild swelling, fingers warm, cap refill brisk, light touch intact, flexion limited about halfway. Heart regular, lungs clear.\n\nA/P:\n1. Electrical injury with left forearm/hand compartment syndrome, s/p fasciotomy and closure. Healing well. OT and hand surgery follow-up per plan. Out of work until hand surgery clears him; note given.\n2. Rhabdomyolysis/AKI: BMP and CK today. Expect normal.\n3. Depression: some situational dip. Continue sertraline; we'll watch it. He knows he can message anytime.\n4. Finish the oxycodone and stop; acetaminophen if needed after."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "portal_message",
+          "start": "2025-05-28T08:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs Normal",
+              "author": "PCP",
+              "date": "2025-05-28T08:20",
+              "body": "Henry, creatinine 0.9 and CK 240, both normal. Your kidneys and muscles have recovered from the injury. Nothing else to do there. Good luck with OT next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "specialist_visit",
+          "start": "2025-06-11T10:00",
+          "service": "Hand Surgery",
+          "reason": "post-fasciotomy follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Clinic Letter",
+              "author": "hand surgery",
+              "date": "2025-06-13T11:40",
+              "body": "REGIONAL HOSPITAL HAND SURGERY CLINIC\nVisit 06/11/2025\n\nMr. Silva returns four weeks after left forearm and hand fasciotomy with delayed closure following a high-voltage injury. Incisions fully healed. Edema minimal. Composite fist about 2 cm short of the palm, improving weekly with occupational therapy. Sensation intact in all digits. Grip weaker on the left.\n\nPlan: continue OT twice weekly, scar massage. Remain off work. Return in 8 weeks.\n\nCurrent meds: sertraline. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "telephone",
+          "start": "2025-06-19T15:20",
+          "reason": "workers' compensation form",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Work Form",
+              "author": "MA",
+              "date": "2025-06-19T15:30",
+              "body": "Insurer for his employer faxed a medical status form. PCP completed the general medical section (kidney recovered, no restrictions from our side) and noted work restrictions defer to hand surgery. Faxed back, copy scanned. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "specialist_visit",
+          "start": "2025-08-06T09:30",
+          "service": "Hand Surgery",
+          "reason": "post-fasciotomy follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Clinic Letter",
+              "author": "hand surgery",
+              "date": "2025-08-08T10:05",
+              "body": "REGIONAL HOSPITAL HAND SURGERY CLINIC\nVisit 08/06/2025\n\nThree months after left forearm and hand fasciotomy. Near-full range of motion of wrist and fingers, full fist. Grip close to the right side. Scars mature, no contracture. Neurovascularly intact.\n\nCleared to return to modified duty now, no heavy overhead lifting with the left arm for one more month, then full duty. Home exercise program; OT discharged. Discharged from hand clinic, return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "nurse_visit",
+          "start": "2025-09-25T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-25T07:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-09-25T07:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-25T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2025-09-25T07:40",
+              "body": "Influenza and 2025-26 COVID given, left and right deltoid. Tolerated. Back at work full duty since September, says the arm is basically normal. Waited 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "hospital_admission",
+          "start": "2025-11-12T03:40",
+          "end": "2025-12-23T13:00",
+          "service": "Burn Surgery",
+          "reason": "40% TBSA burns from house fire",
+          "conditions": [
+            {
+              "label": "Burn of unspecified body region, unspecified degree",
+              "icd10": "T30.0",
+              "action": "diagnosed",
+              "onset": "2025-11-12",
+              "note": "40% TBSA, house fire"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "burn pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-15T10:20",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-15T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-15T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 110
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-15T10:40",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 4.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-15T10:45",
+              "resulted": "2025-11-20T11:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-22T05:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-22T05:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Escharotomy of burnt skin",
+              "snomed": "240992000",
+              "performed": "2025-11-12T05:30"
+            },
+            {
+              "procedure": "Split thickness graft of skin to skin",
+              "snomed": "265675003",
+              "performed": "2025-11-19T08:30"
+            },
+            {
+              "procedure": "Split thickness graft of skin to skin",
+              "snomed": "265675003",
+              "performed": "2025-12-02T08:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-12T03:40"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "telephone",
+          "start": "2025-11-17T11:05",
+          "reason": "family call, patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Brother",
+              "author": "RN",
+              "date": "2025-11-17T11:15",
+              "body": "Pt's older brother called. Henry was burned in a house fire early Wednesday and is in the burn ICU at a regional burn center. Brother says he has had a hard weekend but the team is managing. Asked us to know and to fax his med list and history. No release on file for the brother, so took his message only, confirmed nothing back. Called the burn unit and faxed med list/problem list to the unit clerk at their request. Flagged to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "telephone",
+          "start": "2025-12-24T09:40",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-12-24T09:55",
+              "body": "Spoke with Henry, home since yesterday, staying with his brother for now. Tired, sore, wearing garments. Pain pills about three a day. Eating well. Has dressing supplies, OT starts next week. Booked with PCP 1/6. Burn center summary not yet received, requested."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "outside_records",
+          "start": "2025-12-29T10:30",
+          "reason": "burn center records",
+          "conditions": [
+            {
+              "label": "Severe sepsis with septic shock",
+              "icd10": "R65.21",
+              "action": "diagnosed",
+              "onset": "2025-11-15",
+              "note": "burn center hospital day 4, culture-negative"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Burn ICU Critical Care Note, Hospital Day 4",
+              "author": "critical care",
+              "date": "2025-12-29T10:30",
+              "body": "REGIONAL BURN CENTER, CRITICAL CARE PROGRESS NOTE\nDate of service: 11/15/2025, hospital day 4\n\n30 y/o M, construction worker, hx depression and hyperuricemia, prior kidney injury attributed to allopurinol (2024) and left forearm compartment syndrome after electrical injury (05/2025, fasciotomy). Admitted 11/12 with 40% TBSA burns from a house fire three days ago. Initial management: wound care and escharotomy, resuscitation with IV fluids, morphine for pain, prophylactic antibiotics. Enteral feeds since admission.\n\nEvents: Since early morning febrile, tachycardic and hypotensive. Complains of abdominal discomfort. Vomited twice; NG output 600 mL over the past 6 hours.\n\nHome meds on file: sertraline 50 mg daily, allopurinol 300 mg daily. Allergies: NKDA.\n\nVitals: T 38.9 C, HR 120, BP 90/60.\nExam: Lethargic but arousable. Abdomen distended, tender to palpation, hypoactive bowel sounds. Dressings in place.\n\nLabs: WBC 16.0, Hgb 10.2, Plt 250. Na 135, K 4.5, Cl 100, HCO3 22, BUN 28, Cr 1.4, glucose 110. Lactate 4.2.\n\nAssessment: Septic shock on hospital day 4 of a 40% TBSA burn, source not yet identified. Feeding intolerance.\nPlan: Blood and wound cultures, then broaden to vancomycin and piperacillin-tazobactam. Fluid bolus, norepinephrine to MAP 65 or more. Hold enteral feeds, NG to low intermittent suction. Serial lactate and abdominal exams. Continue sertraline when tolerating enteral route."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Burn Center Discharge Summary",
+              "author": "burn surgery",
+              "date": "2025-12-29T10:35",
+              "body": "REGIONAL BURN CENTER, discharge summary\nAdmitted 11/12/2025. Discharged 12/23/2025 to home.\n\nDiagnoses: 40% TBSA burns, house fire. Septic shock, hospital day 4, resolved; cultures negative.\n\nCourse: Escharotomy and wound care on arrival with fluid resuscitation. On day 4 developed fever, tachycardia, hypotension with lactate 4.2 and feeding intolerance. Treated with fluids, norepinephrine for about 48 hours, and vancomycin plus piperacillin-tazobactam for 7 days. Blood and wound cultures grew no pathogen. Feeds were held with gastric decompression and restarted on day 7, tolerated, advanced to a regular diet. Excision and split-thickness skin grafting 11/19 and 12/02; grafts took well. Creatinine peaked at 1.4 and returned to normal. Physical and occupational therapy daily; walking independently at discharge.\n\nDischarge labs 12/22: WBC 8.4, Hgb 10.9, creatinine 0.9.\n\nDischarge medications: acetaminophen-oxycodone 325/5 mg every 6 hours as needed, short supply. Home meds continued: sertraline 50 mg daily, allopurinol 300 mg daily.\nAllergies: NKDA.\n\nFollow-up: burn clinic in 4-5 weeks; outpatient OT; pressure garments fitted before discharge, worn 23 hours a day; daily moisturizer and scar massage to grafted areas. PCP within 2 weeks. Off work until cleared by burn clinic."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

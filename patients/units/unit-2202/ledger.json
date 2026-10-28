@@ -1277,6 +1277,9 @@
                   "test": "MoCA total score",
                   "loinc": "72172-0",
                   "unit": "{score}",
+                  "range": {
+                    "low": 26
+                  },
                   "value": 23
                 }
               ]
@@ -2893,6 +2896,9 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 900
                 }
               ]
@@ -3882,18 +3888,27 @@
                   "test": "Troponin I",
                   "loinc": "10839-9",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 0.04
+                  },
                   "value": 8.0
                 },
                 {
                   "test": "Creatine kinase MB",
                   "loinc": "32673-6",
                   "unit": "U/L",
+                  "range": {
+                    "high": 25
+                  },
                   "value": 50
                 },
                 {
                   "test": "Myoglobin",
                   "loinc": "2639-3",
                   "unit": "ug/L",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 150
                 }
               ]
@@ -5590,7 +5605,7 @@
         "code": "310537",
         "display": "glyburide 5 MG Oral Tablet",
         "ingredient": "glyburide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5598,30 +5613,45 @@
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Creatine kinase MB": {
         "code": "32673-6",
         "display": "Creatine kinase.MB [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "high": 25
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "MoCA total score": {
         "code": "72172-0",
         "display": "Total score [MoCA]",
         "unit": "{score}",
+        "range": {
+          "low": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Myoglobin": {
         "code": "2639-3",
         "display": "Myoglobin [Mass/volume] in Serum or Plasma",
         "unit": "ug/L",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Troponin I": {
         "code": "10839-9",
         "display": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 0.04
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

@@ -1,9 +1,7 @@
 {
   "unit": "unit-2079",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002079/2023-11-27a: referral to \"Hematology & Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002079",
@@ -962,7 +960,7 @@
               "action": "placed",
               "order": "Hematology-oncology referral (urgent)",
               "category": "referral",
-              "to": "Hematology & Oncology",
+              "to": "Oncology",
               "reason": "Right lower lobe lung mass, worsening symptoms, weight loss"
             }
           ],
@@ -3050,12 +3048,20 @@
                   "test": "Protein, CSF",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 112
                 },
                 {
                   "test": "White Blood Cells, CSF",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 2
                 }
               ]
@@ -3372,7 +3378,7 @@
         "code": "197805",
         "display": "ibuprofen 400 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "psyllium 3.4 G Powder for Oral Suspension": {
         "code": "824586",
@@ -3397,12 +3403,20 @@
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "White Blood Cells, CSF": {
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

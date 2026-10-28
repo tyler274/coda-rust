@@ -257,8 +257,8 @@
               "action": "placed",
               "order": "Ankle-brachial index",
               "category": "imaging",
-              "to": "Vascular laboratory",
-              "reason": "peripheral arterial disease, no prior index on file"
+              "reason": "peripheral arterial disease, no prior index on file",
+              "snomed": "401221002"
             },
             {
               "id": "aaa-us-2023",
@@ -266,7 +266,8 @@
               "order": "Abdominal aorta ultrasound, aneurysm screening",
               "category": "imaging",
               "to": "Radiology",
-              "reason": "male former smoker, 65-75"
+              "reason": "male former smoker, 65-75",
+              "loinc": "69276-4"
             },
             {
               "id": "ldct-2023",
@@ -275,14 +276,6 @@
               "category": "imaging",
               "to": "Radiology",
               "reason": "40 pack-years, quit 2022"
-            },
-            {
-              "id": "records-prior-2023",
-              "action": "placed",
-              "order": "Records request, prior primary care practice",
-              "category": "referral",
-              "to": "Prior primary care practice",
-              "reason": "transfer of care"
             }
           ],
           "documents": [
@@ -316,12 +309,7 @@
           "start": "2023-09-27T11:15",
           "reason": "prior practice records received",
           "orders": [
-            {
-              "id": "records-prior-2023",
-              "action": "done",
-              "date": "2023-09-27T11:15"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Outside Records",

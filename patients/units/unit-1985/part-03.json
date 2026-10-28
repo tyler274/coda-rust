@@ -92,8 +92,8 @@
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-22T09:10", "resulted": "2025-12-22T13:30", "results": [{"test": "Creatinine", "value": 2.8}, {"test": "Blood Urea Nitrogen", "value": 45}, {"test": "Albumin", "value": 3.2}]},
             {"panel": "Urinalysis", "collected": "2025-12-22T09:05", "resulted": "2025-12-22T11:00", "results": [{"test": "Urine Color", "text": "Brown"}, {"test": "Urine Protein", "text": "3+"}, {"test": "Urine Blood", "text": "Large"}, {"test": "Urine Red Blood Cells", "text": "Too numerous to count"}]},
             {"panel": null, "collected": "2025-12-22T09:05", "resulted": "2025-12-22T11:00", "results": [{"test": "Urine RBC casts", "loinc": "5807-3", "unit": "/[LPF]", "text": "Present"}]},
-            {"panel": null, "collected": "2025-12-22T09:10", "resulted": "2025-12-22T16:10", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 62}, {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 24}]},
-            {"panel": null, "collected": "2025-12-22T09:10", "resulted": "2025-12-23T11:20", "results": [{"test": "Antistreptolysin O titer", "loinc": "5370-2", "unit": "[IU]/mL", "value": 640}]}
+            {"panel": null, "collected": "2025-12-22T09:10", "resulted": "2025-12-22T16:10", "results": [{"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 62, "range": {"low": 100, "high": 233}}, {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 24, "range": {"low": 14, "high": 48}}]},
+            {"panel": null, "collected": "2025-12-22T09:10", "resulted": "2025-12-23T11:20", "results": [{"test": "Antistreptolysin O titer", "loinc": "5370-2", "unit": "[IU]/mL", "value": 640, "range": {"high": 200}}]}
           ],
           "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2025-12-22T08:40"}],
           "orders": [{"id": "neph-2025", "action": "placed", "order": "Nephrology referral, urgent", "category": "referral", "to": "Nephrology", "reason": "Acute nephritic syndrome with creatinine 2.8"}],
@@ -214,7 +214,7 @@
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-11T07:20", "resulted": "2026-05-12T10:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]},
             {"panel": "Lipid Panel", "collected": "2026-05-11T07:20", "resulted": "2026-05-12T10:00", "results": [{"test": "Low Density Lipoprotein"}]},
             {"panel": "Urinalysis", "collected": "2026-05-11T07:25", "resulted": "2026-05-12T10:00", "results": [{"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Protein", "text": "Negative"}]},
-            {"panel": null, "collected": "2026-05-11T07:20", "resulted": "2026-05-12T10:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 112}]}
+            {"panel": null, "collected": "2026-05-11T07:20", "resulted": "2026-05-12T10:00", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Complement C3", "loinc": "4485-9", "unit": "mg/dL", "value": 112, "range": {"low": 100, "high": 233}}]}
           ],
           "procedures": [{"procedure": "Venipuncture", "performed": "2026-05-11T07:20"}],
           "documents": [

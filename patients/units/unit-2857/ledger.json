@@ -1,11 +1,7 @@
 {
   "unit": "unit-2857",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002857/2016-09-13a: procedure order \"Request outside records from prior primary care practice\" names no one catalog lab, panel, study or procedure",
-    "MRN00002857/2026-04-02a: imaging order \"CT chest and CT abdomen and pelvis with contrast\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002857",
@@ -49,6 +45,7 @@
           "medications": [
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -289,15 +286,6 @@
               "date": "2016-09-13T10:28"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2016",
-              "action": "placed",
-              "order": "Request outside records from prior primary care practice",
-              "category": "procedure",
-              "reason": "transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -407,11 +395,6 @@
             }
           ],
           "orders": [
-            {
-              "id": "prior-records-2016",
-              "action": "done",
-              "date": "2017-03-15T10:15"
-            },
             {
               "id": "mammo-2017",
               "action": "placed",
@@ -5451,6 +5434,9 @@
                   "test": "Cancer Antigen 125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 35
+                  },
                   "value": 31
                 }
               ]
@@ -5536,6 +5522,7 @@
               "action": "placed",
               "order": "CT chest and CT abdomen and pelvis with contrast",
               "category": "imaging",
+              "loinc": "72254-6",
               "reason": "preoperative evaluation of right ovarian mass"
             }
           ],
@@ -6072,6 +6059,9 @@
                   "test": "Cancer Antigen 125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 35
+                  },
                   "value": 14
                 }
               ]
@@ -6151,31 +6141,31 @@
         "code": "854235",
         "display": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "calcium carbonate 1250 MG Oral Tablet": {
         "code": "282465",
         "display": "calcium carbonate 1250 MG Oral Tablet",
         "ingredient": "calcium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "fidaxomicin 200 MG Oral Tablet": {
         "code": "1111106",
         "display": "fidaxomicin 200 MG Oral Tablet",
         "ingredient": "fidaxomicin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ibuprofen 200 MG Oral Tablet": {
         "code": "310965",
         "display": "ibuprofen 200 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vancomycin 125 MG Oral Capsule": {
         "code": "313570",
         "display": "vancomycin 125 MG Oral Capsule",
         "ingredient": "vancomycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -6183,6 +6173,9 @@
         "code": "10334-1",
         "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Clostridioides difficile antigen (glutamate dehydrogenase), stool": {
@@ -6196,8 +6189,12 @@
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
-    "rejected": [
-      "drug \"multivitamin Oral Tablet\""
-    ]
+    "reports": {
+      "CT chest and CT abdomen and pelvis with contrast": {
+        "code": "72254-6",
+        "display": "CT Chest and Abdomen and Pelvis W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
   }
 }

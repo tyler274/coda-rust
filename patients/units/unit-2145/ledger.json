@@ -1,0 +1,1985 @@
+{
+  "unit": "unit-2145",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002145",
+      "given": "Brian",
+      "family": "Barrett",
+      "birth_date": "1981-03-25",
+      "address_line": "17 Cooke Avenue, Apt 2",
+      "phone": "+1-508-555-0109",
+      "email": "brian.barrett@example.test",
+      "marital_status": "single",
+      "summary": "Warehouse logistics coordinator in long-term recovery from opioid use disorder on naltrexone, with PTSD on sertraline and hepatitis C cured in 2021. Reinfected with hepatitis C in 2024 and cured again with sofosbuvir/velpatasvir; in spring 2026 develops pancytopenia, referred to hematology, where a marrow shows aplastic anemia.",
+      "events": [
+        {
+          "id": "2023-07-11a",
+          "kind": "telephone",
+          "start": "2023-07-11T10:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-07-11T10:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer his primary care here. Has Medicaid, card info taken. Prior PCP office is retiring their panel. Takes three daily meds, says he will bring the bottles. Booked new patient visit 7/17 at 8:40. Release of information form emailed for his old office records."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "establish_care",
+          "start": "2023-07-17T08:40",
+          "end": "2023-07-17T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "History of hepatitis C infection",
+              "action": "history",
+              "onset": "2021-01-01",
+              "note": "treated with antiviral therapy in 2021, cured",
+              "icd10": "Z86.19"
+            },
+            {
+              "label": "Opioid use disorder, in sustained remission",
+              "action": "diagnosed",
+              "icd10": "F11.21"
+            },
+            {
+              "label": "History of intravenous drug use",
+              "action": "history",
+              "icd10": "Z87.898"
+            },
+            {
+              "label": "Post-traumatic stress disorder",
+              "action": "diagnosed"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "naltrexone hydrochloride 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Opioid use disorder, in sustained remission"
+            },
+            {
+              "drug": "sertraline 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Post-traumatic stress disorder"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2000 units by mouth daily",
+              "dose": {
+                "value": 0.05,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              74
+            ],
+            "hr": 79,
+            "spo2": 98,
+            "weight_kg": 83.5,
+            "height_cm": 180.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-07-17T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-17T09:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-07-17T09:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 52
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-17T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-17T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Does not drink alcohol"
+            },
+            {
+              "item": "Occupation",
+              "value": "Warehouse logistics coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-07-17T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-07-17T09:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-17T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-07-17T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-07-17T09:35",
+              "author": "PCP",
+              "body": "42-year-old man transferring care; his former primary care office is closing its panel. Came with his pill bottles.\n\nHepatitis C: diagnosed years ago in the setting of injection use. Treated with a 12-week antiviral course in 2021 through his old office, told he was cured. No symptoms now.\n\nOpioid use disorder: in sustained remission. No injection or other use in years by his account. Goes to his recovery program meetings several times a week. Naltrexone 50 mg daily by mouth, takes it every morning, no side effects. Old prescriber was the prior PCP; I will take it over.\n\nPTSD: on sertraline 100 mg for years. Sleep is ok most nights, occasional bad stretch around anniversaries.\n\nAlso takes vitamin D3 2000 units daily on his own.\n\nPSH: appendectomy at 16. Left femur ORIF at 28 after a car crash, no hardware problems.\nFH: father had alcohol use disorder with cirrhosis. Mother has hypertension and hypothyroidism. Younger brother has hepatitis C.\nSH: logistics coordinator at a warehouse, day shift. Smoked for years, quit in 2021. No alcohol. Single.\nAllergies: no known drug allergies.\n\nExam: well appearing, pleasant. Vitals as charted. Sclerae anicteric. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed RLQ scar, no organomegaly. Old lateral thigh scar on the left. No edema. Skin without track marks or rash. Mood good, affect full.\n\nPHQ-9 4.\n\nAssessment/plan:\n1. History of hepatitis C, treated 2021: checking HCV RNA to confirm cure on our end. Requesting old records.\n2. OUD in sustained remission: continue naltrexone 50 mg daily. Encouraged him to keep going to meetings.\n3. PTSD: stable on sertraline 100 mg, continue.\n4. Health maintenance: CMP, CBC, lipids, HIV screen today. Tdap given (none on record). Colon screening at 45.\nRTC 4-5 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "portal_message",
+          "start": "2023-07-19T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-07-19T16:05",
+              "author": "PCP",
+              "body": "Hi Brian, all of your bloodwork from Monday looks good. Kidney and liver tests are normal, blood counts are normal, cholesterol is fine. The hepatitis C virus test came back not detected, which confirms the 2021 treatment worked. HIV screen negative. Nothing to change. Take care."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "outside_records",
+          "start": "2023-07-25T11:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-07-25T11:40",
+              "author": "outside primary care",
+              "body": "Records packet from the patient's previous primary care office, received by fax, 38 pages.\n\nProblem list on their last summary: hepatitis C (treated), opioid use disorder in remission, PTSD.\nMedications: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3 2000 units daily.\nAllergies: none known.\n\nHepatitis C: genotype and baseline labs from 2021 in the packet. 12-week antiviral regimen completed in 2021. Post-treatment viral load undetectable, documented as sustained virologic response.\n\nOther: tobacco cessation counseling 2021, patient quit that year. Routine metabolic panels and blood counts 2021-2022 within normal limits.\n\nReviewed and filed by PCP. Consistent with history given at visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "nurse_visit",
+          "start": "2023-10-16T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "hr": 69
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-16T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-16T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-16T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2023-10-16T16:50",
+              "author": "RN",
+              "body": "Came in after his shift for flu and the 2023-24 COVID shot. No fever today, no prior vaccine reactions. Flu L deltoid, COVID R deltoid. VIS given. Waited 15 minutes, felt fine, left."
+            }
+          ],
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-12-11a",
+          "kind": "office_visit",
+          "start": "2023-12-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up recovery and PTSD",
+          "vitals": {
+            "bp": [
+              113,
+              78
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 83.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-11T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-12-11T15:50",
+              "author": "PCP",
+              "body": "Routine check-in. Work busy with the holiday freight volume, long days but manageable. Still at meetings, three a week. Taking naltrexone daily without missed doses. No cravings to speak of. Sertraline steady; sleeping alright.\n\nVitals as charted. Calm, good eye contact, organized.\nPHQ-9 3.\n\nA/P: OUD in sustained remission, continue naltrexone 50 mg. PTSD stable, continue sertraline 100 mg. 90-day refills sent. Physical next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-18a",
+          "kind": "pharmacy",
+          "start": "2024-03-18T08:10",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "date": "2024-03-18T08:10",
+              "author": "MA",
+              "body": "Electronic request from his pharmacy, naltrexone 50 mg #90 and sertraline 100 mg #90. Last visit 12/11, on file. Pended for PCP, approved and sent 3/18."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "ed_visit",
+          "start": "2024-05-13T13:05",
+          "end": "2024-05-13T19:40",
+          "service": "Emergency Medicine",
+          "reason": "fatigue, jaundice, dark urine",
+          "conditions": [
+            {
+              "label": "Hepatitis C virus reinfection",
+              "action": "diagnosed",
+              "onset": "2024-04-29",
+              "icd10": "B17.10"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-05-13T13:12",
+              "bp": [
+                132,
+                81
+              ],
+              "hr": 88,
+              "rr": 16,
+              "temp_c": 36.9,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-05-13T13:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 120
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 130
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 210
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 2.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-13T13:40",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Reactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-05-13T13:40",
+              "resulted": "2024-05-14T10:15",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "value": 2400000
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2024-05-13T15:30",
+              "text": "Liver normal in size with homogeneous echotexture. No focal hepatic lesion. Gallbladder without stones, wall thickening or pericholecystic fluid. Common bile duct 4 mm. No intrahepatic ductal dilation. Spleen normal in size. Right kidney unremarkable. No ascites.",
+              "conclusion": "Normal right upper quadrant ultrasound. No biliary dilation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-05-13T13:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-05-14T14:20",
+              "author": "emergency medicine",
+              "body": "Outside emergency department record, faxed to PCP.\n\nVisit 5/13/2024.\nCC: yellow eyes, dark urine, tired.\n\nHPI: 43M with prior hepatitis C (treated, cured 2021), opioid use disorder in remission on naltrexone, PTSD. Two weeks of worsening fatigue, then noticed his eyes turning yellow and tea-colored urine. No travel lately. Drinks no alcohol. No Tylenol or other OTC products or supplements beyond his vitamin D. Denies any drug use now; says he goes to his recovery program regularly.\n\nMeds: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3 2000 units daily.\nAllergies: NKDA.\nPSH: appendectomy, left femur ORIF.\n\nExam: temp 36.9, other vitals in flowsheet. Icteric sclerae. Mildly tender in the right upper quadrant without guarding. No asterixis. Alert and oriented.\n\nData: AST 120, ALT 130, alk phos 210, total bili 3.2, direct bili 2.1. HCV antibody reactive (expected given history). HCV RNA sent. RUQ ultrasound normal, no ductal dilation.\n\nCourse: well appearing, tolerating PO. Discharged with instructions to follow up with primary care within the week. Return precautions for confusion, bleeding, vomiting.\n\nAddendum 5/14 10:40: HCV RNA quantitative 2,400,000 IU/mL. Picture is acute hepatitis C reinfection. Patient called and informed; PCP office notified.\n\nDx: acute hepatitis C, reinfection."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "office_visit",
+          "start": "2024-05-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, hepatitis C",
+          "vitals": {
+            "bp": [
+              117,
+              79
+            ],
+            "hr": 57,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 84.4
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-05-20T11:35",
+              "resulted": "2024-05-20T17:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 104
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 178
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.3
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-20T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-20T11:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hepatology-referral",
+              "action": "placed",
+              "order": "Hepatology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "hepatitis C reinfection, treatment"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "date": "2024-05-20T11:45",
+              "author": "PCP",
+              "body": "Seen in an outside ED 5/13 for jaundice; record reviewed. HCV RNA came back 2.4 million, so this is a reinfection after his 2021 cure.\n\nToday: urine is lighter, eyes less yellow per him. Still tired by mid-afternoon, has been working. Appetite ok. No confusion, no bleeding, no abdominal swelling. Denies any use. Still going to meetings.\n\nExam: vitals as charted, afebrile. Faint scleral icterus. Abdomen soft, minimal RUQ tenderness, no hepatomegaly appreciated, no ascites. No asterixis.\n\nA/P: acute hepatitis C reinfection, clinically improving.\n- Repeat hepatic panel today.\n- Referral to hepatology for treatment; he is agreeable.\n- No alcohol, no acetaminophen above 2 g/day for now.\n- Continue naltrexone and sertraline.\n- Call for worsening jaundice, confusion or bleeding.\n\nAddendum 5/20 17:30: AST 96, ALT 104, alk phos 178, T bili 2.3, D bili 1.4. Trending down. Message sent to patient."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "specialist_visit",
+          "start": "2024-06-12T09:30",
+          "service": "Hepatology",
+          "reason": "hepatitis C reinfection",
+          "medications": [
+            {
+              "drug_text": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 12 weeks",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Hepatitis C virus reinfection"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-06-12T10:15",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 141
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-12T10:15",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "value": 1150000
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-12T10:15",
+              "results": [
+                {
+                  "test": "Hepatitis C virus genotype",
+                  "loinc": "32286-7",
+                  "text": "Genotype 1a"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "hepatology-referral",
+              "action": "done",
+              "date": "2024-06-12T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Consultation",
+              "date": "2024-06-14T15:00",
+              "author": "hepatology",
+              "body": "Outside hepatology clinic. Consult letter to the referring primary care physician.\n\nSeen 6/12/2024 for acute hepatitis C reinfection.\n\nThank you for sending this 43-year-old man, previously cured of hepatitis C in 2021, who presented to an emergency department in May with jaundice. HCV RNA at that time 2.4 million IU/mL. He feels better; fatigue persists. He reports no current drug or alcohol use and remains engaged with his recovery program.\n\nMedications: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3. NKDA.\n\nExam: mild residual scleral icterus. Abdomen soft, nontender, no stigmata of chronic liver disease, no splenomegaly.\n\nLabs today: AST 61, ALT 70, alkaline phosphatase 141, total bilirubin 1.2. HCV RNA 1,150,000 IU/mL. Genotype 1a. His May ultrasound showed a normal liver.\n\nImpression: acute HCV reinfection, genotype 1a, without evidence of advanced liver disease. Spontaneous clearance is unlikely at this level and treatment is recommended now.\n\nPlan:\n1. Sofosbuvir/velpatasvir 400/100 mg, one tablet daily for 12 weeks. Prior authorization submitted to his plan.\n2. No significant interactions with his current medications.\n3. Reviewed how reinfection happens and ways to prevent it.\n4. HCV RNA 12 weeks after completing treatment; we will see him then.\n\nPlease call with questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T14:45",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Prior authorization approved",
+              "date": "2024-06-18T14:45",
+              "author": "MA",
+              "body": "Specialty pharmacy called: Medicaid PA for sofosbuvir/velpatasvir approved, 12 weeks. First 28 tablets shipping to patient, delivery 6/19. Hepatology aware. FYI for PCP, med added to list."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "portal_message",
+          "start": "2024-08-05T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hep C pills",
+              "date": "2024-08-05T20:12",
+              "author": "patient",
+              "body": "Just checking in, I'm about 7 weeks into the hep C pills. No problems, haven't missed any. Energy is back to normal. Do I need any blood work from you guys before I finish?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hep C pills",
+              "date": "2024-08-06T08:30",
+              "author": "PCP",
+              "body": "Great to hear. No labs needed from us. Hepatology will check the virus level about 3 months after you finish, and they'll send us the result. Keep going."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "nurse_visit",
+          "start": "2024-10-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "hr": 70
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-14T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-14T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-14T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-14T16:45",
+              "author": "RN",
+              "body": "Flu and 2024-25 COVID vaccine given, both well tolerated last year. Afebrile by report, feels well. Finished his hepatitis C medicine in September. Flu R deltoid, COVID L deltoid. Observed 15 min, no reaction."
+            }
+          ],
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "specialist_visit",
+          "start": "2024-12-09T10:00",
+          "service": "Hepatology",
+          "reason": "post-treatment follow-up",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-12-09T10:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 88
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-09T10:20",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Follow-up",
+              "date": "2024-12-11T09:10",
+              "author": "hepatology",
+              "body": "Outside hepatology clinic. Follow-up letter.\n\nSeen 12/9/2024, 12 weeks after he completed sofosbuvir/velpatasvir in September. Took every dose. Feels well, working full time.\n\nHCV RNA not detected. AST 27, ALT 30, alkaline phosphatase 88, total bilirubin 0.7.\n\nImpression: sustained virologic response; the reinfection is cured.\n\nRecommendations: HCV RNA once a year at primary care, or sooner with any new exposure or rise in liver enzymes. Antibody testing is not useful for him, since it stays positive. He is discharged from our clinic; glad to see him again if needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "office_visit",
+          "start": "2024-12-16T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {
+              "label": "Hepatitis C virus reinfection",
+              "action": "resolved",
+              "onset": "2024-04-29",
+              "icd10": "B17.10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              74
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 84.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-12-16T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-12-16T16:05",
+              "author": "PCP",
+              "body": "Hepatology letter in: HCV RNA undetectable 12 weeks post treatment, LFTs normal. Reinfection cured, taken off the active list. Plan per hepatology is a yearly HCV RNA here; will do it with his physical.\n\nHe feels good. Meetings continue. Naltrexone and sertraline daily. Mood steady through a stressful fall at work. No nightmares lately.\n\nVitals as charted. Looks well, anicteric.\nPHQ-9 3.\n\nA/P:\n- Hep C reinfection: resolved. Yearly RNA.\n- OUD in sustained remission: naltrexone 50 mg, refills sent.\n- PTSD: sertraline 100 mg, refills sent.\nPhysical in summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-21a",
+          "kind": "pharmacy",
+          "start": "2025-04-21T09:05",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "date": "2025-04-21T09:05",
+              "author": "MA",
+              "body": "Pharmacy e-request: sertraline 100 mg and naltrexone 50 mg, 90-day supply each. Seen 12/16. Sent per PCP standing approval. Reminder to schedule summer physical left on voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "annual_physical",
+          "start": "2025-07-14T08:20",
+          "end": "2025-07-14T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              70
+            ],
+            "hr": 72,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 83.8,
+            "height_cm": 179.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-14T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-14T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 261
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.16
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-14T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-14T09:00",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-07-14T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-14T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-14T09:10",
+              "author": "PCP",
+              "body": "Annual exam, 44M.\n\nInterval: hep C reinfection treated last year, cured per hepatology in December. Feels well. Working full time, on his feet a lot, no joint or back trouble. Still in his program, attends regularly; no use. Naltrexone and sertraline daily. Vitamin D OTC. No tobacco since 2021, no alcohol.\n\nROS negative: no fatigue, bruising, bleeding, weight change, chest pain, dyspnea, bowel change or blood in stool.\n\nExam: vitals as charted. NAD. Sclerae anicteric. Oropharynx clear. Neck supple, no thyromegaly or nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no liver or spleen edge felt. Healed scars RLQ and left thigh. Extremities without edema. Skin no rash or bruising. Mood euthymic.\nPHQ-9 2.\n\nA/P:\n1. Preventive: CMP, CBC, lipids today. Yearly HCV RNA per hepatology. Turning 45 this year; colon screening discussed, he prefers stool testing, FIT kit given with instructions. Tdap 2023, up to date. Flu and COVID in October.\n2. OUD in sustained remission: continue naltrexone 50 mg.\n3. PTSD: stable on sertraline 100 mg.\nFollow-up in about 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "portal_message",
+          "start": "2025-07-16T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-07-16T12:30",
+              "author": "PCP",
+              "body": "Brian, your labs from Monday are all normal, including blood counts, liver and kidney tests and cholesterol. The hepatitis C test is still negative. Please drop off the stool kit when you can."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "date": "2025-07-16T19:48",
+              "author": "patient",
+              "body": "Thanks! Will do the kit this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "lab_only",
+          "start": "2025-07-28T10:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-25T07:00",
+              "resulted": "2025-07-28T10:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-07-28T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2025-07-28T13:15",
+              "author": "PCP",
+              "body": "FIT negative. Repeat in one year. Patient notified through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "nurse_visit",
+          "start": "2025-10-20T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "hr": 67
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-20T16:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-20T16:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-20T16:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2025-10-20T17:00",
+              "author": "RN",
+              "body": "Here for the 2025-26 flu and COVID doses. No illness today. Given L and R deltoid. Tolerated, observed 15 minutes. Reminded him his follow-up with PCP is due in December."
+            }
+          ],
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "office_visit",
+          "start": "2025-12-08T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "telephone",
+          "start": "2025-12-09T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-12-09T09:15",
+              "author": "front desk",
+              "body": "Called re: missed visit yesterday. He got held over at work and forgot to call. Rebooked for 1/12 at 4:00. Has enough of both meds until then."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "office_visit",
+          "start": "2026-01-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              78
+            ],
+            "hr": 72,
+            "spo2": 96,
+            "weight_kg": 83.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-01-12T16:25",
+              "author": "PCP",
+              "body": "Rescheduled from December. Doing fine. Got through the busy season at the warehouse. Meetings twice a week now with the new shift schedule. No use, no cravings. Sleep fine. Takes both meds every day.\n\nVitals as charted. Well appearing, anicteric, no bruising seen. Mood good.\nPHQ-9 3.\n\nA/P: OUD in sustained remission, continue naltrexone 50 mg. PTSD stable, continue sertraline 100 mg. Refills x 90 days with 1 refill. Physical with yearly HCV RNA and FIT in July."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "office_visit",
+          "start": "2026-05-01T10:40",
+          "end": "2026-05-01T11:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, bruising, nosebleeds",
+          "conditions": [
+            {
+              "label": "Pancytopenia",
+              "action": "diagnosed",
+              "onset": "2026-03-16",
+              "icd10": "D61.818"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              74
+            ],
+            "hr": 67,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 83.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-01T11:10",
+              "resulted": "2026-05-01T15:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Platelets",
+                  "value": 24
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-01T11:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-01T11:10",
+              "resulted": "2026-05-04T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-01T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-05-01T11:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hematology-referral",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "pancytopenia, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "date": "2026-05-01T11:30",
+              "author": "PCP",
+              "body": "Texted this morning asking to be seen, came in same day.\n\nAbout six weeks of getting more and more tired, worse the last couple of weeks, dragging through his shifts. Bruises on his legs and arms he doesn't remember getting. Nosebleeds several times, stop with pressure in 10-15 minutes. No fever, no night sweats, no weight loss. No dark or bloody stools, no blood in urine. No new meds or supplements; still just naltrexone, sertraline, vitamin D. No alcohol. Denies any use.\n\nExam: vitals as charted, afebrile. Pale conjunctivae. Sclerae anicteric. No blood in nares now, no oral bleeding. Scattered petechiae over both shins, a few small bruises on the forearms. No cervical, axillary or inguinal nodes. Abdomen soft, nontender, liver and spleen not enlarged. Heart regular. Lungs clear.\n\nA/P: fatigue with bruising and epistaxis, concern for low counts. CBC, CMP and HCV RNA drawn now, will call this afternoon. Bleeding precautions reviewed: no aspirin or ibuprofen, soft toothbrush, ED for a nosebleed that won't stop or any heavy bleeding. Continue current meds.\n\nAddendum 15:40: CBC WBC 2.4, Hgb 8.6, plt 24. Pancytopenia. Called patient (see phone note). Urgent hematology referral placed, office asked for the earliest new patient slot. CMP unremarkable."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.6,
+              "Platelets": 24,
+              "White Blood Cells": 2.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-01b",
+          "kind": "telephone",
+          "start": "2026-05-01T15:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab result call",
+              "date": "2026-05-01T15:45",
+              "author": "PCP",
+              "body": "Called him with today's CBC. All three cell lines are low, platelets 24. Explained this needs a hematologist to look for the cause, likely including a bone marrow test. Urgent referral in. Repeated bleeding precautions and when to go to the ED. He understands, asked whether this could be the hep C back; told him the virus test is still pending and I will let him know. He will stay off ladders at work for now."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hepatitis C test and hematology",
+              "date": "2026-05-04T10:05",
+              "author": "PCP",
+              "body": "Brian, the hepatitis C virus test from Friday came back not detected, so this isn't the hep C returning. Our referral coordinator confirmed your hematology appointment for Monday 5/18 in the morning; they'll mail details. Call us or go to the ED if bleeding is hard to stop."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hepatitis C test and hematology",
+              "date": "2026-05-04T12:41",
+              "author": "patient",
+              "body": "Ok thank you, that's a relief. I'll be there the 18th."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "specialist_visit",
+          "start": "2026-05-18T09:00",
+          "service": "Hematology & Oncology",
+          "reason": "pancytopenia",
+          "vitals": {
+            "bp": [
+              117,
+              75
+            ],
+            "hr": 62,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 84.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-18T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 20
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.72
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-18T09:25",
+              "results": [
+                {
+                  "test": "Reticulocytes",
+                  "loinc": "17849-1",
+                  "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-18T09:25",
+              "results": [
+                {
+                  "test": "Peripheral blood smear",
+                  "loinc": "104701-8",
+                  "text": "No blasts or abnormal cells. Red cells, white cells and platelets all reduced in number."
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-18T09:25",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 512
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-18T09:25",
+              "results": [
+                {
+                  "test": "Folate",
+                  "value": 11.8
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "hematology-referral",
+              "action": "done",
+              "date": "2026-05-18T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "date": "2026-05-20T13:30",
+              "author": "hematology",
+              "body": "Outside hematology and oncology clinic. New patient consultation, seen 5/18/2026. Letter to the referring physician.\n\nReason for referral: pancytopenia.\n\nHistory: 45-year-old man with two months of worsening tiredness, bruising that comes easily and recurring nosebleeds. He has had no fevers, sweats or weight loss. Hepatitis C was treated and cured in 2021; he was reinfected in 2024, seen in an emergency department that May, and was cured again with a 12-week course. His opioid use disorder has been in sustained remission and he has PTSD.\n\nPast surgical: appendectomy at 16; left femur fixation at 28 after a car accident.\nMedications: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3 2000 units daily.\nAllergies: none known.\nFamily: father with alcohol use disorder and cirrhosis; mother with hypertension and hypothyroidism; younger brother with hepatitis C.\nSocial: former smoker, quit 5 years ago. No alcohol. Works as a warehouse logistics coordinator.\n\nExam: pale. Petechiae scattered over the lower legs. No palpable lymph nodes. Liver and spleen not enlarged.\n\nLabs today: hemoglobin 8.2 g/dL, WBC 2.1 x10^9/L, platelets 20 x10^9/L, reticulocytes 0.5%. I reviewed the smear: no blasts and no abnormal forms; all three lines are sparse. B12 512 pg/mL and folate 11.8 ng/mL, both normal. Your HCV RNA on 5/1 was undetectable.\n\nImpression: pancytopenia with an inappropriately low reticulocyte count and a bland smear, pointing to underproduction. A marrow failure process is the main consideration, and a marrow examination is needed.\n\nPlan:\n1. Bone marrow aspirate and biopsy, scheduled 5/27, with cytogenetics and flow cytometry including a PNH screen.\n2. Bleeding precautions; avoid NSAIDs and aspirin.\n3. Follow up after the biopsy results.\n\nThank you for this referral."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.2,
+              "Platelets": 20,
+              "White Blood Cells": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "procedure_visit",
+          "start": "2026-05-27T08:30",
+          "service": "Hematology & Oncology",
+          "reason": "bone marrow biopsy",
+          "reports": [
+            {
+              "study": "Bone marrow biopsy pathology report",
+              "loinc": "66119-9",
+              "performed": "2026-05-27T09:00",
+              "text": "Specimen: right posterior iliac crest aspirate and core biopsy. Core length adequate for evaluation. Cellularity approximately 15%, markedly hypocellular for age. Trilineage hematopoiesis is reduced: scattered erythroid islands, sparse granulocytic precursors, rare megakaryocytes. No dysplasia in the lineages present. Blasts not increased. No fibrosis on reticulin stain. No granulomas, lymphoid aggregates or metastatic infiltrate. Iron stores present. Cytogenetics: 46,XY normal male karyotype in 20 metaphases. Peripheral blood flow cytometry: no PNH clone detected.",
+              "conclusion": "Markedly hypocellular marrow (about 15%) with reduced trilineage hematopoiesis, without dysplasia, increased blasts, fibrosis or infiltrate. Normal karyotype. No PNH clone.",
+              "issued": "2026-05-29T16:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Bone marrow biopsy, needle or trocar",
+              "snomed": "56241004",
+              "performed": "2026-05-27T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pathology Report",
+              "title": "Bone Marrow Pathology",
+              "date": "2026-06-01T10:20",
+              "author": "pathology",
+              "body": "Outside pathology report received by fax from the hematology clinic. Bone marrow aspirate and core biopsy performed 5/27/2026, final report 5/29.\n\nFinal diagnosis: markedly hypocellular marrow, about 15% cellularity, with reduced trilineage hematopoiesis. No dysplasia, no increase in blasts, no fibrosis, no infiltrating process. Karyotype 46,XY. No PNH clone by flow cytometry.\n\nFiled to chart for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "specialist_visit",
+          "start": "2026-06-08T10:30",
+          "service": "Hematology & Oncology",
+          "reason": "bone marrow results",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-08T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 18
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "date": "2026-06-10T11:45",
+              "author": "hematology",
+              "body": "Outside hematology and oncology clinic. Follow-up visit 6/8/2026, letter to PCP.\n\nThe marrow came back markedly hypocellular at about 15% with no dysplasia, no excess blasts, a normal karyotype and no PNH clone. Taken with his counts, this is aplastic anemia. By count criteria it is non-severe. Given his hepatitis C reinfection two years ago, a post-hepatitis mechanism is likely.\n\nToday: hemoglobin 8.0, WBC 2.0, platelets 18. Still tired, a nosebleed last week that stopped at home. No infections.\n\nWe talked through the options. Because his counts are low enough to put him at risk, we are starting treatment now:\n- Cyclosporine 200 mg by mouth twice daily.\n- Eltrombopag 150 mg by mouth once daily, on an empty stomach, apart from dairy and minerals.\nWe will draw counts, cyclosporine levels, kidney function and liver tests here every one to two weeks at first. Platelet transfusion if he bleeds or platelets fall under 10. He has our clinic's after-hours number.\n\nHe should keep taking naltrexone and sertraline. Please let us know of any new prescriptions, given cyclosporine interactions.\n\nNext visit in about 8 weeks, with lab checks in between."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 8.0,
+              "Platelets": 18,
+              "White Blood Cells": 2.0
+            }
+          }
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "pharmacy",
+          "start": "2026-07-20T08:35",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "date": "2026-07-20T08:35",
+              "author": "MA",
+              "body": "E-refill request, naltrexone 50 mg and sertraline 100 mg, 90 days. Last PCP visit 5/1. Approved by PCP and sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "specialist_visit",
+          "start": "2026-08-10T10:00",
+          "service": "Hematology & Oncology",
+          "reason": "aplastic anemia follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-10T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 2.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 31
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "date": "2026-08-12T14:10",
+              "author": "hematology",
+              "body": "Outside hematology and oncology clinic. Follow-up 8/10/2026.\n\nNon-severe aplastic anemia, two months into cyclosporine 200 mg twice daily and eltrombopag 150 mg daily. Taking both as directed and tolerating them. Nosebleeds are less frequent. No transfusion has been needed.\n\nCBC today: hemoglobin 9.0, WBC 2.6, platelets 31.\n\nAssessment: early, modest improvement. Continue both medications at current doses. Labs here every 2 weeks. Return in 6 weeks.\n\nCopy to primary care."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.0,
+              "Platelets": 31,
+              "White Blood Cells": 2.6
+            }
+          }
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T15:40",
+          "reason": "follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Hepatitis C virus reinfection|B17.10": {
+        "code": "B17.10",
+        "display": "Acute hepatitis C without hepatic coma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of hepatitis C infection|Z86.19": {
+        "code": "Z86.19",
+        "display": "Personal history of other infectious and parasitic diseases",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of intravenous drug use|Z87.898": {
+        "code": "Z87.898",
+        "display": "Personal history of other specified conditions",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Opioid use disorder, in sustained remission|F11.21": {
+        "code": "F11.21",
+        "display": "Opioid dependence, in remission",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pancytopenia|D61.818": {
+        "code": "D61.818",
+        "display": "Other pancytopenia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet": {
+        "code": "1799212",
+        "display": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet",
+        "ingredient": "sofosbuvir",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Hepatitis C virus genotype": {
+        "code": "32286-7",
+        "display": "Hepatitis C virus genotype [Identifier] in Serum or Plasma by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Peripheral blood smear": {
+        "code": "104701-8",
+        "display": "Blood smear finding [Identifier] in Blood",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Reticulocytes": {
+        "code": "17849-1",
+        "display": "Reticulocytes/Erythrocytes in Blood by Automated count",
+        "unit": "%",
+        "range": {
+          "low": 0.5,
+          "high": 1.5
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Bone marrow biopsy pathology report": {
+        "code": "66119-9",
+        "display": "Bone marrow Pathology biopsy report Narrative",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Bone marrow biopsy, needle or trocar": {
+        "code": "56241004",
+        "display": "Bone marrow biopsy, needle or trocar",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

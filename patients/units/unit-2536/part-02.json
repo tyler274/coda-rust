@@ -51,8 +51,8 @@
             {"panel": "Urinalysis", "collected": "2021-05-27T11:20", "results": [{"test": "Urine Glucose", "text": "3+"}, {"test": "Urine Ketones", "text": "Moderate (2+)"}, {"test": "Urine Protein", "text": "Negative"}]},
             {"panel": null, "collected": "2021-05-27T11:20", "resulted": "2021-05-28T08:30", "results": [
               {"test": "Hemoglobin A1c", "value": 11.6},
-              {"test": "Glutamic acid decarboxylase 65 antibody", "loinc": "56540-8", "unit": "[IU]/mL", "value": 34},
-              {"test": "C-peptide", "loinc": "1986-9", "unit": "ng/mL", "value": 0.4},
+              {"test": "Glutamic acid decarboxylase 65 antibody", "loinc": "56540-8", "unit": "[IU]/mL", "value": 34, "range": {"high": 5}},
+              {"test": "C-peptide", "loinc": "1986-9", "unit": "ng/mL", "value": 0.4, "range": {"low": 0.8, "high": 3.1}},
               {"test": "Thyroid Stimulating Hormone"},
               {"test": "Tissue Transglutaminase IgA"}
             ]}
@@ -238,7 +238,7 @@
               {"test": "Aspartate Aminotransferase", "value": 40},
               {"test": "Alkaline Phosphatase", "value": 90}
             ]},
-            {"panel": null, "collected": "2021-11-30T14:10", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 0.7}]}
+            {"panel": null, "collected": "2021-11-30T14:10", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 0.7, "range": {"low": 0.2, "high": 0.7}}]}
           ],
           "orders": [
             {"id": "gi-referral", "action": "done", "date": "2021-11-30T13:30"}
@@ -347,7 +347,7 @@
               {"test": "Alanine Aminotransferase", "value": 28},
               {"test": "Alkaline Phosphatase", "value": 70}
             ]},
-            {"panel": null, "collected": "2022-05-24T11:40", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 2.8}]},
+            {"panel": null, "collected": "2022-05-24T11:40", "results": [{"test": "Bilirubin, Indirect", "loinc": "1971-1", "unit": "mg/dL", "value": 2.8, "range": {"low": 0.2, "high": 0.7}}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-24T11:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
           ],
           "documents": [

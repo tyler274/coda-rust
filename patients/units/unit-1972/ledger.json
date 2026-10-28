@@ -1,10 +1,7 @@
 {
   "unit": "unit-1972",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001972/2024-10-29a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001972/2025-10-24a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001972",
@@ -317,7 +314,7 @@
             {
               "id": "fit-2024",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -853,7 +850,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -997,24 +994,28 @@
                   "test": "pH of Pleural fluid",
                   "loinc": "2748-2",
                   "unit": "[pH]",
+                  "range": {},
                   "value": 7.1
                 },
                 {
                   "test": "Glucose in Pleural fluid",
                   "loinc": "2344-0",
                   "unit": "mg/dL",
+                  "range": {},
                   "value": 40
                 },
                 {
                   "test": "Leukocytes in Pleural fluid",
                   "loinc": "26466-3",
                   "unit": "/uL",
+                  "range": {},
                   "value": 60000
                 },
                 {
                   "test": "Neutrophils/100 leukocytes in Pleural fluid",
                   "loinc": "26519-9",
                   "unit": "%",
+                  "range": {},
                   "value": 90
                 },
                 {
@@ -1102,24 +1103,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 50
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 68
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 },
                 {
@@ -1240,24 +1257,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 45
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 68
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 22
                 }
               ]
@@ -1475,18 +1508,27 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glucose in Pleural fluid": {
         "code": "2344-0",
         "display": "Glucose [Mass/volume] in Body fluid",
         "unit": "mg/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Gram stain, pleural fluid": {
@@ -1498,30 +1540,41 @@
         "code": "26466-3",
         "display": "Leukocytes [#/volume] in Body fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Neutrophils/100 leukocytes in Pleural fluid": {
         "code": "26519-9",
         "display": "Granulocytes/Leukocytes in Pleural fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Pleural fluid": {
         "code": "2748-2",
         "display": "pH of Body fluid",
         "unit": "[pH]",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

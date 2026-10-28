@@ -315,16 +315,22 @@
        "resulted": "2023-11-06T09:00",
        "results": [
         {
-         "test": "Norepinephrine, 24 hour urine",
-         "loinc": "2668-2",
-         "unit": "ug/(24.h)",
-         "value": 412
+          "test": "Norepinephrine, 24 hour urine",
+          "loinc": "2668-2",
+          "unit": "ug/(24.h)",
+          "value": 412,
+          "range": {
+            "high": 100
+          }
         },
         {
-         "test": "Epinephrine, 24 hour urine",
-         "loinc": "2232-7",
-         "unit": "ug/(24.h)",
-         "value": 9
+          "test": "Epinephrine, 24 hour urine",
+          "loinc": "2232-7",
+          "unit": "ug/(24.h)",
+          "value": 9,
+          "range": {
+            "high": 20
+          }
         }
        ]
       }
@@ -923,10 +929,14 @@
          "value": 850
         },
         {
-         "test": "Amylase",
-         "loinc": "1798-8",
-         "unit": "U/L",
-         "value": 900
+          "test": "Amylase",
+          "loinc": "1798-8",
+          "unit": "U/L",
+          "value": 900,
+          "range": {
+            "low": 25,
+            "high": 125
+          }
         },
         {
          "test": "Triglycerides",

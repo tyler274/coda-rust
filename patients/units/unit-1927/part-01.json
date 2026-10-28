@@ -1,0 +1,539 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001927",
+      "given": "Deborah",
+      "family": "Lipschitz",
+      "birth_date": "1990-10-21",
+      "address_line": "27 Arbutus Lane",
+      "phone": "+1-413-555-0110",
+      "email": "deborah.lipschitz@example.test",
+      "marital_status": "single",
+      "summary": "Software engineer in her thirties with a strong maternal breast and ovarian cancer history who joined in 2023, found a right breast fibroadenoma in late 2024 that led to BRCA1 testing and high-risk surveillance, and had a stage IB nodular melanoma of the upper back excised in mid-2026.",
+      "events": [
+        {
+          "id": "2023-07-31a",
+          "kind": "telephone",
+          "start": "2023-07-31T14:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2023-07-31T14:20",
+              "body": "Ms. Lipschitz called; her previous doctor retired and she was given our name by a coworker. Explained the membership model and fees, she is fine with it. Booked new patient physical 8/21 at 9:00. Records release signed electronically for her prior primary care office and her gynecologist. Asked her to bring her vitamin and pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "outside_records",
+          "start": "2023-08-14T10:05",
+          "reason": "prior records received",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-05-17T09:40",
+              "text": "Outside gynecology office, received with prior records. Liquid-based cervical cytology: satisfactory for evaluation, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative. Routine interval."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care and gynecology records",
+              "author": "MA",
+              "date": "2023-08-14T10:05",
+              "body": "38 pages from prior primary care office (visits 2016 to early 2023) and 6 pages from her gynecologist. Summary for the new patient visit:\n- No chronic medical problems on their list\n- Meds: combined OCP (norgestimate/ethinyl estradiol) daily, prescribed by gyn; vitamin D3 2000 units daily\n- NKDA\n- Surgeries: tonsillectomy as a child, wisdom teeth out in college\n- Fam hx on their intake: mother breast and ovarian cancer\n- Last routine labs 2021 unremarkable\n- Pap with HPV co-test 5/2022 negative\nScanned to the media tab and flagged for PCP before the 8/21 visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "establish_care",
+          "start": "2023-08-21T09:00",
+          "end": "2023-08-21T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {
+              "label": "Family history of breast cancer",
+              "action": "history",
+              "note": "mother at 42, maternal aunt at 39, maternal grandmother at 44"
+            },
+            {
+              "label": "Family history of malignant neoplasm of ovary",
+              "icd10": "Z80.41",
+              "action": "history",
+              "note": "mother at 51"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "contraception"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software engineer"
+            }
+          ],
+          "state": {
+            "weight_kg": 60.2,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.84
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-21T09:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-08-21T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-21T09:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-21T09:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "author": "PCP",
+              "date": "2023-08-21T10:05",
+              "body": "32F software engineer, works remotely, establishing care. Prior PCP retired; records reviewed.\n\nNo complaints. Sleeps ok, walks most days, some yoga.\n\nPMH: none.\nPSH: tonsillectomy age 8, third molars removed age 21.\nGyn: menarche 11, G0, regular cycles on OCP. Sees her own gynecologist; last Pap/HPV 5/2022 negative.\nMeds: norgestimate 0.25 / EE 35 mcg daily (gyn prescribes), vitamin D3 2000 units daily.\nAllergies: no known drug allergies.\nSH: never smoker, no alcohol, no drugs. Single.\nFH: mother - breast cancer at 42, then ovarian cancer at 51. Maternal aunt breast cancer at 39. Maternal grandmother breast cancer at 44. Father has hypertension. Family is of Eastern European Jewish background.\n\nExam: well appearing. HEENT normal, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Breasts symmetric, no masses, skin or nipple changes; no axillary or supraclavicular nodes. Abdomen soft, nontender. Skin fair, burns easily (Fitzpatrick II by her description), no lesions of concern on a quick look at arms, face, back. No edema.\n\nA/P:\n1. Health maintenance - CBC, CMP, lipids, TSH; HIV and hep C once. Tdap today (last one was in high school). Cervical screening per her gyn, next due 2027.\n2. Family history of breast and ovarian cancer - three affected relatives on mom's side, two diagnosed before 45, plus ovarian. This easily meets criteria for genetic counseling and BRCA testing, and her ancestry adds to it. Talked through what a positive result would mean for screening. She has thought about it before and wants to hold off for now; she wants to look into insurance implications first. Will revisit at next physical. Encouraged breast self-awareness, report any change.\n3. Contraception - continue OCP through gyn.\n4. Fair skin - sunscreen, hats; low threshold for a skin check if anything changes.\nRTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-24T16:40",
+              "body": "Hi Deborah, all of your labs from Monday came back normal: blood counts, kidney and liver tests, thyroid and cholesterol. HIV and hepatitis C screens were negative. Nothing to do here. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T08:30",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T08:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2023-10-12T08:50",
+              "body": "In for seasonal vaccines. Screening questions negative, no prior reactions. Influenza left deltoid, COVID 2023-24 right deltoid. VIS given. Waited 15 min, felt fine, left for work."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "portal_message",
+          "start": "2024-03-04T11:12",
+          "reason": "form request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Employer wellness form",
+              "author": "patient",
+              "date": "2024-03-04T11:12",
+              "body": "Hi, my employer's insurance wants a form signed saying I had a physical in the last 12 months so I get the premium credit. Can I upload it here? Thanks, Deborah"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Employer wellness form",
+              "author": "MA",
+              "date": "2024-03-04T15:30",
+              "body": "Yes, attach it to a reply here. The doctor signed the ones from last week within a day, so it should be back to you by Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "annual_physical",
+          "start": "2024-07-29T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-29T09:15",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 38
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-07-29T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-29T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-07-29T09:25",
+              "body": "33F annual. Feels well. Busy release cycle at work, sleeping fine. No breast changes. Periods light and regular on the pill.\n\nMeds: OCP daily (gyn), D3 2000 units.\nNKDA.\n\nROS negative.\n\nExam: NAD. Heart and lungs normal. Breasts without masses, nipple discharge or nodes. Abdomen benign. Skin: fair, scattered freckles on shoulders, nothing irregular. Neuro grossly normal.\n\nA/P:\n- Wellness: PHQ-2 0. Checking vitamin D since she has been on 3 years of supplement and asked. Flu/COVID in the fall.\n- Family hx breast/ovarian cancer: brought up genetic counseling again. She is still not ready, says she will think about it after her work project wraps. Offered to place the referral whenever she wants.\n- Sun protection reviewed.\nNext physical summer 2025."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:10",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T17:14"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T17:16"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T17:14"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-08T17:30",
+              "body": "Evening vaccine slot. Flu (trivalent) L arm, COVID 2024-25 formula R arm. Last year only mild soreness. Observed 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "portal_message",
+          "start": "2024-12-04T21:48",
+          "reason": "breast lump",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lump",
+              "author": "patient",
+              "date": "2024-12-04T21:48",
+              "body": "Hi Doctor, I felt a hard lump in my right breast in the shower this week, toward the armpit side. It doesn't hurt. I called my gynecologist and they can see me Monday the 9th and said they would try to get imaging the same day. Should I also come in? Given my mom's history I'm pretty anxious."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lump",
+              "author": "PCP",
+              "date": "2024-12-05T07:55",
+              "body": "Thank you for telling me. Keeping the Monday visit with your gynecologist is the right move, especially if they can get the mammogram and ultrasound done that day - that is the fastest path. You don't need a separate visit here first. Please ask them to send me their note and the imaging, and message me once you hear anything. If they can't get imaging scheduled quickly, let me know and I will order it."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "outside_records",
+          "start": "2024-12-12T13:20",
+          "reason": "gynecology consult and breast imaging",
+          "conditions": [
+            {
+              "label": "Unspecified lump in the right breast, upper outer quadrant",
+              "icd10": "N63.11",
+              "action": "diagnosed",
+              "onset": "2024-12-02"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2024-12-09T11:05",
+              "text": "Outside breast imaging center. Indication: palpable right breast mass, upper outer quadrant, found on self-exam. Family history of breast cancer. No prior mammograms for comparison.\nTechnique: bilateral diagnostic digital mammography with tomosynthesis; spot compression views of the right breast at the palpable marker.\nFindings: The breasts are heterogeneously dense, which may obscure small masses. Underlying the palpable marker in the right upper outer quadrant there is an irregular mass with indistinct margins. No associated calcifications or architectural distortion elsewhere. Left breast without suspicious mass, calcifications or distortion. No skin thickening.",
+              "conclusion": "Right breast upper outer quadrant irregular mass corresponding to the palpable finding, suspicious. BI-RADS 4. Ultrasound performed same day, see separate report; tissue sampling recommended."
+            },
+            {
+              "study": "Breast ultrasound",
+              "performed": "2024-12-09T11:40",
+              "text": "Outside breast imaging center. Targeted right breast and right axillary ultrasound.\nFindings: At 10 o'clock, 6 cm from the nipple, at the palpable site, there is an irregular hypoechoic mass measuring 2.3 x 1.8 x 1.6 cm, not parallel to the skin. No internal vascularity of note. No skin thickening. The right axilla shows normal-appearing lymph nodes with preserved fatty hila.",
+              "conclusion": "Irregular hypoechoic mass right breast 10 o'clock, 2.3 cm, corresponding to the mammographic finding. BI-RADS 4. Ultrasound-guided core biopsy recommended and scheduled."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology consult: right breast mass",
+              "author": "gynecology",
+              "date": "2024-12-12T13:20",
+              "body": "Outside gynecology practice\nDate of service: 12/09/2024\nPatient: Deborah Lipschitz, DOB 10/21/1990\n\nReason: palpable mass right breast.\n\n34-year-old G0, menarche at 11, presents after noticing a firm lump in the upper outer right breast while showering last week. Asymptomatic otherwise - no pain, no nipple discharge, no skin change.\n\nMedications: norgestimate/ethinyl estradiol 0.25 mg/35 mcg daily; cholecalciferol 2000 IU daily.\nAllergies: NKDA.\nSurgical history: tonsillectomy (age 8), wisdom tooth extraction (age 21).\nFamily history: mother with breast cancer at 42 and ovarian cancer at 51; maternal aunt breast cancer at 39; maternal grandmother breast cancer at 44. Father hypertension.\nSocial: nonsmoker, no alcohol.\n\nExam: right breast UOQ with a firm, fixed 2.5 cm mass. Overlying skin normal, no retraction, no nipple discharge on expression. Left breast normal. No axillary, supraclavicular or cervical adenopathy. Remainder of exam unremarkable.\n\nImaging today: diagnostic mammogram shows a suspicious irregular mass at the palpable site; same-day ultrasound confirms a 2.3 cm irregular mass at 10 o'clock, BI-RADS 4. Reports attached.\n\nAssessment/Plan:\n1. Right breast mass, suspicious on imaging - ultrasound-guided core biopsy booked for 12/13.\n2. Strong maternal history of breast and ovarian cancer and Jewish ancestry - hereditary cancer panel sent today after pre-test counseling; results in about 3-4 weeks. Will refer to genetic counseling for results.\n3. Contraception - continue current pill for now pending results.\nCopy to primary care physician."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "outside_records",
+          "start": "2024-12-19T09:30",
+          "reason": "breast biopsy pathology",
+          "conditions": [
+            {
+              "label": "Unspecified lump in the right breast, upper outer quadrant",
+              "icd10": "N63.11",
+              "action": "resolved",
+              "onset": "2024-12-02",
+              "note": "biopsy: fibroadenoma"
+            },
+            {
+              "label": "Benign neoplasm of right breast",
+              "icd10": "D24.1",
+              "action": "diagnosed",
+              "onset": "2024-12-13",
+              "note": "fibroadenoma, 10 o'clock, core biopsy 12/13/2024, clip placed"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Core needle biopsy of breast using imaging guidance",
+              "snomed": "1264555004",
+              "performed": "2024-12-13T10:15"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-12-13T10:15",
+              "issued": "2024-12-17T15:10",
+              "text": "Outside pathology laboratory.\nSpecimen: right breast, 10 o'clock, ultrasound-guided core needle biopsy (14-gauge, 4 cores). Post-biopsy clip placed; post-procedure mammogram confirms clip at the biopsy site.\nGross: four tan-white cores, 1.2 to 1.6 cm, entirely submitted.\nMicroscopic: biphasic lesion with proliferating stroma of low cellularity and compressed ducts lined by benign epithelium with a myoepithelial layer. No stromal overgrowth or atypia. No atypical ductal hyperplasia, in situ or invasive carcinoma identified.\nRadiology-pathology correlation (breast imaging): benign concordant result.",
+              "conclusion": "Right breast 10 o'clock core biopsy: fibroadenoma. Negative for atypia and malignancy. Concordant; follow-up ultrasound of the right breast in 6 months."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Breast biopsy result",
+              "author": "MA",
+              "date": "2024-12-19T09:30",
+              "body": "Received from the breast imaging center: procedure note for US-guided core biopsy R breast 12/13 (uncomplicated, clip placed) and pathology dated 12/17 - fibroadenoma, benign, concordant. 6 month follow-up US recommended. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19b",
+          "kind": "portal_message",
+          "start": "2024-12-19T12:05",
+          "reason": "biopsy result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your biopsy",
+              "author": "PCP",
+              "date": "2024-12-19T12:05",
+              "body": "Hi Deborah, I received the pathology from your biopsy. It is a fibroadenoma, which is benign, and the radiologist reviewed it and agrees it matches what they saw on imaging. I know the last two weeks were stressful. The plan is a repeat ultrasound in about six months to make sure it stays stable. Your genetic test is still out; once it is back, let's meet to talk about what it means for you either way."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your biopsy",
+              "author": "patient",
+              "date": "2024-12-19T12:40",
+              "body": "The gyn office called me yesterday too. Such a relief. I'll book something once the genetics result comes. Thank you!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

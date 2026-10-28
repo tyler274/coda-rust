@@ -90,9 +90,13 @@
        "collected": "2026-02-19T10:00",
        "results": [
         {
-         "test": "Digoxin",
-         "loinc": "10535-3",
-         "unit": "ng/mL"
+          "test": "Digoxin",
+          "loinc": "10535-3",
+          "unit": "ng/mL",
+          "range": {
+            "low": 0.5,
+            "high": 2.0
+          }
         }
        ]
       },
@@ -129,11 +133,11 @@
      ],
      "orders": [
       {
-       "id": "inr-standing-2026",
-       "action": "placed",
-       "order": "PT/INR, every 4 weeks",
-       "category": "lab",
-       "reason": "Warfarin monitoring"
+        "id": "inr-standing-2026",
+        "action": "placed",
+        "order": "Prothrombin Time with INR",
+        "category": "lab",
+        "reason": "Warfarin monitoring"
       }
      ],
      "procedures": [
@@ -261,22 +265,31 @@
        "collected": "2026-05-06T08:15",
        "results": [
         {
-         "test": "Troponin I",
-         "loinc": "10839-9",
-         "unit": "ng/mL",
-         "value": 0.04
+          "test": "Troponin I",
+          "loinc": "10839-9",
+          "unit": "ng/mL",
+          "value": 0.04,
+          "range": {
+            "high": 0.04
+          }
         },
         {
-         "test": "D-dimer",
-         "loinc": "48065-7",
-         "unit": "ng/mL FEU",
-         "value": 780
+          "test": "D-dimer",
+          "loinc": "48065-7",
+          "unit": "ng/mL{FEU}",
+          "value": 780,
+          "range": {
+            "high": 500
+          }
         },
         {
-         "test": "B-type natriuretic peptide",
-         "loinc": "30934-4",
-         "unit": "pg/mL",
-         "value": 200
+          "test": "B-type natriuretic peptide",
+          "loinc": "30934-4",
+          "unit": "pg/mL",
+          "value": 200,
+          "range": {
+            "high": 100
+          }
         }
        ]
       },

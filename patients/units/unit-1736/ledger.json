@@ -1119,43 +1119,53 @@
                 {
                   "test": "Osmolality of Stool",
                   "loinc": "2693-0",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {},
                   "value": 260
                 },
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 290
                 },
                 {
                   "test": "Sodium in Stool",
                   "loinc": "15207-4",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 30
                 },
                 {
                   "test": "Potassium in Stool",
                   "loinc": "15202-5",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 40
                 },
                 {
                   "test": "Magnesium in Stool",
                   "loinc": "29911-5",
                   "unit": "mg/dL",
+                  "range": {},
                   "value": 5
                 },
                 {
                   "test": "Phosphate in Stool",
                   "loinc": "88713-3",
                   "unit": "mg/dL",
+                  "range": {},
                   "value": 4
                 },
                 {
                   "test": "Osmol gap of Stool",
                   "loinc": "73571-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {},
                   "value": 150
                 }
               ]
@@ -1264,6 +1274,10 @@
                   "test": "Glucose in Capillary blood by Glucometer",
                   "loinc": "41653-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 70,
+                    "high": 99
+                  },
                   "value": 40
                 }
               ]
@@ -4196,18 +4210,26 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 35
                 },
                 {
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 150
                 },
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
-                  "unit": "ug/mL FEU",
+                  "unit": "ug/mL{FEU}",
                   "text": "Elevated"
                 }
               ]
@@ -4546,37 +4568,37 @@
         "code": "1370216",
         "display": "dextromethorphan hydrobromide 2 MG/ML Oral Solution",
         "ingredient": "dextromethorphan",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "labetalol hydrochloride 200 MG Oral Tablet": {
         "code": "896762",
         "display": "labetalol hydrochloride 200 MG Oral Tablet",
         "ingredient": "labetalol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "lamotrigine 25 MG Oral Tablet": {
-        "code": "282401",
-        "display": "lamotrigine 25 MG Oral Tablet",
+        "code": "198430",
+        "display": "lamotrigine 25 MG Disintegrating Oral Tablet",
         "ingredient": "lamotrigine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "loperamide hydrochloride 2 MG Oral Capsule": {
         "code": "978006",
         "display": "loperamide hydrochloride 2 MG Oral Capsule",
         "ingredient": "loperamide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sertraline 100 MG Oral Tablet": {
         "code": "312938",
         "display": "sertraline 100 MG Oral Tablet",
         "ingredient": "sertraline",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sumatriptan 100 MG Oral Tablet": {
         "code": "313160",
         "display": "sumatriptan 100 MG Oral Tablet",
         "ingredient": "sumatriptan",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4584,6 +4606,10 @@
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Bacteria identified in Stool by Culture": {
@@ -4600,19 +4626,27 @@
       "D-dimer": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
-        "unit": "ug/mL FEU",
+        "unit": "ug/mL{FEU}",
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glucose in Capillary blood by Glucometer": {
         "code": "41653-7",
         "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
         "unit": "mg/dL",
+        "range": {
+          "low": 70,
+          "high": 99
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Insulin": {
@@ -4625,24 +4659,31 @@
         "code": "29911-5",
         "display": "Magnesium [Mass/volume] in Stool",
         "unit": "mg/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmol gap of Stool": {
         "code": "73571-2",
         "display": "Osmol gap of Stool",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Serum or Plasma": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Stool": {
         "code": "2693-0",
         "display": "Osmolality of Stool",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Ova and parasites identified in Stool by Light microscopy": {
@@ -4654,18 +4695,21 @@
         "code": "88713-3",
         "display": "Phosphate [Mass/volume] in Stool",
         "unit": "mg/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Potassium in Stool": {
         "code": "15202-5",
         "display": "Potassium [Moles/volume] in Stool",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sodium in Stool": {
         "code": "15207-4",
         "display": "Sodium [Moles/volume] in Stool",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sulfonylurea screen": {

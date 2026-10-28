@@ -1,20 +1,7 @@
 {
   "unit": "unit-2222",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002222/2022-09-26a: procedure \"Endovascular repair of infrarenal abdominal aortic aneurysm with bifurcated endograft\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2025-03-04a: procedure \"Cystourethroscopy, diagnostic\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2025-03-18a: procedure \"Transurethral resection of bladder tumor, large\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2025-04-22a: procedure \"Transurethral resection of bladder tumor, repeat\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2025-07-08a: procedure \"Cystourethroscopy, diagnostic\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2025-10-21a: procedure \"Cystourethroscopy, diagnostic\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2026-01-27a: procedure \"Cystourethroscopy, diagnostic\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2026-04-21a: procedure \"Cystourethroscopy, diagnostic\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2026-07-14a: procedure \"Cystourethroscopy, diagnostic\" not in catalog and has no snomed (text only)",
-    "MRN00002222/2022-08-12a: imaging order \"Abdominal aortic ultrasound\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): report \"Ankle-brachial index\" LOINC 77194-8 not found; closest real codes: 77194-9 Ankle-brachial index; 8581-1 Systolic blood pressure Posterior tibial artery/Brachial artery",
-    "left text-only (not verified): lab \"Immunoglobulin M\" LOINC 2472-0 not found; closest real codes: 56156-3 Candida albicans IgA and IgG and IgM Ab panel - Serum; 58733-7 Mycoplasma pneumoniae IgG and IgM panel - Serum; 111412-3 IgM [Measurement] in Urine; 2473-7 IgM.monoclonal [Mass/volume] in Serum; 27020-7 IgM.monoclonal [Presence] in Serum"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002222",
@@ -499,7 +486,7 @@
           "reports": [
             {
               "study": "Ankle-brachial index",
-              "loinc": "77194-8",
+              "loinc": "77194-9",
               "performed": "2018-04-17T10:00",
               "text": "Outside study (prior primary care office records). Resting ankle-brachial index with Doppler pressures. Right ABI 0.84. Left ABI 0.79. Triphasic to biphasic waveforms at the ankles bilaterally.",
               "conclusion": "Mild bilateral peripheral arterial disease."
@@ -2539,6 +2526,7 @@
               "action": "placed",
               "order": "Abdominal aortic ultrasound",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "Pulsatile periumbilical mass; father with ruptured AAA"
             }
           ],
@@ -2669,6 +2657,7 @@
           "procedures": [
             {
               "procedure": "Endovascular repair of infrarenal abdominal aortic aneurysm with bifurcated endograft",
+              "snomed": "429167002",
               "performed": "2022-09-26T09:30"
             }
           ],
@@ -5476,6 +5465,7 @@
           "procedures": [
             {
               "procedure": "Cystourethroscopy, diagnostic",
+              "snomed": "386745004",
               "performed": "2025-03-04T10:45"
             }
           ],
@@ -5498,6 +5488,7 @@
           "procedures": [
             {
               "procedure": "Transurethral resection of bladder tumor, large",
+              "snomed": "386792000",
               "performed": "2025-03-18T08:30"
             }
           ],
@@ -5544,6 +5535,7 @@
           "procedures": [
             {
               "procedure": "Transurethral resection of bladder tumor, repeat",
+              "snomed": "386792000",
               "performed": "2025-04-22T08:20"
             }
           ],
@@ -5582,6 +5574,7 @@
           "procedures": [
             {
               "procedure": "Cystourethroscopy, diagnostic",
+              "snomed": "386745004",
               "performed": "2025-07-08T10:15"
             }
           ],
@@ -5642,8 +5635,12 @@
                 },
                 {
                   "test": "Immunoglobulin M",
-                  "loinc": "2472-0",
+                  "loinc": "2472-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 45,
+                    "high": 150
+                  },
                   "value": 4850
                 }
               ]
@@ -5693,6 +5690,7 @@
           "procedures": [
             {
               "procedure": "Cystourethroscopy, diagnostic",
+              "snomed": "386745004",
               "performed": "2025-10-21T09:15"
             }
           ],
@@ -5767,6 +5765,7 @@
           "procedures": [
             {
               "procedure": "Cystourethroscopy, diagnostic",
+              "snomed": "386745004",
               "performed": "2026-01-27T09:45"
             }
           ],
@@ -6038,6 +6037,7 @@
           "procedures": [
             {
               "procedure": "Cystourethroscopy, diagnostic",
+              "snomed": "386745004",
               "performed": "2026-04-21T09:45"
             }
           ],
@@ -6164,6 +6164,7 @@
           "procedures": [
             {
               "procedure": "Cystourethroscopy, diagnostic",
+              "snomed": "386745004",
               "performed": "2026-07-14T09:45"
             }
           ],
@@ -6218,9 +6219,51 @@
         "receipt": "NLM Clinical Tables ICD-10-CM"
       }
     },
-    "rejected": [
-      "report \"Ankle-brachial index\" LOINC 77194-8 not found; closest real codes: 77194-9 Ankle-brachial index; 8581-1 Systolic blood pressure Posterior tibial artery/Brachial artery",
-      "lab \"Immunoglobulin M\" LOINC 2472-0 not found; closest real codes: 56156-3 Candida albicans IgA and IgG and IgM Ab panel - Serum; 58733-7 Mycoplasma pneumoniae IgG and IgM panel - Serum; 111412-3 IgM [Measurement] in Urine; 2473-7 IgM.monoclonal [Mass/volume] in Serum; 27020-7 IgM.monoclonal [Presence] in Serum"
-    ]
+    "labs": {
+      "Immunoglobulin M": {
+        "code": "2472-9",
+        "display": "IgM [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "range": {
+          "low": 45,
+          "high": 150
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Abdominal aortic ultrasound": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ankle-brachial index": {
+        "code": "77194-9",
+        "display": "Ankle-brachial index",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Cystourethroscopy, diagnostic": {
+        "code": "386745004",
+        "display": "Transurethral cystoscopy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Endovascular repair of infrarenal abdominal aortic aneurysm with bifurcated endograft": {
+        "code": "429167002",
+        "display": "Endovascular repair of infrarenal abdominal aortic aneurysm using endovascular stent graft",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Transurethral resection of bladder tumor, large": {
+        "code": "386792000",
+        "display": "Transurethral excision of neoplasm of urinary bladder",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Transurethral resection of bladder tumor, repeat": {
+        "code": "386792000",
+        "display": "Transurethral excision of neoplasm of urinary bladder",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
   }
 }

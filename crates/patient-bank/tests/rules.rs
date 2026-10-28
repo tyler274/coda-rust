@@ -985,25 +985,42 @@ fn a_patients_own_normal_stays_in_range() {
 
 #[test]
 fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
-    let draw = |loinc: serde_json::Value| {
+    let draw_with = |loinc: serde_json::Value, range: Option<serde_json::Value>| {
+        let mut result =
+            json!({"test": "Calcitonin", "loinc": loinc, "unit": "pg/mL", "value": 500});
+        if let Some(range) = range {
+            result["range"] = range;
+        }
         patient(json!([visit(
             "e1",
             "2024-01-01T09:00",
-            json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
-                {"test": "Calcitonin", "loinc": loinc, "unit": "pg/mL", "value": 500}
-            ]}],
+            json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [result]}],
             "allergies": [{"substance": "Dust mites", "snomed": "260147004", "category": "environment"}],
             "procedures": [{"procedure": "Cesarean section", "snomed": "11466000",
                 "performed": "2024-01-01T09:30"}],
             "orders": [{"id": "mri", "action": "placed", "category": "imaging",
-                "order": "MRI brain with and without contrast"}],
+                "order": "MRI brain with and without contrast"},
+                // the catalog's procedure of this label is unverified; its study is not
+                {"id": "pft", "action": "placed", "category": "procedure", "order": "Spirometry"}],
             "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Calcitonin sent."}]})
         )]))
     };
+    let draw = |loinc: serde_json::Value| draw_with(loinc, Some(json!({"high": 10})));
     let unknown = |e: &Vec<String>| e.iter().any(|x| x.contains("unknown lab test"));
     assert!(unknown(&errors_for(seed(), draw(json!(null)))));
     let p = draw(json!("1992-7"));
     assert!(!unknown(&errors_for(seed(), p.clone())));
+    // a measured test the catalog lacks states its reference range, or that none applies
+    let unranged = |e: &Vec<String>| e.iter().any(|x| x.contains("give its reference range"));
+    assert!(unranged(&errors_for(
+        seed(),
+        draw_with(json!("1992-7"), None)
+    )));
+    assert!(!unranged(&errors_for(seed(), p.clone())));
+    assert!(!unranged(&errors_for(
+        seed(),
+        draw_with(json!("1992-7"), Some(json!({})))
+    )));
 
     let catalog = Catalog::load(&paths::catalog()).expect("catalog");
     let mut terms = Terms::default();
@@ -1012,17 +1029,17 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
         patient_bank::ledger::VerifiedCode {
             code: "1992-7".into(),
             display: "Calcitonin [Mass/volume] in Serum or Plasma".into(),
-            ingredient: None,
             unit: Some("pg/mL".into()),
+            range: p.events[0].labs[0].results[0].range.clone(),
             receipt: "test".into(),
+            ..Default::default()
         },
     );
     let snomed = |code: &str, display: &str| patient_bank::ledger::VerifiedCode {
         code: code.into(),
         display: display.into(),
-        ingredient: None,
-        unit: None,
         receipt: "test".into(),
+        ..Default::default()
     };
     terms
         .allergens
@@ -1038,6 +1055,12 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
             .any(|w| w.contains("MRI brain with and without contrast"))
     };
     assert!(uncoded(&terms));
+    assert!(
+        !check::uncoded_orders(std::slice::from_ref(&p), &catalog, &terms)
+            .iter()
+            .any(|w| w.contains("Spirometry")),
+        "a verified entry of the label codes the order"
+    );
     terms.reports.insert(
         "MRI brain with and without contrast".into(),
         snomed("24587-8", "MR Brain WO and W contrast IV"),
@@ -1056,6 +1079,47 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
             .any(|o| o.code.coding.iter().any(|c| c.code == "1992-7")),
         "the verified test renders with its LOINC code"
     );
+    // the author's one-sided range renders as given and flags the value above it
+    let calcitonin = (chart.observations.iter())
+        .find(|o| o.code.coding.iter().any(|c| c.code == "1992-7"))
+        .expect("calcitonin");
+    let range = &calcitonin.reference_range[0];
+    assert!(range.low.is_none() && range.high.is_some());
+    assert!((calcitonin.interpretation.iter()).any(|i| i.coding.iter().any(|c| c.code == "H")));
+    // each result keeps the range stated for it, not the first one its name was given
+    let other = draw_with(json!("1992-7"), Some(json!({"high": 600})));
+    let chart2 = Renderer {
+        catalog: &catalog.with_terms(&terms),
+        terms: &terms,
+    }
+    .render(&seed(), &other, at("2024-02-01T00:00"))
+    .0;
+    let calcitonin = (chart2.observations.iter())
+        .find(|o| o.code.coding.iter().any(|c| c.code == "1992-7"))
+        .expect("calcitonin");
+    let high = calcitonin.reference_range[0].high.as_ref().expect("high");
+    assert_eq!(
+        serde_json::to_value(high).expect("json")["value"].as_f64(),
+        Some(600.0)
+    );
+    assert!(calcitonin.interpretation.is_empty());
+    // the catalog gives its own labs' ranges
+    let stated = patient(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
+            {"test": "Hemoglobin A1c", "value": 6.1, "range": {"high": 7}},
+            {"test": "C Reactive Protein", "value": 2.5, "unit": "mg/dL"}
+        ]}]})
+    )]));
+    let errors = errors_for(seed(), stated);
+    assert!(
+        errors
+            .iter()
+            .any(|e| e.contains("in the catalog, which gives its range"))
+    );
+    // and their units: a value in another unit would render under the catalog's
+    assert!(errors.iter().any(|e| e.contains("which gives its unit")));
     let coded = |codes: Vec<&patient_bank::fhir::CodeableConcept>, code: &str| {
         codes
             .iter()

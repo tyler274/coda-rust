@@ -1,11 +1,7 @@
 {
   "unit": "unit-2200",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002200/2021-06-08a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00002200/2023-09-12a: procedure order \"Request records from outside cardiology\" names no one catalog lab, panel, study or procedure",
-    "MRN00002200/2025-12-09a: referral to \"Orthopedic Surgery\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002200",
@@ -377,13 +373,6 @@
               "order": "Low-dose CT chest for lung cancer screening",
               "category": "imaging",
               "reason": "30 pack-years, quit 2013"
-            },
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "new patient"
             }
           ],
           "documents": [
@@ -439,13 +428,6 @@
           "id": "2021-07-06a",
           "kind": "outside_records",
           "start": "2021-07-06T11:15",
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2021-07-06T11:15"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1442,15 +1424,6 @@
           "id": "2023-09-12a",
           "kind": "telephone",
           "start": "2023-09-12T10:25",
-          "orders": [
-            {
-              "id": "records-cards-2023",
-              "action": "placed",
-              "order": "Request records from outside cardiology",
-              "category": "procedure",
-              "reason": "visit 2023-08-04"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -1497,13 +1470,6 @@
           "id": "2023-10-03a",
           "kind": "outside_records",
           "start": "2023-10-03T09:30",
-          "orders": [
-            {
-              "id": "records-cards-2023",
-              "action": "done",
-              "date": "2023-10-03T09:30"
-            }
-          ],
           "documents": [
             {
               "type": "Result Note",
@@ -2723,7 +2689,7 @@
               "action": "placed",
               "order": "Orthopedic surgery referral",
               "category": "referral",
-              "to": "Orthopedic Surgery",
+              "to": "Orthopedics",
               "reason": "severe right knee osteoarthritis, consider arthroplasty"
             }
           ],

@@ -27,11 +27,11 @@
               {"test": "Glucose", "value": 180}
             ]},
             {"panel": null, "collected": "2025-02-26T14:05", "results": [
-              {"test": "Osmolality of Serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 240}
+              {"test": "Osmolality of Serum", "loinc": "2692-2", "unit": "mosm/kg", "value": 240, "range": {"low": 275, "high": 295}}
             ]},
             {"panel": null, "collected": "2025-02-26T14:30", "results": [
-              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 500},
-              {"test": "Sodium, Urine", "loinc": "2955-3", "unit": "mmol/L", "value": 40},
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mosm/kg", "value": 500, "range": {"low": 38, "high": 1400}},
+              {"test": "Sodium, Urine", "loinc": "2955-3", "unit": "mmol/L", "value": 40, "range": {}},
               {"test": "Pregnancy Test, Urine", "text": "Negative"}
             ]}
           ],
@@ -168,7 +168,7 @@
             {"panel": null, "collected": "2025-05-08T09:45", "results": [{"test": "Hemoglobin A1c"}, {"test": "Thyroid Stimulating Hormone"}]}
           ],
           "orders": [
-            {"id": "ob-referral", "action": "placed", "order": "High-risk obstetrics referral", "category": "referral", "to": "Maternal-Fetal Medicine", "reason": "pregnancy with type 1 diabetes"}
+            {"id": "ob-referral", "action": "placed", "order": "High-risk obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "pregnancy with type 1 diabetes"}
           ],
           "procedures": [
             {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-08T09:20"},

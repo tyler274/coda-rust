@@ -210,7 +210,11 @@
                   "test": "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma",
                   "loinc": "1825-9",
                   "unit": "mg/dL",
-                  "value": 22
+                  "value": 22,
+                  "range": {
+                    "low": 150,
+                    "high": 350
+                  }
                 }
               ]
             },
@@ -306,7 +310,7 @@
               "action": "placed",
               "order": "Abdominal ultrasound",
               "category": "imaging",
-              "to": "Outpatient imaging",
+              "to": "Radiology",
               "reason": "Alpha-1 antitrypsin deficiency with elevated transaminases"
             }
           ],
@@ -432,7 +436,7 @@
           "reason": "AATD follow-up, liver tests",
           "medications": [
             {
-              "drug_text": "alpha 1-antitrypsin 1000 MG Injection",
+              "drug_text": "alpha 1-proteinase inhibitor, human 1 MG Injection",
               "action": "historical",
               "sig": "60 mg/kg IV infusion once weekly (pulmonology)",
               "dose": {

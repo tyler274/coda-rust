@@ -1,11 +1,7 @@
 {
   "unit": "unit-2522",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002522/2020-10-19a: lab order \"CMP, CBC, A1c, lipids, UA, urine albumin/creatinine, HIV and HCV screening\" names no one catalog lab, panel, study or procedure",
-    "MRN00002522/2020-10-22a: lab order \"HIV-1 RNA viral load and CD4 count\" names no one catalog lab, panel, study or procedure",
-    "MRN00002522/2024-07-17a: lab order \"Repeat BMP and CBC end of August\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002522",
@@ -375,7 +371,56 @@
             {
               "id": "lab-2020-10-19",
               "action": "placed",
-              "order": "CMP, CBC, A1c, lipids, UA, urine albumin/creatinine, HIV and HCV screening",
+              "order": "Comprehensive Metabolic Panel (CMP)",
+              "category": "lab",
+              "reason": "New patient baseline"
+            },
+            {
+              "id": "lab-2020-10-19-2",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "New patient baseline"
+            },
+            {
+              "id": "lab-2020-10-19-3",
+              "action": "placed",
+              "order": "Hemoglobin A1c",
+              "category": "lab",
+              "reason": "New patient baseline"
+            },
+            {
+              "id": "lab-2020-10-19-4",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab",
+              "reason": "New patient baseline"
+            },
+            {
+              "id": "lab-2020-10-19-5",
+              "action": "placed",
+              "order": "Urinalysis",
+              "category": "lab",
+              "reason": "New patient baseline"
+            },
+            {
+              "id": "lab-2020-10-19-6",
+              "action": "placed",
+              "order": "Microalbumin/Creatinine Ratio",
+              "category": "lab",
+              "reason": "New patient baseline"
+            },
+            {
+              "id": "lab-2020-10-19-7",
+              "action": "placed",
+              "order": "HIV-1/2 Antigen and Antibody",
+              "category": "lab",
+              "reason": "New patient baseline"
+            },
+            {
+              "id": "lab-2020-10-19-8",
+              "action": "placed",
+              "order": "Hepatitis C Antibody",
               "category": "lab",
               "reason": "New patient baseline"
             }
@@ -424,9 +469,51 @@
               "date": "2020-10-22T11:40"
             },
             {
+              "id": "lab-2020-10-19-2",
+              "action": "done",
+              "date": "2020-10-22T11:40"
+            },
+            {
+              "id": "lab-2020-10-19-3",
+              "action": "done",
+              "date": "2020-10-22T11:40"
+            },
+            {
+              "id": "lab-2020-10-19-4",
+              "action": "done",
+              "date": "2020-10-22T11:40"
+            },
+            {
+              "id": "lab-2020-10-19-5",
+              "action": "done",
+              "date": "2020-10-22T11:40"
+            },
+            {
+              "id": "lab-2020-10-19-6",
+              "action": "done",
+              "date": "2020-10-22T11:40"
+            },
+            {
+              "id": "lab-2020-10-19-7",
+              "action": "done",
+              "date": "2020-10-22T11:40"
+            },
+            {
+              "id": "lab-2020-10-19-8",
+              "action": "done",
+              "date": "2020-10-22T11:40"
+            },
+            {
               "id": "lab-2020-10-22",
               "action": "placed",
-              "order": "HIV-1 RNA viral load and CD4 count",
+              "order": "HIV-1 RNA Viral Load",
+              "category": "lab",
+              "reason": "Reactive HIV screen"
+            },
+            {
+              "id": "lab-2020-10-22-2",
+              "action": "placed",
+              "order": "CD4 Count",
               "category": "lab",
               "reason": "Reactive HIV screen"
             }
@@ -464,7 +551,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 140
                 }
               ]
@@ -479,6 +565,11 @@
           "orders": [
             {
               "id": "lab-2020-10-22",
+              "action": "done",
+              "date": "2020-10-24T08:00"
+            },
+            {
+              "id": "lab-2020-10-22-2",
               "action": "done",
               "date": "2020-10-24T08:00"
             }
@@ -988,7 +1079,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 210
                 }
               ]
@@ -1561,7 +1651,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 190
                 }
               ]
@@ -2054,7 +2143,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 175
                 }
               ]
@@ -2174,6 +2262,9 @@
                   "test": "Protein, 24 hour urine",
                   "loinc": "2889-4",
                   "unit": "g/(24.h)",
+                  "range": {
+                    "high": 0.1
+                  },
                   "value": 2.1
                 }
               ]
@@ -2631,6 +2722,9 @@
                   "test": "Protein, 24 hour urine",
                   "loinc": "2889-4",
                   "unit": "g/(24.h)",
+                  "range": {
+                    "high": 0.1
+                  },
                   "value": 4.2
                 }
               ]
@@ -3231,7 +3325,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 180
                 }
               ]
@@ -3305,7 +3398,14 @@
             {
               "id": "lab-2024-08",
               "action": "placed",
-              "order": "Repeat BMP and CBC end of August",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "AKI on CKD"
+            },
+            {
+              "id": "lab-2024-08-2",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
               "category": "lab",
               "reason": "AKI on CKD"
             }
@@ -3470,6 +3570,11 @@
               "id": "lab-2024-08",
               "action": "done",
               "date": "2024-08-29T16:00"
+            },
+            {
+              "id": "lab-2024-08-2",
+              "action": "done",
+              "date": "2024-08-29T16:00"
             }
           ],
           "state": {
@@ -3565,7 +3670,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 180
                 }
               ]
@@ -3692,7 +3796,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 50
                 }
               ]
@@ -3745,7 +3848,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 50
                 }
               ]
@@ -3856,7 +3958,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 50
                 }
               ]
@@ -3922,7 +4023,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 50
                 }
               ]
@@ -4000,6 +4100,9 @@
         "code": "2889-4",
         "display": "Protein [Mass/time] in 24 hour Urine",
         "unit": "g/(24.h)",
+        "range": {
+          "high": 0.1
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

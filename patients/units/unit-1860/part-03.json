@@ -1,0 +1,355 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001860",
+      "events": [
+        {
+          "id": "2024-03-26a",
+          "kind": "office_visit",
+          "start": "2024-03-26T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "short of breath with activity",
+          "state": {"labs": {"Hemoglobin": 12.1, "Mean Corpuscular Volume": 83, "Iron": 66, "Total Iron-Binding Capacity": 400, "Ferritin": 29, "Thyroid Stimulating Hormone": 1.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-26T13:45", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "White Blood Cells"}]},
+            {"panel": "Iron Studies", "collected": "2024-03-26T13:45", "results": [{"test": "Ferritin"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-26T13:45", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2024-03-26T13:45", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "orders": [{"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "progressive exertional dyspnea"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-26T13:10"},
+            {"procedure": "Venipuncture", "performed": "2024-03-26T13:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Exertional Dyspnea", "author": "PCP", "date": "2024-03-26T13:40",
+             "body": "37F with iron deficiency anemia (on iron) and restless legs (on ropinirole). Since roughly early February she has been getting winded with things that used to be easy: one flight of stairs, carrying groceries from the car. Tired by mid-afternoon. Worried the anemia is back, since that is how it felt in 2022, though no ice cravings this time. No cough, wheeze, fever, chest pain, palpitations or fainting. No ankle swelling. Periods unchanged. Never smoker.\n\nMeds: ferrous sulfate 325 daily, ropinirole 0.5 qhs. NKDA.\n\nExam: comfortable at rest, speaking full sentences. Vitals per flowsheet. Conjunctivae pink. Heart regular rate and rhythm, no murmur appreciated. Lungs clear to the bases. No clubbing. No leg swelling.\n\nA/P: exertional dyspnea and fatigue, about 6 weeks, out of proportion to her usual activity. Recheck CBC and ferritin, BMP, TSH today. Of note her maternal aunt has pulmonary arterial hypertension. Referring to pulmonology for evaluation regardless of today's labs. Return sooner if she gets chest pain, fainting or swelling."}
+          ]
+        },
+        {
+          "id": "2024-03-27a",
+          "kind": "portal_message",
+          "start": "2024-03-27T16:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Yesterday's labs", "author": "PCP", "date": "2024-03-27T16:00",
+             "body": "Your hemoglobin is normal and your iron stores are holding, so anemia doesn't explain the breathlessness. Thyroid and kidney tests are normal too. The pulmonology referral went in yesterday; their office should call you within a week or two. Let me know if they don't."}
+          ]
+        },
+        {
+          "id": "2024-05-16a",
+          "kind": "portal_message",
+          "start": "2024-05-16T19:48",
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2024-04-23T10:00"}],
+          "documents": [
+            {"type": "Patient Message", "title": "Lung doctor update", "author": "patient", "date": "2024-05-16T19:48",
+             "body": "Saw the lung specialist last month. They did an xray that day and I had the heart ultrasound on Tuesday. Haven't heard results yet. Did they send you anything?"},
+            {"type": "Patient Message", "title": "RE: Lung doctor update", "author": "MA", "date": "2024-05-17T09:12",
+             "body": "Hi Tamika, we haven't received notes from them yet. We've faxed a request and will let the doctor know as soon as anything arrives."}
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "portal_message",
+          "start": "2024-06-04T12:31",
+          "documents": [
+            {"type": "Patient Message", "title": "Heart catheter test", "author": "patient", "date": "2024-06-04T12:31",
+             "body": "The lung doctor wants a right heart catheterization next week (the 11th) to measure pressures. Is that something I should be nervous about?"},
+            {"type": "Patient Message", "title": "RE: Heart catheter test", "author": "PCP", "date": "2024-06-04T17:05",
+             "body": "It's a common, generally safe test. A thin tube goes through a vein, usually in the neck or arm, into the right side of the heart to measure pressures directly. Most people go home the same day. It will give the specialists a clear answer. Happy to talk by phone if you want."}
+          ]
+        },
+        {
+          "id": "2024-07-08a",
+          "kind": "portal_message",
+          "start": "2024-07-08T07:55",
+          "documents": [
+            {"type": "Patient Message", "title": "New diagnosis", "author": "patient", "date": "2024-07-08T07:55",
+             "body": "I saw pulmonology again last Wednesday. They told me I have pulmonary arterial hypertension, the same thing my aunt has. They started me on tadalafil, 2 pills every morning. I'm a little overwhelmed. Can I still take my iron and leg pill with it?"},
+            {"type": "Patient Message", "title": "RE: New diagnosis", "author": "PCP", "date": "2024-07-08T12:40",
+             "body": "I'm sorry, that is a lot to take in. Yes, iron and ropinirole are fine alongside tadalafil. We still don't have their notes, so I'm asking them again for the letter and test reports. Let's plan a visit in the fall to go over everything together, and message me anytime before then."}
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T10:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Fill history reviewed", "author": "RN", "date": "2024-07-09T10:20",
+             "body": "Pharmacy fill history pulled after pt's message: tadalafil 20 mg tabs, #60, filled 7/5/24, prescriber an outside pulmonologist, 2 tabs daily. Also ferrous sulfate and ropinirole, filled on schedule. Not added to our med list until we have the specialist's note; PCP aware."}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "telephone",
+          "start": "2024-08-13T11:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request: pulmonology", "author": "MA", "date": "2024-08-13T11:05",
+             "body": "Called the pulmonology group; our May and July faxes were not on file there. Re-faxed signed release. Asked for consult notes from April and July plus the chest x-ray, echo and catheterization reports."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "outside_records",
+          "start": "2024-09-10T15:30",
+          "conditions": [{"label": "Pulmonary arterial hypertension", "icd10": "I27.0", "action": "diagnosed", "onset": "2024-07-03"}],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2024-04-23T11:15", "issued": "2024-04-23T16:40",
+             "text": "PA and lateral views. The central pulmonary arteries are prominent. Lungs are clear. No pleural effusion or pneumothorax. Heart size within normal limits. Bones unremarkable.",
+             "conclusion": "Prominent pulmonary arteries. No acute cardiopulmonary process."},
+            {"study": "Transthoracic echocardiogram", "performed": "2024-05-14T09:00", "issued": "2024-05-14T15:20",
+             "text": "Technically adequate study. Left ventricle normal in size with preserved systolic function and normal wall motion. Right ventricle dilated with reduced systolic function. Aortic and mitral valves structurally normal. No pericardial effusion.",
+             "conclusion": "Dilated right ventricle with reduced systolic function. Normal left ventricular size and function."},
+            {"study": "Right heart catheterization", "loinc": "18745-0", "performed": "2024-06-11T08:30", "issued": "2024-06-11T14:00",
+             "text": "Right heart catheterization via the right internal jugular vein under local anesthesia. Mean pulmonary artery pressure 45 mm Hg. Pulmonary capillary wedge pressure 10 mm Hg. Cardiac output reduced. No complications; sheath removed with hemostasis.",
+             "conclusion": "Precapillary pulmonary hypertension: mean PA pressure 45 mm Hg with wedge 10 mm Hg and reduced cardiac output."}
+          ],
+          "procedures": [{"procedure": "Catheterization of right heart", "snomed": "40403005", "performed": "2024-06-11T08:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology follow-up", "author": "pulmonology", "date": "2024-09-10T15:30",
+             "body": "OUTSIDE PULMONARY ASSOCIATES — FOLLOW-UP\nDate of visit: 07/03/2024\nCopy to: primary care\n\nMs. Kenney, 37, returns after her workup. Since about February she has had steadily worsening breathlessness and fatigue. She now has to stop before she finishes a block, and sometimes feels lightheaded when she pushes herself. She denies chest pain and leg swelling.\n\nHistory: iron deficiency anemia on oral iron; restless legs on ropinirole; submucosal fibroid, resected 2022. Allergies: NKDA. Never smoker, no alcohol. Family: maternal aunt with PAH.\n\nVitals: within normal limits today.\nExam: lungs clear. JVP elevated. Right-sided S3. P2 loud.\n\nData: CXR 4/23 with prominent pulmonary arteries. TTE 5/14 shows a dilated, hypokinetic RV with a normal LV. RHC 6/11: mPAP 45, PCWP 10, cardiac output reduced.\n\nImpression: pulmonary arterial hypertension, precapillary hemodynamics.\n\nPlan: start tadalafil 40 mg once daily (two 20 mg tablets). Reviewed headache, flushing and the absolute rule against nitrates. Return in 6 months, sooner if worse.\n\n— Pulmonology attending\n\nEnclosed: CXR, echo and catheterization reports.\n[Received 9/10 after third request. PCP reviewed; PAH added to problem list. Discuss meds at fall visit.]"}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "office_visit",
+          "start": "2024-10-08T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after PAH diagnosis",
+          "medications": [{"drug_text": "tadalafil 20 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (40 mg) by mouth once daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pulmonary arterial hypertension"}],
+          "state": {"labs": {"Hemoglobin": 12.0, "Ferritin": 26}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-08T10:55", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": "Iron Studies", "collected": "2024-10-08T10:55", "results": [{"test": "Ferritin"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T10:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T10:51"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-10-08T10:52"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-08T10:20"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T10:50"},
+            {"procedure": "Venipuncture", "performed": "2024-10-08T10:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: PAH Follow-up, Medication Review", "author": "PCP", "date": "2024-10-08T10:45",
+             "body": "Here to go over the pulmonary hypertension diagnosis; their July letter finally arrived last month.\n\nShe has been on tadalafil 40 mg daily since early July. Breathing somewhat better; can do her stairs at work now with one pause. Had headaches the first two weeks, gone now. Taking iron and ropinirole as before. Legs quiet most nights. Next pulmonology visit in January.\n\nReviewed the pulmonology letter, echo and catheterization numbers with her (mPAP 45, wedge 10).\n\nMedication reconciliation: tadalafil 20 mg x2 daily added to our list (prescribed by pulmonology). Ferrous sulfate 325 daily, ropinirole 0.5 qhs.\n\nExam: no distress. Vitals per flowsheet. Lungs clear. Heart regular. Ankles without swelling.\n\nA/P:\n1. Pulmonary arterial hypertension — managed by pulmonology, on tadalafil. Reminded no nitrates; tell any ER or dentist she takes it.\n2. Iron deficiency anemia — CBC and ferritin today.\n3. RLS — stable.\n4. Prevention — flu, updated COVID, and PCV20 given today given chronic heart-lung disease.\nPhysical in January with Pap."}
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "portal_message",
+          "start": "2024-10-09T13:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood count", "author": "PCP", "date": "2024-10-09T13:10",
+             "body": "Hemoglobin is a touch below the normal range and ferritin is about where it was in the spring. Keep the iron going. Arm sore from three shots?"},
+            {"type": "Patient Message", "title": "RE: Blood count", "author": "patient", "date": "2024-10-09T18:22",
+             "body": "Both arms a little achy last night but better today. Thank you for explaining everything yesterday, I feel a lot calmer about it."}
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "annual_physical",
+          "start": "2025-01-14T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical and Pap",
+          "state": {"labs": {"Hemoglobin": 11.9, "Mean Corpuscular Volume": 82, "Ferritin": 24}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-01-14T09:40", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Iron Studies", "collected": "2025-01-14T09:40", "results": [{"test": "Ferritin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-01-14T09:40", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2025-01-14T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2025-01-14T09:25", "issued": "2025-01-20T11:30",
+             "text": "Liquid-based cervical specimen, satisfactory for evaluation with endocervical/transformation zone component. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+             "conclusion": "NILM; HPV negative."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-01-14T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-01-14T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-01-14T09:35",
+             "body": "38-year-old for her yearly visit and co-test (a few months past the 5-year mark).\n\nSince October: steady. Short of breath on hills and long stairs, better than last summer. Pulmonology visit later this month. Periods heavy for a few days each month, unchanged. RLS controlled.\n\nMeds: tadalafil 40 mg daily (pulm); ferrous sulfate 325 daily; ropinirole 0.5 qhs. NKDA.\nProblems: PAH; iron deficiency anemia; restless legs; fibroid s/p resection 2022.\n\nPHQ-2 0. Never smoker, no alcohol.\n\nExam: well-appearing. Vitals per flowsheet. Neck supple. Heart regular. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia and vagina, cervix without lesions, uterus normal in size, no adnexal masses; co-test collected. Extremities without swelling. Skin normal.\n\nPlan: co-test; CBC, ferritin, CMP, lipids. Continue current meds. Back in summer for iron/RLS check."}
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T08:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical results", "author": "PCP", "date": "2025-01-21T08:15",
+             "body": "Pap and HPV test negative, so next cervical screening in 2030. Blood count normal; iron stores lowish but stable. Metabolic panel and cholesterol fine."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "outside_records",
+          "start": "2025-02-11T10:40",
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology follow-up", "author": "pulmonology", "date": "2025-02-11T10:40",
+             "body": "OUTSIDE PULMONARY ASSOCIATES\nVisit date: 01/28/2025\nDiagnosis: pulmonary arterial hypertension\n\nSix months on tadalafil. She reports better exercise tolerance than at diagnosis; early headaches resolved. No leg swelling, no syncope.\n\nMedications: tadalafil 40 mg daily; ferrous sulfate 325 mg daily; ropinirole 0.5 mg at bedtime. Allergies: NKDA.\n\nExam: comfortable, no peripheral edema, lungs clear.\n\nPlan: continue tadalafil 40 mg daily. Follow up in 6 months.\n\n[Filed 2/11. PCP read.]"}
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "pharmacy",
+          "start": "2025-04-16T15:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: ropinirole", "author": "RN", "date": "2025-04-16T15:45",
+             "body": "Refill request ropinirole 0.5 mg, 90-day supply. Seen in January, on stable dose. Sent."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "iron and RLS follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-06-24a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-24T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "iron and RLS follow-up",
+          "orders": [
+            {"id": "cbc-2025-06", "action": "placed", "order": "Complete Blood Count (CBC)", "category": "lab"},
+            {"id": "iron-2025-06", "action": "placed", "order": "Iron Studies", "category": "lab"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-06-24T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2025-06-24T12:35",
+             "body": "Video from her desk at lunch; she rescheduled the office visit two weeks ago because of a work conflict.\n\nRLS: one or two restless nights a month, otherwise sleeping well on ropinirole. Takes it around 9.\nIron: takes it most days; misses a few a week when rushed. Periods heavy for a couple of days monthly.\nPAH: followed by pulmonology, on tadalafil, next visit in August. Breathing stable.\n\nAppears well on video, speaking comfortably without pauses.\n\nPlan: CBC and ferritin at the lab this week. Tried to tie her iron to her morning routine so fewer doses get missed. Continue ropinirole."}
+          ]
+        },
+        {
+          "id": "2025-06-26a",
+          "kind": "lab_only",
+          "start": "2025-06-26T07:30",
+          "state": {"labs": {"Hemoglobin": 11.8, "Ferritin": 21}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-26T07:30", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": "Iron Studies", "collected": "2025-06-26T07:30", "results": [{"test": "Ferritin"}]}
+          ],
+          "orders": [
+            {"id": "cbc-2025-06", "action": "done", "date": "2025-06-26T07:30"},
+            {"id": "iron-2025-06", "action": "done", "date": "2025-06-26T07:30"}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2025-06-26T07:30"}]
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "portal_message",
+          "start": "2025-06-27T14:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-06-27T14:50",
+             "body": "Hemoglobin is normal, but ferritin is still on the low side. Please make the daily iron a habit again; every dose matters with your monthly losses. We'll look again in the winter."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T08:05",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-21T08:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-21T08:12"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-21T08:10"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2025-10-21T08:20",
+             "body": "Trivalent flu and 2025-26 COVID given, one in each arm. Pt says pulmonology saw her in August, all routine. Due for wellness visit — scheduled January 9."}
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "annual_physical",
+          "start": "2026-01-09T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "wellness visit; always tired",
+          "conditions": [{"label": "Fatigue", "icd10": "R53.83", "action": "diagnosed", "onset": "2025-06-01"}],
+          "state": {"weight_kg": 70.9, "labs": {"Hemoglobin": 11.6, "Mean Corpuscular Volume": 80, "Iron": 50, "Total Iron-Binding Capacity": 445, "Ferritin": 17, "Thyroid Stimulating Hormone": 2.1}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-09T09:05", "resulted": "2026-01-09T14:20", "results": [{"test": "Hemoglobin", "value": 11.6}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": "Iron Studies", "collected": "2026-01-09T09:05", "resulted": "2026-01-10T10:30", "results": [{"test": "Ferritin", "value": 17}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-09T09:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2026-01-09T09:05", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-01-09T08:20"},
+            {"procedure": "Venipuncture", "performed": "2026-01-09T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Wellness Visit", "author": "PCP", "date": "2026-01-09T09:00",
+             "body": "Ms. Kenney, 39, for her yearly wellness visit. Ongoing care for PAH (pulmonology), iron deficiency anemia, restless legs; fibroid resected 2022. All of these were worked up here and by specialists between 2022 and 2024.\n\nToday she says she is tired all the time, has been for months. She has slipped out of the exercise she used to do and hasn't really been active at all for more than a year. Sits at a desk all day. She misses being in shape. When I raised a routine, she agreed it would probably help, but isn't sure she has the time or the energy for it right now. Asked what an easy starting point would look like; did not want to commit to anything specific today.\n\nPulmonology saw her in August; she says it was routine and the tadalafil dose did not change (no letter received from that visit). Iron: still missing doses some weeks. Periods heavy a few days each month. RLS controlled on ropinirole.\n\nMeds: tadalafil 40 mg daily; ferrous sulfate 325 mg daily; ropinirole 0.5 mg qhs. NKDA.\nSocial: administrative assistant. Never smoker. No alcohol.\nPHQ-2: 1.\n\nExam: tired-appearing but in no distress. Vitals per flowsheet; weight up a little from last year. Conjunctivae pink. Heart regular. Lungs clear. Abdomen soft. No leg swelling. Neuro nonfocal.\n\nAssessment and plan:\n1. Fatigue, with low activity, in someone with PAH and iron deficiency. CBC, ferritin, CMP, TSH today.\n2. Physical activity — she is thinking about it but not ready. Gave her a few low-effort starting ideas (a short walk at lunch, stretching at her desk) and suggested she ask pulmonology how hard she can safely push. Will revisit.\n3. PAH — per pulmonology, continue tadalafil.\n4. Iron deficiency anemia — continue iron; results to follow.\n5. RLS — stable, refill.\n6. Prevention: flu and COVID done in October; Pap current to 2030; mammography starts at 40, next fall.\nFollow-up in about 6 months."}
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "portal_message",
+          "start": "2026-01-12T11:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from Friday", "author": "PCP", "date": "2026-01-12T11:30",
+             "body": "Hemoglobin is 11.6, slightly low, and ferritin is 17, which means your iron stores are low again and could be adding to the tiredness. Thyroid, kidney and liver tests are normal. Please take the iron every day; we'll recheck at your next visit."},
+            {"type": "Patient Message", "title": "RE: Results from Friday", "author": "patient", "date": "2026-01-12T20:41",
+             "body": "Ok. I'm putting it next to my coffee maker so I stop forgetting."}
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "pharmacy",
+          "start": "2026-02-17T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: ropinirole", "author": "RN", "date": "2026-02-17T09:10",
+             "body": "Pharmacy renewal request, ropinirole 0.5 mg #90 with 3 refills. Seen 1/9, stable. Approved."}
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "outside_records",
+          "start": "2026-03-24T13:55",
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology follow-up", "author": "pulmonology", "date": "2026-03-24T13:55",
+             "body": "OUTSIDE PULMONARY ASSOCIATES\nVisit date: 03/10/2026\nProblem: pulmonary arterial hypertension\n\nOn tadalafil 40 mg daily, tolerating it. Stable since last visit. No edema on exam, lungs clear.\n\nMeds per our list: tadalafil 40 mg daily, ferrous sulfate 325 mg daily, ropinirole 0.5 mg at bedtime. Allergies: NKDA. PMH also lists submucosal uterine fibroid.\n\nPlan: continue current therapy. Next visit in 6 months.\n\n[Received by fax 3/24; filed to chart.]"}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T10:22",
+          "documents": [
+            {"type": "Patient Message", "title": "Scheduling", "author": "patient", "date": "2026-05-19T10:22",
+             "body": "Dr. said to come back in about 6 months for my iron. Can I get something in September? Mornings are best."},
+            {"type": "Patient Message", "title": "RE: Scheduling", "author": "front desk", "date": "2026-05-19T14:05",
+             "body": "You're booked Monday, September 14 at 8:40. We'll send a reminder the week before."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T16:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: ferrous sulfate", "author": "RN", "date": "2026-07-21T16:30",
+             "body": "Pharmacy request to renew ferrous sulfate 325 mg daily. Last labs January; visit booked September. Renewed for 6 months."}
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T08:40",
+          "reason": "fatigue and iron follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

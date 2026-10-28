@@ -58,7 +58,7 @@
           "medications": [
             {"drug_text": "labetalol hydrochloride 200 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 200, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "hypertension"},
             {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing or shortness of breath", "dose": {"value": 2, "unit": "puff"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "asthma"},
-            {"drug_text": "prenatal vitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+            {"drug_text": "prenatal vitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "uncoded": true}
           ],
           "allergies": [
             {"substance": "No known drug allergies"}
@@ -201,7 +201,7 @@
           ],
           "measure": ["bp", "hr", "weight_kg"],
           "labs": [
-            {"panel": null, "collected": "2022-06-20T09:25", "resulted": "2022-06-20T15:10", "results": [{"test": "Choriogonadotropin.beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 1500}]}
+            {"panel": null, "collected": "2022-06-20T09:25", "resulted": "2022-06-20T15:10", "results": [{"test": "Choriogonadotropin.beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 1500, "range": {"high": 5}}]}
           ],
           "orders": [
             {"id": "ob-referral-2022a", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics & Gynecology", "reason": "early pregnancy; history of cervical insufficiency and 18-week loss; chronic hypertension"}
@@ -244,7 +244,7 @@
           "labs": [
             {"panel": null, "collected": "2022-06-27T14:05", "results": [
               {"test": "Hemoglobin", "loinc": "718-7", "unit": "g/dL", "value": 10.2},
-              {"test": "Choriogonadotropin.beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 50},
+              {"test": "Choriogonadotropin.beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 50, "range": {"high": 5}},
               {"test": "ABO and Rh group", "loinc": "882-1", "text": "A Rh(D) positive"}
             ]}
           ],

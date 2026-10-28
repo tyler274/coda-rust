@@ -46,8 +46,7 @@
             {"procedure": "Office visit, new patient, low MDM", "performed": "2023-06-20T08:40"}
           ],
           "orders": [
-            {"id": "prior-pcp-records", "action": "placed", "order": "Records request, prior primary care office", "category": "procedure", "reason": "Establishing care"}
-          ],
+            ],
           "documents": [
             {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-06-20T09:30",
              "body": "27 yo here to set up primary care. Currently pregnant, about 21 weeks by LMP (~1/22/23), seeing an outside OB group for prenatal care; she says everything has gone smoothly so far. No bleeding, no leaking, no headaches or vision change.\n\nOB hx: this is her second pregnancy. First was in 2021, carried to term, delivered by low transverse C-section, healthy baby.\n\nPMH: nothing chronic. PSH: C-section as above.\nMeds: ferrous sulfate 325 mg daily, started by her OB this pregnancy.\nAllergies: NKDA.\nFH: her mother had preeclampsia with a pregnancy. A maternal aunt was treated for gestational trophoblastic disease.\nSH: works in HR as a coordinator. Never smoker. Drinks rarely, a drink or two a month before pregnancy, none now.\n\nROS otherwise negative.\n\nExam: well, gravid. Ht 165 cm. Heart regular, no murmur. Lungs clear. Abdomen gravid, low transverse scar well healed. No leg swelling. Mood and affect normal.\n\nA/P\n1. Pregnancy, ~21 wks, followed by OB. Uncomplicated so far. We will stay out of the prenatal lane; she knows to call OB first for anything pregnancy-related. Asked her to have OB copy us on major notes.\n2. Health maintenance: will get records from her old primary office (form signed). Vaccines in pregnancy per OB, she expects Tdap there in the third trimester.\n3. Iron per OB, continue.\n\nRTC after delivery or sooner as needed."}
@@ -58,8 +57,7 @@
           "kind": "outside_records",
           "start": "2023-07-06T14:05",
           "orders": [
-            {"id": "prior-pcp-records", "action": "done", "date": "2023-07-06T14:05"}
-          ],
+            ],
           "reports": [
             {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-04-19T10:00", "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
           ],
@@ -111,11 +109,15 @@
           "kind": "telephone",
           "start": "2023-09-19T11:00",
           "orders": [
-            {"id": "delivery-records", "action": "placed", "order": "Records request, hospital discharge summary", "category": "procedure", "reason": "Delivery admission 9/10-9/14"}
-          ],
+            ],
           "documents": [
-            {"type": "Telephone Encounter", "title": "Records request", "author": "front desk", "date": "2023-09-19T11:00",
-             "body": "Requested discharge summary from the hospital L&D unit for admission 9/10-9/14/23 (signed release on file). Told 5-7 business days."}
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "author": "front desk",
+              "date": "2023-09-19T11:00",
+              "body": "Requested discharge summary from the hospital L&D unit for admission 9/10-9/14/23 (signed release on file). Told 5-7 business days. Records request, hospital discharge summary."
+            }
           ]
         },
         {
@@ -123,8 +125,7 @@
           "kind": "outside_records",
           "start": "2023-09-26T15:20",
           "orders": [
-            {"id": "delivery-records", "action": "done", "date": "2023-09-26T15:20"}
-          ],
+            ],
           "documents": [
             {"type": "Discharge Summary", "title": "Obstetric discharge summary", "author": "obstetrics", "date": "2023-09-26T15:20",
              "body": "OBSTETRIC DISCHARGE SUMMARY (outside hospital)\nAdmitted 09/10/2023, discharged 09/14/2023.\n\nG2P1 at 32 weeks with a prior low transverse cesarean presented with a sudden gush of clear fluid and irregular contractions roughly every 10 minutes. No bleeding, no significant pain. Prenatal course uncomplicated with adequate care. Vitals stable on arrival. Sterile speculum exam confirmed ROM; cervix 3 cm, vertex. Continuous monitoring showed abrupt decelerations from a baseline of 140 to 90 bpm with quick recovery, variable in relation to contractions. Given recurrent decelerations, proceeded to emergent repeat low transverse cesarean for fetal distress. Liveborn male, admitted to NICU.\n\nPostoperative course unremarkable; incision clean and dry at discharge, ambulating, tolerating diet.\n\nAllergies: NKDA.\nDischarge medications: ferrous sulfate 325 mg daily (continue).\nFollow-up: OB postpartum visit; routine wound care."},

@@ -120,21 +120,21 @@
               "collected": "2025-02-26T15:30",
               "results": [
                 {
-                  "test": "Prothrombin time",
-                  "loinc": "5902-2",
-                  "unit": "s",
+                  "test": "Prothrombin Time",
                   "value": 29
                 },
                 {
                   "test": "Activated partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
-                  "value": 48
+                  "value": 48,
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  }
                 },
                 {
-                  "test": "Platelet count",
-                  "loinc": "777-3",
-                  "unit": "10*3/uL",
+                  "test": "Platelets",
                   "value": 210
                 }
               ]
@@ -686,7 +686,11 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
-                  "value": 412
+                  "value": 412,
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  }
                 }
               ]
             }

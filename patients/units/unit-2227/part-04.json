@@ -1,0 +1,883 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002227",
+      "events": [
+        {
+          "id": "2026-01-02a",
+          "kind": "telephone",
+          "start": "2026-01-02T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Warfarin hold before EUS/ERCP",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Peri-procedure warfarin",
+              "author": "RN",
+              "date": "2026-01-02T10:15",
+              "body": "GI office called: EUS with biopsy and ERCP with stent 1/9, CT 1/6. Reviewed with PCP: last warfarin dose Saturday 1/3, none 1/4 through 1/9, no bridging. GI will advise on restart after the procedure. Pt and RN went over the dates twice; he wrote them on his calendar. He asked about the GI's ultrasound result - told him the GI and PCP will go over everything once the biopsy is back."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "imaging",
+          "start": "2026-01-06T09:00",
+          "service": "Radiology",
+          "reason": "Pancreatic head mass staging",
+          "reports": [
+            {
+              "study": "CT pancreas with IV contrast (pancreas protocol)",
+              "loinc": "24858-3",
+              "performed": "2026-01-06T09:00",
+              "text": "INDICATION: Pancreatic head mass on ultrasound, obstructive jaundice.\nTECHNIQUE: Multiphase pancreas-protocol CT of the abdomen with IV contrast.\nFINDINGS: 3.2 cm hypoattenuating mass in the pancreatic head. The mass encases the superior mesenteric artery for more than 180 degrees of its circumference. Common bile duct dilated to 14 mm and main pancreatic duct dilated to 6 mm upstream of the mass. Distended gallbladder without stones. No liver lesions. No ascites. Spleen, adrenal glands and kidneys normal. Bowel unremarkable.",
+              "conclusion": "3.2 cm pancreatic head mass with SMA encasement greater than 180 degrees, compatible with locally advanced pancreatic cancer. No liver lesions or ascites."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-01-06T09:20",
+              "text": "INDICATION: Staging, pancreatic mass.\nFINDINGS: Lungs clear without nodules. No pleural effusion. No mediastinal, hilar or axillary adenopathy. Heart normal in size.",
+              "conclusion": "No evidence of thoracic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "CT reports received",
+              "author": "front desk",
+              "date": "2026-01-07T09:00",
+              "body": "Pancreas CT and chest CT reports from 1/6 received from radiology and scanned. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-09a",
+          "kind": "procedure_visit",
+          "start": "2026-01-09T07:30",
+          "end": "2026-01-09T14:00",
+          "service": "Gastroenterology",
+          "reason": "EUS with fine-needle aspiration and ERCP",
+          "conditions": [
+            {
+              "label": "Pancreatic adenocarcinoma (mucin-producing), head of pancreas",
+              "icd10": "C25.0",
+              "action": "diagnosed",
+              "onset": "2026-01-09"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Fine needle aspiration of lesion of pancreas using endoscopic ultrasonography guidance",
+              "snomed": "788641000",
+              "performed": "2026-01-09T08:30"
+            },
+            {
+              "procedure": "ERCP with insertion of biliary metal stent",
+              "snomed": "432110004",
+              "performed": "2026-01-09T09:15"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Endoscopic ultrasound, upper GI",
+              "loinc": "100878-8",
+              "performed": "2026-01-09T08:30",
+              "text": "Linear EUS: 3.1 cm hypoechoic, irregular mass in the pancreatic head. Dilated common bile duct and upstream pancreatic duct. No ascites. Fine-needle aspiration with a 22-gauge needle, 3 passes; on-site evaluation adequate.",
+              "conclusion": "3.1 cm hypoechoic pancreatic head mass, sampled."
+            },
+            {
+              "study": "ERCP",
+              "loinc": "28016-4",
+              "performed": "2026-01-09T09:15",
+              "text": "Distal common bile duct stricture with upstream dilation. Biliary sphincterotomy. A fully covered self-expanding metal stent placed across the stricture with good drainage of bile and contrast.",
+              "conclusion": "Malignant-appearing distal bile duct stricture; covered metal biliary stent placed."
+            },
+            {
+              "study": "Cytology, pancreatic mass fine-needle aspirate",
+              "loinc": "33718-8",
+              "performed": "2026-01-09T08:30",
+              "issued": "2026-01-12T15:00",
+              "text": "SPECIMEN: Pancreas, head mass, EUS-guided FNA with cell block.\nDIAGNOSIS: Positive for malignancy. Adenocarcinoma with abundant extracellular and intracellular mucin (mucin-producing adenocarcinoma).",
+              "conclusion": "Mucin-producing adenocarcinoma of the pancreas."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "EUS and ERCP report",
+              "author": "gastroenterology",
+              "date": "2026-01-12T16:30",
+              "body": "Outside gastroenterology - advanced endoscopy\nDate of procedure: 01/09/2026\nPatient: Eugene Connolly, 71 M. Warfarin held since 1/4. Allergies: NKDA.\nIndication: pancreatic head mass with obstructive jaundice.\nEUS: 3.1 cm hypoechoic head mass; FNA x3.\nERCP: distal biliary stricture; sphincterotomy and fully covered metal stent placed with good drainage.\nNo immediate complications; discharged home the same day after recovery.\nCytology (final 1/12): mucin-producing adenocarcinoma.\nPlan: resume warfarin 1/10 at usual dose. Referred to oncology - consult 1/14. Results discussed with the patient by phone today."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-14a",
+          "kind": "specialist_visit",
+          "start": "2026-01-14T10:00",
+          "service": "Oncology",
+          "reason": "New pancreatic adenocarcinoma",
+          "conditions": [
+            {
+              "label": "Chronic disseminated intravascular coagulation",
+              "icd10": "D65",
+              "action": "diagnosed",
+              "onset": "2026-01-14",
+              "note": "With pancreatic adenocarcinoma"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Changed to enoxaparin by oncology"
+            },
+            {
+              "drug_text": "0.8 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
+              "action": "start",
+              "sig": "Inject 80 mg under the skin every 12 hours",
+              "dose": {
+                "value": 80,
+                "unit": "mg"
+              },
+              "frequency": "Q12H",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Atrial fibrillation and chronic DIC with pancreatic cancer"
+            }
+          ],
+          "vitals": {
+            "weight_kg": 77.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-14T10:20",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 104
+                },
+                {
+                  "test": "Neutrophils %"
+                },
+                {
+                  "test": "Lymphocytes %"
+                },
+                {
+                  "test": "Monocytes %"
+                },
+                {
+                  "test": "Eosinophils %"
+                },
+                {
+                  "test": "Basophils %"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-14T10:20",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 148,
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  }
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-14T10:20",
+              "results": [
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL{FEU}",
+                  "value": 5.6,
+                  "range": {
+                    "high": 0.5
+                  }
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-14T10:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-01-14T10:20",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology consultation",
+              "author": "oncology",
+              "date": "2026-01-15T11:00",
+              "body": "Outside medical oncology practice\nDate of visit: 01/14/2026\nRe: Eugene Connolly, DOB 09/09/1954\n\nThank you for asking us to see Mr. Connolly with a newly diagnosed pancreatic head adenocarcinoma.\n\nHistory: three months of epigastric pain, poor appetite and weight loss, then jaundice. CA 19-9 150. CT 1/6: 3.2 cm head mass encasing the SMA beyond 180 degrees, no liver lesions, no ascites; chest CT clear. EUS-FNA 1/9: mucin-producing adenocarcinoma; covered metal biliary stent placed. Jaundice improving since the stent.\nPMH: type 2 diabetes with neuropathy, hypertension, chronic AF on warfarin, past nodular BCC of the nose, pharyngoesophageal diverticulum (stapled 2022), right cataract surgery with endophthalmitis 2023, foot osteomyelitis 2024, appendectomy 12/2024. Normal coronary angiogram 2023.\nMeds: metformin 1000 mg BID, lisinopril 10 mg, hydrochlorothiazide 12.5 mg, warfarin 5 mg, atorvastatin 40 mg, capsaicin cream. Allergies: NKDA.\nFamily: paternal uncle with pancreatic cancer.\nPerformance status ECOG 1. Weight 77 kg.\n\nLabs today: platelets 104, hemoglobin 11.6, fibrinogen 148 mg/dL, D-dimer 5.6 ug/mL FEU, INR 1.7 (warfarin restarted 1/10 after the procedure), total bilirubin 1.8.\n\nAssessment:\n1. Pancreatic adenocarcinoma, mucin-producing, head, locally advanced and unresectable (arterial encasement), no distant disease on imaging.\n2. Chronic (compensated) disseminated intravascular coagulation related to the mucinous adenocarcinoma - low platelets and fibrinogen with raised D-dimer, no bleeding.\n3. Chronic AF requiring anticoagulation.\n\nPlan:\n- Gemcitabine with nab-paclitaxel, days 1, 8 and 15 of 28-day cycles, starting 1/26.\n- Anticoagulation: stop warfarin today; start enoxaparin 80 mg subcutaneously every 12 hours, which covers his AF and is preferred over warfarin with cancer-associated DIC. Teaching done in clinic.\n- CA 19-9 and coagulation labs each cycle. Restaging CT after 2-3 cycles.\nWe will keep you updated. Please continue to manage his diabetes and blood pressure."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6,
+              "Platelets": 104,
+              "Glucose": 128
+            }
+          }
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "telephone",
+          "start": "2026-01-16T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anticoagulation change",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation change",
+              "author": "RN",
+              "date": "2026-01-16T09:40",
+              "body": "Oncology consult note received. Warfarin stopped 1/14; on enoxaparin 80 mg SC q12h prescribed by oncology. Removed from INR monitoring list; standing INR order cancelled. Called pt: giving his own shots without trouble, small bruises at the sites only. Has sharps container. He is starting chemotherapy 1/26. PCP will see him early February."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "specialist_visit",
+          "start": "2026-01-26T08:30",
+          "service": "Oncology",
+          "reason": "Chemotherapy cycle 1 day 1",
+          "medications": [
+            {
+              "drug_text": "gemcitabine 1000 MG Injection",
+              "action": "start",
+              "sig": "1000 mg/m2 IV on days 1, 8 and 15 of each 28-day cycle (infusion center)",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Pancreatic adenocarcinoma"
+            },
+            {
+              "drug_text": "paclitaxel 100 MG Injection",
+              "action": "start",
+              "sig": "Nab-paclitaxel (protein-bound) 125 mg/m2 IV on days 1, 8 and 15 of each 28-day cycle (infusion center)",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Pancreatic adenocarcinoma"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Chemotherapy-related nausea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology treatment note",
+              "author": "oncology",
+              "date": "2026-01-26T17:00",
+              "body": "Outside medical oncology - infusion center\n01/26/2026 - cycle 1 day 1 gemcitabine 1000 mg/m2 and nab-paclitaxel 125 mg/m2.\nAllergies: NKDA. Continues enoxaparin 80 mg q12h.\nPre-treatment labs acceptable. Tolerated infusion without reaction.\nOndansetron 4 mg ODT as needed for nausea prescribed.\nNext: day 8 on 2/2."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-04a",
+          "kind": "office_visit",
+          "start": "2026-02-04T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after pancreatic cancer diagnosis",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-04T14:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-02-04T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-02-04T14:30",
+              "body": "S: First visit since his diagnosis. EUS 1/9 showed mucin-producing adenocarcinoma of the pancreatic head, locally advanced (SMA encasement), no spread on CT; metal biliary stent placed, yellowing gone. Oncology found chronic DIC on labs and switched warfarin to enoxaparin 80 mg twice a day. Two doses of gemcitabine/nab-paclitaxel so far - tired for a couple of days after each, mild nausea that the ondansetron handles. Appetite still poor, eating small meals. Pain much less since the stent.\n\nMeds reconciled: metformin 1000 BID, lisinopril 10, HCTZ 12.5, atorvastatin 40, capsaicin cream, enoxaparin 80 mg SC q12h, ondansetron 4 mg ODT PRN; chemo at oncology. Warfarin stopped. NKDA.\n\nO: Vitals as charted, weight 76 kg. Sclerae anicteric. Abdomen soft, nontender. Injection-site bruises on abdomen, small. Irregularly irregular, controlled. No edema.\n\nA/P:\n1. Pancreatic adenocarcinoma, locally advanced - under oncology. We talked about how he's coping; he is taking it a day at a time and wants to keep going with treatment.\n2. Chronic DIC - oncology following labs each cycle.\n3. AF - anticoagulated with enoxaparin; no INR checks needed now.\n4. T2DM - eating less; sugars at home 110s-150s. Continue metformin, call for any reading under 80. BMP today.\n5. HTN - BP fine, continue.\nRTC 3 months, sooner as needed."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 76.0
+          }
+        },
+        {
+          "id": "2026-02-25a",
+          "kind": "portal_message",
+          "start": "2026-02-25T18:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Nausea question",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Nausea pills",
+              "author": "patient",
+              "date": "2026-02-25T18:20",
+              "body": "The oncology nurse said to check with you too - is it ok to take the nausea pill with all my other medicines? It works, I take it the day of chemo and the day after."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Nausea pills",
+              "author": "PCP",
+              "date": "2026-02-26T08:05",
+              "body": "Yes, ondansetron is fine with your other medicines. Keep using it as oncology directed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "specialist_visit",
+          "start": "2026-03-23T09:00",
+          "service": "Oncology",
+          "reason": "Cycle 3 visit",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-23T09:10",
+              "results": [
+                {
+                  "test": "Cancer Ag 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 96,
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  }
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-23T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets",
+                  "value": 128
+                },
+                {
+                  "test": "Neutrophils %"
+                },
+                {
+                  "test": "Lymphocytes %"
+                },
+                {
+                  "test": "Monocytes %"
+                },
+                {
+                  "test": "Eosinophils %"
+                },
+                {
+                  "test": "Basophils %"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-23T09:10",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 190,
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  }
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-23T09:10",
+              "results": [
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL{FEU}",
+                  "value": 3.1,
+                  "range": {
+                    "high": 0.5
+                  }
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-03-23T09:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2026-03-24T10:00",
+              "body": "Outside medical oncology practice\nDate of visit: 03/23/2026 - cycle 3 day 1, gemcitabine/nab-paclitaxel.\nTolerating treatment: fatigue for 2-3 days after infusions, nausea controlled with ondansetron. Using enoxaparin twice daily, no bleeding.\nAllergies: NKDA.\nLabs: CA 19-9 96 (from 150). Platelets 128, fibrinogen 190, D-dimer 3.1 - DIC parameters improving with treatment. Bilirubin 0.9.\nPlan: continue current regimen. Restaging CT in 3 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "imaging",
+          "start": "2026-04-13T10:30",
+          "service": "Radiology",
+          "reason": "Restaging, pancreatic adenocarcinoma",
+          "reports": [
+            {
+              "study": "CT pancreas with IV contrast (pancreas protocol)",
+              "loinc": "24858-3",
+              "performed": "2026-04-13T10:30",
+              "text": "INDICATION: Restaging, locally advanced pancreatic adenocarcinoma on chemotherapy.\nCOMPARISON: 01/06/2026.\nFINDINGS: Pancreatic head mass now 2.7 cm (previously 3.2 cm), with persistent encasement of the superior mesenteric artery. Biliary stent in place; bile ducts decompressed. No liver lesions. No ascites. No new adenopathy.",
+              "conclusion": "Decrease in size of the pancreatic head mass to 2.7 cm. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Restaging CT received",
+              "author": "front desk",
+              "date": "2026-04-14T09:30",
+              "body": "Restaging CT report from 4/13 received and scanned, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "portal_message",
+          "start": "2026-04-22T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Refill and appointment",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refills",
+              "author": "patient",
+              "date": "2026-04-22T11:10",
+              "body": "Running low on the metformin and the blood pressure pills. Also the CT showed the tumor got smaller which was good news. Do I still come in on May 1?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refills",
+              "author": "front desk",
+              "date": "2026-04-22T14:30",
+              "body": "Hi Mr. Connolly, refills for metformin, lisinopril and hydrochlorothiazide were sent to your pharmacy today. Yes, you are all set for Friday May 1 at 10:30."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "office_visit",
+          "start": "2026-05-01T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: diabetes, blood pressure, care planning",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-01T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-01T11:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-01T10:30"
+            },
+            {
+              "procedure": "Advance care planning, first 30 minutes",
+              "performed": "2026-05-01T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-05-01T11:45",
+              "body": "S: Three cycles of gemcitabine/nab-paclitaxel done. Restaging CT 4/13: pancreatic mass smaller, 2.7 cm, nothing new. CA 19-9 down to 96 in March. Fatigue is the main thing - naps most afternoons. Eating small meals several times a day. Nausea controlled. Enoxaparin twice daily, no bleeding. Home sugars 100s-140s, no lows.\n\nMeds: metformin 1000 BID, lisinopril 10, HCTZ 12.5, atorvastatin 40, capsaicin cream PRN, enoxaparin 80 mg SC q12h, ondansetron 4 mg ODT PRN; chemotherapy at oncology. NKDA.\n\nO: Vitals as charted, weight 72 kg. Thin. Sclerae anicteric. Abdomen soft, nontender. Irregularly irregular. No edema. Feet intact.\n\nA/P:\n1. Pancreatic adenocarcinoma, locally advanced, responding on imaging - oncology managing.\n2. Chronic DIC - improving per oncology labs.\n3. T2DM: A1c 7.0, lower with weight loss and less intake. Continue metformin for now; check sugars daily, call for anything under 80. BMP today.\n4. HTN: controlled, continue.\n5. AF: on enoxaparin.\n6. Advance care planning (about 20 minutes): talked through what matters most to him - staying at home and staying independent as long as he can. He wants full treatment for now. Gave him a health care proxy form and the state MOLST information to read; will review at next visit.\nPHQ-2 1.\nRTC early September, sooner as needed."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 72.0
+          }
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "specialist_visit",
+          "start": "2026-05-18T09:00",
+          "service": "Oncology",
+          "reason": "Cycle 5 visit",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-18T09:10",
+              "results": [
+                {
+                  "test": "Cancer Ag 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 61,
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  }
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2026-05-19T10:00",
+              "body": "Outside medical oncology practice\nDate of visit: 05/18/2026 - cycle 5 day 1.\nContinues gemcitabine/nab-paclitaxel. Fatigue stable. No bleeding on enoxaparin 80 mg q12h.\nAllergies: NKDA.\nCA 19-9 61. Counts adequate to treat.\nPlan: continue treatment; restaging CT in July."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Filed",
+              "author": "front desk",
+              "date": "2026-05-20T09:00",
+              "body": "Oncology note 5/18 received and scanned."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "pharmacy",
+          "start": "2026-06-10T10:00",
+          "service": "Community pharmacy",
+          "reason": "Electronic refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2026-06-10T10:00",
+              "body": "Pharmacy e-request: atorvastatin 40 mg, 90-day supply. Last office visit 5/1. Approved per PCP protocol and sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "imaging",
+          "start": "2026-07-14T10:00",
+          "service": "Radiology",
+          "reason": "Restaging, pancreatic adenocarcinoma",
+          "reports": [
+            {
+              "study": "CT pancreas with IV contrast (pancreas protocol)",
+              "loinc": "24858-3",
+              "performed": "2026-07-14T10:00",
+              "text": "INDICATION: Restaging, pancreatic adenocarcinoma on chemotherapy.\nCOMPARISON: 04/13/2026.\nFINDINGS: Pancreatic head mass 2.6 cm (previously 2.7 cm), with unchanged encasement of the superior mesenteric artery. Biliary stent in place, ducts decompressed. No liver lesions. No ascites. No adenopathy.",
+              "conclusion": "Stable pancreatic head mass, 2.6 cm. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Restaging CT received",
+              "author": "front desk",
+              "date": "2026-07-15T09:15",
+              "body": "CT report 7/14 received from radiology and scanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "specialist_visit",
+          "start": "2026-07-20T09:00",
+          "service": "Oncology",
+          "reason": "Restaging review",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-07-20T09:10",
+              "results": [
+                {
+                  "test": "Cancer Ag 19-9",
+                  "loinc": "24108-3",
+                  "unit": "U/mL",
+                  "value": 58,
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  }
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2026-07-21T11:00",
+              "body": "Outside medical oncology practice\nDate of visit: 07/20/2026.\nRestaging CT 7/14: head mass stable at 2.6 cm, no new disease. CA 19-9 58.\nTolerating gemcitabine/nab-paclitaxel with fatigue as the main effect. No bleeding on enoxaparin.\nAllergies: NKDA.\nPlan: continue current treatment; next restaging in about 3 months. Copy to primary care."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Filed",
+              "author": "front desk",
+              "date": "2026-07-22T09:00",
+              "body": "Oncology note 7/20 received and scanned."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Appointment confirmation",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September appointment",
+              "author": "patient",
+              "date": "2026-08-12T16:45",
+              "body": "Just checking I am on for September 10. My chemo days are Mondays so Thursday works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September appointment",
+              "author": "front desk",
+              "date": "2026-08-13T09:10",
+              "body": "Yes - Thursday September 10 at 10:00. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: diabetes, blood pressure, advance care planning",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

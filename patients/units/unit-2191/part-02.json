@@ -143,8 +143,8 @@
             {"panel": null, "collected": "2018-06-22T10:00", "results": [{"test": "Phosphorus", "value": 5.8}, {"test": "Parathyroid Hormone, Intact", "value": 800}]}
           ],
           "orders": [
-            {"id": "neck-us-2018", "action": "placed", "order": "Neck ultrasound", "category": "imaging", "reason": "Hypercalcemia, elevated PTH, neck mass"},
-            {"id": "endosurg-2018", "action": "placed", "order": "Endocrine surgery referral", "category": "referral", "to": "Endocrine surgery", "reason": "Tertiary hyperparathyroidism"}
+            {"id": "neck-us-2018", "action": "placed", "order": "Neck ultrasound", "category": "imaging", "reason": "Hypercalcemia, elevated PTH, neck mass", "loinc": "24842-7"},
+            {"id": "endosurg-2018", "action": "placed", "order": "Endocrine surgery referral", "category": "referral", "to": "Endocrine Surgery", "reason": "Tertiary hyperparathyroidism"}
           ],
           "documents": [
             {
@@ -352,7 +352,7 @@
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-12-24T10:30", "results": [{"test": "Creatinine", "value": 3.9}]},
             {"panel": "Iron Studies", "collected": "2018-12-24T10:30", "results": [{"test": "Ferritin"}, {"test": "Transferrin Saturation"}, {"test": "Iron"}]},
             {"panel": null, "collected": "2018-12-24T10:30", "results": [
-              {"test": "Reticulocytes", "loinc": "17849-1", "unit": "%", "value": 0.4},
+              {"test": "Reticulocytes", "loinc": "17849-1", "unit": "%", "value": 0.4, "range": {"low": 0.5, "high": 1.5}},
               {"test": "Thyroid Stimulating Hormone", "value": 1.84},
               {"test": "Vitamin B12", "value": 512},
               {"test": "Folate", "value": 13.6},

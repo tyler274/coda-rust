@@ -1,0 +1,255 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002289",
+      "events": [
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T18:30",
+          "procedures": [
+            {"procedure": "Implantation of venous access port", "snomed": "80402001", "performed": "2025-02-25T08:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Scan results and port", "author": "patient", "date": "2025-02-27T18:30",
+             "body": "Writing for Bill again. His February scans showed the cancer is growing, so they stopped the atezolizumab. He had a port put in on Tuesday the 25th. He goes in on March 8 to start carboplatin and etoposide again, they want to keep him in the hospital for the first round. No changes to his other pills."},
+            {"type": "Patient Message", "title": "Re: Scan results and port", "author": "PCP", "date": "2025-02-28T08:05",
+             "body": "Thanks for the update. Sorry the scans weren't better news. Keep the port site clean and dry for now, and call oncology or us for fever, redness or swelling there. I'll check in after his stay."}
+          ]
+        },
+        {
+          "id": "2025-03-08a",
+          "kind": "hospital_admission",
+          "start": "2025-03-08T09:00",
+          "end": "2025-03-18T14:00",
+          "service": "Oncology",
+          "reason": "scheduled chemotherapy admission",
+          "vitals": [{"time": "2025-03-10T21:30", "temp_c": 38.9, "bp": [110, 70], "hr": 110, "rr": 22, "spo2": 94}],
+          "conditions": [
+            {"label": "Catheter-related bloodstream infection", "icd10": "T80.211A", "action": "diagnosed", "onset": "2025-03-08"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-03-10T21:45", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin", "value": 10.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Urinalysis", "collected": "2025-03-10T21:50", "results": [{"test": "Urine Protein"}, {"test": "Urine Leukocyte Esterase"}, {"test": "Urine Nitrite"}]},
+            {"panel": null, "collected": "2025-03-10T21:45", "resulted": "2025-03-12T07:30", "results": [{"test": "Blood Culture", "text": "Coagulase-negative staphylococci, port and peripheral sets"}]},
+            {"panel": null, "collected": "2025-03-14T06:00", "resulted": "2025-03-17T07:30", "results": [{"test": "Blood Culture", "text": "No growth"}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-03-10T22:20",
+             "text": "Portable AP view. Right chest port with catheter tip at the cavoatrial junction. No focal infiltrate or consolidation. Post-pleurodesis change at the right base. No pneumothorax.",
+             "conclusion": "No infiltrate or consolidation."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Oncology Discharge Summary", "author": "oncology", "date": "2025-03-20T10:40",
+             "body": "Inpatient oncology, admitted 3/8/2025, discharged 3/18/2025. Age 67.\nAdmitted for C1 carboplatin/etoposide (rechallenge) via port placed 2/25.\nHD3: T 38.9, rigors, dyspnea. BP 110/70, HR 110, RR 22, SpO2 94% RA. No cough, sputum or urinary sx. Port site mildly tender, no erythema or drainage. Lungs clear.\nWBC 12.0, Hgb 10.2, plt 250. UA neg. CXR no infiltrate.\nBlood cx port + peripheral: coag-negative staph. Dx catheter-related bloodstream infection.\nVancomycin IV, 14-day course with antibiotic lock, port retained. Repeat cx no growth.\nChemo completed. Cycles 2-4 outpatient.\nNKDA. Home meds unchanged: atorvastatin 40, aspirin 81."}
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [{"label": "Catheter-related bloodstream infection", "icd10": "T80.211A", "action": "resolved"}],
+          "state": {"weight_kg": 76.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [{"panel": "Complete Blood Count (CBC)", "collected": "2025-03-25T11:10", "results": [{"test": "Hemoglobin", "value": 10.6}]}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-03-25T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-03-25T11:25",
+             "body": "One week out from a 10-day oncology admission. Discharge summary in.\n\nWent in for the first round of carboplatin/etoposide again after progression in Feb. Day 3 he spiked to 38.9 with shaking chills; cultures from the new port and his arm grew coag-negative staph. Port kept, vancomycin 2 weeks with lock, last cultures clean. Antibiotic finished yesterday.\n\nToday: no fevers at home, port site not sore, appetite fair. Next cycle on the 31st.\n\nExam: afebrile, vitals as charted. Port R upper chest, healed incision, no redness or tenderness. Lungs with bibasilar crackles, unchanged. Heart regular. No edema.\n\nCBC today.\n\nA/P\n1. Port infection, treated; resolved.\n2. ES-SCLC, second-line carbo/etoposide.\n3. Anemia from chemo, following with oncology.\n4. HLD: continue atorvastatin, aspirin."}
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "portal_message",
+          "start": "2025-03-26T15:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood count", "author": "PCP", "date": "2025-03-26T15:20",
+             "body": "His white count is back to normal and the hemoglobin is 10.6, a bit better than in the hospital. That's the chemo's effect and oncology is watching it too. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "pharmacy",
+          "start": "2025-05-13T08:30",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill: atorvastatin", "author": "MA", "date": "2025-05-13T08:30",
+             "body": "eRx renewal atorvastatin 40 mg #90 with 3 refills. Approved by PCP."}
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-17T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-06-17T15:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Follow-up", "author": "PCP", "date": "2025-06-17T15:30",
+             "body": "Video, pt and wife on the tablet from their kitchen, ID verified.\nFourth and last round of the carbo/etoposide is next week. Tired for a few days after each one, then recovers. No fevers since March. Cough and morning sputum about the same. Port fine.\nMeds: atorvastatin 40, aspirin 81.\nObserved: speaking full sentences, no distress, color good.\nPlan: no changes. Oncology restaging after this round. Office visit this fall with the flu shot."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T11:00",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-07T11:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T11:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T11:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2025-10-07T11:25",
+             "body": "Flu HD L deltoid, COVID R deltoid. Wife says scans in late August showed growth again and he started lurbinectedin every 3 weeks on 9/5; next dose 10/17. Updated med list note for PCP. Tolerated shots, observed 15 min."}
+          ]
+        },
+        {
+          "id": "2025-11-16a",
+          "kind": "hospital_admission",
+          "start": "2025-11-16T13:10",
+          "end": "2025-11-20T12:30",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "confusion and lethargy",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "conditions": [
+            {"label": "Syndrome of inappropriate antidiuretic hormone secretion", "icd10": "E22.2", "action": "diagnosed", "onset": "2025-11-13"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-16T13:40", "results": [{"test": "Sodium", "value": 119}]},
+            {"panel": null, "collected": "2025-11-16T13:40", "results": [
+              {"test": "Osmolality of Serum or Plasma", "loinc": "2692-2", "unit": "mosm/kg", "value": 252, "range": {"low": 275, "high": 295}},
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mosm/kg", "value": 470, "range": {"low": 38, "high": 1400}},
+              {"test": "Sodium [Moles/volume] in Urine", "loinc": "2955-3", "unit": "mmol/L", "value": 54, "range": {}},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.1}
+            ]},
+            {"panel": null, "collected": "2025-11-17T07:00", "results": [{"test": "Cortisol, AM", "value": 15.8}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-20T06:00", "results": [{"test": "Sodium", "value": 128}]}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2025-11-21T09:20",
+             "body": "Regional hospital ED, 11/16/2025. 68M, ES-SCLC, prior malignant pleural effusion, earlier admission for hypercalcemia with confusion.\nWife: 3 days of increasing confusion, sleepy; drinking his usual amount, eating little. Last chemo about a month ago.\nVitals WNL. Oriented to self only. Euvolemic, turgor normal, no edema. Foley placed for strict I/O.\nNa 119, serum osm 252, urine osm 470, urine Na 54. TSH and AM cortisol normal.\nImp: SIADH, paraneoplastic.\nAdmitted: fluid restriction, cautious 3% saline in step-down, then salt tabs 1 g TID and 1.2 L/day restriction. Na 128 at discharge 11/20. Foley out day 2.\nNKDA. Discharge meds add sodium chloride 1 g TID."}
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "office_visit",
+          "start": "2025-11-25T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, low sodium",
+          "medications": [
+            {"drug_text": "sodium chloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily", "dose": {"value": 1, "unit": "g"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "SIADH"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-25T09:50", "results": [{"test": "Sodium", "value": 131}]}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2025-11-25T09:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2025-11-25T10:05",
+             "body": "Seen with wife 5 days after discharge. He spent his birthday in the ED: 3 days of confusion and sleepiness, sodium 119, workup fit SIADH from the cancer. Hypertonic saline briefly, then fluid restriction and salt tablets. Sodium 128 on discharge.\n\nNow clear, back to himself, doing crosswords. Sticking to about 5 cups of fluid a day, wife measuring. Salt tabs 1 g three times a day. Lurbinectedin continues every 3 weeks, next dose per oncology.\n\nExam: alert, oriented x3, conversant. Moist membranes, no edema. Chest unchanged. Heart regular.\n\nBMP today.\n\nA/P\n1. SIADH, paraneoplastic. Continue restriction and NaCl tabs. Repeat sodium in 2 weeks. Signs of low sodium reviewed.\n2. ES-SCLC on lurbinectedin (oncology).\n3. HLD: atorvastatin, aspirin."}
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "portal_message",
+          "start": "2025-11-26T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Sodium result", "author": "PCP", "date": "2025-11-26T12:10",
+             "body": "Sodium is 131 today, up from 128 at discharge. Moving the right way. Keep the fluid limit and salt tablets, and we'll recheck on 12/9. I sent a copy to oncology."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "lab_only",
+          "start": "2025-12-09T08:20",
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-09T08:20", "results": [{"test": "Sodium", "value": 134}]}],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2025-12-09T08:20"}]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "portal_message",
+          "start": "2025-12-10T09:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Sodium 134", "author": "PCP", "date": "2025-12-10T09:30",
+             "body": "Sodium 134, nearly normal. Stay on the tablets and the fluid limit through the holidays and we'll look at easing off in the new year."},
+            {"type": "Patient Message", "title": "Re: Sodium 134", "author": "patient", "date": "2025-12-10T13:02",
+             "body": "Great, thank you. He wants to know if coffee counts in the 5 cups. (It does, I told him.)"}
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "annual_physical",
+          "start": "2026-03-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit and sodium follow-up",
+          "conditions": [{"label": "Syndrome of inappropriate antidiuretic hormone secretion", "icd10": "E22.2", "action": "resolved", "note": "paraneoplastic, resolved"}],
+          "medications": [
+            {"drug_text": "sodium chloride 1000 MG Oral Tablet", "action": "stop", "reason": "sodium normal"}
+          ],
+          "state": {"weight_kg": 75.5},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-02T08:10", "results": [{"test": "Sodium", "value": 137}]}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2026-03-03T10:00"},
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-03-03T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness and Follow-up", "author": "PCP", "date": "2026-03-03T10:55",
+             "body": "AWV plus sodium follow-up. Wife present.\n\nSince Dec: no confusion. Fluid limit kept, salt tablets three times daily. Lurbinectedin every 3 weeks, tolerating it. Morning sputum as always, PEP device most days. No falls.\n\nMeds: atorvastatin 40, aspirin 81, NaCl 1 g TID.\nPHQ-2 1. Proxy: wife, MOLST on file from oncology.\n\nVitals as charted, weight 75.5. Exam: thin. Clubbing. Port clean. Crackles at bases, reduced at R base after pleurodesis. Heart regular. No edema. Oriented, speech normal.\n\nBMP yesterday: Na 137.\n\nA/P\n1. SIADH, paraneoplastic: resolved for now. Stop salt tablets. Loosen fluid limit to about 1.5 L, recheck sodium with oncology's next labs; any confusion -> call.\n2. ES-SCLC on lurbinectedin.\n3. Bronchiectasis, asbestosis: stable.\n4. HLD: continue statin, aspirin.\nRTC in 6 months."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T08:40",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill: atorvastatin", "author": "MA", "date": "2026-05-19T08:40",
+             "body": "Atorvastatin 40 mg 90-day fill, refills remaining on the May 2025 Rx. Pharmacy just confirming. No action needed."}
+          ]
+        },
+        {
+          "id": "2026-07-04a",
+          "kind": "ed_visit",
+          "start": "2026-07-04T10:15",
+          "end": "2026-07-04T17:40",
+          "service": "Emergency Medicine",
+          "reason": "shortness of breath, cough, blood-streaked sputum",
+          "vitals": [{"time": "2026-07-04T10:20", "temp_c": 36.7, "bp": [132, 84], "hr": 94, "spo2": 94}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2026-07-09T14:10",
+             "body": "Regional hospital ED, 7/4/2026.\n68M, ES-SCLC, bronchiectasis, on lurbinectedin. Breathing worse over weeks, productive cough with occasional streaks of blood. No chest pain, no fever. Appetite down, about 5 kg lost in 3 months without trying. Many bouts of bronchitis over the years, never admitted for one. Former smoker 90 pk-yr, quit 2 years ago.\nT 36.7, BP 132/84, HR 94, SpO2 94% RA.\nDecreased breath sounds and dull to percussion R mid and lower fields. No crackles, no wheeze. Trachea shifted to the R.\nCXR: dense R mid/lower zone opacity, mediastinum shifted R.\nCT chest: central R bronchial mass with R lung volume loss.\nImp: obstructive atelectasis from central airway tumor.\nOncology paged, will see him this week. Discharged home with wife, return for heavier bleeding or worse breathing.\nNKDA."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T20:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Radiation", "author": "patient", "date": "2026-08-11T20:15",
+             "body": "Hi, Bill's wife. After the ER in July the oncologist stopped the lurbinectedin and he's getting radiation to the tumor in the airway, he's about halfway done. They said you got the ER paperwork. We still have him down to see you on September 10, is that still good?"},
+            {"type": "Patient Message", "title": "Re: Radiation", "author": "PCP", "date": "2026-08-12T08:40",
+             "body": "Thank you for writing. Yes, we have the ER note. September 10 is still on and I'll plan extra time. If radiation days make it hard, we can switch it to video. Call us before then for anything."}
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "telephone",
+          "start": "2026-08-12T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment Confirmed", "author": "front desk", "date": "2026-08-12T10:05",
+             "body": "Called wife to confirm 9/10 at 1:30, 40-min slot per PCP. Ride arranged by family. Confirmed."}
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit and radiation",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

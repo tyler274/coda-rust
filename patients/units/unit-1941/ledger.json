@@ -1,9 +1,7 @@
 {
   "unit": "unit-1941",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001941/2024-12-23a: imaging order \"CT angiography, abdomen and pelvis (renal arteries)\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001941",
@@ -1004,6 +1002,7 @@
               "action": "placed",
               "order": "CT angiography, abdomen and pelvis (renal arteries)",
               "category": "imaging",
+              "loinc": "36833-2",
               "reason": "hypertension with abdominal bruit, evaluate renal arteries"
             }
           ],
@@ -2007,6 +2006,11 @@
       "CT angiography head and neck": {
         "code": "37498-3",
         "display": "CTA Head vessels and Neck vessels W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CT angiography, abdomen and pelvis (renal arteries)": {
+        "code": "36833-2",
+        "display": "CTA Renal vessels W contrast IV",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

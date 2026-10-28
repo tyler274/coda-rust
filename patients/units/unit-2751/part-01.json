@@ -45,7 +45,7 @@
             {"drug_text": "tamoxifen 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Adjuvant endocrine therapy, right breast cancer"},
             {"drug_text": "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily (600 mg calcium / 400 IU vitamin D3)", "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Osteopenia"},
             {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 8 hours as needed for pain", "dose": {"value": 400, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "chronic"},
-            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "uncoded": true}
           ],
           "allergies": [
             {"substance": "No known drug allergies"}
@@ -536,8 +536,8 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-15T10:30", "results": [{"test": "Hemoglobin", "value": 12.3}, {"test": "Platelets", "value": 250}]},
             {"panel": null, "collected": "2023-12-15T10:30", "results": [
               {"test": "Follicle Stimulating Hormone", "value": 7.2},
-              {"test": "Luteinizing hormone", "loinc": "10501-5", "unit": "mIU/mL", "value": 6.9},
-              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 45}
+              {"test": "Luteinizing hormone", "loinc": "10501-5", "unit": "m[IU]/mL", "value": 6.9, "range": {}},
+              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 45, "range": {}}
             ]}
           ],
           "reports": [

@@ -1,10 +1,7 @@
 {
   "unit": "unit-2742",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002742/2018-10-10a: imaging order \"Diagnostic mammogram, bilateral\" names no one catalog lab, panel, study or procedure",
-    "MRN00002742/2023-07-24a: referral to \"Orthopedic Surgery\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002742",
@@ -386,7 +383,7 @@
             {
               "id": "mammo-2018",
               "action": "placed",
-              "order": "Diagnostic mammogram, bilateral",
+              "order": "Diagnostic mammogram",
               "category": "imaging",
               "reason": "History of right breast cancer"
             }
@@ -3302,36 +3299,42 @@
                   "test": "Leukocytes in Pleural fluid",
                   "loinc": "26466-3",
                   "unit": "/uL",
+                  "range": {},
                   "value": 1500
                 },
                 {
                   "test": "Lymphocytes/100 leukocytes in Pleural fluid",
                   "loinc": "26481-2",
                   "unit": "%",
+                  "range": {},
                   "value": 70
                 },
                 {
                   "test": "Glucose in Pleural fluid",
                   "loinc": "2344-0",
                   "unit": "mg/dL",
+                  "range": {},
                   "value": 30
                 },
                 {
                   "test": "Lactate dehydrogenase in Pleural fluid",
                   "loinc": "2529-6",
                   "unit": "U/L",
+                  "range": {},
                   "value": 700
                 },
                 {
                   "test": "Protein in Pleural fluid",
                   "loinc": "2881-1",
                   "unit": "g/dL",
+                  "range": {},
                   "value": 4.5
                 },
                 {
                   "test": "pH of Pleural fluid",
                   "loinc": "2748-2",
                   "unit": "[pH]",
+                  "range": {},
                   "value": 7.3
                 }
               ]
@@ -3414,6 +3417,10 @@
                   "test": "Lactate dehydrogenase in Serum or Plasma",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 190
                 }
               ]
@@ -4525,7 +4532,7 @@
               "action": "placed",
               "order": "Orthopedic surgery referral",
               "category": "referral",
-              "to": "Orthopedic Surgery",
+              "to": "Orthopedics",
               "reason": "Right hip pain, on chronic prednisone"
             }
           ],
@@ -7455,19 +7462,19 @@
         "code": "833528",
         "display": "amiodarone hydrochloride 200 MG Oral Tablet",
         "ingredient": "amiodarone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "calcium carbonate 1500 MG Oral Tablet": {
         "code": "237420",
         "display": "calcium carbonate 1500 MG Oral Tablet",
         "ingredient": "calcium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "cefpodoxime proxetil 200 MG Oral Tablet": {
         "code": "309078",
         "display": "cefpodoxime 200 MG Oral Tablet",
         "ingredient": "cefpodoxime",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "conjugated estrogens 0.625 MG / medroxyprogesterone acetate 2.5 MG Oral Tablet": {
         "code": "1000395",
@@ -7479,13 +7486,13 @@
         "code": "606726",
         "display": "esomeprazole 20 MG Delayed Release Oral Capsule",
         "ingredient": "esomeprazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ibuprofen 400 MG Oral Tablet": {
         "code": "197805",
         "display": "ibuprofen 400 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "rituximab 10 MG/ML Injectable Solution": {
         "code": "1657862",
@@ -7504,42 +7511,52 @@
         "code": "2344-0",
         "display": "Glucose [Mass/volume] in Body fluid",
         "unit": "mg/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lactate dehydrogenase in Pleural fluid": {
         "code": "2529-6",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Body fluid",
         "unit": "U/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lactate dehydrogenase in Serum or Plasma": {
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Leukocytes in Pleural fluid": {
         "code": "26466-3",
         "display": "Leukocytes [#/volume] in Body fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lymphocytes/100 leukocytes in Pleural fluid": {
         "code": "26481-2",
         "display": "Lymphocytes/Leukocytes in Pleural fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein in Pleural fluid": {
         "code": "2881-1",
         "display": "Protein [Mass/volume] in Body fluid",
         "unit": "g/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Pleural fluid": {
         "code": "2748-2",
         "display": "pH of Body fluid",
         "unit": "[pH]",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

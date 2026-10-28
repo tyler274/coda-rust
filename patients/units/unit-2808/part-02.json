@@ -16,7 +16,7 @@
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-07-22T10:55", "resulted": "2025-07-22T15:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Aspartate Aminotransferase"}]},
             {"panel": null, "collected": "2025-07-22T10:55", "resulted": "2025-07-23T09:40", "results": [{"test": "Thyroid Stimulating Hormone"}, {"test": "Creatine Kinase"}]},
             {"panel": null, "collected": "2025-07-22T10:55", "resulted": "2025-07-25T14:30", "results": [{"test": "Antinuclear Antibodies", "text": "Negative"}]},
-            {"panel": null, "collected": "2025-07-22T10:55", "resulted": "2025-07-28T08:15", "results": [{"test": "Acetylcholine receptor binding antibody", "loinc": "11034-6", "unit": "nmol/L", "value": 7.6}]}
+            {"panel": null, "collected": "2025-07-22T10:55", "resulted": "2025-07-28T08:15", "results": [{"test": "Acetylcholine receptor binding antibody", "loinc": "11034-6", "unit": "nmol/L", "value": 7.6, "range": {"high": 0.02}}]}
           ],
           "procedures": [
             {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-07-22T10:00"},
@@ -24,7 +24,7 @@
           ],
           "orders": [
             {"id": "cxr-2025", "action": "placed", "order": "Chest X-ray, 2 views", "category": "imaging", "reason": "suspected myasthenia gravis, evaluate thymus"},
-            {"id": "rns-2025", "action": "placed", "order": "Repetitive nerve stimulation study", "category": "referral", "to": "Neurology (EMG laboratory)", "reason": "fatigable ptosis and bulbar weakness"},
+            {"id": "rns-2025", "action": "placed", "order": "Repetitive nerve stimulation study", "category": "referral", "to": "Neurology", "reason": "fatigable ptosis and bulbar weakness"},
             {"id": "neuro-2025", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "suspected myasthenia gravis"},
             {"id": "ophtho-2025", "action": "placed", "order": "Ophthalmology referral", "category": "referral", "to": "Ophthalmology", "reason": "intermittent diplopia and ptosis"}
           ],
@@ -129,7 +129,7 @@
             {"drug_text": "pyridostigmine bromide 60 MG Oral Tablet", "action": "start", "sig": "Take 1/2 tablet (30 mg) by mouth up to 3 times daily as needed for chewing or eyelid weakness", "dose": {"value": 30, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Myasthenia gravis"}
           ],
           "orders": [
-            {"id": "ct-chest-2025", "action": "placed", "order": "CT chest with contrast", "category": "imaging", "reason": "anterior mediastinal mass on chest X-ray, myasthenia gravis"}
+            {"id": "ct-chest-2025", "action": "placed", "order": "CT chest with contrast", "category": "imaging", "reason": "anterior mediastinal mass on chest X-ray, myasthenia gravis", "loinc": "24628-0"}
           ],
           "documents": [
             {
@@ -327,7 +327,7 @@
             }
           ],
           "orders": [
-            {"id": "hemonc-2026", "action": "placed", "order": "Hematology/oncology referral", "category": "referral", "to": "Hematology and Oncology", "reason": "anterior mediastinal mass, suspected thymoma"}
+            {"id": "hemonc-2026", "action": "placed", "order": "Hematology/oncology referral", "category": "referral", "to": "Oncology", "reason": "anterior mediastinal mass, suspected thymoma"}
           ],
           "documents": [
             {

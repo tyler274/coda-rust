@@ -4,9 +4,7 @@
   "warnings": [
     "MRN00002546/2018-09-11a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
     "MRN00002546/2018-09-11a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
-    "MRN00002546/2020-06-23a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)",
-    "left text-only (not verified): drug \"allergenic extract, grass, tree and weed pollen mix, injectable solution\"",
-    "left text-only (not verified): drug \"alpha 1-proteinase inhibitor, human 1000 MG Injection\""
+    "MRN00002546/2020-06-23a: reaction \"Rhinoconjunctivitis\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -749,6 +747,7 @@
           "medications": [
             {
               "drug_text": "allergenic extract, grass, tree and weed pollen mix, injectable solution",
+              "uncoded": true,
               "action": "historical",
               "sig": "Subcutaneous injection at allergy office; weekly build-up then monthly maintenance per allergy schedule",
               "frequency": "per allergy schedule",
@@ -2263,7 +2262,7 @@
           "reason": "pulmonology letter, augmentation started",
           "medications": [
             {
-              "drug_text": "alpha 1-proteinase inhibitor, human 1000 MG Injection",
+              "drug_text": "alpha 1-proteinase inhibitor, human 1 MG Injection",
               "action": "historical",
               "sig": "Infuse 60 mg/kg (3,840 mg) intravenously once weekly by home infusion",
               "dose": {
@@ -3466,6 +3465,14 @@
         "receipt": "NLM Clinical Tables ICD-10-CM"
       }
     },
+    "medications": {
+      "alpha 1-proteinase inhibitor, human 1 MG Injection": {
+        "code": "1661208",
+        "display": "alpha 1-proteinase inhibitor, human 1 MG Injection",
+        "ingredient": "alpha",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
     "allergens": {
       "Grass pollen": {
         "code": "256277009",
@@ -3482,10 +3489,6 @@
         "display": "Weed pollen",
         "receipt": "tx.fhir.org SNOMED CT"
       }
-    },
-    "rejected": [
-      "drug \"allergenic extract, grass, tree and weed pollen mix, injectable solution\"",
-      "drug \"alpha 1-proteinase inhibitor, human 1000 MG Injection\""
-    ]
+    }
   }
 }

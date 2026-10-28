@@ -1,0 +1,3344 @@
+{
+  "unit": "unit-2082",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002082",
+      "given": "Derek",
+      "family": "Plante",
+      "birth_date": "1976-10-26",
+      "address_line": "112 Sewall Street",
+      "phone": "+1-201-555-0169",
+      "email": "derek.plante@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker and current smoker with COPD who joined in 2020; a 2022 low-dose CT found a small right lower lobe nodule, and in 2024 a right upper lobe mass proved to be stage IIIA non-small cell lung cancer treated with chemoradiation and durvalumab. Last seen 2025-05-09; outside records then show a COPD admission in 2025 and progression with SIADH in 2026, now on docetaxel.",
+      "events": [
+        {
+          "id": "2020-08-19a",
+          "kind": "establish_care",
+          "start": "2020-08-19T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "onset": "2018-05-01",
+              "note": "On tiotropium since diagnosis by prior PCP"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "1994-01-01",
+              "note": "Current smoker, about 30 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1-2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              73
+            ],
+            "hr": 66,
+            "rr": 17,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 84.4,
+            "height_cm": 178.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-08-19T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-08-19T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 307
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-08-19T08:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-19T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-19T08:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-08-19T08:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-08-19T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-08-19T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-08-19T08:30",
+              "author": "PCP",
+              "body": "43M, framer/carpenter on commercial crews, coming over from his old primary care office because his coworker is a member here and he wanted to be able to text a doctor. Came in at 7:30 so he could get to the site by 9.\n\nCOPD: told about two years ago by his last doctor after he got winded on ladders; did a breathing test then. On tiotropium capsule every morning and albuterol, uses the rescue maybe 2-3x a week, more in humid weather or around drywall dust. No ED visits, no steroid bursts he can remember. Mild morning cough, clear phlegm.\n\nTobacco: started at around 17, a pack and a half most days for years, now about a pack. Roughly 30 pack-years. Has tried cold turkey twice. Not interested in a quit date right now - 'it's the only break I get on the job.'\nAlcohol: a few beers on weekends, not every weekend. No drugs.\n\nPMH: COPD. PSH: none. Allergies: none known.\nFamily: father with COPD. Paternal uncle had lung cancer. No other family history he knows of.\nSocial: single, lives in Ludlow. Construction worker.\n\nMeds: tiotropium 18 mcg inhaled daily, albuterol HFA 1-2 puffs q4-6h prn.\n\nExam: well appearing, talks in full sentences. HEENT unremarkable. Neck supple, no nodes. Lungs: good air movement, no wheeze, no crackles. Heart regular, no murmur. Abd soft. Ext: no clubbing, no edema. Skin: no lesions of concern.\n\nA/P\n1. COPD, on LAMA, symptoms controlled. Continue tiotropium and albuterol. Will get old records including his spirometry.\n2. Tobacco use disorder. Advised quitting, offered patch/varenicline and quitline. Declined for now. Will revisit.\n3. Health maintenance: CMP, CBC, lipids, A1c, one-time hep C and HIV screen drawn today. Flu shot when the vaccine arrives.\nRTC for physical in spring, sooner as needed. Records release signed."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-08-24a",
+          "kind": "portal_message",
+          "start": "2020-08-24T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab work",
+              "date": "2020-08-24T12:20",
+              "author": "PCP",
+              "body": "Hi Derek - all of your bloodwork from last week came back normal: kidney and liver function, blood counts, sugar (A1c) and cholesterol are all fine. Hepatitis C and HIV screens were negative. Nothing to do. We'll see you for your physical in the spring."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your recent lab work",
+              "date": "2020-08-24T18:47",
+              "author": "patient",
+              "body": "Thanks doc. Good to hear."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-02a",
+          "kind": "outside_records",
+          "start": "2020-09-02T10:00",
+          "reason": "Records from prior primary care office",
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2018-05-10T09:00",
+              "text": "Pre- and post-bronchodilator spirometry. Good effort, acceptable and reproducible maneuvers. Post-bronchodilator FEV1/FVC 0.62. Post-bronchodilator FEV1 71% of predicted. No significant bronchodilator response.",
+              "conclusion": "Obstructive ventilatory defect, consistent with COPD (moderate airflow limitation by FEV1)."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2020-09-02T10:00",
+              "author": "front desk",
+              "body": "Records received by fax from the patient's previous primary care office, 23 pages, covering 2014 to 2020. Includes office notes, a 2018 spirometry report, medication list (tiotropium daily, albuterol as needed) and immunization history (influenza most years). No hospitalizations recorded. Scanned to chart and routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "date": "2020-09-03T16:40",
+              "author": "PCP",
+              "body": "Reviewed old records. Spirometry May 2018: post-BD FEV1/FVC 0.62, FEV1 71% predicted - fits his COPD diagnosis, moderate obstruction. Started on tiotropium after that. Smoking documented at every visit there. Nothing else outstanding. Problem list confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "nurse_visit",
+          "start": "2020-10-07T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-07T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-07T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccination",
+              "date": "2020-10-07T16:30",
+              "author": "RN",
+              "body": "Came by after work for flu shot. No egg allergy, no prior reaction, feeling well today. Influenza vaccine 0.5 mL IM left deltoid. VIS given. Waited 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-10a",
+          "kind": "pharmacy",
+          "start": "2021-02-10T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: tiotropium",
+              "date": "2021-02-10T09:05",
+              "author": "MA",
+              "body": "Pharmacy refill request for tiotropium 18 mcg capsules, 90-day supply. Last visit 08/2020, on med list. Pended to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2021-02-10T11:32",
+              "author": "PCP",
+              "body": "Approved x 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "annual_physical",
+          "start": "2021-03-22T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 67,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 84.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-03-22T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-03-22T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-03-22T08:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-03-22T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-03-22T08:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-03-22T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-03-22T08:15"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2021-03-22T08:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-03-22T08:40",
+              "author": "PCP",
+              "body": "Physical. 44 y/o. Busy winter - indoor work on a renovation, says breathing has been about the same. Rescue inhaler a couple times a week. No exacerbations, no antibiotics this year. Still about a pack a day.\n\nROS otherwise negative: no chest pain, no weight change, no blood in sputum, no GI or urinary complaints, mood fine.\n\nMeds: tiotropium daily, albuterol prn. NKDA.\n\nExam: NAD. Eyes, ears, throat normal. No lymphadenopathy. Lungs with no wheeze or crackles today. RRR no murmur. Abdomen soft, nontender, no organomegaly. No edema, no clubbing. Skin ok.\n\nA/P\n- COPD: stable. Inhaler technique reviewed, good. Continue current regimen.\n- Tobacco: discussed again. He knows. Not ready to pick a date. Offered meds - declined.\n- Vaccines: PCV20 today given COPD and smoking; Tdap today (no record of one since his teens). He'll get his COVID shots at the pharmacy when his group opens.\n- Labs today. Colon cancer screening starts at 45 - next year.\nRTC 6 months for COPD check."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T13:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2021-03-24T13:10",
+              "author": "PCP",
+              "body": "Derek, your labs from Monday all look good - normal kidney and liver numbers, normal blood counts and a healthy cholesterol profile."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "pharmacy",
+          "start": "2021-05-12T10:20",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-14T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-05T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization record",
+              "date": "2021-05-12T10:20",
+              "author": "MA",
+              "body": "Patient sent a photo of his vaccine card through the portal. Pfizer COVID-19 primary series at a retail pharmacy: dose 1 on 4/14/2021, dose 2 on 5/5/2021. Entered into immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "office_visit",
+          "start": "2021-09-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "vitals": {
+            "bp": [
+              126,
+              76
+            ],
+            "hr": 54,
+            "rr": 17,
+            "spo2": 97,
+            "weight_kg": 84.7
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-09-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - COPD",
+              "date": "2021-09-14T16:35",
+              "author": "PCP",
+              "body": "S: 6-mo COPD check. Summer was hot and he was roofing for part of it; used albuterol more on the worst days, maybe daily for a stretch in July, back to 2-3x/week now. No fevers, no change in sputum, no ED or urgent care. Still smoking about a pack. Asked about vaping as a way to cut down - we talked through it; he hasn't tried.\nO: Vitals as charted, sat fine on room air. Lungs: no wheeze, no crackles. No edema.\nA/P: COPD, stable, no exacerbations. Continue tiotropium + albuterol. Heat/dust on site are his triggers - mask with a real respirator rating when cutting or sanding.\nTobacco: brief counseling again, quitline card given. Precontemplative.\nFlu shot next month. Physical in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "nurse_visit",
+          "start": "2021-10-13T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-13T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-13T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccination",
+              "date": "2021-10-13T16:25",
+              "author": "RN",
+              "body": "Seasonal flu vaccine given IM right deltoid, lot and expiration logged. Tolerated well. Patient declined the COVID booster today, says he may get it at the pharmacy later."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-28a",
+          "kind": "annual_physical",
+          "start": "2022-03-28T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; questions about lung cancer risk",
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 99,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-28T08:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-28T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-28T08:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-28T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-03-28T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-28T08:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Heavy smoker with COPD, shared decision"
+            },
+            {
+              "id": "fit-2022",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-03-28T08:50",
+              "author": "PCP",
+              "body": "45M here for his physical. Feels fine, no complaints, but he has something on his mind: a buddy of his, 52, who smoked about the way Derek does, was just diagnosed with lung cancer. Wants to know straight up how much more likely he is to get it than someone who never smoked.\n\nBreathing: same as last year. Albuterol a few times a week. No exacerbations. No cough change, no hemoptysis, no weight loss, no night sweats.\nTobacco: still about a pack a day, roughly 30 pack-years.\nFamily: father COPD. No parent or sibling with cancer; a paternal uncle had lung cancer.\n\nMeds: tiotropium 18 mcg daily, albuterol prn. Allergies: none known.\n\nVitals: BP 130/85, HR 78, RR 16.\nExam: unremarkable. Lungs without wheeze or crackles, heart regular, abdomen benign, no clubbing, no edema, no adenopathy.\n\nA/P\n1. Lung cancer risk. Long talk. Told him plainly that heavy smoking raises lung cancer risk many times over compared with never-smokers, that the risk keeps climbing with each pack-year, and that quitting is the single thing that lowers it. He asked about a CT scan like his friend had. The screening guideline starts at 50 and he is 45; we went over what a CT can and can't do, false alarms, radiation. Given his ~30 pack-years, COPD and his uncle, we agreed to do a low-dose CT now - understanding he's under the usual age and insurance may push back. Ordered; will send prior auth.\n2. Tobacco: he says this scare has him thinking. Not ready for medication yet. Will message me if he wants to start.\n3. COPD: stable, continue.\n4. Colorectal screening: 45 now - FIT kit given.\n5. Labs today.\nRTC 1 year, sooner as needed."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-04-01a",
+          "kind": "telephone",
+          "start": "2022-04-01T14:00",
+          "reason": "Prior authorization",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior auth - low-dose chest CT",
+              "date": "2022-04-01T14:00",
+              "author": "MA",
+              "body": "Insurer called back re: prior authorization for low-dose CT chest. Peer note from PCP about smoking history and COPD was accepted. APPROVED, valid 6 months. Radiology scheduling number given to patient by voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-11a",
+          "kind": "lab_only",
+          "start": "2022-04-11T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-04-08T06:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "done",
+              "date": "2022-04-11T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2022-04-11T15:20",
+              "author": "PCP",
+              "body": "FIT negative. Repeat yearly. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "portal_message",
+          "start": "2022-06-08T20:14",
+          "reason": "Scheduling the chest CT",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT scan",
+              "date": "2022-06-08T20:14",
+              "author": "patient",
+              "body": "Hey doc, haven't done the CT yet. We're in the middle of a big job in Palmer, 6 days a week til end of August. Can it wait til September? The approval said 6 months."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: CT scan",
+              "date": "2022-06-09T07:48",
+              "author": "PCP",
+              "body": "September is fine since you feel well - but please do book it before the approval runs out at the end of September. Call me sooner if you notice any cough change, blood, or weight loss."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "imaging",
+          "start": "2022-09-12T15:30",
+          "reason": "Low-dose CT chest",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-09-12T15:30",
+              "text": "TECHNIQUE: Low-dose helical CT of the chest without intravenous contrast.\nCOMPARISON: None.\nFINDINGS: Lungs: 6 mm solid non-calcified nodule in the right lower lobe (mean diameter on lung windows). No other pulmonary nodules. No consolidation. Airways are patent. Pleura: no effusion or pneumothorax. Mediastinum and hila: no lymphadenopathy. Heart normal in size; no pericardial effusion. Visualized upper abdomen unremarkable. Bones: no aggressive lesion.",
+              "conclusion": "6 mm solid right lower lobe nodule. Lung-RADS 3, probably benign. Recommend 6-month low-dose CT."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-09-12T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Low-dose CT chest",
+              "date": "2022-09-12T18:05",
+              "author": "radiology",
+              "body": "Outside imaging center report received electronically. 6 mm solid non-calcified nodule right lower lobe, Lung-RADS 3. No adenopathy. Recommendation: low-dose CT in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "telephone",
+          "start": "2022-09-13T12:10",
+          "reason": "CT result",
+          "conditions": [
+            {
+              "label": "Pulmonary nodule",
+              "action": "diagnosed",
+              "onset": "2022-09-12",
+              "note": "6 mm solid RLL nodule, Lung-RADS 3"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-2022",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "6 mm RLL nodule in heavy smoker with COPD"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "CT result call",
+              "date": "2022-09-13T12:25",
+              "author": "PCP",
+              "body": "Called him on his lunch break. CT shows a single 6 mm nodule in the right lower lung. Explained that most spots this size are not cancer, that the radiologist's category means a repeat scan in about 6 months, and that given his history I'd like a lung specialist to see him and own the follow-up. He was quiet, then asked if he should quit now. Yes. Pulmonology referral placed, marked soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "specialist_visit",
+          "start": "2022-09-28T10:00",
+          "service": "Pulmonology",
+          "reason": "Pulmonary nodule on low-dose CT",
+          "vitals": {
+            "bp": [
+              118,
+              70
+            ],
+            "hr": 58,
+            "rr": 15,
+            "spo2": 98,
+            "weight_kg": 83.8
+          },
+          "orders": [
+            {
+              "id": "pulm-2022",
+              "action": "done",
+              "date": "2022-09-28T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "date": "2022-10-03T09:30",
+              "author": "pulmonology",
+              "body": "PULMONARY MEDICINE - OUTPATIENT CONSULTATION\nDate of visit: 09/28/2022\nReferred by: primary care, for a pulmonary nodule.\n\nMr. Plante is a 45-year-old construction worker with COPD on tiotropium and an active smoking history of about 30 pack-years. In March he talked with his PCP about his lung cancer risk after a friend was diagnosed, and a low-dose CT on 09/12/2022 showed a 6 mm solid, non-calcified right lower lobe nodule. He has no symptoms today. He is anxious and wants to know the odds that this is cancer.\n\nMeds: tiotropium 18 mcg inhaled daily; albuterol HFA as needed.\nAllergies: none known.\nFamily history: father with COPD; paternal uncle with lung cancer.\nSocial: current smoker, about 30 pack-years. Occasional alcohol.\n\nExam: comfortable, no distress. Lungs clear without wheeze. Cardiac regular. No clubbing or adenopathy.\n\nImaging reviewed: single 6 mm solid nodule, right lower lobe, smooth. No adenopathy.\n\nImpression:\n1. Solitary pulmonary nodule, 6 mm, right lower lobe. I explained that how likely a nodule is to be cancer depends on the person screened as much as the scan - his age, his smoking history and the size and shape of the nodule all go into it. Most nodules this size turn out to be benign, but with his exposure I consider this one concerning and want it watched closely.\n2. COPD, stable on LAMA.\n3. Tobacco use - cessation strongly advised.\n\nPlan: repeat low-dose CT chest in 6 months. Return after that scan. Continue current inhalers.\n\ncc: primary care"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-19T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-19T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-19T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2022-10-19T16:40",
+              "author": "RN",
+              "body": "Flu (L arm) and bivalent COVID booster (R arm) given. Screening questions negative. Observed 15 minutes, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "annual_physical",
+          "start": "2023-03-29T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ],
+            "hr": 59,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 84.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-29T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-29T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-29T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 42
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-03-29T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-29T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-29T08:45",
+              "author": "PCP",
+              "body": "Annual. 46 y/o. Doing ok. Winter was slow at work, he's been on indoor jobs. Breathing unchanged, rescue inhaler 2-3x/wk. No exacerbations. Cut back a little, maybe 3/4 ppd, but still smoking.\nROS: no cough change, no hemoptysis, no weight loss, no chest pain.\n\nMeds: tiotropium, albuterol prn. NKDA.\nExam: vitals as charted. Well. Lungs without wheeze or crackles. Heart RRR. Abd soft. No edema or clubbing.\n\nA/P\n- COPD: stable, continue.\n- Pulmonary nodule: followed by pulmonology.\n- Tobacco: congratulated on cutting back; encouraged to keep going. Declines pharmacotherapy again.\n- CRC screening: FIT kit.\n- Labs today. Flu and COVID in the fall.\nRTC 6 mo COPD follow-up."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "lab_only",
+          "start": "2023-04-12T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-10T06:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-04-12T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT and physical labs",
+              "date": "2023-04-12T12:15",
+              "author": "PCP",
+              "body": "FIT negative. Physical labs from 3/29 normal across the board. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "office_visit",
+          "start": "2023-09-20T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "No-show",
+              "date": "2023-09-20T16:30",
+              "author": "front desk",
+              "body": "Pt did not arrive for 4:00 COPD follow-up. Left voicemail to reschedule. Texted the booking link."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "office_visit",
+          "start": "2023-10-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up, vaccines",
+          "vitals": {
+            "bp": [
+              117,
+              72
+            ],
+            "hr": 65,
+            "rr": 16,
+            "spo2": 98,
+            "weight_kg": 83.6
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-10-04T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-04T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-04T16:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-04T16:31"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - COPD",
+              "date": "2023-10-04T16:40",
+              "author": "PCP",
+              "body": "Rebooked after missing 9/20 - got stuck on a job site, forgot to call.\nS: Breathing about baseline. A few heavy days this summer with the heat. No sputum change, no fever, no urgent care. About 3/4 ppd.\nO: Vitals as charted, room air sat normal. Lungs: fair air entry, no wheeze, no crackles. No edema.\nA/P: COPD stable on tiotropium/albuterol. Refills current. Smoking counseling, ~3 min; he isn't ready. Flu and updated COVID vaccines given today.\nPhysical in the spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "pharmacy",
+          "start": "2024-02-07T08:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: albuterol HFA",
+              "date": "2024-02-07T08:40",
+              "author": "MA",
+              "body": "eRx request from pharmacy for albuterol HFA, 2 inhalers. Last fill 5 months ago. On med list. Sent to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2024-02-07T10:02",
+              "author": "PCP",
+              "body": "Ok x2 inhalers, 1 refill. Due for physical - front desk please book."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-03a",
+          "kind": "annual_physical",
+          "start": "2024-04-03T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              62
+            ],
+            "hr": 60,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 84.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-03T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-03T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 312
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-04-03T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 162
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 45
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-04-03T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-03T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-04-03T08:50",
+              "author": "PCP",
+              "body": "47M, physical. Feels well. Breathing at his usual - albuterol a couple of times a week, more with dust. No flares this past year. Smoking 3/4 to 1 ppd.\nROS: negative for cough change, hemoptysis, weight loss, fevers, chest pain.\nMeds: tiotropium daily, albuterol prn. No allergies.\n\nExam: vitals as charted, weight stable from last year. HEENT normal. Lungs no wheeze, no crackles. Heart regular without murmur. Abdomen soft. No clubbing, no edema. No lymphadenopathy.\n\nA/P\n- COPD: stable. Continue.\n- Pulmonary nodule: followed by pulmonology.\n- Tobacco: we talked again about what quitting would do for his lungs. He wants to try on his own this summer.\n- Screening: FIT. Labs today.\n- Vaccines: flu and COVID in the fall.\nRTC fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-17a",
+          "kind": "lab_only",
+          "start": "2024-04-17T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-15T06:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-04-17T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT",
+              "date": "2024-04-17T13:00",
+              "author": "PCP",
+              "body": "Negative FIT, labs from the physical normal. Message to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-16a",
+          "kind": "office_visit",
+          "start": "2024-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Cough and weight loss",
+          "vitals": {
+            "bp": [
+              103,
+              79
+            ],
+            "hr": 68,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 77.2
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-16T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2024",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "Cough and weight loss in smoker"
+            },
+            {
+              "id": "pulm-2024",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "Cough, 15 lb weight loss, prior RLL nodule; urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - cough, weight loss",
+              "date": "2024-09-16T08:45",
+              "author": "PCP",
+              "body": "S: Texted Friday asking to come in. Dry cough for about 3 months, not his usual morning cough - comes on through the day, no phlegm. Has lost about 15 lb without trying; belt is two notches tighter. Appetite a bit down. No fever, no night sweats, no blood in what he coughs up. Breathing about baseline otherwise. Still smoking.\n\nO: Weight 77.2 kg, down from 84 at his physical in April. Vitals otherwise as charted, afebrile. Appears well, not in distress. Lungs: breath sounds decreased over the right upper chest; no wheeze, no crackles. Heart regular. No supraclavicular or cervical nodes. No clubbing.\n\nA/P\nPersistent cough and unintentional weight loss in a ~30 pack-year smoker with COPD and a known RLL nodule (pulmonology wanted a repeat CT in 2023). Worried about this. Chest x-ray today; urgent pulmonology referral placed and I called their office directly to get him in this month. Told him honestly why I'm moving fast. He'll text me with anything new."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "imaging",
+          "start": "2024-09-17T07:15",
+          "reason": "Chest X-ray",
+          "conditions": [
+            {
+              "label": "Lung mass",
+              "action": "diagnosed",
+              "onset": "2024-09-17",
+              "note": "Right upper lobe mass on chest X-ray, suspected malignancy",
+              "icd10": "R91.8"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-09-17T07:15",
+              "text": "PA and lateral views of the chest. Comparison: none.\nThere is a mass in the right upper lobe. The remainder of the lungs is clear. No pleural effusion or pneumothorax. Heart size normal. Bones intact.",
+              "conclusion": "Right upper lobe mass. CT chest recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2024",
+              "action": "done",
+              "date": "2024-09-17T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Chest X-ray result",
+              "date": "2024-09-17T12:40",
+              "author": "PCP",
+              "body": "Called pt with CXR: mass in the right upper lung. Told him this needs a CT and likely a biopsy, and that cancer is the main concern, though we don't know yet. Pulmonology has him 9/27; they'll arrange the CT. His sister is going to drive him. Answered questions. He said he's done with cigarettes - we'll see; offered nicotine patch, he wants to try without."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "specialist_visit",
+          "start": "2024-09-27T09:30",
+          "service": "Pulmonology",
+          "reason": "Cough, weight loss, right upper lobe mass",
+          "vitals": {
+            "bp": [
+              130,
+              85
+            ],
+            "hr": 78,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 76.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-27T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-27T10:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-2024",
+              "action": "done",
+              "date": "2024-09-27T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology follow-up",
+              "date": "2024-10-02T08:15",
+              "author": "pulmonology",
+              "body": "PULMONARY MEDICINE - OFFICE NOTE\nDate of visit: 09/27/2024\n\nSeen in 2022 for a 6 mm right lower lobe nodule. Now referred back urgently by primary care: three months of a new dry cough and an unintended 15 lb weight loss. Denies fevers, night sweats or hemoptysis. Still smoking, cutting down since last week. COPD on tiotropium, albuterol as needed.\n\nFamily history: father with COPD; paternal uncle with lung cancer.\nSocial: construction worker. Current smoker, 30 pack-years. Drinks occasionally.\nAllergies: none known.\n\nExam: afebrile. BP 130/85, HR 78, RR 16. Thin, comfortable. Decreased breath sounds over the right upper lobe. No wheeze. No palpable adenopathy.\n\nData: CBC - Hgb 14 g/dL, WBC 7,000, platelets 250,000. Na 140, K 4.2, creatinine 1.0, glucose 95.\nChest x-ray 9/17 (reviewed): right upper lobe mass.\n\nAssessment: right upper lobe mass with weight loss in a heavy smoker - suspicious for primary lung cancer.\nPlan:\n1. CT chest with contrast this week.\n2. Bronchoscopy with endobronchial ultrasound for tissue and nodal sampling, depending on CT.\n3. He understands the concern. Strongly encouraged to stop smoking.\n\ncc: primary care"
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "imaging",
+          "start": "2024-10-01T13:00",
+          "reason": "CT chest with contrast",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2024-10-01T13:00",
+              "text": "TECHNIQUE: CT of the chest with intravenous contrast.\nCOMPARISON: Low-dose CT 09/12/2022; chest radiograph 09/17/2024.\nFINDINGS: There is a 4.0 cm mass in the right upper lobe. Mediastinal lymphadenopathy is present. The previously described 6 mm solid nodule in the right lower lobe is unchanged. No pleural effusion. No pericardial effusion. Heart size normal. Visualized upper abdomen unremarkable. No destructive osseous lesion.",
+              "conclusion": "4 cm right upper lobe mass with mediastinal lymphadenopathy, highly suspicious for primary lung malignancy. Stable 6 mm right lower lobe nodule."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "CT chest with contrast",
+              "date": "2024-10-01T17:20",
+              "author": "radiology",
+              "body": "Report received from the outside imaging center. 4 cm RUL mass with mediastinal adenopathy; RLL 6 mm nodule unchanged since 2022. Routed to PCP; pulmonology also copied."
+            },
+            {
+              "type": "Result Note",
+              "title": "CT reviewed",
+              "date": "2024-10-02T07:50",
+              "author": "PCP",
+              "body": "Reviewed CT. Spoke with pulmonology - bronchoscopy with EBUS booked for 10/9. Called Derek and went over it. He asked whether this is the spot from 2022 - no, that one hasn't changed; this is in the upper lobe."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "procedure_visit",
+          "start": "2024-10-09T07:30",
+          "end": "2024-10-09T12:30",
+          "service": "Pulmonology",
+          "reason": "Bronchoscopy with EBUS",
+          "procedures": [
+            {
+              "procedure": "EBUS-guided transbronchial needle aspiration",
+              "snomed": "1137699004",
+              "performed": "2024-10-09T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Bronchoscopy with endobronchial ultrasound",
+              "date": "2024-10-10T09:00",
+              "author": "pulmonology",
+              "body": "PROCEDURE REPORT - received 10/10/2024\nDate of procedure: 10/09/2024\nProcedure: flexible bronchoscopy with endobronchial ultrasound-guided transbronchial needle aspiration of the right upper lobe mass and mediastinal lymph nodes.\nIndication: 4 cm right upper lobe mass with mediastinal lymphadenopathy.\nAnesthesia: moderate sedation, oral route.\nFindings: airways without endobronchial lesion. Enlarged mediastinal nodes visualized by EBUS and sampled; the mass was sampled as well. Rapid on-site evaluation showed malignant cells.\nComplications: none. Minimal bleeding.\nDisposition: discharged home with his sister. Final pathology to follow."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-11a",
+          "kind": "outside_records",
+          "start": "2024-10-11T14:00",
+          "reason": "Pathology report",
+          "conditions": [
+            {
+              "label": "Lung mass",
+              "action": "resolved",
+              "onset": "2024-09-17",
+              "note": "Pathology: non-small cell lung carcinoma",
+              "icd10": "R91.8"
+            },
+            {
+              "label": "Malignant neoplasm of lung",
+              "action": "diagnosed",
+              "onset": "2024-10-11",
+              "note": "Non-small cell carcinoma, right upper lobe, mediastinal nodes involved"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-10-09T08:30",
+              "text": "SPECIMENS: (A) Right upper lobe mass, EBUS-guided FNA. (B) Mediastinal lymph node, EBUS-guided FNA.\nMICROSCOPIC: Both specimens contain malignant epithelial cells in cohesive groups, without features of small cell carcinoma. Material is limited for further subtyping.",
+              "conclusion": "A and B: Non-small cell carcinoma, consistent with primary lung carcinoma.",
+              "issued": "2024-10-11T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pathology Report",
+              "title": "Surgical pathology, EBUS FNA",
+              "date": "2024-10-11T14:00",
+              "author": "pathology",
+              "body": "Final pathology received: non-small cell carcinoma in the right upper lobe mass and in the mediastinal lymph node. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Pathology result",
+              "date": "2024-10-11T17:45",
+              "author": "PCP",
+              "body": "Pulmonology already told him this afternoon. I called after. Non-small cell lung cancer, involving the nodes in the middle of the chest. Staging scans (PET, brain MRI) ordered by pulmonology; oncology referral made by them. He was steady on the phone, sister there with him. Booked to see me after the oncology visit. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "imaging",
+          "start": "2024-10-16T11:00",
+          "reason": "Staging PET-CT",
+          "reports": [
+            {
+              "study": "PET-CT, skull base to mid-thigh",
+              "loinc": "81555-5",
+              "performed": "2024-10-16T11:00",
+              "text": "FDG PET-CT from skull base to mid-thigh.\nThe right upper lobe mass is FDG avid. FDG-avid ipsilateral mediastinal lymph nodes. No FDG-avid contralateral mediastinal or supraclavicular nodes. No FDG-avid lesions in the liver, adrenal glands or skeleton. The 6 mm right lower lobe nodule is below PET resolution.",
+              "conclusion": "FDG-avid right upper lobe mass with ipsilateral mediastinal nodal disease. No distant metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "PET-CT",
+              "date": "2024-10-16T16:30",
+              "author": "radiology",
+              "body": "PET-CT report received. Disease limited to the right upper lobe mass and ipsilateral mediastinal nodes; no distant spread."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-18a",
+          "kind": "imaging",
+          "start": "2024-10-18T08:00",
+          "reason": "Staging brain MRI",
+          "reports": [
+            {
+              "study": "MRI brain with and without contrast",
+              "loinc": "24587-8",
+              "performed": "2024-10-18T08:00",
+              "text": "Multiplanar multisequence MRI of the brain before and after gadolinium. No enhancing lesion. No mass effect, hemorrhage or acute infarct. Ventricles normal in size.",
+              "conclusion": "No evidence of intracranial metastatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "MRI brain",
+              "date": "2024-10-18T13:10",
+              "author": "radiology",
+              "body": "Brain MRI with and without contrast: normal, no metastases. Received and filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "specialist_visit",
+          "start": "2024-10-22T13:00",
+          "service": "Oncology",
+          "reason": "New diagnosis non-small cell lung cancer",
+          "vitals": {
+            "bp": [
+              126,
+              78
+            ],
+            "hr": 61,
+            "rr": 17,
+            "spo2": 98,
+            "weight_kg": 78.0
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology consultation",
+              "date": "2024-10-24T07:30",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - NEW PATIENT CONSULTATION\nDate of visit: 10/22/2024\n\n47-year-old construction worker, ~30 pack-year current smoker with COPD, referred by pulmonology for newly diagnosed non-small cell lung cancer. Presented with 3 months of dry cough and 15 lb weight loss. CT 10/01: 4 cm RUL mass with mediastinal adenopathy. EBUS-FNA 10/09: non-small cell carcinoma in the mass and a mediastinal node. PET-CT 10/16: ipsilateral mediastinal nodal disease, no distant disease. Brain MRI 10/18: negative.\n\nMeds: tiotropium, albuterol prn. Allergies: none known.\nFamily: father COPD; paternal uncle lung cancer.\n\nExam: thin, ECOG 1. Decreased breath sounds right upper lung field. No adenopathy. No edema.\n\nStage: IIIA (cT2a N2 M0).\nDiscussed at thoracic tumor board 10/21: N2 disease, not a surgical candidate up front.\n\nPlan:\n- Definitive concurrent chemoradiation: carboplatin AUC 2 and paclitaxel 45 mg/m2 weekly with radiation 60 Gy in 30 fractions, starting 11/04.\n- If no progression after chemoradiation, consolidation durvalumab for 12 months.\n- Smoking cessation strongly advised; improves outcomes during radiation.\n- Radiation oncology simulation this week.\n\ncc: primary care, pulmonology"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "office_visit",
+          "start": "2024-10-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up on lung cancer diagnosis",
+          "vitals": {
+            "bp": [
+              126,
+              71
+            ],
+            "hr": 66,
+            "rr": 14,
+            "spo2": 98,
+            "weight_kg": 78.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current some day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-24T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-24T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-24T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-24T16:36"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - new lung cancer",
+              "date": "2024-10-24T16:55",
+              "author": "PCP",
+              "body": "Came in with his sister to go over everything after seeing oncology Tuesday.\n\nS: Stage IIIA non-small cell lung cancer, right upper lobe with mediastinal nodes, no distant spread on PET or brain MRI. Plan is chemo + radiation together starting 11/4, then an immunotherapy drug for a year. Cough the same, weight holding. Smoking down to a few a day. Mood: 'scared, but I'd rather know.' Sleep ok. No SI.\n\nO: Vitals as charted. Tired-appearing but engaged. Lungs: decreased breath sounds right upper chest, no wheeze. Heart regular. No edema.\n\nA/P\n1. NSCLC stage IIIA - oncology/radiation oncology leading. Reviewed the plan with him and his sister, answered questions about side effects. He knows he can text me through treatment.\n2. Tobacco: down to a few a day. Offered nicotine patch and varenicline again - wants to finish quitting on his own. Encouraged.\n3. COPD: stable, continue tiotropium/albuterol.\n4. Mood: understandable stress; PHQ-2 2. Will check in.\n5. Flu and updated COVID vaccine today, before chemo starts.\nFollow up after chemoradiation."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-20a",
+          "kind": "outside_records",
+          "start": "2024-12-20T11:00",
+          "reason": "Chemoradiation treatment summary",
+          "medications": [
+            {
+              "drug_text": "carboplatin 10 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "AUC 2 IV weekly with radiation, 11/04/2024 to 12/13/2024",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Non-small cell lung cancer"
+            },
+            {
+              "drug_text": "paclitaxel 6 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "45 mg/m2 IV weekly with radiation, 11/04/2024 to 12/13/2024",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Non-small cell lung cancer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Radiotherapy",
+              "snomed": "1287742003",
+              "performed": "2024-11-04T09:00"
+            },
+            {
+              "procedure": "Chemotherapy",
+              "snomed": "367336001",
+              "performed": "2024-11-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Radiation oncology treatment summary",
+              "date": "2024-12-20T11:00",
+              "author": "radiation oncology",
+              "body": "RADIATION ONCOLOGY - END OF TREATMENT SUMMARY\nTreatment dates: 11/04/2024 - 12/13/2024\nDiagnosis: non-small cell lung carcinoma, right upper lobe, stage IIIA (cT2a N2 M0).\nTreatment: 60 Gy in 30 fractions to the right upper lobe primary and involved mediastinal nodes, with concurrent weekly carboplatin AUC 2 and paclitaxel 45 mg/m2 given by medical oncology.\nCourse: completed all 30 fractions and all weekly chemotherapy doses. No treatment breaks.\nFollow-up: CT chest about 4 weeks after completion; medical oncology to start consolidation durvalumab if no progression.\ncc: primary care"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2024-12-20T15:30",
+              "author": "PCP",
+              "body": "Chemoradiation completed 12/13 without breaks. Med list updated with chemo course. Will see him in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "imaging",
+          "start": "2025-01-08T10:30",
+          "reason": "CT chest after chemoradiation",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-01-08T10:30",
+              "text": "TECHNIQUE: CT chest with intravenous contrast.\nCOMPARISON: 10/01/2024.\nFINDINGS: The right upper lobe mass has decreased, now 2.3 cm. Mediastinal lymph nodes have decreased in size. The 6 mm right lower lobe nodule is unchanged. No new pulmonary nodules. No pleural effusion. No new lymphadenopathy.",
+              "conclusion": "Treatment response: right upper lobe mass decreased to 2.3 cm and mediastinal nodes decreased. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "CT chest post-treatment",
+              "date": "2025-01-08T15:45",
+              "author": "radiology",
+              "body": "Outside report received: RUL mass down to 2.3 cm from 4 cm, nodes smaller, nothing new. Routed to PCP and oncology."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "outside_records",
+          "start": "2025-01-13T15:00",
+          "reason": "Oncology letter: durvalumab started",
+          "medications": [
+            {
+              "drug_text": "durvalumab 50 MG/ML Injection",
+              "action": "historical",
+              "sig": "1500 mg IV every 4 weeks, planned for 12 months; given at the infusion center",
+              "dose": {
+                "value": 1500,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Non-small cell lung cancer, consolidation after chemoradiation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "date": "2025-01-13T15:00",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 01/13/2025\nStage IIIA NSCLC, RUL, s/p concurrent chemoradiation (carboplatin/paclitaxel weekly + 60 Gy) completed 12/13/2024.\nPost-treatment CT 01/08: RUL mass 2.3 cm, nodes decreased, no new disease.\nFatigue improving. Cough unchanged. Eating better.\nPlan: start durvalumab 1500 mg IV every 4 weeks today, for 12 months. Discussed immune side effects - cough or breathlessness (pneumonitis), diarrhea, rash, thyroid changes - and to call for any of them. Surveillance CT every 3 months.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "office_visit",
+          "start": "2025-01-22T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after chemoradiation",
+          "vitals": {
+            "bp": [
+              107,
+              78
+            ],
+            "hr": 67,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 74.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current some day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-22T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - after chemoradiation",
+              "date": "2025-01-22T16:10",
+              "author": "PCP",
+              "body": "S: Finished chemo/radiation 12/13. Tired, naps most afternoons, improving week by week. First durvalumab dose 1/13, no issues so far. Cough about the same, no blood. Eating more. Breathing at baseline, albuterol a few times a week. Still sneaking 3-4 cigarettes a day - embarrassed about it.\nO: Weight 74 kg (about 78 in October). Vitals otherwise as charted. Lungs: no wheeze, no crackles. Heart regular. No edema.\nA/P\n1. NSCLC IIIA, good response on CT 1/8 (2.3 cm). On durvalumab q4 weeks via oncology. Reviewed which symptoms should prompt a call to them (new cough or shortness of breath, diarrhea, rash).\n2. Tobacco: a few a day. No judgment; offered patch again - wants to keep tapering on his own.\n3. COPD: stable.\n4. Fatigue: expected after treatment; oncology following counts.\nRTC spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "outside_records",
+          "start": "2025-04-14T14:30",
+          "reason": "Oncology letter, surveillance CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-04-07T09:45",
+              "text": "CT chest with contrast. Comparison 01/08/2025. Right upper lobe treated mass and post-radiation change are stable. Mediastinal nodes stable. Right lower lobe 6 mm nodule unchanged. No new nodules, no effusion.",
+              "conclusion": "Stable. No evidence of progression."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "date": "2025-04-14T14:30",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 04/14/2025\nOn durvalumab, cycle 4 today. Tolerating well, no rash, no diarrhea, no new cough. Energy improving.\nCT chest 04/07: stable, no progression.\nPlan: continue durvalumab every 4 weeks. Next CT in July.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-09a",
+          "kind": "office_visit",
+          "start": "2025-05-09T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: COPD, lung cancer on immunotherapy",
+          "vitals": {
+            "bp": [
+              117,
+              80
+            ],
+            "hr": 63,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 76.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current some day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-09T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - follow-up",
+              "date": "2025-05-09T08:45",
+              "author": "PCP",
+              "body": "S: Doing better. Energy most of the way back, doing light work for a buddy's crew a couple days a week. Durvalumab every 4 weeks, no side effects he's noticed. April CT stable per oncology. Cough mild, no blood. Breathing baseline. Smoking: 2-4 a day.\nO: Weight 76.5 kg, up from 74 in January. Vitals as charted. Lungs: no wheeze, no crackles. Heart regular. No edema, no rash.\nA/P\n1. NSCLC IIIA on consolidation durvalumab; stable April CT. Oncology following monthly with labs - reviewed their recent counts and chemistries, unremarkable.\n2. COPD: stable on tiotropium + albuterol; refills sent.\n3. Tobacco: down to a few a day. Encouraged a full stop - offered nicotine patch, still declines.\n4. CRC screening: FIT kit given.\nRTC fall, flu/COVID then. Text anytime."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "lab_only",
+          "start": "2025-05-20T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-17T06:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-05-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT",
+              "date": "2025-05-20T12:30",
+              "author": "PCP",
+              "body": "FIT negative. Next due 05/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "pharmacy",
+          "start": "2025-06-18T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: tiotropium",
+              "date": "2025-06-18T09:15",
+              "author": "MA",
+              "body": "Pharmacy asking for a 90-day fill of tiotropium capsules; insurer switched preferred mail order. New script needed at the mail-order pharmacy."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "date": "2025-06-18T10:40",
+              "author": "PCP",
+              "body": "New 90-day script with 3 refills sent to mail order."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "outside_records",
+          "start": "2025-07-21T13:00",
+          "reason": "Oncology letter, surveillance CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-07-14T10:15",
+              "text": "CT chest with contrast. Comparison 04/07/2025. Treated right upper lobe mass and radiation change unchanged. Mediastinal nodes stable. 6 mm right lower lobe nodule unchanged. No new findings.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "date": "2025-07-21T13:00",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 07/21/2025\nDurvalumab cycle 7. Doing well. No immune-related side effects.\nCT 07/14: stable.\nPlan: continue. CT again in October.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-14a",
+          "kind": "ed_visit",
+          "start": "2025-09-14T10:40",
+          "end": "2025-09-14T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, productive cough",
+          "vitals": [
+            {
+              "time": "2025-09-14T10:48",
+              "rr": 22,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-14T11:05",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
+                  "value": 55
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
+                  "value": 70
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-09-14T11:20",
+              "text": "Portable AP chest. Comparison 09/17/2024. Increased bronchial wall thickening. No consolidation. Post-treatment changes in the right upper lung. No pleural effusion or pneumothorax.",
+              "conclusion": "Bronchial wall thickening without consolidation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-14T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "date": "2025-09-19T10:00",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD - received 09/19/2025\nDate of visit: 09/14/2025\n\nHPI: 48M with COPD and stage III non-small cell lung cancer on durvalumab, here with two days of increasing breathlessness and cough productive of green sputum.\nMeds: tiotropium, albuterol inhalers; durvalumab every 4 weeks (oncology).\nAllergies: NKDA.\nFamily: father COPD; paternal uncle lung cancer.\nSocial: smoker, 30 pack-years.\n\nTriage: RR 22, SpO2 88% on room air.\nExam: tachypneic, diffuse expiratory wheezes throughout.\nABG: pH 7.32, PaCO2 55, PaO2 70.\nCXR: bronchial wall thickening, no consolidation.\n\nImpression: acute exacerbation of COPD with acute respiratory acidosis.\nED course: continuous nebulized albuterol/ipratropium, steroids and antibiotics started, BiPAP initiated.\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-14b",
+          "kind": "hospital_admission",
+          "start": "2025-09-14T16:30",
+          "end": "2025-09-17T12:00",
+          "service": "Hospital Medicine",
+          "reason": "COPD exacerbation",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-09-14T17:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-09-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-09-19T10:05",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY - received 09/19/2025\nAdmitted 09/14/2025, discharged 09/17/2025.\nPrincipal diagnosis: acute exacerbation of COPD.\nOther: stage IIIA NSCLC on consolidation durvalumab; tobacco use.\n\nCourse: admitted from the ED with hypercapnic exacerbation. Noninvasive ventilation overnight on admission, then nasal cannula; back on room air by the second hospital day. Treated with scheduled nebulized albuterol/ipratropium, prednisone 40 mg daily (5-day course) and azithromycin (5-day course). Chest imaging without consolidation; the team did not find evidence of pneumonitis. Oncology aware.\n\nDischarge medications: tiotropium 18 mcg daily; albuterol HFA as needed; prednisone 40 mg daily to complete 5 days (last dose 09/18); azithromycin to complete 5 days (last dose 09/18).\nAllergies: none known.\nFollow-up: primary care in 1-2 weeks; oncology as scheduled. Smoking cessation advised.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-22a",
+          "kind": "telephone",
+          "start": "2025-09-22T10:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-09-22T10:30",
+              "author": "RN",
+              "body": "Called after hospital discharge 9/17 for COPD flare. Finished prednisone and azithromycin 9/18. Breathing much better, back to his usual rescue use. No fever. Using tiotropium daily. Offered a follow-up visit this week or next - he'd rather wait, sees oncology on the 13th and says he's 'had enough appointments.' Advised to call or text for any worsening. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Post-discharge call",
+              "date": "2025-09-22T13:15",
+              "author": "PCP",
+              "body": "Thanks - read the discharge summary. Ok to hold off; front desk please offer him an October slot for a check plus flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "outside_records",
+          "start": "2025-10-20T13:30",
+          "reason": "Oncology letter, surveillance CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-10-13T09:30",
+              "text": "CT chest with contrast. Comparison 07/14/2025. Treated right upper lobe mass and radiation change stable. Mediastinal nodes stable. 6 mm right lower lobe nodule unchanged. No consolidation. No new nodules.",
+              "conclusion": "Stable. No progression."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "date": "2025-10-20T13:30",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 10/20/2025\nHospitalized in September for a COPD exacerbation; recovered. Durvalumab given through it on schedule after review - no evidence of pneumonitis.\nCT 10/13: stable.\nPlan: continue durvalumab to complete 12 months (final dose end of December). Surveillance CT in spring.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "pharmacy",
+          "start": "2025-11-19T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: albuterol HFA",
+              "date": "2025-11-19T08:50",
+              "author": "MA",
+              "body": "Refill request albuterol HFA x2. Pt has not come in since May; did not book the October slot. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2025-11-19T12:05",
+              "author": "PCP",
+              "body": "Approved. Please reach out again about a visit and flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "outside_records",
+          "start": "2026-01-12T14:00",
+          "reason": "Oncology letter, durvalumab completed",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "date": "2026-01-12T14:00",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 01/12/2026\nCompleted 12 months of consolidation durvalumab; final dose 12/29/2025. No immune-related adverse events during therapy.\nFeels fair. Weight 76 kg.\nPlan: surveillance. CT chest in April, then every 3-6 months. Call for new cough, blood in sputum, weight loss or confusion.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-28a",
+          "kind": "ed_visit",
+          "start": "2026-03-28T14:00",
+          "end": "2026-03-28T20:00",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, lethargy, poor appetite",
+          "vitals": [
+            {
+              "time": "2026-03-28T14:08",
+              "bp": [
+                116,
+                74
+              ],
+              "hr": 84
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-28T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 117
+                },
+                {
+                  "test": "Chloride",
+                  "value": 84
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 104
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-28T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-28T14:30",
+              "results": [
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
+                  "value": 247
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-28T15:10",
+              "results": [
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
+                  "value": 486
+                },
+                {
+                  "test": "Sodium [Moles/volume] in Urine",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "range": {},
+                  "value": 58
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-03-28T15:30",
+              "text": "Noncontrast CT of the head. No intracranial hemorrhage, mass effect or acute infarct. Ventricles and sulci normal for age. No extra-axial collection.",
+              "conclusion": "No acute intracranial abnormality."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-03-28T16:10",
+              "text": "CT chest with intravenous contrast. Comparison 10/13/2025. Centrally located right upper lobe mass now measures 5.8 cm, enlarged compared with prior. Enlarged mediastinal lymph nodes. 6 mm right lower lobe nodule unchanged. No pleural effusion.",
+              "conclusion": "Enlarging central right upper lobe mass (5.8 cm) with enlarged mediastinal nodes, consistent with progression."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-28T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "date": "2026-04-06T09:30",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT RECORD - received 04/06/2026\nDate of visit: 03/28/2026\n\nHPI: 49M with COPD, tobacco use and stage IIIA NSCLC treated with chemoradiation and durvalumab (completed 12/2025), brought in by his sister. Over the past week he has become more confused and sluggish and has hardly been eating. She says he has dropped close to 7 kg in two months and has had an ongoing cough with occasional streaks of blood.\nMeds: tiotropium, albuterol.\nAllergies: NKDA.\nFamily: father COPD; paternal uncle lung cancer.\nSocial: 30 pack-year smoker.\n\nVitals: BP 116/74, HR 84.\nExam: drowsy, oriented to name only. Moist mucous membranes. No peripheral edema. Lungs without crackles. No focal motor deficit.\nLabs: Na 117, serum osm 247, urine osm 486, urine Na 58, K 3.9, creatinine 0.7, glucose 104, TSH 1.9. Hgb 12.6.\nCT head: no acute abnormality.\nCT chest: central RUL mass 5.8 cm, larger than in October, with enlarged mediastinal nodes.\n\nImpression: severe hypotonic hyponatremia from SIADH, in the setting of progressive lung cancer. Euvolemic.\nPlan: fluid restriction, admit to medicine with frequent sodium checks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-28b",
+          "kind": "hospital_admission",
+          "start": "2026-03-28T20:00",
+          "end": "2026-04-02T13:00",
+          "service": "Hospital Medicine",
+          "reason": "Hyponatremia, SIADH",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-29T06:00",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 17
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-02T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 128
+                },
+                {
+                  "test": "Chloride",
+                  "value": 94
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-28T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-04-02T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-04-06T09:35",
+              "author": "hospital medicine",
+              "body": "DISCHARGE SUMMARY - received 04/06/2026\nAdmitted 03/28/2026, discharged 04/02/2026.\nPrincipal diagnosis: hyponatremia due to SIADH.\nSecondary: progression of stage IIIA non-small cell lung cancer, right upper lobe; COPD; tobacco use.\n\nCourse: presented confused with Na 117, low serum osmolality, concentrated urine and high urine sodium while clinically euvolemic; TSH 1.9 and AM cortisol 17, both normal. Managed with fluid restriction to 1 L/day and sodium chloride 1 g tablets three times daily, correcting slowly. Sodium 128 on day of discharge; mentation back to his baseline by day 3. Blood-streaked sputum only, hemoglobin stable at 12.6. CT chest showed growth of the central RUL mass to 5.8 cm with enlarged mediastinal nodes. Oncology consulted: progression after chemoradiation and durvalumab; plan second-line systemic therapy as an outpatient.\n\nDischarge medications: tiotropium 18 mcg daily; albuterol HFA as needed; sodium chloride 1 g by mouth three times daily. Fluid restriction 1 L/day.\nAllergies: none known.\nFollow-up: oncology next week with BMP; primary care.\ncc: primary care"
+            },
+            {
+              "type": "Result Note",
+              "title": "Records filed",
+              "date": "2026-04-06T17:20",
+              "author": "PCP",
+              "body": "Hospital records received and reviewed: SIADH with Na 117, progression of the RUL cancer. Discharged on fluid restriction and salt tabs, oncology starting second-line treatment. Asked front desk to reach out to him about coming in."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "portal_message",
+          "start": "2026-04-08T19:32",
+          "reason": "Message after hospital stay",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital",
+              "date": "2026-04-08T19:32",
+              "author": "patient",
+              "body": "Hi, wanted to let you know I was in the hospital last week, my sodium was really low and I was out of it. Cancer grew back. Starting new chemo next week with oncology. I'm ok, my sister is staying with me for a bit. Is it ok to keep using my inhalers the same?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital",
+              "date": "2026-04-09T07:55",
+              "author": "PCP",
+              "body": "Derek, thank you for telling me - I read the hospital records and I'm sorry this came back. Yes, keep both inhalers exactly as before. Stick with the 1 liter fluid limit and the salt tablets until oncology changes them, and get your blood checks with them. I'd like to see you once treatment is underway - the front desk will reach out, or text me a time that works."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "outside_records",
+          "start": "2026-04-20T14:30",
+          "reason": "Oncology letter: docetaxel started",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-16T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Chloride",
+                  "value": 97
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "date": "2026-04-20T14:30",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 04/16/2026\nRecent admission for SIADH (Na 117) with progression of the RUL primary and mediastinal nodes, 3 months after completing durvalumab. Mental status normal today. Na 131 on 1 L fluid restriction and NaCl 1 g TID.\nPlan: second-line docetaxel 75 mg/m2 IV every 21 days, cycle 1 today. Continue fluid restriction and salt tablets; BMP with each cycle. Restage after 4 cycles.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "outside_records",
+          "start": "2026-07-13T13:45",
+          "reason": "Oncology letter, restaging CT",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-08T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                },
+                {
+                  "test": "Chloride",
+                  "value": 99
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-07-08T10:00",
+              "text": "CT chest with contrast. Comparison 03/28/2026. Central right upper lobe mass 5.6 cm (previously 5.8 cm). Mediastinal lymph nodes stable. 6 mm right lower lobe nodule unchanged. No new lesions. No effusion.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "date": "2026-07-13T13:45",
+              "author": "oncology",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 07/13/2026\nCompleted 4 cycles of docetaxel. Restaging CT 07/08: central RUL mass 5.6 cm, nodes stable - stable disease. Na 133 on fluid restriction and salt tablets. Alert, eating.\nPlan: continue docetaxel every 21 days; restage in 3 months. Continue SIADH measures.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "pharmacy",
+          "start": "2026-08-12T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: tiotropium",
+              "date": "2026-08-12T09:10",
+              "author": "MA",
+              "body": "Mail-order renewal request for tiotropium 18 mcg capsules, 90 days. Last office visit 05/2025. Pended to PCP with note that he has not scheduled."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "date": "2026-08-12T11:25",
+              "author": "PCP",
+              "body": "Approved x 90 days. He's in active chemo - will text him directly about a visit."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Lung mass|R91.8": {
+        "code": "R91.8",
+        "display": "Other nonspecific abnormal finding of lung field",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "carboplatin 10 MG/ML Injectable Solution": {
+        "code": "597195",
+        "display": "carboplatin 10 MG/ML Injectable Solution",
+        "ingredient": "carboplatin",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "durvalumab 50 MG/ML Injection": {
+        "code": "1919515",
+        "display": "10 ML durvalumab 50 MG/ML Injection",
+        "ingredient": "durvalumab",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "paclitaxel 6 MG/ML Injectable Solution": {
+        "code": "312199",
+        "display": "paclitaxel 6 MG/ML Injectable Solution",
+        "ingredient": "paclitaxel",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "tiotropium 0.018 MG Inhalation Powder": {
+        "code": "485032",
+        "display": "tiotropium 0.018 MG Inhalation Powder",
+        "ingredient": "tiotropium",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Serum or Plasma": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Urine": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sodium [Moles/volume] in Urine": {
+        "code": "2955-3",
+        "display": "Sodium [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI brain with and without contrast": {
+        "code": "24587-8",
+        "display": "MR Brain WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "PET-CT, skull base to mid-thigh": {
+        "code": "81555-5",
+        "display": "PET+CT Guidance for localization of tumor of Whole body-- W 18F-FDG IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Chemotherapy": {
+        "code": "367336001",
+        "display": "Chemotherapy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "EBUS-guided transbronchial needle aspiration": {
+        "code": "1137699004",
+        "display": "Endoscopic endobronchial ultrasonography guided transbronchial needle aspiration of mediastinal lymph node",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Radiotherapy": {
+        "code": "1287742003",
+        "display": "Radiotherapy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

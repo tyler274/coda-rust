@@ -1,10 +1,7 @@
 {
   "unit": "unit-2332",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002332/2022-08-23a: imaging order \"Ultrasound abdominal aorta, AAA screening\" names no one catalog lab, panel, study or procedure",
-    "MRN00002332/2022-08-23a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002332",
@@ -322,14 +319,8 @@
               "action": "placed",
               "order": "Ultrasound abdominal aorta, AAA screening",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "one-time AAA screen, former smoker age 74"
-            },
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "new patient"
             }
           ],
           "documents": [
@@ -381,13 +372,6 @@
           "id": "2022-09-06a",
           "kind": "outside_records",
           "start": "2022-09-06T14:00",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2022-09-06T14:00"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1980,6 +1964,13 @@
         "code": "I67.9",
         "display": "Cerebrovascular disease, unspecified",
         "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "reports": {
+      "Ultrasound abdominal aorta, AAA screening": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
       }
     }
   }

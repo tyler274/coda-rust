@@ -38,7 +38,7 @@
           "reason": "Right hip pain",
           "measure": ["bp", "hr", "spo2", "weight_kg"],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-04T15:40"}],
-          "orders": [{"id": "ortho-referral", "action": "placed", "order": "Orthopedic surgery referral", "category": "referral", "to": "Orthopedic Surgery", "reason": "right hip pain, suspected osteoarthritis"}],
+          "orders": [{"id": "ortho-referral", "action": "placed", "order": "Orthopedic surgery referral", "category": "referral", "to": "Orthopedics", "reason": "right hip pain, suspected osteoarthritis"}],
           "documents": [
             {
               "type": "Progress Notes",
@@ -145,12 +145,12 @@
           ],
           "labs": [
             {"panel": null, "collected": "2025-06-20T05:10", "results": [
-              {"test": "Troponin I", "loinc": "10839-9", "unit": "ng/mL", "value": 8},
-              {"test": "B-type Natriuretic Peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 900},
-              {"test": "pH, Arterial", "loinc": "2744-1", "unit": "[pH]", "value": 7.32},
-              {"test": "PaCO2", "loinc": "2019-8", "unit": "mm[Hg]", "value": 45},
-              {"test": "PaO2", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
-              {"test": "Bicarbonate, Arterial", "loinc": "1960-4", "unit": "mmol/L", "value": 22}
+              {"test": "Troponin I", "loinc": "10839-9", "unit": "ng/mL", "value": 8, "range": {"high": 0.04}},
+              {"test": "B-type Natriuretic Peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 900, "range": {"high": 100}},
+              {"test": "pH, Arterial", "loinc": "2744-1", "unit": "[pH]", "value": 7.32, "range": {"low": 7.38, "high": 7.44}},
+              {"test": "PaCO2", "loinc": "2019-8", "unit": "mm[Hg]", "value": 45, "range": {"low": 38, "high": 42}},
+              {"test": "PaO2", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60, "range": {"low": 75, "high": 100}},
+              {"test": "Bicarbonate, Arterial", "loinc": "1960-4", "unit": "mmol/L", "value": 22, "range": {"low": 23, "high": 26}}
             ]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-20T05:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-20T05:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}

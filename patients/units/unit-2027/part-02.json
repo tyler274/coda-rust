@@ -212,10 +212,14 @@
        "collected": "2023-05-04T08:00",
        "results": [
         {
-         "test": "5-Hydroxyindoleacetate [Mass/time] in 24 hour Urine",
-         "loinc": "1695-6",
-         "unit": "mg/(24.h)",
-         "value": 38
+          "test": "5-Hydroxyindoleacetate [Mass/time] in 24 hour Urine",
+          "loinc": "1695-6",
+          "unit": "mg/(24.h)",
+          "value": 38,
+          "range": {
+            "low": 2,
+            "high": 9
+          }
         }
        ]
       }
@@ -260,14 +264,7 @@
      "service": "Internal Medicine — Primary Care",
      "reason": "Wife calling: surgery update",
      "orders": [
-      {
-       "id": "postop-visit",
-       "action": "placed",
-       "order": "Post-hospital follow-up visit",
-       "category": "procedure",
-       "reason": "After laparotomy"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Telephone Encounter",
@@ -327,12 +324,7 @@
       }
      ],
      "orders": [
-      {
-       "id": "postop-visit",
-       "action": "done",
-       "date": "2023-07-06T10:00"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Progress Notes",

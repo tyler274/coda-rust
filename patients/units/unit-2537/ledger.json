@@ -1,0 +1,3050 @@
+{
+  "unit": "unit-2537",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002537",
+      "given": "Henry",
+      "family": "Silva",
+      "birth_date": "1995-09-05",
+      "address_line": "118 Cottage St, Apt 2",
+      "phone": "+1-508-555-0146",
+      "email": "henry.silva@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker in his late twenties with depression on sertraline and untreated hyperuricemia. Allopurinol in 2024 caused interstitial nephritis with kidney injury that recovered; in 2025 a high-voltage injury needed forearm and hand fasciotomy, and a house fire six months later brought 40% burns complicated by culture-negative septic shock.",
+      "events": [
+        {
+          "id": "2022-06-21a",
+          "kind": "telephone",
+          "start": "2022-06-21T10:40",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2022-06-21T10:52",
+              "author": "front desk",
+              "body": "Caller is Henry Silva, 26, wants to move his primary care here. Says his old office is too far now that he works out of the Amherst yard and he can never get a same-day slot. Only med is sertraline, prescribed by the old office. Membership info emailed. Booked new patient physical 7/12 at 8:00. Gave him the records release form to sign so we can pull his chart."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "establish_care",
+          "start": "2022-07-12T08:00",
+          "end": "2022-07-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, single episode, unspecified",
+              "action": "history",
+              "onset": "2020-02-01",
+              "note": "diagnosed by prior primary care office; stable on sertraline",
+              "icd10": "F32.9"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "2013-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "depression"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              86
+            ],
+            "hr": 74,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 83.3,
+            "height_cm": 180.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-07-12T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-07-12T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-07-12T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-12T08:50",
+              "resulted": "2022-07-13T14:20",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-12T08:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-12T08:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-07-12T08:00"
+            },
+            {
+              "procedure": "Appendectomy",
+              "snomed": "80146002",
+              "performed": "2010-04-01T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical Notes",
+              "title": "New Patient Visit",
+              "date": "2022-07-12T12:15",
+              "author": "PCP",
+              "body": "26 y/o man transferring care, wants a doctor he can actually reach.\n\nMood: Diagnosed with depression at his old practice in early 2020 after a rough winter, low energy, sleeping too much, pulled away from friends. Started sertraline then, dose went up once and has sat at 50 mg since. Feels it works. Some flat weeks in the winter but nothing like before. Never seen psychiatry or counseling, open to it if things slide. No SI now or ever. PHQ-9 6 today.\n\nPMH: depression as above. PSH: appendix out at 14, no complications. Meds: sertraline 50 mg daily. Allergies: none to meds.\n\nFamily: Dad has gout, flares a couple times a year, and has also been treated for depression. Mom has high blood pressure and type 2 diabetes. One older brother, healthy.\n\nSocial: Works construction, mostly framing and site work. Smokes a pack a day, started around 18. Has thought about quitting, says not this summer with the overtime. Drinks socially, 2-3 beers a week, AUDIT-C 3. No drug use. Lives in Amherst, single.\n\nROS: negative except as above. No joint pain or swelling.\n\nExam: Well-appearing. Vitals as charted. HEENT normal. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear bilaterally. Abdomen soft, nontender, healed RLQ scar. Extremities without edema, joints normal. Skin normal. Neuro grossly intact. Affect a little reserved, appropriate, linear.\n\nAssessment/plan:\n1. Depression, stable on sertraline 50 mg. Continue. Will take over prescribing. Recheck mood in 6 months.\n2. Tobacco, 1 ppd. Talked about the lungs and the heart; he knows. Offered patch/gum or a medication when he's ready. Revisit next visit.\n3. Health maintenance: CMP, CBC, lipids. One-time HIV and hep C screens, he agrees. Adding uric acid since he asked about his dad's gout.\n4. Records release signed, requesting prior office records.\n\nFollow up in 6 months, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 84.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-07-14a",
+          "kind": "portal_message",
+          "start": "2022-07-14T09:05",
+          "reason": "lab results",
+          "conditions": [
+            {
+              "label": "Hyperuricemia",
+              "action": "diagnosed",
+              "onset": "2022-07-12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2022-07-14T09:05",
+              "author": "PCP",
+              "body": "Henry, your blood work looks good overall. Kidney and liver tests, blood counts and cholesterol are all normal, and the HIV and hepatitis C screens are negative.\n\nThe one number that stands out is your uric acid at 8.4, a bit above the normal range. That's the substance that causes gout, which fits with your dad. You've never had a gout attack, so there's nothing to treat right now. Cutting back on beer and sugary drinks helps, and staying hydrated on hot job sites. We'll recheck it once a year.\n\nTalk soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "outside_records",
+          "start": "2022-07-26T11:30",
+          "reason": "prior primary care records",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2017-05-09T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from Prior Primary Care Office",
+              "date": "2022-07-26T11:30",
+              "author": "outside primary care",
+              "body": "Records received covering 2015 through 2022.\n\nProblem list: Depression, onset early 2020. Tobacco use.\nSurgical: Appendectomy, age 14.\nMedications: Sertraline 25 mg daily started 02/2020, increased to 50 mg daily 04/2020, unchanged since.\nAllergies: NKDA.\nImmunizations: Tdap 05/2017. Influenza most seasons.\nVisits: Annual physicals 2018 and 2021, normal exams. 2021 labs: CBC and metabolic panel normal. Smoking cessation discussed each year, declined.\nFamily history: father gout and depression; mother hypertension and type 2 diabetes.\n\nFiled. Reviewed by PCP, consistent with intake history."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "pharmacy",
+          "start": "2022-08-24T15:10",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "date": "2022-08-24T15:10",
+              "author": "RN",
+              "body": "E-request from pharmacy for sertraline 50 mg. Last fill from the old office ran out. Switched to 90-day supply with 3 refills under PCP per new patient plan. Sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T07:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T07:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T07:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "date": "2022-10-20T07:50",
+              "author": "RN",
+              "body": "Came in before his shift. Screening questions negative. Flu vaccine L deltoid, bivalent COVID booster R deltoid. Lot numbers in the immunization record. Stayed 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "mood and tobacco follow-up",
+          "vitals": {
+            "bp": [
+              118,
+              81
+            ],
+            "hr": 61,
+            "spo2": 96,
+            "weight_kg": 83.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-01-24T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-01-24T17:05",
+              "author": "PCP",
+              "body": "S: 6-month check. Work slow for the winter, laid off two weeks over the holidays, back now. Mood okay, PHQ-9 5. Sleeping fine. Taking sertraline daily, no side effects he notices. Still a pack a day. Says he cut back for a week in December and was miserable. Doesn't want a medication yet, would rather try on his own in the spring.\n\nO: Vitals as charted. Comfortable, good eye contact. Lungs clear. Heart regular.\n\nA/P:\n- Depression: stable, continue sertraline 50.\n- Tobacco: gave quitline number and a handout. Patches available any time, he only has to message.\n- Physical in the summer with labs, including uric acid recheck."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "pharmacy",
+          "start": "2023-04-19T11:25",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "date": "2023-04-19T11:25",
+              "author": "MA",
+              "body": "Pharmacy request, sertraline 50 mg #90. Seen in January, on protocol. Approved per standing order, 1 refill. PCP cosigned."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "annual_physical",
+          "start": "2023-07-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Missed Appointment",
+              "date": "2023-07-20T09:10",
+              "author": "front desk",
+              "body": "No call, no show for 8:00 physical. Left voicemail. He texted back at lunch, got pulled to a job across the river at 6 am and forgot. Rebooked 8/10."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "annual_physical",
+          "start": "2023-08-10T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              111,
+              70
+            ],
+            "hr": 68,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 84.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-10T08:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-10T08:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 176
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-10T08:20",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-10T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-10T09:30",
+              "author": "PCP",
+              "body": "Annual exam, 27 y/o M. Rescheduled from last month.\n\nInterval: Busy summer, long days in the heat. Mood good, PHQ-9 4, sertraline daily. No joint pain, never a swollen toe or ankle. Smoking about a pack a day, some days less. Alcohol unchanged.\n\nROS: no chest pain, no shortness of breath on the job, no cough beyond a morning clear-throat. No GI or urinary symptoms.\n\nExam: Vitals as charted. Well, tanned, fit. HEENT normal, dentition fine. Neck no nodes. Heart RRR no murmur. Lungs clear, no wheeze. Abdomen soft, nontender. No edema. Joints of hands and feet normal, no tophi. Skin: no suspicious lesions. Mood/affect normal.\n\nA/P:\n1. Health maintenance: CMP, lipids, uric acid today. Vaccines: flu and COVID at a nurse visit when the fall stock comes in.\n2. Hyperuricemia: no attacks. Recheck level; diet and water discussed again.\n3. Depression: in a good stretch. Continue sertraline 50.\n4. Tobacco: still not ready. We talked through what quitting on a job site looks like (breaks are smoke breaks). Will keep asking.\n\nRTC 1 year, or 6 months for mood."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Uric Acid": 8.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-11a",
+          "kind": "portal_message",
+          "start": "2023-08-11T12:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Your Physical",
+              "date": "2023-08-11T12:40",
+              "author": "PCP",
+              "body": "Hi Henry, labs from yesterday: kidney, liver, sugar and cholesterol all normal. Uric acid 8.9, a little higher than last year but no gout and nothing to start. Keep up the water on site. See you in the fall for shots."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T07:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T07:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T07:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "date": "2023-10-19T07:45",
+              "author": "RN",
+              "body": "Flu (L arm) and 2023-24 COVID (R arm). No prior reactions. Observed 15 minutes, fine. He asked about patches for quitting, gave the handout again and told him to message PCP when he picks a date."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "pharmacy",
+          "start": "2023-12-13T14:05",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "date": "2023-12-13T14:05",
+              "author": "RN",
+              "body": "Refill request sertraline 50 mg, 90 days. Seen 8/2023. Sent with 1 refill. Reminder to book mood check after the new year."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-09a",
+          "kind": "portal_message",
+          "start": "2024-05-09T20:14",
+          "reason": "stopped smoking",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Quit",
+              "date": "2024-05-09T20:14",
+              "author": "patient",
+              "body": "hey doc, figured you'd want to know. I stopped smoking 2 weeks ago. Cold turkey, no patches. Guys on the crew still smoke so it's hard at lunch but so far so good"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Quit",
+              "date": "2024-05-10T07:48",
+              "author": "PCP",
+              "body": "Henry, that's great news, the best thing you could do for your health. The first month is the hardest. If cravings get bad, patches or gum are fine to add, just tell me. Let's do a quick video check in June."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "telehealth_visit",
+          "start": "2024-06-12T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "tobacco cessation and mood check",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "resolved"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2024-04-25"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-06-12T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-06-12T17:55",
+              "author": "PCP",
+              "body": "Video, he's in his truck after work, verified DOB.\n\nNo cigarettes since about 4/25, roughly seven weeks. Chewing a lot of sunflower seeds. Irritable the first ten days, better now. Not vaping. Mood fine, PHQ-9 4. Still on sertraline 50 daily.\n\nA/P: Former smoker now. Problem list updated. Congratulated him. Not a candidate for lung screening at his age. Physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "pharmacy",
+          "start": "2024-08-22T09:30",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "date": "2024-08-22T09:30",
+              "author": "MA",
+              "body": "Sertraline 50 mg #90 request. Last visit 6/12. Approved per protocol, 1 refill, PCP to cosign."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "lab_only",
+          "start": "2024-10-09T07:10",
+          "reason": "labs before physical",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-09T07:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.0
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-09T07:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.86
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-09T07:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-09T07:10",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-09T07:10"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Uric Acid": 9.5
+            }
+          }
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "annual_physical",
+          "start": "2024-10-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "medications": [
+            {
+              "drug": "allopurinol 300 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperuricemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              77
+            ],
+            "hr": 67,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 83.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-16T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-16T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-16T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-16T10:10",
+              "author": "PCP",
+              "body": "29 y/o M, yearly exam.\n\nInterval: Still off cigarettes since April, proud of it. Put on a couple of pounds. Mood steady, PHQ-9 3, sertraline 50 daily. No joint pain or swelling ever. His dad had another bad gout flare this summer and Henry is worried he's next.\n\nLabs from 10/9 reviewed: CMP normal, creatinine normal. CBC normal. Lipids fine. Uric acid 9.5, up again (8.4 in 2022, 8.9 last year).\n\nExam: Vitals as charted. Well. HEENT normal. Neck no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Feet and hands: no swelling, no tophi. Skin normal. Mood/affect normal.\n\nA/P:\n1. Hyperuricemia, rising, no gout. Long talk. He wants to treat it given his father. Starting allopurinol 300 mg daily. Reviewed: stop and call for rash, fever, or any swelling. Recheck uric acid and kidney function in 2-3 months.\n2. Depression: stable, continue sertraline.\n3. Former smoker: keep it up.\n4. Flu shot given today. He declined the COVID booster this year.\n\nRTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "office_visit",
+          "start": "2024-10-31T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ankle swelling and fatigue",
+          "conditions": [
+            {
+              "label": "Acute kidney failure, unspecified",
+              "action": "diagnosed",
+              "onset": "2024-10-27",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Acute tubulo-interstitial nephritis",
+              "action": "diagnosed",
+              "onset": "2024-10-27",
+              "note": "suspected allopurinol-related; urine culture sent",
+              "icd10": "N10"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "allopurinol 300 MG Oral Tablet",
+              "action": "stop",
+              "reason": "suspected drug-induced interstitial nephritis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              80
+            ],
+            "hr": 68,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 83.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-10-31T11:55",
+              "resulted": "2024-10-31T14:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.3
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 34
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 38
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-10-31T11:50",
+              "resulted": "2024-10-31T13:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "1+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "1+"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 8
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-31T11:50",
+              "resulted": "2024-11-02T09:30",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth at 48 hours"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2024-10-31T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "renal-us-2024",
+              "action": "placed",
+              "order": "Renal ultrasound",
+              "category": "imaging",
+              "reason": "acute kidney injury"
+            },
+            {
+              "id": "neph-ref-2024",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "acute kidney injury, suspected allopurinol interstitial nephritis"
+            },
+            {
+              "id": "bmp-recheck-2024",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "creatinine recheck in 1 week"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit: Leg Swelling",
+              "date": "2024-10-31T16:45",
+              "author": "PCP",
+              "body": "S: Texted this morning, ankles puffy since the weekend and he's been wiped out at work, dragging by noon. Socks leave deep marks. Started allopurinol 300 on 10/16, so about two weeks in; has taken it daily. No rash, no fever, no burning or urgency with urination, no flank or back pain. No new NSAIDs or supplements. No chest pain or shortness of breath.\n\nO: Vitals normal, as charted. Looks tired, not ill. No rash anywhere. Heart regular. Lungs clear. Abdomen soft, no CVA tenderness. Bilateral pitting edema of the lower legs. No joint swelling.\n\nLabs (drawn today, back this afternoon): creatinine 2.3 (normal on 10/9), BUN 34. UA: protein 1+, blood 1+, RBC 8/hpf, WBC 2/hpf; no RBC casts and no bacteria on micro; nitrite and leukocyte esterase negative. Urine culture pending.\n\nA/P:\n1. Acute kidney injury two weeks after starting allopurinol, with edema, mild proteinuria and microscopic hematuria, bland for infection. Most likely drug-induced acute interstitial nephritis. Allopurinol stopped today. Called him at 3 pm with the numbers and told him to take no more.\n2. Culture sent to be complete. Renal ultrasound this week. Repeat BMP in 1 week. Nephrology referral, asked for a prompt slot.\n3. Avoid ibuprofen/naproxen, keep drinking water. Light duty if he can get it; work note given.\n4. Return precautions: less urine, shortness of breath, worse swelling, fever, rash: call same day.\n5. Allopurinol not to be restarted."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "telephone",
+          "start": "2024-11-04T09:15",
+          "reason": "urine culture result",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result Call",
+              "date": "2024-11-04T09:25",
+              "author": "RN",
+              "body": "Per PCP, called pt: urine culture no growth, no infection. Ankles a bit less puffy, still tired. Urinating normally. Off allopurinol since Thursday. Confirmed US tomorrow 2:30 and labs Thursday. He knows to call with any decrease in urine or new swelling."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "imaging",
+          "start": "2024-11-05T14:30",
+          "reason": "acute kidney injury",
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2024-11-05T14:30",
+              "text": "INDICATION: Acute kidney injury.\nTECHNIQUE: Grayscale and color flow sonography of both kidneys and the bladder.\nFINDINGS: Right kidney 11.4 cm, left kidney 11.7 cm in length. Normal cortical thickness and echogenicity. No hydronephrosis. No calculi. No solid or cystic mass. Normal color flow. Bladder decompressed, unremarkable.",
+              "conclusion": "Normal renal ultrasound. No hydronephrosis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "renal-us-2024",
+              "action": "done",
+              "date": "2024-11-05T14:30"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "lab_only",
+          "start": "2024-11-07T07:05",
+          "reason": "creatinine recheck",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-07T07:05",
+              "resulted": "2024-11-07T12:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.7
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 55
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-recheck-2024",
+              "action": "done",
+              "date": "2024-11-07T07:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "BMP Result",
+              "date": "2024-11-07T13:00",
+              "author": "PCP",
+              "body": "Creatinine down to 1.7 from 2.3, BUN 25. Ultrasound normal. Moving the right way off allopurinol. Message sent to pt. Nephrology on the 20th."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "specialist_visit",
+          "start": "2024-11-20T13:00",
+          "service": "Nephrology",
+          "reason": "acute kidney injury",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-20T12:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "neph-ref-2024",
+              "action": "done",
+              "date": "2024-11-20T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "date": "2024-11-22T10:15",
+              "author": "nephrology",
+              "body": "OUTSIDE NEPHROLOGY GROUP, consultation letter\nVisit 11/20/2024. Reason: acute kidney injury.\n\nDear colleague, thank you for asking me to see Mr. Silva, 29, a construction worker with depression on sertraline and hyperuricemia.\n\nHe started allopurinol 300 mg daily on 10/16. Two weeks later he developed bilateral leg edema and fatigue, and your labs showed creatinine 2.3 from a normal baseline, BUN 34, and a urinalysis with mild proteinuria and microscopic hematuria without casts, pyuria or bacteria. Culture negative. Renal ultrasound normal. Allopurinol was stopped 10/31 and creatinine was 1.7 a week later.\n\nToday he feels close to normal. Edema nearly gone. No rash, fever or joint pain.\nMeds: sertraline 50 mg daily. Allergies: NKDA.\nExam: BP normal. No rash. Trace ankle edema. Otherwise unremarkable.\nLabs today: creatinine 1.3.\n\nImpression: Acute interstitial nephritis, most likely allopurinol-induced, recovering after withdrawal of the drug. With steady improvement I would not biopsy and would not give steroids.\n\nRecommendations: avoid allopurinol permanently. Avoid NSAIDs while recovering. Repeat creatinine in 3 weeks; I expect it to normalize. If his uric acid needs treatment in future it should be discussed with us first. No routine nephrology follow-up needed unless creatinine fails to return to baseline.\n\nSincerely, consulting nephrologist"
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "kidney follow-up",
+          "conditions": [
+            {
+              "label": "Acute kidney failure, unspecified",
+              "action": "resolved",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Acute tubulo-interstitial nephritis",
+              "action": "resolved",
+              "icd10": "N10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              80
+            ],
+            "hr": 62,
+            "spo2": 96,
+            "weight_kg": 83.6
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-10T15:40",
+              "resulted": "2024-12-10T15:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-10T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: Kidney Injury",
+              "date": "2024-12-10T16:40",
+              "author": "PCP",
+              "body": "S: Swelling gone for about two weeks. Energy back, working full days again since mid-November. No rash. Has stayed off allopurinol and off ibuprofen. Saw nephrology 11/20, letter reviewed: allopurinol-related interstitial nephritis, no biopsy, avoid allopurinol.\n\nO: Vitals as charted. No edema. Heart and lungs normal.\nBMP drawn just before the visit: creatinine 1.0, BUN 15. Back to his baseline.\n\nA/P:\n1. AKI / acute interstitial nephritis from allopurinol: resolved. Allopurinol is off his list for good; told him to say so at any pharmacy or ER.\n2. Hyperuricemia: no gout. Leaving it untreated for now.\n3. Depression: fine, PHQ-9 3.\n\nPhysical next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-19a",
+          "kind": "pharmacy",
+          "start": "2025-02-19T10:45",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "date": "2025-02-19T10:45",
+              "author": "RN",
+              "body": "Pharmacy fax for sertraline 50 mg #90. Seen 12/10. Approved with 1 refill. Pharmacy profile also showed an old allopurinol script; called and asked them to inactivate it, pharmacist confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "ed_visit",
+          "start": "2025-05-13T14:50",
+          "end": "2025-05-13T19:10",
+          "service": "Emergency Medicine",
+          "reason": "high-voltage electrical injury, left arm pain",
+          "conditions": [
+            {
+              "label": "Electrocution, initial encounter",
+              "action": "diagnosed",
+              "onset": "2025-05-13",
+              "icd10": "T75.4XXA"
+            },
+            {
+              "label": "Traumatic compartment syndrome of left upper extremity, initial encounter",
+              "action": "diagnosed",
+              "onset": "2025-05-13",
+              "note": "forearm and hand",
+              "icd10": "T79.A12A"
+            },
+            {
+              "label": "Rhabdomyolysis",
+              "action": "diagnosed",
+              "onset": "2025-05-13",
+              "icd10": "M62.82"
+            },
+            {
+              "label": "Acute kidney failure, unspecified",
+              "action": "diagnosed",
+              "onset": "2025-05-13",
+              "note": "with rhabdomyolysis",
+              "icd10": "N17.9"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-05-13T14:55",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 110,
+              "rr": 18,
+              "temp_c": 37.2
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-13T15:05",
+              "resulted": "2025-05-13T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.5
+                },
+                {
+                  "test": "Calcium",
+                  "value": 7.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 52
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-13T15:05",
+              "resulted": "2025-05-13T15:50",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 6.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-13T15:05",
+              "resulted": "2025-05-13T16:05",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 20000
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-13T15:30",
+              "resulted": "2025-05-13T16:10",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-13T14:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-05-13T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-05-15T08:20",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT, physician record\nArrival 05/13/2025 14:50 by ambulance from a job site.\n\nHPI: 29 y/o male construction worker. Per EMS and coworkers, his left arm contacted an overhead power line while he was moving equipment. No fall from height reported. Awake, alert and oriented on arrival. Severe pain in the left arm, which is swollen and red. Hx depression, hyperuricemia, kidney injury last fall attributed to allopurinol.\nHome meds (per patient/old list): sertraline 50 mg daily, allopurinol 300 mg daily.\nAllergies: NKDA. Former smoker, social alcohol.\n\nVitals: BP 135/85, HR 110, RR 18, T 37.2 C.\nExam: Alert, GCS 15, in distress from pain. Left forearm tense and tender throughout, swollen and erythematous; passively extending the fingers produces severe pain. Radial pulse palpable. Right arm, chest and legs without injury. Heart tachycardic, regular. Lungs clear.\nECG: sinus tachycardia, no arrhythmia.\n\nLabs: creatinine 1.8 (no baseline available to us), K 5.5, Ca 7.9, phos 6.2, CK 20,000. Urine dip 3+ blood, microscopy without RBCs.\n\nAssessment: High-voltage electrical injury with compartment syndrome of the left forearm and hand. Rhabdomyolysis with myoglobinuria and acute kidney injury, mild hyperkalemia.\nPlan: Aggressive IV fluids targeting urine output. Cardiac monitoring. Hyperkalemia treated per protocol. Tdap updated. Hand surgery at bedside, to OR emergently for fasciotomy. Admit to surgery.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13b",
+          "kind": "hospital_admission",
+          "start": "2025-05-13T19:10",
+          "end": "2025-05-20T12:30",
+          "service": "Hand Surgery",
+          "reason": "compartment syndrome left forearm and hand after electrical injury",
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "post-fasciotomy pain"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-20T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-20T05:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 1850
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Fasciotomy forearm",
+              "snomed": "178071007",
+              "performed": "2025-05-13T20:15"
+            },
+            {
+              "procedure": "Division of fascia of hand",
+              "snomed": "397737001",
+              "performed": "2025-05-13T20:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-05-13T19:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative Report: Fasciotomy",
+              "date": "2025-05-21T09:00",
+              "author": "hand surgery",
+              "body": "REGIONAL HOSPITAL, operative report\nDate of surgery: 05/13/2025\nPreoperative and postoperative diagnosis: Compartment syndrome, left forearm and hand, after high-voltage electrical injury.\nProcedure: Fasciotomy of the left forearm, volar and dorsal; decompression of the hand compartments.\nAnesthesia: General.\nFindings: Tense volar and dorsal forearm compartments. Muscle swollen, pink and contractile after release. Hand compartments tight, released. No muscle debridement needed.\nEBL minimal. Wounds left open with negative pressure dressing. Condition to PACU stable.\nPlan: Return for wound closure in 3-5 days."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-05-21T09:05",
+              "author": "hand surgery",
+              "body": "REGIONAL HOSPITAL, discharge summary\nAdmitted 05/13/2025, discharged 05/20/2025.\n\nDiagnoses: High-voltage electrical injury. Compartment syndrome left forearm and hand, s/p fasciotomy. Rhabdomyolysis with acute kidney injury, resolved.\n\nCourse: Taken to the OR the evening of arrival for fasciotomy (see op note). IV fluids with close urine output monitoring; potassium normal by the next morning and creatinine back to normal within days. CK fell steadily. Returned to the OR 05/17 for delayed primary closure of the fasciotomy wounds, closed without graft. Started hand therapy in the hospital. Telemetry without arrhythmia.\n\nDischarge labs 05/20: creatinine 1.0, CK 1,850.\nDischarge exam: wounds clean and closed, sutures in. Fingers warm, sensation intact, motion limited by stiffness.\n\nDischarge medications: acetaminophen-oxycodone 325/5 mg every 6 hours as needed, short supply. Home: sertraline 50 mg daily, allopurinol 300 mg daily.\nAllergies: NKDA.\n\nFollow-up: hand surgery clinic in 3 weeks, suture removal at 2 weeks, outpatient occupational therapy twice weekly. Off work until cleared by hand surgery. PCP within 1-2 weeks; recheck BMP and CK."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "telephone",
+          "start": "2025-05-21T10:30",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-05-21T10:45",
+              "author": "RN",
+              "body": "Called after discharge summary arrived. Home since yesterday, staying with his parents for the week. Pain 5/10, taking the oxycodone pill about twice a day, plus nothing else. Dressing dry. Urine normal color now. Sertraline taking. Reviewed d/c med list with him: he is NOT on allopurinol, the hospital carried it from an old list. Appt 5/27 with PCP confirmed. Knows to go to ED for numbness, cold fingers, fever or wound drainage."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "office_visit",
+          "start": "2025-05-27T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Rhabdomyolysis",
+              "action": "resolved",
+              "icd10": "M62.82"
+            },
+            {
+              "label": "Acute kidney failure, unspecified",
+              "action": "resolved",
+              "icd10": "N17.9"
+            },
+            {
+              "label": "Electrocution, initial encounter",
+              "action": "resolved",
+              "icd10": "T75.4XXA"
+            },
+            {
+              "label": "Traumatic compartment syndrome of left upper extremity, initial encounter",
+              "action": "resolved",
+              "note": "s/p fasciotomy 5/13/2025",
+              "icd10": "T79.A12A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              83
+            ],
+            "hr": 63,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 83.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-27T14:20",
+              "resulted": "2025-05-27T17:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-27T14:20",
+              "resulted": "2025-05-27T17:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 240
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-05-27T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-05-27T14:35",
+              "author": "PCP",
+              "body": "S: Two weeks out from the power line injury. Discharge summary, op note and ED record reviewed. Sutures came out at hand surgery on Friday. Pain 3/10, down to one oxycodone at night and stopping. Hand stiff, starts OT twice a week next week. Sleeping poorly the first few nights, replaying it; better now. Mood a bit down being off work, PHQ-9 6. No SI. Workers' comp case opened by his employer.\n\nMeds: sertraline 50 daily. Not on allopurinol (reconciled by RN 5/21).\n\nO: Vitals as charted. Left forearm volar and dorsal incisions closed, clean, no erythema. Hand: mild swelling, fingers warm, cap refill brisk, light touch intact, flexion limited about halfway. Heart regular, lungs clear.\n\nA/P:\n1. Electrical injury with left forearm/hand compartment syndrome, s/p fasciotomy and closure. Healing well. OT and hand surgery follow-up per plan. Out of work until hand surgery clears him; note given.\n2. Rhabdomyolysis/AKI: BMP and CK today. Expect normal.\n3. Depression: some situational dip. Continue sertraline; we'll watch it. He knows he can message anytime.\n4. Finish the oxycodone and stop; acetaminophen if needed after."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "portal_message",
+          "start": "2025-05-28T08:20",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs Normal",
+              "date": "2025-05-28T08:20",
+              "author": "PCP",
+              "body": "Henry, creatinine 0.9 and CK 240, both normal. Your kidneys and muscles have recovered from the injury. Nothing else to do there. Good luck with OT next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "specialist_visit",
+          "start": "2025-06-11T10:00",
+          "service": "Hand Surgery",
+          "reason": "post-fasciotomy follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Clinic Letter",
+              "date": "2025-06-13T11:40",
+              "author": "hand surgery",
+              "body": "REGIONAL HOSPITAL HAND SURGERY CLINIC\nVisit 06/11/2025\n\nMr. Silva returns four weeks after left forearm and hand fasciotomy with delayed closure following a high-voltage injury. Incisions fully healed. Edema minimal. Composite fist about 2 cm short of the palm, improving weekly with occupational therapy. Sensation intact in all digits. Grip weaker on the left.\n\nPlan: continue OT twice weekly, scar massage. Remain off work. Return in 8 weeks.\n\nCurrent meds: sertraline. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "telephone",
+          "start": "2025-06-19T15:20",
+          "reason": "workers' compensation form",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Work Form",
+              "date": "2025-06-19T15:30",
+              "author": "MA",
+              "body": "Insurer for his employer faxed a medical status form. PCP completed the general medical section (kidney recovered, no restrictions from our side) and noted work restrictions defer to hand surgery. Faxed back, copy scanned. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-06a",
+          "kind": "specialist_visit",
+          "start": "2025-08-06T09:30",
+          "service": "Hand Surgery",
+          "reason": "post-fasciotomy follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hand Surgery Clinic Letter",
+              "date": "2025-08-08T10:05",
+              "author": "hand surgery",
+              "body": "REGIONAL HOSPITAL HAND SURGERY CLINIC\nVisit 08/06/2025\n\nThree months after left forearm and hand fasciotomy. Near-full range of motion of wrist and fingers, full fist. Grip close to the right side. Scars mature, no contracture. Neurovascularly intact.\n\nCleared to return to modified duty now, no heavy overhead lifting with the left arm for one more month, then full duty. Home exercise program; OT discharged. Discharged from hand clinic, return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "nurse_visit",
+          "start": "2025-09-25T07:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-25T07:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-25T07:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-09-25T07:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "date": "2025-09-25T07:40",
+              "author": "RN",
+              "body": "Influenza and 2025-26 COVID given, left and right deltoid. Tolerated. Back at work full duty since September, says the arm is basically normal. Waited 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "hospital_admission",
+          "start": "2025-11-12T03:40",
+          "end": "2025-12-23T13:00",
+          "service": "Burn Surgery",
+          "reason": "40% TBSA burns from house fire",
+          "conditions": [
+            {
+              "label": "Burn of unspecified body region, unspecified degree",
+              "action": "diagnosed",
+              "onset": "2025-11-12",
+              "note": "40% TBSA, house fire",
+              "icd10": "T30.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "burn pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-15T10:20",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 120,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-15T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-15T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 22
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 28
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 110
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 69
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-15T10:40",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 4.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-15T10:45",
+              "resulted": "2025-11-20T11:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-22T05:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-22T05:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Escharotomy of burnt skin",
+              "snomed": "240992000",
+              "performed": "2025-11-12T05:30"
+            },
+            {
+              "procedure": "Split thickness graft of skin to skin",
+              "snomed": "265675003",
+              "performed": "2025-11-19T08:30"
+            },
+            {
+              "procedure": "Split thickness graft of skin to skin",
+              "snomed": "265675003",
+              "performed": "2025-12-02T08:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-12T03:40"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-17a",
+          "kind": "telephone",
+          "start": "2025-11-17T11:05",
+          "reason": "family call, patient hospitalized",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Brother",
+              "date": "2025-11-17T11:15",
+              "author": "RN",
+              "body": "Pt's older brother called. Henry was burned in a house fire early Wednesday and is in the burn ICU at a regional burn center. Brother says he has had a hard weekend but the team is managing. Asked us to know and to fax his med list and history. No release on file for the brother, so took his message only, confirmed nothing back. Called the burn unit and faxed med list/problem list to the unit clerk at their request. Flagged to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "telephone",
+          "start": "2025-12-24T09:40",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-12-24T09:55",
+              "author": "RN",
+              "body": "Spoke with Henry, home since yesterday, staying with his brother for now. Tired, sore, wearing garments. Pain pills about three a day. Eating well. Has dressing supplies, OT starts next week. Booked with PCP 1/6. Burn center summary not yet received, requested."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-29a",
+          "kind": "outside_records",
+          "start": "2025-12-29T10:30",
+          "reason": "burn center records",
+          "conditions": [
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "diagnosed",
+              "onset": "2025-11-15",
+              "note": "burn center hospital day 4, culture-negative",
+              "icd10": "R65.21"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Burn ICU Critical Care Note, Hospital Day 4",
+              "date": "2025-12-29T10:30",
+              "author": "critical care",
+              "body": "REGIONAL BURN CENTER, CRITICAL CARE PROGRESS NOTE\nDate of service: 11/15/2025, hospital day 4\n\n30 y/o M, construction worker, hx depression and hyperuricemia, prior kidney injury attributed to allopurinol (2024) and left forearm compartment syndrome after electrical injury (05/2025, fasciotomy). Admitted 11/12 with 40% TBSA burns from a house fire three days ago. Initial management: wound care and escharotomy, resuscitation with IV fluids, morphine for pain, prophylactic antibiotics. Enteral feeds since admission.\n\nEvents: Since early morning febrile, tachycardic and hypotensive. Complains of abdominal discomfort. Vomited twice; NG output 600 mL over the past 6 hours.\n\nHome meds on file: sertraline 50 mg daily, allopurinol 300 mg daily. Allergies: NKDA.\n\nVitals: T 38.9 C, HR 120, BP 90/60.\nExam: Lethargic but arousable. Abdomen distended, tender to palpation, hypoactive bowel sounds. Dressings in place.\n\nLabs: WBC 16.0, Hgb 10.2, Plt 250. Na 135, K 4.5, Cl 100, HCO3 22, BUN 28, Cr 1.4, glucose 110. Lactate 4.2.\n\nAssessment: Septic shock on hospital day 4 of a 40% TBSA burn, source not yet identified. Feeding intolerance.\nPlan: Blood and wound cultures, then broaden to vancomycin and piperacillin-tazobactam. Fluid bolus, norepinephrine to MAP 65 or more. Hold enteral feeds, NG to low intermittent suction. Serial lactate and abdominal exams. Continue sertraline when tolerating enteral route."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Burn Center Discharge Summary",
+              "date": "2025-12-29T10:35",
+              "author": "burn surgery",
+              "body": "REGIONAL BURN CENTER, discharge summary\nAdmitted 11/12/2025. Discharged 12/23/2025 to home.\n\nDiagnoses: 40% TBSA burns, house fire. Septic shock, hospital day 4, resolved; cultures negative.\n\nCourse: Escharotomy and wound care on arrival with fluid resuscitation. On day 4 developed fever, tachycardia, hypotension with lactate 4.2 and feeding intolerance. Treated with fluids, norepinephrine for about 48 hours, and vancomycin plus piperacillin-tazobactam for 7 days. Blood and wound cultures grew no pathogen. Feeds were held with gastric decompression and restarted on day 7, tolerated, advanced to a regular diet. Excision and split-thickness skin grafting 11/19 and 12/02; grafts took well. Creatinine peaked at 1.4 and returned to normal. Physical and occupational therapy daily; walking independently at discharge.\n\nDischarge labs 12/22: WBC 8.4, Hgb 10.9, creatinine 0.9.\n\nDischarge medications: acetaminophen-oxycodone 325/5 mg every 6 hours as needed, short supply. Home meds continued: sertraline 50 mg daily, allopurinol 300 mg daily.\nAllergies: NKDA.\n\nFollow-up: burn clinic in 4-5 weeks; outpatient OT; pressure garments fitted before discharge, worn 23 hours a day; daily moisturizer and scar massage to grafted areas. PCP within 2 weeks. Off work until cleared by burn clinic."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "office_visit",
+          "start": "2026-01-06T10:20",
+          "end": "2026-01-06T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "burn center follow-up",
+          "conditions": [
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "resolved",
+              "icd10": "R65.21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              78
+            ],
+            "hr": 72,
+            "rr": 13,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 75.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-06T11:00",
+              "resulted": "2026-01-06T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.95
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 313
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-06T11:00",
+              "resulted": "2026-01-06T16:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            },
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-01-06T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-01-06T12:30",
+              "author": "PCP",
+              "body": "S: First visit since the fire. Burn center summary and the day-4 ICU note came in 12/29, reviewed: 40% TBSA burns, escharotomy, grafting twice, septic shock on day 4 treated with pressors and broad antibiotics, cultures negative, home 12/23. He doesn't remember much of the first week.\n\nNow: staying with his brother. Pain 4/10, using acetaminophen-oxycodone once or twice a day, wants off it. Wearing garments nearly all day, itchy. OT twice weekly. Eating well, lost about 7 kg since fall. Sleep broken. Mood low, PHQ-9 9, says it is mostly the house, the time off work, and being stuck. No SI, no plan, no thoughts of self-harm. Still taking sertraline 50 daily.\n\nMed reconciliation: burn center list shows allopurinol 300 daily. He has not taken allopurinol since 10/31/2024; it caused his kidney injury. Not on our list. Will send a note to the burn clinic.\n\nO: Vitals as charted, afebrile. Thin, moving carefully. Garments in place; grafted areas inspected where garments removed, healing, no drainage or open areas. Heart regular. Lungs clear. Abdomen soft, nontender, normal bowel sounds. No edema.\n\nA/P:\n1. Burns 40% TBSA s/p grafting, recovering. Burn clinic and OT per plan. Taper off the opioid over the next week, acetaminophen for baseline pain.\n2. Septic shock during admission: resolved. CBC and BMP today to look at the anemia and kidney numbers.\n3. Depression with a recent rise in symptoms after a major event. Talked about counseling, he wants to wait until he's driving again. Keeping sertraline at 50 for now; recheck in 2 months, sooner if worse. Crisis line reviewed.\n4. Work forms: out of work, burn clinic to decide return.\n5. Medication list corrected with patient; allopurinol remains off."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "portal_message",
+          "start": "2026-01-07T08:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Labs",
+              "date": "2026-01-07T08:10",
+              "author": "PCP",
+              "body": "Henry, hemoglobin is 12.1, up from 10.9 at discharge. Still a little low after everything, but heading back up as you heal and eat. Kidney function normal at 0.9. We'll recheck at your physical. Hang in there."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "specialist_visit",
+          "start": "2026-01-28T13:30",
+          "service": "Burn Surgery",
+          "reason": "burn clinic follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Burn Clinic Letter",
+              "date": "2026-01-30T09:15",
+              "author": "burn surgery",
+              "body": "REGIONAL BURN CENTER, outpatient burn clinic\nVisit 01/28/2026\n\nMr. Silva is five weeks out from discharge after 40% TBSA burns with grafting. All grafted areas healed, no open wounds. Donor sites healed. Garments fitting well. Range of motion good and improving with OT.\n\nPlan: continue pressure garments 23 h/day, moisturizer and scar massage, OT. Remains off work. Return in 10-12 weeks.\n\nNote: thank you for the medication correction; allopurinol removed from our record."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "pharmacy",
+          "start": "2026-02-19T16:00",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "date": "2026-02-19T16:00",
+              "author": "RN",
+              "body": "Sertraline 50 mg 90-day request, seen 1/6. Sent with 1 refill. Asked pharmacy to confirm no allopurinol on profile, confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "mood follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-03-11T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit: Mood",
+              "date": "2026-03-11T12:45",
+              "author": "PCP",
+              "body": "Video, at his brother's place, confirmed name and DOB.\n\nDoing better than January. Off all pain pills since mid-January. Driving again. Garments still most of the day, itch improving. Sleeping 6-7 hours. PHQ-9 7. Gets out to the gym his OT set up. Insurance and the house rebuild take up a lot of his week. No SI.\n\nA/P: Depression improving, sertraline 50 continued. He declines counseling for now, will reach out if it slips. Physical in early June with labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "specialist_visit",
+          "start": "2026-04-15T14:00",
+          "service": "Burn Surgery",
+          "reason": "burn clinic follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Burn Clinic Letter",
+              "date": "2026-04-17T10:40",
+              "author": "burn surgery",
+              "body": "REGIONAL BURN CENTER, outpatient burn clinic\nVisit 04/15/2026\n\nGrafts stable and maturing. Full range of motion at all joints we follow. No breakdown. Continue garments and scar care. Discussed return to construction work; will reassess at next visit before clearing him. Follow up in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "portal_message",
+          "start": "2026-05-20T19:30",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-05-20T19:30",
+              "author": "patient",
+              "body": "Is my physical still June 4? Do I need to fast for the labs? Also I have a disability form from the insurance company, can I bring it then"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-05-21T08:50",
+              "author": "front desk",
+              "body": "Yes, Thursday June 4 at 8:20. Nothing to eat after midnight, water and black coffee are fine. Bring the form and we'll get it to the doctor."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "annual_physical",
+          "start": "2026-06-04T08:20",
+          "end": "2026-06-04T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              71
+            ],
+            "hr": 64,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 80.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-04T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-04T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-04T09:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-04T09:05",
+              "results": [
+                {
+                  "test": "Uric Acid",
+                  "value": 9.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-06-04T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-04T10:20",
+              "author": "PCP",
+              "body": "30 y/o M, annual exam.\n\nInterval since January: steady recovery from the burns. Burn clinic in April happy with the grafts, return to work decision at the July visit. Garments still daytime. No pain medication. Weight back up some. Mood better, PHQ-9 5, sertraline daily. Still no cigarettes. Alcohol a couple of beers on weekends. No gout attacks ever.\n\nROS: no fever, cough, chest pain, dyspnea. No GI or urinary complaints. Itch at grafts, improving.\n\nExam: Vitals as charted. Well-appearing. HEENT normal. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Grafted skin intact, flat, no open areas. Left forearm fasciotomy scars mature. Hands with full grip. No edema. Affect brighter than winter.\n\nA/P:\n1. Burns, s/p grafting: healing well, per burn clinic.\n2. Depression: improved. Continue sertraline 50.\n3. Hyperuricemia: no gout. Uric acid today. No allopurinol (interstitial nephritis 2024).\n4. Health maintenance: CMP, CBC, lipids today. Flu and COVID this fall. Tdap current (2025).\n5. Insurance disability form completed today, deferring work clearance to burn clinic.\n\nFollow-up in September."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.0,
+            "labs": {
+              "Uric Acid": 9.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "portal_message",
+          "start": "2026-06-05T13:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical Labs",
+              "date": "2026-06-05T13:15",
+              "author": "PCP",
+              "body": "Henry, good results. Hemoglobin is back to normal at 14.0. Kidney and liver tests normal, cholesterol fine. Uric acid 9.1, about where it has been, and with no gout we'll keep watching it. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-15a",
+          "kind": "specialist_visit",
+          "start": "2026-07-15T13:00",
+          "service": "Burn Surgery",
+          "reason": "burn clinic follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Burn Clinic Letter",
+              "date": "2026-07-17T09:30",
+              "author": "burn surgery",
+              "body": "REGIONAL BURN CENTER, outpatient burn clinic\nVisit 07/15/2026\n\nEight months after injury. Grafts stable, supple, no breakdown. Full motion. Garments can be reduced to nights over the next month. He may begin a graded return to work in the fall; we will send the work status letter to his employer's insurer at that time. Sun protection to grafted skin. Return in 4 months.\n\nMeds: sertraline 50 mg daily. Allergies: NKDA.\n\nFiled to chart; reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "pharmacy",
+          "start": "2026-08-13T10:10",
+          "reason": "refill",
+          "documents": [
+            {
+              "type": "Refill Encounter",
+              "title": "Sertraline Refill",
+              "date": "2026-08-13T10:10",
+              "author": "MA",
+              "body": "Pharmacy request sertraline 50 mg #90. Seen 6/4, f/u booked 9/17. Approved per protocol with 1 refill; PCP to cosign."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, mood and recovery",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute kidney failure, unspecified|N17.9": {
+        "code": "N17.9",
+        "display": "Acute kidney failure, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute tubulo-interstitial nephritis|N10": {
+        "code": "N10",
+        "display": "Acute pyelonephritis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Burn of unspecified body region, unspecified degree|T30.0": {
+        "code": "T30.0",
+        "display": "Burn of unspecified body region, unspecified degree",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Electrocution, initial encounter|T75.4XXA": {
+        "code": "T75.4XXA",
+        "display": "Electrocution, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder, single episode, unspecified|F32.9": {
+        "code": "F32.9",
+        "display": "Major depressive disorder, single episode, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rhabdomyolysis|M62.82": {
+        "code": "M62.82",
+        "display": "Rhabdomyolysis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe sepsis with septic shock|R65.21": {
+        "code": "R65.21",
+        "display": "Severe sepsis with septic shock",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Traumatic compartment syndrome of left upper extremity, initial encounter|T79.A12A": {
+        "code": "T79.A12A",
+        "display": "Traumatic compartment syndrome of left upper extremity, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "procedures": {
+      "Appendectomy": {
+        "code": "80146002",
+        "display": "Appendectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Division of fascia of hand": {
+        "code": "397737001",
+        "display": "Division of fascia of hand",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Escharotomy of burnt skin": {
+        "code": "240992000",
+        "display": "Escharotomy of burnt skin",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Fasciotomy forearm": {
+        "code": "178071007",
+        "display": "Fasciotomy forearm",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Split thickness graft of skin to skin": {
+        "code": "265675003",
+        "display": "Split thickness graft of skin to skin",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

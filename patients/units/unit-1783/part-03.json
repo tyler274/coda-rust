@@ -1,0 +1,162 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001783",
+      "events": [
+        {
+          "id": "2025-03-25a",
+          "kind": "annual_physical",
+          "start": "2025-03-25T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment cancelled", "author": "front desk", "date": "2025-03-24T07:55",
+             "body": "Pt called, parent-teacher conferences were moved to tomorrow afternoon and she can't make her physical. Rebooked 4/8 at 7:40 am before school."}
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "annual_physical",
+          "start": "2025-04-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-04-08T08:25", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-04-08T08:25", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2025-04-08T08:25", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-04-08T08:25", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2025-04-08T08:05", "issued": "2025-04-10T16:20",
+             "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+             "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-04-08T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-04-08T09:10",
+             "body": "Early-morning physical before her school day.\n\nSince last year: seen by an outside gynecology group for infertility. Thyroid, prolactin and pituitary hormones normal, office ultrasound normal, HSG normal with open tubes, husband's semen analysis normal. Two clomiphene cycles did not result in pregnancy; challenge test in October showed normal ovarian reserve. Diagnosis unexplained infertility. She has decided to take a break from treatment and is not on anything. Periods remain regular with mild cramps that she manages without medication.\n\nNo other concerns. No new family history.\nAllergies: NKDA.\n\nExam: well, pleasant. Vitals as recorded, weight steady. Thyroid normal. Heart and lungs normal. Abdomen soft, nontender. Pelvic: external genitalia normal, cervix without lesions, Pap collected; no adnexal tenderness or masses. Skin and extremities normal. PHQ-2 1, she says winter was long but mood is fine.\n\nA/P:\n1. Health maintenance: CBC, CMP, lipids. TSH given mother's thyroid disease and the fertility history (gyn checked it last summer, rechecking yearly is reasonable).\n2. Cervical screening: Pap today, cytology only at 29.\n3. Infertility, unexplained, treatment on hold: she knows to reconnect with gyn when ready.\n4. Dysmenorrhea, mild: no treatment wanted.\n\nNext physical in a year."}
+          ]
+        },
+        {
+          "id": "2025-04-11a",
+          "kind": "portal_message",
+          "start": "2025-04-11T07:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap and blood work", "author": "PCP", "date": "2025-04-11T07:15",
+             "body": "Hi Nicole - your Pap is normal, so the next one is in three years. Blood counts, chemistries, cholesterol and thyroid were all normal as well."},
+            {"type": "Patient Message", "title": "RE: Pap and blood work", "author": "patient", "date": "2025-04-11T17:48",
+             "body": "Great news, thanks for letting me know."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T15:40",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-21T15:44"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-21T15:46"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-21T15:44"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccine administration", "author": "RN", "date": "2025-10-21T15:58",
+             "body": "Came in for her yearly flu and COVID 2025-26 vaccines. No fever or illness. Given IM in each deltoid. No immediate reaction; she had a sore arm last year for about a day after the COVID shot, expects the same."}
+          ]
+        },
+        {
+          "id": "2026-01-17a",
+          "kind": "ed_visit",
+          "start": "2026-01-17T14:10",
+          "end": "2026-01-17T17:55",
+          "service": "Emergency Medicine",
+          "reason": "left lower abdominal pain",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 6}],
+          "conditions": [{"label": "Left lower quadrant pain", "icd10": "R10.32", "action": "diagnosed", "onset": "2026-01-17"}],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2026-01-17T14:35", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "Negative"},
+              {"test": "Urine Nitrite", "text": "Negative"},
+              {"test": "Urine Blood", "text": "Negative"}
+            ]},
+            {"panel": null, "collected": "2026-01-17T14:35", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2026-01-17T14:10"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-01-20T10:05",
+             "body": "AREA HOSPITAL EMERGENCY DEPARTMENT - PROVIDER NOTE\nArrival 01/17/2026 14:10\n\nCC: left lower abdominal pain\n\nHPI: 30 yo F with a history of female infertility and a prior clomiphene citrate challenge test. Left-sided lower abdominal pain began suddenly this morning. Sharp, comes and goes, 6/10 at worst. LMP started 14 days ago, ordinary flow and length; cycles regular at 28 days. Not sexually active at present; uses no contraception. No STI history. Denies nausea, vomiting, fevers, dysuria, frequency.\n\nPMH (per records): female infertility; clomiphene citrate challenge testing indication.\nMeds: none. Allergies: NKDA.\nFHx: MGM type 2 DM, mother hypothyroidism, father HTN; no infertility, endometriosis or early menopause in the family.\nSHx: never smoker, no alcohol, math teacher.\n\nExam: VS within normal limits. Uncomfortable but nontoxic. Abdomen: mild LLQ tenderness on palpation; no rebound, no guarding. No CVA tenderness. Pelvic: normal external exam and cervix, no cervical motion tenderness, no adnexal tenderness or mass.\n\nUA: leukocyte esterase, nitrite and blood all negative. Urine hCG negative.\n\nMDM: well-appearing young woman with mid-cycle unilateral pain, benign exam and negative urine studies. No evidence of infection, stone or pregnancy-related cause.\n\nImpression: left lower quadrant pain.\nDisposition: discharged home in stable condition. Follow up with PCP this week; return for worsening pain, fever, vomiting or bleeding."},
+            {"type": "Progress Notes", "title": "ED record reviewed", "author": "PCP", "date": "2026-01-20T12:30",
+             "body": "ED record from Saturday reviewed. LLQ pain mid-cycle, exam and UA/hCG negative, sent home. Patient already messaged; follow-up booked."}
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T06:50",
+          "documents": [
+            {"type": "Patient Message", "title": "ER visit over the weekend", "author": "patient", "date": "2026-01-20T06:50",
+             "body": "Hi - I went to the ER Saturday with pain on my lower left side. They checked my urine and did an exam and said it all looked ok and to follow up with you. It's a lot better already. Do I need an appointment?"},
+            {"type": "Patient Message", "title": "RE: ER visit over the weekend", "author": "RN", "date": "2026-01-20T09:30",
+             "body": "Glad it's easing up. Yes, the doctor would like a quick follow-up. Booked you Friday 1/23 at 3:45. If the pain comes back strongly, or you get fever or vomiting before then, call us right away."}
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "office_visit",
+          "start": "2026-01-23T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, abdominal pain",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "conditions": [{"label": "Left lower quadrant pain", "icd10": "R10.32", "action": "resolved", "onset": "2026-01-17"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-01-23T15:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - ED follow-up", "author": "PCP", "date": "2026-01-23T16:20",
+             "body": "Follow-up after ED visit 1/17 for left lower abdominal pain. ED record reviewed: benign abdominal and pelvic exam, UA negative, urine pregnancy test negative, discharged.\n\nThe pain settled within two days and has not come back. No fever, bowel or urinary changes, no abnormal bleeding.\n\nMeds: none. NKDA.\n\nExam: afebrile, vitals normal. Abdomen soft, nontender throughout including the left lower quadrant, no masses, normal bowel sounds.\n\nA/P: Left lower quadrant pain, resolved. Timing at mid-cycle with a reassuring workup. No further testing now. Call if it recurs. Physical in March as planned."}
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "annual_physical",
+          "start": "2026-03-09T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-03-09T08:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-09T08:20", "results": [{"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2026-03-09T08:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-03-09T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-03-09T09:00",
+             "body": "30 y/o here for her yearly exam.\n\nInterval: ED visit in January for left lower quadrant pain, settled on its own, nothing since. Fertility treatment still on hold; she has not gone back to gyn. Cycles regular, mild cramps as before, nothing needing medication. No other new symptoms.\n\nMeds: none. Allergies: no known drug allergies.\nFamily history unchanged. Never smoker, no alcohol.\n\nExam: well-appearing. Vitals reviewed, BMI stable around 22. Thyroid normal. Heart regular without murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Mood good, PHQ-2 0.\n\nA/P:\n1. Preventive care: CBC, BMP, lipids today. Pap next due 2028. Tdap due 2027. Vaccines current for this season.\n2. Female infertility, unexplained, on pause: she can call gyn directly when ready.\n3. Dysmenorrhea, mild, stable.\n\nSee her in a year."}
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "portal_message",
+          "start": "2026-03-11T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from your physical", "author": "PCP", "date": "2026-03-11T12:10",
+             "body": "Nicole, your blood work from this week's physical is normal across the board. Have a good spring."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T20:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine record", "author": "patient", "date": "2026-05-19T20:15",
+             "body": "The district is updating staff files and asked for a copy of my vaccination record. Could you send one through here?"},
+            {"type": "Patient Message", "title": "RE: Vaccine record", "author": "front desk", "date": "2026-05-20T08:40",
+             "body": "Attached is your immunization history as we have it on file. Let us know if the district needs a different form."}
+          ]
+        }
+      ]
+    }
+  ]
+}

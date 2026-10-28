@@ -1,0 +1,230 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002145",
+      "events": [
+        {
+          "id": "2024-03-18a",
+          "kind": "pharmacy",
+          "start": "2024-03-18T08:10",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2024-03-18T08:10",
+              "body": "Electronic request from his pharmacy, naltrexone 50 mg #90 and sertraline 100 mg #90. Last visit 12/11, on file. Pended for PCP, approved and sent 3/18."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-13a",
+          "kind": "ed_visit",
+          "start": "2024-05-13T13:05",
+          "end": "2024-05-13T19:40",
+          "service": "Emergency Medicine",
+          "reason": "fatigue, jaundice, dark urine",
+          "conditions": [
+            {"label": "Hepatitis C virus reinfection", "icd10": "B17.10", "action": "diagnosed", "onset": "2024-04-29"}
+          ],
+          "vitals": [
+            {"time": "2024-05-13T13:12", "temp_c": 36.9, "bp": [132, 81], "hr": 88, "rr": 16, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-05-13T13:40", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 120},
+              {"test": "Alanine Aminotransferase", "value": 130},
+              {"test": "Alkaline Phosphatase", "value": 210},
+              {"test": "Bilirubin, Total", "value": 3.2},
+              {"test": "Bilirubin, Direct", "value": 2.1}
+            ]},
+            {"panel": null, "collected": "2024-05-13T13:40", "results": [{"test": "Hepatitis C Antibody", "text": "Reactive"}]},
+            {"panel": null, "collected": "2024-05-13T13:40", "resulted": "2024-05-14T10:15", "results": [{"test": "Hepatitis C Viral Load, PCR", "value": 2400000}]}
+          ],
+          "reports": [
+            {"study": "Right upper quadrant ultrasound", "performed": "2024-05-13T15:30", "text": "Liver normal in size with homogeneous echotexture. No focal hepatic lesion. Gallbladder without stones, wall thickening or pericholecystic fluid. Common bile duct 4 mm. No intrahepatic ductal dilation. Spleen normal in size. Right kidney unremarkable. No ascites.", "conclusion": "Normal right upper quadrant ultrasound. No biliary dilation."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2024-05-13T13:05"}],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-05-14T14:20",
+              "body": "Outside emergency department record, faxed to PCP.\n\nVisit 5/13/2024.\nCC: yellow eyes, dark urine, tired.\n\nHPI: 43M with prior hepatitis C (treated, cured 2021), opioid use disorder in remission on naltrexone, PTSD. Two weeks of worsening fatigue, then noticed his eyes turning yellow and tea-colored urine. No travel lately. Drinks no alcohol. No Tylenol or other OTC products or supplements beyond his vitamin D. Denies any drug use now; says he goes to his recovery program regularly.\n\nMeds: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3 2000 units daily.\nAllergies: NKDA.\nPSH: appendectomy, left femur ORIF.\n\nExam: temp 36.9, other vitals in flowsheet. Icteric sclerae. Mildly tender in the right upper quadrant without guarding. No asterixis. Alert and oriented.\n\nData: AST 120, ALT 130, alk phos 210, total bili 3.2, direct bili 2.1. HCV antibody reactive (expected given history). HCV RNA sent. RUQ ultrasound normal, no ductal dilation.\n\nCourse: well appearing, tolerating PO. Discharged with instructions to follow up with primary care within the week. Return precautions for confusion, bleeding, vomiting.\n\nAddendum 5/14 10:40: HCV RNA quantitative 2,400,000 IU/mL. Picture is acute hepatitis C reinfection. Patient called and informed; PCP office notified.\n\nDx: acute hepatitis C, reinfection."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "office_visit",
+          "start": "2024-05-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, hepatitis C",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-05-20T11:35", "resulted": "2024-05-20T17:10", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 96},
+              {"test": "Alanine Aminotransferase", "value": 104},
+              {"test": "Alkaline Phosphatase", "value": 178},
+              {"test": "Bilirubin, Total", "value": 2.3},
+              {"test": "Bilirubin, Direct", "value": 1.4}
+            ]}
+          ],
+          "orders": [
+            {"id": "hepatology-referral", "action": "placed", "order": "Hepatology referral", "category": "referral", "to": "Gastroenterology", "reason": "hepatitis C reinfection, treatment"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-05-20T11:00"},
+            {"procedure": "Venipuncture", "performed": "2024-05-20T11:35"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2024-05-20T11:45",
+              "body": "Seen in an outside ED 5/13 for jaundice; record reviewed. HCV RNA came back 2.4 million, so this is a reinfection after his 2021 cure.\n\nToday: urine is lighter, eyes less yellow per him. Still tired by mid-afternoon, has been working. Appetite ok. No confusion, no bleeding, no abdominal swelling. Denies any use. Still going to meetings.\n\nExam: vitals as charted, afebrile. Faint scleral icterus. Abdomen soft, minimal RUQ tenderness, no hepatomegaly appreciated, no ascites. No asterixis.\n\nA/P: acute hepatitis C reinfection, clinically improving.\n- Repeat hepatic panel today.\n- Referral to hepatology for treatment; he is agreeable.\n- No alcohol, no acetaminophen above 2 g/day for now.\n- Continue naltrexone and sertraline.\n- Call for worsening jaundice, confusion or bleeding.\n\nAddendum 5/20 17:30: AST 96, ALT 104, alk phos 178, T bili 2.3, D bili 1.4. Trending down. Message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "specialist_visit",
+          "start": "2024-06-12T09:30",
+          "service": "Hepatology",
+          "reason": "hepatitis C reinfection",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-06-12T10:15", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 61},
+              {"test": "Alanine Aminotransferase", "value": 70},
+              {"test": "Alkaline Phosphatase", "value": 141},
+              {"test": "Bilirubin, Total", "value": 1.2}
+            ]},
+            {"panel": null, "collected": "2024-06-12T10:15", "results": [{"test": "Hepatitis C Viral Load, PCR", "value": 1150000}]},
+            {"panel": null, "collected": "2024-06-12T10:15", "results": [{"test": "Hepatitis C virus genotype", "loinc": "32286-7", "text": "Genotype 1a"}]}
+          ],
+          "medications": [
+            {"drug_text": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily for 12 weeks", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "short", "reason": "Hepatitis C virus reinfection"}
+          ],
+          "orders": [
+            {"id": "hepatology-referral", "action": "done", "date": "2024-06-12T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Consultation",
+              "author": "hepatology",
+              "date": "2024-06-14T15:00",
+              "body": "Outside hepatology clinic. Consult letter to the referring primary care physician.\n\nSeen 6/12/2024 for acute hepatitis C reinfection.\n\nThank you for sending this 43-year-old man, previously cured of hepatitis C in 2021, who presented to an emergency department in May with jaundice. HCV RNA at that time 2.4 million IU/mL. He feels better; fatigue persists. He reports no current drug or alcohol use and remains engaged with his recovery program.\n\nMedications: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3. NKDA.\n\nExam: mild residual scleral icterus. Abdomen soft, nontender, no stigmata of chronic liver disease, no splenomegaly.\n\nLabs today: AST 61, ALT 70, alkaline phosphatase 141, total bilirubin 1.2. HCV RNA 1,150,000 IU/mL. Genotype 1a. His May ultrasound showed a normal liver.\n\nImpression: acute HCV reinfection, genotype 1a, without evidence of advanced liver disease. Spontaneous clearance is unlikely at this level and treatment is recommended now.\n\nPlan:\n1. Sofosbuvir/velpatasvir 400/100 mg, one tablet daily for 12 weeks. Prior authorization submitted to his plan.\n2. No significant interactions with his current medications.\n3. Reviewed how reinfection happens and ways to prevent it.\n4. HCV RNA 12 weeks after completing treatment; we will see him then.\n\nPlease call with questions."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "pharmacy",
+          "start": "2024-06-18T14:45",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Prior authorization approved",
+              "author": "MA",
+              "date": "2024-06-18T14:45",
+              "body": "Specialty pharmacy called: Medicaid PA for sofosbuvir/velpatasvir approved, 12 weeks. First 28 tablets shipping to patient, delivery 6/19. Hepatology aware. FYI for PCP, med added to list."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-05a",
+          "kind": "portal_message",
+          "start": "2024-08-05T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hep C pills",
+              "author": "patient",
+              "date": "2024-08-05T20:12",
+              "body": "Just checking in, I'm about 7 weeks into the hep C pills. No problems, haven't missed any. Energy is back to normal. Do I need any blood work from you guys before I finish?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hep C pills",
+              "author": "PCP",
+              "date": "2024-08-06T08:30",
+              "body": "Great to hear. No labs needed from us. Hepatology will check the virus level about 3 months after you finish, and they'll send us the result. Keep going."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "nurse_visit",
+          "start": "2024-10-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-14T16:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-14T16:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-14T16:25"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-14T16:45",
+              "body": "Flu and 2024-25 COVID vaccine given, both well tolerated last year. Afebrile by report, feels well. Finished his hepatitis C medicine in September. Flu R deltoid, COVID L deltoid. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-09a",
+          "kind": "specialist_visit",
+          "start": "2024-12-09T10:00",
+          "service": "Hepatology",
+          "reason": "post-treatment follow-up",
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-12-09T10:20", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 27},
+              {"test": "Alanine Aminotransferase", "value": 30},
+              {"test": "Alkaline Phosphatase", "value": 88},
+              {"test": "Bilirubin, Total", "value": 0.7}
+            ]},
+            {"panel": null, "collected": "2024-12-09T10:20", "results": [{"test": "Hepatitis C Viral Load, PCR", "text": "Not detected"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hepatology Follow-up",
+              "author": "hepatology",
+              "date": "2024-12-11T09:10",
+              "body": "Outside hepatology clinic. Follow-up letter.\n\nSeen 12/9/2024, 12 weeks after he completed sofosbuvir/velpatasvir in September. Took every dose. Feels well, working full time.\n\nHCV RNA not detected. AST 27, ALT 30, alkaline phosphatase 88, total bilirubin 0.7.\n\nImpression: sustained virologic response; the reinfection is cured.\n\nRecommendations: HCV RNA once a year at primary care, or sooner with any new exposure or rise in liver enzymes. Antibody testing is not useful for him, since it stays positive. He is discharged from our clinic; glad to see him again if needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-16a",
+          "kind": "office_visit",
+          "start": "2024-12-16T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {"label": "Hepatitis C virus reinfection", "icd10": "B17.10", "action": "resolved", "onset": "2024-04-29"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-12-16T15:40"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-12-16T16:05",
+              "body": "Hepatology letter in: HCV RNA undetectable 12 weeks post treatment, LFTs normal. Reinfection cured, taken off the active list. Plan per hepatology is a yearly HCV RNA here; will do it with his physical.\n\nHe feels good. Meetings continue. Naltrexone and sertraline daily. Mood steady through a stressful fall at work. No nightmares lately.\n\nVitals as charted. Looks well, anicteric.\nPHQ-9 3.\n\nA/P:\n- Hep C reinfection: resolved. Yearly RNA.\n- OUD in sustained remission: naltrexone 50 mg, refills sent.\n- PTSD: sertraline 100 mg, refills sent.\nPhysical in summer."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

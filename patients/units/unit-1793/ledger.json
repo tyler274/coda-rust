@@ -1,9 +1,7 @@
 {
   "unit": "unit-1793",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001793/2023-09-27a: referral to \"Outpatient eating disorder program\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001793",
@@ -209,6 +207,7 @@
                   "test": "Chloride [Moles/volume] in Urine",
                   "loinc": "2078-4",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 15
                 }
               ]
@@ -470,7 +469,7 @@
               "action": "placed",
               "order": "Eating disorder program referral",
               "category": "referral",
-              "to": "Outpatient eating disorder program",
+              "to": "Psychiatry",
               "reason": "Surreptitious vomiting, bulimia history"
             },
             {
@@ -2069,6 +2068,10 @@
                   "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
                   "loinc": "3298-7",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 30
+                  },
                   "value": 150
                 }
               ]
@@ -2082,6 +2085,10 @@
                   "test": "Acetaminophen [Mass/volume] in Serum or Plasma",
                   "loinc": "3298-7",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 30
+                  },
                   "value": 162
                 }
               ]
@@ -2541,6 +2548,10 @@
                   "test": "pH of Blood",
                   "loinc": "11558-4",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.31
                 }
               ]
@@ -3358,7 +3369,7 @@
         "code": "312033",
         "display": "ethinyl estradiol 0.035 MG / norethindrone 1 MG Oral Tablet",
         "ingredient": "ethinyl",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3366,12 +3377,17 @@
         "code": "3298-7",
         "display": "Acetaminophen [Mass/volume] in Serum or Plasma",
         "unit": "ug/mL",
+        "range": {
+          "low": 10,
+          "high": 30
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Chloride [Moles/volume] in Urine": {
         "code": "2078-4",
         "display": "Chloride [Moles/volume] in Urine",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Ethanol": {
@@ -3390,6 +3406,10 @@
         "code": "11558-4",
         "display": "pH of Blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

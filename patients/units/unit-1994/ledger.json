@@ -1,10 +1,7 @@
 {
   "unit": "unit-1994",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001994/2023-05-08a: referral to \"Hematology & Oncology\" names no catalog specialty",
-    "MRN00001994/2024-04-11a: lab order \"Standing order: BMP and serum lithium every 3 months\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001994",
@@ -342,6 +339,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.9
                 },
                 {
@@ -628,6 +629,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -792,6 +797,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 }
               ]
@@ -1061,6 +1070,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -1564,7 +1577,7 @@
               "action": "placed",
               "order": "Hematology and oncology referral, head and neck clinic",
               "category": "referral",
-              "to": "Hematology & Oncology",
+              "to": "Oncology",
               "reason": "firm 3 cm left cervical lymph node in a heavy smoker"
             }
           ],
@@ -1882,6 +1895,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -2054,6 +2071,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -2250,6 +2271,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 1.2
                 }
               ]
@@ -2396,8 +2421,16 @@
             {
               "id": "li-standing",
               "action": "placed",
-              "order": "Standing order: BMP and serum lithium every 3 months",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
+              "reason": "lithium nephrotoxicity"
+            },
+            {
+              "id": "li-standing-2",
+              "action": "placed",
+              "order": "Lithium",
+              "category": "lab",
+              "loinc": "14334-7",
               "reason": "lithium nephrotoxicity"
             }
           ],
@@ -2495,6 +2528,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.93
                 }
               ]
@@ -2735,6 +2772,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.88
                 },
                 {
@@ -3066,6 +3107,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.85
                 }
               ]
@@ -3230,6 +3275,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.82
                 }
               ]
@@ -3341,24 +3390,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 55
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 60
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 28
                 }
               ]
@@ -3514,6 +3579,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.86
                 }
               ]
@@ -3710,6 +3779,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.81
                 },
                 {
@@ -3806,12 +3879,20 @@
                   "test": "Glucose, capillary (fingerstick)",
                   "loinc": "41653-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 70,
+                    "high": 99
+                  },
                   "value": 60
                 },
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.9
                 }
               ]
@@ -3934,6 +4015,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.84
                 }
               ]
@@ -4094,6 +4179,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -4321,6 +4410,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.85
                 }
               ]
@@ -4453,6 +4546,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.89
                 }
               ]
@@ -4507,6 +4604,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -4658,6 +4759,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.82
                 }
               ]
@@ -4879,6 +4984,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.88
                 }
               ]
@@ -5009,13 +5118,13 @@
         "code": "197889",
         "display": "lithium carbonate 300 MG Oral Capsule",
         "ingredient": "lithium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tiotropium 0.018 MG Inhalation Powder": {
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5023,42 +5132,70 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Bicarbonate in Arterial blood": {
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glucose, capillary (fingerstick)": {
         "code": "41653-7",
         "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
         "unit": "mg/dL",
+        "range": {
+          "low": 70,
+          "high": 99
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lithium": {
         "code": "14334-7",
         "display": "Lithium [Moles/volume] in Serum or Plasma",
         "unit": "mmol/L",
+        "range": {
+          "low": 0.6,
+          "high": 1.2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -5066,6 +5203,11 @@
       "Coronary angiography": {
         "code": "18745-0",
         "display": "Cardiac catheterization study",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lithium": {
+        "code": "14334-7",
+        "display": "Lithium [Moles/volume] in Serum or Plasma",
         "receipt": "NLM Clinical Tables LOINC"
       },
       "PET-CT skull base to mid-thigh": {

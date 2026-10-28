@@ -1,10 +1,7 @@
 {
   "unit": "unit-2670",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): report \"Electroencephalogram, routine\" LOINC 11523-9 not found",
-    "left text-only (not verified): lab \"Valproate\" LOINC 4086-6 not found; closest real codes: 57775-9 Valproate.free and Valproate panel - Serum or Plasma; 14946-8 Valproate [Moles/volume] in Serum or Plasma; 32283-4 Valproate Free/Valproate.total in Serum or Plasma; 17762-6 Valproate [Mass/volume] in Urine; 29229-2 Valproate [Mass/volume] in Body fluid"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002670",
@@ -508,7 +505,7 @@
           "reports": [
             {
               "study": "Electroencephalogram, routine",
-              "loinc": "11523-9",
+              "loinc": "11523-8",
               "performed": "2025-05-11T07:20",
               "text": "Routine EEG, awake and drowsy, approximately 30 minutes, standard 10-20 placement. Posterior dominant rhythm 10 Hz, symmetric and reactive to eye opening. Intermittent sharp-wave discharges arise over the temporal region during drowsiness. No electrographic seizures captured. Photic stimulation without a photoparoxysmal response. Hyperventilation not performed.",
               "conclusion": "Abnormal EEG: intermittent temporal sharp-wave discharges, indicating a potentially epileptogenic focus. No seizures recorded."
@@ -622,8 +619,12 @@
               "results": [
                 {
                   "test": "Valproate",
-                  "loinc": "4086-6",
+                  "loinc": "4086-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 50,
+                    "high": 100
+                  },
                   "value": 74
                 }
               ]
@@ -965,24 +966,40 @@
                   "test": "pH of arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.28
                 },
                 {
                   "test": "Carbon dioxide partial pressure in arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 60
                 },
                 {
                   "test": "Bicarbonate in arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 29
                 },
                 {
                   "test": "Oxygen partial pressure in arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 70
                 }
               ]
@@ -1059,8 +1076,12 @@
               "results": [
                 {
                   "test": "Valproate",
-                  "loinc": "4086-6",
+                  "loinc": "4086-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 50,
+                    "high": 100
+                  },
                   "value": 71
                 }
               ]
@@ -1211,7 +1232,7 @@
         "code": "1099681",
         "display": "valproic acid 250 MG Oral Capsule",
         "ingredient": "valproic",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1219,30 +1240,59 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Valproate": {
+        "code": "4086-5",
+        "display": "Valproate [Mass/volume] in Serum or Plasma",
+        "unit": "ug/mL",
+        "range": {
+          "low": 50,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
-    "rejected": [
-      "report \"Electroencephalogram, routine\" LOINC 11523-9 not found",
-      "lab \"Valproate\" LOINC 4086-6 not found; closest real codes: 57775-9 Valproate.free and Valproate panel - Serum or Plasma; 14946-8 Valproate [Moles/volume] in Serum or Plasma; 32283-4 Valproate Free/Valproate.total in Serum or Plasma; 17762-6 Valproate [Mass/volume] in Urine; 29229-2 Valproate [Mass/volume] in Body fluid"
-    ]
+    "reports": {
+      "Electroencephalogram, routine": {
+        "code": "11523-8",
+        "display": "EEG study",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
   }
 }

@@ -194,16 +194,23 @@
        "collected": "2023-05-02T07:30",
        "results": [
         {
-         "test": "Fibrinogen",
-         "loinc": "3255-7",
-         "unit": "mg/dL",
-         "value": 138
+          "test": "Fibrinogen",
+          "loinc": "3255-7",
+          "unit": "mg/dL",
+          "value": 138,
+          "range": {
+            "low": 200,
+            "high": 400
+          }
         },
         {
-         "test": "D-dimer",
-         "loinc": "48065-7",
-         "unit": "ug/mL{FEU}",
-         "value": 4.6
+          "test": "D-dimer",
+          "loinc": "48065-7",
+          "unit": "ug/mL{FEU}",
+          "value": 4.6,
+          "range": {
+            "high": 0.5
+          }
         }
        ]
       }
@@ -271,10 +278,14 @@
        "collected": "2023-05-16T10:30",
        "results": [
         {
-         "test": "CA 19-9",
-         "loinc": "24108-3",
-         "unit": "U/mL",
-         "value": 210
+          "test": "CA 19-9",
+          "loinc": "24108-3",
+          "unit": "U/mL",
+          "value": 210,
+          "range": {
+            "low": 0,
+            "high": 37
+          }
         }
        ]
       }
@@ -429,22 +440,33 @@
        "collected": "2023-08-22T09:30",
        "results": [
         {
-         "test": "Fibrinogen",
-         "loinc": "3255-7",
-         "unit": "mg/dL",
-         "value": 296
+          "test": "Fibrinogen",
+          "loinc": "3255-7",
+          "unit": "mg/dL",
+          "value": 296,
+          "range": {
+            "low": 200,
+            "high": 400
+          }
         },
         {
-         "test": "D-dimer",
-         "loinc": "48065-7",
-         "unit": "ug/mL{FEU}",
-         "value": 0.42
+          "test": "D-dimer",
+          "loinc": "48065-7",
+          "unit": "ug/mL{FEU}",
+          "value": 0.42,
+          "range": {
+            "high": 0.5
+          }
         },
         {
-         "test": "CA 19-9",
-         "loinc": "24108-3",
-         "unit": "U/mL",
-         "value": 31
+          "test": "CA 19-9",
+          "loinc": "24108-3",
+          "unit": "U/mL",
+          "value": 31,
+          "range": {
+            "low": 0,
+            "high": 37
+          }
         }
        ]
       }
@@ -588,10 +610,14 @@
        "collected": "2024-01-23T08:30",
        "results": [
         {
-         "test": "CA 19-9",
-         "loinc": "24108-3",
-         "unit": "U/mL",
-         "value": 24
+          "test": "CA 19-9",
+          "loinc": "24108-3",
+          "unit": "U/mL",
+          "value": 24,
+          "range": {
+            "low": 0,
+            "high": 37
+          }
         }
        ]
       }
@@ -721,28 +747,44 @@
        "collected": "2024-04-29T20:55",
        "results": [
         {
-         "test": "pH of Arterial blood",
-         "loinc": "2744-1",
-         "unit": "[pH]",
-         "value": 7.32
+          "test": "pH of Arterial blood",
+          "loinc": "2744-1",
+          "unit": "[pH]",
+          "value": 7.32,
+          "range": {
+            "low": 7.38,
+            "high": 7.44
+          }
         },
         {
-         "test": "Carbon dioxide partial pressure in Arterial blood",
-         "loinc": "2019-8",
-         "unit": "mm[Hg]",
-         "value": 50
+          "test": "Carbon dioxide partial pressure in Arterial blood",
+          "loinc": "2019-8",
+          "unit": "mm[Hg]",
+          "value": 50,
+          "range": {
+            "low": 38,
+            "high": 42
+          }
         },
         {
-         "test": "Oxygen partial pressure in Arterial blood",
-         "loinc": "2703-7",
-         "unit": "mm[Hg]",
-         "value": 58
+          "test": "Oxygen partial pressure in Arterial blood",
+          "loinc": "2703-7",
+          "unit": "mm[Hg]",
+          "value": 58,
+          "range": {
+            "low": 75,
+            "high": 100
+          }
         },
         {
-         "test": "Bicarbonate in Arterial blood",
-         "loinc": "1960-4",
-         "unit": "meq/L",
-         "value": 24
+          "test": "Bicarbonate in Arterial blood",
+          "loinc": "1960-4",
+          "unit": "meq/L",
+          "value": 24,
+          "range": {
+            "low": 23,
+            "high": 26
+          }
         }
        ]
       },
@@ -864,14 +906,7 @@
       }
      ],
      "orders": [
-      {
-       "id": "records-0424",
-       "action": "placed",
-       "order": "Records request: hospital discharge summary and echocardiogram, 04/2024 admission",
-       "category": "procedure",
-       "reason": "post-hospital reconciliation"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Progress Notes",
@@ -1112,10 +1147,13 @@
        "collected": "2024-10-17T07:25",
        "results": [
         {
-         "test": "CK-MB",
-         "loinc": "13969-1",
-         "unit": "ng/mL",
-         "value": 9.4
+          "test": "CK-MB",
+          "loinc": "13969-1",
+          "unit": "ng/mL",
+          "value": 9.4,
+          "range": {
+            "high": 5.0
+          }
         }
        ]
       },
@@ -1124,10 +1162,13 @@
        "collected": "2024-10-17T19:30",
        "results": [
         {
-         "test": "CK-MB",
-         "loinc": "13969-1",
-         "unit": "ng/mL",
-         "value": 81
+          "test": "CK-MB",
+          "loinc": "13969-1",
+          "unit": "ng/mL",
+          "value": 81,
+          "range": {
+            "high": 5.0
+          }
         }
        ]
       }

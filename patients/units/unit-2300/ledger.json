@@ -1329,6 +1329,9 @@
                   "test": "Protein/Creatinine ratio, urine",
                   "loinc": "2890-2",
                   "unit": "mg/mg",
+                  "range": {
+                    "high": 0.2
+                  },
                   "value": 0.3
                 }
               ]
@@ -4356,24 +4359,37 @@
                   "test": "Leukocytes, cerebrospinal fluid",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 1200
                 },
                 {
                   "test": "Neutrophils/100 leukocytes, cerebrospinal fluid",
                   "loinc": "26517-3",
                   "unit": "%",
+                  "range": {},
                   "value": 90
                 },
                 {
                   "test": "Protein, cerebrospinal fluid",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 210
                 },
                 {
                   "test": "Glucose, cerebrospinal fluid",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 25
                 }
               ]
@@ -4877,7 +4893,7 @@
         "code": "1721476",
         "display": "ampicillin 2000 MG Injection",
         "ingredient": "ampicillin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4905,6 +4921,10 @@
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Gram stain, synovial fluid": {
@@ -4921,24 +4941,36 @@
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Neutrophils/100 leukocytes, cerebrospinal fluid": {
         "code": "26517-3",
         "display": "Deprecated Polymorphonuclear cells/100 leukocytes in Cerebral spinal fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein, cerebrospinal fluid": {
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein/Creatinine ratio, urine": {
         "code": "2890-2",
         "display": "Protein/Creatinine [Mass Ratio] in Urine",
         "unit": "mg/mg",
+        "range": {
+          "high": 0.2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

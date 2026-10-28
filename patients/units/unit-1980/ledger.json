@@ -1,12 +1,7 @@
 {
   "unit": "unit-1980",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001980/2021-09-14a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00001980/2025-03-11a: procedure order \"Request records from pulmonology (sleep study, January visit)\" names no one catalog lab, panel, study or procedure",
-    "MRN00001980/2026-03-06a: procedure order \"Request exercise stress test report from cardiology\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): lab \"Zinc\" LOINC 5763-0 not found; closest real codes: 61505-4 How many years did you take Zinc [PhenX]; 81883-1 CNBP gene CCTG repeat analysis in Blood or Tissue by Molecular genetics method; 2893-6 Protoporphyrin.zinc [Presence] in Blood; 40871-6 CNBP gene mutations found [Identifier] in Blood or Tissue by Targeted gene mutation analysis Nominal; 10918-1 Zinc [Mass/volume] in Specimen"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001980",
@@ -346,15 +341,6 @@
               "date": "2021-09-14T09:10"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2021",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -409,13 +395,6 @@
           "id": "2021-10-05a",
           "kind": "outside_records",
           "start": "2021-10-05T10:10",
-          "orders": [
-            {
-              "id": "prior-records-2021",
-              "action": "done",
-              "date": "2021-10-05T10:10"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -674,8 +653,12 @@
                 },
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  },
                   "value": 141
                 }
               ]
@@ -777,8 +760,12 @@
               "results": [
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  },
                   "value": 137
                 }
               ]
@@ -1252,8 +1239,12 @@
               "results": [
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  },
                   "value": 108
                 }
               ]
@@ -1770,24 +1761,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.43
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 55
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 68
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 32
                 }
               ]
@@ -2207,8 +2214,12 @@
                 },
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  },
                   "value": 144
                 }
               ]
@@ -2224,15 +2235,6 @@
             {
               "procedure": "Preventive visit, established patient, 40-64",
               "performed": "2025-03-11T08:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "pulm-records-2025",
-              "action": "placed",
-              "order": "Request records from pulmonology (sleep study, January visit)",
-              "category": "procedure",
-              "reason": "records not received"
             }
           ],
           "documents": [
@@ -2314,24 +2316,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 58
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 68
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 29
                 }
               ]
@@ -2355,13 +2373,6 @@
               "performed": "2025-01-03T09:40",
               "text": "Full pulmonary function testing with spirometry, lung volumes and pre/post bronchodilator. Good effort and reproducibility. FEV1 and FVC proportionally reduced with a preserved FEV1/FVC ratio. Total lung capacity mildly reduced. No significant response to bronchodilator.",
               "conclusion": "Mild restrictive pattern without significant bronchodilator reversibility."
-            }
-          ],
-          "orders": [
-            {
-              "id": "pulm-records-2025",
-              "action": "done",
-              "date": "2025-04-22T14:30"
             }
           ],
           "documents": [
@@ -2733,8 +2744,12 @@
                 },
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  },
                   "value": 132
                 }
               ]
@@ -2744,15 +2759,6 @@
             {
               "procedure": "Office visit, established patient, moderate MDM",
               "performed": "2026-03-06T08:40"
-            }
-          ],
-          "orders": [
-            {
-              "id": "ett-report-2026",
-              "action": "placed",
-              "order": "Request exercise stress test report from cardiology",
-              "category": "procedure",
-              "reason": "result not received"
             }
           ],
           "documents": [
@@ -2815,13 +2821,6 @@
               "text": "Indication: exertional chest discomfort. Baseline ECG normal sinus rhythm. Standard Bruce protocol. Exercised 7 minutes 0 seconds, 8.2 METs. Peak heart rate 141 bpm, 86% of age-predicted maximum. Normal rise in blood pressure with exercise. Stopped for fatigue. No chest discomfort reported. No ischemic ST-segment changes during exercise or recovery. No arrhythmias.",
               "conclusion": "No ECG evidence of ischemia at the workload achieved. Normal blood pressure response.",
               "issued": "2026-02-11T14:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "ett-report-2026",
-              "action": "done",
-              "date": "2026-04-07T09:30"
             }
           ],
           "documents": [
@@ -3033,12 +3032,20 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Crystals in synovial fluid": {
@@ -3050,17 +3057,32 @@
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Zinc": {
+        "code": "5763-8",
+        "display": "Zinc [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "range": {
+          "low": 75,
+          "high": 140
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Zinc\" LOINC 5763-0 not found; closest real codes: 61505-4 How many years did you take Zinc [PhenX]; 81883-1 CNBP gene CCTG repeat analysis in Blood or Tissue by Molecular genetics method; 2893-6 Protoporphyrin.zinc [Presence] in Blood; 40871-6 CNBP gene mutations found [Identifier] in Blood or Tissue by Targeted gene mutation analysis Nominal; 10918-1 Zinc [Mass/volume] in Specimen"
-    ]
+    }
   }
 }

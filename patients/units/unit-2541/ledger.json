@@ -1,10 +1,7 @@
 {
   "unit": "unit-2541",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002541/2024-09-11a: lab order \"CBC with differential weekly (clozapine monitoring)\" names no one catalog lab, panel, study or procedure",
-    "MRN00002541/2026-01-05b: lab order \"CSF AFB culture\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002541",
@@ -1526,7 +1523,7 @@
             {
               "id": "anc-weekly",
               "action": "placed",
-              "order": "CBC with differential weekly (clozapine monitoring)",
+              "order": "CBC with Differential",
               "category": "lab",
               "reason": "Clozapine absolute neutrophil count monitoring"
             }
@@ -3672,6 +3669,7 @@
               "action": "placed",
               "order": "CSF AFB culture",
               "category": "lab",
+              "loinc": "534-8",
               "reason": "Suspected tuberculous meningitis"
             }
           ],
@@ -4461,55 +4459,55 @@
         "code": "349545",
         "display": "aripiprazole 10 MG Oral Tablet",
         "ingredient": "aripiprazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "atovaquone 250 MG / proguanil hydrochloride 100 MG Oral Tablet": {
         "code": "864675",
         "display": "atovaquone 250 MG / proguanil hydrochloride 100 MG Oral Tablet",
         "ingredient": "atovaquone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "benztropine mesylate 1 MG Oral Tablet": {
         "code": "885213",
         "display": "benztropine mesylate 1 MG Oral Tablet",
         "ingredient": "benztropine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "clozapine 25 MG Oral Tablet": {
         "code": "197536",
         "display": "clozapine 25 MG Oral Tablet",
         "ingredient": "clozapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "clozapine 50 MG Oral Tablet": {
         "code": "429212",
         "display": "clozapine 50 MG Oral Tablet",
         "ingredient": "clozapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "dexamethasone 4 MG Oral Tablet": {
         "code": "197582",
         "display": "dexamethasone 4 MG Oral Tablet",
         "ingredient": "dexamethasone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "dexamethasone sodium phosphate 4 MG/ML Injectable Solution": {
         "code": "1049400",
         "display": "dexamethasone sodium phosphate 4 MG/ML Injectable Solution",
         "ingredient": "dexamethasone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "diphenhydramine hydrochloride 50 MG/ML Injectable Solution": {
         "code": "1049633",
         "display": "diphenhydramine hydrochloride 50 MG/ML Injectable Solution",
         "ingredient": "diphenhydramine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ethambutol hydrochloride 400 MG Oral Tablet": {
         "code": "995607",
         "display": "ethambutol hydrochloride 400 MG Oral Tablet",
         "ingredient": "ethambutol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "haloperidol lactate 5 MG/ML Injectable Solution": {
         "code": "1876502",
@@ -4521,37 +4519,44 @@
         "code": "197832",
         "display": "isoniazid 300 MG Oral Tablet",
         "ingredient": "isoniazid",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "lorazepam 2 MG/ML Injectable Solution": {
         "code": "238100",
         "display": "lorazepam 2 MG/ML Injectable Solution",
         "ingredient": "lorazepam",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "pyrazinamide 500 MG Oral Tablet": {
         "code": "198181",
         "display": "pyrazinamide 500 MG Oral Tablet",
         "ingredient": "pyrazinamide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "rifampin 300 MG Oral Capsule": {
         "code": "198202",
         "display": "rifampin 300 MG Oral Capsule",
         "ingredient": "rifampin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "risperidone 4 MG Oral Tablet": {
         "code": "314211",
         "display": "risperidone 4 MG Oral Tablet",
         "ingredient": "risperidone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vitamin B6 50 MG Oral Tablet": {
         "code": "639566",
         "display": "vitamin B6 50 MG Oral Tablet",
         "ingredient": "vitamin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "reports": {
+      "CSF AFB culture": {
+        "code": "534-8",
+        "display": "Mycobacterium sp identified in Cerebrospinal Fluid by Organism specific culture",
+        "receipt": "NLM Clinical Tables LOINC"
       }
     }
   }

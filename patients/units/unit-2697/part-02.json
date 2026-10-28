@@ -117,7 +117,7 @@
           "measure": ["bp", "hr", "weight_kg"],
           "surveys": [{"survey": "Pain severity (0-10)", "value": 6}],
           "orders": [
-            {"id": "ortho-referral-2023", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics & Sports Medicine", "reason": "bilateral knee osteoarthritis, worsening"}
+            {"id": "ortho-referral-2023", "action": "placed", "order": "Orthopedics referral", "category": "referral", "to": "Orthopedics", "reason": "bilateral knee osteoarthritis, worsening"}
           ],
           "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-17T09:00"}],
           "documents": [
@@ -240,9 +240,9 @@
           "vitals": {"bp": [135, 85]},
           "labs": [
             {"panel": null, "collected": "2023-08-24T10:30", "results": [
-              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 450},
+              {"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 450, "range": {}},
               {"test": "Follicle Stimulating Hormone", "value": 7.2},
-              {"test": "Luteinizing Hormone", "loinc": "10501-5", "unit": "mIU/mL", "value": 3.1}
+              {"test": "Luteinizing Hormone", "loinc": "10501-5", "unit": "m[IU]/mL", "value": 3.1, "range": {}}
             ]}
           ],
           "reports": [
@@ -250,7 +250,7 @@
           ],
           "orders": [
             {"id": "gyn-referral-2023", "action": "done", "date": "2023-08-24T09:30"},
-            {"id": "gynonc-referral-2023", "action": "placed", "order": "Gynecologic oncology referral", "category": "referral", "to": "Gynecologic Oncology", "reason": "left ovarian mass with estrogen excess"}
+            {"id": "gynonc-referral-2023", "action": "placed", "order": "Gynecologic oncology referral", "category": "referral", "to": "Gynecology", "reason": "left ovarian mass with estrogen excess"}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Gynecology Consultation", "author": "gynecology", "date": "2023-08-28T09:00", "body": "GYNECOLOGY CONSULTATION\nDate of service: 08/24/2023\nReferring: primary care, urgent, for postmenopausal bleeding\n\nMs. Merrill is a 57-year-old G0 who went through menopause in 2017 and has had several weeks of irregular bleeding: heavy episodes separated by weeks with none. She also notes pelvic discomfort. She denies significant weight loss, fevers or night sweats. Hypertension and osteoarthritis are her main medical problems; she has never had surgery and never used hormone therapy.\n\nMedications: hydrochlorothiazide 25 mg, amlodipine 5 mg, omeprazole 20 mg, topical diclofenac, acetaminophen. Allergies: NKDA. Family history: no gynecologic or other cancers.\n\nExam: BP 135/85. BMI 30. External genitalia and vagina normal; small amount of dark blood in the vault. Cervix normal. Bimanual: a mobile mass is palpable in the left adnexa. Uterus not enlarged.\n\nLabs today: estradiol 450 pg/mL (lab reference 12-233), FSH 7.2 mIU/mL (3.5-12.5), LH 3.1 mIU/mL (2.4-12.6). In a woman six years past menopause these are far from expected: estradiol strikingly high and the gonadotropins suppressed.\n\nTransvaginal ultrasound today: 5 cm left ovarian mass with both solid and cystic elements.\n\nImpression: postmenopausal bleeding with a complex left adnexal mass and biochemical estrogen excess, concerning for a hormonally active malignant ovarian neoplasm (sex cord-stromal type most likely).\n\nPlan: referred to gynecologic oncology for surgical management; appointment secured for 09/06. Discussed findings with patient, who understands.\n\nObstetrics & Gynecology"}
@@ -330,7 +330,7 @@
           "service": "Gynecologic Oncology",
           "reason": "surveillance",
           "labs": [
-            {"panel": null, "collected": "2023-12-12T10:30", "results": [{"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 14}]}
+            {"panel": null, "collected": "2023-12-12T10:30", "results": [{"test": "Estradiol", "loinc": "2243-4", "unit": "pg/mL", "value": 14, "range": {}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Gynecologic Oncology Follow-up", "author": "gynecologic oncology", "date": "2023-12-14T13:00", "body": "GYNECOLOGIC ONCOLOGY - SURVEILLANCE\nDate: 12/12/2023\nDiagnosis: adult granulosa cell tumor, left ovary, FIGO IA, s/p laparoscopic LSO and staging 09/19/2023.\n\nInterval: no bleeding, no pain, appetite normal.\nMeds: HCTZ, amlodipine, omeprazole, acetaminophen, topical diclofenac. NKDA.\nExam: abdomen soft, incisions well healed. Pelvic: cervix normal, uterus small, no adnexal mass on either side.\nLabs: estradiol 14 pg/mL, back in the postmenopausal range.\n\nImpression: no evidence of disease.\nPlan: surveillance exam and estradiol every 3 months for the first two years.\n\nGynecologic Oncology"}

@@ -1,0 +1,694 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002547",
+      "events": [
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; team form",
+          "state": {
+            "weight_kg": 63.9
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-08-20T09:50"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T09:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-20T09:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-20T09:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-20T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-20T09:15",
+              "body": "Curtis, 22, here for his yearly exam and the athletics form. Senior-year season starting in two weeks, first race early September. Ran a lot of the summer in the heat at home. Feels strong.\n\nNo syncope or near-syncope, no chest pain, no cramping episodes, no dark urine. Sleeping fine. Mood good.\nMeds: none. NKDA.\nSocial: never smoker, no alcohol.\nFamily history unchanged (father with sickle trait, mother HTN, paternal uncle T2DM).\n\nExam: vitals as charted. Well-appearing. Cardiac regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Normal gait and strength.\n\nA/P\n- Cleared for cross-country, form signed with trait status noted.\n- Sickle cell trait: reviewed again, early-season heat is the risky stretch; drink on a schedule, back off if anything feels off.\n- Tdap due (last 2014), given today.\n- CMP today, he wanted his kidney numbers checked since he trains hard.\n- Flu shot in October."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2024-08-22T12:30",
+              "body": "Curtis, your metabolic panel came back normal, kidney function and electrolytes included. Have a good season."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-07a",
+          "kind": "ed_visit",
+          "start": "2024-09-07T14:25",
+          "end": "2024-09-08T12:40",
+          "service": "Emergency Medicine",
+          "reason": "Collapse during cross-country race",
+          "conditions": [
+            {
+              "label": "Exertional heatstroke",
+              "icd10": "T67.02XA",
+              "action": "diagnosed",
+              "onset": "2024-09-07"
+            },
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "diagnosed",
+              "onset": "2024-09-07"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-09-07T14:25",
+              "temp_c": 40.2,
+              "hr": 158,
+              "bp": [
+                96,
+                58
+              ],
+              "rr": 26
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-09-07T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2024-09-11T10:00",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT, brief clinical note (sent to PCP)\nDate of service: 09/07/2024\n\n22M collegiate cross-country runner, EMS from a race course. Went down abruptly near the end of a race on a hot, humid afternoon. Per teammates and coach, before he fell he had been very dizzy, complaining of a pounding headache and had vomited, then was stumbling. Patient himself could not give a history on arrival: lethargic, at times agitated.\n\nKnown sickle cell trait per team paperwork. No meds. NKDA.\n\nArrival vitals: T 40.2 C, HR 158, BP 96/58, RR 26.\nExam: hot, flushed skin, dry, no sweating. No focal neuro deficit. No seizure activity observed.\n\nCourse: airway protected and circulation supported, rapid cooling begun on arrival, IV fluid resuscitation. Mentation cleared as core temp came down. Labs notable for mild transaminase elevation and an elevated CK. Kept in ED observation overnight on fluids, tolerating PO and ambulating at discharge.\n\nImpression: exertional heat stroke; rhabdomyolysis.\nDisposition: home with teammate. Rest, fluids, no running until seen by PCP with repeat labs within 1-2 weeks.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-09a",
+          "kind": "portal_message",
+          "start": "2024-09-09T08:05",
+          "reason": "ED visit over the weekend",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER on Saturday",
+              "author": "patient",
+              "date": "2024-09-09T08:05",
+              "body": "Hi, I passed out at my race Saturday and ended up in the ER overnight. They said it was heat stroke and my muscle enzyme was high. They gave me IV fluids and cooled me down. I feel ok now just really sore and tired. They told me to get bloodwork and see you before I run again. When can I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER on Saturday",
+              "author": "RN",
+              "date": "2024-09-09T09:40",
+              "body": "Sorry to hear that, Curtis, glad you are feeling better. We have you on the schedule Tuesday 9/17 at 10:30, which gives the labs time to settle. Please keep drinking fluids and rest until then. If your urine turns dark like cola, you have trouble making urine, or you get confused or faint, go back to the ER. We have asked the hospital to send their note."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "office_visit",
+          "start": "2024-09-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED visit for heat stroke",
+          "conditions": [
+            {
+              "label": "Exertional heatstroke",
+              "icd10": "T67.02XA",
+              "action": "resolved",
+              "onset": "2024-09-07"
+            },
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "resolved",
+              "onset": "2024-09-07"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-17T08:10",
+              "resulted": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-17T08:10",
+              "resulted": "2024-09-17T10:05",
+              "results": [
+                {
+                  "test": "Creatine Kinase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-17T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-17T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Follow-up",
+              "author": "PCP",
+              "date": "2024-09-17T10:30",
+              "body": "Seen after his ED visit 9/7 for exertional heat stroke with rhabdo. ED note reviewed (no lab values in it: transaminases mildly up, CK elevated). Collapsed late in a race on a humid day; does not remember the last part of the course or the ambulance. Cooled and fluid-resuscitated, observed overnight.\n\nSince then: sore legs for about 4 days, now gone. Urine never dark that he noticed. No headache, no confusion, eating and drinking normally. Has not run. Wants to know when he can race.\n\nExam: well, vitals as charted. Alert and oriented, thinking clearly. Heart regular, lungs clear. Thighs and calves nontender, strength 5/5, no swelling. Neuro nonfocal, normal gait and tandem.\n\nLabs drawn this morning before the visit: CMP normal including AST, ALT and creatinine; CK normal.\n\nA/P\n1. Exertional heat stroke, recovered. Rhabdomyolysis, resolved by labs. Sickle cell trait likely contributed along with the conditions that day.\n2. Return to running: graded, over about two weeks, starting with short easy runs in cool parts of the day, supervised by the team's athletic trainer, no racing until he has done a full week of normal training without symptoms. Will send the trainer a letter.\n3. Reviewed early warning signs again and the plan to stop, cool and tell someone. Fluids on a schedule.\nCall with any symptoms."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatine Kinase": 140
+            }
+          }
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "portal_message",
+          "start": "2024-09-18T11:45",
+          "reason": "Return-to-run letter",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Letter to athletic training staff",
+              "author": "PCP",
+              "date": "2024-09-18T11:45",
+              "body": "To the athletic training staff:\n\nCurtis Grant is under my care. He was treated on 9/7/2024 for exertional heat stroke with rhabdomyolysis. He has recovered and his follow-up blood work, including CK and kidney function, is normal. He has sickle cell trait.\n\nHe may begin a graded return to running under your supervision: easy, short sessions at cooler times of day, increasing over about two weeks as tolerated, with free access to fluids and rest. No competition until he has completed a full normal training week without symptoms. Please stop activity and contact me for any recurrence of dizziness, headache, cramping, weakness or dark urine.\n\nSincerely,\nPrimary care physician"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Letter for your trainer",
+              "author": "MA",
+              "date": "2024-09-18T11:50",
+              "body": "Hi Curtis, the letter for the athletic trainer is in your portal under Letters."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-10T15:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-10T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu vaccine",
+              "author": "RN",
+              "date": "2024-10-10T15:50",
+              "body": "Flu shot L deltoid, tolerated. Offered the 2024-25 COVID vaccine, he'd rather skip it this year. Back to racing, says it's going ok. 15 min observation, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-07a",
+          "kind": "ed_visit",
+          "start": "2025-06-07T19:10",
+          "end": "2025-06-08T14:30",
+          "service": "Emergency Medicine",
+          "reason": "Collapse at outdoor music festival",
+          "conditions": [
+            {
+              "label": "Exertional heatstroke",
+              "icd10": "T67.02XA",
+              "action": "diagnosed",
+              "onset": "2025-06-07"
+            },
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "diagnosed",
+              "onset": "2025-06-07"
+            },
+            {
+              "label": "Acute kidney failure, unspecified",
+              "icd10": "N17.9",
+              "action": "diagnosed",
+              "onset": "2025-06-07"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-06-07T19:10",
+              "temp_c": 41.0,
+              "hr": 130,
+              "bp": [
+                90,
+                60
+              ],
+              "rr": 24
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-07T19:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 145
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 20
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-07T19:25",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 10000
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-06-07T19:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-07T19:25",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 35,
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  }
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-07T19:25",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-06-07T19:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2025-06-16T09:30",
+              "body": "ED PHYSICIAN NOTE, regional hospital, copy to primary care\nVisit 06/07/2025\n\nCC: collapse at outdoor concert.\n\n22-year-old with sickle cell trait and a history of exertional heat stroke last September. Brought in by friends from an all-day outdoor music festival; it was 38 C out. Friends say he had been dancing for hours with no breaks and drank very little water before he went down.\n\nVitals on arrival: T 41.0 C, HR 130, BP 90/60, RR 24.\nExam: disoriented, agitated. Skin hot and dry.\n\nLabs: Na 145, K 4.2, creatinine 1.8, BUN 20. CK 10,000. PT 14 sec, INR 1.2, PTT 35 sec. Lactate 5.\n\nTreatment: rapid cooling, aggressive IV fluids. Mental status normalized with cooling. Monitored overnight in ED observation on IV fluids, urine output good, discharged next afternoon.\n\nDx: heat stroke (exertional), rhabdomyolysis, acute kidney injury.\nFollow up with PCP for repeat CK and kidney function in about a week. Return for dark urine, low urine output, confusion.\nMeds: none. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-09a",
+          "kind": "telephone",
+          "start": "2025-06-09T09:15",
+          "reason": "ED visit for heat stroke",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call after ED visit",
+              "author": "RN",
+              "date": "2025-06-09T09:15",
+              "body": "Pt called. Was at a music festival Saturday, collapsed, friends took him to the ED. Told it was heat stroke again plus kidney strain and high muscle enzymes. Got fluids overnight, home Sunday afternoon. Today feels washed out, thighs sore, urine is light yellow, drinking well. No confusion, no fever.\nPlan: f/u with PCP 6/17 with labs that morning (BMP, CK). Return precautions given (dark urine, little urine, confusion, vomiting). Requested ED records."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after second heat stroke",
+          "conditions": [
+            {
+              "label": "Exertional heatstroke",
+              "icd10": "T67.02XA",
+              "action": "resolved",
+              "onset": "2025-06-07"
+            },
+            {
+              "label": "Rhabdomyolysis",
+              "icd10": "M62.82",
+              "action": "resolved",
+              "onset": "2025-06-07"
+            },
+            {
+              "label": "Acute kidney failure, unspecified",
+              "icd10": "N17.9",
+              "action": "resolved",
+              "onset": "2025-06-07"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-17T08:40",
+              "resulted": "2025-06-17T10:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-06-17T08:40",
+              "resulted": "2025-06-17T10:30",
+              "results": [
+                {
+                  "test": "Creatine Kinase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-17T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-17T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-06-17T11:00",
+              "body": "F/u 6/7 ED visit. Second heat stroke, this time not at a race: outdoor festival on a very hot day, hours of dancing, little water. ED note in: T 41, HR 130, BP 90/60; Cr 1.8, BUN 20, CK 10,000, lactate 5, coags essentially normal (INR 1.2). Cooled, IV fluids, overnight obs.\n\nHe is a little embarrassed about it. Soreness gone by Thursday. Urine normal color. Energy back. No headaches.\n\nExam: vitals as charted. Alert, oriented, normal speech. Heart and lungs normal. Muscles nontender, full strength. Neuro nonfocal.\n\nLabs this morning: BMP normal with creatinine back to his usual; CK normal.\n\nA/P\n1. Exertional heat stroke, second episode (first 9/2024), recovered.\n2. Rhabdo and AKI, resolved on today's labs.\n3. Sickle cell trait in a young man who has now had two heat strokes nine months apart. Long talk: hot days count even when it isn't a race; water on a schedule, shade and breaks; leave the crowd early if he starts feeling dizzy or headachy; tell friends what to watch for. He gets it.\n4. Summer training: ok to resume easy running at cool times now that labs are normal, and let the athletic trainer know before fall preseason.\nPhysical in August as usual."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-11a",
+          "kind": "telephone",
+          "start": "2025-08-11T17:20",
+          "reason": "Reschedule physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "author": "front desk",
+              "date": "2025-08-11T17:20",
+              "body": "Pt left a message, has a team meeting tomorrow morning, needs to move his physical. Moved to Tue 8/19 8:30. Confirmed by text."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; athletics form",
+          "state": {
+            "weight_kg": 64.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T09:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-08-19T08:30",
+              "body": "23M, yearly visit and team paperwork. Fall season starts in two weeks.\n\nInterval: heat stroke x2 (race 9/2024; festival 6/2025 with rhabdo and AKI that resolved). Since June: running easy then building, no symptoms, has been doing his longer runs at 6 am. No dizziness, cramping or dark urine. Drinking well.\n\nMeds none. NKDA. Never smoker, no alcohol.\nFHx: father sickle trait, mother hypertension, paternal uncle with type 2 DM.\n\nExam: vitals as charted, looks well. HEENT normal. Heart regular, no murmur. Lungs clear. Abdomen soft. MSK and neuro normal.\n\nPHQ-2 0.\n\nA/P\n- Pre-participation: cleared, with the heat stroke history and sickle cell trait written on the form so the athletic trainer has it. Spoke with him about the team's heat plan: acclimatize over the first two weeks, scheduled fluids, a cold tub at practices and meets, he stops at the first sign of trouble.\n- Labs: CBC and CMP today.\n- Flu shot in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T13:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "author": "PCP",
+              "date": "2025-08-21T13:05",
+              "body": "Blood count and chemistry panel are both normal, kidney function included. Your physical form is in the portal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your labs",
+              "author": "patient",
+              "date": "2025-08-21T18:44",
+              "body": "Great thanks!!"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "nurse_visit",
+          "start": "2025-10-09T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T16:24"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T16:24"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Influenza vaccine",
+              "author": "RN",
+              "date": "2025-10-09T16:20",
+              "body": "Seasonal flu vaccine R deltoid. Declined COVID again. Well, no reactions. Waited the 15 minutes."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

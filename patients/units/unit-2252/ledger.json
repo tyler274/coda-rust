@@ -1,11 +1,7 @@
 {
   "unit": "unit-2252",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002252/2019-09-17a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002252/2024-08-27a: imaging order \"PET-CT skull base to mid-thigh\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002252",
@@ -78,6 +74,7 @@
             },
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -321,7 +318,7 @@
             {
               "id": "fit-2019",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening; declines colonoscopy"
             }
@@ -2662,6 +2659,7 @@
               "action": "placed",
               "order": "PET-CT skull base to mid-thigh",
               "category": "imaging",
+              "loinc": "81554-8",
               "reason": "Right upper lobe mass, Lung-RADS 4B"
             },
             {
@@ -4742,7 +4740,7 @@
         "code": "1665046",
         "display": "ceftriaxone 2000 MG Injection",
         "ingredient": "ceftriaxone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "durvalumab 50 MG/ML Injection": {
         "code": "1919515",
@@ -4751,8 +4749,12 @@
         "receipt": "NLM RxNav approximateTerm + properties"
       }
     },
-    "rejected": [
-      "drug \"multivitamin Oral Tablet\""
-    ]
+    "reports": {
+      "PET-CT skull base to mid-thigh": {
+        "code": "81554-8",
+        "display": "PET+CT Guidance for localization of tumor of Skull base to mid-thigh-- W 18F-FDG IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
   }
 }

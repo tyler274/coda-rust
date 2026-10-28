@@ -1,9 +1,7 @@
 {
   "unit": "unit-1753",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001753/2021-11-02a: lab order \"Rapid plasma reagin, 6-month post-treatment\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001753",
@@ -614,6 +612,10 @@
                   "test": "Vaginal fluid pH",
                   "loinc": "48037-6",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 3.8,
+                    "high": 4.5
+                  },
                   "value": 4.5
                 }
               ]
@@ -1054,7 +1056,7 @@
             {
               "id": "rpr-6mo",
               "action": "placed",
-              "order": "Rapid plasma reagin, 6-month post-treatment",
+              "order": "Rapid Plasma Reagin",
               "category": "lab",
               "reason": "early syphilis follow-up"
             }
@@ -2198,12 +2200,14 @@
                   "test": "Synovial fluid leukocytes",
                   "loinc": "26469-7",
                   "unit": "/uL",
+                  "range": {},
                   "value": 50000
                 },
                 {
                   "test": "Synovial fluid neutrophils",
                   "loinc": "17836-8",
                   "unit": "%",
+                  "range": {},
                   "value": 90
                 },
                 {
@@ -2545,12 +2549,14 @@
                   "test": "Synovial fluid leukocytes",
                   "loinc": "26469-7",
                   "unit": "/uL",
+                  "range": {},
                   "value": 20000
                 },
                 {
                   "test": "Synovial fluid neutrophils",
                   "loinc": "17836-8",
                   "unit": "%",
+                  "range": {},
                   "value": 90
                 },
                 {
@@ -2785,19 +2791,19 @@
         "code": "409823",
         "display": "cefixime 400 MG Oral Capsule",
         "ingredient": "cefixime",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ceftriaxone 1000 MG Injection": {
         "code": "1665021",
         "display": "ceftriaxone 1000 MG Injection",
         "ingredient": "ceftriaxone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "penicillin G benzathine 600000 UNT/ML Injectable Suspension": {
         "code": "731572",
         "display": "penicillin G benzathine 600000 UNT/ML Injectable Suspension",
         "ingredient": "penicillin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2845,12 +2851,14 @@
         "code": "26469-7",
         "display": "Leukocytes [#/volume] in Synovial fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Synovial fluid neutrophils": {
         "code": "17836-8",
         "display": "Neutrophils/Leukocytes in Synovial fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Treponema pallidum antibody, TP-PA": {
@@ -2867,6 +2875,10 @@
         "code": "48037-6",
         "display": "pH of Vaginal fluid",
         "unit": "[pH]",
+        "range": {
+          "low": 3.8,
+          "high": 4.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

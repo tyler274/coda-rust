@@ -1,11 +1,7 @@
 {
   "unit": "unit-2697",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002697/2021-09-06a: imaging order \"Knee X-ray, bilateral\" names no one catalog lab, panel, study or procedure",
-    "MRN00002697/2023-01-17a: referral to \"Orthopedics & Sports Medicine\" names no catalog specialty",
-    "MRN00002697/2023-08-24a: referral to \"Gynecologic Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002697",
@@ -771,7 +767,7 @@
             {
               "id": "knee-xr-2021",
               "action": "placed",
-              "order": "Knee X-ray, bilateral",
+              "order": "Knee X-ray",
               "category": "imaging",
               "reason": "knee pain"
             },
@@ -1500,7 +1496,7 @@
               "action": "placed",
               "order": "Orthopedics referral",
               "category": "referral",
-              "to": "Orthopedics & Sports Medicine",
+              "to": "Orthopedics",
               "reason": "bilateral knee osteoarthritis, worsening"
             }
           ],
@@ -1988,6 +1984,7 @@
                   "test": "Estradiol",
                   "loinc": "2243-4",
                   "unit": "pg/mL",
+                  "range": {},
                   "value": 450
                 },
                 {
@@ -1997,7 +1994,8 @@
                 {
                   "test": "Luteinizing Hormone",
                   "loinc": "10501-5",
-                  "unit": "mIU/mL",
+                  "unit": "m[IU]/mL",
+                  "range": {},
                   "value": 3.1
                 }
               ]
@@ -2022,7 +2020,7 @@
               "action": "placed",
               "order": "Gynecologic oncology referral",
               "category": "referral",
-              "to": "Gynecologic Oncology",
+              "to": "Gynecology",
               "reason": "left ovarian mass with estrogen excess"
             }
           ],
@@ -2199,6 +2197,7 @@
                   "test": "Estradiol",
                   "loinc": "2243-4",
                   "unit": "pg/mL",
+                  "range": {},
                   "value": 14
                 }
               ]
@@ -2404,6 +2403,9 @@
                   "test": "Cancer Antigen 125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 35
+                  },
                   "value": 250
                 }
               ]
@@ -2524,6 +2526,9 @@
                   "test": "Cancer Antigen 125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 35
+                  },
                   "value": 17
                 }
               ]
@@ -3262,12 +3267,16 @@
                   "test": "Cancer Antigen 125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 35
+                  },
                   "value": 35
                 },
                 {
                   "test": "Estradiol",
                   "loinc": "2243-4",
                   "unit": "pg/mL",
+                  "range": {},
                   "value": 450
                 },
                 {
@@ -3277,7 +3286,8 @@
                 {
                   "test": "Luteinizing Hormone",
                   "loinc": "10501-5",
-                  "unit": "mIU/mL",
+                  "unit": "m[IU]/mL",
+                  "range": {},
                   "value": 6.9
                 }
               ]
@@ -3866,6 +3876,7 @@
                   "test": "Estradiol",
                   "loinc": "2243-4",
                   "unit": "pg/mL",
+                  "range": {},
                   "value": 9
                 }
               ]
@@ -4104,7 +4115,7 @@
         "code": "860221",
         "display": "megestrol acetate 40 MG Oral Tablet",
         "ingredient": "megestrol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4112,18 +4123,23 @@
         "code": "10334-1",
         "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Estradiol": {
         "code": "2243-4",
         "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Luteinizing Hormone": {
         "code": "10501-5",
         "display": "Lutropin [Units/volume] in Serum or Plasma",
-        "unit": "mIU/mL",
+        "unit": "m[IU]/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

@@ -1,0 +1,244 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002041",
+      "given": "Mark",
+      "family": "Fournier",
+      "birth_date": "1974-06-06",
+      "address_line": "214 Bridge Road",
+      "phone": "+1-978-555-0129",
+      "email": "mark.fournier@example.test",
+      "marital_status": "married",
+      "summary": "Former automotive mechanic with hypertension, chronic alcohol-induced pancreatitis and recurrent depression who joins in 2018 minimizing his drinking. Severe alcohol use disorder is named in 2020, followed by necrotizing pancreatitis, Wernicke encephalopathy, hallucinosis, recurrent pancreatitis and two ethylene glycol poisonings; last seen January 2025.",
+      "events": [
+        {
+          "id": "2018-09-12a",
+          "kind": "establish_care",
+          "start": "2018-09-12T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2014-06-01", "note": "On hydrochlorothiazide from prior office"},
+            {"label": "Alcohol-induced chronic pancreatitis", "icd10": "K86.0", "action": "history", "onset": "2016-01-01", "note": "Per prior office records"},
+            {"label": "Major depressive disorder, recurrent, moderate", "action": "history", "onset": "2012-01-01", "note": "Per prior records; not on treatment"}
+          ],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [138, 88], "weight_kg": 94.0, "height_cm": 178.0, "labs": {"Hemoglobin": 13.9, "Mean Corpuscular Volume": 95}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-09-12T10:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-09-12T10:25", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2018-09-12T10:25", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2018-09-12T10:25", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2018-09-12T10:25", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 11},
+            {"survey": "AUDIT-C total score", "value": 6}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Beer most nights, reports 'a few'"},
+            {"item": "Occupation", "value": "Automotive mechanic"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-09-12T10:20"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2018-09-12T09:40"},
+            {"procedure": "Immunization administration", "performed": "2018-09-12T10:20"},
+            {"procedure": "Venipuncture", "performed": "2018-09-12T10:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2018-09-12T09:40", "body": "44M new to us, left his old primary office because the hours didn't work with the shop. Works full time as a mechanic.\n\nPMH (his account plus what he brought): high blood pressure for several years, on HCTZ 25 daily, takes it most days. Pancreatitis 'a couple of times' before he came here, told it was from drinking and that the pancreas is now chronically inflamed; no hospital stays in the last year, no current pain. Depression on and off since his 30s, saw a counselor once years ago, nothing current. No surgeries.\n\nMeds: HCTZ 25 mg daily. Allergies: none to medications.\nFamily: father drank heavily and has cirrhosis; mother has high blood pressure and depression; one sister who has struggled with substances.\nSocial: married, lives with wife. Quit cigarettes in 2015. Alcohol: says a few beers most nights after work, 'nothing crazy.' AUDIT-C 6. No drugs.\nPHQ-9 11: low energy, sleep poor, still working and functioning.\n\nExam: BP mildly above goal on recheck. Well appearing, no distress. Heart regular, lungs clear. Abdomen soft, nontender. No edema. Mood a little flat, affect appropriate, linear.\n\nA/P\n1. HTN: slightly above goal on HCTZ. Continue 25 mg, home cuff if he can get one, recheck in 5-6 months.\n2. Chronic pancreatitis by history: quiet now. Explained that the pancreas will keep flaring if he keeps drinking.\n3. Alcohol: AUDIT-C positive. He doesn't see his drinking as a problem. Talked through standard drink sizes and the link to his pancreas; gave him the local recovery meeting list. Will revisit.\n4. Recurrent depression: moderate symptoms, wants to wait. Revisit next visit.\n5. Health maintenance: BMP, CBC, lipids, HCV and HIV screening today. Flu shot given. Records release signed for his prior office.\n\nRTC 5 months."}
+          ]
+        },
+        {
+          "id": "2018-09-14a",
+          "kind": "portal_message",
+          "start": "2018-09-14T16:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2018-09-14T16:05", "body": "Hi Mark, your labs from Wednesday look fine: kidney function, salts, blood counts and cholesterol are all in the normal range, and the hepatitis C and HIV screens were negative. See you in the late winter for a blood pressure check."}
+          ]
+        },
+        {
+          "id": "2018-10-03a",
+          "kind": "outside_records",
+          "start": "2018-10-03T11:20",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2018-10-03T11:20", "body": "Received by fax, 14 pages, from the patient's previous primary care office.\n\nProblem list on their summary: hypertension; chronic pancreatitis, alcohol related; major depressive disorder, recurrent, moderate.\nMedication list: hydrochlorothiazide 25 mg daily.\nAllergies: NKDA.\nImmunizations on file: influenza in prior seasons; tetanus booster more than ten years ago.\nLast visits: blood pressure checks, unremarkable.\n\nScanned to chart. Routed to PCP.\n\nPCP addendum: Reviewed. Matches what he told me. Tetanus due, will do at his physical."}
+          ]
+        },
+        {
+          "id": "2019-02-20a",
+          "kind": "office_visit",
+          "start": "2019-02-20T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 7}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2019-02-20T15:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2019-02-20T15:20", "body": "BP check. No home cuff yet, wife is looking for one. Taking HCTZ daily, misses maybe once a week. No belly pain since he joined. Busy at the shop through the winter, lots of brake jobs.\n\nStill a few beers most nights by his count; AUDIT-C 7 today, up a point (more on weekends). Not interested in cutting back right now.\n\nBP a little above goal on repeat. Heart RRR, lungs clear, no edema.\n\nA/P: HTN a bit above goal, he admits missed doses; continue HCTZ 25 daily, take it every morning. Alcohol: discussed again, he listened. Physical in the fall with labs."}
+          ]
+        },
+        {
+          "id": "2019-02-25a",
+          "kind": "pharmacy",
+          "start": "2019-02-25T10:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2019-02-25T10:10", "body": "E-refill request from pharmacy, hydrochlorothiazide 25 mg #90 with 3 refills. Seen last week. Sent per protocol."}
+          ]
+        },
+        {
+          "id": "2019-06-05a",
+          "kind": "office_visit",
+          "start": "2019-06-05T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2019-10-02a",
+          "kind": "annual_physical",
+          "start": "2019-10-02T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "state": {"weight_kg": 93.1},
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-10-02T08:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-10-02T08:55", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 9},
+            {"survey": "AUDIT-C total score", "value": 7}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-10-02T09:05"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-02T09:06"}
+          ],
+          "orders": [
+            {"id": "fit-2019", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "Colorectal cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2019-10-02T08:20"},
+            {"procedure": "Immunization administration", "performed": "2019-10-02T09:05"},
+            {"procedure": "Venipuncture", "performed": "2019-10-02T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-10-02T08:20", "body": "Physical. Missed the June BP visit, says he got called into work.\n\nFeels about the same. Sleep so-so. Mood: PHQ-9 9, a bit better than last year. No abdominal pain, eating fine. Drinking unchanged by his report; AUDIT-C 7.\nMeds: HCTZ 25 daily. NKDA.\nSocial: married, working, quit smoking 2015.\n\nROS otherwise negative.\nExam: BP acceptable. Weight a little down. Alert, pleasant. HEENT normal. Neck supple. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no masses. Skin without rash. Extremities without edema. Neuro nonfocal.\n\nA/P\n- HTN: acceptable on HCTZ, continue.\n- Alcohol: brief counseling again; still not ready to change.\n- Depression: mild-moderate, monitoring.\n- Chronic pancreatitis: no flares.\n- Prevention: Tdap and flu today. Colon screening: FIT kit given, he prefers that to a scope. CMP and CBC drawn.\nRTC 6 months."},
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2019-10-03T12:40", "body": "Mark, your blood work from the physical came back in the normal range, including liver and kidney tests and blood counts. Please don't forget to send back the stool card."}
+          ]
+        },
+        {
+          "id": "2019-10-21a",
+          "kind": "lab_only",
+          "start": "2019-10-21T09:00",
+          "labs": [
+            {"panel": null, "collected": "2019-10-18T07:00", "resulted": "2019-10-21T09:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2019", "action": "done", "date": "2019-10-21T09:00"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "FIT result", "author": "RN", "date": "2019-10-21T11:15", "body": "FIT negative. Letter mailed; repeat in one year."}
+          ]
+        },
+        {
+          "id": "2020-01-22a",
+          "kind": "pharmacy",
+          "start": "2020-01-22T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill", "author": "MA", "date": "2020-01-22T09:30", "body": "Pharmacy asking for HCTZ 25 mg refill, last fill 90 days ago. Approved x90 days. Pt due for 6 month f/u, front desk to call."}
+          ]
+        },
+        {
+          "id": "2020-04-22a",
+          "kind": "office_visit",
+          "start": "2020-04-22T10:40",
+          "end": "2020-04-22T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Insomnia, anxiety, morning tremor",
+          "conditions": [
+            {"label": "Severe alcohol use disorder", "icd10": "F10.20", "action": "diagnosed", "onset": "2018-01-01"}
+          ],
+          "state": {"bp": [140, 90], "weight_kg": 91.9, "labs": {"Hemoglobin": 13.5, "Mean Corpuscular Volume": 98, "Aspartate Aminotransferase": 72, "Alanine Aminotransferase": 50, "Gamma Glutamyl Transferase": 110}},
+          "vitals": {"bp": [140, 90], "hr": 88, "weight_kg": 91.9},
+          "measure": ["spo2", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-04-22T11:25", "resulted": "2020-04-23T08:10", "results": [{"test": "Hemoglobin", "value": 13.5}, {"test": "Mean Corpuscular Volume", "value": 98}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2020-04-22T11:25", "resulted": "2020-04-23T08:10", "results": [{"test": "Aspartate Aminotransferase", "value": 72}, {"test": "Alanine Aminotransferase", "value": 50}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2020-04-22T11:25", "resulted": "2020-04-23T08:10", "results": [{"test": "Gamma Glutamyl Transferase", "value": 110}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 13},
+            {"survey": "AUDIT-C total score", "value": 9},
+            {"survey": "GAD-7 total score", "value": 10}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-04-22T10:40"},
+            {"procedure": "Venipuncture", "performed": "2020-04-22T11:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2020-04-22T10:40", "body": "In person (masked, screened at door). First visit since the physical.\n\nCC: can't fall asleep, on edge, hands shaky in the mornings.\nHPI: Going on roughly half a year and getting worse. Lies awake, then up at 5 feeling like he never slept. Feels keyed up most days. The shakes are worst first thing and settle by midmorning; he admits a beer helps them. Shop has been slow with the shutdown.\nAlcohol: still describes it as a few beers most nights to unwind. When I asked about mornings he went quiet. AUDIT-C 9. No other drugs.\nMood: PHQ-9 13, GAD-7 10.\nMeds: HCTZ 25 daily. NKDA.\n\nExam: BP 140/90, HR 88, BMI 29. Restless, mildly agitated, picking at his hands. Fine tremor of outstretched hands. No jaundice. Several spider angiomas over the upper chest. Liver edge palpable about 2 cm below the right costal margin, smooth, nontender. Spleen not felt. No ascites. Heart regular, lungs clear.\n\nA/P\n1. Severe alcohol use disorder with physical dependence. Morning tremor relieved by drinking, sleep and anxiety symptoms, skin and liver findings. Told him plainly that this is what is driving the sleep and nerves. He was not happy to hear it but did not argue. Gave the outpatient program list again and the sober support line. Warned him not to stop suddenly on his own.\n2. Enlarged liver, spider angiomas: CBC, liver panel and GGT today.\n3. HTN: 140/90, continue HCTZ for now.\n4. Depression and anxiety: moderate. He wants to see if sleep improves first.\nRTC 3 months, sooner if worse."}
+          ]
+        },
+        {
+          "id": "2020-04-23a",
+          "kind": "portal_message",
+          "start": "2020-04-23T13:30",
+          "conditions": [
+            {"label": "Alcoholic liver disease", "icd10": "K70.9", "action": "diagnosed", "onset": "2020-04-22"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Liver tests", "author": "PCP", "date": "2020-04-23T13:30", "body": "AST 72 > ALT 50, GGT 110, MCV 98, Hgb 13.5. Pattern fits alcohol-related liver injury with the hepatomegaly and angiomas. Adding alcoholic liver disease to the list."},
+            {"type": "Patient Communication", "title": "Your blood work", "author": "PCP", "date": "2020-04-23T13:40", "body": "Mark, your liver tests are elevated in the pattern we see when alcohol is irritating the liver, and your red cells are slightly large, which also goes with drinking. Your blood count is otherwise fine. The liver can recover a lot if the drinking comes down. I'd like to recheck in a few months. Call me any time if you want help getting started with cutting back."}
+          ]
+        },
+        {
+          "id": "2020-08-12a",
+          "kind": "telehealth_visit",
+          "start": "2020-08-12T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up alcohol use, mood",
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 12},
+            {"survey": "AUDIT-C total score", "value": 9}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-08-12T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-08-12T14:00", "body": "Video, he is in his truck on lunch break. Consents to video.\n\nSleep a bit better on weekends. Tremor 'comes and goes.' Says he cut down to 'three or four' a night, then admitted more on Fridays. AUDIT-C still 9. Did not call the program. PHQ-9 12.\nNo abdominal pain, eating okay. BP at the pharmacy machine 'in the 130s.'\n\nObserved: alert, talkative, no distress.\n\nA/P: Severe AUD, still precontemplative to contemplative. Kept it brief, left the door open. Depression moderate, stable. Labs deferred, will draw at next in-person. Flu shot this fall at a nurse visit."}
+          ]
+        },
+        {
+          "id": "2020-10-21a",
+          "kind": "nurse_visit",
+          "start": "2020-10-21T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-21T16:15"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2020-10-21T16:15"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit", "author": "RN", "date": "2020-10-21T16:10", "body": "Flu vaccine L deltoid, tolerated. VIS given. Waited 15 min. Reminded him he is due to see the PCP with labs; he will call after the holidays."}
+          ]
+        }
+      ]
+    }
+  ]
+}

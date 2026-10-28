@@ -35,7 +35,7 @@
             {"procedure": "Venipuncture", "performed": "2025-04-08T09:20"}
           ],
           "orders": [
-            {"id": "mammo-2025", "action": "placed", "order": "Diagnostic mammogram, bilateral", "category": "imaging", "reason": "History of right breast cancer"},
+            {"id": "mammo-2025", "action": "placed", "order": "Diagnostic mammogram", "category": "imaging", "reason": "History of right breast cancer"},
             {"id": "dxa-2025", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "Aromatase inhibitor therapy"}
           ],
           "documents": [
@@ -204,7 +204,7 @@
               {"test": "Bilirubin, Total", "value": 1.2}
             ]},
             {"panel": null, "collected": "2025-11-24T13:45", "results": [
-              {"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 550}
+              {"test": "B-type natriuretic peptide", "loinc": "30934-4", "unit": "pg/mL", "value": 550, "range": {"high": 100}}
             ]}
           ],
           "reports": [
@@ -330,10 +330,10 @@
           ],
           "labs": [
             {"panel": null, "collected": "2026-05-13T07:30", "resulted": "2026-05-13T07:42", "results": [
-              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.48},
-              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32},
-              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 70},
-              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.48, "range": {"low": 7.38, "high": 7.44}},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32, "range": {"low": 38, "high": 42}},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 70, "range": {"low": 75, "high": 100}},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24, "range": {"low": 23, "high": 26}}
             ]},
             {"panel": null, "collected": "2026-05-13T07:05", "results": [{"test": "Troponin I, High Sensitivity", "value": 4}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-13T07:05", "results": [{"test": "Hemoglobin"}]},

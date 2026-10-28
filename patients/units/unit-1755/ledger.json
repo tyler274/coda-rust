@@ -1,9 +1,7 @@
 {
   "unit": "unit-1755",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001755/2024-01-22a: lab order \"Neisseria gonorrhoeae and Chlamydia trachomatis NAAT, retest\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001755",
@@ -2254,12 +2252,14 @@
                   "test": "Synovial fluid leukocytes",
                   "loinc": "26469-7",
                   "unit": "/uL",
+                  "range": {},
                   "value": 42000
                 },
                 {
                   "test": "Synovial fluid neutrophils",
                   "loinc": "17836-8",
                   "unit": "%",
+                  "range": {},
                   "value": 88
                 },
                 {
@@ -2700,7 +2700,14 @@
             {
               "id": "gc-ct-retest-2024",
               "action": "placed",
-              "order": "Neisseria gonorrhoeae and Chlamydia trachomatis NAAT, retest",
+              "order": "Neisseria gonorrhoeae NAAT",
+              "category": "lab",
+              "reason": "3-month retest after gonococcal infection"
+            },
+            {
+              "id": "gc-ct-retest-2024-2",
+              "action": "placed",
+              "order": "Chlamydia trachomatis NAAT",
               "category": "lab",
               "reason": "3-month retest after gonococcal infection"
             }
@@ -2746,6 +2753,11 @@
           "orders": [
             {
               "id": "gc-ct-retest-2024",
+              "action": "done",
+              "date": "2024-03-25T07:50"
+            },
+            {
+              "id": "gc-ct-retest-2024-2",
               "action": "done",
               "date": "2024-03-25T07:50"
             }
@@ -3424,13 +3436,13 @@
         "code": "1665021",
         "display": "ceftriaxone 1000 MG Injection",
         "ingredient": "ceftriaxone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "imiquimod 50 MG/ML Topical Cream": {
         "code": "310982",
         "display": "imiquimod 50 MG/ML Topical Cream",
         "ingredient": "imiquimod",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3463,12 +3475,14 @@
         "code": "26469-7",
         "display": "Leukocytes [#/volume] in Synovial fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Synovial fluid neutrophils": {
         "code": "17836-8",
         "display": "Neutrophils/Leukocytes in Synovial fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

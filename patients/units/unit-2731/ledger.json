@@ -1,14 +1,7 @@
 {
   "unit": "unit-2731",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002731/2021-09-14a: procedure order \"Records request, prior primary care\" names no one catalog lab, panel, study or procedure",
-    "MRN00002731/2021-09-14a: procedure order \"Records request, cancer center and treating hospital\" names no one catalog lab, panel, study or procedure",
-    "MRN00002731/2022-03-08a: imaging order \"Diagnostic mammogram, bilateral\" names no one catalog lab, panel, study or procedure",
-    "MRN00002731/2023-03-28a: imaging order \"Diagnostic mammogram, bilateral\" names no one catalog lab, panel, study or procedure",
-    "MRN00002731/2024-03-26a: imaging order \"Diagnostic mammogram, bilateral\" names no one catalog lab, panel, study or procedure",
-    "MRN00002731/2025-04-08a: imaging order \"Diagnostic mammogram, bilateral\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002731",
@@ -386,22 +379,6 @@
               "performed": "2021-09-14T10:05"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Records request, prior primary care",
-              "category": "procedure",
-              "reason": "Establishing care"
-            },
-            {
-              "id": "records-oncology",
-              "action": "placed",
-              "order": "Records request, cancer center and treating hospital",
-              "category": "procedure",
-              "reason": "Oncologic and surgical history"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -460,13 +437,6 @@
               "date": "2021-02-18T14:00"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2021-10-05T11:15"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -482,13 +452,6 @@
           "kind": "outside_records",
           "start": "2021-10-12T14:30",
           "reason": "Records from cancer center",
-          "orders": [
-            {
-              "id": "records-oncology",
-              "action": "done",
-              "date": "2021-10-12T14:30"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -852,7 +815,7 @@
             {
               "id": "mammo-2022",
               "action": "placed",
-              "order": "Diagnostic mammogram, bilateral",
+              "order": "Diagnostic mammogram",
               "category": "imaging",
               "reason": "History of right breast cancer, yearly surveillance"
             }
@@ -1171,6 +1134,7 @@
                   "test": "Luteinizing Hormone",
                   "loinc": "10501-5",
                   "unit": "m[IU]/mL",
+                  "range": {},
                   "value": 55
                 },
                 {
@@ -1489,7 +1453,7 @@
             {
               "id": "mammo-2023",
               "action": "placed",
-              "order": "Diagnostic mammogram, bilateral",
+              "order": "Diagnostic mammogram",
               "category": "imaging",
               "reason": "History of right breast cancer"
             },
@@ -2233,7 +2197,7 @@
             {
               "id": "mammo-2024",
               "action": "placed",
-              "order": "Diagnostic mammogram, bilateral",
+              "order": "Diagnostic mammogram",
               "category": "imaging",
               "reason": "History of right breast cancer"
             }
@@ -3009,7 +2973,7 @@
             {
               "id": "mammo-2025",
               "action": "placed",
-              "order": "Diagnostic mammogram, bilateral",
+              "order": "Diagnostic mammogram",
               "category": "imaging",
               "reason": "History of right breast cancer"
             },
@@ -3513,6 +3477,9 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 550
                 }
               ]
@@ -3872,24 +3839,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.48
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 32
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 70
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -4166,13 +4149,13 @@
         "code": "199224",
         "display": "anastrozole 1 MG Oral Tablet",
         "ingredient": "anastrozole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "calcium carbonate 500 MG Oral Tablet": {
         "code": "318076",
         "display": "calcium carbonate 500 MG Oral Tablet",
         "ingredient": "calcium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4180,6 +4163,9 @@
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Bacteria": {
@@ -4191,12 +4177,20 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Epithelial cells": {
@@ -4214,18 +4208,27 @@
         "code": "10501-5",
         "display": "Lutropin [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

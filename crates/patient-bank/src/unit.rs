@@ -252,7 +252,7 @@ fn brief(unit: &Unit, seeds: &Seeds, drafts: &Path, out: &Path) -> Result<i32> {
 
 fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
     let (merged, mut errors) = merge_measured(unit, drafts, catalog);
-    let (errs, mut warnings) = check::check(unit, &merged.patients, catalog);
+    let (errs, warnings) = check::check(unit, &merged.patients, catalog);
     errors.extend(errs.into_iter().map(|e| {
         let eid = e.split(':').next().unwrap_or("");
         match merged.part_of.get(eid) {
@@ -263,12 +263,14 @@ fn accept(unit: &Unit, drafts: &Path, catalog: &Catalog) -> Result<i32> {
     let mut terms = Terms::default();
     if errors.is_empty() {
         terms = verify(unit, &merged.patients, catalog)?;
-        warnings.extend(check::uncoded_orders(&merged.patients, catalog, &terms));
-        warnings.extend(
+        // every coded field takes a verified code; only a drug the author marked
+        // `uncoded` stays text
+        errors.extend(check::uncoded_orders(&merged.patients, catalog, &terms));
+        errors.extend(
             terms
                 .rejected
                 .iter()
-                .map(|x| format!("left text-only (not verified): {x}")),
+                .map(|x| format!("not verified: {x}; `patient-bank find` finds the code")),
         );
         // so the author sees what each code it chose means
         for (label, v) in terms.labs.iter().chain(&terms.reports) {

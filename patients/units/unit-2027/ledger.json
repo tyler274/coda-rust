@@ -1,9 +1,7 @@
 {
   "unit": "unit-2027",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002027/2023-06-26a: procedure order \"Post-hospital follow-up visit\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002027",
@@ -1457,6 +1455,10 @@
                   "test": "5-Hydroxyindoleacetate [Mass/time] in 24 hour Urine",
                   "loinc": "1695-6",
                   "unit": "mg/(24.h)",
+                  "range": {
+                    "low": 2,
+                    "high": 9
+                  },
                   "value": 38
                 }
               ]
@@ -1506,15 +1508,6 @@
           "start": "2023-06-26T11:40",
           "service": "Internal Medicine — Primary Care",
           "reason": "Wife calling: surgery update",
-          "orders": [
-            {
-              "id": "postop-visit",
-              "action": "placed",
-              "order": "Post-hospital follow-up visit",
-              "category": "procedure",
-              "reason": "After laparotomy"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -1639,13 +1632,6 @@
             {
               "procedure": "Office visit, established patient, moderate MDM",
               "performed": "2023-07-06T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "postop-visit",
-              "action": "done",
-              "date": "2023-07-06T10:00"
             }
           ],
           "documents": [
@@ -3551,24 +3537,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.42
                 },
                 {
                   "test": "Carbon dioxide [Partial pressure] in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 45
                 },
                 {
                   "test": "Oxygen [Partial pressure] in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 70
                 },
                 {
                   "test": "Bicarbonate [Moles/volume] in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -4105,7 +4107,7 @@
         "code": "199206",
         "display": "riluzole 50 MG Oral Tablet",
         "ingredient": "riluzole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4113,30 +4115,50 @@
         "code": "1695-6",
         "display": "5-Hydroxyindoleacetate [Mass/time] in 24 hour Urine",
         "unit": "mg/(24.h)",
+        "range": {
+          "low": 2,
+          "high": 9
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Bicarbonate [Moles/volume] in Arterial blood": {
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide [Partial pressure] in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen [Partial pressure] in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

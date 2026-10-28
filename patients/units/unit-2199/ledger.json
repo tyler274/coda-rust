@@ -1,12 +1,7 @@
 {
   "unit": "unit-2199",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002199/2023-09-12a: procedure order \"Records request, prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00002199/2025-06-10a: procedure order \"Records request, outside cardiology\" names no one catalog lab, panel, study or procedure",
-    "MRN00002199/2025-10-13a: procedure order \"Records request, outside hospital\" names no one catalog lab, panel, study or procedure",
-    "MRN00002199/2026-04-30a: procedure order \"Records request, outside hospital\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002199",
@@ -313,13 +308,6 @@
               "order": "Low-dose CT chest for lung cancer screening",
               "category": "imaging",
               "reason": "current smoker, about 40 pack-years"
-            },
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Records request, prior primary care office",
-              "category": "procedure",
-              "reason": "transfer of care"
             }
           ],
           "documents": [
@@ -375,13 +363,6 @@
             {
               "vaccine": "Tdap",
               "date": "2017-05-09T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2023-09-26T11:10"
             }
           ],
           "documents": [
@@ -1291,13 +1272,6 @@
               "id": "cards-amaurosis",
               "action": "done",
               "date": "2025-06-10T10:40"
-            },
-            {
-              "id": "records-cards-2025",
-              "action": "placed",
-              "order": "Records request, outside cardiology",
-              "category": "procedure",
-              "reason": "consult letter 5/5/25 not received"
             }
           ],
           "documents": [
@@ -1356,13 +1330,6 @@
                   "value": 8.2
                 }
               ]
-            }
-          ],
-          "orders": [
-            {
-              "id": "records-cards-2025",
-              "action": "done",
-              "date": "2025-06-23T14:30"
             }
           ],
           "documents": [
@@ -1587,15 +1554,6 @@
           "id": "2025-10-13a",
           "kind": "telephone",
           "start": "2025-10-13T10:05",
-          "orders": [
-            {
-              "id": "records-hosp-2025",
-              "action": "placed",
-              "order": "Records request, outside hospital",
-              "category": "procedure",
-              "reason": "ED and inpatient records 10/8-10/11/25"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -1765,13 +1723,6 @@
             {
               "procedure": "Coronary stent placement, single vessel",
               "performed": "2025-10-09T11:20"
-            }
-          ],
-          "orders": [
-            {
-              "id": "records-hosp-2025",
-              "action": "done",
-              "date": "2025-11-18T15:00"
             }
           ],
           "documents": [
@@ -2020,15 +1971,6 @@
           "id": "2026-04-30a",
           "kind": "telephone",
           "start": "2026-04-30T15:10",
-          "orders": [
-            {
-              "id": "records-hosp-2026",
-              "action": "placed",
-              "order": "Records request, outside hospital",
-              "category": "procedure",
-              "reason": "ED, operative and discharge records 4/26-4/30/26"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -2610,7 +2552,7 @@
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     }
   }

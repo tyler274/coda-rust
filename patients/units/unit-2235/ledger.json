@@ -1,15 +1,7 @@
 {
   "unit": "unit-2235",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002235/2019-09-10a: procedure order \"Records request, prior primary care practice\" names no one catalog lab, panel, study or procedure",
-    "MRN00002235/2021-05-11a: imaging order \"X-ray right foot, 3 views\" names no one catalog lab, panel, study or procedure",
-    "MRN00002235/2022-06-07a: procedure order \"Records request, orthopedics visit and MRI 5/2/2022\" names no one catalog lab, panel, study or procedure",
-    "MRN00002235/2023-04-11a: referral to \"Hematology & Oncology\" names no catalog specialty",
-    "MRN00002235/2025-05-02a: imaging order \"Chest X-ray, 2 views, in 4-5 weeks\" names no one catalog lab, panel, study or procedure",
-    "MRN00002235/2025-05-02a: procedure order \"Records request, emergency department 4/25/2025\" names no one catalog lab, panel, study or procedure",
-    "MRN00002235/2025-11-14a: referral to \"Palliative Care\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002235",
@@ -319,15 +311,6 @@
               "performed": "2019-09-10T09:00"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Records request, prior primary care practice",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -385,13 +368,6 @@
             {
               "vaccine": "Tdap",
               "date": "2016-04-12T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2019-09-30T11:15"
             }
           ],
           "documents": [
@@ -1321,7 +1297,7 @@
             {
               "id": "foot-xr-2021",
               "action": "placed",
-              "order": "X-ray right foot, 3 views",
+              "order": "Foot X-ray",
               "category": "imaging",
               "reason": "plantar ulcer, exclude osteomyelitis"
             },
@@ -1964,13 +1940,6 @@
               "id": "ortho-2022",
               "action": "done",
               "date": "2022-06-07T10:40"
-            },
-            {
-              "id": "ortho-records-2022",
-              "action": "placed",
-              "order": "Records request, orthopedics visit and MRI 5/2/2022",
-              "category": "procedure",
-              "reason": "no consult note received"
             }
           ],
           "documents": [
@@ -2008,13 +1977,6 @@
               "performed": "2022-05-02T14:20",
               "text": "MRI LUMBAR SPINE WITHOUT CONTRAST. Indication: low back pain radiating to the thighs with walking. Sagittal images include T10 through the sacrum. At T11-T12 the central canal is narrowed by thickening of the ligamentum flavum. Cord signal normal at the levels included; conus ends normally at L1. L1-L2 through L5-S1: disc heights preserved, no significant central canal narrowing, neural foramina patent. Vertebral body heights and marrow signal normal. Paraspinal soft tissues unremarkable.",
               "conclusion": "Spinal canal narrowing at T11-T12 from ligamentum flavum thickening. No significant lumbar canal narrowing."
-            }
-          ],
-          "orders": [
-            {
-              "id": "ortho-records-2022",
-              "action": "done",
-              "date": "2022-06-21T15:00"
             }
           ],
           "documents": [
@@ -2658,7 +2620,7 @@
               "action": "placed",
               "order": "Hematology/oncology referral, urgent",
               "category": "referral",
-              "to": "Hematology & Oncology",
+              "to": "Hematology",
               "reason": "anemia, lymphocytosis, lymphadenopathy, B symptoms"
             }
           ],
@@ -4398,16 +4360,9 @@
             {
               "id": "cxr-2025",
               "action": "placed",
-              "order": "Chest X-ray, 2 views, in 4-5 weeks",
+              "order": "Chest X-ray, 2 views",
               "category": "imaging",
               "reason": "follow-up right pleural effusion"
-            },
-            {
-              "id": "ed-records-2025",
-              "action": "placed",
-              "order": "Records request, emergency department 4/25/2025",
-              "category": "procedure",
-              "reason": "post-ED follow-up"
             }
           ],
           "documents": [
@@ -4521,13 +4476,6 @@
               "performed": "2025-04-25T20:15",
               "text": "PA AND LATERAL CHEST. Indication: dyspnea and cough. Moderate right pleural effusion layering posteriorly, blunting the right costophrenic angle and obscuring the right hemidiaphragm. Heart size normal. No pulmonary vascular congestion or interstitial edema. Left lung clear. No pneumothorax. Sclerotic foci in the thoracic spine, previously characterized.",
               "conclusion": "Moderate right pleural effusion. No cardiomegaly or pulmonary edema."
-            }
-          ],
-          "orders": [
-            {
-              "id": "ed-records-2025",
-              "action": "done",
-              "date": "2025-05-20T14:40"
             }
           ],
           "documents": [
@@ -5143,18 +5091,30 @@
                   "test": "Leukocytes in Cerebral spinal fluid",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 3
                 },
                 {
                   "test": "Protein in Cerebral spinal fluid",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 45
                 },
                 {
                   "test": "Glucose in Cerebral spinal fluid",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 60
                 }
               ]
@@ -5440,13 +5400,13 @@
         "code": "1100075",
         "display": "abiraterone acetate 250 MG Oral Tablet",
         "ingredient": "abiraterone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "acalabrutinib 100 MG Oral Tablet": {
         "code": "2607734",
         "display": "acalabrutinib 100 MG Oral Tablet",
         "ingredient": "acalabrutinib",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "leuprolide acetate 22.5 MG Injectable Suspension": {
         "code": "2606516",
@@ -5458,13 +5418,13 @@
         "code": "311296",
         "display": "levofloxacin 750 MG Oral Tablet",
         "ingredient": "levofloxacin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "melatonin 3 MG Oral Tablet": {
         "code": "199163",
         "display": "melatonin 3 MG Oral Tablet",
         "ingredient": "melatonin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5472,6 +5432,10 @@
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lactate dehydrogenase": {
@@ -5484,12 +5448,20 @@
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein in Cerebral spinal fluid": {
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

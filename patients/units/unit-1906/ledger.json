@@ -1,9 +1,7 @@
 {
   "unit": "unit-1906",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001906/2025-10-28a: imaging order \"MRI brain with contrast\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001906",
@@ -377,7 +375,6 @@
                 },
                 {
                   "test": "Thyroid Stimulating Hormone",
-                  "unit": "m[IU]/L",
                   "value": 2.5
                 },
                 {
@@ -389,6 +386,7 @@
                   "test": "Luteinizing Hormone",
                   "loinc": "10501-5",
                   "unit": "m[IU]/mL",
+                  "range": {},
                   "value": 6.8
                 }
               ]
@@ -400,6 +398,7 @@
               "action": "placed",
               "order": "MRI brain with contrast",
               "category": "imaging",
+              "loinc": "24589-4",
               "reason": "hyperprolactinemia with visual field defect"
             },
             {
@@ -915,7 +914,7 @@
         "code": "199703",
         "display": "cabergoline 0.5 MG Oral Tablet",
         "ingredient": "cabergoline",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -923,6 +922,7 @@
         "code": "10501-5",
         "display": "Lutropin [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -930,6 +930,11 @@
       "MRI brain with and without contrast": {
         "code": "24590-2",
         "display": "MR Brain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI brain with contrast": {
+        "code": "24589-4",
+        "display": "MR Brain W contrast IV",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

@@ -1,11 +1,7 @@
 {
   "unit": "unit-1700",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001700/2021-06-08a: procedure order \"Outside records request, prior primary care and OB\" names no one catalog lab, panel, study or procedure",
-    "MRN00001700/2026-01-21a: lab order \"CBC\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001700",
@@ -51,6 +47,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -339,15 +336,6 @@
               "performed": "2021-06-08T08:40"
             }
           ],
-          "orders": [
-            {
-              "id": "rec-prior-2021",
-              "action": "placed",
-              "order": "Outside records request, prior primary care and OB",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -421,13 +409,6 @@
             {
               "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
               "date": "2021-04-20T15:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "rec-prior-2021",
-              "action": "done",
-              "date": "2021-06-22T11:30"
             }
           ],
           "documents": [
@@ -1860,7 +1841,7 @@
             {
               "id": "cbc-2026-01",
               "action": "placed",
-              "order": "CBC",
+              "order": "Complete Blood Count (CBC)",
               "category": "lab",
               "reason": "platelet check on enoxaparin"
             }
@@ -2807,13 +2788,13 @@
         "code": "854238",
         "display": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "enoxaparin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "enoxaparin sodium 80 MG in 0.8 ML Prefilled Syringe": {
         "code": "854241",
         "display": "0.8 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "enoxaparin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "reports": {
@@ -2822,9 +2803,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

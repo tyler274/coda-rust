@@ -1,10 +1,7 @@
 {
   "unit": "unit-1776",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001776",
@@ -784,6 +781,7 @@
             },
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -2664,6 +2662,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -3556,6 +3558,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -3572,6 +3578,10 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 130
                 }
               ]
@@ -3713,11 +3723,17 @@
       }
     },
     "medications": {
+      "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet": {
+        "code": "428485",
+        "display": "calcium carbonate 1500 MG / cholecalciferol 0.01 MG Oral Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
       "tranexamic acid 650 MG Oral Tablet": {
         "code": "883826",
         "display": "tranexamic acid 650 MG Oral Tablet",
         "ingredient": "tranexamic",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3725,18 +3741,22 @@
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
-      "drug \"multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

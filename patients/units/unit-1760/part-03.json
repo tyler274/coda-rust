@@ -21,7 +21,7 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2023-04-13T09:45", "results": [{"test": "Hemoglobin", "value": 13.2}, {"test": "White Blood Cells", "value": 7.5}, {"test": "Platelets", "value": 244}]},
             {"panel": null, "collected": "2023-04-13T09:45", "results": [
               {"test": "Erythrocyte Sedimentation Rate", "value": 20},
-              {"test": "Cancer Antigen 125", "loinc": "10334-1", "unit": "U/mL", "value": 58}
+              {"test": "Cancer Antigen 125", "loinc": "10334-1", "unit": "U/mL", "value": 58, "range": {"high": 35}}
             ]}
           ],
           "reports": [
@@ -49,7 +49,7 @@
           "service": "Gynecology — Outpatient Surgery (outside)",
           "reason": "Endometriosis, chronic pelvic pain",
           "procedures": [
-            {"procedure": "Laparoscopy with excision of endometriosis implants and lysis of pelvic adhesions", "performed": "2023-06-27T08:15"}
+            {"procedure": "Laparoscopy with excision of endometriosis implants and lysis of pelvic adhesions", "performed": "2023-06-27T08:15", "snomed": "713174005"}
           ],
           "reports": [
             {"study": "Surgical pathology report", "performed": "2023-06-27T09:20", "issued": "2023-06-30T15:00", "text": "Specimens: (A) peritoneum, posterior cul-de-sac, excision; (B) pelvic peritoneum, right pelvic sidewall, excision.\nGross: A, two tan-red fibrous tissue fragments, 1.6 x 0.8 x 0.3 cm in aggregate. B, one tan fibrous fragment, 1.1 x 0.5 x 0.2 cm. Entirely submitted.\nMicroscopic: both specimens show endometrial-type glands with surrounding endometrial stroma within fibrotic peritoneal tissue, with hemosiderin-laden macrophages. No atypia. No malignancy.", "conclusion": "A and B: endometriosis. Negative for malignancy."}
@@ -90,8 +90,7 @@
             {"procedure": "Venipuncture", "performed": "2023-08-22T08:55"}
           ],
           "orders": [
-            {"id": "fu-feb-2024", "action": "placed", "order": "Return visit in 6 months, pelvic pain follow-up", "category": "procedure", "reason": "endometriosis after laparoscopy"}
-          ],
+            ],
           "documents": [
             {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-08-22T08:50", "body": "Yearly visit, few days before teachers go back.\n\nInterval: laparoscopy 6/27, endometriosis confirmed on pathology, implants excised, adhesions freed. Gyn op note says right tube open on dye, left still blocked. Post-op visit 8/9: off the continuous pill now, they're going to try on their own for 6-12 months, then back to REI if needed.\n\nFeels like a different person. Pain 1/10 today, \"the everyday ache is gone.\" First period off the pill came last week, crampy for a day, ibuprofen covered it. Intercourse comfortable again.\n\nMeds: prenatal vitamin, ibuprofen 600 prn. NKDA.\n\nExam: vitals as charted. Well, cheerful. Thyroid normal. Heart regular, lungs clear. Abdomen soft, three small healed port scars, nontender.\n\nA/P\n1. Endometriosis s/p laparoscopic excision and adhesiolysis 6/2023, pain much improved. Off hormonal suppression to try to conceive. Ibuprofen prn. Med list updated.\n2. Tubal factor infertility: per gyn, right tube patent after surgery. Continue prenatal.\n3. Health maintenance: CBC/CMP. Flu and COVID this fall. Pap due next year.\nCheck in around February, sooner if pain returns."}
           ]
@@ -132,7 +131,7 @@
           "kind": "portal_message",
           "start": "2024-02-20T16:30",
           "reason": "Missed visit",
-          "orders": [{"id": "fu-feb-2024", "action": "cancelled", "date": "2024-02-20T16:30"}],
+          "orders": [],
           "documents": [
             {"type": "Patient Message", "title": "Missed appointment", "author": "front desk", "date": "2024-02-20T08:45", "body": "Hi Melissa, we missed you at your 3:40 appointment last Tuesday. Would you like to reschedule?"},
             {"type": "Patient Message", "title": "RE: Missed appointment", "author": "patient", "date": "2024-02-20T16:30", "body": "So sorry!! Parent conferences ran over and I completely forgot. Honestly I'm doing well, periods are crampy the first day or two and the ibuprofen handles it, no pain otherwise. No pregnancy yet. Could I just see you at my physical instead of rescheduling?"},
@@ -195,7 +194,7 @@
             {"drug": "doxycycline hyclate 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily for 7 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "Chlamydia"}
           ],
           "orders": [
-            {"id": "ct-retest", "action": "placed", "order": "Chlamydia and gonorrhea NAAT, retest in 3 months", "category": "lab", "reason": "test of reinfection"}
+            {"id": "ct-retest", "action": "placed", "order": "Chlamydia trachomatis NAAT", "category": "lab", "reason": "test of reinfection"}, {"id": "ct-retest-2", "action": "placed", "order": "Neisseria gonorrhoeae NAAT", "category": "lab", "reason": "test of reinfection"}
           ],
           "documents": [
             {"type": "Telephone Encounter", "title": "Result Call — Chlamydia", "author": "PCP", "date": "2024-10-14T12:30", "body": "Called pt on her lunch break re: positive chlamydia NAAT from Thursday's screen. Gonorrhea, HIV and syphilis negative. She has no symptoms. Upset but took it calmly.\n\nPlan: doxycycline 100 mg BID x 7 days sent. Expedited partner therapy: second doxycycline prescription for her husband under his name per state EPT guidance. No intercourse until both have finished 7 days of treatment. Retest in 3 months. Call for fever or pelvic pain; with her history I want to hear early.\nPap from 10/10 still pending."},

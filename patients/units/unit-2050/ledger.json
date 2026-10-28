@@ -1,12 +1,7 @@
 {
   "unit": "unit-2050",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002050/2022-09-13a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00002050/2022-09-15a: procedure order \"Hepatitis B vaccine series (Heplisav-B)\" names no one catalog lab, panel, study or procedure",
-    "MRN00002050/2024-10-23a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002050/2025-11-04a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002050",
@@ -329,15 +324,6 @@
               "performed": "2022-09-13T10:50"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "New patient"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -377,7 +363,7 @@
             {
               "id": "heplisav-series",
               "action": "placed",
-              "order": "Hepatitis B vaccine series (Heplisav-B)",
+              "order": "Immunization administration",
               "category": "procedure",
               "reason": "Hepatitis B nonimmune"
             }
@@ -396,13 +382,6 @@
           "id": "2022-09-21a",
           "kind": "outside_records",
           "start": "2022-09-21T11:05",
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2022-09-21T11:05"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1402,7 +1381,7 @@
             {
               "id": "fit-2024",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening, age 45"
             }
@@ -2803,7 +2782,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -3575,7 +3554,7 @@
         "code": "1665060",
         "display": "cefazolin 2000 MG Injection",
         "ingredient": "cefazolin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     }
   }

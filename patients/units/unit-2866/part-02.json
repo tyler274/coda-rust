@@ -433,12 +433,12 @@
        "reason": "Left knee pain, osteoarthritis"
       },
       {
-       "id": "ortho-2024",
-       "action": "placed",
-       "order": "Orthopedic surgery referral",
-       "category": "referral",
-       "to": "Orthopedic Surgery",
-       "reason": "Left knee osteoarthritis not controlled with conservative care"
+        "id": "ortho-2024",
+        "action": "placed",
+        "order": "Orthopedic surgery referral",
+        "category": "referral",
+        "to": "Orthopedics",
+        "reason": "Left knee osteoarthritis not controlled with conservative care"
       },
       {
        "id": "ldct-2024",
@@ -809,16 +809,23 @@
        "resulted": "2024-09-22T16:25",
        "results": [
         {
-         "test": "Activated partial thromboplastin time",
-         "loinc": "14979-9",
-         "unit": "s",
-         "value": 28
+          "test": "Activated partial thromboplastin time",
+          "loinc": "14979-9",
+          "unit": "s",
+          "value": 28,
+          "range": {
+            "low": 25,
+            "high": 35
+          }
         },
         {
-         "test": "D-dimer",
-         "loinc": "48065-7",
-         "unit": "ng/mL{FEU}",
-         "value": 2840
+          "test": "D-dimer",
+          "loinc": "48065-7",
+          "unit": "ng/mL{FEU}",
+          "value": 2840,
+          "range": {
+            "high": 500
+          }
         }
        ]
       }
@@ -894,10 +901,13 @@
        "resulted": "2024-09-23T16:00",
        "results": [
         {
-         "test": "Heparin-induced platelet antibody",
-         "loinc": "45155-9",
-         "unit": "{OD}",
-         "value": 1.84
+          "test": "Heparin-induced platelet antibody",
+          "loinc": "45155-9",
+          "unit": "{OD}",
+          "value": 1.84,
+          "range": {
+            "high": 0.4
+          }
         }
        ]
       },

@@ -1,0 +1,5551 @@
+{
+  "unit": "unit-2264",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002264",
+      "given": "Donald",
+      "family": "Levine",
+      "birth_date": "1947-08-17",
+      "address_line": "212 Linden Street, Apt 3",
+      "phone": "+1-201-555-0167",
+      "email": "donald.levine@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired math teacher who joined in 2017 with hypertension, stable schizophrenia on quetiapine, knee osteoarthritis and BPH after TURP. Primary adrenal insufficiency diagnosed in 2020, recurrent BPH, amlodipine edema, senile purpura, a Spigelian hernia and orthostatic hypotension follow; after his last visit he has an ED visit for urinary retention with post-renal AKI.",
+      "events": [
+        {
+          "id": "2017-08-30a",
+          "kind": "telephone",
+          "start": "2017-08-30T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2017-08-30T10:20",
+              "author": "front desk",
+              "body": "Mr. Levine phoned about joining. Says his old doctor retired over the summer and a neighbor recommended us. 70 years old, Medicare plus a supplement. Explained the membership and that his insurance still covers labs and specialists. Booked a new-patient visit 9/12 at 9:30. Asked him to bring his pill bottles and to sign a release for his old office's records; release form mailed to his home address."
+            }
+          ]
+        },
+        {
+          "id": "2017-09-12a",
+          "kind": "establish_care",
+          "start": "2017-09-12T09:30",
+          "end": "2017-09-12T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2007-06-01"
+            },
+            {
+              "label": "Schizophrenia",
+              "action": "diagnosed",
+              "onset": "1974-01-01",
+              "note": "Long stable; followed by community psychiatry"
+            },
+            {
+              "label": "Bilateral primary osteoarthritis of knee",
+              "action": "diagnosed",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+              "action": "history",
+              "onset": "2010-01-01",
+              "note": "Treated with TURP early 2017; no urinary symptoms since"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "1965-01-01",
+              "note": "30 pack-years, quit about 2005"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug_text": "quetiapine 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Schizophrenia; prescribed by psychiatry"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              82
+            ],
+            "hr": 73,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 80.0,
+            "height_cm": 175.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2017-09-12T10:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2017-09-12T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2017-09-12T10:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2017-09-12T10:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired high school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2017-09-12T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2017",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "30 pack-years, quit about 12 years ago"
+            },
+            {
+              "id": "aaa-us-2017",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "One-time aortic screening, former smoker age 65-75"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2017-09-12T10:30",
+              "author": "PCP",
+              "body": "70 yo retired high school math teacher, coming over after his longtime PCP retired. Brought his bottles in a shopping bag, which helped.\n\nHTN: about ten years, on HCTZ 25 daily since the start. Doesn't check at home. No headaches, CP, SOB.\n\nSchizophrenia: dx in his twenties, one hospitalization decades ago, none since. Stable on quetiapine 200 qhs from the community psychiatry clinic, sees them twice a year. Denies AH/VH today, organized and pleasant, a bit formal. He would like us not to change anything about that med, which is fine.\n\nKnees: OA both knees per old records, aches with stairs and after long walks, manages without pills for now.\n\nProstate: TURP in February this year at an outside urology group after years of slow stream on medication. Says he voids \"like a young man\" since and stopped the urology pill afterward. Has not been back to them.\n\nAspirin 81 daily on his own for years, \"for the heart.\" No hx MI, stroke or stents.\n\nPMH as above. PSH: TURP 2017. Meds: HCTZ 25 daily, quetiapine 200 qhs, ASA 81. NKDA.\nFH: father HTN and an enlarged prostate. Mother osteoporosis and macular degeneration. Sister with autoimmune thyroid disease. Paternal uncle type 1 diabetes.\nSH: divorced, lives alone in an apartment, daughter lives ten minutes away and checks in. Smoked about a pack a day for 30 years, quit roughly 12 years ago. A drink or two a month. Walks most mornings.\n\nExam: well-appearing, NAD. BP 138/82. Lungs clear. Heart RRR, no murmur. Abd soft, NT, no masses. No edema. Knees with crepitus bilaterally, no effusion, full ROM. Skin unremarkable. Affect mildly flat, thought process linear.\n\nA/P\n1. HTN - ok on HCTZ. CMP.\n2. Schizophrenia - stable, psychiatry manages. CMP, A1c and lipids yearly for quetiapine monitoring.\n3. Knee OA - activity, consider acetaminophen if it worsens.\n4. BPH s/p TURP - asymptomatic.\n5. Former smoker, 30 pk-yr - qualifies for lung screening: LDCT ordered after shared decision talk. One-time aortic ultrasound ordered.\n6. Health maintenance: Hep C ab, TSH, CBC today. Records request to old office for colonoscopy and vaccine history. Flu shot when it arrives.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              82
+            ],
+            "weight_kg": 80.0,
+            "height_cm": 175.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2017-09-14a",
+          "kind": "portal_message",
+          "start": "2017-09-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2017-09-14T16:05",
+              "author": "PCP",
+              "body": "Hello Mr. Levine, all of your blood work from Tuesday came back fine: kidney function, electrolytes, blood count, sugar, cholesterol, thyroid. Hepatitis C screening is negative. Nothing to change. The scan scheduling office should be calling you about the lung CT and the aorta ultrasound."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2017-09-14T19:40",
+              "author": "patient",
+              "body": "Thank you. They called already. Both on November 8 at the imaging center. D. Levine"
+            }
+          ]
+        },
+        {
+          "id": "2017-10-03a",
+          "kind": "nurse_visit",
+          "start": "2017-10-03T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2017-10-03T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2017-10-03T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2017-10-03T11:15",
+              "author": "RN",
+              "body": "High-dose flu vaccine given L deltoid, lot recorded. No prior reactions. Waited 15 minutes, fine. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2017-10-17a",
+          "kind": "outside_records",
+          "start": "2017-10-17T13:00",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2013-04-10T08:00"
+            },
+            {
+              "procedure": "Transurethral resection of prostate",
+              "snomed": "90199006",
+              "performed": "2017-02-14T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal polysaccharide PPSV23",
+              "date": "2013-01-22T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2014-05-06T10:00"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV13",
+              "date": "2015-02-10T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from former primary care office",
+              "date": "2017-10-17T13:00",
+              "author": "front desk",
+              "body": "Received 41 pages by fax from his previous PCP's office (closed practice, records held by a custodian service). Highlights abstracted for the PCP:\n- Screening colonoscopy April 2013, normal, no polyps; no repeat advised given age.\n- Pneumococcal polysaccharide vaccine Jan 2013, conjugate pneumococcal vaccine Feb 2015, Tdap May 2014.\n- TURP February 2017 at outside urology, operative note not included, only the referral letter.\n- BP readings 130s-140s/80s on HCTZ over several years.\n- Psychiatry letters, stable on quetiapine.\nScanned to chart."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2017-10-19T08:10",
+              "author": "PCP",
+              "body": "Old records reviewed. Colon screening done 2013, normal; at 70 with a clean scope no further screening planned. Pneumococcal series complete. Tdap good until 2024. Shingles vaccine not on file; will discuss in spring. Nothing new clinically."
+            }
+          ]
+        },
+        {
+          "id": "2017-11-08a",
+          "kind": "imaging",
+          "start": "2017-11-08T09:00",
+          "service": "Outside imaging center",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2017-11-08T09:00",
+              "text": "Low-dose non-contrast CT of the chest for lung cancer screening. Baseline exam. The lungs are clear without nodules, consolidation or effusion. No emphysema. Airways patent. Heart size normal. No mediastinal or hilar adenopathy. Upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            },
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2017-11-08T09:40",
+              "text": "Limited ultrasound of the abdominal aorta for aneurysm screening. The aorta is visualized from the diaphragm to the bifurcation and is of normal caliber throughout. No aneurysm. Iliac origins unremarkable.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2017",
+              "action": "done",
+              "date": "2017-11-08T09:00"
+            },
+            {
+              "id": "aaa-us-2017",
+              "action": "done",
+              "date": "2017-11-08T09:40"
+            }
+          ]
+        },
+        {
+          "id": "2017-11-13a",
+          "kind": "portal_message",
+          "start": "2017-11-13T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung CT and aorta ultrasound",
+              "date": "2017-11-13T12:30",
+              "author": "PCP",
+              "body": "Both scans were normal. The lung CT shows no nodules, and we would repeat it once a year for now. The aorta is a normal size and doesn't need another look. Have a good week."
+            }
+          ]
+        },
+        {
+          "id": "2018-03-22a",
+          "kind": "office_visit",
+          "start": "2018-03-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              149,
+              86
+            ],
+            "hr": 85,
+            "spo2": 98,
+            "weight_kg": 79.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2018-03-22T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2018-03-22T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2018-03-22T14:25",
+              "author": "PCP",
+              "body": "Six-month check. Winter was quiet. Walking indoors at the mall when it's icy. Taking HCTZ every morning, no missed doses he can recall. Psychiatry visit in January went fine, no changes.\nKnees about the same.\nNo urinary complaints.\n\nBP as charted, a touch high today; home cuff not used. Heart RRR, lungs clear, no edema.\n\nA/P: HTN, borderline today, prior readings fine; recheck at the fall visit before changing anything. BMP for K and Na on the diuretic. Shingles vaccine: recommended the two-dose recombinant series; Part D covers it at the pharmacy, he will go this week. RTC fall for wellness visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2018-03-29a",
+          "kind": "pharmacy",
+          "start": "2018-03-29T15:00",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2018-03-29T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2018-03-29T15:30",
+              "author": "pharmacy",
+              "body": "Recombinant zoster vaccine dose 1 of 2 administered at community pharmacy, left deltoid. Dose 2 due in 2 to 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2018-06-19a",
+          "kind": "pharmacy",
+          "start": "2018-06-19T10:40",
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2018-06-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2018-06-19T11:00",
+              "author": "pharmacy",
+              "body": "Recombinant zoster vaccine dose 2 of 2 administered, right deltoid. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-14a",
+          "kind": "telephone",
+          "start": "2018-08-14T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2018-08-14T09:15",
+              "author": "MA",
+              "body": "Electronic request from the pharmacy for hydrochlorothiazide 25 mg #90. Last BMP March normal, seen in March. Sent per protocol, 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-27a",
+          "kind": "annual_physical",
+          "start": "2018-09-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              129,
+              80
+            ],
+            "hr": 69,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 80.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-09-27T10:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-09-27T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 282
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-09-27T10:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-27T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2018-09-27T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2018",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2018-09-27T10:45",
+              "author": "PCP",
+              "body": "First AWV with us.\nHealth risk assessment reviewed: independent in all ADLs and IADLs, drives, manages own pills with a weekly box. No falls in the past year. Hearing ok, wears readers. Lives alone, daughter nearby. Advance directive: has a health care proxy (daughter), copy requested.\nCognition: three-word recall 3/3, clock normal.\nPHQ-2 0.\nMeds reviewed, unchanged: HCTZ 25, quetiapine 200 qhs, ASA 81.\n\nExam: BP as charted. Weight steady. Lungs clear, heart regular, no edema. Gait steady.\n\nPlan: annual labs incl. metabolic monitoring for quetiapine. Second year LDCT ordered. Flu shot next visit with nurse. Shingles series done. Return 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2018-10-16a",
+          "kind": "nurse_visit",
+          "start": "2018-10-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-16T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2018-10-16T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2018-10-16T09:45",
+              "author": "RN",
+              "body": "High-dose influenza vaccine, R deltoid. Tolerated. He asked about the lab letters from the wellness visit; reviewed with him that they were all normal per PCP note."
+            }
+          ]
+        },
+        {
+          "id": "2018-11-14a",
+          "kind": "imaging",
+          "start": "2018-11-14T08:30",
+          "service": "Outside imaging center",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2018-11-14T08:30",
+              "text": "Annual low-dose screening CT, compared with November 2017. No pulmonary nodules. No consolidation, effusion or pneumothorax. Normal heart size. No adenopathy.",
+              "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2018",
+              "action": "done",
+              "date": "2018-11-14T08:30"
+            }
+          ]
+        },
+        {
+          "id": "2018-11-16a",
+          "kind": "portal_message",
+          "start": "2018-11-16T11:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT result",
+              "date": "2018-11-16T11:10",
+              "author": "PCP",
+              "body": "Your screening lung CT is clear again, same as last year. One more next fall."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-25a",
+          "kind": "office_visit",
+          "start": "2019-03-25T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Knee pain, blood pressure check",
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 to 2 tablets by mouth up to 3 times daily as needed for knee pain. Max 3,000 mg per day",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "TID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Osteoarthritis of both knees"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              79
+            ],
+            "hr": 64,
+            "weight_kg": 79.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-03-25T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-03-25T15:50",
+              "author": "PCP",
+              "body": "Knees have been grumbling more since he started helping a friend move furniture in February, both sides, worse going downstairs. No swelling, locking or giving way. No falls. Hasn't taken anything.\nBP check otherwise, feels well.\n\nBP as charted. Knees: crepitus both, no effusion, no warmth, ligaments stable, ROM full but stiff at end range. Gait normal.\n\nA/P\nKnee OA, both - flare with activity. Acetaminophen 500 mg, 1-2 tabs up to TID prn, ceiling 3 g/day. Avoiding NSAIDs with the diuretic and his age. Quad strengthening handout. Call if not settling in a month.\nHTN - fine on HCTZ.\nRTC fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-06-11a",
+          "kind": "telephone",
+          "start": "2019-06-11T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy change",
+              "date": "2019-06-11T13:40",
+              "author": "MA",
+              "body": "Patient called, his supplement plan now prefers a mail-order pharmacy for maintenance meds. Updated preferred pharmacy. New 90-day script for HCTZ sent to mail order. He'll ask psychiatry to send the quetiapine there too."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-20a",
+          "kind": "annual_physical",
+          "start": "2019-09-20T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              134,
+              75
+            ],
+            "hr": 61,
+            "temp_c": 36.1,
+            "spo2": 96,
+            "weight_kg": 79.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-20T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-20T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-20T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-20T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2019-09-20T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2019",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "Annual lung screening, final year"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2019-09-20T09:25",
+              "author": "PCP",
+              "body": "Subsequent AWV.\nFunction: independent, still driving, still walking most mornings. No falls. Takes acetaminophen for the knees maybe twice a week and it does the job.\nMood fine, PHQ-2 0. Psychiatry every six months, no changes.\nCognition grossly intact in conversation; recall 3/3.\nHC proxy on file (daughter).\nMeds: HCTZ 25, quetiapine 200 qhs, ASA 81, acetaminophen prn.\n\nExam: BP as charted. Heart and lungs normal. No edema. Knees crepitant, no effusion.\n\nPlan: annual labs. LDCT this fall will be his last round, since next year he passes 15 years from quitting. Flu shot with the nurse in October. RTC spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-10-15a",
+          "kind": "nurse_visit",
+          "start": "2019-10-15T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-15T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2019-10-15T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2019-10-15T10:25",
+              "author": "RN",
+              "body": "Flu vaccine, high-dose, L deltoid. Observed, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-13a",
+          "kind": "imaging",
+          "start": "2019-11-13T09:15",
+          "service": "Outside imaging center",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2019-11-13T09:15",
+              "text": "Low-dose screening CT of the chest compared with 2017 and 2018. Lungs remain clear without nodules or masses. No pleural effusion. Coronary arteries without significant calcification. No lymphadenopathy. Visualized upper abdomen normal.",
+              "conclusion": "Lung-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2019",
+              "action": "done",
+              "date": "2019-11-13T09:15"
+            }
+          ]
+        },
+        {
+          "id": "2019-11-15a",
+          "kind": "portal_message",
+          "start": "2019-11-15T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung CT",
+              "date": "2019-11-15T09:05",
+              "author": "PCP",
+              "body": "Third clear lung CT in a row. Because you'll be 15 years out from quitting next year, this completes your screening; no more yearly CTs unless something changes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lung CT",
+              "date": "2019-11-15T18:22",
+              "author": "patient",
+              "body": "Very good news. Three negatives is a respectable sample size. Thank you."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-11a",
+          "kind": "telephone",
+          "start": "2020-05-11T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Fatigue",
+              "date": "2020-05-11T11:30",
+              "author": "RN",
+              "body": "Pt called (his spring visit was pushed by the pandemic). Says he's been worn out for about two months, not hungry, pants are loose. Gets woozy standing up from the couch, sits back down and it passes. No fever, cough, chest pain, vomiting or black stools. No COVID exposure he knows of. Daughter has been bringing groceries. Discussed with PCP: in-person visit tomorrow 8:15 so fasting AM labs can be drawn. Told him to go to the ED for fainting, vomiting he can't keep down or confusion."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-12a",
+          "kind": "office_visit",
+          "start": "2020-05-12T08:15",
+          "end": "2020-05-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, weight loss, lightheaded on standing",
+          "vitals": {
+            "bp": [
+              104,
+              62
+            ],
+            "hr": 69,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 74.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-05-12T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-05-12T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 295
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-05-12T08:20",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 2.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2020-05-12T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-ref-2020",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Fatigue, weight loss, hyperpigmentation, low AM cortisol"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-05-12T09:05",
+              "author": "PCP",
+              "body": "Masked visit, screened at door.\n\nS: about 2 months of steadily worse fatigue and poor appetite. Down from 80 kg in the fall to 74 today without trying. Lightheaded when he stands quickly, never passed out. Has noticed his forearms look tanned though he's barely been outside since March, which bothers him as a puzzle more than a worry. No N/V/abd pain, no fever, no cough, no melena. Sleep ok. Mood flat but not depressed by his account, no change in voices or thinking, psychiatry phone visit last month fine. Same meds.\n\nO: BP 104/62, well below his usual. Weight 74 kg. Thin, tired-appearing. Forearms diffusely darker than upper arms, oral mucosa looks pigmented on the inner cheeks. Lungs clear, heart regular, abdomen soft, nontender. No LAD. No edema.\n\nA/P\nFatigue, weight loss, low BP with darkening of skin and mucosa - this picture worries me for primary adrenal insufficiency. Drawing CMP, CBC and an AM cortisol now (drawn 8:20). Will call him with the cortisol and get him into endocrinology quickly if low. Hold off on HCTZ change until labs back. Reviewed red flags: vomiting, fainting, confusion -> ED and tell them about this workup."
+            }
+          ],
+          "state": {
+            "bp": [
+              104,
+              62
+            ],
+            "weight_kg": 74.0
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-05-13a",
+          "kind": "telephone",
+          "start": "2020-05-13T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results",
+              "date": "2020-05-13T14:10",
+              "author": "PCP",
+              "body": "Called pt. AM cortisol 2.8 mcg/dL, very low for 8 a.m.; CMP and CBC otherwise unremarkable. Explained this points toward the adrenal glands not making enough cortisol and that he needs endocrinology soon. Spoke with endocrinology triage: new-patient slot June 1, with stimulation testing that morning; they asked that we not start steroids before the test unless he gets sicker. Pt and daughter (on speaker) understand ED precautions. Daughter will drive him."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-01a",
+          "kind": "specialist_visit",
+          "start": "2020-06-01T08:00",
+          "end": "2020-06-01T10:00",
+          "service": "Endocrinology",
+          "reason": "Fatigue, weight loss, hyperpigmentation; low AM cortisol",
+          "conditions": [
+            {
+              "label": "Addison disease",
+              "action": "diagnosed",
+              "onset": "2020-03-01",
+              "note": "Primary adrenal insufficiency"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (20 mg) by mouth every morning and 1 tablet (10 mg) every evening",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            },
+            {
+              "drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 0.1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              100,
+              60
+            ],
+            "hr": 65,
+            "weight_kg": 73.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-06-01T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 23
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 46
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 24
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-06-01T08:05",
+              "results": [
+                {
+                  "test": "Cortisol, baseline",
+                  "loinc": "2143-6",
+                  "unit": "ug/dL",
+                  "range": {},
+                  "value": 2.6
+                },
+                {
+                  "test": "ACTH",
+                  "loinc": "2141-0",
+                  "unit": "pg/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 60
+                  },
+                  "value": 486
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-06-01T09:10",
+              "results": [
+                {
+                  "test": "Cortisol 60 minutes post cosyntropin",
+                  "loinc": "26528-0",
+                  "unit": "ug/dL",
+                  "range": {
+                    "low": 18
+                  },
+                  "value": 4.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cosyntropin stimulation test",
+              "snomed": "18721001",
+              "performed": "2020-06-01T08:10"
+            },
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2020-06-01T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-ref-2020",
+              "action": "done",
+              "date": "2020-06-01T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2020-06-22T11:00",
+              "author": "endocrinology",
+              "body": "Endocrinology consultation, date of service 06/01/2020. Received by fax 06/22.\n\nReason: low morning cortisol, referred by his primary care physician.\n\nThis 72-year-old man describes several months of increasing tiredness, reduced appetite and weight loss he did not intend. He feels faint on standing. His forearms have darkened although he has had little sun exposure this spring. He has hypertension on hydrochlorothiazide, schizophrenia on quetiapine, osteoarthritis and BPH treated by TURP in 2017. Aspirin 81 mg. NKDA. Former smoker.\n\nExam: BP 100/60. Diffuse hyperpigmentation over both forearms and on the buccal mucosa. Remainder unremarkable.\n\nData: CBC with eosinophils 23%. Cosyntropin 250 mcg IV: cortisol 2.6 mcg/dL at baseline and 4.1 mcg/dL at 60 minutes. Plasma ACTH 486 pg/mL.\n\nImpression: primary adrenal insufficiency.\n\nPlan: hydrocortisone 20 mg on waking and 10 mg in the late afternoon/evening; fludrocortisone 0.1 mg daily. Sick-day rules reviewed with patient and daughter: double the hydrocortisone for fever or significant illness, go to the ED for vomiting. Advised a medical alert bracelet. Follow-up here in 3 months and then yearly.\n\nAllergies: NKDA.\ncc: primary care"
+            }
+          ],
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-06-02a",
+          "kind": "pharmacy",
+          "start": "2020-06-02T09:00",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "New prescription fills",
+              "date": "2020-06-02T09:00",
+              "author": "pharmacy",
+              "body": "Fill history update from retail pharmacy: hydrocortisone 10 mg tablets #90 and fludrocortisone 0.1 mg tablets #30 dispensed 06/01/2020, prescriber endocrinology."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-03a",
+          "kind": "telephone",
+          "start": "2020-06-03T10:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Endocrinology update",
+              "date": "2020-06-03T10:45",
+              "author": "RN",
+              "body": "Called to check in after endocrinology. Pt says they did the stimulation test and told him his adrenal glands \"aren't pulling their weight.\" Started hydrocortisone twice a day (2 tabs in the morning, 1 at supper) and fludrocortisone daily. Already a bit more appetite. Knows to double the dose if sick and go to the ED for vomiting. Med list updated per pharmacy fill; letter not yet received. Follow-up with PCP mid-July booked."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-16a",
+          "kind": "office_visit",
+          "start": "2020-07-16T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up adrenal insufficiency",
+          "vitals": {
+            "bp": [
+              128,
+              78
+            ],
+            "hr": 75,
+            "spo2": 97,
+            "weight_kg": 76.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-07-16T14:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 80
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-07-16T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2020-07-16T14:05",
+              "author": "PCP",
+              "body": "Six weeks into hydrocortisone and fludrocortisone. \"Night and day.\" Eating normally, energy back to walking most mornings, lightheadedness gone. Forearms maybe a shade lighter, hard to say. Endocrinology letter now in the chart.\nTaking hydrocortisone 20 on waking, 10 around 5 pm; fludro in the morning. Has a bracelet on order.\n\nBP 128/78, back to his old range. Weight 76 kg, up 2.\nLungs clear, heart regular, no edema.\n\nA/P\nPrimary adrenal insufficiency - responding well to replacement. BMP today for Na/K on fludrocortisone plus HCTZ. Endocrinology follow-up in September.\nHTN - BP back to normal range on HCTZ, continue.\nReviewed sick-day doubling again; gave him a wallet card.\nRTC fall (AWV)."
+            }
+          ],
+          "state": {
+            "bp": [
+              128,
+              78
+            ],
+            "weight_kg": 76.0
+          },
+          "measure": [
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2020-07-17a",
+          "kind": "portal_message",
+          "start": "2020-07-17T15:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2020-07-17T15:30",
+              "author": "PCP",
+              "body": "Sodium, potassium and kidney function are all normal on the new medicines. No changes needed."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-01a",
+          "kind": "telehealth_visit",
+          "start": "2020-10-01T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit (video)",
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2020-10-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit (video)",
+              "date": "2020-10-01T10:40",
+              "author": "PCP",
+              "body": "Video AWV, pt at home with daughter helping with the tablet; identity verified, consent for telehealth given.\nDoing well since adrenal replacement started. Saw endocrinology in September: no changes, yearly now (his report). No falls. Independent. Using a pill box with morning and evening rows for the hydrocortisone.\nPHQ-2 0. Psychiatry by phone, stable.\nMeds: hydrocortisone 20/10, fludrocortisone 0.1, HCTZ 25, quetiapine 200 qhs, ASA 81, acetaminophen prn.\nHome BP cuff (daughter bought one): 120s-130s/70s.\n\nPlan: in-person lab draw and flu shot next week. Annual labs incl. quetiapine monitoring. COVID precautions reviewed. RTC 6 months in person."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "lab_only",
+          "start": "2020-10-06T08:30",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-10-06T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-10-06T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.16
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-10-06T08:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-10-06T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-10-06T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T08:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-06T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Lab draw and flu vaccine",
+              "date": "2020-10-06T08:50",
+              "author": "RN",
+              "body": "Fasting draw R antecubital, one stick. High-dose flu vaccine L deltoid. Took his morning hydrocortisone before coming, as instructed. No issues."
+            },
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2020-10-07T12:15",
+              "author": "PCP",
+              "body": "Annual labs normal, including A1c and lipids on quetiapine. Portal message sent."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "office_visit",
+          "start": "2020-12-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2020-12-07T15:10",
+              "author": "front desk",
+              "body": "Daughter called to cancel tomorrow's follow-up; with case counts up she'd rather he stay home for now. Feels fine, no concerns. Will rebook for spring."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "portal_message",
+          "start": "2021-01-19T08:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "date": "2021-01-19T08:55",
+              "author": "patient",
+              "body": "Should I be getting the COVID shot with my adrenal problem? My daughter signed me up at the senior center clinic for early February. Do I need to do anything with the hydrocortisone?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "date": "2021-01-19T12:40",
+              "author": "PCP",
+              "body": "Yes, please get it; your adrenal condition is a reason to, not against. Keep taking your usual doses. If you get feverish or achy afterward, use your sick-day rule (double the hydrocortisone for a day or two) and let us know."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-02a",
+          "kind": "outside_records",
+          "start": "2021-03-02T09:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-03T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "State registry reconciliation",
+              "date": "2021-03-02T09:00",
+              "author": "MA",
+              "body": "Immunization registry query: two doses of Pfizer COVID-19 vaccine at a community vaccination clinic, 2/3/21 and 2/24/21. Added to record."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-05a",
+          "kind": "office_visit",
+          "start": "2021-05-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Urinary symptoms, follow-up",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 72,
+            "spo2": 98,
+            "weight_kg": 76.9
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-05-05T11:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.4
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-05-05T11:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-05-05T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-ref-2021",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "Recurrent obstructive urinary symptoms after TURP"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-05-05T11:40",
+              "author": "PCP",
+              "body": "First in-person visit since fall. Vaccinated x2.\nNew: since around the holidays, slow to get started, weaker stream, feels he hasn't finished. Up once at night. No burning, no blood, no fever. Thinks it's \"the prostate again,\" like before his surgery.\nAdrenal: stable on replacement, endocrinology yearly.\n\nVitals as charted. Abd soft, nontender, bladder not palpable. Deferred DRE to urology at his preference.\nUA dip in office negative; sent for formal UA.\n\nA/P\nObstructive LUTS 4 years after TURP - likely regrowth. Back to urology (the group that did the TURP). UA, BMP.\nPrimary adrenal insufficiency - stable.\nHTN - ok.\nRTC after urology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-11a",
+          "kind": "specialist_visit",
+          "start": "2021-06-11T09:20",
+          "service": "Urology",
+          "reason": "Weak stream, hesitancy, incomplete emptying",
+          "conditions": [
+            {
+              "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+              "action": "diagnosed",
+              "onset": "2020-12-01",
+              "note": "Recurrent after TURP"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily, 30 minutes after the evening meal",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Recurrent BPH"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-06-11T09:25",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Ultrasonography of urinary bladder",
+              "snomed": "169251004",
+              "performed": "2021-06-11T09:40"
+            },
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2021-06-11T09:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-ref-2021",
+              "action": "done",
+              "date": "2021-06-11T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology consultation",
+              "date": "2021-06-28T10:30",
+              "author": "urology",
+              "body": "Urology office note, seen 6/11/2021, faxed 6/28.\n\nMr. Levine had a TURP with our group in 2017. For roughly six months he has had trouble starting his stream, a weaker flow and the sense that his bladder doesn't empty. No dysuria. He also carries a diagnosis of primary adrenal insufficiency, followed by endocrinology.\n\nAbdomen soft, nontender, bladder not distended to palpation. DRE: prostate moderately enlarged, firm, nontender, no nodules.\nUrinalysis unremarkable. Bladder scan post-void residual 150 mL.\n\nAssessment: recurrent benign prostatic hyperplasia after TURP with obstructive symptoms.\nPlan: tamsulosin 0.4 mg nightly after supper; warned about lightheadedness on standing, especially the first week. Recheck in 3 months by phone, sooner if unable to void.\n\nMeds reviewed: hydrocortisone, fludrocortisone, hydrochlorothiazide, quetiapine, aspirin. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "portal_message",
+          "start": "2021-07-20T07:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pill timing",
+              "date": "2021-07-20T07:50",
+              "author": "patient",
+              "body": "Urology gave me tamsulosin after supper. My evening hydrocortisone is also at supper. Is it all right to take them together or should I space them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pill timing",
+              "date": "2021-07-20T11:15",
+              "author": "RN",
+              "body": "Checked with the doctor: fine to take them at the same time. Keep the tamsulosin about half an hour after you eat, and stand up slowly in the evening."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-30a",
+          "kind": "annual_physical",
+          "start": "2021-09-30T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              148,
+              88
+            ],
+            "hr": 63,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 78.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-30T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-30T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-30T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 167
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-30T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2021-09-30T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2021-09-30T09:50",
+              "author": "PCP",
+              "body": "AWV.\nStream better on tamsulosin, urology phone check in September fine per pt. Adrenal replacement unchanged, endocrinology yearly. Psych stable.\nNo falls. Independent, still drives in daytime. Daughter does the big grocery runs.\nPHQ-2 0. Recall 3/3.\n\nBP 148/88, higher than his usual; home readings he reports in the 140s. Weight 78 kg, back near baseline.\nHeart RRR, lungs clear, no edema.\n\nA/P\nHTN - creeping up since the fludrocortisone started. Will recheck in a few months before adding anything; asked him to log home readings.\nRecurrent BPH - on tamsulosin, better.\nPrimary adrenal insufficiency - stable.\nAnnual labs. Flu and COVID booster with nurse in October. RTC 4-5 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              148,
+              88
+            ],
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID booster",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-10-19T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2021-10-19T10:30",
+              "author": "RN",
+              "body": "High-dose flu L deltoid, Pfizer booster R deltoid. Reminded him of sick-day dosing if he feels flu-ish tonight. Observed 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "telephone",
+          "start": "2022-01-11T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill and scheduling",
+              "date": "2022-01-11T14:20",
+              "author": "MA",
+              "body": "Mail-order pharmacy requested HCTZ 25 mg #90; sent. Pt reminded he is overdue for his BP recheck; booked 2/23. He says home numbers are \"mostly 150s on top.\" Asked him to bring the log."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-23a",
+          "kind": "office_visit",
+          "start": "2022-02-23T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure recheck",
+          "vitals": {
+            "bp": [
+              168,
+              94
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 78.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-02-23T10:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-23T10:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "echo-2022",
+              "action": "placed",
+              "order": "Transthoracic echocardiogram",
+              "category": "imaging",
+              "reason": "Uncontrolled hypertension, assess LV"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-02-23T10:55",
+              "author": "PCP",
+              "body": "BP recheck. Brought a neat log in graph paper (former math teacher): mornings 150-170 systolic over the past month, evenings a bit lower. No headache, chest pain, vision change or SOB. Taking HCTZ daily. No salt shaker at home but likes canned soup.\nAdrenal: same hydrocortisone and fludrocortisone doses, no dizziness.\n\nBP 168/94 here, repeat similar. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\nHTN, not controlled on HCTZ alone; fludrocortisone likely contributes but he needs it. Echo to look at the LV before we add a second agent. BMP. Lower-sodium soups. Back in 2 months with the log; will add a second drug then if still up."
+            }
+          ],
+          "state": {
+            "bp": [
+              168,
+              94
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "imaging",
+          "start": "2022-03-08T13:00",
+          "service": "Outside cardiac imaging",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2022-03-08T13:00",
+              "text": "Complete transthoracic echocardiogram. Left ventricle normal in size with normal wall thickness and normal systolic function; estimated ejection fraction 60%. No regional wall motion abnormality. Right ventricle normal size and function. Atria normal size. Valves structurally normal without significant stenosis or regurgitation. No pericardial effusion. IVC normal with normal respiratory variation.",
+              "conclusion": "Normal left ventricular size and function, EF 60%. Normal study."
+            }
+          ],
+          "orders": [
+            {
+              "id": "echo-2022",
+              "action": "done",
+              "date": "2022-03-08T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "portal_message",
+          "start": "2022-03-10T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Echo result",
+              "date": "2022-03-10T17:20",
+              "author": "PCP",
+              "body": "Your heart ultrasound is normal: good pumping function and normal heart walls. Keep the log going and we'll decide on a second blood pressure medicine at your April visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-08a",
+          "kind": "portal_message",
+          "start": "2022-04-08T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home readings",
+              "date": "2022-04-08T09:30",
+              "author": "patient",
+              "body": "Readings for the last 3 weeks: morning average 163/91, evening average 152/86 (n=21 each). Cutting back on the soup has not moved the needle much. See you on the 26th."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home readings",
+              "date": "2022-04-08T12:05",
+              "author": "PCP",
+              "body": "Thanks for the averages, very useful. That is still too high; we'll plan on adding a medicine on the 26th."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "office_visit",
+          "start": "2022-04-26T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              166,
+              92
+            ],
+            "hr": 73,
+            "weight_kg": 77.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-04-26T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-04-26T15:30",
+              "author": "PCP",
+              "body": "HTN f/u. Home averages as messaged, 150s-160s. Feels fine. Echo normal.\nBP 166/92 today.\nNo edema, lungs clear.\n\nA/P\nHTN uncontrolled on HCTZ 25. Adding amlodipine 5 mg daily. Holding off on an ACE inhibitor or ARB for now with the fludrocortisone and potassium in mind. Ankle swelling is a known side effect, told him to mention it. Continue HCTZ. Recheck 6 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              166,
+              92
+            ]
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-06-07a",
+          "kind": "office_visit",
+          "start": "2022-06-07T09:45",
+          "end": "2022-06-07T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ankle swelling",
+          "conditions": [
+            {
+              "label": "Calcium channel blocker-induced peripheral edema",
+              "action": "diagnosed",
+              "onset": "2022-05-10",
+              "icd10": "R60.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 71,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 80.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-07T10:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-07T10:20",
+              "results": [
+                {
+                  "test": "B-type natriuretic peptide",
+                  "loinc": "30934-4",
+                  "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
+                  "value": 42
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-06-07T10:05",
+              "text": "Normal sinus rhythm. Normal axis and intervals. No ST or T wave changes. No prior for comparison in this office.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2022-06-07T10:05"
+            },
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-06-07T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-06-07T10:35",
+              "author": "PCP",
+              "body": "74 yo M with primary adrenal insufficiency and recurrent BPH, here 6 weeks after amlodipine was added to HCTZ.\nBP response is good: home systolics now about 130, down from the 160s; 132 here (was 168 in Feb). Feels better overall.\nBut both ankles swell, painless, starting a couple of weeks after the new pill. Worse by evening, a little better in the morning. Socks leave marks.\nNo shortness of breath, chest pain, orthopnea or PND. No NSAIDs, and no steroids other than his replacement hydrocortisone/fludrocortisone at the usual doses.\nMeds: amlodipine 5, HCTZ 25, ASA 81, hydrocortisone 20/10, fludrocortisone 0.1, tamsulosin 0.4, quetiapine 200 qhs, acetaminophen prn.\n\nVitals otherwise normal. JVP not elevated. Heart RRR, no murmur or gallop. Lungs clear. Abdomen soft, no liver edge, no fluid wave. 2+ pitting edema both legs to above the ankles, symmetric, calves soft and nontender.\nECG in office: NSR, normal.\nEcho from March reviewed: normal LV function.\n\nA/P\nBilateral ankle edema, timing and pattern fit amlodipine (dihydropyridine effect), not heart failure: JVP, lungs and March echo normal. Checking CMP (kidneys, albumin) and BNP today.\nPlan discussed: he doesn't want to give up the first real BP control he's had, and the swelling doesn't bother him much. Keep amlodipine 5, elevate legs in the evening, knee-high compression stockings (light). Re-evaluate at the wellness visit; if worse we'll switch agents.\nHTN - improved on two agents."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              80
+            ],
+            "weight_kg": 80.0
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-06-09a",
+          "kind": "portal_message",
+          "start": "2022-06-09T13:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-06-09T13:10",
+              "author": "PCP",
+              "body": "Your kidney function, protein level (albumin) and the heart strain test (BNP 42, normal) all came back normal. That fits the swelling being from amlodipine and not from the heart or kidneys. Stockings and leg elevation as we discussed."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill",
+              "date": "2022-08-02T11:00",
+              "author": "MA",
+              "body": "Mail order asked for a 90-day amlodipine 5 mg script with refills now that he's staying on it. Sent #90 x3. Pt says ankles \"about the same, the stockings are a chore in July.\""
+            }
+          ]
+        },
+        {
+          "id": "2022-09-30a",
+          "kind": "annual_physical",
+          "start": "2022-09-30T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 79.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-30T11:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-30T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 290
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 95
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-30T11:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-30T11:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2022-09-30T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-09-30T11:50",
+              "author": "PCP",
+              "body": "AWV.\nBP controlled at home, 120s-130s. Ankles still puff by evening, wears stockings most days, no worse. Urinary stream fine on tamsulosin. Endocrinology saw him in the spring (his report), same doses. Psychiatry stable.\nNo falls. Independent. Daughter visits twice a week.\nPHQ-2 0. Recall 3/3.\n\nBP as charted. Trace to 1+ ankle edema both sides, calves soft. Heart and lungs normal.\n\nA/P\nHTN controlled on amlodipine + HCTZ.\nAmlodipine edema - stable, tolerated, continue measures.\nAdrenal insufficiency, recurrent BPH, schizophrenia - stable.\nAnnual labs. Flu and bivalent COVID next month. RTC spring."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-18T09:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2022-10-18T09:45",
+              "author": "RN",
+              "body": "Flu (high-dose) L arm, bivalent COVID R arm. Tolerated. He keeps the extra hydrocortisone at home for sick days and knows when to use it."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "portal_message",
+          "start": "2022-10-25T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Swelling question",
+              "date": "2022-10-25T20:15",
+              "author": "patient",
+              "body": "Ankles are the same as always. Is it all right to skip the stockings on days I'm not going out? They take me ten minutes to get on."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Swelling question",
+              "date": "2022-10-25T22:00",
+              "author": "PCP",
+              "body": "Yes, on home days putting your feet up in the afternoon works fine. Wear them when you'll be on your feet a lot. Let us know if one leg ever swells more than the other or gets painful."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "telephone",
+          "start": "2023-01-24T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill routing",
+              "date": "2023-01-24T10:05",
+              "author": "MA",
+              "body": "Pharmacy faxed a fludrocortisone refill request to us by mistake; prescriber is endocrinology. Called endocrinology's office, they will send it today. Pt aware; has 6 days left."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-13a",
+          "kind": "office_visit",
+          "start": "2023-03-13T13:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension and adrenal follow-up",
+          "vitals": {
+            "bp": [
+              132,
+              83
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 80.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-13T14:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-13T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-03-13T14:15",
+              "author": "PCP",
+              "body": "Routine f/u. Quiet winter. BP log in range. Ankles unchanged with stockings. Voiding fine. No dizziness on standing. Takes hydrocortisone on schedule; hasn't needed sick-day doses this winter.\nBP as charted. 1+ ankle edema, same. Lungs clear, heart regular.\nA/P: HTN controlled. Adrenal insufficiency stable - BMP. Edema stable. RTC fall AWV, sooner prn."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              80
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "office_visit",
+          "start": "2023-04-20T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bruising on arms",
+          "vitals": {
+            "bp": [
+              137,
+              86
+            ],
+            "hr": 62,
+            "weight_kg": 80.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-20T12:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-04-20T12:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 12.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-20T11:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-ref-2023",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Recurrent purple patches on hands and forearms"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-04-20T12:05",
+              "author": "PCP",
+              "body": "Here with his daughter, who scheduled the visit. Over the past few months purple patches keep appearing on the backs of his hands and forearms after small knocks (car door, kitchen cabinet). Each fades over weeks. Not painful or itchy. No nosebleeds, gum bleeding, blood in urine or stool. On aspirin 81. No new meds.\n\nVitals as charted. Several flat purple patches, non-blanching, on the dorsal hands and extensor forearms, various ages. No petechiae elsewhere. No LAD, no spleen tip.\n\nA/P\nBruising on sun-exposed, thin forearm skin - likely benign age-related fragility, possibly with his steroid replacement and aspirin, but checking CBC with platelets and PT/INR first. Daughter would like a dermatologist to look; referral placed and labs will go with it."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "portal_message",
+          "start": "2023-04-24T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count and clotting",
+              "date": "2023-04-24T08:40",
+              "author": "PCP",
+              "body": "Blood count, platelets and clotting test are all normal, so there is no bleeding disorder behind the bruises. I've sent the results to dermatology with the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-05a",
+          "kind": "specialist_visit",
+          "start": "2023-06-05T14:00",
+          "service": "Dermatology",
+          "reason": "Purple patches after minor trauma",
+          "conditions": [
+            {
+              "label": "Senile purpura",
+              "action": "diagnosed",
+              "onset": "2022-12-01",
+              "icd10": "D69.2"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2023-06-05T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-ref-2023",
+              "action": "done",
+              "date": "2023-06-05T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2023-07-11T09:15",
+              "author": "dermatology",
+              "body": "Dermatology clinic note, visit 06/05/2023 (received 07/11/2023).\n\n75 y/o man with primary adrenal insufficiency since 2020, accompanied by his daughter. Several months of purple patches that come up after trivial bumps and fade over weeks to months. No pain, pruritus or bleeding.\nMeds per referral: hydrochlorothiazide, amlodipine, hydrocortisone, fludrocortisone, tamsulosin, quetiapine, aspirin 81. NKDA.\n\nExam: several non-blanching violaceous ecchymoses over the extensor hands and forearms, no warmth, edema or tenderness. Remainder of the skin exam unremarkable.\nLabs from referring office: CBC, coagulation studies and platelet count normal.\n\nImpression: senile (actinic) purpura.\nPlan: reassurance; long sleeves or forearm sleeves for protection, emollient for dry skin. No further workup. Follow up as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-06a",
+          "kind": "portal_message",
+          "start": "2023-06-06T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dermatology visit",
+              "date": "2023-06-06T19:30",
+              "author": "patient",
+              "body": "This is his daughter writing on Dad's account. The skin doctor said the bruises are 'senile purpura', thin skin from age and sun, nothing dangerous, no treatment needed. She said to keep his arms covered. Just letting you know. Should he stop the baby aspirin?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dermatology visit",
+              "date": "2023-06-06T21:05",
+              "author": "PCP",
+              "body": "Thanks for the update, that matches what we thought. No need to change any medicines for this; arm sleeves are a good idea. We'll look for the dermatology letter."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-28a",
+          "kind": "annual_physical",
+          "start": "2023-09-28T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              141,
+              85
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 79.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-28T11:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 76
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-28T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 311
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-28T11:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 54
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 126
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-28T11:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-09-28T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-09-28T11:20",
+              "author": "PCP",
+              "body": "AWV.\nDermatology letter in: senile purpura, reassurance. Wearing sleeves.\nBP fine at home. Ankles same. Voiding fine. Endocrinology yearly in spring, unchanged. Psychiatry unchanged.\nNo falls. Stopped driving at night. Independent.\nPHQ-2 0. Recall 3/3, clock normal.\n\nVitals as charted. Scattered purpura on the forearms. 1+ ankle edema. Heart and lungs normal.\n\nPlan: annual labs. Flu and updated COVID with nurse in October. RSV vaccine recommended at 75+, he'll get it at the pharmacy. Tdap due next year. RTC winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-17T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2023-10-17T09:25",
+              "author": "RN",
+              "body": "Flu L deltoid, 2023-24 COVID R deltoid. Bandage over a small bruise on the R arm from the stick, pressure held a little longer. Fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-31a",
+          "kind": "pharmacy",
+          "start": "2023-10-31T14:30",
+          "immunizations": [
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-31T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Pharmacy vaccine notification",
+              "date": "2023-10-31T15:00",
+              "author": "pharmacy",
+              "body": "RSV vaccine (adjuvanted), single dose, administered at community pharmacy, left deltoid."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-16a",
+          "kind": "office_visit",
+          "start": "2024-02-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              76
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 79.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-16T10:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-16T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-02-16T10:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-02-16T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-16T10:35",
+              "author": "PCP",
+              "body": "Winter check. No complaints. Ankles unchanged. A couple of new purple spots on the hands, as expected. Voiding ok on tamsulosin. Hydrocortisone and fludro unchanged.\nBP as charted, near goal. Lungs clear, heart regular, 1+ ankle edema.\nA/P: HTN acceptable for his age on two agents. Adrenal insufficiency - BMP. Tdap given today (last 2014). RTC fall, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-15a",
+          "kind": "office_visit",
+          "start": "2024-05-15T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bulge in lower left abdomen",
+          "vitals": {
+            "bp": [
+              143,
+              78
+            ],
+            "hr": 77,
+            "weight_kg": 79.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-15T14:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gs-ref-2024",
+              "action": "placed",
+              "order": "General surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "Reducible left lower quadrant abdominal wall bulge"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-15T15:00",
+              "author": "PCP",
+              "body": "Noticed a soft lump low on the left side of his belly a few months back when getting out of bed. More obvious when he stands or bears down, gone when he lies flat. Doesn't hurt. Bowels regular, no nausea, appetite fine, weight steady. No injury, never had belly surgery, doesn't lift anything heavy.\n\nVitals as charted. Abdomen: soft, nontender. Standing, a soft bulge in the left lower quadrant lateral to the rectus, bigger with a cough, reduces easily with gentle pressure. No erythema. Not in the groin; inguinal canals normal.\n\nA/P\nReducible LLQ abdominal wall hernia, likely lateral (Spigelian-type) location. No signs of incarceration. Referred to general surgery for an opinion. Reviewed warning signs: pain, a bulge that won't go back, vomiting -> ED."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "specialist_visit",
+          "start": "2024-06-10T09:40",
+          "service": "General Surgery",
+          "reason": "Left lower quadrant abdominal wall bulge",
+          "conditions": [
+            {
+              "label": "Spigelian hernia",
+              "action": "diagnosed",
+              "onset": "2024-02-01",
+              "icd10": "K43.9"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2024-06-10T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gs-ref-2024",
+              "action": "done",
+              "date": "2024-06-10T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General surgery consultation",
+              "date": "2024-06-27T13:20",
+              "author": "general surgery",
+              "body": "General surgery consultation, seen 06/10/2024 (letter received 06/27/2024).\n\n76-year-old man, known to our hospital system since 2020 for primary adrenal insufficiency, with recurrent BPH and hypertension, also osteoarthritis. A few months ago he noticed a swelling in the left lower abdomen on rising from bed, gradually more visible with standing or straining. No trauma, no prior abdominal operations, no heavy lifting. No pain, change in bowel habit, nausea or weight loss.\nAllergies: NKDA.\n\nExam: soft, reducible mass in the left lower quadrant abdominal wall several centimeters lateral to the lateral edge of the rectus abdominis. Enlarges with strain, reduces with gentle pressure. No overlying erythema, no tenderness, no signs of obstruction.\n\nImpression: left Spigelian hernia, reducible.\n\nPlan: we discussed elective repair given the narrow neck these hernias typically have, against his age and the perioperative steroid coverage he would need. He would prefer to wait. Reasonable with clear return precautions: pain, a firm bulge that does not reduce, vomiting or inability to pass gas should prompt immediate evaluation. Happy to see him again to proceed with repair whenever he wishes."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "portal_message",
+          "start": "2024-07-09T18:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hernia question",
+              "date": "2024-07-09T18:45",
+              "author": "patient",
+              "body": "Daughter here on Dad's account. The surgeon said he can wait on the hernia. What exactly should make us go to the emergency room? He forgets the list."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hernia question",
+              "date": "2024-07-09T20:10",
+              "author": "RN",
+              "body": "Go in right away if the bulge becomes painful, gets firm and won't push back in when he lies down, or if he starts vomiting or can't pass gas. Also tell them about his adrenal insufficiency so he gets extra hydrocortisone. A copy of this is printable from the portal; it may help to put it on the fridge."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "annual_physical",
+          "start": "2024-09-26T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              144,
+              77
+            ],
+            "hr": 58,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 80.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-26T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-26T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-26T10:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-26T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-09-26T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-09-26T10:05",
+              "author": "PCP",
+              "body": "AWV.\nSurgery letter in: left Spigelian hernia, he chose to wait. Bulge unchanged, painless.\nBP ok at home. Ankle swelling and arm bruising unchanged. Voiding ok. Endocrinology and psychiatry unchanged.\nNo falls. Still independent; daughter manages the bills now at his request.\nPHQ-2 0. Recall 3/3.\n\nVitals as charted. Reducible LLQ bulge on standing, nontender. 1+ ankle edema. Heart and lungs normal.\n\nPlan: annual labs. Flu and COVID next month. Hernia warning signs reviewed again. RTC winter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-15a",
+          "kind": "nurse_visit",
+          "start": "2024-10-15T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-15T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-15T13:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-15T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2024-10-15T13:55",
+              "author": "RN",
+              "body": "High-dose flu (trivalent this season) and 2024-25 COVID given, one each arm. No problems."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "telephone",
+          "start": "2025-01-21T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills",
+              "date": "2025-01-21T09:40",
+              "author": "MA",
+              "body": "New plan year; mail order needs new scripts. Sent amlodipine 5 mg #90 x3 and HCTZ 25 mg #90 x3. Pt overdue for winter visit, booked 2/12."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "office_visit",
+          "start": "2025-02-12T11:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "vitals": {
+            "bp": [
+              156,
+              92
+            ],
+            "hr": 73,
+            "spo2": 97,
+            "weight_kg": 81.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-12T11:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-12T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-02-12T11:45",
+              "author": "PCP",
+              "body": "Winter f/u. Says he's fine. Hasn't been checking BP at home since the cuff battery died. Taking everything. Hernia unchanged.\nBP 156/92, recheck 152/90.\nHeart regular, lungs clear, 1+ edema.\nA/P: BP above goal today; no home readings to compare. New batteries, log for two weeks and send. BMP. RTC spring."
+            }
+          ],
+          "state": {
+            "bp": [
+              156,
+              92
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "office_visit",
+          "start": "2025-05-14T10:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Urinary frequency and weak stream",
+          "vitals": {
+            "bp": [
+              158,
+              92
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 81.2
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-14T11:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-14T11:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-ref-2025",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "Recurrent obstructive urinary symptoms on tamsulosin"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-05-14T11:20",
+              "author": "PCP",
+              "body": "Since about February: going more often, up 2-3 times a night, weak stream again and the feeling of not emptying, despite tamsulosin every evening. No blood, no burning, no fever.\nNever sent the BP log.\n\nBP 158/92. Abdomen soft, bladder not palpable. Hernia reducible, nontender.\nUA in office negative; formal UA sent.\n\nA/P\nRecurrent BPH symptoms on tamsulosin - back to urology.\nBP elevated again; he'd rather not add anything until urology is sorted. Will revisit."
+            }
+          ],
+          "state": {
+            "bp": [
+              158,
+              92
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "specialist_visit",
+          "start": "2025-06-03T13:15",
+          "service": "Urology",
+          "reason": "Frequency, nocturia, weak stream, incomplete emptying",
+          "medications": [
+            {
+              "drug": "finasteride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Benign prostatic hyperplasia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              160,
+              94
+            ]
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-06-03T13:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.6
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-03T13:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 78
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2025-06-03T13:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-ref-2025",
+              "action": "done",
+              "date": "2025-06-03T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology follow-up",
+              "date": "2025-08-12T10:00",
+              "author": "urology",
+              "body": "Urology clinic note, DOS 06/03/2025, sent 08/12/2025.\nKnown patient, TURP here years ago and on tamsulosin since 2021. Four months of recurrent frequency, nocturia, weak stream and incomplete emptying. No hematuria, no dysuria. BP 160/94 today; he says his blood pressure has been running high.\nDRE: prostate symmetrically enlarged, smooth, nontender.\nUA normal. Creatinine 1.0 mg/dL.\nA/P: BPH, recurrent. Adding finasteride 5 mg daily to tamsulosin; explained it takes months to shrink the gland. Follow up in 6 months.\nNKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-05a",
+          "kind": "pharmacy",
+          "start": "2025-06-05T08:30",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "New prescription fill",
+              "date": "2025-06-05T08:30",
+              "author": "pharmacy",
+              "body": "Fill history: finasteride 5 mg tablets #30 dispensed 06/03/2025, prescriber urology. Added to med list pending urology note."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-25a",
+          "kind": "annual_physical",
+          "start": "2025-09-25T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              153,
+              91
+            ],
+            "hr": 81,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 79.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-25T10:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-25T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-25T10:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 161
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 91
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 111
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-25T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-09-25T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-09-25T10:50",
+              "author": "PCP",
+              "body": "AWV. Turned 78 last month.\nUrology note received: finasteride added in June. Stream \"a little better, maybe.\" Up twice at night.\nBP: no home log. Feels fine.\nHernia, purpura, ankle edema unchanged. Endocrinology in spring, same doses. Psychiatry same.\nNo falls. Independent at home, daughter helps with errands.\nPHQ-2 0. Recall 2/3, clock normal.\n\nVitals as charted, BP again above goal. Heart, lungs normal. 1+ ankle edema. Reducible LLQ bulge.\n\nPlan: annual labs. BP follow-up visit in 6-8 weeks with home readings. Flu and COVID next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-14T09:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2025-10-14T09:55",
+              "author": "RN",
+              "body": "Flu and 2025-26 COVID given. Tolerated. Reminded about the BP visit in November."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "office_visit",
+          "start": "2025-11-18T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "telephone",
+          "start": "2025-11-19T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-11-19T10:15",
+              "author": "front desk",
+              "body": "Pt missed yesterday's 2:00 BP visit. Called home, no answer; left voicemail to rebook. Also left a message for his daughter (listed contact)."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "telephone",
+          "start": "2026-01-20T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refills",
+              "date": "2026-01-20T11:20",
+              "author": "MA",
+              "body": "Mail order renewals: amlodipine 5 and HCTZ 25, 90 days each, sent. Daughter returned November's message today, apologized, he lost track of the date. Offered BP visit; she will call back with a day that works for her to drive."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "telephone",
+          "start": "2026-03-20T16:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Dizziness",
+              "date": "2026-03-20T16:05",
+              "author": "RN",
+              "body": "Daughter called: for about a week Dad gets dizzy and nearly faints when he stands, vision goes blurry for a few seconds and his heart races, then it settles if he sits. Hasn't fallen or passed out. No chest pain, no vomiting, eating and drinking ok. Taking hydrocortisone as usual. Booked Monday 3/23 in person. Advised: sit on the edge of the bed before standing, fluids, ED if he faints, falls, has chest pain or can't keep pills down."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-23a",
+          "kind": "office_visit",
+          "start": "2026-03-23T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Dizziness on standing, palpitations",
+          "vitals": {
+            "bp": [
+              146,
+              88
+            ],
+            "hr": 74,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 79.5
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-03-23T09:20",
+              "text": "Sinus rhythm, rate normal. Normal axis, PR, QRS and QT intervals. No ST-T abnormality. Unchanged from June 2022.",
+              "conclusion": "Normal sinus rhythm. No change from prior."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-03-23T09:20"
+            },
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-23T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-2026",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "Near-syncope on standing with palpitations"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-03-23T09:40",
+              "author": "PCP",
+              "body": "Here with daughter. About 10 days of lightheadedness and near-fainting when he gets up, with blurred vision and a pounding heartbeat for a few seconds. Passes when he sits. No syncope, no falls, no chest pain or SOB. No vomiting or diarrhea. Not sick otherwise; taking hydrocortisone 20/10 and fludro daily, no missed doses per pill box. No new meds.\n\nSeated BP 146/88. Heart regular, no murmur. Lungs clear. 1+ ankle edema, unchanged. Neuro nonfocal.\nECG: NSR, unchanged from 2022.\n\nA/P\nNear-syncope on standing with palpitations in a 78 yo on tamsulosin, two antihypertensives and adrenal replacement. Wants a cardiology look given the palpitations; urgent referral placed. Until then: rise slowly, sit before standing, keep fluids up, stockings on. Daughter will stay with him more this week. ED precautions."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              88
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-01a",
+          "kind": "specialist_visit",
+          "start": "2026-04-01T10:00",
+          "service": "Cardiology",
+          "reason": "Dizziness and near-fainting on standing, palpitations",
+          "conditions": [
+            {
+              "label": "Orthostatic hypotension",
+              "action": "diagnosed",
+              "onset": "2026-03-18"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-04-01T10:05",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 78
+            },
+            {
+              "time": "2026-04-01T10:09",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-01T10:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-01T10:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-01T10:30",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 98
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2026-04-01T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-ref-2026",
+              "action": "done",
+              "date": "2026-04-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2026-04-20T15:40",
+              "author": "cardiology",
+              "body": "Cardiology consult, seen 04/01/2026 (faxed 04/20).\nReferred for two weeks of lightheadedness and near-fainting on standing, with blurred vision and palpitations. Primary adrenal insufficiency since 2020.\nMeds: quetiapine 200 mg nightly, tamsulosin 0.4 mg, amlodipine 5 mg, hydrochlorothiazide 25 mg, hydrocortisone 20/10 mg, fludrocortisone 0.1 mg, aspirin 81 mg. (Finasteride per PCP list.) NKDA.\n\nOrthostatic vitals: seated BP 145/90, HR 78; standing BP 110/70, HR 98.\nExam otherwise unremarkable.\nLabs: Hgb 14.2 g/dL, Na 140 mEq/L, K 4.1 mEq/L, creatinine 1.0 mg/dL, fasting glucose 98 mg/dL.\n\nImpression: orthostatic hypotension, likely multifactorial (alpha-blocker, thiazide diuretic, adrenal insufficiency, age). No evidence of structural or arrhythmic cause on today's evaluation; palpitations correspond to the compensatory rise in heart rate.\nRecommendations: slow staged rising, adequate fluid and salt intake, waist-high compression if tolerated, avoid hot showers standing. No medication changes from our standpoint; would defer adjustments of his antihypertensives and replacement doses to primary care and endocrinology. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "telephone",
+          "start": "2026-04-21T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cardiology letter",
+              "date": "2026-04-21T09:30",
+              "author": "RN",
+              "body": "Cardiology note received and given to PCP. Called daughter: dizziness happening less since he started getting up slowly and wearing the stockings. Booked follow-up 5/22."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-22a",
+          "kind": "office_visit",
+          "start": "2026-05-22T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up orthostatic hypotension",
+          "vitals": {
+            "bp": [
+              142,
+              86
+            ],
+            "hr": 62,
+            "spo2": 98,
+            "weight_kg": 80.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-22T11:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 77
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-22T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-05-22T11:05",
+              "author": "PCP",
+              "body": "F/u after cardiology. Their letter: orthostatic hypotension, multifactorial, non-drug measures, no med changes from them.\nSince then: dizzy spells less often, maybe twice a week, brief, always on getting up fast. No falls or faints. Stockings most days, drinking more water. Up 2 times at night to void, stream so-so; on tamsulosin and finasteride. Hernia unchanged.\n\nSeated BP 142/86. Heart regular, lungs clear, 1+ ankle edema.\n\nA/P\nOrthostatic hypotension - better with measures; keep doing them. Leaving meds as they are for now; will revisit once endocrinology has seen him this summer.\nHTN - seated pressure above goal, standing drops: no intensification.\nAdrenal insufficiency - BMP today.\nRecurrent BPH - urology follow-up due, he will call them.\nReturn 3 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              86
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "portal_message",
+          "start": "2026-05-26T12:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-05-26T12:45",
+              "author": "PCP",
+              "body": "Your sodium, potassium and kidney numbers from Friday are normal. Keep up the fluids and slow standing."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "ed_visit",
+          "start": "2026-06-04T15:30",
+          "end": "2026-06-04T22:10",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, fatigue, decreased urine output",
+          "vitals": {
+            "bp": [
+              128,
+              76
+            ],
+            "hr": 84,
+            "rr": 17,
+            "temp_c": 36.4,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-04T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 4.2
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 82
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 14
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-06-04T16:40",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-04T16:40",
+              "results": [
+                {
+                  "test": "Fractional excretion of sodium",
+                  "loinc": "49135-7",
+                  "unit": "%",
+                  "range": {},
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Ultrasonography of urinary bladder",
+              "snomed": "169251004",
+              "performed": "2026-06-04T15:45"
+            },
+            {
+              "procedure": "Insertion of indwelling catheter into urinary bladder",
+              "snomed": "446583004",
+              "performed": "2026-06-04T16:20"
+            },
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-04T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "date": "2026-06-08T09:10",
+              "author": "emergency medicine",
+              "body": "Emergency department provider note, 06/04/2026 (brief note faxed to PCP 06/08/2026).\n\nCC: confusion, fatigue, decreased urine output x 2 days. Brought by daughter. Hx recurrent BPH (urology June 2025), TURP remotely, HTN, primary adrenal insufficiency on hydrocortisone/fludrocortisone, schizophrenia. Takes tamsulosin. Last BM 3 days ago.\nNKDA.\n\nVS within normal limits. Disoriented. Distended, palpable bladder.\nBedside bladder scan: 700 mL retained.\nCr 4.2 mg/dL (baseline 1.0), BUN 82 mg/dL. UA bland, no hematuria or proteinuria. FENa 0.8%.\n\nMDM: acute kidney injury, post-renal, from bladder outlet obstruction with urinary retention.\nCourse: indwelling urethral catheter placed with drainage of retained urine. Hydrocortisone 100 mg IV given (stress dosing for adrenal insufficiency). Admitted to the medicine service for monitoring of renal recovery and post-obstructive diuresis."
+            }
+          ],
+          "measure": [
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-06-10a",
+          "kind": "portal_message",
+          "start": "2026-06-10T19:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Dad was in the hospital",
+              "date": "2026-06-10T19:20",
+              "author": "patient",
+              "body": "Daughter writing. Dad was admitted last Thursday, his bladder wasn't emptying and his kidneys got backed up. He was very confused. He came home yesterday after 3 nights with a catheter in. They said his kidney number was 1.6 when he left and going down. Urology is supposed to see him in a couple of weeks. He's much clearer now. Do you need anything from us?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Dad was in the hospital",
+              "date": "2026-06-10T21:30",
+              "author": "PCP",
+              "body": "Thank you for letting me know, and I'm glad he's clearer. We received the ED note but not the discharge paperwork; could you bring or photograph the discharge instructions and medication list? Keep the catheter bag below the bladder, plenty of fluids, and call for fever, no urine in the bag, or new confusion. Make sure he keeps taking his hydrocortisone; double it if he runs a fever. I'd like to see him after urology."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "portal_message",
+          "start": "2026-06-30T17:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Urology update",
+              "date": "2026-06-30T17:00",
+              "author": "patient",
+              "body": "Urology took the catheter out today and he passed the voiding test. They'll see him again later in the summer about the prostate. I couldn't find the discharge papers, sorry, I think they went home with the hospital bag that got thrown out."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Urology update",
+              "date": "2026-06-30T17:45",
+              "author": "RN",
+              "body": "Good news, thank you. We'll request the hospital records directly. Call to book a follow-up whenever he's up to it."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T08:15",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Fill history",
+              "date": "2026-07-21T08:15",
+              "author": "pharmacy",
+              "body": "Fill history update: hydrocortisone 10 mg #90 (endocrinology), tamsulosin 0.4 mg #90 and finasteride 5 mg #90 (urology) dispensed 07/20/2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "telephone",
+          "start": "2026-08-11T14:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital records request",
+              "date": "2026-08-11T14:00",
+              "author": "front desk",
+              "body": "Second request faxed to the hospital's records department for the June admission discharge summary and labs; first request 7/1 not answered. Called daughter about booking the follow-up: she'll call once his urology date is set. Nothing booked."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Calcium channel blocker-induced peripheral edema|R60.0": {
+        "code": "R60.0",
+        "display": "Localized edema",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Senile purpura|D69.2": {
+        "code": "D69.2",
+        "display": "Other nonthrombocytopenic purpura",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Spigelian hernia|K43.9": {
+        "code": "K43.9",
+        "display": "Ventral hernia without obstruction or gangrene",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "fludrocortisone acetate 0.1 MG Oral Tablet": {
+        "code": "313979",
+        "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
+        "ingredient": "fludrocortisone",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "hydrocortisone 10 MG Oral Tablet": {
+        "code": "197782",
+        "display": "hydrocortisone 10 MG Oral Tablet",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "quetiapine 200 MG Oral Tablet": {
+        "code": "317174",
+        "display": "quetiapine 200 MG Oral Tablet",
+        "ingredient": "quetiapine",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "ACTH": {
+        "code": "2141-0",
+        "display": "Corticotropin [Mass/volume] in Plasma",
+        "unit": "pg/mL",
+        "range": {
+          "low": 10,
+          "high": 60
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "B-type natriuretic peptide": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Cortisol 60 minutes post cosyntropin": {
+        "code": "26528-0",
+        "display": "Cortisol [Mass/volume] in Serum or Plasma --1 hour post dose corticotropin",
+        "unit": "ug/dL",
+        "range": {
+          "low": 18
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Cortisol, baseline": {
+        "code": "2143-6",
+        "display": "Cortisol [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fractional excretion of sodium": {
+        "code": "49135-7",
+        "display": "Fractional excretion of sodium [Ratio] in Urine and Serum or Plasma",
+        "unit": "%",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Cosyntropin stimulation test": {
+        "code": "18721001",
+        "display": "Cosyntropin test",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Insertion of indwelling catheter into urinary bladder": {
+        "code": "446583004",
+        "display": "Insertion of indwelling catheter into urinary bladder",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Transurethral resection of prostate": {
+        "code": "90199006",
+        "display": "Transurethral prostatectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Ultrasonography of urinary bladder": {
+        "code": "169251004",
+        "display": "Ultrasonography of urinary bladder",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001800",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "specialist_visit",
+          "start": "2026-01-20T10:00",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Follow-up", "author": "psychiatry", "date": "2026-01-26T12:15",
+             "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 1/20/2026\nRe: Paige Howland\n\nFall semester went acceptably. Therapy weekly. Mood \"steady, not great.\" No voices or suspicious thoughts. Denies SI. Mirror checking less.\n\nSertraline 50 mg daily, no side effects.\n\nPlan: continue current regimen. Return in 4 to 6 months.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "annual_physical",
+          "start": "2026-02-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 61.2},
+          "vitals": {"weight_kg": 61.2},
+          "measure": ["bp", "hr", "spo2"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 9}],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2026-02-24T09:30", "issued": "2026-03-02T13:00", "text": "Specimen satisfactory; transformation zone present. Cytology negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2026-02-24T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-02-24T09:50",
+             "body": "Physical. Last full visit with me was the hospital follow-up in June; she cancelled September for teaching. Since then: weekly therapy, psychiatry every few months, sertraline 50 daily. Mood \"okay, a little gray this winter.\" No voices. No thoughts of self-harm. Sleeping fine. Eating regularly. Hopes to defend next year.\n\nWeight 61.2, same as usual for her.\n\nExam: well appearing. HEENT normal, thyroid normal size. Heart RRR. Lungs clear. Abdomen soft. Pelvic normal, cotest collected. Skin clear. Affect slightly restricted, linear thinking.\n\nPHQ-9 9.\n\nMeds: sertraline 50 mg daily (psychiatry). NKDA.\n\nA/P:\n- Mood: mild symptoms, followed by psychiatry and therapy. Safety plan still in her phone. Reach out early if things slide.\n- Pap with HPV today (age 30).\n- Vaccines current.\nRTC 6 months for a check-in."}
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "portal_message",
+          "start": "2026-03-03T08:35",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "PCP", "date": "2026-03-03T08:35",
+             "body": "Pap and HPV test both negative. With a normal cotest you're set for five years."}
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "ed_visit",
+          "start": "2026-05-21T19:05",
+          "end": "2026-05-22T00:40",
+          "service": "Emergency Medicine",
+          "reason": "found on rooftop edge, suicidal thoughts",
+          "state": {"labs": {"Thyroid Stimulating Hormone": 1.9, "Free Thyroxine": 1.2}},
+          "vitals": {"weight_kg": 55.6},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-05-21T19:40", "resulted": "2026-05-21T20:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-21T19:40", "resulted": "2026-05-21T20:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2026-05-21T19:40", "resulted": "2026-05-21T21:30", "results": [
+              {"test": "Thyroid Stimulating Hormone"},
+              {"test": "Free Thyroxine"},
+              {"test": "Drugs identified in Urine by Screen method", "loinc": "12286-1", "text": "Negative"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-05-21T19:05"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-05-22T09:20",
+             "body": "REGIONAL MEDICAL CENTER EMERGENCY DEPARTMENT\nVisit 5/21/2026, 19:05\nPatient: Paige Howland, 30F\n\nCC: brought in by roommate after being found at the edge of the building roof.\n\nHPI: Roommate came home and found her seated on the edge of their apartment building's roof, talking about feeling hopeless. Patient has schizoaffective disorder and body dysmorphic disorder and was admitted about a year ago for suicidal ideation. She describes repeated thoughts of harming herself recently and says she feels \"empty.\" Over roughly two months she has lost a lot of weight, pulled away from friends and slept poorly. Denies alcohol or drug use.\n\nMeds: sertraline 50 mg daily. Allergies: NKDA.\nPMH: as above. PSH: none.\n\nVitals within normal limits. Weight 55.6 kg.\nExam: restless and agitated at times, blunted affect. Neuro exam normal: alert, oriented, cranial nerves intact, strength and sensation symmetric, gait steady. No injuries. Heart and lungs normal.\n\nLabs: CBC, CMP, TSH and free T4 normal. Urine drug screen negative.\n\nMDM: medically cleared. High acute suicide risk. Psychiatry evaluated in the ED; admission recommended and accepted.\n\nDisposition: admitted to inpatient psychiatry.\nCopy to PCP."}
+          ]
+        },
+        {
+          "id": "2026-05-22a",
+          "kind": "hospital_admission",
+          "start": "2026-05-22T00:50",
+          "end": "2026-06-04T10:30",
+          "service": "Inpatient Psychiatry",
+          "reason": "suicidal ideation",
+          "medications": [
+            {"drug_text": "24 HR paliperidone 6 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 6, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "schizoaffective disorder; started inpatient by psychiatry"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Inpatient Psychiatry Discharge Summary", "author": "psychiatry", "date": "2026-06-05T11:30",
+             "body": "INPATIENT PSYCHIATRIC UNIT, REGIONAL MEDICAL CENTER\nAdmitted 5/22/2026, discharged 6/4/2026\nPatient: Paige Howland\n\nPrincipal diagnosis: suicidal ideation; schizoaffective disorder, depressive type.\nOther: body dysmorphic disorder.\n\nCourse: Admitted from the ED after her roommate found her on the roof edge. Second admission for suicidal ideation in a year. For the first several days she was guarded and slept little. Given recurrent depressive episodes with psychosis, an antipsychotic was recommended; she agreed, and paliperidone ER 6 mg each morning was started, with sertraline 50 mg daily continued. She tolerated it without stiffness, restlessness or dizziness. Appetite and sleep gradually improved. No self-harm on the unit. By discharge she denied suicidal intent, could name reasons for living and her supports, and had updated her safety plan with her roommate and parents.\n\nDischarge medications:\n- paliperidone ER 6 mg by mouth every morning (new)\n- sertraline 50 mg by mouth daily (unchanged)\nAllergies: NKDA.\n\nFollow-up: outpatient psychiatry and therapy within one week (booked); primary care within 2 weeks. PCP asked to follow weight and metabolic labs on the new antipsychotic.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "telephone",
+          "start": "2026-06-08T10:40",
+          "reason": "post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2026-06-08T10:40",
+             "body": "Called pt, home since 6/4, parents staying with her. Has both medications and is taking them. Saw her therapist on Friday, psychiatry on the 10th. No thoughts of self-harm today. Sleeping better. Appt with PCP 6/17 confirmed. Crisis numbers reviewed."}
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "office_visit",
+          "start": "2026-06-17T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "state": {"weight_kg": 56.4, "labs": {"Hemoglobin A1c": 5.1}},
+          "vitals": {"weight_kg": 56.4},
+          "measure": ["bp", "hr", "spo2"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 12}],
+          "labs": [
+            {"panel": null, "collected": "2026-06-17T14:00", "resulted": "2026-06-18T07:45", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Lipid Panel", "collected": "2026-06-17T14:00", "resulted": "2026-06-18T07:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2026-06-17T13:20"},
+            {"procedure": "Venipuncture", "performed": "2026-06-17T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2026-06-17T14:20",
+             "body": "Seen after her second psychiatric admission. ED record and discharge summary reviewed.\n\nShe says this spring \"crept up\": stopped eating much, slept 3-4 hours, stopped texting friends. Glad her roommate found her. On the unit she started paliperidone 6 mg each morning and stays on sertraline 50. She has seen psychiatry (6/10) and her therapist twice since discharge.\n\nSide effects: a little sleepy in the mornings, no stiffness or restlessness. Eating more again.\n\nSafety: denies current suicidal thoughts or plan. Parents have the medications and hand her a week at a time. No firearms.\n\nExam: thin, appropriately dressed, fair eye contact, speech slow but organized. Weight 56.4, up a little from the ED (55.6), still about 5 kg under her usual 61. BP and pulse normal. Heart and lungs normal. No tremor, no rigidity.\n\nPHQ-9: 12.\n\nMeds: paliperidone ER 6 mg every morning (psychiatry, new), sertraline 50 mg daily (psychiatry). NKDA.\n\nA/P:\n1. Suicidal ideation, recent admission: safety plan reviewed and updated; it's on her phone and the fridge. Psychiatry and therapy weekly.\n2. Schizoaffective disorder, depressive type, now on paliperidone: baseline A1c and fasting lipids today for antipsychotic monitoring; I'll follow weight here.\n3. Weight loss from the depressive episode: regular meals, add snacks. Recheck at next visit.\n4. BDD: unchanged, therapy.\nRTC in 3 months, sooner for anything. Nurse will check in by phone."}
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2026-06-18T12:10",
+             "body": "Paige, your A1c (blood sugar average) and cholesterol are both normal. These are a starting point now that you're on paliperidone; we'll repeat them in a few months."},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "patient", "date": "2026-06-18T19:44",
+             "body": "Thanks. Feeling a little more like a person this week."}
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "telephone",
+          "start": "2026-07-14T11:30",
+          "reason": "nurse check-in",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Nurse check-in", "author": "RN", "date": "2026-07-14T11:30",
+             "body": "Check-in call. Pt says mood slowly better, sleeping 7 hours, eating three meals. Taking both meds; morning grogginess less. No thoughts of self-harm. Therapy weekly. No needs for PCP right now."}
+          ]
+        },
+        {
+          "id": "2026-07-14b",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T15:00",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Follow-up", "author": "psychiatry", "date": "2026-07-21T09:05",
+             "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 7/14/2026\nRe: Paige Howland\n\nSix weeks after discharge. Mood slowly improving. Sleep and appetite better. No hallucinations. No suicidal thoughts. Engaged in weekly therapy; parents remain involved.\n\nMedications: paliperidone ER 6 mg every morning, sertraline 50 mg daily. Mild morning sedation, fading. No extrapyramidal signs on exam.\n\nPlan: continue both at current doses. Return in 4 weeks.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T17:05",
+          "documents": [
+            {"type": "Patient Message", "title": "September appointment", "author": "patient", "date": "2026-08-11T17:05",
+             "body": "Just checking I'm still on for Sept 16? I have a new class schedule and want to make sure it fits."},
+            {"type": "Patient Message", "title": "RE: September appointment", "author": "front desk", "date": "2026-08-12T08:55",
+             "body": "Yes, Wednesday 9/16 at 1:20. See you then!"}
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "office_visit",
+          "start": "2026-09-16T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, weight and mood",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

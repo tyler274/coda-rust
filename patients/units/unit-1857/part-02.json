@@ -124,10 +124,13 @@
        "resulted": "2024-02-02T09:40",
        "results": [
         {
-         "test": "Porphobilinogen/Creatinine [Mass Ratio] in Urine",
-         "loinc": "13797-6",
-         "unit": "mg/g{creat}",
-         "value": 42
+          "test": "Porphobilinogen/Creatinine [Mass Ratio] in Urine",
+          "loinc": "13797-6",
+          "unit": "mg/g{creat}",
+          "value": 42,
+          "range": {
+            "high": 2
+          }
         }
        ]
       }
@@ -220,14 +223,7 @@
       }
      ],
      "orders": [
-      {
-       "id": "rec-2024-adm",
-       "action": "placed",
-       "order": "Records request - hospital admission 2/1-2/5/2024",
-       "category": "procedure",
-       "reason": "discharge summary not yet received"
-      }
-     ],
+      ],
      "procedures": [
       {
        "procedure": "Transitional care management, moderate complexity",
@@ -240,11 +236,11 @@
      ],
      "documents": [
       {
-       "type": "Progress Notes",
-       "title": "Post-Hospital Visit",
-       "author": "PCP",
-       "date": "2024-02-09T09:30",
-       "body": "Post-discharge visit, info from patient and her discharge instructions sheet (no summary from the hospital yet - requested today).\n\nHospitalized 2/1-2/5 with what was called an acute porphyria attack. Says it started with cramping belly pain and exhaustion a few days after a cold, for which she'd taken an OTC cold product, and she had been eating very little. Hands and feet went numb, couldn't concentrate. Got dextrose and 4 days of hemin. Cramps gone since the weekend. Still mild tingling in fingertips and toes, better each day. Thinking clearly again. Eating 3 meals a day since discharge.\n\nExam: well, a bit tired-looking. Abdomen soft, nontender. Pinprick slightly reduced in toes only; strength 5/5, reflexes 2+ and symmetric. Gait normal.\n\nA/P\n1. Acute intermittent porphyria, first recognized attack, recovering. Added to problem list. Reviewed the drug-safety list with her and scanned it to the chart; flagged in the allergy/alert section as a chart alert (not an allergy). Every new med, including OTC, gets checked first. No fasting. She will look into a medical alert bracelet.\n2. Hyponatremia during admission - recheck BMP today.\n3. Hematology follow-up being arranged by the hospital; she has the number.\nRTC 3 months or sooner.\n\nAddendum: BMP today normal, sodium back in range."
+        "type": "Progress Notes",
+        "title": "Post-Hospital Visit",
+        "author": "PCP",
+        "date": "2024-02-09T09:30",
+        "body": "Post-discharge visit, info from patient and her discharge instructions sheet (no summary from the hospital yet - requested today).\n\nHospitalized 2/1-2/5 with what was called an acute porphyria attack. Says it started with cramping belly pain and exhaustion a few days after a cold, for which she'd taken an OTC cold product, and she had been eating very little. Hands and feet went numb, couldn't concentrate. Got dextrose and 4 days of hemin. Cramps gone since the weekend. Still mild tingling in fingertips and toes, better each day. Thinking clearly again. Eating 3 meals a day since discharge.\n\nExam: well, a bit tired-looking. Abdomen soft, nontender. Pinprick slightly reduced in toes only; strength 5/5, reflexes 2+ and symmetric. Gait normal.\n\nA/P\n1. Acute intermittent porphyria, first recognized attack, recovering. Added to problem list. Reviewed the drug-safety list with her and scanned it to the chart; flagged in the allergy/alert section as a chart alert (not an allergy). Every new med, including OTC, gets checked first. No fasting. She will look into a medical alert bracelet.\n2. Hyponatremia during admission - recheck BMP today.\n3. Hematology follow-up being arranged by the hospital; she has the number.\nRTC 3 months or sooner.\n\nAddendum: BMP today normal, sodium back in range. Records request - hospital admission 2/1-2/5/2024."
       }
      ]
     },
@@ -269,12 +265,7 @@
      "start": "2024-02-27T10:15",
      "reason": "hospital records received",
      "orders": [
-      {
-       "id": "rec-2024-adm",
-       "action": "done",
-       "date": "2024-02-27T10:15"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Outside Records",

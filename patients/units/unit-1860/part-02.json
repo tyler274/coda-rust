@@ -1,0 +1,265 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001860",
+      "events": [
+        {
+          "id": "2022-01-26a",
+          "kind": "outside_records",
+          "start": "2022-01-26T11:40",
+          "conditions": [{"label": "Submucosal uterine leiomyoma", "icd10": "D25.0", "action": "diagnosed", "onset": "2022-01-17"}],
+          "state": {"labs": {"Hemoglobin": 10.2, "Mean Corpuscular Volume": 82, "Ferritin": 14}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-01-17T10:50", "resulted": "2022-01-17T15:10",
+             "results": [{"test": "Hemoglobin", "value": 10.2}, {"test": "Hematocrit", "value": 30.5}, {"test": "Mean Corpuscular Volume", "value": 82}, {"test": "Platelets", "value": 250}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2022-01-17T11:30", "issued": "2022-01-17T13:05",
+             "text": "Transvaginal technique. Uterus enlarged, anteverted. A 3 cm well-circumscribed intracavitary mass arises on a stalk from the anterior uterine wall. The endometrium is thickened and heterogeneous around it. Ovaries normal in size and appearance bilaterally. No adnexal mass. No free fluid.",
+             "conclusion": "3 cm pedunculated submucosal (intracavitary) fibroid from the anterior wall; thickened, heterogeneous endometrium."}
+          ],
+          "orders": [{"id": "gyn-referral", "action": "done", "date": "2022-01-17T10:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology consultation", "author": "gynecology", "date": "2022-01-26T11:40",
+             "body": "OUTSIDE GYNECOLOGY PRACTICE — CONSULTATION\nDate of service: 01/17/2022\nReferring: primary care\n\nReason: worsening menstrual bleeding.\n\nMs. Kenney is a 35-year-old G1P1 seen at her PCP's request. Over roughly half a year her flow has become heavier and longer; she now bleeds 10 to 12 days each cycle and passes large clots. Cramps are severe; she says they feel like contractions did in labor.\n\nPMH: none. PSH: SVD x1. Meds: none. Allergies: NKDA. FH: mother with fibroids. Never smoker, no alcohol.\n\nExam: Abdomen soft without tenderness. Speculum and bimanual: uterus enlarged, smooth in contour and nontender. A firm, irregular mass is felt at the cervix.\n\nIn-office studies: CBC hemoglobin 10.2, hematocrit 30.5, MCV 82, platelets 250. Transvaginal US with a 3 cm intracavitary mass on a stalk off the anterior wall and a thick, heterogeneous lining.\n\nImpression: submucosal leiomyoma, pedunculated, likely prolapsing toward the cervix; menorrhagia; mild anemia.\n\nPlan: discussed options. She would like it removed. Hysteroscopic resection to be scheduled after pre-op; our surgical coordinator will call her. Anemia results forwarded to PCP.\n\n— Gynecology attending\n\n[PCP note on receipt 1/26: read. Fibroid on list. She plans surgery in spring.]"}
+          ]
+        },
+        {
+          "id": "2022-04-04a",
+          "kind": "office_visit",
+          "start": "2022-04-04T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "tired and short of breath",
+          "state": {"labs": {"Hemoglobin": 9.2, "Mean Corpuscular Volume": 70, "Iron": 30, "Total Iron-Binding Capacity": 600, "Ferritin": 8}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-04-04T09:25", "resulted": "2022-04-04T13:40",
+             "results": [{"test": "Hemoglobin", "value": 9.2}, {"test": "Mean Corpuscular Volume", "value": 70}]},
+            {"panel": "Iron Studies", "collected": "2022-04-04T09:25", "resulted": "2022-04-04T15:55",
+             "results": [{"test": "Iron", "value": 30}, {"test": "Total Iron-Binding Capacity", "value": 600}, {"test": "Ferritin", "value": 8}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-04-04T08:50"},
+            {"procedure": "Venipuncture", "performed": "2022-04-04T09:25"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Fatigue, Exertional Dyspnea", "author": "PCP", "date": "2022-04-04T09:30",
+             "body": "CC: worn out, winded.\n\nHPI: 35F seen about three months after gynecology found a submucosal fibroid. For about three months she has been tired all the time and gets short of breath on exertion, worst on the stairs at work. Periods still heavy and long while she waits for her resection. New since winter: she craves ice and chews it constantly, and admits she sometimes eats little bits of paper, which embarrasses her. No chest pain, palpitations, black stools or blood in the urine. No meds.\n\nHgb at gyn in January was 10.2.\n\nExam: tired-appearing. Skin and conjunctivae pale. Spoon-shaped nails on both hands. Heart regular, no murmur. Lungs clear. Abdomen soft. No leg swelling. Vitals per flowsheet.\n\nAssessment: fatigue and exertional dyspnea with pica and koilonychia in the setting of menorrhagia from a fibroid. Strongly suspect iron deficiency.\n\nPlan: CBC and iron studies now, I'll call this afternoon. Expect oral iron. Surgery date with gyn pending, she will let us know."}
+          ]
+        },
+        {
+          "id": "2022-04-04b",
+          "kind": "telephone",
+          "start": "2022-04-04T16:40",
+          "conditions": [{"label": "Iron deficiency anemia", "action": "diagnosed", "onset": "2022-04-04"}],
+          "medications": [{"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Iron deficiency anemia"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Lab results: iron deficiency", "author": "PCP", "date": "2022-04-04T16:40",
+             "body": "Called pt with today's results. Hgb 9.2, MCV 70. Iron 30, TIBC 600, ferritin 8 — classic iron deficiency, from the fibroid bleeding. Starting ferrous sulfate 325 mg once daily; take it with orange juice, not with coffee or tea; stools will darken, constipation possible. The ice and paper cravings should fade as iron comes back up. Sent to her pharmacy. Recheck counts after the surgery. She verbalized understanding."}
+          ]
+        },
+        {
+          "id": "2022-05-31a",
+          "kind": "portal_message",
+          "start": "2022-05-31T20:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Had my surgery", "author": "patient", "date": "2022-05-31T20:14",
+             "body": "Hi, just wanted you to know I had the hysteroscopy on the 20th and they took the fibroid out. They said it went fine and I went home the same day. Should I keep taking the iron?"},
+            {"type": "Patient Message", "title": "RE: Had my surgery", "author": "PCP", "date": "2022-06-01T08:30",
+             "body": "Glad it went smoothly. Yes, please keep the iron going every day for now. It takes months to rebuild your stores. Let's see you this summer and we'll recheck your blood count then."}
+          ]
+        },
+        {
+          "id": "2022-07-13a",
+          "kind": "office_visit",
+          "start": "2022-07-13T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "can't sleep, legs uncomfortable",
+          "conditions": [
+            {"label": "Submucosal uterine leiomyoma", "icd10": "D25.0", "action": "resolved", "onset": "2022-01-17", "note": "hysteroscopic resection 2022-05-20 per patient"},
+            {"label": "Restless legs syndrome", "action": "diagnosed", "onset": "2022-04-13"}
+          ],
+          "medications": [{"drug": "ropinirole 0.5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 0.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Restless legs syndrome"}],
+          "state": {"labs": {"Hemoglobin": 10.8, "Mean Corpuscular Volume": 76, "Iron": 52, "Total Iron-Binding Capacity": 470, "Ferritin": 21}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-07-13T14:55", "resulted": "2022-07-14T07:30", "results": [{"test": "Hemoglobin", "value": 10.8}]},
+            {"panel": "Iron Studies", "collected": "2022-07-13T14:55", "resulted": "2022-07-14T09:10", "results": [{"test": "Ferritin", "value": 21}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-07-13T14:20"},
+            {"procedure": "Venipuncture", "performed": "2022-07-13T14:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Sleep Disturbance, Leg Discomfort", "author": "PCP", "date": "2022-07-13T14:50",
+             "body": "Subjective\nFollow-up for her iron deficiency, now about 3 months on ferrous sulfate. Fibroid was resected hysteroscopically in May. Periods are shorter since then, 6 to 7 days, but still heavy.\n\nMain concern today is sleep. For about three months, once she lies down at night she gets an overpowering need to move her legs, with a deep buzzing feeling inside both calves. Moving or walking makes it go away, but it comes right back once she is still again. She is up several times a night pacing the hall and drags through the next day. Nothing like it during the day. Her mother has the same thing.\n\nShe eats vegetarian. Doesn't drink, no drugs. She does not snore and no one has seen her stop breathing in sleep. Taking the iron daily.\n\nObjective\nVitals per flowsheet. Neuro: strength, reflexes, sensation and gait normal. Legs: no edema, no varicosities or skin changes of venous disease. Pulses normal.\n\nAssessment\n1. Restless legs syndrome — meets criteria. Iron deficiency likely contributes.\n2. Iron deficiency anemia, on oral iron; ongoing menstrual losses plus a vegetarian diet.\n3. Submucosal fibroid, resected; marking resolved.\n\nPlan\n- Ropinirole 0.5 mg at bedtime, start tonight; discussed sleepiness and nausea; avoid driving if drowsy.\n- Continue ferrous sulfate daily. Ferritin and CBC today; for restless legs the goal is to get ferritin well up.\n- Requesting the operative report from gyn.\n- Phone check in 3 to 4 weeks."}
+          ]
+        },
+        {
+          "id": "2022-07-14a",
+          "kind": "portal_message",
+          "start": "2022-07-14T12:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Ferritin and blood count", "author": "PCP", "date": "2022-07-14T12:20",
+             "body": "Hemoglobin is up to 10.8 from 9.2 in April — good progress. Ferritin (iron stores) is 21, better than 8 but still low, and low iron can make restless legs worse. Keep taking the iron every day with juice. We'll recheck in the fall."}
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "telephone",
+          "start": "2022-08-09T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Ropinirole check-in", "author": "RN", "date": "2022-08-09T10:15",
+             "body": "Called pt for follow-up per PCP. Taking ropinirole nightly at 9 pm. Says she is getting up once a night at most now and usually sleeps through. No daytime sleepiness. Continue current dose. Message routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "telephone",
+          "start": "2022-08-23T13:35",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2022-08-23T13:35",
+             "body": "Second request to the gynecology office for the 5/20 operative note and pathology. First fax 7/13 not answered. Spoke with their records clerk; will fax this week."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "outside_records",
+          "start": "2022-08-30T09:05",
+          "procedures": [{"procedure": "Hysteroscopic excision of leiomyoma of uterus", "snomed": "446804002", "performed": "2022-05-20T08:30"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-05-20T09:10", "issued": "2022-05-24T16:00",
+             "text": "Specimen: uterine mass, hysteroscopic resection. Gross: a 3.0 cm tan-white whorled fragment of rubbery tissue with an attached stalk. Microscopic: interlacing fascicles of bland smooth muscle cells without atypia, necrosis or increased mitotic activity.",
+             "conclusion": "Leiomyoma, benign."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Operative report: hysteroscopic myomectomy", "author": "gynecology", "date": "2022-08-30T09:05",
+             "body": "OUTSIDE GYNECOLOGY — OPERATIVE REPORT\nDate of procedure: 05/20/2022, ambulatory surgery\nPreop/postop diagnosis: submucosal leiomyoma, menorrhagia\nProcedure: operative hysteroscopy with resection of submucosal myoma\nAnesthesia: general (LMA)\nAllergies: NKDA\n\nFindings: a pedunculated 3 cm fibroid on a stalk from the anterior uterine wall, protruding to the internal os. Remainder of the cavity regular. Both ostia seen.\n\nThe stalk was resected at its base and the myoma removed in one piece. Hemostasis good. Fluid deficit within limits. No complications. Discharged home the same day.\n\nPath: see report.\n\n[Received by fax 8/30, filed. PCP reviewed.]"}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "lab_only",
+          "start": "2022-10-11T07:45",
+          "state": {"labs": {"Hemoglobin": 11.8, "Mean Corpuscular Volume": 81, "Iron": 68, "Total Iron-Binding Capacity": 405, "Ferritin": 30}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-11T07:45", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}]},
+            {"panel": "Iron Studies", "collected": "2022-10-11T07:45", "results": [{"test": "Ferritin"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-10-11T07:45"}]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "portal_message",
+          "start": "2022-10-12T17:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Fall bloodwork", "author": "PCP", "date": "2022-10-12T17:50",
+             "body": "Hemoglobin continues to climb and your iron stores are slowly rising. Stay on the iron. How are the legs at night?"},
+            {"type": "Patient Message", "title": "RE: Fall bloodwork", "author": "patient", "date": "2022-10-12T21:03",
+             "body": "Legs are mostly fine with the pill. Maybe one bad night a week. I'm coming in next week for flu and covid."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T16:45",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T16:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T16:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-18T16:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2022-10-18T17:00",
+             "body": "Influenza vaccine right deltoid; Pfizer bivalent COVID booster left deltoid. Screening questions negative. Observed 15 minutes, no reaction."}
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request: ropinirole", "author": "RN", "date": "2023-01-10T09:30",
+             "body": "Electronic request from pt's pharmacy, ropinirole 0.5 mg #90. Last visit July, symptom check October good. Approved per protocol with 1 refill; reminded pt by portal to book a follow-up this spring."}
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "office_visit",
+          "start": "2023-03-07T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "iron and restless legs follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "portal_message",
+          "start": "2023-03-08T09:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Missed appointment", "author": "front desk", "date": "2023-03-08T09:40",
+             "body": "We missed you yesterday at 11. Would you like to fold this follow-up into your physical in June instead? Reply here and we'll set it up."},
+            {"type": "Patient Message", "title": "RE: Missed appointment", "author": "patient", "date": "2023-03-08T12:16",
+             "body": "So sorry, our office had a deadline and I completely forgot. June is fine."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "annual_physical",
+          "start": "2023-06-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin": 12.4, "Mean Corpuscular Volume": 83, "Iron": 74, "Total Iron-Binding Capacity": 390, "Ferritin": 36}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-20T09:10", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Iron Studies", "collected": "2023-06-20T09:10", "results": [{"test": "Ferritin"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-20T09:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-20T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-06-20T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-06-20T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-06-20T09:05",
+             "body": "36-year-old here for her yearly exam; also covers the follow-up she missed in March.\n\nInterval: energy better than last year. No more ice chewing. Periods heavy for the first couple of days, about a week total, no clots like before. Restless legs controlled on ropinirole at bedtime, maybe one restless night a week. Taking iron most days.\n\nMeds: ferrous sulfate 325 mg daily; ropinirole 0.5 mg qhs.\nAllergies: none.\nPMH: iron deficiency anemia; restless legs; submucosal fibroid s/p hysteroscopic resection 5/2022.\nSocial: unchanged; vegetarian.\n\nROS otherwise negative. PHQ-2 0.\n\nExam: well. Conjunctivae pink. Nails normal now. Heart regular, no murmur. Lungs clear. Abdomen soft. No leg swelling. Neuro grossly normal.\n\nPlan:\n- Iron deficiency anemia: CBC, ferritin. Keep iron.\n- RLS: stable, same dose, refills sent.\n- Health maintenance: CMP, lipids. Pap due next year. Fall flu and COVID."}
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "portal_message",
+          "start": "2023-06-21T15:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical results", "author": "PCP", "date": "2023-06-21T15:25",
+             "body": "Good news: your hemoglobin is back in the normal range and iron stores are the best they've been. Kidney, liver, sugar and cholesterol all fine. Keep taking the iron; your periods are still heavy enough that you need it."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T17:15",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T17:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T17:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T17:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Seasonal vaccines", "author": "MA", "date": "2023-10-17T17:30",
+             "body": "Flu (left arm) and 2023-24 COVID (right arm) given. Tolerated both. Pt asked that the after-visit summary go to the portal rather than print."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T14:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: ferrous sulfate", "author": "RN", "date": "2023-12-05T14:00",
+             "body": "Pharmacy asking to renew ferrous sulfate 325 mg (her insurance covers it with a prescription). Renewed x 1 year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

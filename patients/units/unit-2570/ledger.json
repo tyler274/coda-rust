@@ -1,11 +1,7 @@
 {
   "unit": "unit-2570",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002570/2022-11-09a: procedure order \"Records request, prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00002570/2025-04-09a: procedure order \"Records request, regional hospital ED\" names no one catalog lab, panel, study or procedure",
-    "MRN00002570/2025-12-11a: procedure order \"Records request, regional hospital admission 12/04-12/07/2025\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002570",
@@ -302,15 +298,6 @@
               "date": "2022-11-09T10:00"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2022",
-              "action": "placed",
-              "order": "Records request, prior primary care office",
-              "category": "procedure",
-              "reason": "transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -379,13 +366,6 @@
             {
               "vaccine": "Meningococcal conjugate MenACWY",
               "date": "2019-01-22T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records-2022",
-              "action": "done",
-              "date": "2022-11-21T11:15"
             }
           ],
           "documents": [
@@ -1041,15 +1021,6 @@
               "performed": "2025-04-09T10:30"
             }
           ],
-          "orders": [
-            {
-              "id": "ed-records-2025-04",
-              "action": "placed",
-              "order": "Records request, regional hospital ED",
-              "category": "procedure",
-              "reason": "ED visit 04/06/2025, hip dislocation"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -1092,13 +1063,6 @@
           "id": "2025-04-30a",
           "kind": "outside_records",
           "start": "2025-04-30T14:10",
-          "orders": [
-            {
-              "id": "ed-records-2025-04",
-              "action": "done",
-              "date": "2025-04-30T14:10"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -1605,13 +1569,6 @@
               "category": "referral",
               "to": "Neurology",
               "reason": "diffuse axonal injury, post-hospital follow-up"
-            },
-            {
-              "id": "hospital-records-2025-12",
-              "action": "placed",
-              "order": "Records request, regional hospital admission 12/04-12/07/2025",
-              "category": "procedure",
-              "reason": "discharge summary and imaging"
             }
           ],
           "documents": [
@@ -1685,13 +1642,6 @@
           "id": "2026-01-08a",
           "kind": "outside_records",
           "start": "2026-01-08T10:20",
-          "orders": [
-            {
-              "id": "hospital-records-2025-12",
-              "action": "done",
-              "date": "2026-01-08T10:20"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",

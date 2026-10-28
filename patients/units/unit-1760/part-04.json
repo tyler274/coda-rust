@@ -37,6 +37,11 @@
               "id": "ct-retest",
               "action": "done",
               "date": "2025-01-21T07:40"
+            },
+            {
+              "id": "ct-retest-2",
+              "action": "done",
+              "date": "2025-01-21T07:40"
             }
           ],
           "documents": [
@@ -225,7 +230,10 @@
                   "test": "hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
-                  "value": 2850
+                  "value": 2850,
+                  "range": {
+                    "high": 5
+                  }
                 },
                 {
                   "test": "ABO and Rh group",
@@ -284,7 +292,8 @@
           "procedures": [
             {
               "procedure": "Laparoscopic right salpingectomy for ruptured tubal ectopic pregnancy",
-              "performed": "2025-10-19T20:40"
+              "performed": "2025-10-19T20:40",
+              "snomed": "63596003"
             }
           ],
           "medications": [
@@ -334,14 +343,7 @@
           "start": "2025-10-21T10:15",
           "reason": "Hospital stay",
           "orders": [
-            {
-              "id": "records-er-oct25",
-              "action": "placed",
-              "order": "Request ED and hospital records",
-              "category": "procedure",
-              "reason": "ED visit and surgery 10/19"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Patient Message",
@@ -372,12 +374,7 @@
           "start": "2025-10-22T14:30",
           "reason": "Post-discharge call",
           "orders": [
-            {
-              "id": "records-er-oct25",
-              "action": "done",
-              "date": "2025-10-22T14:30"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Telephone Encounter",

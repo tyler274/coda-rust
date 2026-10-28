@@ -1,0 +1,238 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002561",
+      "given": "Jacob",
+      "family": "Kendall",
+      "birth_date": "1997-10-16",
+      "address_line": "212 Bardwell Street",
+      "phone": "+1-518-555-0105",
+      "email": "jacob.kendall@example.test",
+      "marital_status": "single",
+      "summary": "Software engineer who joined at 21 and over the next years is found to have NF1, hereditary angioedema type I and PiZZ alpha-1 antitrypsin deficiency with early emphysema, then a stage IIB nonseminomatous testicular germ cell tumor found through PTHrP-mediated hypercalcemia. Two later crashes: a T4 fracture with incomplete cord injury and neurogenic shock (2024), and a left pulmonary contusion needing VATS (2026).",
+      "events": [
+        {
+          "id": "2019-09-03a",
+          "kind": "telephone",
+          "start": "2019-09-03T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2019-09-03T10:12",
+             "body": "Caller is 21, just moved to Belchertown for a job at a software company, needs a primary doctor. Insurance BCBS PPO through employer, card info taken. No prior records to send, says he hasn't really had a doctor since his pediatrician. Booked new patient physical 9/10 at 8:40. Membership agreement emailed."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 64.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, weekends, 2-3 drinks"},
+            {"item": "Occupation", "value": "Software engineer"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 3}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-10T09:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-09-10T09:15"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-09-10T08:40"},
+            {"procedure": "Venipuncture", "performed": "2019-09-10T09:20"},
+            {"procedure": "Immunization administration", "performed": "2019-09-10T09:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Physical", "author": "PCP", "date": "2019-09-10T08:40",
+             "body": "21 yo man new to the area, here to set up primary care. No complaints. Last regular care was with his pediatrician in high school; no hospitalizations, no surgeries, no daily meds. NKDA.\n\nSocial: software engineer, started a new job last month, works mostly remote. Single, lives alone in an apartment. Never smoked, no vaping, no drugs. Beer or wine on weekends, 2-3 drinks. Runs and rides a bike a few times a week.\n\nFamily: father died at 45 of liver failure; the family has always put it down to his drinking. Maternal grandfather has high blood pressure. Mother living, he isn't aware of medical problems for her. No siblings mentioned.\n\nROS negative across systems.\n\nExam: thin, well appearing. HEENT normal. Neck supple, no nodes or thyroid enlargement. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin: no rashes. Neuro grossly normal.\n\nA/P: healthy young adult.\n- Screening: CBC, CMP, lipids, HIV and hep C once today.\n- Tdap given, last one he recalls was middle school.\n- PHQ-2 negative.\n- Flu shot when it arrives in October.\nRTC one year for physical."}
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2019-09-12T16:05",
+             "body": "Hi Jacob, all of your screening bloodwork from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to do. Nice to meet you, and we'll send a reminder about the flu shot."}
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-22T17:12"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-22T17:12"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2019-10-22T17:10",
+             "body": "Here after work for flu vaccine. Screening questions negative, no egg or vaccine reactions. Quadrivalent flu given IM L deltoid, VIS given. Tolerated, left after 10 minutes."}
+          ]
+        },
+        {
+          "id": "2020-08-11a",
+          "kind": "annual_physical",
+          "start": "2020-08-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-11T08:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-08-11T08:55", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-08-11T08:20"},
+            {"procedure": "Venipuncture", "performed": "2020-08-11T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-08-11T08:20",
+             "body": "Yearly visit. Masked, screened at door. Working from home since spring, says it suits him. Still running, a bit less. No health concerns.\n\nNo meds. NKDA. Never smoker, social alcohol unchanged.\n\nROS: negative.\n\nExam: well, thin. Heart and lungs normal. Abdomen benign. No edema.\n\nA/P: well visit, 22 yo.\n- CBC and CMP.\n- Flu in the fall.\n- Back in a year."}
+          ]
+        },
+        {
+          "id": "2020-08-13a",
+          "kind": "portal_message",
+          "start": "2020-08-13T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2020-08-13T12:40",
+             "body": "Labs from your physical look fine, no changes needed. See you for a flu shot in October."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "nurse_visit",
+          "start": "2020-10-20T16:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-20T16:47"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-20T16:47"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit - Flu", "author": "MA", "date": "2020-10-20T16:45",
+             "body": "Flu vaccine, R deltoid. No issues last year. Waited in car 15 min per current protocol, no reaction."}
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "portal_message",
+          "start": "2021-05-11T19:22",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-12T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-03T11:30"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "COVID vaccine card", "author": "patient", "date": "2021-05-11T19:22",
+             "body": "Got both of my Pfizer shots at the pharmacy, April 12 and May 3. Picture of the card attached in case you need it for my chart."},
+            {"type": "Patient Message", "title": "RE: COVID vaccine card", "author": "MA", "date": "2021-05-12T09:03",
+             "body": "Thanks Jacob, both doses entered in your record."}
+          ]
+        },
+        {
+          "id": "2021-06-18a",
+          "kind": "annual_physical",
+          "start": "2021-06-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [{"label": "Neurofibromatosis, type 1", "action": "diagnosed", "onset": "2021-06-18"}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-18T09:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-18T09:45", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "orders": [
+            {"id": "ophtho-2021", "action": "placed", "order": "Ophthalmology referral", "category": "referral", "to": "Ophthalmology", "reason": "slit-lamp exam, suspected neurofibromatosis type 1"},
+            {"id": "allergy-2021", "action": "placed", "order": "Allergy and Immunology referral", "category": "referral", "to": "Allergy and Immunology", "reason": "recurrent episodes of swelling without hives"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-06-18T09:00"},
+            {"procedure": "Venipuncture", "performed": "2021-06-18T09:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-06-18T09:00",
+             "body": "23 yo here for his yearly exam, first in-person in a while. Feels fine. Fully vaccinated for COVID in the spring.\n\nTwo things came up:\n1) I noticed spots on his skin during the exam (below). He says he has had them as long as he can remember and his mom has the same kind, as does one of her brothers. His father didn't.\n2) When asked about anything else, he describes episodes over roughly the last year where his lip, a hand, or once his genitals swelled up over a few hours and then went down on its own over two or three days. No hives, no itching. Separately he has had a few bad bouts of crampy belly pain. He hadn't connected them and didn't come in for any of them.\n\nMeds none. NKDA. Social unchanged: software engineer, never smoker, weekend drinks.\n\nExam: thin, well. Skin: many flat hyperpigmented macules scattered over the trunk, arms and legs; clusters of small brown freckle-type spots in both axillae and the groin. No subcutaneous nodules felt. Mouth: no mucosal lesions. Heart RRR. Lungs clear. Abdomen soft, nontender. No swelling today. Neuro nonfocal.\n\nA/P:\n1. Neurofibromatosis type 1, clinical diagnosis: the macules plus axillary and inguinal freckling, and a mother with the same findings. BP normal. Ophthalmology referral for slit-lamp exam. Discussed what NF1 means and the yearly skin and BP checks.\n2. Recurrent swelling episodes without urticaria plus abdominal pain bouts - want allergy/immunology to evaluate for a bradykinin-type angioedema rather than me ordering piecemeal. Referral placed. Come in or go to ED if throat or tongue swells.\n3. Health maintenance: CBC, CMP today. Flu in fall.\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "portal_message",
+          "start": "2021-06-21T13:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Your labs", "author": "PCP", "date": "2021-06-21T13:15",
+             "body": "Jacob, bloodwork from Friday is all normal. The referral coordinator will call you with ophthalmology and allergy appointments."},
+            {"type": "Patient Message", "title": "RE: Your labs", "author": "patient", "date": "2021-06-21T18:40",
+             "body": "Thanks. Allergy can't see me until late August, is that ok? Nothing's swollen since."},
+            {"type": "Patient Message", "title": "RE: Your labs", "author": "PCP", "date": "2021-06-22T08:10",
+             "body": "That's fine. If you get swelling in your tongue or throat, or trouble breathing, go straight to the ED."}
+          ]
+        },
+        {
+          "id": "2021-07-23a",
+          "kind": "outside_records",
+          "start": "2021-07-23T10:00",
+          "orders": [{"id": "ophtho-2021", "action": "done", "date": "2021-07-20T14:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Ophthalmology Consultation", "author": "ophthalmology", "date": "2021-07-23T10:00",
+             "body": "Outside ophthalmology practice. Date of visit: 07/20/2021.\nReason: referred by PCP, possible NF1, slit-lamp exam requested.\nOcular history: none; no glasses. Meds: none. Allergies: NKDA.\nVA 20/20 OD and OS uncorrected. Pupils equal, no APD. Color plates full. Confrontation fields full.\nSlit lamp: lids and lashes normal; conjunctiva quiet; corneas clear; irides without Lisch nodules or other nodules OU; lenses clear.\nDilated fundus: discs pink and sharp, cup-to-disc 0.3 OU, no optic nerve pallor or swelling; maculae and periphery normal; no choroidal lesions.\nImpression: normal eye exam, no ocular features of NF1 at this time.\nPlan: repeat exam yearly given the diagnosis. Thank you for the referral."}
+          ]
+        },
+        {
+          "id": "2021-09-02a",
+          "kind": "outside_records",
+          "start": "2021-09-02T11:30",
+          "conditions": [{"label": "Hereditary angioedema", "action": "diagnosed", "onset": "2021-08-23", "note": "Type I, C1 esterase inhibitor deficiency"}],
+          "medications": [{"drug_text": "3 ML icatibant 10 MG/ML Prefilled Syringe", "action": "historical", "sig": "Inject 30 mg under the skin at onset of an attack; may repeat every 6 hours, no more than 3 doses in 24 hours", "dose": {"value": 30, "unit": "mg"}, "frequency": "PRN", "route": "Subcutaneous", "course": "chronic", "reason": "hereditary angioedema attacks"}],
+          "labs": [
+            {"panel": null, "collected": "2021-08-23T11:20", "resulted": "2021-08-30T15:00", "results": [
+              {"test": "Complement C4", "loinc": "4498-2", "unit": "mg/dL", "value": 6, "range": {"low": 14, "high": 48}},
+              {"test": "Complement C1 esterase inhibitor", "loinc": "4477-6", "unit": "mg/dL", "value": 7, "range": {"low": 21, "high": 39}},
+              {"test": "Complement C1 esterase inhibitor functional", "loinc": "4476-8", "unit": "%", "value": 22, "range": {"low": 68}}
+            ]}
+          ],
+          "orders": [{"id": "allergy-2021", "action": "done", "date": "2021-08-23T10:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Allergy and Immunology Consultation", "author": "allergy and immunology", "date": "2021-09-02T11:30",
+             "body": "Outside allergy and immunology group. Date of visit: 08/23/2021. Addendum with results 08/31/2021.\n\nReferred by his PCP after his June physical for recurrent swelling.\n\nHistory: over about the past twelve months he has had a number of episodes of localized swelling - lips, either hand, and the genitals. Each comes on gradually over several hours and clears without treatment in two to three days. Apart from these he describes three earlier bouts of severe crampy abdominal pain with bloating and watery diarrhea; no fever, no blood. Never hives, wheeze or itch with any of them. No food triggers he can name, and he takes no medications, so no ACE inhibitor or new drug exposure.\nFamily: his mother and one maternal uncle both had episodes of facial swelling as young people that were never explained.\nMeds: none daily. Allergies: NKDA.\nSocial: software engineer; never smoker; weekend alcohol.\n\nVitals stable. Exam unremarkable today; no swelling, skin clear apart from his known pigmented macules.\n\nLabs drawn today, resulted 8/30: C4 6 mg/dL (ref 14-40); C1 esterase inhibitor antigen 7 mg/dL (ref 21-39); C1 inhibitor function 22% (ref >67%).\n\nAssessment: hereditary angioedema type I (low C1 inhibitor level and function with low C4), consistent with his non-urticarial swelling and the abdominal attacks.\n\nPlan:\n- Icatibant 30 mg subcut at onset of an attack, may repeat every 6 h to max 3 doses/24 h. Taught self-injection in clinic. Keep two syringes on hand.\n- Any throat tightness, voice change or trouble swallowing: give a dose and call 911.\n- Avoid ACE inhibitors and estrogen-containing products.\n- First-degree relatives should be tested; mother especially.\n- Procedures and surgery need pre-procedure prophylaxis; contact us beforehand.\n- Return in one year, sooner if attacks become frequent; long-term prophylaxis can be discussed then."}
+          ]
+        },
+        {
+          "id": "2021-09-07a",
+          "kind": "pharmacy",
+          "start": "2021-09-07T09:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior authorization - icatibant", "author": "MA", "date": "2021-09-07T09:40",
+             "body": "Specialty pharmacy faxed a PA request for icatibant 30 mg syringes. Prescriber is the allergist, but the plan sent it here as PCP of record. Called allergy office - they are submitting it with the lab results. Faxed back that allergy is handling."}
+          ]
+        },
+        {
+          "id": "2021-09-09a",
+          "kind": "telephone",
+          "start": "2021-09-09T14:25",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "PA approved", "author": "RN", "date": "2021-09-09T14:25",
+             "body": "Allergy office called: icatibant approved for 12 months. Specialty pharmacy shipping 2 syringes to his home. Pt aware."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T17:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T17:07"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T17:07"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit - Flu", "author": "RN", "date": "2021-10-19T17:05",
+             "body": "Flu vaccine L deltoid. Has HAE now, asked allergy whether vaccines are a problem - they said no. No swelling episode since August. Observed, fine."}
+          ]
+        }
+      ]
+    }
+  ]
+}

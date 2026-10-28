@@ -2,11 +2,7 @@
   "unit": "unit-1690",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00001690/2024-08-13a: reaction \"Contact dermatitis\" not in catalog (text only)",
-    "MRN00001690/2024-10-03a: lab order \"TSH and free T4\" names no one catalog lab, panel, study or procedure",
-    "MRN00001690/2025-09-04a: lab order \"TSH and free T4\" names no one catalog lab, panel, study or procedure",
-    "MRN00001690/2026-05-12a: lab order \"CBC and ferritin\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin with iron Oral Tablet\""
+    "MRN00001690/2024-08-13a: reaction \"Contact dermatitis\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -69,6 +65,7 @@
             },
             {
               "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -411,7 +408,14 @@
             {
               "id": "tsh-2024-10",
               "action": "placed",
-              "order": "TSH and free T4",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab",
+              "reason": "Hypothyroidism in early pregnancy"
+            },
+            {
+              "id": "tsh-2024-10-2",
+              "action": "placed",
+              "order": "Free Thyroxine",
               "category": "lab",
               "reason": "Hypothyroidism in early pregnancy"
             }
@@ -464,6 +468,11 @@
           "orders": [
             {
               "id": "tsh-2024-10",
+              "action": "done",
+              "date": "2024-10-07T08:15"
+            },
+            {
+              "id": "tsh-2024-10-2",
               "action": "done",
               "date": "2024-10-07T08:15"
             }
@@ -1350,7 +1359,14 @@
             {
               "id": "tsh-2025-09",
               "action": "placed",
-              "order": "TSH and free T4",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab",
+              "reason": "Hypothyroidism in early pregnancy"
+            },
+            {
+              "id": "tsh-2025-09-2",
+              "action": "placed",
+              "order": "Free Thyroxine",
               "category": "lab",
               "reason": "Hypothyroidism in early pregnancy"
             }
@@ -1403,6 +1419,11 @@
           "orders": [
             {
               "id": "tsh-2025-09",
+              "action": "done",
+              "date": "2025-09-08T07:50"
+            },
+            {
+              "id": "tsh-2025-09-2",
               "action": "done",
               "date": "2025-09-08T07:50"
             }
@@ -1817,7 +1838,14 @@
             {
               "id": "cbc-iron-recheck-2026",
               "action": "placed",
-              "order": "CBC and ferritin",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Iron deficiency anemia, recheck in 3 months"
+            },
+            {
+              "id": "cbc-iron-recheck-2026-2",
+              "action": "placed",
+              "order": "Ferritin",
               "category": "lab",
               "reason": "Iron deficiency anemia, recheck in 3 months"
             }
@@ -1883,25 +1911,25 @@
         "code": "1115005",
         "display": "docusate sodium 100 MG Oral Capsule",
         "ingredient": "docusate",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "gentamicin 40 MG/ML Injectable Solution": {
         "code": "313996",
         "display": "gentamicin 40 MG/ML Injectable Solution",
         "ingredient": "gentamicin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "oxytocin 10 UNT/ML Injectable Solution": {
         "code": "238013",
         "display": "oxytocin 10 UNT/ML Injectable Solution",
         "ingredient": "oxytocin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vancomycin 1000 MG Injection": {
         "code": "1807513",
         "display": "vancomycin 1000 MG Injection",
         "ingredient": "vancomycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "reports": {
@@ -1910,9 +1938,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin with iron Oral Tablet\""
-    ]
+    }
   }
 }

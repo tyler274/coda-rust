@@ -1,0 +1,321 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002041",
+      "events": [
+        {
+          "id": "2021-04-29a",
+          "kind": "hospital_admission",
+          "start": "2021-04-29T13:50",
+          "end": "2021-05-03T11:30",
+          "service": "Regional hospital — Emergency Department and Medicine",
+          "reason": "Abdominal pain, nausea, vomiting",
+          "conditions": [
+            {"label": "Severe acute pancreatitis, alcohol-induced", "icd10": "K85.20", "action": "diagnosed", "onset": "2021-04-27"},
+            {"label": "Systemic inflammatory response syndrome", "icd10": "R65.10", "action": "diagnosed", "onset": "2021-04-29"}
+          ],
+          "medications": [
+            {"drug": "acetaminophen 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 to 2 tablets by mouth every 6 hours as needed for pain, no more than 3,000 mg per day", "dose": {"value": 500, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "Pancreatitis pain"}
+          ],
+          "vitals": [
+            {"time": "2021-04-29T13:58", "bp": [150, 90], "hr": 110, "rr": 22, "temp_c": 38.3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-04-29T14:20", "results": [{"test": "White Blood Cells", "value": 16.0}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 230}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2021-04-29T14:20", "results": [{"test": "Aspartate Aminotransferase", "value": 120}, {"test": "Alanine Aminotransferase", "value": 100}, {"test": "Alkaline Phosphatase", "value": 90}, {"test": "Bilirubin, Total", "value": 1.2}]},
+            {"panel": null, "collected": "2021-04-29T14:20", "results": [{"test": "Lipase", "value": 600}]},
+            {"panel": null, "collected": "2021-04-29T14:20", "results": [{"test": "Amylase", "loinc": "1798-8", "unit": "U/L", "value": 250, "range": {"low": 25, "high": 125}}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2021-04-29T13:50"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2021-04-29T20:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2021-05-12T10:05", "body": "Regional hospital, inpatient medicine. Admitted 4/29/2021 via the ED, discharged 5/3/2021.\n\nDiagnosis: severe acute pancreatitis, alcohol-induced, on a background of chronic pancreatitis. SIRS on presentation.\n\nPresentation: 46-year-old man, two days of intense upper abdominal pain with nausea and repeated vomiting. In the ED he was loud with staff and repeatedly asked for strong opioids, escalating when they were not given right away. Temp 38.3 C, BP 150/90, HR 110, RR 22. Abdomen distended and diffusely tender without rebound or guarding; bowel sounds hypoactive.\nLabs: WBC 16.0, Hgb 13.2, plt 230. Amylase 250, lipase 600. AST 120, ALT 100, alk phos 90, T bili 1.2.\n\nCourse: aggressive IV fluids, scheduled and as-needed IV analgesia, bowel rest advanced to a low-fat diet by day 3. Monitored on an alcohol withdrawal protocol. Fever and tachycardia settled by day 2.\n\nDischarge medications: hydrochlorothiazide 25 mg daily (home); acetaminophen 500 mg 1-2 tabs every 6 h as needed, max 3 g/day.\nAllergies: NKDA.\nInstructions: no alcohol. Follow up with PCP in 1-2 weeks.\n\nReceived by fax 5/12/2021; scanned. PCP reviewed: he is already readmitted, see 5/10 phone note."}
+          ]
+        },
+        {
+          "id": "2021-05-07a",
+          "kind": "hospital_admission",
+          "start": "2021-05-07T17:30",
+          "end": "2021-06-04T13:00",
+          "service": "Regional hospital — Emergency Department, ICU and Medicine",
+          "reason": "Worsening epigastric pain after recent pancreatitis",
+          "conditions": [
+            {"label": "Infected pancreatic necrosis", "icd10": "K85.22", "action": "diagnosed", "onset": "2021-05-07"},
+            {"label": "Moderate protein-calorie malnutrition", "icd10": "E44.0", "action": "diagnosed", "onset": "2021-05-07"}
+          ],
+          "vitals": [
+            {"time": "2021-05-07T17:38", "bp": [90, 60], "hr": 112, "temp_c": 38.7}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-07T17:55", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2021-05-07T17:55", "results": [{"test": "Lipase", "value": 900}]},
+            {"panel": null, "collected": "2021-05-07T17:55", "results": [{"test": "Amylase", "loinc": "1798-8", "unit": "U/L", "value": 450, "range": {"low": 25, "high": 125}}]},
+            {"panel": null, "collected": "2021-05-07T17:55", "results": [{"test": "C Reactive Protein", "value": 150}]}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2021-05-07T19:40", "text": "Indication: worsening pancreatitis, fever, hypotension.\nTechnique: helical CT of the abdomen and pelvis after IV contrast, portal venous phase.\nFindings: A large portion of the pancreas fails to enhance, consistent with necrosis, with an associated peripancreatic collection containing locules of gas. No free intraperitoneal air. Liver, spleen, adrenals and kidneys without acute abnormality. Gallbladder unremarkable. No bowel obstruction. Bones unremarkable.", "conclusion": "Large area of pancreatic necrosis with gas within the collection, concerning for infected necrosis."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2021-05-07T17:30"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2021-05-07T22:00"},
+            {"procedure": "Percutaneous drainage of pancreas using imaging guidance", "snomed": "708683008", "performed": "2021-05-11T10:30"},
+            {"procedure": "Insertion of nasojejunal tube", "snomed": "235423009", "performed": "2021-05-12T09:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2021-06-18T14:20", "body": "Regional hospital. Admitted 5/7/2021 through the ED; ICU 5/7 to 5/13, then medicine floor. Discharged home 6/4/2021.\n\nDiagnoses: infected pancreatic necrosis complicating severe alcohol-induced acute pancreatitis; moderate protein-calorie malnutrition; chronic pancreatitis; hypertension; alcohol use disorder.\n\nHistory: 46-year-old man discharged from this hospital 5/3 after alcohol-induced pancreatitis, back with ten days of severe epigastric pain boring through to his back, steadily worse despite the analgesic he went home with, plus nausea and several episodes of vomiting, not bloody or bilious.\nOn arrival: febrile 38.7 C, HR 112, BP 90/60. Abdomen distended and tender throughout with decreased bowel sounds.\nLabs: WBC 18.0, Hgb 13.2, plt 250; amylase 450, lipase 900; CRP 150.\nCT with contrast the same evening: large area of pancreatic necrosis with gas in the collection.\n\nCourse: fluid resuscitation and IV meropenem in the ICU. CT-guided percutaneous drain placed in the collection 5/11. Nasojejunal tube 5/12 for enteral feeding; nutrition service diagnosed moderate protein-calorie malnutrition. Transferred to the floor 5/13, fevers resolved, meropenem completed. Oral diet resumed in the final week and the feeding tube removed. Withdrawal protocol without complications.\n\nAt discharge: drain in place, output low. Follow-up with interventional radiology in about 5 weeks with repeat CT. PCP within 1 week.\nMedications: hydrochlorothiazide 25 mg daily. Allergies: NKDA.\nCounseled on complete alcohol abstinence.\n\nCT report attached. Received 6/18/2021 after our records request of 6/9. Scanned, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2021-05-10a",
+          "kind": "telephone",
+          "start": "2021-05-10T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from wife", "author": "RN", "date": "2021-05-10T09:15", "body": "Wife called. Mark was in the hospital last week for pancreatitis, went home, and was readmitted Friday with worse pain. Now in the ICU with an infection in the pancreas and they are talking about putting in a drain. She wanted us to know. Asked her to have him call when he is out so we can see him within a week. No discharge paperwork from the first stay yet. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "PCP note", "author": "PCP", "date": "2021-05-10T12:30", "body": "Noted. Please request records from both admissions."}
+          ]
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "office_visit",
+          "start": "2021-06-09T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, infected pancreatic necrosis",
+          "conditions": [
+            {"label": "Systemic inflammatory response syndrome", "icd10": "R65.10", "action": "resolved"}
+          ],
+          "state": {"bp": [124, 78], "weight_kg": 79.0, "labs": {"Albumin": 3.0, "Aspartate Aminotransferase": 58, "Alanine Aminotransferase": 40, "Gamma Glutamyl Transferase": 96}},
+          "vitals": {"weight_kg": 79.0},
+          "measure": ["bp", "hr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-09T14:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin", "value": 3.0}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-09T14:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2021-06-09T14:05", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-24T11:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-14T11:00"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 12}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2021-06-09T13:20"},
+            {"procedure": "Venipuncture", "performed": "2021-06-09T14:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2021-06-09T13:20", "body": "Here with wife, five days after a four-week stay. Discharge summary not here yet; history from them and his paperwork.\n\nTwo admissions: pancreatitis 4/29 to 5/3, then back 5/7 with infected necrosis, ICU, IV antibiotics, a drain through the left flank, tube feeds for a while. Home 6/4 with the drain still in. Draining a little cloudy fluid, less each day, no fever. Pain much better, mild ache after meals. Eating small low-fat meals, appetite poor. Has lost a lot of weight.\nAlcohol: says none since 4/29. Wife nods.\nCOVID vaccines: two Pfizer doses at the pharmacy in March and April, card shown.\n\nExam: BP lower than before, afebrile. Weight 79 kg, well down from last year. Thin, tired. Drain site clean, dressing dry, no erythema. Abdomen soft, mildly tender epigastrium, no guarding. No edema. Heart and lungs normal.\n\nA/P\n1. Infected pancreatic necrosis with drain: improving. IR follow-up and CT already scheduled per wife. Fever or more pain, call or go in.\n2. Moderate protein-calorie malnutrition: per hospital. Small frequent meals, protein with each, an oral supplement twice a day. CMP, CBC today.\n3. SIRS from April: resolved.\n4. Severe AUD: sober two weeks counting the hospital. Strong encouragement to keep it that way; offered the outpatient program again. He said he would think about it.\n5. HTN: lower with the weight loss, keep HCTZ for now.\nRecords request sent to the hospital for both stays. RTC 2 months."}
+          ]
+        },
+        {
+          "id": "2021-06-11a",
+          "kind": "portal_message",
+          "start": "2021-06-11T10:40",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2021-06-11T10:40", "body": "Mark, your protein level (albumin) is low at 3.0, which fits how much weight you lost in the hospital. Kidney function and salts are fine and your white count is normal now. Liver tests are still a little up. Keep up the small meals and the shakes."}
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "procedure_visit",
+          "start": "2021-07-13T09:30",
+          "service": "Regional hospital — Interventional Radiology",
+          "reason": "Drain check and repeat CT",
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2021-07-13T09:45", "text": "Comparison: 5/7/2021.\nFindings: Percutaneous drain in the peripancreatic collection, which is nearly resolved with only a small residual rim of fluid and no gas. Pancreatic necrosis evolving as expected. No new collection. Liver, spleen and kidneys unremarkable. No bowel obstruction.", "conclusion": "Peripancreatic collection nearly resolved with drain in place."}
+          ],
+          "procedures": [
+            {"procedure": "Removal of drain", "snomed": "241031001", "performed": "2021-07-13T10:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Interventional radiology letter", "author": "interventional radiology", "date": "2021-07-21T15:00", "body": "Regional hospital interventional radiology clinic, visit 7/13/2021.\n\nSeen for follow-up of a percutaneous drain placed 5/11/2021 for infected pancreatic necrosis. Output has been minimal for about ten days. Afebrile, site clean.\nRepeat CT today shows the collection nearly resolved with a small residual rim and no gas.\nThe drain was removed at the bedside without difficulty; dressing applied.\nPlan: no further IR follow-up needed unless symptoms recur. Allergies: NKDA.\n\nThank you for allowing us to participate in his care."}
+          ]
+        },
+        {
+          "id": "2021-08-18a",
+          "kind": "office_visit",
+          "start": "2021-08-18T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up pancreatitis, nutrition, blood pressure",
+          "conditions": [
+            {"label": "Severe acute pancreatitis, alcohol-induced", "icd10": "K85.20", "action": "resolved"},
+            {"label": "Infected pancreatic necrosis", "icd10": "K85.22", "action": "resolved"}
+          ],
+          "state": {"bp": [128, 80], "weight_kg": 80.5, "labs": {"Albumin": 3.4, "Aspartate Aminotransferase": 64, "Gamma Glutamyl Transferase": 108}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-08-18T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin", "value": 3.4}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2021-08-18T10:40", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 12},
+            {"survey": "AUDIT-C total score", "value": 9}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-08-18T10:00"},
+            {"procedure": "Venipuncture", "performed": "2021-08-18T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-08-18T10:00", "body": "Drain came out in July, IR letter reviewed: collection nearly gone. No fevers. Belly fine most days, occasional ache after a heavy meal.\n\nBack at the shop part time. Drinking again: 'just beer, just on weekends' at first, now most nights again by his wife's account at the last call. AUDIT-C 9. PHQ-9 12.\nWeight up a little.\n\nExam: BP at goal. Thin. Healed drain scar left flank. Abdomen soft, nontender. Heart and lungs normal.\n\nA/P\n1. Acute necrotizing pancreatitis episode: resolved, closing both acute problems. Chronic pancreatitis remains.\n2. Malnutrition: slowly improving, keep supplements.\n3. Severe AUD: drinking again after the hospital. Long talk about the pancreas, what another attack could mean. He wants to do it on his own. Program list again.\n4. HTN: fine on HCTZ.\n5. Depression: unchanged, he declines to discuss more today.\nCMP, GGT today. RTC 3-4 months. Flu shot in the fall."},
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2021-08-19T16:20", "body": "Albumin is up to 3.4, good progress. Liver tests about where they were. Kidneys fine."}
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "telephone",
+          "start": "2021-11-10T11:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill and scheduling", "author": "MA", "date": "2021-11-10T11:30", "body": "Pt called for HCTZ refill, out in 3 days. Sent 90 days per protocol. Offered flu shot appointment, he said not this year. Overdue for follow-up, booked for February."}
+          ]
+        },
+        {
+          "id": "2022-02-09a",
+          "kind": "office_visit",
+          "start": "2022-02-09T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2022-04-25a",
+          "kind": "hospital_admission",
+          "start": "2022-04-25T19:15",
+          "end": "2022-05-02T12:00",
+          "service": "Regional hospital — Emergency Department and Medicine",
+          "reason": "Confusion, unsteady gait, double vision",
+          "conditions": [
+            {"label": "Wernicke encephalopathy", "icd10": "E51.2", "action": "diagnosed", "onset": "2022-04-23"}
+          ],
+          "medications": [
+            {"drug_text": "thiamine 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily for 3 months", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Wernicke encephalopathy"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-04-25T19:40", "results": [{"test": "Glucose", "value": 250}, {"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.0}, {"test": "Creatinine", "value": 1.0}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2022-04-25T19:40", "results": [{"test": "Aspartate Aminotransferase", "value": 80}, {"test": "Alanine Aminotransferase", "value": 35}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2022-04-25T19:15"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2022-04-26T01:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2022-05-06T09:50", "body": "Regional hospital. Admitted 4/25/2022 from the ED; discharged 5/2/2022.\n\nPrincipal diagnosis: Wernicke encephalopathy.\nOther: alcohol use disorder, chronic pancreatitis with infected necrosis in 2021, protein-calorie malnutrition, hypertension, depression.\n\nHPI: 47-year-old man brought in for two days of muddled thinking, staggering and seeing double. He had been eating hardly anything for several weeks because of nausea and vomiting.\nED: vital signs within normal limits. Oriented to self only, not to time or place. Nystagmus on lateral gaze, broad-based unsteady gait. No signs of head trauma.\nLabs: glucose 250, Na 140, K 4.0, creatinine 1.0, AST 80, ALT 35. A thiamine level was not sent.\nIV fluids with dextrose were started in the ED, and over the next few hours he became more confused. Wernicke encephalopathy was recognized and high-dose IV thiamine was begun.\n\nCourse: IV thiamine three times daily, then daily. Confusion cleared over several days; diplopia resolved. Gait improved, still a little wide-based at discharge; walking independently. Withdrawal protocol, uneventful. Diet tolerated.\n\nDischarge meds: thiamine 100 mg by mouth daily for 3 months; hydrochlorothiazide 25 mg daily.\nAllergies: NKDA. PCP follow-up 1 week. Advised strongly to stop drinking.\n\nScanned 5/6/2022, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-05-11a",
+          "kind": "office_visit",
+          "start": "2022-05-11T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, Wernicke encephalopathy",
+          "state": {"weight_kg": 74.0, "labs": {"Albumin": 3.2, "Aspartate Aminotransferase": 66, "Alanine Aminotransferase": 38, "Gamma Glutamyl Transferase": 122, "Mean Corpuscular Volume": 99}},
+          "vitals": {"weight_kg": 74.0},
+          "measure": ["bp", "hr", "spo2"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-05-11T11:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin", "value": 3.2}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-11T11:45", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-05-11T11:45", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 14},
+            {"survey": "AUDIT-C total score", "value": 10}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2022-05-11T11:00"},
+            {"procedure": "Venipuncture", "performed": "2022-05-11T11:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2022-05-11T11:00", "body": "Wife drove him. Discharge summary reviewed: Wernicke encephalopathy, IV thiamine, home on oral thiamine 100 daily for three months.\n\nHe remembers little of the first days in hospital. Thinking 'back to normal' per him, wife says he repeats himself a little less each day. Double vision gone. Still a bit wobbly on stairs, using the railing. Eating better, nausea mostly gone. Taking thiamine and HCTZ.\nAlcohol: had a couple of beers since coming home. AUDIT-C 10 for the past year. PHQ-9 14.\n\nExam: BP fine. Weight 74 kg, down again. Alert, oriented x3, conversant, recalls 3/3 at five minutes. No nystagmus today. Gait slightly broad, steady with turns, can tandem a few steps. Heart and lungs normal. Abdomen soft.\n\nA/P\n1. Wernicke encephalopathy: much improved, mild residual gait unsteadiness. Continue thiamine 100 daily to finish the course. No driving until his gait is clearly normal; he agreed.\n2. Severe AUD: drinking again within days. I was direct that the next episode could leave permanent memory damage. He teared up, but declined referral today.\n3. Malnutrition: weight 74 kg, albumin check today.\n4. Depression: PHQ-9 14. He says he is 'disgusted with himself.' Denies thoughts of hurting himself.\n5. HTN: at goal, continue.\nCMP, CBC, GGT. RTC 3 months."},
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2022-05-12T15:10", "body": "Mark, your kidney tests and salts are normal. Albumin is 3.2, a bit lower than last summer, so keep eating protein at every meal. Liver tests are still elevated, about the same pattern as before."}
+          ]
+        },
+        {
+          "id": "2022-08-10a",
+          "kind": "office_visit",
+          "start": "2022-08-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "medications": [
+            {"drug_text": "thiamine 100 MG Oral Tablet", "action": "stop", "reason": "Three-month course complete"}
+          ],
+          "state": {"bp": [128, 82], "weight_kg": 75.2},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 13}
+          ],
+          "orders": [
+            {"id": "fit-2022", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "Colorectal cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-08-10T15:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2022-08-10T15:00", "body": "Three months out from the Wernicke admission. Finished the thiamine bottle this week. Gait normal to him, no falls, back to driving short distances. Memory fine per him. Working most days.\nStill drinking, won't quantify. PHQ-9 13.\n\nExam: BP at goal, weight up slightly. Oriented, conversant. Gait normal, tandem okay, stands steady with eyes closed. Abdomen soft.\n\nA/P\n1. Wernicke: recovered clinically. Thiamine course done, stopping it.\n2. AUD: ongoing, same conversation, same answer.\n3. HTN: at goal.\n4. Depression: moderate, stable.\n5. FIT kit given, last one 2019.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2022-08-29a",
+          "kind": "lab_only",
+          "start": "2022-08-29T08:30",
+          "labs": [
+            {"panel": null, "collected": "2022-08-25T07:00", "resulted": "2022-08-29T08:30", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2022", "action": "done", "date": "2022-08-29T08:30"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "FIT result", "author": "RN", "date": "2022-08-29T10:00", "body": "FIT negative. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2022-11-02a",
+          "kind": "telephone",
+          "start": "2022-11-02T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from sister", "author": "RN", "date": "2022-11-02T10:05", "body": "Patient's sister called. She took him to the ED yesterday: he had gone about a day without drinking, which she said never happens, and started seeing bugs on the walls and hearing voices. ED watched him and sent him home. She is worried and wants him seen. Booked with PCP 11/9. ED records requested."}
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "outside_records",
+          "start": "2022-11-09T13:00",
+          "documents": [
+            {"type": "Outside Records", "title": "ED discharge instructions (patient copy)", "author": "emergency medicine", "date": "2022-11-09T13:00", "body": "Patient-provided printout, regional hospital emergency department, visit 11/1/2022.\n\nYour diagnosis today: alcoholic hallucinosis.\nYour tests: blood counts normal; electrolytes normal; liver tests mildly elevated; alcohol level not detected.\nInstructions: Do not stop drinking suddenly on your own without medical help. Return for confusion, seizures, fever or if hallucinations return. Follow up with your primary care doctor this week.\n\nScanned at check-in. The full ED record has not been received."}
+          ]
+        },
+        {
+          "id": "2022-11-09b",
+          "kind": "office_visit",
+          "start": "2022-11-09T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, hallucinations",
+          "conditions": [
+            {"label": "Alcoholic hallucinosis", "icd10": "F10.251", "action": "diagnosed", "onset": "2022-11-01"}
+          ],
+          "state": {"labs": {"Aspartate Aminotransferase": 70, "Alanine Aminotransferase": 45}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-09T14:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2022-11-09T14:00", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 13},
+            {"survey": "AUDIT-C total score", "value": 10}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-11-09T14:05"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-11-09T13:20"},
+            {"procedure": "Immunization administration", "performed": "2022-11-09T14:05"},
+            {"procedure": "Venipuncture", "performed": "2022-11-09T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2022-11-09T13:20", "body": "48M here after an ED visit 11/1, brought by his sister then. Has the ED instruction sheet only (scanned): alcoholic hallucinosis, counts and lytes normal, LFTs mildly up, alcohol not detected.\n\nHis story: tried to go a day without drinking, by evening saw bugs crawling on the walls and heard people talking in the next room when no one was there. Scared him. Knew where he was the whole time. Started drinking again the next day and the visions stopped. No seizures. No hallucinations since.\nAUDIT-C 10. PHQ-9 13, denies thoughts of self-harm.\n\nExam: BP okay. Calm, oriented x3, slight fine tremor of the hands. No nystagmus. Gait normal. Abdomen soft.\n\nA/P\n1. Alcoholic hallucinosis: happened when he stopped abruptly. Explained that stopping safely needs medical supervision and that the next time could be worse. Offered to help him get into a detox and program. He wants to talk it over with his wife.\n2. Severe AUD: as above.\n3. ALD: CMP and GGT today.\n4. HTN, depression: stable.\nFlu shot today. ED record requested again. RTC 3 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

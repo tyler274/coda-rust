@@ -1,11 +1,7 @@
 {
   "unit": "unit-2728",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002728/2023-04-17a: procedure order \"Screening colonoscopy\" names no one catalog lab, panel, study or procedure",
-    "MRN00002728/2024-02-12a: lab order \"Stool studies: C. difficile, culture, ova and parasites\" names no one catalog lab, panel, study or procedure",
-    "MRN00002728/2025-09-18a: procedure order \"Upper endoscopy\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002728",
@@ -2391,7 +2387,7 @@
             {
               "id": "colo-2023",
               "action": "placed",
-              "order": "Screening colonoscopy",
+              "order": "Colonoscopy, screening, average risk",
               "category": "procedure",
               "to": "Gastroenterology",
               "reason": "average-risk colorectal cancer screening, age 45"
@@ -2881,8 +2877,25 @@
             {
               "id": "stool-2024",
               "action": "placed",
-              "order": "Stool studies: C. difficile, culture, ova and parasites",
+              "order": "C. difficile toxin B, stool",
               "category": "lab",
+              "loinc": "10895-1",
+              "reason": "chronic watery diarrhea"
+            },
+            {
+              "id": "stool-2024-2",
+              "action": "placed",
+              "order": "Stool culture",
+              "category": "lab",
+              "loinc": "625-4",
+              "reason": "chronic watery diarrhea"
+            },
+            {
+              "id": "stool-2024-3",
+              "action": "placed",
+              "order": "Ova and parasites, stool",
+              "category": "lab",
+              "loinc": "10701-1",
               "reason": "chronic watery diarrhea"
             },
             {
@@ -2948,6 +2961,16 @@
           "orders": [
             {
               "id": "stool-2024",
+              "action": "done",
+              "date": "2024-02-15T12:00"
+            },
+            {
+              "id": "stool-2024-2",
+              "action": "done",
+              "date": "2024-02-15T12:00"
+            },
+            {
+              "id": "stool-2024-3",
               "action": "done",
               "date": "2024-02-15T12:00"
             }
@@ -3045,6 +3068,10 @@
                   "test": "pH of Venous blood",
                   "loinc": "2746-6",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.32,
+                    "high": 7.41
+                  },
                   "value": 7.3
                 }
               ]
@@ -3541,6 +3568,9 @@
                   "test": "Vasoactive intestinal peptide",
                   "loinc": "3125-2",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 75
+                  },
                   "value": 200
                 },
                 {
@@ -3933,6 +3963,9 @@
                   "test": "Vasoactive intestinal peptide",
                   "loinc": "3125-2",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 75
+                  },
                   "value": 38
                 }
               ]
@@ -4423,6 +4456,7 @@
                   "test": "Chloride in Urine",
                   "loinc": "2078-4",
                   "unit": "meq/L",
+                  "range": {},
                   "value": 10
                 }
               ]
@@ -4547,6 +4581,7 @@
               "order": "Upper endoscopy",
               "category": "procedure",
               "to": "Gastroenterology",
+              "snomed": "76009000",
               "reason": "epigastric pain and vomiting, history of peptic ulcer disease"
             }
           ],
@@ -5484,7 +5519,7 @@
         "code": "198037",
         "display": "nimodipine 30 MG Oral Capsule",
         "ingredient": "nimodipine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "octreotide 20 MG Injectable Suspension": {
         "code": "898589",
@@ -5503,6 +5538,7 @@
         "code": "2078-4",
         "display": "Chloride [Moles/volume] in Urine",
         "unit": "meq/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Clostridioides difficile toxin B gene": {
@@ -5525,13 +5561,44 @@
         "code": "3125-2",
         "display": "Vasoactive intestinal peptide [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Venous blood": {
         "code": "2746-6",
         "display": "pH of Venous blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.32,
+          "high": 7.41
+        },
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "C. difficile toxin B, stool": {
+        "code": "10895-1",
+        "display": "Clostridioides difficile toxin B [Presence] in Stool",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ova and parasites, stool": {
+        "code": "10701-1",
+        "display": "Ova and parasites identified in Stool by Concentration",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Stool culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Upper endoscopy": {
+        "code": "76009000",
+        "display": "Esophagogastroduodenoscopy",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

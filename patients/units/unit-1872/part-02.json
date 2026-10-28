@@ -61,7 +61,8 @@
               "frequency": "DAILY",
               "route": "Oral",
               "course": "chronic",
-              "reason": "pregnancy"
+              "reason": "pregnancy",
+              "uncoded": true
             }
           ],
           "state": {
@@ -461,7 +462,11 @@
                   "test": "Bilirubin, indirect",
                   "loinc": "1971-1",
                   "unit": "mg/dL",
-                  "value": 3.0
+                  "value": 3.0,
+                  "range": {
+                    "low": 0.2,
+                    "high": 0.7
+                  }
                 }
               ]
             },
@@ -473,7 +478,11 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
-                  "value": 486
+                  "value": 486,
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  }
                 }
               ]
             },
@@ -485,7 +494,11 @@
                   "test": "Haptoglobin",
                   "loinc": "4542-7",
                   "unit": "mg/dL",
-                  "value": 8
+                  "value": 8,
+                  "range": {
+                    "low": 83,
+                    "high": 267
+                  }
                 }
               ]
             },

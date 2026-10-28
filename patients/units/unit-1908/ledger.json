@@ -1,0 +1,2366 @@
+{
+  "unit": "unit-1908",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001908",
+      "given": "Lisa",
+      "family": "O'Brien",
+      "birth_date": "1990-03-15",
+      "address_line": "37 Quarry Hill Terrace, Apt 2",
+      "phone": "+1-774-555-0153",
+      "email": "lisa.obrien@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher with lifelong atopy (eczema, allergic rhinitis) and recurrent HSV-1 cold sores, who had intraoperative anaphylaxis as a child and again at a 2025 nevus excision, later traced to latex. HSV keratitis of the right eye in October 2025 healed without sequelae.",
+      "events": [
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T15:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "date": "2022-08-16T15:40",
+              "author": "front desk",
+              "body": "Caller is a teacher, 32, moving her care here from her old primary office; wants to get set up before the school year gets busy. Explained the membership and that insurance still covers labs and specialists. She is fine with that. New patient appointment scheduled for 9/8 at 8:00 AM. Records release form emailed for her prior office. Asked her to bring all medication bottles, including creams and nasal spray."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "establish_care",
+          "start": "2022-09-08T08:00",
+          "end": "2022-09-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Atopic dermatitis",
+              "action": "diagnosed",
+              "onset": "1992-06-01",
+              "note": "since early childhood; moderate, well controlled with topical steroid"
+            },
+            {
+              "label": "Allergic rhinitis",
+              "action": "diagnosed",
+              "onset": "2004-04-01",
+              "note": "seasonal (tree pollen) and perennial (dust mite)"
+            },
+            {
+              "label": "Recurrent herpes simplex labialis",
+              "action": "diagnosed",
+              "onset": "2008-01-01",
+              "note": "two to three cold sores a year, episodic valacyclovir",
+              "icd10": "B00.1"
+            },
+            {
+              "label": "Personal history of anaphylaxis",
+              "action": "diagnosed",
+              "onset": "1998-07-01",
+              "note": "intraoperative reaction during tonsillectomy and adenoidectomy at age 8; trigger never identified",
+              "icd10": "Z87.892"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "mometasone furoate 0.001 MG/MG Topical Ointment",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected areas twice daily as needed for eczema",
+              "frequency": "BID PRN",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "atopic dermatitis"
+            },
+            {
+              "drug": "cetirizine hydrochloride 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth once daily as needed for allergy symptoms",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "allergic rhinitis"
+            },
+            {
+              "drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray",
+              "action": "historical",
+              "sig": "1 spray in each nostril once daily",
+              "frequency": "DAILY",
+              "route": "Nasal",
+              "course": "chronic",
+              "reason": "allergic rhinitis"
+            },
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 g by mouth at the first sign of a cold sore, then 1 g 12 hours later",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "recurrent herpes labialis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Dust mites",
+              "snomed": "260147004",
+              "category": "environment",
+              "reaction": "Itching",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Tree pollen",
+              "snomed": "782576004",
+              "category": "environment",
+              "reaction": "Itching",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 48,
+            "spo2": 98,
+            "weight_kg": 63.5,
+            "height_cm": 163.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, two drinks a month or fewer"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Tonsillectomy and adenoidectomy",
+              "snomed": "28913000",
+              "performed": "1998-07-01T09:00"
+            },
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-08T08:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "est-cbc",
+              "action": "placed",
+              "order": "CBC with Differential",
+              "category": "lab"
+            },
+            {
+              "id": "est-cmp",
+              "action": "placed",
+              "order": "Comprehensive Metabolic Panel (CMP)",
+              "category": "lab"
+            },
+            {
+              "id": "est-lipid",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab"
+            },
+            {
+              "id": "est-hiv",
+              "action": "placed",
+              "order": "HIV-1/2 Antigen and Antibody",
+              "category": "lab"
+            },
+            {
+              "id": "est-hcv",
+              "action": "placed",
+              "order": "Hepatitis C Antibody",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-08T09:10",
+              "author": "PCP",
+              "body": "NEW PATIENT, ESTABLISHING CARE\n\n32-year-old woman, elementary school teacher, transferring from her previous primary office. No acute complaints today. Wants one place to call when her allergies or skin act up.\n\nHISTORY\nEczema since she was a toddler. These days it is mostly hands and the creases of the elbows in winter, and the mometasone ointment keeps it quiet; she uses it a few days at a time, not continuously. Moisturizes with a fragrance-free cream.\nAllergies: itchy watery eyes and congestion every spring with the trees, plus a year-round stuffy nose she was told was dust mite. Daily fluticasone, cetirizine on bad days.\nCold sores since her teens, roughly two or three a year. Keeps valacyclovir at home and starts it at the first tingle.\nAt 8 she had her tonsils and adenoids out and had a severe allergic reaction in the OR. Her mother was told it was anaphylaxis but no one ever told them what caused it. She has never had testing. No reactions to any medicine since that she knows of.\n\nPSH: T&A age 8 (reaction as above).\nMeds: mometasone 0.1% ointment BID PRN; cetirizine 10 mg daily PRN; fluticasone nasal 1 spray each side daily; valacyclovir 1 g at prodrome then 1 g 12 h later.\nAllergies: dust mite and tree pollen (rhinitis). No known drug allergies.\nFamily: mother asthma and hay fever; father eczema; younger sister also gets cold sores.\nSocial: teaches elementary school. Never smoked. A glass of wine once or twice a month. Walks most evenings.\n\nROS: negative except as above. No wheeze or asthma symptoms of her own.\n\nEXAM\nWell appearing. HEENT: TMs clear, mild pale nasal turbinates, oropharynx clear, lips without lesions. Neck supple, no nodes, thyroid normal. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. Skin: a few faint dry patches at both antecubital fossae, no excoriation or weeping. No edema.\n\nASSESSMENT AND PLAN\n1. Atopic dermatitis, quiet right now. Continue mometasone in short bursts, daily emollient.\n2. Allergic rhinitis, perennial with spring flares. Continue fluticasone daily and cetirizine as needed.\n3. Recurrent herpes labialis. Episodic valacyclovir, refills on file.\n4. History of anaphylaxis during childhood surgery, cause unknown. Advised she tell any surgeon or dentist about it before a procedure.\n5. Health maintenance: baseline CBC, CMP, lipids; one-time HIV and hepatitis C screening, which she agrees to. Requesting records from her prior office, including her last Pap and immunizations. PHQ-2 negative.\nLab draw Monday morning. Follow up for a physical next year or sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.8,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "lab_only",
+          "start": "2022-09-12T07:30",
+          "reason": "screening labs",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-12T07:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-12T07:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 119
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-12T07:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 189
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-12T07:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-12T07:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-12T07:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "est-cbc",
+              "action": "done",
+              "date": "2022-09-12T07:35"
+            },
+            {
+              "id": "est-cmp",
+              "action": "done",
+              "date": "2022-09-12T07:35"
+            },
+            {
+              "id": "est-lipid",
+              "action": "done",
+              "date": "2022-09-12T07:35"
+            },
+            {
+              "id": "est-hiv",
+              "action": "done",
+              "date": "2022-09-12T07:35"
+            },
+            {
+              "id": "est-hcv",
+              "action": "done",
+              "date": "2022-09-12T07:35"
+            }
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T17:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Recent Labs",
+              "date": "2022-09-14T17:05",
+              "author": "PCP",
+              "body": "Hi Lisa, everything from Monday came back fine: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to change. Nice meeting you last week."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "outside_records",
+          "start": "2022-10-04T11:20",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2022-10-04T11:20",
+              "author": "MA",
+              "body": "Records received by fax from the patient's previous primary care office, 41 pages, 2016 to 2022. Abstracted:\n- Cervical cytology with HPV co-test 06/2021: negative for intraepithelial lesion, HPV negative. Next due 2026.\n- Tdap 03/2019.\n- Problem list: eczema, allergic rhinitis, recurrent cold sores, remote anaphylaxis during childhood surgery.\n- Medications match what she brought to her first visit.\n- Allergies listed as dust mite and tree pollen.\nNo childhood surgical records in the packet. Placed in chart for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-13T15:50",
+              "author": "RN",
+              "body": "Came after school for vaccines. No fever or illness today. Screening questions negative; history of childhood OR reaction noted, no prior vaccine reactions. Influenza vaccine left deltoid, bivalent COVID booster right deltoid. Observed 15 minutes, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "pharmacy",
+          "start": "2022-12-06T09:15",
+          "reason": "refill request",
+          "medications": [
+            {
+              "drug_text": "mometasone furoate 0.001 MG/MG Topical Ointment",
+              "action": "stop",
+              "reason": "replaced by practice prescription"
+            },
+            {
+              "drug_text": "mometasone furoate 0.001 MG/MG Topical Ointment",
+              "action": "start",
+              "sig": "Apply a thin layer to affected areas twice daily as needed for eczema flares, up to 2 weeks at a time",
+              "frequency": "BID PRN",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "atopic dermatitis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2022-12-06T09:15",
+              "author": "MA",
+              "body": "Pharmacy request for mometasone 0.1% ointment, 45 g; old prescriber is her prior office. Routed to PCP. Approved, 45 g with 2 refills, transferred to our prescriber."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-26a",
+          "kind": "office_visit",
+          "start": "2023-01-26T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "eczema flare",
+          "vitals": {
+            "bp": [
+              121,
+              79
+            ],
+            "hr": 69,
+            "weight_kg": 63.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-01-26T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-26T16:20",
+              "author": "PCP",
+              "body": "S: Hands cracking and itchy since the holidays, worse with all the handwashing in the classroom and the dry heat at school. Elbow creases flaring too. Using the mometasone most nights for about a week, which helps, but it comes back when she stops. No oozing, no crusting, no fever. Sleep a little broken by the itch.\nO: Vitals as charted. Dorsal hands with dry, lichenified erythematous plaques and a few fissures over the knuckles; both antecubital fossae with mild erythema and scale. No vesicles, no honey crust, no pustules.\nA: Atopic dermatitis, winter flare, hands and flexures. No sign of infection.\nP: Mometasone twice daily for two weeks, then weekends only for a few weeks. Heavy plain ointment after every wash and cotton gloves over it at night. Keep a fragrance-free hand cream at her desk. If the hands are not better in three weeks, message me and we can talk about dermatology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "portal_message",
+          "start": "2023-04-20T19:22",
+          "reason": "allergy season refills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergy Refills",
+              "date": "2023-04-20T19:22",
+              "author": "patient",
+              "body": "Hi, the trees are out and I am a mess. Could you send refills of the nasal spray and the cetirizine? My hands are fine now, the gloves trick worked. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergy Refills",
+              "date": "2023-04-21T07:48",
+              "author": "PCP",
+              "body": "Done, both sent with a year of refills. During the worst of the pollen it is fine to take the cetirizine every day rather than as needed. Glad the hands settled."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2023-06-12T12:10",
+              "author": "front desk",
+              "body": "Patient called to cancel tomorrow's 4:00. End-of-year events at school, and she says she feels well. Will book her physical for September."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "annual_physical",
+          "start": "2023-09-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              126,
+              72
+            ],
+            "hr": 54,
+            "spo2": 97,
+            "weight_kg": 62.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-09-21T08:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-21T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-21T08:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 188
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-21T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-21T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-21T08:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-21T08:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-21T08:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-21T08:45",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT\n\nInterval: good year. One mild cold sore in the spring that she caught early with valacyclovir. Hands stayed decent since the winter flare. Allergies typical for the spring, controlled on the spray. No ER visits, no new meds.\n\nCurrent meds: mometasone 0.1% ointment PRN, cetirizine 10 mg PRN, fluticasone nasal daily, valacyclovir episodic.\nAllergies: dust mite, tree pollen. NKDA.\nSocial: back in the classroom. Never smoker, rare alcohol. Walking most evenings.\n\nROS negative in detail. Periods regular.\n\nExam: Vitals as charted. Pleasant, well. HEENT normal, lips clear. Neck without adenopathy or thyromegaly. Lungs clear. Heart RRR, no murmur. Abdomen benign. Skin with faint dryness of the knuckles only. Neuro grossly intact. Mood bright.\n\nA/P:\n- Adult preventive care: PHQ-2 0. Pap/HPV co-test was negative in 2021; next one due 2026. Tdap 2019, current. Flu and updated COVID given today.\n- Atopic dermatitis, controlled. Same plan; start the night-glove routine early this winter.\n- Allergic rhinitis, stable.\n- Recurrent cold sores, infrequent. Valacyclovir refilled.\n- Remote anaphylaxis, cause unknown. Reminded her to flag it before any procedure.\n- CBC, CMP and lipids drawn today. Physical again in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "portal_message",
+          "start": "2023-09-25T12:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "date": "2023-09-25T12:30",
+              "author": "PCP",
+              "body": "Lisa, labs from Thursday's physical were all normal, cholesterol included. See you next year, or anytime you need us."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "portal_message",
+          "start": "2024-02-06T06:52",
+          "reason": "cold sore, valacyclovir refill",
+          "medications": [
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "stop",
+              "reason": "replaced by practice prescription"
+            },
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 g by mouth at the first sign of a cold sore, then 1 g 12 hours later",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "recurrent herpes labialis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cold Sore Starting",
+              "date": "2024-02-06T06:52",
+              "author": "patient",
+              "body": "Good morning. I have the tingle on my upper lip and just realized my valacyclovir bottle is empty. Could you send more to the pharmacy near school? I can pick up at lunch."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cold Sore Starting",
+              "date": "2024-02-06T07:31",
+              "author": "PCP",
+              "body": "Sent, 1 g tablets, enough for a few episodes. Take the first dose as soon as you have it and the second 12 hours later. Let me know if it spreads or you get sores inside the mouth."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-25a",
+          "kind": "office_visit",
+          "start": "2024-04-25T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spring allergies",
+          "vitals": {
+            "bp": [
+              136,
+              92
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 61.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-04-25T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-25T16:40",
+              "author": "PCP",
+              "body": "S: Two weeks of sneezing, itchy eyes and a blocked nose, the usual tree season but heavier this year. Using fluticasone most days, not every day. Cetirizine helps the itch. No fever, no facial pain, no cough or wheeze, no discolored drainage.\nO: Vitals as charted. Conjunctivae mildly injected, no discharge. Nasal mucosa pale and boggy, clear rhinorrhea. Sinuses nontender. Pharynx clear. Lungs clear, no wheeze.\nA: Allergic rhinitis, seasonal flare on a perennial background.\nP: Fluticasone every day through June, aimed toward the outer wall of each nostril. Cetirizine daily for now. Saline rinse after outdoor recess duty. Return if facial pain or fever."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "annual_physical",
+          "start": "2024-08-29T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              138,
+              80
+            ],
+            "hr": 65,
+            "spo2": 98,
+            "weight_kg": 62.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-29T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-29T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-29T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-29T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-nevus",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "mole on upper back she would like evaluated"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-29T08:50",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT\n\nLast week of summer before teachers report. Feels well. Two cold sores this year, both handled at home. Hands held up last winter. Spring allergies settled after the April visit.\n\nNew concern: a mole on her upper back that her sister noticed at the beach. She cannot see it herself and does not know if it has been there long. Would like a skin doctor to look at it and do a full skin check.\n\nMeds: mometasone ointment PRN, cetirizine PRN, fluticasone nasal daily, valacyclovir episodic.\nAllergies: dust mite, tree pollen. NKDA.\nSocial: unchanged. Never smoker.\n\nExam: Vitals as charted. Well appearing. HEENT clear, lips without lesions. Neck supple. Lungs clear. Heart regular. Abdomen soft. Skin: on the left upper back a single brown papule, about 6 mm, round, even color; no other notable lesions on the trunk or limbs. Faint dryness of the elbow creases.\n\nA/P:\n- Preventive: PHQ-2 0. CMP and lipids today. Pap due 2026. Flu and COVID at a nurse visit when this year's vaccines arrive.\n- Nevus, left upper back: referred to dermatology for evaluation and a full skin exam, at her request.\n- Atopic dermatitis and allergic rhinitis: stable on current regimen.\n- Herpes labialis: episodic valacyclovir.\n- History of childhood anaphylaxis during surgery: if dermatology plans to remove anything, she should tell them about it ahead of time.\nPhysical again next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "portal_message",
+          "start": "2024-09-03T16:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "date": "2024-09-03T16:15",
+              "author": "PCP",
+              "body": "Chemistry panel and cholesterol from last Thursday are normal. The dermatology referral is in; their office will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "nurse_visit",
+          "start": "2024-10-03T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-03T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-03T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-03T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-03T15:45",
+              "author": "RN",
+              "body": "Flu (left arm) and this season's COVID (right arm). Feels well, no fever. Tolerated both, waited 15 minutes without problems. Next dose of either due next fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "office_visit",
+          "start": "2024-10-21T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "painful sores on lips and in mouth",
+          "conditions": [
+            {
+              "label": "Herpes simplex virus infection",
+              "action": "diagnosed",
+              "onset": "2024-10-18",
+              "note": "orolabial, lip vermilion and buccal mucosa; HSV-1 by serology",
+              "icd10": "B00.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "valacyclovir 1000 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 g by mouth twice daily for 7 days",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "herpes simplex, lips and mouth"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              67
+            ],
+            "hr": 46,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 62.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-21T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-21T16:30",
+              "resulted": "2024-10-24T10:05",
+              "results": [
+                {
+                  "test": "Herpes simplex virus 1 IgG Ab [Presence] in Serum",
+                  "loinc": "17850-9",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Herpes simplex virus 2 IgG Ab [Presence] in Serum",
+                  "loinc": "17851-7",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-21T15:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-21T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "date": "2024-10-21T16:35",
+              "author": "PCP",
+              "body": "S: Texted this morning; seen same day. Three days of sore blisters on her lips and a few inside her cheek. Similar to past episodes. Eating is uncomfortable. She did not feel the usual warning tingle, so she never took her valacyclovir. Over the years she has had these two or three times a year, though this past year fewer. No fever, no eye symptoms, no genital lesions. She denies any recent sexual activity or new partner. Her dermatology appointment for the back mole is coming up; she wants to make sure this clears first.\nO: Vitals as charted, afebrile. Clusters of small vesicles on a red base along the vermilion of the upper and lower lip, and a few of the same on the right buccal mucosa. No gingival involvement. No cervical or submandibular nodes. Eyes clear. Remainder of the exam unremarkable.\nA: Herpes simplex, orolabial with buccal lesions, in a patient with a long history of cold sores. Checking type-specific serology to confirm the type, and a CBC.\nP: Valacyclovir 1 g twice daily for 7 days. Mouth care: salt-water rinses, soft cool foods. Stay home from school until lesions crust if she can. CBC and HSV-1/HSV-2 IgG today. Call if eye pain, redness or blurred vision, or if not improving in a week."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T13:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "HSV Blood Test Results",
+              "date": "2024-10-24T13:10",
+              "author": "PCP",
+              "body": "Hi Lisa, blood count is normal. Your antibody test shows HSV type 1, the usual cold-sore virus, and no type 2. That fits with your history and with what we saw on Monday. Keep going with the full week of valacyclovir. How is your mouth feeling?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: HSV Blood Test Results",
+              "date": "2024-10-24T19:40",
+              "author": "patient",
+              "body": "Much better, the inside ones are almost gone and the lip is crusting. Thank you for squeezing me in."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "portal_message",
+          "start": "2024-12-03T18:05",
+          "reason": "dermatology update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mole on My Back",
+              "date": "2024-12-03T18:05",
+              "author": "patient",
+              "body": "Quick update: saw the dermatologist last week. They want to cut the mole out to be safe and scheduled it for January 16, after break and once the cold sore stuff is well behind me. I told them about my reaction as a kid. Do you need anything from me before then?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mole on My Back",
+              "date": "2024-12-03T20:12",
+              "author": "PCP",
+              "body": "Thanks for the update. Nothing needed from us. I have not received their note yet; I'll keep an eye out. Good that you told them about the childhood reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T07:15",
+          "reason": "reaction during procedure",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bad Reaction Yesterday",
+              "date": "2025-01-17T07:15",
+              "author": "patient",
+              "body": "I wanted you to know: when they were finishing taking the mole off my back yesterday, I suddenly felt my throat closing, my face swelled up and I broke out in hives everywhere. They gave me a shot and IV fluids and sent me by ambulance to the ER. They watched me for hours and let me go home last night with an EpiPen. I feel washed out but OK. I am taking today off. It felt like what my mom described from when I was 8, but worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bad Reaction Yesterday",
+              "date": "2025-01-17T07:52",
+              "author": "PCP",
+              "body": "I am so sorry, that sounds frightening. Glad you are home. Any return of throat tightness, trouble breathing or swelling: use the auto-injector and call 911. I'd like to see you next week; the front desk will call with a time. I'll request the records from the procedure and the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "office_visit",
+          "start": "2025-01-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after anaphylaxis",
+          "conditions": [
+            {
+              "label": "Herpes simplex virus infection",
+              "action": "resolved",
+              "note": "October lesions healed",
+              "icd10": "B00.9"
+            },
+            {
+              "label": "Anaphylaxis",
+              "action": "diagnosed",
+              "onset": "2025-01-16",
+              "note": "during excision of back nevus at an outside procedure suite; trigger not yet identified",
+              "icd10": "T78.2XXA"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector",
+              "action": "historical",
+              "sig": "Inject 0.3 mg into the outer thigh once for anaphylaxis; may repeat once after 5 to 15 minutes; call 911",
+              "dose": {
+                "value": 0.3,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "anaphylaxis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              77
+            ],
+            "hr": 54,
+            "spo2": 97,
+            "weight_kg": 63.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-23T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-nevus",
+              "action": "done",
+              "date": "2025-01-16T13:00"
+            },
+            {
+              "id": "allergy-ref",
+              "action": "placed",
+              "order": "Allergy and Immunology referral",
+              "category": "referral",
+              "to": "Allergy and Immunology",
+              "reason": "intraoperative anaphylaxis twice, trigger unknown"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-23T16:20",
+              "author": "PCP",
+              "body": "S: Follow-up one week after a reaction during excision of the nevus on her left upper back at an outside dermatology procedure suite on 1/16. By her account, near the end of the procedure she felt her throat tighten, her face and eyes swelled, she broke out in itchy hives everywhere and could not get a full breath. The team gave an injection in her thigh and started an IV, and she went by ambulance to the ER, was watched for several hours and sent home with an epinephrine auto-injector. She was told the reaction was anaphylaxis. Nobody has told her what caused it. Back at work since Monday. No symptoms since. The excision site is healing; sutures out next week at dermatology.\nThis is her second reaction during a procedure; the first was at age 8. She remembers no common thread except being in an operating room.\nWe have not yet received the procedure or ER records; requested again today. Pharmacy confirms an epinephrine 0.3 mg auto-injector two-pack filled 1/16 from the ER prescriber.\nO: Vitals as charted. Comfortable. No facial or lip swelling, no urticaria. Lungs clear, no wheeze. Left upper back: healing linear incision with sutures, no erythema or drainage. Lips without lesions.\nA: 1. Anaphylaxis during a skin procedure, resolved. Two perioperative episodes now; a procedure-related trigger needs to be found before she has anything else done.\n2. Herpes labialis from October healed.\nP: Referral to allergy and immunology. Reviewed auto-injector use with her trainer pen; carry two at all times, school nurse to be told. No elective procedures or dental work beyond cleanings until the allergy evaluation is done. Will follow the pathology from dermatology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "outside_records",
+          "start": "2025-02-20T10:30",
+          "reason": "records of 1/16 reaction",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Allergy and Immunology Event Record",
+              "date": "2025-02-20T10:30",
+              "author": "allergy and immunology",
+              "body": "OUTSIDE HOSPITAL ALLERGY AND IMMUNOLOGY SERVICE, PROCEDURE AREA RECORD\nDate of event: 01/16/2025\nPatient: Lisa O'Brien, 34 F\n\nCalled emergently to the outpatient procedure suite. Patient under local anesthesia for excisional biopsy of a nevus on the left upper back, wound being closed, when she abruptly reported her throat was closing, then developed facial swelling, trouble breathing and a generalized itchy rash. Reports a similar but milder reaction during surgery in childhood.\nAllergies on file: dust mite (rhinitis), tree pollen (rhinitis).\nHome meds: mometasone 0.1% ointment PRN, cetirizine 10 mg PRN, fluticasone nasal daily, valacyclovir episodic for cold sores (recently completed a course for herpes labialis).\nFamily: atopy in both parents.\nVitals on arrival: BP 85/50, HR 120, RR 28, SpO2 88% on room air.\nExam: bilateral periorbital edema, diffuse urticaria over trunk and limbs, expiratory wheeze both lungs. No JVD. No peripheral edema.\nTreatment: epinephrine 0.5 mg IM, lateral thigh. Peripheral IV placed; normal saline bolus started. Transferred to the emergency department for observation.\nImpression: anaphylaxis, intraoperative, during minor skin procedure. Agent unclear; exposures during the case included local anesthetic, skin prep, gloves and dressings.\nRecommendations: observe in ED; discharge with epinephrine auto-injector 0.3 mg; outpatient allergy evaluation; until then, flag chart for anaphylaxis during procedures.\nNo emergency department note was included in this packet."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "outside_records",
+          "start": "2025-03-18T14:00",
+          "reason": "allergy consult letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-04T10:45",
+              "resulted": "2025-03-07T09:00",
+              "results": [
+                {
+                  "test": "Latex IgE Ab [Units/volume] in Serum",
+                  "loinc": "6158-0",
+                  "unit": "k[IU]/L",
+                  "range": {
+                    "high": 0.35
+                  },
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-ref",
+              "action": "done",
+              "date": "2025-03-04T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Allergy and Immunology Consultation",
+              "date": "2025-03-18T14:00",
+              "author": "allergy and immunology",
+              "body": "OUTSIDE ALLERGY AND IMMUNOLOGY GROUP\nDate of visit: 03/04/2025\nRe: Lisa O'Brien, DOB 03/15/1990\n\nThank you for referring Ms. O'Brien, a 34-year-old teacher with atopic dermatitis, allergic rhinitis and recurrent HSV-1 labialis, after anaphylaxis on 1/16/2025 during excision of a back nevus. She also reacted during a tonsillectomy and adenoidectomy at age 8. Between those, she has had dental cleanings and routine care without trouble.\n\nCurrent allergies: dust mite and tree pollen (rhinitis).\nMeds: mometasone ointment PRN, cetirizine PRN (held 5 days before visit), fluticasone nasal, valacyclovir episodic, epinephrine auto-injector.\nExam today: normal, no urticaria, lungs clear.\n\nTesting: latex-specific IgE 5.2 kU/L, positive.\n\nImpression: IgE-mediated latex allergy with anaphylaxis. Both intraoperative reactions are best explained by latex exposure (gloves, drains, catheters). Local anesthetic allergy is unlikely and was not pursued.\n\nRecommendations:\n1. Strict latex avoidance. Every surgical, dental and procedural visit must be latex-free; she has a letter to give to all providers.\n2. Carry two epinephrine auto-injectors at all times, including at school.\n3. Medical alert bracelet recommended.\n4. Follow up here as needed.\n\nAllergies updated in our records: LATEX (anaphylaxis), dust mite, tree pollen."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "outside_records",
+          "start": "2025-03-26T09:45",
+          "reason": "pathology report",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-01-16T12:30",
+              "text": "Specimen: skin, left upper back, excision. Gross: ellipse of skin 1.4 x 0.6 cm, with a centrally placed 0.6 cm brown papule. Microscopic: nests of banal melanocytes at the dermoepidermal junction and within the dermis, maturing with depth. No cytologic atypia, no mitoses, no pagetoid spread. Margins free of the lesion.",
+              "conclusion": "Benign compound melanocytic nevus, margins clear.",
+              "issued": "2025-01-21T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatopathology Report Received",
+              "date": "2025-03-26T09:45",
+              "author": "MA",
+              "body": "Pathology report for the 01/16/2025 left upper back excision received by fax after a second request to the dermatology office. Report dated 01/21/2025. Scanned for PCP review."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pathology Reviewed",
+              "date": "2025-03-26T12:15",
+              "author": "PCP",
+              "body": "Benign compound nevus, completely removed. Messaged patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "office_visit",
+          "start": "2025-04-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spring allergies, allergy consult follow-up",
+          "conditions": [
+            {
+              "label": "Anaphylaxis",
+              "action": "resolved",
+              "note": "January episode; trigger latex",
+              "icd10": "T78.2XXA"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Latex",
+              "reaction": "Anaphylaxis",
+              "severity": "severe",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              70
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 64.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-17T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-17T16:35",
+              "author": "PCP",
+              "body": "S: Tree pollen season again: sneezing, itchy eyes, congestion for ten days. Using fluticasone daily and cetirizine daily this time, about 70% better. Saw allergy in early March; their letter came last month. Latex allergy confirmed and both OR reactions blamed on it. She has her latex-free letter, wears a medical alert bracelet now and keeps two auto-injectors in her school bag. She is relieved to have an answer. Pathology from the back was benign.\nO: Vitals as charted. Pale boggy turbinates, clear drainage. Mild conjunctival injection. Lungs clear. Back scar well healed.\nA: 1. Allergic rhinitis, seasonal flare, partly controlled.\n2. Latex allergy with anaphylaxis, now identified; added to the allergy list today. January's anaphylaxis episode closed; history of anaphylaxis stays on the problem list.\nP: Add saline rinses; continue daily fluticasone and cetirizine through the season. Chart flagged latex-free for any procedure here, including immunizations and blood draws. Auto-injector renewals through us going forward."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "portal_message",
+          "start": "2025-05-08T15:55",
+          "reason": "school medication form",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for School",
+              "date": "2025-05-08T15:55",
+              "author": "patient",
+              "body": "Our school nurse needs a form signed by my doctor so I can keep my auto-injectors in the classroom and so she has an emergency plan on file for me. I attached the blank one. Thank you!"
+            },
+            {
+              "type": "Letter",
+              "title": "Medication Authorization for School",
+              "date": "2025-05-09T12:20",
+              "author": "PCP",
+              "body": "To the school nurse:\nLisa O'Brien (DOB 03/15/1990) has a latex allergy with a history of anaphylaxis. She is authorized to carry and self-administer epinephrine 0.3 mg auto-injectors at work. In an emergency: inject into the outer thigh, call 911, and a second dose may be given after 5 to 15 minutes if symptoms persist. Please keep latex balloons and latex gloves out of her classroom and the nurse's office supplies she may use.\nForm completed and signed; returned to patient through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-18a",
+          "kind": "annual_physical",
+          "start": "2025-09-18T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              73
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 62.3
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-18T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-18T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-18T08:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 98
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-18T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-18T08:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-18T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-18T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-18T08:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-18T08:40",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT\n\nInterval: big year. Anaphylaxis in January during the nevus excision; allergy found latex IgE positive in March. Nevus benign. No reactions since. Carries two auto-injectors, school has her plan. One small cold sore over the summer, treated at home. Eczema quiet through the warm months. Allergies better this spring with daily spray.\n\nMeds: mometasone 0.1% ointment PRN; cetirizine 10 mg PRN; fluticasone nasal daily; valacyclovir 1 g episodic; epinephrine 0.3 mg auto-injector.\nAllergies: LATEX (anaphylaxis); dust mite, tree pollen (rhinitis).\nSocial: started the new school year last month. Never smoker. Alcohol rare.\n\nROS: negative.\nExam: Vitals as charted. Well. HEENT normal; lips clear. Neck supple, no nodes. Lungs clear. Heart RRR. Abdomen soft. Skin: well-healed linear scar left upper back; no eczema active today. No edema.\n\nA/P:\n- Preventive: PHQ-9 1. CBC, CMP, lipids today. Flu and COVID given, latex-free supplies confirmed before the injections. Pap/HPV co-test due next year.\n- Latex allergy with history of anaphylaxis: avoidance, auto-injectors current; renewal due in January.\n- Atopic dermatitis, allergic rhinitis, herpes labialis: stable, no changes.\nNext physical in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "portal_message",
+          "start": "2025-09-23T11:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "date": "2025-09-23T11:40",
+              "author": "PCP",
+              "body": "Lisa, all of last week's bloodwork is normal. Have a good fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "portal_message",
+          "start": "2025-10-15T06:40",
+          "reason": "eye infection seen in ED",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Eye Problem",
+              "date": "2025-10-15T06:40",
+              "author": "patient",
+              "body": "Hi, I ended up in the ER yesterday with my right eye. It had been red and painful for three days and getting blurry, and the light was killing me. The eye doctor there said it was herpes on the cornea, the same virus as my cold sores, and gave me an antiviral eye gel to use 5 times a day. I have a follow-up with them next week. I am out of school for a few days. Just wanted you to know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Eye Problem",
+              "date": "2025-10-15T08:05",
+              "author": "PCP",
+              "body": "Thanks for letting me know, and I'm sorry, that is a painful one. Use the gel exactly as they told you and keep the follow-up with ophthalmology; they will guide how long to continue it. Don't touch the eye and then your lips or the other eye, and wash hands after the gel. If vision gets worse or the pain spikes before your appointment, go back to them. Please book a visit with me after you've seen them."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-30a",
+          "kind": "outside_records",
+          "start": "2025-10-30T10:15",
+          "reason": "ED ophthalmology record",
+          "medications": [
+            {
+              "drug_text": "ganciclovir 0.0015 MG/MG Ophthalmic Gel",
+              "action": "historical",
+              "sig": "1 drop in the right eye 5 times daily until the ulcer heals, then 3 times daily for 7 days",
+              "frequency": "5 TIMES DAILY",
+              "route": "Ophthalmic",
+              "course": "short",
+              "reason": "herpes simplex keratitis, right eye"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Ophthalmology Consultation",
+              "date": "2025-10-30T10:15",
+              "author": "ophthalmology",
+              "body": "OUTSIDE HOSPITAL EMERGENCY DEPARTMENT, OPHTHALMOLOGY CONSULT\nDate of service: 10/14/2025\nPatient: Lisa O'Brien, 35 F\n\nCC: right eye pain, redness, blurred vision x 3 days.\nHPI: 35-year-old woman with recurrent HSV-1 cold sores (orolabial outbreak with buccal lesions October 2024) and anaphylaxis during a skin procedure in January 2025, attributed to latex. Three days ago it felt like something was in the right eye; then tearing, light sensitivity, worsening pain and blur. No trauma. No contact lens use. Left eye fine.\nPMH: atopic dermatitis, allergic rhinitis, recurrent herpes labialis, anaphylaxis history.\nMeds: mometasone ointment PRN, cetirizine PRN, fluticasone nasal, valacyclovir episodic, epinephrine auto-injector.\nAllergies: LATEX (anaphylaxis); dust mite, tree pollen.\n\nExam:\nVisual acuity (sc): OD 20/60, OS 20/20.\nPupils equal and reactive, no APD.\nOD: conjunctival injection. Cornea with several small epithelial vesicles and a branching dendritic ulcer that takes up fluorescein. No purulent discharge. Anterior chamber deep and quiet.\nOS: normal anterior segment.\nIOP normal both eyes.\n\nImpression: herpes simplex epithelial keratitis, right eye.\nPlan: ganciclovir 0.15% ophthalmic gel, 1 drop OD 5 times daily until the epithelium heals, then 3 times daily for 7 days. No topical steroid. Ophthalmology clinic follow-up in about 10 days. Return sooner for worsening vision or pain.\nLatex precautions observed during the exam."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "office_visit",
+          "start": "2025-11-06T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for eye",
+          "conditions": [
+            {
+              "label": "Herpes simplex keratitis",
+              "action": "diagnosed",
+              "onset": "2025-10-11",
+              "note": "right eye, dendritic epithelial ulcer, treated by ophthalmology",
+              "icd10": "B00.52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              85
+            ],
+            "hr": 51,
+            "weight_kg": 63.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-11-06T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-11-06T16:15",
+              "author": "PCP",
+              "body": "S: Here after her 10/14 ER visit for the right eye. ER ophthalmology note received 10/30: dendritic ulcer right cornea, acuity 20/60 on that side, started on ganciclovir gel. She saw ophthalmology clinic on 10/24 and was told the ulcer had healed and her vision was back; she finished the 3-times-a-day taper last week. We do not yet have the clinic note. The eye feels normal now, no pain, no redness, reading fine. No new lip lesions.\nO: Vitals as charted. Right eye white and quiet, no discharge, pupils equal. Reads the wall chart comfortably at near. Lips clear.\nA: Herpes simplex keratitis, right eye, treated and healed per ophthalmology. Recurrent HSV-1 labialis.\nP: Added to the problem list. Requested the ophthalmology clinic note. Any recurrence of eye pain, redness or blur goes straight to ophthalmology, not to waiting on us. Continue episodic valacyclovir for lip outbreaks. She will keep her ophthalmology follow-up schedule."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "outside_records",
+          "start": "2026-01-08T13:30",
+          "reason": "ophthalmology follow-up letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Follow-up Letter",
+              "date": "2026-01-08T13:30",
+              "author": "ophthalmology",
+              "body": "OUTSIDE OPHTHALMOLOGY CLINIC\nDate of visit: 10/24/2025\nRe: Lisa O'Brien, DOB 03/15/1990\n\nSeen in follow-up for right herpes simplex epithelial keratitis diagnosed in the emergency department 10/14/2025, on ganciclovir 0.15% gel 5 times daily.\nToday: pain and photophobia resolved.\nVisual acuity: OD 20/20, OS 20/20.\nSlit lamp OD: corneal epithelium healed, no residual staining with fluorescein; no stromal haze or infiltrate; anterior chamber quiet.\nOS: normal.\nAssessment: HSV epithelial keratitis OD, resolved.\nPlan: reduce ganciclovir to 3 times daily for 7 days, then stop. Return promptly for any recurrence of redness, pain or blurred vision in either eye.\nAllergies: latex (anaphylaxis); dust mite; tree pollen.\n\n(Received by fax 01/08/2026 after a second request.)"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T09:40",
+          "reason": "auto-injector renewal",
+          "medications": [
+            {
+              "drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector",
+              "action": "stop",
+              "reason": "expiring; renewed by practice"
+            },
+            {
+              "drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector",
+              "action": "start",
+              "sig": "Inject 0.3 mg into the outer thigh once for anaphylaxis; may repeat once after 5 to 15 minutes; call 911",
+              "dose": {
+                "value": 0.3,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "latex allergy with anaphylaxis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior Authorization and Renewal",
+              "date": "2026-01-13T09:40",
+              "author": "MA",
+              "body": "Pharmacy requesting a new prescription for epinephrine 0.3 mg auto-injectors; her two-pack from January 2025 expires this month. Insurance prefers the generic; brand would need a PA. PCP sent generic, 2 two-packs (one for home, one for school), 1 refill. Patient notified by portal; she will drop the old pens off at the pharmacy."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "office_visit",
+          "start": "2026-02-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "eczema flare",
+          "conditions": [
+            {
+              "label": "Herpes simplex keratitis",
+              "action": "resolved",
+              "note": "healed per ophthalmology 10/24/2025",
+              "icd10": "B00.52"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              66
+            ],
+            "hr": 61,
+            "weight_kg": 63.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-12T16:30",
+              "author": "PCP",
+              "body": "S: Eczema up for three weeks with the cold snap: backs of the hands, wrists and elbow creases, itchy at night. Using mometasone on and off, plus hand cream, but she slipped on the night gloves. Has been extra careful about not using latex gloves for classroom cleanup. Eye has stayed fine since the fall. No cold sores this winter.\nO: Vitals as charted. Dorsal hands and wrists with erythematous, scaly, slightly lichenified patches; a couple of shallow fissures. Antecubital fossae with mild erythema. No vesicles, crusts or pustules. Eyes white and quiet.\nA: Atopic dermatitis, winter flare. Herpes simplex keratitis resolved; ophthalmology clinic letter arrived in January confirming healed cornea and 20/20.\nP: Mometasone twice daily for 2 weeks, then twice weekly maintenance on the usual spots through March. Back to the ointment-and-cotton-glove routine at night. Vinyl or nitrile gloves only. Message in 3 weeks if not clearly better. Physical this summer with Pap."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T20:10",
+          "reason": "allergy season refills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Spring Refills",
+              "date": "2026-04-21T20:10",
+              "author": "patient",
+              "body": "Pollen season is here again. Could I get refills on the fluticasone and cetirizine? Hands cleared up nicely after the February visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Spring Refills",
+              "date": "2026-04-22T08:30",
+              "author": "MA",
+              "body": "Both sent to your pharmacy per the doctor, with refills for the year. Your physical is booked for July 30 at 7:30 AM."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-30a",
+          "kind": "annual_physical",
+          "start": "2026-07-30T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              134,
+              78
+            ],
+            "hr": 60,
+            "spo2": 97,
+            "weight_kg": 63.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-30T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-30T08:15",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 59
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-30T08:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-07-30T08:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2026-08-04T14:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-30T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-30T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-30T08:35",
+              "author": "PCP",
+              "body": "PREVENTIVE VISIT\n\nInterval: quiet year after a rough 2025. No allergic reactions; auto-injectors renewed in January and never needed. No eye trouble since the keratitis healed in October. Two small cold sores, both caught early with valacyclovir. Eczema flare in February settled. Spring allergies manageable with daily spray and cetirizine.\n\nMeds: mometasone 0.1% ointment PRN; cetirizine 10 mg PRN; fluticasone nasal daily; valacyclovir 1 g episodic; epinephrine 0.3 mg auto-injector.\nAllergies: LATEX (anaphylaxis); dust mite, tree pollen (rhinitis).\nSocial: summer off, teaching again in late August. Never smoker; alcohol rare.\n\nROS negative.\nExam: Vitals as charted. Well. HEENT normal, eyes white, lips clear. Neck no nodes or thyromegaly. Lungs clear. Heart RRR, no murmur. Abdomen soft, nontender. Pelvic: normal external genitalia, vagina and cervix normal; Pap/HPV collected with a nonlatex speculum and gloves. Skin: hands clear, old scar left upper back. No edema.\n\nA/P:\n- Preventive: PHQ-2 0. Pap with HPV co-test today (last 2021). CBC, CMP, lipids. Flu and COVID this fall; she will come by once vaccines arrive.\n- Latex allergy with anaphylaxis history: avoidance, auto-injectors current.\n- Atopic dermatitis: controlled; keep the winter routine.\n- Allergic rhinitis: stable.\n- Recurrent HSV-1 labialis: episodic valacyclovir, refills sent. History of HSV keratitis right eye, healed; she knows to go straight to ophthalmology for eye symptoms.\nFollow-up in the fall for skin and allergies, then physical next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T17:20",
+          "reason": "results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Results",
+              "date": "2026-08-04T17:20",
+              "author": "PCP",
+              "body": "Hi Lisa, your Pap and HPV test are both normal, so the next one is in five years. Blood counts, chemistry and cholesterol from the 30th are all normal too. Enjoy the rest of the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical Results",
+              "date": "2026-08-04T19:02",
+              "author": "patient",
+              "body": "Great news, thank you! See you in November."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-05a",
+          "kind": "office_visit",
+          "start": "2026-11-05T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up of eczema and allergies",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anaphylaxis|T78.2XXA": {
+        "code": "T78.2XXA",
+        "display": "Anaphylactic shock, unspecified, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Herpes simplex keratitis|B00.52": {
+        "code": "B00.52",
+        "display": "Herpesviral keratitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Herpes simplex virus infection|B00.9": {
+        "code": "B00.9",
+        "display": "Herpesviral infection, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Personal history of anaphylaxis|Z87.892": {
+        "code": "Z87.892",
+        "display": "Personal history of anaphylaxis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Recurrent herpes simplex labialis|B00.1": {
+        "code": "B00.1",
+        "display": "Herpesviral vesicular dermatitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ganciclovir 0.0015 MG/MG Ophthalmic Gel": {
+        "code": "388052",
+        "display": "ganciclovir 0.0015 MG/MG Ophthalmic Gel",
+        "ingredient": "ganciclovir",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "mometasone furoate 0.001 MG/MG Topical Ointment": {
+        "code": "151029",
+        "display": "mometasone furoate 0.001 MG/MG Topical Ointment",
+        "ingredient": "mometasone",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Herpes simplex virus 1 IgG Ab [Presence] in Serum": {
+        "code": "17850-9",
+        "display": "Herpes simplex virus 1 IgG Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Herpes simplex virus 2 IgG Ab [Presence] in Serum": {
+        "code": "17851-7",
+        "display": "Herpes simplex virus 2 IgG Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Latex IgE Ab [Units/volume] in Serum": {
+        "code": "6158-0",
+        "display": "Latex IgE Ab [Units/volume] in Serum",
+        "unit": "k[IU]/L",
+        "range": {
+          "high": 0.35
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Dust mites": {
+        "code": "260147004",
+        "display": "House dust mite",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Tree pollen": {
+        "code": "782576004",
+        "display": "Tree pollen",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    },
+    "procedures": {
+      "Tonsillectomy and adenoidectomy": {
+        "code": "28913000",
+        "display": "Tonsillectomy and adenoidectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

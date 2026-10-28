@@ -49,7 +49,7 @@
           ],
           "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-10-19T09:20"}],
           "orders": [
-            {"id": "lab-2020-10-19", "action": "placed", "order": "CMP, CBC, A1c, lipids, UA, urine albumin/creatinine, HIV and HCV screening", "category": "lab", "reason": "New patient baseline"}
+            {"id": "lab-2020-10-19", "action": "placed", "order": "Comprehensive Metabolic Panel (CMP)", "category": "lab", "reason": "New patient baseline"}, {"id": "lab-2020-10-19-2", "action": "placed", "order": "Complete Blood Count (CBC)", "category": "lab", "reason": "New patient baseline"}, {"id": "lab-2020-10-19-3", "action": "placed", "order": "Hemoglobin A1c", "category": "lab", "reason": "New patient baseline"}, {"id": "lab-2020-10-19-4", "action": "placed", "order": "Lipid Panel", "category": "lab", "reason": "New patient baseline"}, {"id": "lab-2020-10-19-5", "action": "placed", "order": "Urinalysis", "category": "lab", "reason": "New patient baseline"}, {"id": "lab-2020-10-19-6", "action": "placed", "order": "Microalbumin/Creatinine Ratio", "category": "lab", "reason": "New patient baseline"}, {"id": "lab-2020-10-19-7", "action": "placed", "order": "HIV-1/2 Antigen and Antibody", "category": "lab", "reason": "New patient baseline"}, {"id": "lab-2020-10-19-8", "action": "placed", "order": "Hepatitis C Antibody", "category": "lab", "reason": "New patient baseline"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-10-19T10:00", "body": "32 y/o man establishing care. Previous PCP was across the river; he stopped going after his insurance changed to Medicaid and has been getting refills through urgent care. Records requested.\n\nDM2 dx roughly 3 yrs ago, on metformin 1000 BID, says he takes it most days. No home glucose checks. HTN about 2 yrs, lisinopril 20 daily. Denies chest pain, SOB, vision change, foot numbness. No NSAID use.\n\nPSH: appendectomy around age 22.\nFHx: mother DM2 (dx at 45). Father HTN. Maternal uncle on dialysis, cause unknown.\nSH: lives in Easthampton with partner. Unemployed, used to do security work. Smokes ~10/day since about 20. Alcohol a drink or two a month. No drugs.\nAllergies: NKDA.\n\nExam: BP 138/88. Well appearing. Fundi not dilated. Neck supple, no LAD. Heart RRR, no murmur. Lungs clear. Abd soft, well-healed RLQ scar. Ext without edema. Feet intact to monofilament bilaterally, pulses 2+.\n\nA/P\n1. DM2 - A1c today. Continue metformin.\n2. HTN - near goal, continue lisinopril 20. Recheck next visit.\n3. Tobacco - advised quitting. He wants to cut down on his own, not ready for patches.\n4. Health maintenance - CMP, CBC, lipids, UA, urine microalbumin. Offered routine HIV and hep C screening (one-time adult screening), he agreed. Flu shot at nurse visit in a couple weeks.\nRTC 3 mo, sooner pending labs."}
@@ -61,8 +61,8 @@
           "start": "2020-10-22T11:40",
           "reason": "Results call",
           "orders": [
-            {"id": "lab-2020-10-19", "action": "done", "date": "2020-10-22T11:40"},
-            {"id": "lab-2020-10-22", "action": "placed", "order": "HIV-1 RNA viral load and CD4 count", "category": "lab", "reason": "Reactive HIV screen"}
+            {"id": "lab-2020-10-19", "action": "done", "date": "2020-10-22T11:40"}, {"id": "lab-2020-10-19-2", "action": "done", "date": "2020-10-22T11:40"}, {"id": "lab-2020-10-19-3", "action": "done", "date": "2020-10-22T11:40"}, {"id": "lab-2020-10-19-4", "action": "done", "date": "2020-10-22T11:40"}, {"id": "lab-2020-10-19-5", "action": "done", "date": "2020-10-22T11:40"}, {"id": "lab-2020-10-19-6", "action": "done", "date": "2020-10-22T11:40"}, {"id": "lab-2020-10-19-7", "action": "done", "date": "2020-10-22T11:40"}, {"id": "lab-2020-10-19-8", "action": "done", "date": "2020-10-22T11:40"},
+            {"id": "lab-2020-10-22", "action": "placed", "order": "HIV-1 RNA Viral Load", "category": "lab", "reason": "Reactive HIV screen"}, {"id": "lab-2020-10-22-2", "action": "placed", "order": "CD4 Count", "category": "lab", "reason": "Reactive HIV screen"}
           ],
           "documents": [
             {"type": "Telephone Encounter", "title": "Results discussed by phone", "author": "PCP", "date": "2020-10-22T11:55", "body": "Called pt with screening results. HIV antigen/antibody screen is reactive. Explained this needs confirmation and a viral load and CD4 count. He was quiet, asked whether it could be wrong. Told him we confirm before calling it anything, but to take it seriously. He agreed to come in for blood work this afternoon and to come back Monday to go over everything in person.\n\nAlso: creatinine 1.5, which gives an eGFR right around 60, and urine microalbumin 380 with 1+ protein and 1+ blood on UA. A1c 7.1. Hep C antibody negative. Will repeat kidney tests in a few months; may need nephrology.\n\nAdvised condoms with partner until we have answers."}
@@ -74,10 +74,10 @@
           "start": "2020-10-22T15:10",
           "labs": [
             {"panel": null, "collected": "2020-10-22T15:10", "resulted": "2020-10-24T08:00", "results": [{"test": "HIV-1 RNA Viral Load", "value": 85000}]},
-            {"panel": null, "collected": "2020-10-22T15:10", "resulted": "2020-10-23T14:00", "results": [{"test": "CD4 Count", "value": 140, "unit": "cells/uL"}]}
+            {"panel": null, "collected": "2020-10-22T15:10", "resulted": "2020-10-23T14:00", "results": [{"test": "CD4 Count", "value": 140}]}
           ],
           "procedures": [{"procedure": "Venipuncture", "performed": "2020-10-22T15:10"}],
-          "orders": [{"id": "lab-2020-10-22", "action": "done", "date": "2020-10-24T08:00"}]
+          "orders": [{"id": "lab-2020-10-22", "action": "done", "date": "2020-10-24T08:00"}, {"id": "lab-2020-10-22-2", "action": "done", "date": "2020-10-24T08:00"}]
         },
         {
           "id": "2020-10-26a",
@@ -212,7 +212,7 @@
           "start": "2021-06-14T11:30",
           "reason": "ID follow-up letter received",
           "labs": [
-            {"panel": null, "collected": "2021-06-07T10:00", "results": [{"test": "CD4 Count", "value": 210, "unit": "cells/uL"}]},
+            {"panel": null, "collected": "2021-06-07T10:00", "results": [{"test": "CD4 Count", "value": 210}]},
             {"panel": null, "collected": "2021-06-07T10:00", "results": [{"test": "HIV-1 RNA Viral Load", "value": 1200}]}
           ],
           "documents": [

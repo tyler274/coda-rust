@@ -497,10 +497,13 @@
        "collected": "2022-02-24T13:40",
        "results": [
         {
-         "test": "Insulin, fasting",
-         "value": 32,
-         "loinc": "20448-7",
-         "unit": "u[IU]/mL"
+          "test": "Insulin, fasting",
+          "value": 32,
+          "loinc": "20448-7",
+          "unit": "u[IU]/mL",
+          "range": {
+            "high": 20
+          }
         }
        ]
       }
@@ -582,12 +585,12 @@
      "reason": "right knee pain",
      "orders": [
       {
-       "id": "ortho-referral",
-       "action": "placed",
-       "order": "Orthopedics referral",
-       "category": "referral",
-       "to": "Orthopedics & Sports Medicine",
-       "reason": "right knee pain"
+        "id": "ortho-referral",
+        "action": "placed",
+        "order": "Orthopedics referral",
+        "category": "referral",
+        "to": "Orthopedics",
+        "reason": "right knee pain"
       }
      ],
      "documents": [

@@ -1,10 +1,7 @@
 {
   "unit": "unit-2013",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001101/2020-04-14a: lab order \"Basic metabolic panel in 2 weeks\" names no one catalog lab, panel, study or procedure",
-    "MRN00001101/2021-07-28a: procedure order \"Ankle-brachial index, in office\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001101",
@@ -1027,7 +1024,7 @@
             {
               "id": "bmp-2020-04",
               "action": "placed",
-              "order": "Basic metabolic panel in 2 weeks",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "potassium and creatinine after ACE inhibitor start"
             }
@@ -1664,6 +1661,7 @@
               "action": "placed",
               "order": "Ankle-brachial index, in office",
               "category": "procedure",
+              "snomed": "401221002",
               "reason": "diminished pedal pulses on endocrinology exam"
             }
           ],
@@ -4324,13 +4322,20 @@
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "allergens": {
       "ACE inhibitors": {
         "code": "372733002",
         "display": "Angiotensin-converting enzyme inhibitor",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    },
+    "procedures": {
+      "Ankle-brachial index, in office": {
+        "code": "401221002",
+        "display": "Ankle brachial pressure index",
         "receipt": "tx.fhir.org SNOMED CT"
       }
     }

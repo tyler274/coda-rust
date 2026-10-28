@@ -1,9 +1,7 @@
 {
   "unit": "unit-1725",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"Prenatal Multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001725",
@@ -532,6 +530,7 @@
           "medications": [
             {
               "drug_text": "Prenatal Multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -2111,6 +2110,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 90
                 }
               ]
@@ -2619,6 +2622,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 90
                 }
               ]
@@ -3991,13 +3998,13 @@
         "code": "991061",
         "display": "dicyclomine hydrochloride 10 MG Oral Capsule",
         "ingredient": "dicyclomine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "nitrofurantoin macrocrystals 100 MG Oral Capsule": {
         "code": "1648759",
         "display": "nitrofurantoin, macrocrystals 100 MG Oral Capsule",
         "ingredient": "nitrofurantoin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4005,6 +4012,10 @@
         "code": "1798-8",
         "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 25,
+          "high": 125
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis A IgM Antibody": {
@@ -4017,9 +4028,6 @@
         "display": "Hepatitis B virus core IgM Ab [Presence] in Serum",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"Prenatal Multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

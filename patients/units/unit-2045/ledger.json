@@ -1341,7 +1341,7 @@
             {
               "id": "colonoscopy-2022",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "colorectal cancer screening, average risk"
@@ -2867,6 +2867,10 @@
                   "test": "ACTH",
                   "loinc": "2141-0",
                   "unit": "pg/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 60
+                  },
                   "value": 84
                 },
                 {
@@ -2883,6 +2887,10 @@
                   "test": "Urine free cortisol, 24 hour",
                   "loinc": "2147-7",
                   "unit": "ug/(24.h)",
+                  "range": {
+                    "low": 4,
+                    "high": 50
+                  },
                   "value": 286
                 }
               ]
@@ -4026,6 +4034,10 @@
                   "test": "Urine free cortisol, 24 hour",
                   "loinc": "2147-7",
                   "unit": "ug/(24.h)",
+                  "range": {
+                    "low": 4,
+                    "high": 50
+                  },
                   "value": 28
                 }
               ]
@@ -4114,19 +4126,19 @@
         "code": "197782",
         "display": "hydrocortisone 10 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ibuprofen 200 MG Oral Tablet": {
         "code": "310965",
         "display": "ibuprofen 200 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "olanzapine 10 MG Oral Tablet": {
         "code": "314154",
         "display": "olanzapine 10 MG Oral Tablet",
         "ingredient": "olanzapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4134,6 +4146,10 @@
         "code": "2141-0",
         "display": "Corticotropin [Mass/volume] in Plasma",
         "unit": "pg/mL",
+        "range": {
+          "low": 10,
+          "high": 60
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Stool occult blood": {
@@ -4145,6 +4161,10 @@
         "code": "2147-7",
         "display": "Cortisol Free [Mass/time] in 24 hour Urine",
         "unit": "ug/(24.h)",
+        "range": {
+          "low": 4,
+          "high": 50
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

@@ -1,0 +1,290 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001694",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: prenatal vitamin",
+              "author": "MA",
+              "date": "2026-01-20T09:15",
+              "body": "Pharmacy fax for prenatal vitamin, 90 tablets with 3 refills, so her insurance covers it. PCP signed. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "specialist_visit",
+          "start": "2026-03-19T15:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 28 weeks",
+          "state": {"weight_kg": 70.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2026-03-19T15:55"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "author": "obstetrics",
+              "date": "2026-03-26T10:20",
+              "body": "Outside obstetrics and gynecology practice. Prenatal visit 3/19/2026.\n\nG2P1 at 28w0d. Feeling well, good fetal movement, no headaches, no visual change, no swelling. Myasthenia quiet on pyridostigmine 60 mg TID. Prenatal vitamin daily.\n\nBP normal today. Fundal height appropriate. Fetal heart tones present and normal. No edema.\n\nTdap given today, left deltoid, for newborn pertussis protection.\n\nPlan: routine visits every 2 weeks from here. Reviewed warning signs of preeclampsia given her history (severe headache, visual change, right upper abdominal pain, sudden swelling) and to go to labor and delivery or the ED if they occur.\n\nAllergies: NKDA.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-30a",
+          "kind": "ed_visit",
+          "start": "2026-04-30T07:40",
+          "end": "2026-04-30T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Severe headache and flashing lights in vision",
+          "conditions": [
+            {"label": "Severe preeclampsia without HELLP features", "icd10": "O14.13", "action": "diagnosed", "onset": "2026-04-29"}
+          ],
+          "vitals": {"bp": [158, 102]},
+          "state": {"labs": {"Hemoglobin": 12.0}},
+          "measure": ["hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2026-04-30T08:05", "results": [{"test": "Urine Protein", "text": "2+"}, {"test": "Urine Blood"}, {"test": "Urine Glucose"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-04-30T08:00", "results": [{"test": "Creatinine", "value": 1.2}, {"test": "Aspartate Aminotransferase", "value": 70}, {"test": "Alanine Aminotransferase", "value": 80}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-30T08:00", "results": [{"test": "Hemoglobin", "value": 12.0}, {"test": "Platelets", "value": 180}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2026-04-30T08:00", "results": [{"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 171, "range": {"low": 80, "high": 225}}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-04-30T07:40"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-05-04T11:00",
+              "body": "Regional hospital ED. Seen 4/30/2026, arrived 07:40.\n\nCC: severe headache, flashing lights in vision.\n\nHPI: 29 yo G2P1 at 34w0d (EDD 6/11/26) with myasthenia gravis on pyridostigmine and gestational hypertension in her prior pregnancy. Headache began yesterday, now severe and not relieved by acetaminophen at home; since last night she sees flashing lights. Pressures had been normal at prenatal visits, most recently in early April per patient. Good fetal movement. No bleeding, no leakage of fluid, no contractions.\n\nMeds: pyridostigmine 60 mg PO TID; prenatal vitamin daily.\nAllergies: NKDA.\nPSH: none.\nFHx: mother with preeclampsia; maternal cousin with SLE.\nSH: teacher, never smoker, no alcohol in pregnancy.\n\nExam: BP 158/102. Uncomfortable, photophobic. 2+ pitting edema of the lower extremities. DTRs brisk with clonus at the ankles. No focal weakness, no ptosis. Gravid abdomen, nontender, including RUQ. Fetal heart tracing reassuring on monitor per L&D nurse.\n\nResults: UA protein 2+. Creatinine 1.2 mg/dL (elevated). AST 70 U/L, ALT 80 U/L (elevated). Platelets 180 K/uL. Hgb 12.0 g/dL. LDH 171 U/L, within range.\n\nMDM: new hypertension with headache, visual symptoms, proteinuria, rising creatinine and transaminases at 34 weeks: preeclampsia with severe features. Platelets and LDH do not suggest HELLP. OB at bedside; patient's neurology plan on file advises against magnesium sulfate. Neurology called and agrees magnesium should be avoided; levetiracetam recommended for seizure prophylaxis.\n\nDx: severe preeclampsia without HELLP features, 34 weeks.\nDisposition: admitted to labor and delivery for stabilization and delivery."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-30b",
+          "kind": "hospital_admission",
+          "start": "2026-04-30T10:30",
+          "end": "2026-05-03T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Severe preeclampsia at 34 weeks, delivery",
+          "conditions": [
+            {"label": "Supervision of high risk pregnancy", "icd10": "O09.90", "action": "resolved", "note": "delivered 2026-05-01 at 34w1d"}
+          ],
+          "medications": [
+            {"drug": "levetiracetam 500 MG Oral Tablet", "action": "start", "sig": "500 mg by mouth twice daily until 24 hours after delivery", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "seizure prophylaxis, magnesium avoided in myasthenia gravis"},
+            {"drug_text": "1 ML hydralazine hydrochloride 20 MG/ML Injection", "action": "start", "sig": "5 to 10 mg IV as needed for severe-range blood pressure", "route": "Intravenous", "course": "short", "reason": "severe-range blood pressure"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-03T05:30", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Aspartate Aminotransferase", "value": 45}, {"test": "Alanine Aminotransferase", "value": 52}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-03T05:30", "results": [{"test": "Platelets", "value": 168}, {"test": "Hemoglobin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-04-30T10:30"},
+            {"procedure": "Oxytocin induction of labor", "snomed": "177135005", "performed": "2026-04-30T14:00"},
+            {"procedure": "Vaginal delivery of fetus", "snomed": "700000006", "performed": "2026-05-01T03:12"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-05-03T12:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "author": "obstetrics",
+              "date": "2026-05-04T11:05",
+              "body": "Regional hospital, labor and delivery. Admitted 4/30/2026, discharged 5/3/2026.\n\nAdmitting diagnosis: preeclampsia with severe features at 34w0d, no HELLP features. Background: myasthenia gravis on pyridostigmine; gestational hypertension in first pregnancy.\n\nCourse: admitted from the ED. Magnesium sulfate was not used because of myasthenia gravis, per neurology; levetiracetam 500 mg twice daily was given for seizure prophylaxis and continued for 24 hours after delivery. Severe-range pressures were treated with IV hydralazine as needed. Labor was induced with oxytocin and she had a vaginal delivery of a liveborn infant on 5/1/2026 at 03:12, at 34w1d. Headache and visual symptoms resolved after delivery. No myasthenic weakness at any point; pyridostigmine continued on schedule. Postpartum pressures settled into the 130s to low 140s over 80s to 90s without oral agents.\n\nLabs at discharge (5/3): creatinine 1.0 mg/dL, AST 45 U/L, ALT 52 U/L, platelets 168 K/uL.\n\nDischarge medications: pyridostigmine 60 mg PO TID; prenatal vitamin daily. No antihypertensive.\nAllergies: NKDA.\n\nInstructions: home BP twice daily with the provided cuff. Return for BP 160/110 or higher, headache, visual change, RUQ pain, shortness of breath. OB BP check within a week. Notify neurology of any weakness.\n\ncc: primary care, neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "telehealth_visit",
+          "start": "2026-05-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge check after delivery",
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2026-05-05T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "author": "PCP",
+              "date": "2026-05-05T11:35",
+              "body": "Video visit, patient at home, ID verified, consents to video.\n\nPostpartum day 4. Admitted 4/30 from the ED at 34 weeks with severe preeclampsia without HELLP features (BP 158/102, protein 2+, Cr 1.2, AST 70, ALT 80, plt 180). Magnesium avoided because of her MG; levetiracetam and IV hydralazine; induced and delivered vaginally 5/1. Discharge labs improved (Cr 1.0, AST 45, ALT 52, plt 168). Home yesterday on no BP medication. ED record and discharge summary reviewed.\n\nToday: headache gone, vision normal, no RUQ pain, no shortness of breath. Mild leg swelling improving. Home cuff readings since discharge 126-138 / 80-88. MG: no weakness, swallowing normal, on pyridostigmine 60 mg TID. Sleeping in pieces with a newborn but mood good; PHQ-2 0.\n\nExam (video): comfortable, speaking in full sentences, no ptosis, normal facial movement.\n\nA/P\n1. Severe preeclampsia without HELLP features, delivered. Pressures acceptable off medication. Keep checking twice daily. Any reading 160/110 or higher, or a headache, vision change or upper belly pain, go to L&D/ED directly; risk persists for several weeks after delivery. OB BP check later this week as planned.\n2. Myasthenia gravis: stable; continue pyridostigmine. Neurology to see postpartum.\n3. Prior gestational hypertension and now preeclampsia: long-term cardiovascular risk is higher; yearly BP, lipids and glucose here.\n\nPhysical with us in late summer or early fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T21:10",
+          "reason": "Home blood pressure log",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP log",
+              "author": "patient",
+              "date": "2026-05-19T21:10",
+              "body": "Two weeks of readings attached. Mostly 124 to 132 over 78 to 86. OB checked me last week and was happy. No headaches. Should I keep checking every day?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP log",
+              "author": "PCP",
+              "date": "2026-05-20T07:40",
+              "body": "These look reassuring. Please keep checking once a day until your six-week postpartum visit with OB, and don't hesitate to go in if a reading is 160/110 or above or a bad headache comes on."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "ed_visit",
+          "start": "2026-06-04T18:20",
+          "end": "2026-06-04T22:10",
+          "service": "Emergency Medicine",
+          "reason": "Headache, visual disturbance, right upper abdominal pain",
+          "vitals": {"bp": [160, 110]},
+          "measure": ["hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2026-06-04T18:45", "results": [{"test": "Urine Protein", "text": "3+"}, {"test": "Urine Blood"}, {"test": "Urine Glucose"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-04T18:40", "results": [{"test": "Creatinine", "value": 0.9}, {"test": "Aspartate Aminotransferase", "value": 70}, {"test": "Alanine Aminotransferase", "value": 65}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-04T18:40", "results": [{"test": "Platelets", "value": 110}, {"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2026-06-04T18:40", "results": [{"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 186, "range": {"low": 80, "high": 225}}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-06-04T18:20"}
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2026-06-09T09:30",
+              "body": "Regional hospital ED, 6/4/2026.\n\nChief complaint: headache with visual disturbance and pain under the right ribs.\n\nHistory: 29 yo, 34 days after a vaginal delivery at 34 weeks for severe preeclampsia (5/1/2026). Home pressures had been in the 120s-130s. Today developed a headache, spots in her vision and right upper quadrant pain. Known myasthenia gravis, well controlled on pyridostigmine.\n\nMeds: pyridostigmine 60 mg PO TID, prenatal vitamin 1 tab daily. NKDA. PSH: none. FHx: mother had preeclampsia; maternal cousin with SLE. SH: teacher, never smoker, no current alcohol.\n\nExam: BP 160/110. Alert, oriented, no ptosis. Lungs clear. RUQ tender without guarding. Lower extremities with 2+ edema. Reflexes brisk.\n\nData: urine protein 3+. Creatinine 0.9 mg/dL. Platelets 110 K/uL. AST 70 U/L, ALT 65 U/L. LDH 186 U/L, no hemolysis pattern.\n\nAssessment: delayed postpartum preeclampsia with severe features, no HELLP features.\n\nCourse here: OB consulted. Magnesium sulfate was raised for seizure prophylaxis; after a call with on-call neurology it was not given because of her myasthenia, and levetiracetam was started instead. IV hydralazine for BP. Admitted to the postpartum unit under OB."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04b",
+          "kind": "hospital_admission",
+          "start": "2026-06-04T22:10",
+          "end": "2026-06-07T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum preeclampsia with severe features",
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-07T05:45", "results": [{"test": "Aspartate Aminotransferase", "value": 44}, {"test": "Alanine Aminotransferase", "value": 41}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-07T05:45", "results": [{"test": "Platelets", "value": 142}]}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-06-04T22:10"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-06-07T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Postpartum Readmission Discharge Summary",
+              "author": "obstetrics",
+              "date": "2026-06-09T09:35",
+              "body": "Regional hospital, postpartum unit. Admission 6/4/2026 to 6/7/2026.\n\nDiagnosis: postpartum preeclampsia with severe features, without HELLP features, 34 days after delivery.\nComorbidity: myasthenia gravis.\n\nHospital course: magnesium sulfate withheld in view of myasthenia gravis, on neurology's advice. Levetiracetam 500 mg twice daily for 24 hours. IV hydralazine for severe-range pressures overnight, then nifedipine ER 30 mg daily started with good control. Headache, visual symptoms and RUQ pain resolved by hospital day 2. Strength remained normal throughout.\n\nDischarge labs (6/7): platelets 142 K/uL, AST 44 U/L, ALT 41 U/L.\n\nDischarge medications: nifedipine ER 30 mg PO daily (new); pyridostigmine 60 mg PO TID; prenatal vitamin daily.\nAllergies: NKDA.\n\nFollow-up: OB in 1 week for BP check, then her postpartum visit. Continue home BP log. Return precautions given.\n\ncc: primary care, neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T14:05",
+          "reason": "Readmission update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in the hospital",
+              "author": "patient",
+              "date": "2026-06-09T14:05",
+              "body": "Wanted you to know I was readmitted last week, my pressure went up again with a headache. They put me on nifedipine. OB is following me. Do I need to see you too?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back in the hospital",
+              "author": "PCP",
+              "date": "2026-06-09T17:30",
+              "body": "Thanks for telling me, and I'm sorry you had to go back in. I have the hospital records now. OB is the right team to adjust the nifedipine over the next few weeks, so no separate visit with me right now. Let's keep the fall physical on the calendar so we can look at your blood pressure together once things settle."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "specialist_visit",
+          "start": "2026-07-09T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "vitals": {"bp": [116, 74]},
+          "measure": ["hr"],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit",
+              "author": "obstetrics",
+              "date": "2026-07-14T15:10",
+              "body": "Outside obstetrics and gynecology practice. Postpartum visit, 7/9/2026, about 10 weeks after delivery and 5 weeks after readmission for postpartum preeclampsia.\n\nFeeling well. No headaches or visual symptoms. Home BP 110s-120s/70s on nifedipine ER 30 mg. MG stable on pyridostigmine.\n\nBP 116/74 today. Exam: no edema; abdomen soft; perineum healed.\n\nPlan:\n- Stop nifedipine. Check home BP a few times a week for a month and call for readings at or above 140/90.\n- Counseled that preeclampsia and prior gestational hypertension raise her long-term risk of hypertension and cardiovascular disease; she should have blood pressure checked at least yearly with primary care.\n- Continue pyridostigmine; neurology aware.\n\nAllergies: NKDA.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "pharmacy",
+          "start": "2026-07-22T10:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: pyridostigmine",
+              "author": "RN",
+              "date": "2026-07-22T10:50",
+              "body": "Electronic refill request, pyridostigmine 60 mg TID x 90 days. Dose unchanged in the June discharge summary. Approved per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T12:30",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall physical",
+              "author": "patient",
+              "date": "2026-08-11T12:30",
+              "body": "Can I get my physical on a Thursday morning in September? School starts at the end of the month, but I can take a personal morning for it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall physical",
+              "author": "front desk",
+              "date": "2026-08-11T15:15",
+              "body": "You're booked for 9/17 at 8:30. Please bring your home blood pressure readings."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "annual_physical",
+          "start": "2026-09-17T08:30",
+          "reason": "Annual physical and postpartum follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

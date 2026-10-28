@@ -10,6 +10,9 @@
 //!             encounter links resolve to the same patient
 //! terminology every coding is the catalog's verified code and display, or one the
 //!             patient's ledger verified; text-only concepts are counted
+//! contract    every coded field has a code (a drug only when its author found no
+//!             RxNorm concept), every referral a coded specialty, every measured lab
+//!             a UCUM unit and a reference range unless its cited source gives none
 //! timeline    clinical times after birth and before the bank time; issued >= effective;
 //!             onset <= recorded; abatement after onset
 //! ```
@@ -30,7 +33,7 @@ use serde_json::Value;
 
 use crate::catalog::{CPT, Catalog};
 use crate::fhir::{FAMILIES, LOINC};
-use crate::ledger::{Ledger, Terms};
+use crate::ledger::{Ledger, RefRange, Terms};
 use crate::render::{DOC_TYPE_CODES, VITAL_CODES};
 use crate::seeds::Seeds;
 use crate::{Result, paths, repeats, time};
@@ -231,6 +234,7 @@ fn check_patient(
             if *fam == "Patient" {
                 continue;
             }
+            contract(sh, ledgers.get(&w.unit), fam, id, r, &mut errors);
             for (k, v) in times(r) {
                 // an encounter under way at the bank time ends after it
                 if v >= as_of_utc.as_str() && k != "period.end" {
@@ -301,6 +305,75 @@ fn check_calendar(
         *counts.entry(str_of(&r, "status").to_string()).or_default() += 1;
     }
     Ok(counts)
+}
+
+/// What the tool promises of every resource beyond the schema: each coded field
+/// carries a code (only a drug its author marked as having no RxNorm concept stays
+/// text), each referral its coded specialty, and each measured lab result its UCUM
+/// unit and reference range (unless the catalog's cited source, or the author for a
+/// test the catalog lacks, gives none).
+fn contract(
+    sh: &Shared,
+    ledger: Option<&Ledger>,
+    fam: &str,
+    id: &str,
+    r: &Value,
+    errors: &mut Vec<String>,
+) {
+    let coded = |cc: &Value| cc["coding"].as_array().is_some_and(|c| !c.is_empty());
+    let text = |cc: &Value| cc["text"].as_str().unwrap_or_default().to_string();
+    let field = match fam {
+        "MedicationRequest" => "medicationCodeableConcept",
+        "Immunization" => "vaccineCode",
+        "DocumentReference" | "Encounter" => return,
+        _ => "code",
+    };
+    let cc = &r[field];
+    if !cc.is_null() && !coded(cc) {
+        let what = text(cc);
+        let allowed = match fam {
+            "MedicationRequest" => ledger.is_some_and(|l| {
+                (l.patients.iter().flat_map(|p| &p.events))
+                    .flat_map(|e| &e.medications)
+                    .any(|m| m.uncoded && m.drug_text.as_deref() == Some(what.as_str()))
+            }),
+            // a referral is coded by its specialty
+            "ServiceRequest" => r["performerType"].is_array(),
+            _ => false,
+        };
+        if !allowed {
+            errors.push(format!("{fam}/{id}: {what:?} has no code"));
+        }
+    }
+    if fam == "ServiceRequest" {
+        for p in r["performerType"].as_array().into_iter().flatten() {
+            if !coded(p) {
+                errors.push(format!("{fam}/{id}: specialty {:?} has no code", text(p)));
+            }
+        }
+    }
+    let lab = r["category"].as_array().into_iter().flatten().any(|c| {
+        c["coding"]
+            .as_array()
+            .into_iter()
+            .flatten()
+            .any(|x| x["code"] == "laboratory")
+    });
+    if fam == "Observation" && lab && r["valueQuantity"].is_object() {
+        let test = text(&r["code"]);
+        if r["valueQuantity"]["code"].is_null() {
+            errors.push(format!("{fam}/{id}: {test:?} has no UCUM unit"));
+        }
+        // check holds a name to one answer on whether a range applies
+        let none_given = sh.catalog.labs.get(&test).is_some_and(|e| {
+            e.range.as_ref().is_some_and(|r| r.is_empty()) && e.range_source.is_some()
+        }) || ledger.is_some_and(|l| {
+            (l.terms.labs.get(&test)).is_some_and(|v| v.range == Some(RefRange::default()))
+        });
+        if r["referenceRange"].is_null() && !none_given {
+            errors.push(format!("{fam}/{id}: {test:?} has no reference range"));
+        }
+    }
 }
 
 /// Whether a coding is one the ledger's own verified terms produced.

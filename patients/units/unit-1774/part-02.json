@@ -1,0 +1,1000 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001774",
+      "events": [
+        {
+          "id": "2021-01-19a",
+          "kind": "office_visit",
+          "start": "2021-01-19T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Facial rash and sore wrists",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "derm-ref-1",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "facial rash with sun sensitivity and hand/wrist pain"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-01-19T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Rash",
+              "author": "PCP",
+              "date": "2021-01-19T16:20",
+              "body": "S: Zoe comes in with a red rash on her face for about a week. It flares when she sits by the window at her desk or goes out on a bright day. Over the same stretch her hands and wrists ache, stiff for about an hour in the morning before they loosen up. No fever. Mother has lupus and Zoe is worried about that.\nAlso, almost as an afterthought: stools have been looser since sometime in the fall, a couple of times a day, some bloating. No blood. She thought it was the iron.\n\nMeds: ferrous sulfate 325 mg TID. NKDA.\n\nO: vitals as charted. Faint red rash across the cheeks. Mouth clear today. Wrists and small joints of the hands without swelling, mildly tender to squeeze. Heart and lungs normal. Abdomen soft, nontender.\n\nA/P\n1. Facial rash, photosensitive, with inflammatory-sounding hand and wrist pain, and a mother with SLE. Needs dermatology and likely a serologic workup; dermatology has an opening next week and will draw the lupus labs there. Sunscreen and a hat in the meantime.\n2. Loose stools: on iron, which could do it, but also could fit something else. Keep a log; recheck at the next visit, sooner if weight drops.\n3. Iron deficiency: keep iron; CBC and ferritin recheck is overdue, will catch it with whatever labs come next."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-28a",
+          "kind": "specialist_visit",
+          "start": "2021-01-28T13:30",
+          "service": "Dermatology",
+          "reason": "Facial rash, joint pain, photosensitivity",
+          "vitals": {
+            "temp_c": 37.4,
+            "bp": [
+              118,
+              74
+            ],
+            "hr": 78,
+            "rr": 16,
+            "spo2": 98
+          },
+          "conditions": [
+            {
+              "label": "Systemic lupus erythematosus",
+              "action": "diagnosed",
+              "onset": "2021-01-10"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-01-28T14:10",
+              "resulted": "2021-02-01T11:00",
+              "results": [
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-01-28T14:10",
+              "resulted": "2021-02-01T11:00",
+              "results": [
+                {
+                  "test": "Anti-dsDNA antibody",
+                  "loinc": "5130-0",
+                  "unit": "[IU]/mL",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-01-28T14:10",
+              "resulted": "2021-02-01T11:00",
+              "results": [
+                {
+                  "test": "Complement C3",
+                  "loinc": "4485-9",
+                  "unit": "mg/dL",
+                  "value": 68,
+                  "range": {
+                    "low": 100,
+                    "high": 233
+                  }
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-01-28T14:10",
+              "resulted": "2021-02-01T11:00",
+              "results": [
+                {
+                  "test": "Complement C4",
+                  "loinc": "4498-2",
+                  "unit": "mg/dL",
+                  "value": 8,
+                  "range": {
+                    "low": 14,
+                    "high": 48
+                  }
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-ref-1",
+              "action": "done",
+              "date": "2021-01-28T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Consultation",
+              "author": "dermatology",
+              "date": "2021-02-03T10:45",
+              "body": "Outside dermatology practice. Visit of January 28, 2021. Letter and results sent to the referring PCP.\n\nThank you for asking us to see Zoe Johansson, 29, for a facial eruption. About two weeks of redness on the face that she connects with sunlight, alongside aching in both hands and wrists with roughly an hour of stiffness each morning.\n\nCurrent medications: ferrous sulfate 325 mg three times daily. Allergies: none known.\nFamily: mother with SLE, maternal grandmother with RA.\nSocial: designer, never smoker, occasional alcohol.\n\nVitals: T 37.4 C, BP 118/74, HR 78, RR 16, SpO2 98% on room air.\nExam: erythematous eruption on the face. Remaining skin, scalp and nails unremarkable. No oral lesions today. Hands and wrists without swelling.\n\nLabs drawn at the visit: ANA positive. Anti-double-stranded DNA positive. Complement C3 68 mg/dL and C4 8 mg/dL, both low.\n\nImpression: systemic lupus erythematosus, presenting with photosensitive facial rash and inflammatory arthralgia, supported by positive ANA and anti-dsDNA with hypocomplementemia.\n\nPlan: broad-spectrum SPF 50 daily and sun avoidance. We have sent a referral to rheumatology for systemic management. Happy to see her again for any skin changes.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2021-02-05a",
+          "kind": "portal_message",
+          "start": "2021-02-05T19:22",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Dermatology results",
+              "author": "patient",
+              "date": "2021-02-05T19:22",
+              "body": "The dermatologist called and said my bloodwork points to lupus, same as my mom. I'm kind of freaking out. Do I need to do anything before the rheumatology appointment?"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Dermatology results",
+              "author": "PCP",
+              "date": "2021-02-06T09:40",
+              "body": "I saw the letter, and I'm sorry, that is a lot to take in. Your kidney tests have been normal, which is reassuring. Nothing to start before rheumatology; keep up the sunscreen and call if you get fevers, chest pain, swelling or a change in your urine. Happy to talk by phone anytime this week."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-24a",
+          "kind": "specialist_visit",
+          "start": "2021-02-24T10:00",
+          "service": "Rheumatology",
+          "reason": "New SLE",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "medications": [
+            {
+              "drug": "hydroxychloroquine sulfate 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 200,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Systemic lupus erythematosus"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-02-24T10:45",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Potassium"
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-02-24T10:45",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                },
+                {
+                  "test": "Urine Blood"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology New Patient Consultation",
+              "author": "rheumatology",
+              "date": "2021-03-01T14:20",
+              "body": "Outside rheumatology. Seen February 24, 2021, at the request of dermatology; copy to PCP.\n\n29-year-old graphic designer with a few weeks of photosensitive facial rash and symmetric hand and wrist arthralgia with morning stiffness. Dermatology workup showed positive ANA, positive anti-dsDNA and low C3 and C4. Mother has SLE.\n\nShe also mentions loose stools since the fall; asked her to raise that with her PCP.\nMeds: ferrous sulfate. NKDA.\n\nExam: facial erythema fading. No synovitis on today's exam. No alopecia. Heart and lung sounds normal. No edema.\nLabs today: creatinine 0.8, urinalysis negative for protein and blood.\n\nAssessment: SLE with mucocutaneous and musculoskeletal features, no renal involvement.\n\nPlan:\n- Start hydroxychloroquine 200 mg twice daily.\n- Baseline eye examination this spring for hydroxychloroquine monitoring.\n- Sun protection.\n- Labs with each visit; follow up in about a year, sooner for flares.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2021-03-30a",
+          "kind": "office_visit",
+          "start": "2021-03-30T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Ongoing diarrhea and weight loss",
+          "state": {
+            "weight_kg": 53.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "gi-ref-1",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chronic diarrhea, bloating, weight loss, iron deficiency"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-30T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Diarrhea",
+              "author": "PCP",
+              "date": "2021-03-30T11:55",
+              "body": "S: loose stools now about five months, two or three a day, lots of bloating. She has noticed it is worst after bread or pasta; she ate a big bowl of spaghetti last week and was miserable that night. No blood or black tarry stool beyond the usual iron darkening. No fever, no travel. Down about 10 pounds without trying.\nRheumatology started hydroxychloroquine last month for lupus; she is tolerating it. Joints better, rash fading.\n\nMeds: hydroxychloroquine 200 mg BID, ferrous sulfate 325 mg TID. NKDA.\n\nO: weight 53.5 kg, was 58 at her first visit here. Thin. Abdomen soft, a little tender all over, no masses. Skin without the facial rash today.\n\nA/P\n1. Chronic diarrhea with bloating, weight loss, worse with wheat, and iron deficiency that has not budged on iron. Paternal aunt has celiac. Celiac disease is high on the list. Referred to gastroenterology; GI prefers to do serology and scope together, so she should keep eating gluten until she is seen.\n2. SLE: per rheumatology.\n3. Iron deficiency: continue iron."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-07a",
+          "kind": "specialist_visit",
+          "start": "2021-04-07T09:00",
+          "service": "Ophthalmology",
+          "reason": "Baseline hydroxychloroquine exam",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Baseline Exam",
+              "author": "ophthalmology",
+              "date": "2021-04-12T08:30",
+              "body": "Eye examination of April 7, 2021, baseline before long-term hydroxychloroquine. Copy to PCP and rheumatology.\n\nVisual acuity 20/20 each eye. Pupils, pressures and anterior segments normal. Dilated fundus exam: healthy discs, normal maculae. Automated visual fields 10-2 full both eyes. OCT macula with normal ellipsoid zone.\n\nImpression: normal baseline. Repeat yearly screening after five years of use, or sooner for visual symptoms."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "pharmacy",
+          "start": "2021-04-20T13:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization record",
+              "title": "COVID-19 Vaccine Dose 1",
+              "author": "pharmacy",
+              "date": "2021-04-21T09:00",
+              "body": "Community pharmacy immunization report: COVID-19 mRNA vaccine (Pfizer-BioNTech) dose 1 given April 20, 2021, left deltoid. Dose 2 scheduled in three weeks."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-26a",
+          "kind": "specialist_visit",
+          "start": "2021-04-26T14:00",
+          "service": "Gastroenterology",
+          "reason": "Chronic diarrhea and weight loss",
+          "state": {
+            "labs": {
+              "Hemoglobin": 10.2,
+              "Mean Corpuscular Volume": 74,
+              "Ferritin": 15
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Celiac disease",
+              "action": "diagnosed",
+              "onset": "2020-10-25"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Celiac disease"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2000 IU by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[IU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Celiac disease"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-04-26T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2021-04-26T14:40",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 450
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-04-26T14:40",
+              "resulted": "2021-04-28T16:00",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-04-26T14:40",
+              "resulted": "2021-04-28T16:00",
+              "results": [
+                {
+                  "test": "Endomysial IgA antibody",
+                  "loinc": "10362-2",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-ref-1",
+              "action": "done",
+              "date": "2021-04-26T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2021-04-30T15:10",
+              "body": "Outside gastroenterology group. Office visit April 26, 2021; letter to the referring PCP.\n\nReason: six months of diarrhea and bloating with a 10-pound weight loss.\n\nZoe is 29 and was found to have lupus by dermatology this winter. Her bowel symptoms began in the fall, are clearly worse after bread and pasta, and have never included blood. Paternal aunt has celiac disease.\nMedications: hydroxychloroquine 200 mg twice daily, ferrous sulfate 325 mg three times daily. Allergies: NKDA.\n\nExam: slim young woman who looks her age. Abdomen soft and not distended, mildly tender throughout without rebound or guarding; bowel sounds normal.\n\nLabs: hemoglobin 10.2 g/dL, MCV 74 fL. Iron 30, TIBC 450, ferritin 15. Tissue transglutaminase IgA positive; endomysial IgA antibody positive.\n\nImpression: celiac disease by serology, with iron deficiency anemia from malabsorption.\n\nPlan:\n1. Upper endoscopy with duodenal biopsies to confirm, booked May 12. Stay on her usual diet until then.\n2. Begin folic acid 1 mg daily and vitamin D3 2000 IU daily.\n3. Continue ferrous sulfate.\n4. After the biopsy, strict gluten-free diet with our dietitian.\n\nGastroenterology"
+            }
+          ]
+        },
+        {
+          "id": "2021-05-11a",
+          "kind": "pharmacy",
+          "start": "2021-05-11T13:15",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization record",
+              "title": "COVID-19 Vaccine Dose 2",
+              "author": "pharmacy",
+              "date": "2021-05-12T09:00",
+              "body": "Community pharmacy immunization report: COVID-19 mRNA vaccine (Pfizer-BioNTech) dose 2 given May 11, 2021. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "procedure_visit",
+          "start": "2021-05-12T07:45",
+          "end": "2021-05-12T10:30",
+          "service": "Gastroenterology",
+          "reason": "EGD with duodenal biopsies",
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2021-05-12T08:20"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-05-12T08:20",
+              "text": "Specimen: duodenum, bulb and second portion, endoscopic biopsies (six fragments). Microscopic: small bowel mucosa with villous atrophy, crypt hyperplasia and increased intraepithelial lymphocytes. No granulomas, dysplasia or organisms identified.",
+              "conclusion": "Duodenum, biopsies: villous atrophy with intraepithelial lymphocytosis and crypt hyperplasia, consistent with celiac disease in the appropriate serologic setting."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure note",
+              "title": "Upper Endoscopy Report",
+              "author": "gastroenterology",
+              "date": "2021-05-17T13:00",
+              "body": "Endoscopy center report, procedure May 12, 2021, with pathology.\n\nIndication: positive celiac serology, iron deficiency.\nSedation: monitored anesthesia care. Esophagus normal. Stomach normal. Duodenum with scalloped folds in the second portion; six biopsies taken from bulb and second portion.\nPathology: villous atrophy, crypt hyperplasia, increased intraepithelial lymphocytes, consistent with celiac disease.\n\nPlan: strict gluten-free diet starting now; dietitian appointment arranged through our office. Repeat celiac serology in 6 to 12 months. Continue iron, folic acid and vitamin D3."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-19a",
+          "kind": "telephone",
+          "start": "2021-05-19T14:10",
+          "documents": [
+            {
+              "type": "Telephone encounter",
+              "title": "Endoscopy Results Reviewed",
+              "author": "PCP",
+              "date": "2021-05-19T14:10",
+              "body": "Reviewed the EGD report and pathology with Zoe by phone: biopsies confirm celiac. She has the dietitian booked. Explained that the iron deficiency likely came from this rather than her periods, and that the iron should absorb better as her gut heals. Problem list current."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-02a",
+          "kind": "portal_message",
+          "start": "2021-06-02T21:14",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Gluten free question",
+              "author": "patient",
+              "date": "2021-06-02T21:14",
+              "body": "Hi, I met with the GI dietitian and I'm about two weeks into gluten free. Is it ok to keep taking all my pills? Some of the supplement brands say \"may contain wheat.\" Also bathroom stuff is already a little better!"
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Gluten free question",
+              "author": "RN",
+              "date": "2021-06-03T09:30",
+              "body": "Good to hear things are improving. Your prescriptions from the pharmacy are fine; for supplements, pick ones labeled gluten-free, and your pharmacist can check any specific bottle. Your PCP would like to see you in about a month to check in."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "office_visit",
+          "start": "2021-07-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Celiac follow-up",
+          "state": {
+            "weight_kg": 54.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-07-13T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Follow-up",
+              "author": "PCP",
+              "date": "2021-07-13T09:35",
+              "body": "Celiac confirmed on EGD in May. About seven weeks strict gluten-free. Stools down to once a day and formed most days, much less bloating. Weight up a kilo to 54.5. Learning to read labels, eating out is the hard part.\nLupus: on hydroxychloroquine, joints mostly quiet, using sunscreen. Eye exam baseline done in April, normal.\nMeds: hydroxychloroquine 200 mg BID, ferrous sulfate 325 mg TID, folic acid 1 mg, vitamin D3 2000 IU.\n\nExam: vitals as charted. Abdomen soft, nontender. No rash. No synovitis.\n\nA/P: celiac disease improving on diet. Iron deficiency: GI will recheck with celiac serology later this year; continue iron. SLE stable. Flu shot in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T16:30",
+          "reason": "Flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T16:32"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T16:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing note",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2021-10-12T16:40",
+              "body": "Flu vaccine 0.5 mL IM right deltoid. Feeling well. She mentions some itchy spots on her elbows; advised to book with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "office_visit",
+          "start": "2021-11-16T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Itchy rash on elbows and knees",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "orders": [
+            {
+              "id": "derm-ref-2",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "pruritic papulovesicular rash on extensor surfaces in a patient with celiac disease"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-16T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Rash",
+              "author": "PCP",
+              "date": "2021-11-16T14:55",
+              "body": "S: itchy bumps for about five months, first on the elbows, now also knees, low back and buttocks. Itch is intense, worse at night. OTC hydrocortisone did nothing. No new soaps or detergents, no new pills, no travel. Bowels fine, no joint flares.\n\nMeds unchanged. NKDA.\n\nO: clustered small red papules and a few tiny blisters over both elbows and knees, scattered on the low back; several scratched open. No facial rash. Mouth clear.\n\nA/P: intensely itchy grouped papulovesicular rash on extensor surfaces in a woman with celiac disease. Dermatitis herpetiformis is the concern; needs a biopsy. Back to her dermatologist, who can do the punch biopsy. Cool compresses for itch meanwhile; keep strict gluten-free."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-03a",
+          "kind": "specialist_visit",
+          "start": "2021-12-03T10:15",
+          "service": "Dermatology",
+          "reason": "Pruritic papulovesicular eruption",
+          "conditions": [
+            {
+              "label": "Dermatitis herpetiformis",
+              "icd10": "L13.0",
+              "action": "diagnosed",
+              "onset": "2021-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "clobetasol propionate 0.0005 MG/MG Topical Ointment",
+              "action": "historical",
+              "sig": "Apply a thin layer to affected areas twice daily for 2 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Dermatitis herpetiformis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-03T10:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-03T10:50",
+              "resulted": "2021-12-06T14:00",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Punch skin biopsy, single lesion",
+              "performed": "2021-12-03T10:35"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-12-03T10:35",
+              "text": "Specimen: skin, left elbow, 4 mm punch biopsy of a fresh vesicle. Microscopic: subepidermal vesicle containing neutrophils, with neutrophilic infiltrate in the adjacent dermal papillae. No eosinophil predominance. Epidermis otherwise intact.",
+              "conclusion": "Subepidermal vesicles with neutrophilic infiltrates, consistent with dermatitis herpetiformis in the clinical setting."
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-ref-2",
+              "action": "done",
+              "date": "2021-12-03T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology Follow-up",
+              "author": "dermatology",
+              "date": "2021-12-10T11:30",
+              "body": "Outside dermatology. Visit December 3, 2021, with biopsy result; copy to PCP and gastroenterology.\n\nKnown to us with SLE; celiac disease diagnosed this spring. Six months of very itchy lesions that started at the elbows and spread to the knees, lower back and buttocks. No recent travel, no new medications, no new detergents or soaps. No joint pain, belly pain or diarrhea at present.\nMeds: hydroxychloroquine, ferrous sulfate, folic acid, vitamin D3. NKDA.\n\nExam: grouped erythematous papules and vesicles over the extensor surfaces, several excoriated. Face clear.\n\nLabs drawn at the visit: hemoglobin 10.2, MCV 74. tTG IgA positive.\nPunch biopsy, left elbow: subepidermal vesicles with neutrophilic infiltrates.\n\nDiagnosis: dermatitis herpetiformis.\n\nPlan: the strict gluten-free diet is the long-term treatment and will take months to control the skin. For the itch now, clobetasol 0.05% ointment twice daily to active spots for two weeks, then stop. Review with GI about the persistent tTG. Return in three months or sooner if not settling.\n\nDermatology"
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T08:12",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Refill",
+              "author": "patient",
+              "date": "2022-01-11T08:12",
+              "body": "My rheumatologist's office is closed this week and I'm almost out of hydroxychloroquine. Could you send a month to tide me over? Skin is way less itchy now btw."
+            },
+            {
+              "type": "Patient message",
+              "title": "RE: Refill",
+              "author": "PCP",
+              "date": "2022-01-11T12:40",
+              "body": "Sent 30 days of hydroxychloroquine 200 mg twice daily to your pharmacy. Please get future refills through rheumatology. Glad the itch is calming down. Let's plan a visit in March with blood work."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "office_visit",
+          "start": "2022-03-22T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, labs",
+          "state": {
+            "weight_kg": 56.0,
+            "labs": {
+              "Hemoglobin": 11.2,
+              "Ferritin": 24,
+              "Mean Corpuscular Volume": 79
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-03-22T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-03-22T09:15",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 24
+                },
+                {
+                  "test": "Iron"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-22T09:15",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-22T09:15",
+              "resulted": "2022-03-24T10:00",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "text": "Positive, lower level than prior"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-03-22T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-22T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Follow-up",
+              "author": "PCP",
+              "date": "2022-03-22T09:30",
+              "body": "Here for a general check-in and labs. The elbow and knee rash settled within a few weeks of the clobetasol and she has been strict about gluten since the biopsy; no new spots for two months. Bowels normal. Joints quiet, rash on face none. Energy better.\n\nMeds: hydroxychloroquine 200 mg BID, ferrous sulfate 325 mg TID, folic acid 1 mg daily, vitamin D3 2000 IU daily. NKDA.\n\nExam: weight 56 kg, gaining back. Skin with faint pink macules where the lesions were, no active vesicles. Mouth clear. Joints without synovitis.\n\nA/P\n1. Celiac disease with dermatitis herpetiformis: improving. CBC, ferritin, tTG today.\n2. Iron deficiency anemia: on iron TID.\n3. SLE: rheumatology yearly; next due this fall.\n4. Pap/HPV at her physical this fall when she is 30."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-25a",
+          "kind": "portal_message",
+          "start": "2022-03-25T13:05",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Your results",
+              "author": "PCP",
+              "date": "2022-03-25T13:05",
+              "body": "Zoe, good news overall. Hemoglobin is up to 11.2 from 10.2 and ferritin to 24, so the iron is finally getting absorbed. The celiac antibody is still positive but lower, which is what we expect while the gut heals. Kidney and liver tests normal. Keep doing what you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "specialist_visit",
+          "start": "2022-09-26T15:00",
+          "service": "Rheumatology",
+          "reason": "SLE follow-up",
+          "vitals": {
+            "temp_c": 37.2,
+            "bp": [
+              132,
+              78
+            ],
+            "hr": 76,
+            "rr": 14
+          },
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.8,
+              "White Blood Cells": 3.2,
+              "Mean Corpuscular Volume": 81
+            }
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-26T15:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 3.2
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-26T15:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-09-26T15:40",
+              "results": [
+                {
+                  "test": "Urine Protein"
+                },
+                {
+                  "test": "Urine Blood"
+                },
+                {
+                  "test": "Urine Red Blood Cells"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology Follow-up",
+              "author": "rheumatology",
+              "date": "2022-10-03T09:15",
+              "body": "Outside rheumatology office note, visit September 26, 2022. Copy to PCP.\n\nSLE, on hydroxychloroquine since early 2021; celiac disease and dermatitis herpetiformis since then as well.\nFor several months she has had achy joints and tiredness. Stiff about an hour each morning, eases a little once she moves around. Now and then a mouth sore that does not hurt. More hair in the brush lately. No fever, cough or infections.\nMeds: hydroxychloroquine 200 mg twice daily, ferrous sulfate 325 mg three times daily, folic acid 1 mg daily, vitamin D3 2000 IU daily. NKDA.\n\nVitals: T 37.2 C, BP 132/78, P 76, RR 14.\nExam: both wrists mildly tender, no swelling or redness. Shallow ulcers on the buccal mucosa. Heart, lungs and neurologic exam normal.\n\nLabs: hemoglobin 11.8, WBC 3.2, creatinine 0.9, urinalysis normal.\n\nAssessment: SLE with arthralgia, oral ulcers, hair shedding and mild leukopenia; kidneys spared.\nPlan: continue hydroxychloroquine at the current dose. Labs and visit in a year, sooner with a flare.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "annual_physical",
+          "start": "2022-10-18T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-10-18T10:05",
+              "text": "Specimen adequacy: satisfactory, transformation zone present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T10:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-18T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-18T10:40",
+              "body": "30 yo, yearly exam. Rheumatology saw her last month: achy joints, a few painless mouth sores, white count a bit low at 3.2, no change in treatment. She feels about the same today, tired by late afternoon. Skin clear, sticking to gluten-free.\n\nMeds: hydroxychloroquine 200 mg twice a day, ferrous sulfate 325 mg three times a day, folic acid 1 mg, vitamin D3 2000 IU. NKDA.\nNever smoker. Alcohol a drink or two a month.\n\nExam: vitals as charted. Mouth: no ulcers today. Thyroid normal. Heart regular, lungs clear. Abdomen soft. Skin without active lesions. Pelvic: normal external genitalia, cervix without lesions; Pap and HPV collected.\n\nA/P\n- Preventive: Pap with HPV today. Flu and bivalent COVID booster given. PHQ-2 0.\n- SLE, celiac, DH, iron deficiency: stable, managed with rheumatology and GI. CBC and ferritin at her spring visit.\nReturn in about 6 months."
+            },
+            {
+              "type": "Nursing note",
+              "title": "Vaccine Administration",
+              "author": "MA",
+              "date": "2022-10-18T10:20",
+              "body": "Flu 0.5 mL IM left deltoid; Pfizer bivalent booster 0.3 mL IM right deltoid. Observed 15 minutes, fine."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-26a",
+          "kind": "portal_message",
+          "start": "2022-10-26T11:20",
+          "documents": [
+            {
+              "type": "Patient message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2022-10-26T11:20",
+              "body": "Your Pap smear was normal and the HPV test was negative. With both normal, the next one is due in five years."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

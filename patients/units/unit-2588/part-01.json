@@ -294,7 +294,6 @@
         {
          "test": "Treponema pallidum antibody",
          "loinc": "24110-9",
-         "unit": "",
          "text": "Reactive"
         }
        ]
@@ -361,11 +360,12 @@
      ],
      "orders": [
       {
-       "id": "bicillin-2019",
-       "action": "placed",
-       "order": "Benzathine penicillin G 2.4 million units IM, nurse visit today",
-       "category": "procedure",
-       "reason": "primary syphilis"
+        "id": "bicillin-2019",
+        "action": "placed",
+        "order": "Benzathine penicillin G 2.4 million units IM, nurse visit today",
+        "category": "procedure",
+        "reason": "primary syphilis",
+        "snomed": "76601001"
       }
      ],
      "documents": [
@@ -453,9 +453,9 @@
      ],
      "orders": [
       {
-       "id": "bicillin-2019",
-       "action": "done",
-       "date": "2019-02-11T16:05"
+        "id": "bicillin-2019",
+        "action": "done",
+        "date": "2019-02-11T16:05"
       }
      ],
      "procedures": [
@@ -670,11 +670,18 @@
      ],
      "orders": [
       {
-       "id": "gc-retest-2019",
-       "action": "placed",
-       "order": "Urine GC/CT NAAT, 3-month retest",
-       "category": "lab",
-       "reason": "gonococcal urethritis"
+        "id": "gc-retest-2019",
+        "action": "placed",
+        "order": "Neisseria gonorrhoeae NAAT",
+        "category": "lab",
+        "reason": "gonococcal urethritis"
+      },
+      {
+        "id": "gc-retest-2019-2",
+        "action": "placed",
+        "order": "Chlamydia trachomatis NAAT",
+        "category": "lab",
+        "reason": "gonococcal urethritis"
       }
      ],
      "procedures": [
@@ -756,9 +763,14 @@
      ],
      "orders": [
       {
-       "id": "gc-retest-2019",
-       "action": "done",
-       "date": "2019-11-05T07:50"
+        "id": "gc-retest-2019",
+        "action": "done",
+        "date": "2019-11-05T07:50"
+      },
+      {
+        "id": "gc-retest-2019-2",
+        "action": "done",
+        "date": "2019-11-05T07:50"
       }
      ],
      "procedures": [
@@ -938,7 +950,7 @@
      "conditions": [
       {
        "label": "High risk sexual behavior",
-       "icd10": "Z72.5",
+       "icd10": "Z72.52",
        "action": "diagnosed",
        "onset": "2019-01-07"
       }
@@ -975,11 +987,18 @@
      ],
      "orders": [
       {
-       "id": "ct-retest-2020",
-       "action": "placed",
-       "order": "Urine GC/CT NAAT, 3-month retest",
-       "category": "lab",
-       "reason": "chlamydial epididymitis"
+        "id": "ct-retest-2020",
+        "action": "placed",
+        "order": "Neisseria gonorrhoeae NAAT",
+        "category": "lab",
+        "reason": "chlamydial epididymitis"
+      },
+      {
+        "id": "ct-retest-2020-2",
+        "action": "placed",
+        "order": "Chlamydia trachomatis NAAT",
+        "category": "lab",
+        "reason": "chlamydial epididymitis"
       }
      ],
      "procedures": [
@@ -994,7 +1013,7 @@
        "title": "Office Visit - ED follow-up",
        "author": "PCP",
        "date": "2020-02-19T12:10",
-       "body": "ED 2/11 for L epididymitis, chlamydia NAAT positive, US without torsion. Got ceftriaxone there and is on doxycycline 100 BID, day 8 today. Pain and swelling much better, ache only at the end of the day. No fever, no discharge now. No GI upset with the doxy.\n\nSexual history: since last summer several partners, condoms not consistent. Three STIs in a year. We talked frankly - he says he knows, and he wants to do better about condoms.\nAllergies: penicillin - anaphylaxis (ED list again said NKDA; reminded him to tell them).\n\nExam: afebrile, vitals as charted. Left epididymis mildly thickened and barely tender; testis normal. Right side normal. No discharge.\n\nA/P:\n1. Left epididymitis, chlamydial - improving, finish the 10-day course. Retest urine in 3 months.\n2. Syphilis, treated 2/2019 - 12-month RPR today.\n3. HIV Ag/Ab today.\n4. High-risk sexual behavior - added to the problem list. Condoms, regular screening every visit, and come in with any new symptom."
+       "body": "ED 2/11 for L epididymitis, chlamydia NAAT positive, US without torsion. Got ceftriaxone there and is on doxycycline 100 BID, day 8 today. Pain and swelling much better, ache only at the end of the day. No fever, no discharge now. No GI upset with the doxy.\n\nSexual history: since last summer several male partners, condoms not consistent. Three STIs in a year. We talked frankly - he says he knows, and he wants to do better about condoms.\nAllergies: penicillin - anaphylaxis (ED list again said NKDA; reminded him to tell them).\n\nExam: afebrile, vitals as charted. Left epididymis mildly thickened and barely tender; testis normal. Right side normal. No discharge.\n\nA/P:\n1. Left epididymitis, chlamydial - improving, finish the 10-day course. Retest urine in 3 months.\n2. Syphilis, treated 2/2019 - 12-month RPR today.\n3. HIV Ag/Ab today.\n4. High-risk sexual behavior - added to the problem list. Condoms, regular screening every visit, and come in with any new symptom."
       },
       {
        "type": "Result Note",
@@ -1062,9 +1081,14 @@
      ],
      "orders": [
       {
-       "id": "ct-retest-2020",
-       "action": "done",
-       "date": "2020-05-12T07:40"
+        "id": "ct-retest-2020",
+        "action": "done",
+        "date": "2020-05-12T07:40"
+      },
+      {
+        "id": "ct-retest-2020-2",
+        "action": "done",
+        "date": "2020-05-12T07:40"
       }
      ],
      "procedures": [

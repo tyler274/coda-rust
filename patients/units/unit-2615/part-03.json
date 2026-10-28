@@ -1,0 +1,346 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002615",
+      "events": [
+        {
+          "id": "2026-01-02a",
+          "kind": "office_visit",
+          "start": "2026-01-02T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fever, sore throat, fatigue x 2 weeks",
+          "vitals": {"temp_c": 38.5},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Infectious mononucleosis, unspecified with other complication", "icd10": "B27.99", "action": "diagnosed", "onset": "2025-12-19"},
+            {"label": "Thrombocytopenia", "action": "diagnosed", "onset": "2026-01-02"},
+            {"label": "Anemia, unspecified", "action": "diagnosed", "onset": "2026-01-02"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-01-02T09:50", "resulted": "2026-01-02T10:15", "results": [{"test": "White Blood Cells", "value": 15.0}, {"test": "Hemoglobin", "value": 10.2}, {"test": "Platelets", "value": 90}, {"test": "Neutrophils %", "value": 34}, {"test": "Lymphocytes %", "value": 56}, {"test": "Monocytes %", "value": 9}, {"test": "Eosinophils %", "value": 1}, {"test": "Basophils %", "value": 0}]},
+            {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T10:15", "results": [{"test": "Variant lymphocytes/Leukocytes in Blood by Manual count", "loinc": "735-1", "unit": "%", "value": 20, "range": {"high": 5}}]},
+            {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T16:20", "results": [{"test": "Variant lymphocytes [Presence] in Blood", "loinc": "104802-4", "text": "Present; pathologist smear review confirms atypical lymphocytes"}]},
+            {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T16:20", "results": [{"test": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells", "loinc": "1007-4", "text": "Positive"}]},
+            {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T16:20", "results": [
+              {"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 4.6, "range": {"low": 0.5, "high": 1.5}},
+              {"test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma", "loinc": "2532-0", "unit": "U/L", "value": 388, "range": {"low": 80, "high": 225}},
+              {"test": "Haptoglobin [Mass/volume] in Serum or Plasma", "loinc": "4542-7", "unit": "mg/dL", "text": "<10"},
+              {"test": "Bilirubin, Total", "value": 1.9},
+              {"test": "Bilirubin, Direct", "value": 0.3}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-02T09:20"},
+            {"procedure": "Venipuncture", "performed": "2026-01-02T09:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit - Fever and Sore Throat",
+              "author": "PCP",
+              "date": "2026-01-02T10:40",
+              "body": "20 y/o home from college for winter break. Two weeks of fevers, sore throat and exhaustion, same feel as his illnesses last January and July. OTC pain relievers and lozenges haven't touched it. Says his upper abdomen feels \"puffy.\" No bleeding, bruising, dark urine or yellow eyes that he has noticed. Not taking any medications.\n\nNKDA.\n\nExam: Febrile at 38.5, other vitals as charted. Pharynx red with exudate. Tender cervical nodes. Abdomen soft, spleen tip palpable, mildly enlarged, nontender. No jaundice. No petechiae or bruising on skin survey.\n\nCBC this morning: Hgb 10.2, WBC 15.0, platelets 90K, 20% atypical lymphocytes. His August counts were normal.\n\nA/P:\n1. Third mononucleosis-like illness in a year, heterophile positive at the first two. Treating as a relapsing course of the same illness.\n2. New anemia and thrombocytopenia. With mono the worry is immune destruction. Sent a smear for pathologist review, direct antiglobulin test, retic count, LDH, haptoglobin and bilirubin from this morning's draw; will call him with results this afternoon. Low threshold for same-day hematology input.\n3. Spleen: no sports or lifting. Rest and fluids. Avoid ibuprofen and aspirin while platelets are low.\n4. ED for bleeding, black stools, sudden left-sided belly pain, lightheadedness or shortness of breath."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-02b",
+          "kind": "telephone",
+          "start": "2026-01-02T17:10",
+          "conditions": [
+            {"label": "Autoimmune hemolytic anemia, unspecified", "icd10": "D59.10", "action": "diagnosed", "onset": "2026-01-02"},
+            {"label": "Anemia, unspecified", "action": "resolved"}
+          ],
+          "orders": [{"id": "heme-referral", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "Coombs-positive hemolytic anemia and thrombocytopenia with mononucleosis"}],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Results Call",
+              "author": "PCP",
+              "date": "2026-01-02T17:10",
+              "body": "Afternoon labs back. Smear reviewed by pathology, atypical lymphocytes confirmed. DAT positive. Retic 4.6%, LDH 388, haptoglobin <10, total bilirubin 1.9 with direct 0.3. Picture fits autoimmune hemolysis, along with the low platelets, in the setting of his mono.\n\nCalled patient. He feels the same as this morning, no bleeding, no dark urine, no chest pain or breathlessness. Explained the findings. Spoke with on-call hematology at the regional hospital: Hgb 10.2 and stable symptoms do not need admission or steroids tonight; they will see him early next week. Urgent referral placed.\n\nSame precautions as this morning. ED for any bleeding, yellowing, cola-colored urine, faintness or worsening breathlessness. He verbalized understanding."
+            },
+            {
+              "type": "Letter",
+              "title": "Referral to Hematology",
+              "author": "PCP",
+              "date": "2026-01-02T17:40",
+              "body": "Re: Min-jun Tanaka, DOB 12/12/2005\n\nThank you for seeing this 20-year-old college student, otherwise healthy, on no medications, NKDA. Heterophile-positive mononucleosis in January 2025 and again at an ED visit in July 2025, both resolving with supportive care. Normal CBC August 2025.\n\nSeen today with 2 weeks of fever, sore throat and fatigue. T 38.5, exudative pharyngitis, tender cervical nodes, mild splenomegaly. Hgb 10.2, WBC 15.0, platelets 90K, atypical lymphocytes 20%, confirmed on smear. DAT positive. Retic 4.6%, LDH 388, haptoglobin <10, total bilirubin 1.9 (direct 0.3).\n\nDiscussed with your on-call physician today. Requesting evaluation of Coombs-positive hemolytic anemia and thrombocytopenia during a mononucleosis illness. Family history: maternal uncle with nasopharyngeal carcinoma, paternal grandfather with gastric cancer.\n\nCopies of today's labs attached."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-05a",
+          "kind": "telephone",
+          "start": "2026-01-05T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Scheduled",
+              "author": "front desk",
+              "date": "2026-01-05T09:05",
+              "body": "Hematology office called, referral received, pt scheduled Thursday 1/8 at 1:15. Called pt to confirm, he has it. Reminded him to bring his insurance card since it's a specialist."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "specialist_visit",
+          "start": "2026-01-08T13:15",
+          "service": "Hematology",
+          "reason": "Coombs-positive anemia and thrombocytopenia",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-01-08T13:05", "results": [{"test": "Hemoglobin", "value": 10.6}, {"test": "Platelets", "value": 104}]},
+            {"panel": null, "collected": "2026-01-08T13:05", "results": [{"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 4.1, "range": {"low": 0.5, "high": 1.5}}]}
+          ],
+          "orders": [{"id": "heme-referral", "action": "done", "date": "2026-01-08T13:15"}],
+          "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2026-01-08T13:15"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "author": "hematology",
+              "date": "2026-01-09T15:30",
+              "body": "Outside hematology group. Date of consultation 01/08/2026. Received 01/09/2026.\n\nReason for referral: positive DAT with anemia and low platelets during infectious mononucleosis.\n\nHistory: 20M, previously healthy, presented to his PCP 1/2 with two weeks of fever, pharyngitis and fatigue, his third such illness in a year. Hgb 10.2, plt 90K, 20% atypical lymphocytes, DAT positive, retic 4.6%, LDH 388, haptoglobin <10, total bilirubin 1.9. Since then the sore throat is easing and fevers are less frequent; still tired. No bleeding, no dark urine. No medications. NKDA. Family history of nasopharyngeal carcinoma in a maternal uncle and gastric cancer in a paternal grandfather.\n\nExam: Tired but well-appearing. Vitals as recorded. No scleral icterus. Cervical nodes still tender. Spleen palpable, mildly enlarged. No petechiae, purpura or mucosal bleeding. Heart and lungs normal.\n\nLabs today: Hgb 10.6, plt 104K, retic 4.1%.\n\nImpression: Mild autoimmune hemolytic anemia and thrombocytopenia accompanying infectious mononucleosis. Counts already turning upward. Positive heterophile results can persist for months, which may explain the repeated positives this year. Expect both to settle as the infection does.\n\nRecommendations:\n1. Observation. No corticosteroid at this hemoglobin with counts improving.\n2. CBC weekly for now; first one next week, can be drawn at his PCP's office.\n3. No contact sports or heavy exertion while the spleen is enlarged.\n4. Seek care for jaundice, dark urine, bleeding or rapidly worsening fatigue.\n5. Return visit in about 4 weeks.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-16a",
+          "kind": "lab_only",
+          "start": "2026-01-16T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-01-16T08:15", "results": [{"test": "Hemoglobin", "value": 11.5}, {"test": "Platelets", "value": 131}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2026-01-16T08:15"}],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood Count Today",
+              "author": "PCP",
+              "date": "2026-01-16T13:20",
+              "body": "Hemoglobin up to 11.5 and platelets 131, both moving the right way since last week. Copy sent to hematology. Keep the activity restrictions for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood Count Today",
+              "author": "patient",
+              "date": "2026-01-16T18:44",
+              "body": "Nice. I go back to campus Sunday. Can I do next week's blood test there?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood Count Today",
+              "author": "RN",
+              "date": "2026-01-17T09:10",
+              "body": "Yes. Ask campus health to draw a CBC and fax the result to us and to hematology. Fax numbers are on your after-visit summary."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-19a",
+          "kind": "portal_message",
+          "start": "2026-01-19T11:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Note for school",
+              "author": "patient",
+              "date": "2026-01-19T11:02",
+              "body": "My dean's office wants a doctor's note so I can drop to part-time load for the first few weeks without penalty. Is that something you can write?"
+            },
+            {
+              "type": "Letter",
+              "title": "Medical Letter for School",
+              "author": "PCP",
+              "date": "2026-01-19T16:30",
+              "body": "To whom it may concern,\n\nMin-jun Tanaka is under my care for a recent medical illness. His recovery is expected to take several more weeks, during which he may have reduced stamina. I support a reduced course load and flexibility with attendance through the end of February 2026. Please contact my office with any questions.\n\nSincerely,\nPrimary care physician"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "specialist_visit",
+          "start": "2026-02-06T10:30",
+          "service": "Hematology",
+          "reason": "follow-up autoimmune hemolysis and thrombocytopenia",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-02-06T10:15", "results": [{"test": "Hemoglobin", "value": 12.6}, {"test": "Platelets", "value": 178}]},
+            {"panel": null, "collected": "2026-02-06T10:15", "results": [{"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 2.2, "range": {"low": 0.5, "high": 1.5}}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-02-06T10:30"}],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "author": "hematology",
+              "date": "2026-02-10T09:45",
+              "body": "Outside hematology group. Follow-up visit 02/06/2026. Received 02/10/2026.\n\nInterval: energy steadily better, attending classes on a reduced load, no fevers for about three weeks. No bleeding or dark urine. Weekly counts trending up.\n\nExam: Well. No icterus. No cervical adenopathy of note. Spleen not palpable. No petechiae.\n\nLabs today: Hgb 12.6, plt 178K, retic 2.2%.\n\nImpression: Autoimmune hemolysis and thrombocytopenia with mononucleosis, resolving without treatment.\n\nPlan: Stop weekly CBCs. Repeat CBC in about 2 months through his PCP; if normal, he can be discharged from our clinic and we will send a closing letter. Spleen no longer enlarged on exam; return to sports can be decided with his PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "portal_message",
+          "start": "2026-02-11T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hematology letter",
+              "author": "PCP",
+              "date": "2026-02-11T08:05",
+              "body": "Read hematology's note from last week. Your counts are close to normal, hemoglobin 12.6 and platelets 178. No more weekly blood tests. Let's see you in April with a blood count; the front desk will reach out. Hold off on basketball until that visit."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hematology letter",
+              "author": "patient",
+              "date": "2026-02-11T12:31",
+              "body": "Ok thanks. Spring break is the week of March 16, but April is fine, I can come on a Wednesday afternoon."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "telephone",
+          "start": "2026-03-30T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "author": "front desk",
+              "date": "2026-03-30T10:20",
+              "body": "Called pt to schedule April recheck with CBC per PCP. Booked Wed 4/8 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "office_visit",
+          "start": "2026-04-08T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "recheck after hemolytic anemia",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2026-04-07T15:48",
+              "body": "Pt called, has a midterm moved to Wednesday afternoon. Cancelled 4/8, rebooked Wed 4/15 at 4:20."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-15a",
+          "kind": "office_visit",
+          "start": "2026-04-15T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "recheck after hemolytic anemia, sports clearance",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "conditions": [
+            {"label": "Infectious mononucleosis, unspecified with other complication", "icd10": "B27.99", "action": "resolved"},
+            {"label": "Autoimmune hemolytic anemia, unspecified", "icd10": "D59.10", "action": "resolved"},
+            {"label": "Thrombocytopenia", "action": "resolved"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-04-15T16:30", "resulted": "2026-04-15T17:05", "results": [{"test": "Hemoglobin", "value": 14.1}, {"test": "Platelets", "value": 228}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-04-15T16:20"},
+            {"procedure": "Venipuncture", "performed": "2026-04-15T16:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up - Hemolysis and Thrombocytopenia",
+              "author": "PCP",
+              "date": "2026-04-15T17:20",
+              "body": "Recheck, about 3.5 months after the January illness with Coombs-positive hemolysis and low platelets. Hematology observed without treatment; Feb counts Hgb 12.6, plt 178K. Feels completely back to normal, full course load again since March. No fevers, sore throats, bruising, bleeding or dark urine. Wants to play intramural basketball this spring.\n\nNo medications. NKDA.\n\nExam: Well. Vitals as charted. Sclerae anicteric. Oropharynx clear. No cervical or supraclavicular nodes. Abdomen soft, spleen not palpable. Skin without petechiae or bruising.\n\nCBC in office: Hgb 14.1, plt 228K, WBC normal.\n\nA/P:\n1. Mononucleosis with autoimmune hemolysis and thrombocytopenia, resolved. Counts normal. Removed from active problem list. Will forward today's CBC to hematology for their closing letter.\n2. Cleared for all sports.\n3. Physical due in the summer; flu and COVID in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "portal_message",
+          "start": "2026-04-16T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CBC",
+              "author": "PCP",
+              "date": "2026-04-16T07:45",
+              "body": "Yesterday's blood count was entirely normal. Sent a copy to hematology. Enjoy the basketball."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: CBC",
+              "author": "patient",
+              "date": "2026-04-16T09:12",
+              "body": "Thank you for everything this winter!"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "outside_records",
+          "start": "2026-04-22T14:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Hematology Discharge Letter",
+              "author": "hematology",
+              "date": "2026-04-22T14:00",
+              "body": "Outside hematology group, letter dated 04/20/2026, received 04/22/2026.\n\nWe reviewed the CBC from 04/15/2026 (Hgb 14.1, plt 228K). His autoimmune hemolysis and thrombocytopenia associated with infectious mononucleosis have resolved without treatment. He is discharged from hematology follow-up. Should anemia, jaundice or low platelets recur, we would be glad to see him again.\n\nScanned and filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "portal_message",
+          "start": "2026-06-03T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization list",
+              "author": "patient",
+              "date": "2026-06-03T20:15",
+              "body": "Can you send me my vaccine list again? I lost the PDF and the school portal wants it updated with last fall's shots."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization list",
+              "author": "front desk",
+              "date": "2026-06-04T09:30",
+              "body": "Attached is your current immunization record including the October 2025 flu and COVID doses."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "portal_message",
+          "start": "2026-08-12T17:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flu shot",
+              "author": "patient",
+              "date": "2026-08-12T17:40",
+              "body": "When do you start doing flu shots? I head back to school the 24th so I might just get it there."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flu shot",
+              "author": "RN",
+              "date": "2026-08-13T08:50",
+              "body": "Our supply usually arrives in mid-September, so campus is the easier option this year. Please have them send us the record so we can update your chart. You're also due for a yearly physical; reply here and we'll find a time over a break."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

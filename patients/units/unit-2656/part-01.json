@@ -1,0 +1,549 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002656",
+      "given": "Asher",
+      "family": "Kane",
+      "birth_date": "1995-02-22",
+      "address_line": "41 Bridge Rd, Apt 3",
+      "phone": "+1-518-555-0112",
+      "email": "asher.kane@example.test",
+      "marital_status": "single",
+      "summary": "Young unemployed former maintenance worker with recurrent moderate depression, insomnia on trazodone and a long pattern of stopping medicines. An ED visit for arterial priapism in 2025 ends trazodone; in 2026 an ED treats a bleeding coagulopathy after he put out rat poison, which the practice learns of from a pharmacy fill and a late record.",
+      "events": [
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T10:05",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2022-08-16T10:05",
+              "body": "Caller wants to transfer primary care here; his old office is closing its Medicaid panel. 27M. Main issues per him: depression and trouble sleeping, on one med at night. Insurance verified, Medicaid active. New patient appt set for 8/23 at 9:00. Asked him to sign release so we can get records from prior office; form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T09:00",
+          "end": "2022-08-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; depression and insomnia",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, recurrent, moderate",
+              "action": "diagnosed",
+              "onset": "2018-03-01",
+              "note": "recurrent episodes since about age 23, per patient and prior records"
+            },
+            {
+              "label": "Insomnia",
+              "action": "diagnosed",
+              "onset": "2020-06-01"
+            },
+            {
+              "label": "Medication non-adherence",
+              "icd10": "Z91.148",
+              "action": "diagnosed",
+              "onset": "2019-01-01",
+              "note": "prior office records show missed refills and self-stopped antidepressants"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "trazodone hydrochloride 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime for sleep",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "AT BEDTIME",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Insomnia"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder, recurrent, moderate"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 15
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Does not drink alcohol"
+            },
+            {
+              "item": "Occupation",
+              "value": "Unemployed; previously maintenance worker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Rents an apartment with a roommate"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-08-23T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-23T10:05",
+              "body": "27-year-old man transferring care. Main concerns are low mood and poor sleep.\n\nHPI: Describes depression on and off since his early twenties, with at least two prior stretches bad enough that he stopped leaving the apartment much. Current stretch has gone on most of this year: low energy, little interest, sleeps poorly, appetite fine. Has tried antidepressants through his old office but cannot name them; says he never stayed on any for long because he 'didn't see the point.' Prior office notes (faxed 8/19) list depression, insomnia and repeated missed refills. Sleep: trouble falling asleep, trazodone 50 at night helps when he takes it. No SI now or in the past, no plan, no prior attempts. No mania by history.\n\nPMH: depression, recurrent. Insomnia.\nPSH: none.\nMeds: trazodone 50 mg qhs.\nAllergies: no known drug allergies.\nFamily: mother with depression. Father with high blood pressure. No bleeding problems or sickle cell in the family that he knows of.\nSocial: out of work; used to do building maintenance. Shares an apartment with a roommate. Never smoked, no alcohol, no drugs.\n\nROS otherwise negative.\n\nExam: Well-appearing, flat affect, good eye contact, speech normal rate. HEENT normal. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin without bruising or rash. Neuro grossly nonfocal.\n\nPHQ-9 15. GAD-7 8.\n\nAssessment/plan:\n1. Major depressive disorder, recurrent, moderate. Talked through options. He is willing to try sertraline 50 mg daily; reviewed that it takes several weeks and early GI upset usually passes. Gave crisis line number. Video check-in in about a month.\n2. Insomnia. Continue trazodone 50 mg at bedtime; I'll take over the prescription.\n3. History of stopping medicines on his own: named it with him, plain and nonjudgmental. He agrees to message before stopping anything.\n4. Baseline labs today: CBC, CMP, TSH, lipids, HIV and hep C screening."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "portal_message",
+          "start": "2022-08-26T14:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2022-08-26T14:30",
+              "body": "Hi Asher, all of the blood work from Tuesday came back normal: blood counts, kidney and liver tests, thyroid, and cholesterol. HIV and hepatitis C screens were negative. Nothing to act on. Keep going with the sertraline and we'll talk next month."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "telehealth_visit",
+          "start": "2022-09-27T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression follow-up",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "patient stopped on his own after about ten days"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2022",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "recurrent major depression, poor medication persistence"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2022-09-27T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-up",
+              "author": "PCP",
+              "date": "2022-09-27T15:45",
+              "body": "Video, he is at his apartment, alone in the room.\n\nStopped the sertraline after roughly ten days. No side effect he can name, just 'felt the same, so why bother.' Did not message first. Mood about the same as last month. Sleep OK on nights he takes trazodone. Denies SI.\n\nPHQ-9 14.\n\nNot willing to restart an antidepressant right now. Open to seeing someone. Placed referral to outpatient psychiatry, which also has a therapy program. Sertraline off the list. Trazodone continues. Revisit in a couple of months."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T11:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T11:47"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "author": "RN",
+              "date": "2022-10-13T12:00",
+              "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Screening questions negative, afebrile. VIS given. Waited 15 min, no reaction. Reminded him psychiatry intake office should be calling him."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "office_visit",
+          "start": "2022-11-29T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-02-01a",
+          "kind": "outside_records",
+          "start": "2023-02-01T09:15",
+          "orders": [
+            {
+              "id": "psych-referral-2022",
+              "action": "done",
+              "date": "2023-02-01T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Intake Evaluation",
+              "author": "psychiatry",
+              "date": "2023-02-01T09:15",
+              "body": "Outpatient behavioral health clinic, adult psychiatry\nDate of evaluation: 01/24/2023\nReferral from: primary care, for recurrent depression\n\nMr. Kane is a 27-year-old single man, not working, who lives with a roommate. He reports several episodes of depression since about 2018, the current one present most of the past year, with anhedonia, fatigue, low motivation and initial insomnia. He has tried antidepressants and stopped each within weeks. He denies suicidal ideation, intent or past attempts. No history of mania or psychosis. No substance use. Mother has depression.\n\nMental status: casually dressed, cooperative, psychomotor normal, mood 'blah', affect constricted, thought process linear, no SI/HI, insight fair.\n\nPHQ-9: 13.\nAllergies: NKDA. Medications: trazodone 50 mg at bedtime.\n\nImpression: Major depressive disorder, recurrent episode, moderate. Insomnia.\n\nRecommendations:\n- Re-trial of an SSRI. Sertraline 50 mg daily is reasonable; we ask that primary care prescribe and follow.\n- Individual therapy here, weekly to start; he has been given a therapist assignment.\n- Continue trazodone for sleep.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression follow-up after psychiatry intake",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder, recurrent, moderate"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-07T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-02-07T10:50",
+              "body": "Missed November. Here today after his psychiatry intake on 1/24; their letter is in the chart and suggests trying sertraline again with therapy there.\n\nHas had one therapy session so far, plans to keep going. Mood unchanged. Sleep fair with trazodone. No SI.\n\nPHQ-9 13. Vitals fine. Calm, flat, engaged in the conversation.\n\nPlan: restart sertraline 50 mg daily. We agreed on two things this time: give it six weeks before judging, and send a message rather than quitting. Trazodone same. Back in 2 to 3 months, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "telephone",
+          "start": "2023-04-25T11:10",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "patient stopped again"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication Adherence Call",
+              "author": "RN",
+              "date": "2023-04-25T11:25",
+              "body": "Pharmacy adherence line flagged sertraline: filled once in February, never refilled. Called pt. He confirms he quit it about three weeks in, says it made him 'feel flat' and he didn't want to message about it. No SI. Still seeing the therapist, though he has missed a few. Trazodone he is still taking most nights.\n\nRoute to PCP. Sertraline marked as stopped per pt. He will keep the June appointment."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Addendum",
+              "author": "PCP",
+              "date": "2023-04-25T16:40",
+              "body": "Reviewed. Will discuss alternatives in June; no change today."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression and sleep follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-13T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-06-13T14:30",
+              "body": "Follow-up, mood and sleep.\n\nOff sertraline since about March. Doesn't want another antidepressant, including a different class; we went over a couple of options and he listened but is clear. Going to therapy roughly every other week, sometimes skips. Mood a bit better with warmer weather. Takes trazodone most nights, sleeps about six hours. No SI.\n\nPHQ-9 12. Exam: alert, mood 'okay', affect brighter than February.\n\nA/P: Recurrent depression, moderate, not on an antidepressant by his choice. Respecting that; door stays open. Keep therapy going. Trazodone 50 qhs refilled for 90 days. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preventive visit",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-19T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-19T10:06"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-19T10:07"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive Visit",
+              "author": "PCP",
+              "date": "2023-09-19T10:15",
+              "body": "Yearly exam, 28-year-old man.\n\nInterval: no illnesses. Still looking for work, some applications out. Therapy on and off. Sleep acceptable with trazodone. Not on an antidepressant. Denies SI.\n\nHabits: never smoker, no alcohol or drugs. Walks most days. Seatbelt yes. No firearms at home.\n\nMeds: trazodone 50 mg qhs. NKDA.\n\nExam: BP and weight at baseline. HEENT clear, TMs normal. Neck without nodes or thyroid enlargement. Heart regular without murmur. Lungs clear. Abdomen soft, no masses. Skin normal. Mood mildly low, affect reactive.\n\nPHQ-9 11.\n\nPlan: no labs needed this year, baseline from last summer normal. Flu, updated COVID and Tdap today (no Tdap on record). Continue current plan for mood and sleep. See me in the spring, sooner if mood slides."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2023-12-05T08:50",
+              "body": "Electronic request for trazodone 50 mg #90. Last 90-day fill was in June, so about 3 months overdue; pt says he ran out and \"just didn't call.\" Sent to PCP queue."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approved",
+              "author": "PCP",
+              "date": "2023-12-05T12:15",
+              "body": "Approved x90 with 1 refill."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

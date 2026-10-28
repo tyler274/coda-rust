@@ -1,0 +1,259 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002752",
+      "given": "Morgan",
+      "family": "Hale",
+      "birth_date": "1984-09-07",
+      "address_line": "38 Brainerd Ridge Road",
+      "phone": "+1-617-555-0135",
+      "email": "morgan.hale@example.test",
+      "marital_status": "single",
+      "summary": "Travel agent and daily smoker on a combined estrogen pill who joins the practice in 2023 with migraine, mild depression and irregular menses. Three pulmonary emboli after long flights (April 2025, October 2025, April 2026); the pill is stopped only after the third, and she is now on indefinite apixaban.",
+      "events": [
+        {
+          "id": "2023-08-10a",
+          "kind": "telephone",
+          "start": "2023-08-10T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2023-08-10T10:20",
+              "body": "Caller wants to move her primary care here; her old office has had a hard time getting her in around her work travel. Booked a new-patient appointment for 8/22 at 2:40 pm. Gave her the release form so we can get her old office's chart. Insurance card photo uploaded through the portal while on the line."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Migraine without aura", "action": "history", "onset": "2006-06-01", "note": "Episodic, no aura; manages without prescriptions"},
+            {"label": "Major depressive disorder, single episode, mild", "icd10": "F32.0", "action": "history", "onset": "2021-03-01"},
+            {"label": "Irregular menstruation, unspecified", "icd10": "N92.6", "action": "history", "onset": "2016-01-01"},
+            {"label": "Nicotine dependence, cigarettes", "action": "history", "onset": "2004-01-01"}
+          ],
+          "medications": [
+            {"drug_text": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Irregular menses"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [114, 72], "weight_kg": 64.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm", "temp_c"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Every day smoker"},
+            {"item": "Occupation", "value": "International travel agent"},
+            {"item": "History of alcohol use", "value": "Occasional, 1 to 2 drinks per month"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-08-22T15:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T15:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T15:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-08-22T15:30", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2023-08-22T15:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-08-22T15:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-08-22T14:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-22T16:10",
+              "body": "38 yo woman transferring care. Books international trips for a living, mostly from a desk, but she is on a long-haul flight several times a year for work.\n\nHeadaches: migraines since her early twenties, a few a month, throbbing and one-sided with nausea and light sensitivity. No visual or sensory warning before them, no weakness. Dark room and sleep take care of most; she has never wanted a prescription for them.\n\nMood: a depressive episode about two years ago, mild, worked through it on her own and with friends. Never took medication, never saw a therapist. Some low days still. PHQ-9 today 7. No thoughts of self-harm.\n\nGyn: cycles have been irregular for years; started a combined pill around 2017 for that and it keeps her regular. Takes it daily, no missed packs to speak of. Not trying to conceive.\n\nTobacco: a pack a day, has smoked since about 19, so roughly 20 pack-years. Has tried cold turkey twice. Not interested in patches or pills right now. Alcohol a drink or two a month. No drugs.\n\nNo surgeries. No medication allergies.\nFamily: mother had a DVT at 45. Father has high blood pressure. An uncle on her father's side had a blood clot in the lung.\n\nMeds: ethinyl estradiol 0.035 / norgestimate 0.25, one daily.\n\nExam: well, pleasant. Vitals as recorded. HEENT unremarkable, neck supple without thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft. Legs without swelling. Neuro nonfocal. Affect a little flat but appropriate.\n\nA/P:\n1. Migraine without aura, episodic. Lifestyle triggers reviewed. Return if frequency changes.\n2. Mild depression, single episode, residual low mood. Watchful; she would rather not start anything. Rescreen next visit.\n3. Irregular menses on combined pill. Refills here going forward.\n4. Cigarette dependence. Strongly encouraged quitting; she knows where to find us when ready.\n5. Health maintenance: CBC, CMP, lipids, TSH, one-time HIV and hep C screens today. Requesting her old office's records for her last Pap.\nFollow up in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-24T09:05",
+              "body": "Hi Morgan, all of the blood work from Tuesday looks fine: blood counts, kidney and liver tests, thyroid and cholesterol are normal, and the HIV and hepatitis C screens were negative. Nothing to do there. Good meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "outside_records",
+          "start": "2023-09-06T11:30",
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2021-05-18T10:00", "text": "Specimen adequate for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2023-09-06T11:30",
+              "body": "Faxed chart from her previous primary care office, 41 pages, scanned. Includes visit notes 2017 to 2023, a Pap with HPV co-test from May 2021 (negative for lesion, HPV not detected), and pill prescriptions going back to 2017. Routed to PCP for review.\n\nPCP addendum: reviewed. Nothing new beyond what she told us. Next cervical screening due 2026."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T08:15",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T08:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T08:22"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-17T08:30",
+              "body": "Here before work for her seasonal shots. Feeling well, no fever. Influenza vaccine in the left deltoid and the updated COVID vaccine in the right deltoid. Lot numbers in the immunization record. Observed afterward, no reaction. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: oral contraceptive",
+              "author": "MA",
+              "date": "2024-01-09T13:40",
+              "body": "Pharmacy e-request for ethinyl estradiol/norgestimate, 3 packs with 3 refills. Last seen 8/2023. Pended for PCP.\n\nPCP: approved, 3 packs x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: mood, headaches",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "social": [{"item": "Tobacco smoking status", "value": "Every day smoker"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-02-20T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "author": "PCP",
+              "date": "2024-02-20T11:35",
+              "body": "Six-month check. Winter has been busy at work with people booking spring trips; she has been in the office more than usual.\n\nMood about the same, steady, sleeping okay. PHQ-9 6. Declines counseling referral again, though she took the list of local therapists.\nHeadaches: two or three a month, same pattern as before, no new features, nothing that wakes her.\nCycles regular on the pill.\nStill at about a pack a day. We talked through what quitting could look like; she wants to try cutting back on her own first.\n\nVitals as recorded. Looks well. Heart and lungs normal.\n\nPlan: continue current pill. Recheck mood at the physical in the fall. Book the physical before she leaves the office."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T21:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "author": "patient",
+              "date": "2024-06-12T21:47",
+              "body": "So sorry about yesterday, I was stuck at the airport after a delayed connection and completely forgot to call. Everything is fine on my end. Can we just roll it into my physical in September?\n\nFront desk reply 6/13: no problem, you're set for 9/24 at 10:00."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm", "temp_c"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 8}],
+          "social": [{"item": "Tobacco smoking status", "value": "Every day smoker"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T10:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T10:50", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-24T10:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2024-09-24T10:45"}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Routine screening, age 40"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-09-24T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-24T11:20",
+              "body": "Annual exam, just turned 40.\n\nInterval: no illnesses, no ED visits. Headaches unchanged at a couple a month. Mood a bit lower this summer with long hours; PHQ-9 8, mild range. No self-harm thoughts. She still prefers no medication and no therapy right now; we agreed to keep an eye on it and she will message if it slides.\nCycles regular on the pill. LMP two weeks ago.\nSmoking about a pack a day, the cutting-back plan did not stick. Again offered help when she wants it.\nTravel: roughly six long-haul trips this year for work.\n\nMeds: ethinyl estradiol 0.035 / norgestimate 0.25 daily. No medication allergies.\n\nExam: well-appearing. Vitals as recorded. Eyes, ears, throat normal. No thyroid enlargement or nodes. Heart regular, no murmur. Lungs clear. Breasts without masses, skin changes or nipple discharge, no axillary nodes. Abdomen soft, nontender. No leg swelling. Skin without suspicious lesions.\n\nA/P:\n- Health maintenance: CBC, CMP and lipids today. Tdap today (none on record). Screening mammogram ordered. Pap due 2026. Flu and COVID later this fall when the season's supply comes in.\n- Mild depression: watchful, rescreen at each visit.\n- Migraine: no change.\n- Tobacco: counseled.\nRTC one year, or sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "imaging",
+          "start": "2024-10-08T08:30",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-10-08T08:30", "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies for comparison. The breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast.", "conclusion": "BI-RADS 1: negative. Routine annual screening recommended."}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-10-08T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2024-10-09T12:15",
+              "body": "Your mammogram came back normal, no findings. We'll plan to repeat it next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "nurse_visit",
+          "start": "2024-10-29T16:30",
+          "reason": "Vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-29T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-29T16:37"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2024-10-29T16:45",
+              "body": "Seasonal flu and 2024-25 COVID vaccines given, one in each arm. Afebrile, no complaints. Tolerated without issue and left after the observation period."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

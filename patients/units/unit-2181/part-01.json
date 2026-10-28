@@ -1,0 +1,477 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002181",
+      "given": "Derek",
+      "family": "Pereira",
+      "birth_date": "1982-01-19",
+      "address_line": "27 Fairhaven Terrace",
+      "phone": "+1-413-555-0123",
+      "email": "derek.pereira@example.test",
+      "marital_status": "single",
+      "summary": "Healthy 44-year-old corporate sales manager who joined in late 2023 with no problems or medications. Right Bell palsy in June 2025 treated at ENT with steroids, fully recovered by his October 2025 physical; a same-side recurrence in February 2026 was handled in the ED after his last practice visit.",
+      "events": [
+        {
+          "id": "2023-10-25a",
+          "kind": "telephone",
+          "start": "2023-10-25T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "author": "front desk",
+              "date": "2023-10-25T10:20",
+              "body": "Caller Derek Pereira, DOB 01/19/1982, interested in membership. Heard about us from a coworker. Currently has no doctor he sees regularly; last physical \"a few years back\" at his old primary care office. Employer PPO, card info entered. Membership agreement emailed. New patient appointment set for 11/7 at 8:30. Medical records release signed electronically, request faxed to prior office today."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "establish_care",
+          "start": "2023-11-07T08:30",
+          "end": "2023-11-07T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 84.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks on weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "Corporate sales manager"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-11-07T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-07T09:35",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-11-07T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-07T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-07T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-07T09:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-11-07T09:20"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-07T09:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 40-64",
+              "performed": "2023-11-07T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-07T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-07T09:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "est-cbc",
+              "action": "placed",
+              "order": "CBC with Differential",
+              "category": "lab"
+            },
+            {
+              "id": "est-cmp",
+              "action": "placed",
+              "order": "Comprehensive Metabolic Panel (CMP)",
+              "category": "lab"
+            },
+            {
+              "id": "est-lipid",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab"
+            },
+            {
+              "id": "est-a1c",
+              "action": "placed",
+              "order": "Hemoglobin A1c",
+              "category": "lab"
+            },
+            {
+              "id": "est-hcv",
+              "action": "placed",
+              "order": "Hepatitis C Antibody",
+              "category": "lab"
+            },
+            {
+              "id": "est-hiv",
+              "action": "placed",
+              "order": "HIV-1/2 Antigen and Antibody",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-11-07T09:30",
+              "body": "41-year-old man joining the practice. Feels well, no complaints today, mainly wants a doctor he can reach and a baseline checkup. Works as a sales manager for a corporate account team, a lot of driving and some air travel, sits a good part of the day.\n\nPMH: none. No chronic illnesses, no hospitalizations.\nPSH: tonsils out at age 7.\nMeds: none, no supplements.\nAllergies: none to medications.\nFamily: father with high blood pressure and type 2 diabetes. Mother with an underactive thyroid. Sister gets migraines.\nSocial: never used tobacco. Has 2-3 drinks on weekends, social. Single, lives in Westfield.\nROS: negative across systems; sleeps OK, mood good.\n\nExam: well appearing, vitals as recorded. HEENT unremarkable, TMs clear, oropharynx without lesions (tonsils surgically absent). Neck supple, no thyroid enlargement or nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Extremities warm, no swelling. Neuro: cranial nerves grossly intact, face symmetric, strength and gait normal. Skin: nothing of note.\n\nPHQ-2 0.\n\nAssessment/plan:\n1. Adult health maintenance. Baseline CBC, CMP, lipids. A1c given his father's diabetes. One-time hepatitis C and HIV screening, he agrees.\n2. Immunizations: no record of a tetanus booster in at least 10 years per patient, Tdap today. Flu vaccine today.\n3. Colon cancer screening starts at 45, will plan for it then.\n4. Old records requested.\n\nFollow up for a physical next fall, or message any time."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "portal_message",
+          "start": "2023-11-09T07:55",
+          "orders": [
+            {
+              "id": "est-cbc",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            },
+            {
+              "id": "est-cmp",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            },
+            {
+              "id": "est-lipid",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            },
+            {
+              "id": "est-a1c",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            },
+            {
+              "id": "est-hcv",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            },
+            {
+              "id": "est-hiv",
+              "action": "done",
+              "date": "2023-11-08T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-11-09T07:55",
+              "body": "Hi Derek, everything from Tuesday came back fine. Blood counts, kidney and liver numbers normal. Cholesterol is in a good range and your A1c shows no sign of diabetes. Hep C and HIV screens negative. Nothing to do here. Good to have a baseline on file."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-06a",
+          "kind": "outside_records",
+          "start": "2023-12-06T13:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "MA",
+              "date": "2023-12-06T13:10",
+              "body": "17 pages received by fax from the patient's previous primary care office, covering 2016 to 2021. Contents: three routine physical exams with normal findings, routine labs within normal ranges, influenza vaccines most years, COVID primary series documented. Surgical history lists remote tonsillectomy. No problem list entries, no medications. No tetanus booster documented in that span. Abstracted, original scanned under Media for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "portal_message",
+          "start": "2024-04-16T16:42",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Employer Wellness Form",
+              "author": "patient",
+              "date": "2024-04-16T16:42",
+              "body": "Hey, our company does a wellness credit on the insurance if a doctor signs off on a biometric form. Can I upload it here? It wants BP, height/weight and cholesterol from the last 12 months. Thanks."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Employer Wellness Form",
+              "author": "front desk",
+              "date": "2024-04-17T09:05",
+              "body": "Yes, attach it to this thread. We'll fill it in from your November visit and labs and get it signed. It usually takes a couple of business days, we'll message when it's back."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Form Completed",
+              "author": "front desk",
+              "date": "2024-04-19T11:30",
+              "body": "Biometric screening form completed from 11/7/23 visit and labs, signed by PCP, uploaded back to patient via portal. Copy scanned."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-22T08:45",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-22T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-22T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-22T08:37"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-10-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T08:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ap24-cmp",
+              "action": "placed",
+              "order": "Comprehensive Metabolic Panel (CMP)",
+              "category": "lab"
+            },
+            {
+              "id": "ap24-lipid",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab"
+            },
+            {
+              "id": "ap24-a1c",
+              "action": "placed",
+              "order": "Hemoglobin A1c",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-10-22T08:50",
+              "body": "Yearly exam. Has been well since joining, no visits in between. Busy quarter at work, traveling twice a month. Walks on weekends, plays pickup basketball occasionally. Alcohol unchanged, weekends only. No tobacco.\n\nNo meds. NKDA.\nROS negative.\n\nExam: vitals reviewed. Comfortable. Ears, throat normal. No neck masses. Heart RRR without murmur. Lungs clear bilaterally. Abdomen benign. No peripheral swelling. Face symmetric, neuro nonfocal. Skin clear.\n\nPHQ-2 negative.\n\nA/P: healthy adult.\n- CMP, lipids, A1c today (father's diabetes).\n- Flu and COVID boosters given in clinic.\n- Tdap current (11/2023).\n- Colonoscopy or stool test discussion at 45.\nSee him next October."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T12:15",
+          "orders": [
+            {
+              "id": "ap24-cmp",
+              "action": "done",
+              "date": "2024-10-23T15:20"
+            },
+            {
+              "id": "ap24-lipid",
+              "action": "done",
+              "date": "2024-10-23T15:20"
+            },
+            {
+              "id": "ap24-a1c",
+              "action": "done",
+              "date": "2024-10-23T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-10-24T12:15",
+              "body": "Derek, your labs from the physical all look normal: sugar and A1c fine, kidneys and liver fine, cholesterol good. Same plan, recheck next year."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Lab Results",
+              "author": "patient",
+              "date": "2024-10-24T18:02",
+              "body": "Great, thanks doc."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

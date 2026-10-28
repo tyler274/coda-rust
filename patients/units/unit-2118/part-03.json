@@ -28,7 +28,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             }
@@ -133,7 +137,7 @@
               "action": "placed",
               "order": "Home infusion nursing, IV hydration",
               "category": "referral",
-              "to": "Home infusion agency",
+              "to": "Home Health",
               "reason": "dehydration from gastroenteritis with nephrogenic diabetes insipidus"
             }
           ],
@@ -252,19 +256,31 @@
                   "test": "pH, arterial",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.32
+                  "value": 7.32,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "pCO2, arterial",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 40
+                  "value": 40,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "pO2, arterial",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 98
+                  "value": 98,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 }
               ]
             }
@@ -495,7 +511,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 },
                 {
                   "test": "Thyroid Stimulating Hormone"
@@ -516,7 +536,7 @@
             {
               "id": "fit-2026",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening at age 45"
             }

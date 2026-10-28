@@ -2,19 +2,7 @@
   "unit": "unit-2531",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002531/2025-10-09a: reaction \"Methemoglobinemia\" not in catalog (text only)",
-    "MRN00002531/2020-09-09a: procedure order \"Request records from prior primary care\" names no one catalog lab, panel, study or procedure",
-    "MRN00002531/2022-08-12a: lab order \"24-hour urine fractionated metanephrines\" names no one catalog lab, panel, study or procedure",
-    "MRN00002531/2022-08-26a: imaging order \"MRI abdomen with and without contrast, adrenal protocol\" names no one catalog lab, panel, study or procedure",
-    "MRN00002531/2022-09-30a: referral to \"Endocrine Surgery\" names no catalog specialty",
-    "MRN00002531/2022-10-04a: lab order \"Basic metabolic panel\" names no one catalog lab, panel, study or procedure",
-    "MRN00002531/2023-10-16a: lab order \"KOH preparation and fungal culture, skin scraping\" names no one catalog lab, panel, study or procedure",
-    "MRN00002531/2025-10-06a: lab order \"Urine culture\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): lab \"Metanephrines, 24 hour urine\" LOINC 2671-8 not found; closest real codes: 14833-8 Metanephrines [Moles/time] in 24 hour Urine; 71791-8 Metanephrines [Moles/volume] in 24 hour Urine; 19050-4 Metanephrines [Mass/volume] in 24 hour Urine; 2609-6 Metanephrines [Mass/time] in 24 hour Urine; 27978-6 Metanephrines/Creatinine [Molar ratio] in 24 hour Urine",
-    "left text-only (not verified): lab \"Normetanephrine, 24 hour urine\" LOINC 2668-4 not found; closest real codes: 101400-0 Metanephrine, Normetanephrine, 3-Methoxytyramine panel - 24 hour Urine; 79575-7 Metanephrine, Normetanephrine, 3-Methoxytyramine and Creatinine panel - 24 hour Urine; 25964-8 Normetanephrine [Moles/volume] in 24 hour Urine; 2671-6 Normetanephrine [Mass/time] in 24 hour Urine; 21422-1 Normetanephrine [Mass/volume] in 24 hour Urine",
-    "left text-only (not verified): report \"MRI abdomen with and without contrast\" LOINC 24556-5 not found; closest real codes: 30854-4 MR Cervical and thoracic and lumbar spine WO contrast; 44123-8 MR Biliary ducts and Pancreatic duct WO contrast; 91525-6 MR Chest and Abdomen and Pelvis WO contrast; 99611-6 MRA Abdominal vessels and Pelvis vessels WO contrast; 80501-0 MR Small bowel W contrast PO and WO contrast IV",
-    "left text-only (not verified): lab \"KOH preparation, skin\" LOINC 6587-9 not found; closest real codes: 55303-2 Fungus [Presence] in Skin by KOH preparation; 55317-2 Yeast [Presence] in Skin by KOH preparation; 55311-5 Yeast.pseudohyphae [Presence] in Skin by KOH preparation; 644-5 Microscopic observation [Identifier] in Skin by KOH preparation",
-    "left text-only (not verified): lab \"Methemoglobin\" LOINC 2614-2 not found; closest real codes: 2182-4 Cytochrome B reductase [Enzymatic activity/volume] in Amniotic fluid; 32703-1 Cytochrome B5 reductase [Enzymatic activity/mass] in Red Blood Cells; 2183-2 Cytochrome B5 reductase [Enzymatic activity/volume] in Serum; 109592-6 Methemoglobin [Measurement] in Blood; 15082-1 Methemoglobin [Mass/volume] in Blood"
+    "MRN00002531/2025-10-09a: reaction \"Methemoglobinemia\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -338,15 +326,6 @@
               "date": "2020-09-09T10:30"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2020",
-              "action": "placed",
-              "order": "Request records from prior primary care",
-              "category": "procedure",
-              "reason": "Transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -404,13 +383,6 @@
             {
               "vaccine": "Tdap",
               "date": "2011-06-14T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records-2020",
-              "action": "done",
-              "date": "2020-09-21T11:05"
             }
           ],
           "documents": [
@@ -1373,8 +1345,17 @@
             {
               "id": "urine-24h-2022",
               "action": "placed",
-              "order": "24-hour urine fractionated metanephrines",
+              "order": "Metanephrines, 24 hour urine",
               "category": "lab",
+              "loinc": "2609-6",
+              "reason": "Elevated plasma metanephrines"
+            },
+            {
+              "id": "urine-24h-2022-2",
+              "action": "placed",
+              "order": "Normetanephrine, 24 hour urine",
+              "category": "lab",
+              "loinc": "2671-6",
               "reason": "Elevated plasma metanephrines"
             }
           ],
@@ -1400,14 +1381,20 @@
               "results": [
                 {
                   "test": "Metanephrines, 24 hour urine",
-                  "loinc": "2671-8",
+                  "loinc": "2609-6",
                   "unit": "ug/(24.h)",
+                  "range": {
+                    "high": 1300
+                  },
                   "value": 1850
                 },
                 {
                   "test": "Normetanephrine, 24 hour urine",
-                  "loinc": "2668-4",
+                  "loinc": "2671-6",
                   "unit": "ug/(24.h)",
+                  "range": {
+                    "high": 900
+                  },
                   "value": 4600
                 }
               ]
@@ -1416,6 +1403,11 @@
           "orders": [
             {
               "id": "urine-24h-2022",
+              "action": "done",
+              "date": "2022-08-26T09:15"
+            },
+            {
+              "id": "urine-24h-2022-2",
               "action": "done",
               "date": "2022-08-26T09:15"
             }
@@ -1440,6 +1432,7 @@
               "action": "placed",
               "order": "MRI abdomen with and without contrast, adrenal protocol",
               "category": "imaging",
+              "loinc": "36951-2",
               "reason": "Biochemically confirmed catecholamine excess"
             }
           ],
@@ -1460,7 +1453,7 @@
           "reports": [
             {
               "study": "MRI abdomen with and without contrast",
-              "loinc": "24556-5",
+              "loinc": "24557-1",
               "performed": "2022-09-07T18:30",
               "text": "MRI ABDOMEN WITHOUT AND WITH IV CONTRAST, ADRENAL PROTOCOL\n\nIndication: Elevated plasma and urine metanephrines.\nComparison: None.\nTechnique: Multiplanar multisequence imaging of the abdomen before and after IV gadolinium.\n\nFindings:\nAdrenals: 3.0 cm mass in the left adrenal gland. The right adrenal gland is normal.\nKidneys: Normal size and enhancement bilaterally. No hydronephrosis.\nLiver, gallbladder, spleen, pancreas: Normal.\nVessels: No aortic aneurysm.\nLymph nodes: No adenopathy.\nBones and soft tissues: Unremarkable.",
               "conclusion": "3.0 cm left adrenal mass. Otherwise normal MRI of the abdomen."
@@ -1658,7 +1651,7 @@
             {
               "id": "bmp-k-2022",
               "action": "placed",
-              "order": "Basic metabolic panel",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "Recheck potassium"
             }
@@ -2590,8 +2583,17 @@
             {
               "id": "fungal-cx-2023",
               "action": "placed",
-              "order": "KOH preparation and fungal culture, skin scraping",
+              "order": "KOH preparation, skin",
               "category": "lab",
+              "loinc": "55303-2",
+              "reason": "Interdigital scaling"
+            },
+            {
+              "id": "fungal-cx-2023-2",
+              "action": "placed",
+              "order": "Fungal culture, skin",
+              "category": "lab",
+              "loinc": "575-1",
               "reason": "Interdigital scaling"
             }
           ],
@@ -2637,7 +2639,7 @@
               "results": [
                 {
                   "test": "KOH preparation, skin",
-                  "loinc": "6587-9",
+                  "loinc": "55303-2",
                   "text": "Septate hyphae seen"
                 },
                 {
@@ -2651,6 +2653,11 @@
           "orders": [
             {
               "id": "fungal-cx-2023",
+              "action": "done",
+              "date": "2023-11-06T09:30"
+            },
+            {
+              "id": "fungal-cx-2023-2",
               "action": "done",
               "date": "2023-11-06T09:30"
             }
@@ -3123,7 +3130,7 @@
               "results": [
                 {
                   "test": "KOH preparation, skin",
-                  "loinc": "6587-9",
+                  "loinc": "55303-2",
                   "text": "Septate hyphae seen"
                 }
               ]
@@ -4146,7 +4153,7 @@
             {
               "id": "ucx-2025",
               "action": "placed",
-              "order": "Urine culture",
+              "order": "Urine Culture",
               "category": "lab",
               "reason": "Dysuria in a man"
             }
@@ -4235,18 +4242,30 @@
                   "test": "Arterial pO2",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 98
                 },
                 {
                   "test": "Arterial pCO2",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 38
                 },
                 {
                   "test": "Methemoglobin",
-                  "loinc": "2614-2",
+                  "loinc": "2614-6",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 3.0
+                  },
                   "value": 15
                 }
               ]
@@ -4350,8 +4369,12 @@
               "results": [
                 {
                   "test": "Methemoglobin",
-                  "loinc": "2614-2",
+                  "loinc": "2614-6",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 3.0
+                  },
                   "value": 2.1
                 }
               ]
@@ -4966,37 +4989,37 @@
         "code": "885213",
         "display": "benztropine mesylate 1 MG Oral Tablet",
         "ingredient": "benztropine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "olanzapine 10 MG Oral Tablet": {
         "code": "314154",
         "display": "olanzapine 10 MG Oral Tablet",
         "ingredient": "olanzapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "phenazopyridine hydrochloride 200 MG Oral Tablet": {
         "code": "1094104",
         "display": "phenazopyridine hydrochloride 200 MG Oral Tablet",
         "ingredient": "phenazopyridine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "phenoxybenzamine hydrochloride 10 MG Oral Capsule": {
         "code": "861402",
         "display": "phenoxybenzamine hydrochloride 10 MG Oral Capsule",
         "ingredient": "phenoxybenzamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "risperidone 2 MG Oral Tablet": {
         "code": "312831",
         "display": "risperidone 2 MG Oral Tablet",
         "ingredient": "risperidone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "risperidone 3 MG Oral Tablet": {
         "code": "312832",
         "display": "risperidone 3 MG Oral Tablet",
         "ingredient": "risperidone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5004,17 +5027,90 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Arterial pO2": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fungal culture, skin": {
         "code": "580-1",
         "display": "Fungus identified in Specimen by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "KOH preparation, skin": {
+        "code": "55303-2",
+        "display": "Fungus [Presence] in Skin by KOH preparation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Metanephrines, 24 hour urine": {
+        "code": "2609-6",
+        "display": "Metanephrines [Mass/time] in 24 hour Urine",
+        "unit": "ug/(24.h)",
+        "range": {
+          "high": 1300
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Methemoglobin": {
+        "code": "2614-6",
+        "display": "Methemoglobin/Hemoglobin.total in Blood",
+        "unit": "%",
+        "range": {
+          "low": 0.5,
+          "high": 3.0
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Normetanephrine, 24 hour urine": {
+        "code": "2671-6",
+        "display": "Normetanephrine [Mass/time] in 24 hour Urine",
+        "unit": "ug/(24.h)",
+        "range": {
+          "high": 900
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Fungal culture, skin": {
+        "code": "575-1",
+        "display": "Fungus identified in Skin by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "KOH preparation, skin": {
+        "code": "55303-2",
+        "display": "Fungus [Presence] in Skin by KOH preparation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI abdomen with and without contrast": {
+        "code": "24557-1",
+        "display": "MR Abdomen WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI abdomen with and without contrast, adrenal protocol": {
+        "code": "36951-2",
+        "display": "MR Adrenal gland WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Metanephrines, 24 hour urine": {
+        "code": "2609-6",
+        "display": "Metanephrines [Mass/time] in 24 hour Urine",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Normetanephrine, 24 hour urine": {
+        "code": "2671-6",
+        "display": "Normetanephrine [Mass/time] in 24 hour Urine",
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -5024,13 +5120,6 @@
         "display": "Phenazopyridine",
         "receipt": "tx.fhir.org SNOMED CT"
       }
-    },
-    "rejected": [
-      "lab \"Metanephrines, 24 hour urine\" LOINC 2671-8 not found; closest real codes: 14833-8 Metanephrines [Moles/time] in 24 hour Urine; 71791-8 Metanephrines [Moles/volume] in 24 hour Urine; 19050-4 Metanephrines [Mass/volume] in 24 hour Urine; 2609-6 Metanephrines [Mass/time] in 24 hour Urine; 27978-6 Metanephrines/Creatinine [Molar ratio] in 24 hour Urine",
-      "lab \"Normetanephrine, 24 hour urine\" LOINC 2668-4 not found; closest real codes: 101400-0 Metanephrine, Normetanephrine, 3-Methoxytyramine panel - 24 hour Urine; 79575-7 Metanephrine, Normetanephrine, 3-Methoxytyramine and Creatinine panel - 24 hour Urine; 25964-8 Normetanephrine [Moles/volume] in 24 hour Urine; 2671-6 Normetanephrine [Mass/time] in 24 hour Urine; 21422-1 Normetanephrine [Mass/volume] in 24 hour Urine",
-      "report \"MRI abdomen with and without contrast\" LOINC 24556-5 not found; closest real codes: 30854-4 MR Cervical and thoracic and lumbar spine WO contrast; 44123-8 MR Biliary ducts and Pancreatic duct WO contrast; 91525-6 MR Chest and Abdomen and Pelvis WO contrast; 99611-6 MRA Abdominal vessels and Pelvis vessels WO contrast; 80501-0 MR Small bowel W contrast PO and WO contrast IV",
-      "lab \"KOH preparation, skin\" LOINC 6587-9 not found; closest real codes: 55303-2 Fungus [Presence] in Skin by KOH preparation; 55317-2 Yeast [Presence] in Skin by KOH preparation; 55311-5 Yeast.pseudohyphae [Presence] in Skin by KOH preparation; 644-5 Microscopic observation [Identifier] in Skin by KOH preparation",
-      "lab \"Methemoglobin\" LOINC 2614-2 not found; closest real codes: 2182-4 Cytochrome B reductase [Enzymatic activity/volume] in Amniotic fluid; 32703-1 Cytochrome B5 reductase [Enzymatic activity/mass] in Red Blood Cells; 2183-2 Cytochrome B5 reductase [Enzymatic activity/volume] in Serum; 109592-6 Methemoglobin [Measurement] in Blood; 15082-1 Methemoglobin [Mass/volume] in Blood"
-    ]
+    }
   }
 }

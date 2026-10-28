@@ -1,9 +1,7 @@
 {
   "unit": "unit-2002",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002002/2020-10-13a: referral to \"Pulmonary & Critical Care\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002002",
@@ -1505,7 +1503,7 @@
               "action": "placed",
               "order": "Pulmonary / sleep medicine referral",
               "category": "referral",
-              "to": "Pulmonary & Critical Care",
+              "to": "Pulmonology",
               "reason": "loud snoring, witnessed apneas, daytime sleepiness"
             }
           ],
@@ -3126,7 +3124,11 @@
                 {
                   "test": "Osmolality of Serum",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 258
                 }
               ]
@@ -3138,7 +3140,11 @@
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 115
                 }
               ]
@@ -5055,31 +5061,31 @@
         "code": "308907",
         "display": "calcium carbonate 500 MG Chewable Tablet",
         "ingredient": "calcium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "diphenhydramine hydrochloride 25 MG Oral Capsule": {
         "code": "1049909",
         "display": "diphenhydramine hydrochloride 25 MG Oral Capsule",
         "ingredient": "diphenhydramine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "entecavir 0.5 MG Oral Tablet": {
         "code": "485434",
         "display": "entecavir 0.5 MG Oral Tablet",
         "ingredient": "entecavir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 5 MG Oral Tablet": {
         "code": "197787",
         "display": "hydrocortisone 5 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "risperidone 2 MG Oral Tablet": {
         "code": "312831",
         "display": "risperidone 2 MG Oral Tablet",
         "ingredient": "risperidone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5091,13 +5097,21 @@
       "Osmolality of Serum": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

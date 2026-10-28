@@ -1,9 +1,7 @@
 {
   "unit": "unit-1888",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001888",
@@ -529,6 +527,14 @@
         "receipt": "NLM Clinical Tables ICD-10-CM"
       }
     },
+    "medications": {
+      "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet": {
+        "code": "428485",
+        "display": "calcium carbonate 1500 MG / cholecalciferol 0.01 MG Oral Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
     "labs": {
       "Thyroglobulin": {
         "code": "3013-0",
@@ -543,9 +549,6 @@
         "display": "NM Thyroid gland Uptake",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\""
-    ]
+    }
   }
 }

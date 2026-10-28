@@ -1,0 +1,217 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001866",
+      "given": "Isabelle",
+      "family": "Beaulieu",
+      "birth_date": "1997-03-24",
+      "address_line": "27 Woodbridge Street",
+      "phone": "+1-774-555-0156",
+      "email": "isabelle.beaulieu@example.test",
+      "marital_status": "single",
+      "summary": "Healthy elementary school teacher in her late twenties who joined in 2024 with recurrent cystitis; two culture-positive E. coli episodes treated here, then bacterial vaginosis twice at an outside gynecology office whose notes arrive late.",
+      "events": [
+        {
+          "id": "2024-09-03a",
+          "kind": "telephone",
+          "start": "2024-09-03T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2024-09-03T10:20",
+              "body": "Caller is a 27 y/o woman looking for a new primary care doctor. Her old office stopped taking her plan's tier after the school district switched carriers. Explained membership and the fee schedule; she wants to enroll. Booked new patient visit Tue 9/10 at 3:45 (after school). Sent intake forms and the records release for her prior PCP office through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T15:45",
+          "end": "2024-09-10T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Recurrent urinary tract infections", "icd10": "N39.0", "action": "diagnosed", "note": "several episodes over the past few years; most recent April 2024, treated at an urgent care"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 61.0, "height_cm": 165.0, "labs": {"Low Density Lipoprotein": 92}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T16:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T16:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T16:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-10T16:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-09-10T16:35", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2024-09-10T15:45"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-10T16:40",
+              "body": "New patient, 27 y/o F, teaches second grade. Here to establish; feels well.\n\nMain issue she wants on the radar: bladder infections. Has had them on and off for several years, a few a year at worst. Most recent was in April, seen at an urgent care, given a short course of an antibiotic she can't name; cleared. No hx of fevers, flank pain or hospitalization with any of them. No kidney stones. Mother has had the same problem for years.\n\nPMH: recurrent UTIs, otherwise none.\nPSH: tonsils out at age 8.\nMeds: none. No supplements.\nAllergies: no known drug allergies.\nFHx: mother with recurrent UTIs; father with high blood pressure.\nSocial: never smoked. A drink or two a month. One partner, condoms some of the time. Lives locally, teaches at an elementary school.\nGyn: periods regular. Last Pap 2023 at her old office, told normal.\nPHQ-2: 0.\n\nExam: well appearing. Vitals as charted. HEENT normal, tonsillar pillars surgically absent. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no CVA tenderness. Skin clear. Mood and affect normal.\n\nA/P\n1. Recurrent UTIs, by history. Discussed fluids and voiding after intercourse. If symptoms start, message or call and we'll see her same day with a urine sample rather than treating blind.\n2. Health maintenance: baseline CBC, CMP and lipids; one-time HIV and hep C screening today. Requesting records from prior PCP office (release signed). Pap next due 2026. Flu and COVID boosters once the fall supply is in.\nRTC: annual, sooner prn."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab results",
+              "author": "PCP",
+              "date": "2024-09-12T07:55",
+              "body": "Hi Isabelle, everything from Tuesday came back normal: blood counts, kidney and liver tests, sugar and cholesterol all fine, and the HIV and hepatitis C screens were negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-02a",
+          "kind": "outside_records",
+          "start": "2024-10-02T13:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2024-10-02T13:10",
+              "body": "Received by fax, 14 pages, from the patient's previous primary care office (care 2016 to 2024).\n\nSummary of contents: annual visits, unremarkable. Problem list: recurrent cystitis. Surgical history: tonsillectomy in childhood. Medications: none. Allergies: NKDA.\nCervical cytology 2023: negative for intraepithelial lesion or malignancy.\nImmunizations: childhood series complete per state registry printout; HPV series complete; Tdap 2009; influenza most years; COVID primary series 2021.\nSeveral urine cultures in past years listed by date only; reports not included.\n\nScanned to chart. Reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T15:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-08T15:50",
+              "body": "In for seasonal vaccines. Afebrile, no current illness, no prior vaccine reactions. Influenza (trivalent) IM left deltoid, COVID-19 updated mRNA IM right deltoid. VIS given. Observed 15 min, tolerated well. Left after."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "portal_message",
+          "start": "2024-11-18T06:42",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Burning again",
+              "author": "patient",
+              "date": "2024-11-18T06:42",
+              "body": "Hi - I think I have another UTI. Burning when I pee and going constantly since yesterday afternoon. No fever. I can come in after 3 today if there's a spot, otherwise I'll try to get coverage for my class."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Burning again",
+              "author": "RN",
+              "date": "2024-11-18T07:30",
+              "body": "Good morning, we have a 3:20 today with the doctor. Please bring yourself in without emptying your bladder right before, we'll need a sample. Push fluids in the meantime."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18b",
+          "kind": "office_visit",
+          "start": "2024-11-18T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dysuria, urinary frequency",
+          "conditions": [
+            {"label": "Acute cystitis without hematuria", "action": "diagnosed", "onset": "2024-11-17"}
+          ],
+          "medications": [
+            {"drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily with food for 5 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "acute cystitis"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2024-11-18T15:25", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "1+"},
+              {"test": "Urine Nitrite", "text": "Positive"},
+              {"test": "Urine Blood", "text": "Negative"},
+              {"test": "Urine White Blood Cells", "value": 20},
+              {"test": "Urine Red Blood Cells", "value": 0}
+            ]},
+            {"panel": null, "collected": "2024-11-18T15:25", "results": [
+              {"test": "Bacteria in Urine sediment by Microscopy high power field", "loinc": "5769-5", "text": "Many"}
+            ]},
+            {"panel": null, "collected": "2024-11-18T15:25", "resulted": "2024-11-21T09:10", "results": [
+              {"test": "Urine Culture", "text": "Escherichia coli, greater than 100,000 CFU/mL. Susceptible to nitrofurantoin."}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-11-18T15:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "author": "PCP",
+              "date": "2024-11-18T15:55",
+              "body": "S: Dysuria and frequency starting yesterday afternoon. Mild urgency. No fever, chills, back or flank pain, nausea. No discharge or genital sores. No new partner. First episode since April.\n\nO: Afebrile, vitals as charted. Comfortable. No CVA tenderness. Abdomen soft, mild discomfort low midline only with deep palpation.\nUA (in office): LE 1+, nitrite positive, blood negative; micro WBC 20/hpf, RBC 0/hpf, many bacteria. Culture sent.\n\nA/P: Uncomplicated cystitis, second documented episode this year counting April.\n- Nitrofurantoin 100 mg BID x 5 days with food.\n- Will call with culture. If fever, flank pain or not better in 48h, let us know.\n- Reviewed voiding after sex and hydration again."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "portal_message",
+          "start": "2024-11-21T12:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Urine culture result",
+              "author": "PCP",
+              "date": "2024-11-21T12:15",
+              "body": "Isabelle - your urine culture grew E. coli, and it's sensitive to the nitrofurantoin you're on, so just finish the five days. Hope you're already feeling better."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-25a",
+          "kind": "portal_message",
+          "start": "2024-11-25T19:02",
+          "conditions": [
+            {"label": "Acute cystitis without hematuria", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: Urine culture result",
+              "author": "patient",
+              "date": "2024-11-25T19:02",
+              "body": "All better by day 2, finished the pills Saturday. Thank you for squeezing me in!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

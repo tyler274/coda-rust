@@ -1,9 +1,7 @@
 {
   "unit": "unit-2153",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002153",
@@ -103,6 +101,7 @@
             },
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet (CF fat-soluble formulation) by mouth daily",
               "dose": {
@@ -509,6 +508,10 @@
                   "test": "Vitamin A",
                   "loinc": "2923-1",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 32.5,
+                    "high": 78.0
+                  },
                   "value": 14
                 }
               ]
@@ -605,6 +608,10 @@
                   "test": "Vitamin A",
                   "loinc": "2923-1",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 32.5,
+                    "high": 78.0
+                  },
                   "value": 41
                 }
               ]
@@ -1050,6 +1057,10 @@
                   "test": "Vitamin A",
                   "loinc": "2923-1",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 32.5,
+                    "high": 78.0
+                  },
                   "value": 19
                 }
               ]
@@ -1072,21 +1083,15 @@
               "resulted": "2026-04-13T15:10",
               "results": [
                 {
-                  "test": "Alanine aminotransferase",
-                  "loinc": "1742-6",
-                  "unit": "U/L",
+                  "test": "Alanine Aminotransferase",
                   "value": 24
                 },
                 {
-                  "test": "Aspartate aminotransferase",
-                  "loinc": "1920-8",
-                  "unit": "U/L",
+                  "test": "Aspartate Aminotransferase",
                   "value": 22
                 },
                 {
-                  "test": "Bilirubin, total",
-                  "loinc": "1975-2",
-                  "unit": "mg/dL",
+                  "test": "Bilirubin, Total",
                   "value": 0.6
                 }
               ]
@@ -1124,6 +1129,10 @@
                   "test": "Vitamin A",
                   "loinc": "2923-1",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 32.5,
+                    "high": 78.0
+                  },
                   "value": 36
                 }
               ]
@@ -1134,21 +1143,15 @@
               "resulted": "2026-07-13T15:30",
               "results": [
                 {
-                  "test": "Alanine aminotransferase",
-                  "loinc": "1742-6",
-                  "unit": "U/L",
+                  "test": "Alanine Aminotransferase",
                   "value": 27
                 },
                 {
-                  "test": "Aspartate aminotransferase",
-                  "loinc": "1920-8",
-                  "unit": "U/L",
+                  "test": "Aspartate Aminotransferase",
                   "value": 25
                 },
                 {
-                  "test": "Bilirubin, total",
-                  "loinc": "1975-2",
-                  "unit": "mg/dL",
+                  "test": "Bilirubin, Total",
                   "value": 0.7
                 }
               ]
@@ -1190,46 +1193,28 @@
         "code": "1373325",
         "display": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
         "ingredient": "amylase",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule": {
         "code": "855499",
         "display": "amylase 30000 UNT / lipase 6000 UNT / protease 19000 UNT Delayed Release Oral Capsule",
         "ingredient": "amylase",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sodium chloride 9 MG/ML Nasal Spray": {
         "code": "351179",
         "display": "sodium chloride 9 MG/ML Nasal Spray",
         "ingredient": "sodium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vitamin A 10000 UNT Oral Capsule": {
         "code": "313638",
         "display": "vitamin A 10000 UNT Oral Capsule",
         "ingredient": "vitamin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
-      "Alanine aminotransferase": {
-        "code": "1742-6",
-        "display": "Alanine aminotransferase [Enzymatic activity/volume] in Serum or Plasma",
-        "unit": "U/L",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Aspartate aminotransferase": {
-        "code": "1920-8",
-        "display": "Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma",
-        "unit": "U/L",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Bilirubin, total": {
-        "code": "1975-2",
-        "display": "Bilirubin.total [Mass/volume] in Serum or Plasma",
-        "unit": "mg/dL",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
       "Fecal fat, qualitative": {
         "code": "2270-7",
         "display": "Fat [Presence] in Stool",
@@ -1239,11 +1224,12 @@
         "code": "2923-1",
         "display": "Retinol [Mass/volume] in Serum or Plasma",
         "unit": "ug/dL",
+        "range": {
+          "low": 32.5,
+          "high": 78.0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

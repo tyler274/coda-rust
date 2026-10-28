@@ -1,0 +1,233 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002289",
+      "given": "William",
+      "family": "Casey",
+      "birth_date": "1957-11-16",
+      "address_line": "212 Brookline Ave",
+      "phone": "+1-774-555-0175",
+      "email": "william.casey@example.test",
+      "marital_status": "married",
+      "summary": "Retired shipyard worker, 90 pack-year former smoker with asbestos exposure, who joins in 2023 for a chronic productive cough; bronchiectasis and asbestosis are found, then extensive-stage small cell lung cancer presenting with hypercalcemia. Chemoimmunotherapy, malignant pleural and pericardial effusions, a port infection, SIADH and a central airway mass follow, mostly seen through sparse outside notes.",
+      "events": [
+        {
+          "id": "2023-06-06a",
+          "kind": "telephone",
+          "start": "2023-06-06T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2023-06-06T10:20",
+             "body": "Caller wants to transfer his primary care here; his old doctor retired this spring and he hasn't connected with whoever took over. Medicare. Booked new patient appt 6/13 at 9:00. Release signed by fax for his old office notes and med list. Told him to bring his pill bottles."}
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "outside_records",
+          "start": "2023-06-12T14:05",
+          "reason": "records from prior primary care office",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2023-06-12T14:05",
+             "body": "Faxed packet, 9 pages, from his previous family practice.\n\nMedication list: atorvastatin 40 mg daily; aspirin 81 mg daily.\nAllergies: NKDA.\nProblem list: hyperlipidemia; tobacco use, quit 2021; occupational asbestos exposure (shipyard).\n\nApril 2023 sick visit: fever, productive cough, crackles at the right base; treated as community-acquired pneumonia with an oral antibiotic course, improved at phone follow-up. Not admitted.\n\nOlder visits note repeated winter chest infections treated with antibiotics. No colonoscopy on file.\n\nScanned to chart."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "establish_care",
+          "start": "2023-06-13T09:00",
+          "end": "2023-06-13T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, chronic cough",
+          "conditions": [
+            {"label": "Hyperlipidemia", "action": "diagnosed", "onset": "2014-05-01"},
+            {"label": "Asbestos exposure", "icd10": "Z77.090", "action": "diagnosed", "onset": "1983-06-01", "note": "30 years in naval shipyards"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2021-03-01", "note": "90 pack-years, quit 2021"},
+            {"label": "Community-acquired pneumonia", "action": "history", "onset": "2023-04-10", "note": "outpatient, treated by prior office"},
+            {"label": "Community-acquired pneumonia", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hyperlipidemia"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 82.0, "height_cm": 178.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired naval shipyard worker"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-13T10:10", "results": [{"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-13T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-13T10:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-06-13T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-06-13T10:00"},
+            {"vaccine": "Tdap", "date": "2023-06-13T10:00"}
+          ],
+          "orders": [
+            {"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "years of daily purulent sputum, frequent chest infections, clubbing"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-06-13T09:00"},
+            {"procedure": "Immunization administration", "performed": "2023-06-13T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-06-13T10:05",
+             "body": "65M establishing care. Previous PCP retired; records from that office reviewed.\n\nMain issue is his cough. Every morning he brings up a lot of thick yellow-green phlegm, often with a bad smell, mostly in the first hour after he gets up. Says he has had a chest infection that needed antibiotics most years for about five years; the last one in April was called pneumonia and treated at home with pills. Feels back to his usual now. No fevers, sweats or weight change.\n\nPMH: high cholesterol on atorvastatin. Took aspirin on old doctor's advice, brother has heart disease.\nMeds: atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: none to medicines.\nFamily: father died of lung cancer at 68, smoked heavily. Mother had emphysema. Brother with coronary disease.\nSocial: married, lives with wife. Thirty years at the naval shipyard, retired at 55; worked around insulation and lagging, asbestos exposure for years. Smoked about two packs a day for roughly 45 years (90 pk-yr), finally quit in 2021 after several tries. A beer once or twice a month. Walks now and then.\n\nExam: BP and vitals as charted. Comfortable, no distress. Clubbing of the fingers. Lungs with scattered rhonchi over both bases, clear after cough in part, no wheeze. Heart regular, no murmur. Abdomen soft. No edema.\n\nA/P\n1. Chronic productive cough with recurrent infections, clubbing, heavy smoking and asbestos history. Needs a pulmonary evaluation and CT. Referral to pulmonology placed.\n2. Hyperlipidemia: continue atorvastatin 40. Lipids today.\n3. Former smoker, asbestos exposure: pulmonology will steer imaging.\n4. Health maintenance: PCV20 and Tdap today. Hep C and HIV screening with labs. CMP, CBC, lipids.\nRTC early September for his wellness visit."}
+          ]
+        },
+        {
+          "id": "2023-06-15a",
+          "kind": "portal_message",
+          "start": "2023-06-15T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2023-06-15T16:40",
+             "body": "Mr. Casey, everything from Tuesday came back fine: kidney and liver tests, blood count, and the hepatitis C and HIV screens are negative. Your cholesterol numbers look good on the atorvastatin, so no change. Pulmonology should call you to set up the visit; let us know if you don't hear in two weeks."}
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "specialist_visit",
+          "start": "2023-07-17T13:30",
+          "service": "Pulmonology",
+          "reason": "chronic productive cough",
+          "conditions": [
+            {"label": "Bronchiectasis", "action": "diagnosed", "onset": "2018-06-01"}
+          ],
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2023-07-17T13:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Consultation", "author": "pulmonology", "date": "2023-07-24T09:15",
+             "body": "Outside pulmonary group. Date of visit 7/17/2023. Thank you for asking us to see Mr. Casey.\n\nReason: daily purulent sputum.\nHe raises a large volume of foul, yellow-green sputum each morning, heaviest right after waking. About five years of recurrent respiratory infections, each needing antibiotics. No weight loss, fevers or night sweats.\n\nHistory: hyperlipidemia. Ex-smoker, 90 pack-years, quit 2021. Shipyard work with asbestos exposure. Meds atorvastatin 40, aspirin 81. NKDA.\n\nExam: digital clubbing. Scattered rhonchi over both lung bases. No wheeze.\n\nCT chest 7/11/2023 (reviewed): thick-walled, dilated bronchi in both lower lobes with mucus plugging and cystic change.\n\nImpression: bronchiectasis, bilateral lower lobes.\n\nPlan: daily airway clearance with an oscillating PEP device, twice a day, technique taught today. Treat flares with antibiotics early. Will see him again in October.\n\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "pharmacy",
+          "start": "2023-08-21T08:50",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill: atorvastatin", "author": "MA", "date": "2023-08-21T08:50",
+             "body": "Pharmacy e-request for atorvastatin 40 mg #90. Last lipids 6/13 fine. Sent 90 days, 1 refill, per protocol."}
+          ]
+        },
+        {
+          "id": "2023-09-08a",
+          "kind": "annual_physical",
+          "start": "2023-09-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "health maintenance",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-09-08T11:10"}],
+          "procedures": [
+            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2023-09-08T10:30"},
+            {"procedure": "Immunization administration", "performed": "2023-09-08T11:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Welcome to Medicare Visit", "author": "PCP", "date": "2023-09-08T11:20",
+             "body": "Preventive visit. 65-year-old man, seen by pulmonology in July for his cough, told he has bronchiectasis; doing the flutter device most mornings. Nothing new bothering him today.\n\nMeds: atorvastatin 40, aspirin 81. Allergies none.\nFunction: independent, drives, no falls. Hearing and vision okay for him. PHQ-2 negative.\n\nVitals in normal range. Exam: well appearing. Clubbing as before. Chest with a few coarse sounds at the bases. Heart regular. Abdomen benign. Skin unremarkable.\n\nCounseling: we talked about what is most likely to threaten his health over the coming years. With 90 pack-years, decades of asbestos and his father's lung cancer, lung cancer is the big one, more than his heart. Pulmonology has a CT planned for October, which will cover the screening question, so I am not ordering a separate low-dose CT now. He knows to call for coughing up blood, weight loss or new chest pain.\n\nShingrix #1 today, #2 in 2 to 6 months. Flu/COVID/RSV when supplies are in, nurse visit.\nAdvance directive packet given."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T14:00",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-03T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T14:07"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-03T14:09"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T14:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2023-10-03T14:25",
+             "body": "High-dose flu L deltoid, updated COVID R deltoid, RSV L deltoid lower site. Screening questions negative. Waited 15 min, no reaction. VIS sheets given."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "specialist_visit",
+          "start": "2023-10-10T09:45",
+          "service": "Pulmonology",
+          "reason": "cough and dyspnea follow-up",
+          "conditions": [
+            {"label": "Asbestosis", "action": "diagnosed", "onset": "2023-10-10"},
+            {"label": "Suspected malignant neoplasm of lung", "icd10": "R91.8", "action": "diagnosed", "onset": "2023-10-06", "note": "right hilar fullness on HRCT"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2023-10-17T11:30",
+             "body": "Outside pulmonary group, follow-up 10/10/2023.\n\nBack after the July consult; his PCP saw him in September. Ongoing cough, and over the last couple of months he gets winded sooner on hills and stairs. No chest pain, no blood in the sputum, weight steady.\n\nExam: fine inspiratory crackles at both bases. Clubbing.\n\nChest x-ray: interstitial fibrotic change with pleural plaques.\nHRCT 10/6/2023: diffuse subpleural reticulation with honeycombing. Separately, soft tissue fullness at the right hilum, not well characterized on a non-contrast study; contrast-enhanced CT advised.\nPFTs: restrictive pattern.\n\nImpression:\n1. Asbestosis with pleural plaques, on top of his known lower-lobe bronchiectasis.\n2. Right hilar abnormality, suspicious for a malignancy given his history.\n\nPlan: we spent time on what to expect over the long term: the fibrosis tends to progress slowly, and with his asbestos and smoking history his risks of lung cancer and of mesothelioma are both well above average. Contrast CT chest ordered, first opening is late November. Continue airway clearance.\n\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "telephone",
+          "start": "2023-10-19T12:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pulmonology Letter Review", "author": "PCP", "date": "2023-10-19T12:55",
+             "body": "Called pt after reading the pulm note. Went over the scarring from asbestos, and that the CT also showed something at the right side of the chest center that needs a dye CT to sort out. He had heard the same from pulm and is booked for late November. Asked if it could go sooner; he would rather keep the date, his wife has a procedure the week before. Offered to push for an earlier slot anyway, he declined. Added to problem list. Call if any blood in sputum, weight loss, or he feels worse."}
+          ]
+        },
+        {
+          "id": "2023-11-18a",
+          "kind": "hospital_admission",
+          "start": "2023-11-18T15:20",
+          "end": "2023-11-24T12:00",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "confusion, fatigue, constipation",
+          "conditions": [
+            {"label": "Hypercalcemia", "icd10": "E83.52", "action": "diagnosed", "onset": "2023-11-14"},
+            {"label": "Malignant neoplasm of lung", "action": "diagnosed", "onset": "2023-11-18", "note": "small cell carcinoma, right hilar, extensive stage, stage IV"},
+            {"label": "Malignant pleural effusion", "icd10": "J91.0", "action": "diagnosed", "onset": "2023-11-18", "note": "right"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-18T15:50", "results": [{"test": "Calcium", "value": 13.9}]},
+            {"panel": null, "collected": "2023-11-18T15:50", "results": [{"test": "Phosphorus", "value": 1.9}, {"test": "Parathyroid Hormone, Intact", "value": 9}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-24T06:00", "results": [{"test": "Calcium", "value": 10.2}]}
+          ],
+          "procedures": [
+            {"procedure": "Percutaneous needle biopsy of lung, CT-guided", "snomed": "287465001", "performed": "2023-11-21T10:30"},
+            {"procedure": "Thoracentesis", "snomed": "91602002", "performed": "2023-11-22T14:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2023-11-27T08:30",
+             "body": "Regional hospital ED, 11/18/2023.\nCC: confused, tired, constipated x several days, per wife.\nPt slow to answer, lethargic. Dry mucous membranes, mildly dry. Reflexes sluggish, cannot keep attention on serial tasks. Nonfocal otherwise.\nCa 13.9, phos 1.9, PTH low (9).\nCXR: 4.5 cm R hilar mass.\nImp: hypercalcemia, low PTH, hilar mass, concern for malignancy. IV NS started. Admit to medicine.\nAllergies: NKDA."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2023-11-27T08:35",
+             "body": "Admitted 11/18/2023, discharged 11/24/2023.\nDx: hypercalcemia due to malignancy; small cell lung cancer, extensive stage (stage IV) with malignant right pleural effusion.\n\nCourse: IV saline and zoledronic acid 4 mg IV x1; mental status cleared by day 3. Contrast CT chest: right hilar mass, small right effusion. CT abd/pelvis and MRI brain without metastatic disease. CT-guided transthoracic needle biopsy 11/21: small cell carcinoma. Diagnostic right thoracentesis 11/22: cytology positive for malignant cells. Ca 10.2 on day of discharge.\n\nDischarge meds: atorvastatin 40 daily, aspirin 81 daily (unchanged).\nAllergies: NKDA.\nFollow-up: oncology consult arranged for early December; PCP within 1 week."}
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "office_visit",
+          "start": "2023-11-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {"label": "Hypercalcemia", "icd10": "E83.52", "action": "resolved"},
+            {"label": "Suspected malignant neoplasm of lung", "icd10": "R91.8", "action": "resolved", "note": "biopsy confirmed small cell carcinoma"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [{"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-11-28T11:40", "results": [{"test": "Calcium", "value": 9.6}]}],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2023-11-28T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2023-11-28T12:10",
+             "body": "Seen with his wife, 4 days after discharge. Discharge summary reviewed (received 11/27).\n\nHe came in with confusion and constipation; calcium was 13.9 and a 4.5 cm right hilar mass was found. Biopsy showed small cell carcinoma, and the fluid around the right lung had cancer cells, so it is extensive stage. He got fluids and a dose of zoledronic acid and cleared quickly.\n\nToday he is sharp, oriented, bowels moving. Some fatigue. Wife is taking notes and doing the driving.\n\nExam: alert, appropriate. Lungs: crackles at bases as before, slightly reduced sounds at R base. Heart regular. No edema.\n\nA/P\n1. Small cell lung cancer, extensive stage, malignant R pleural effusion. Oncology consult 12/4. We talked about how treatment usually goes and that I'll stay involved. They asked good questions; both understandably shaken.\n2. Hypercalcemia: resolved. BMP today. Call for confusion, constipation, vomiting.\n3. Bronchiectasis, asbestosis: keep up airway clearance.\n4. HLD: continue atorvastatin, aspirin.\nWill touch base after he meets oncology."}
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "portal_message",
+          "start": "2023-12-19T19:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Update from wife", "author": "patient", "date": "2023-12-19T19:05",
+             "body": "Hi, this is Bill's wife writing for him. He started treatment on the 11th: carboplatin and etoposide with atezolizumab, every three weeks. The cancer doctor said four rounds then the immune drug alone. He's tired but managing. Just wanted you to know. Do we still need the second shingles shot?"},
+            {"type": "Patient Message", "title": "Re: Update from wife", "author": "PCP", "date": "2023-12-20T08:15",
+             "body": "Thank you for letting me know, I'm glad the first round went okay. Let's hold the second shingles shot until his counts settle; we can give it at his spring visit. Message any time."}
+          ]
+        }
+      ]
+    }
+  ]
+}

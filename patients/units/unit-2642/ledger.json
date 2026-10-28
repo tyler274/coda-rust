@@ -1,9 +1,7 @@
 {
   "unit": "unit-2642",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): lab \"Fungal elements, KOH preparation\" LOINC 6575-2 not found"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002642",
@@ -372,7 +370,7 @@
               "results": [
                 {
                   "test": "Fungal elements, KOH preparation",
-                  "loinc": "6575-2",
+                  "loinc": "55303-2",
                   "text": "Branched, segmented hyphae seen"
                 }
               ]
@@ -796,7 +794,7 @@
               "results": [
                 {
                   "test": "Fungal elements, KOH preparation",
-                  "loinc": "6575-2",
+                  "loinc": "55303-2",
                   "text": "Branching hyphae seen"
                 }
               ]
@@ -866,7 +864,7 @@
         "code": "992528",
         "display": "terbinafine hydrochloride 10 MG/ML Topical Cream",
         "ingredient": "terbinafine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -874,10 +872,12 @@
         "code": "580-1",
         "display": "Fungus identified in Specimen by Culture",
         "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fungal elements, KOH preparation": {
+        "code": "55303-2",
+        "display": "Fungus [Presence] in Skin by KOH preparation",
+        "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Fungal elements, KOH preparation\" LOINC 6575-2 not found"
-    ]
+    }
   }
 }

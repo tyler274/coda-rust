@@ -1,0 +1,428 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002181",
+      "events": [
+        {
+          "id": "2025-06-24a",
+          "kind": "telephone",
+          "start": "2025-06-24T07:12",
+          "reason": "right facial heaviness on waking",
+          "orders": [
+            {
+              "id": "ent-ref",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "acute right facial weakness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Triage Call",
+              "author": "PCP",
+              "date": "2025-06-24T07:25",
+              "body": "Pt called the after-hours line at 7:10. Woke up about an hour ago and the right side of his face feels heavy. Couldn't brush his teeth right, water ran out the corner of his mouth when he drank. He tried in the mirror and can't lift the right eyebrow either. Denies weakness or numbness in his arms or legs, no trouble getting words out, no double vision, no headache. Walking normally. Went to bed fine last night.\n\nWhole right side including the forehead points toward a peripheral facial nerve problem rather than a stroke, but he needs to be examined today. ENT colleague has an 11:00 opening, booked it and sent the referral. Told him plainly: if any arm or leg weakness, slurred speech, vision change or the face gets worse on the way, go straight to the ED / call 911. He should not drive himself if anything changes. He understands, a friend is giving him a ride. Asked him to let me know what ENT says."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-24b",
+          "kind": "specialist_visit",
+          "start": "2025-06-24T11:00",
+          "service": "Otolaryngology",
+          "reason": "right facial weakness",
+          "conditions": [
+            {
+              "label": "Bell palsy",
+              "action": "diagnosed",
+              "onset": "2025-06-24",
+              "note": "right side"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 3 tablets (60 mg) by mouth once daily with breakfast for 5 days, then 50 mg, 40 mg, 30 mg, 20 mg, 10 mg on days 6-10, then stop",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Bell palsy"
+            },
+            {
+              "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+              "action": "start",
+              "sig": "Instill 1-2 drops in the right eye every 2-3 hours while awake",
+              "frequency": "PRN",
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "eye protection, Bell palsy"
+            },
+            {
+              "drug_text": "mineral oil 0.425 MG/MG / petrolatum 0.568 MG/MG Ophthalmic Ointment",
+              "action": "start",
+              "sig": "Apply a small ribbon to the right eye at bedtime",
+              "frequency": "NIGHTLY",
+              "route": "Ophthalmic",
+              "course": "chronic",
+              "reason": "eye protection, Bell palsy"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-ref",
+              "action": "done",
+              "date": "2025-06-24T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consultation Note",
+              "title": "Otolaryngology Consultation",
+              "author": "otolaryngology",
+              "date": "2025-06-26T15:40",
+              "body": "OUTSIDE OTOLARYNGOLOGY PRACTICE\nDate of service: 06/24/2025\nRe: Derek Pereira, DOB 01/19/1982\nAllergies: NKDA\n\nThank you for the same-day referral. Mr. Pereira is a 43 year old man who noticed on waking today that the right side of his face felt heavy. He could not brush his teeth normally and lost water from his mouth when drinking. Food tastes bland to him. He denies any limb weakness. Otherwise healthy, no medications; tonsillectomy as a child. Never smoker, drinks socially on weekends.\n\nExam: right auricle, ear canal and drum normal. Left ear normal. Complete weakness of the right face, forehead included, upper and lower divisions. Limb strength and coordination normal.\n\nImpression: acute right Bell palsy.\n\nPlan: prednisone 60 mg daily x5 days then taper by 10 mg/day to off. Eye care discussed at length: lubricating drops through the day, ointment and taping the lid closed at night, sunglasses outdoors. Expect improvement over weeks. Return to me as needed, sooner for eye pain or redness, or no improvement by 3 months.\n\nOtolaryngology"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "portal_message",
+          "start": "2025-06-30T21:14",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Eye Question",
+              "author": "patient",
+              "date": "2025-06-30T21:14",
+              "body": "Saw ENT last week, they said Bell's palsy and put me on the prednisone. Day 7 now. Question about the eye tape at night, it keeps coming off by morning. Is the ointment enough on its own? Eye feels a little dry when I wake up but not painful."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Eye Question",
+              "author": "RN",
+              "date": "2025-07-01T08:40",
+              "body": "Hi Derek, thanks for the update, the doctor got the ENT letter. Keep using the ointment every night. For the tape, paper tape works better than the regular kind; close the lid gently first, then tape horizontally across the upper lid. Some people use a moisture shield/eye patch from the pharmacy instead. Mild dryness in the morning is common, use the drops right away. If the eye gets red, painful, or your vision blurs, call us the same day. Follow-up is on the books for 7/8."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bell palsy follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-07-08T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-07-08T16:00",
+              "body": "Two weeks after onset of right Bell palsy, seen by ENT the same day. Finished the prednisone taper on 7/3. Says the face is \"coming back\": he can tell the right side of his mouth is moving more, and the eyebrow twitches up a bit. Food is starting to taste like food again. Using drops several times a day and ointment at night, gave up on tape and bought a sleep shield. No eye pain, no redness, vision fine. Working from home mostly, video calls are the hardest part.\n\nExam: right face still weaker than left but improved per patient and compared with the ENT description. Slight brow elevation on the right. Right eye closes fully with effort, cornea looks clear, no injection. Mouth droops less at rest, smile asymmetric. Rest of cranial nerves normal. Ears normal.\n\nA/P: right Bell palsy, recovering.\n- Steroid course complete.\n- Continue drops/ointment as needed until the eye closes easily on its own.\n- Facial exercises in the mirror if he likes, no need for formal therapy right now.\n- Reach out if recovery stalls or eye symptoms. Physical due in October, will reassess then."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "portal_message",
+          "start": "2025-08-19T12:48",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Update",
+              "author": "patient",
+              "date": "2025-08-19T12:48",
+              "body": "Quick update since you asked me to keep you posted. Most people at work can't tell anymore. Smile is almost even, eye shuts on its own most of the time, only using the drops once or twice a day now. Just wanted to say thanks for getting me in so fast that morning."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Update",
+              "author": "PCP",
+              "date": "2025-08-19T17:30",
+              "body": "That's really good to hear, it's moving in the right direction. Fine to taper the drops as you feel you need them. Keep the ointment at night until the eye is fully closing every time. See you at your physical in October."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-10a",
+          "kind": "annual_physical",
+          "start": "2025-10-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Bell palsy",
+              "action": "resolved",
+              "onset": "2025-06-24",
+              "note": "right, full recovery"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
+              "action": "stop"
+            },
+            {
+              "drug_text": "mineral oil 0.425 MG/MG / petrolatum 0.568 MG/MG Ophthalmic Ointment",
+              "action": "stop"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-10T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-10T09:50",
+              "results": [
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-10T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-10T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-10T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-10T09:42"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-10-10T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-10T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-10T09:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ap25-cbc",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab"
+            },
+            {
+              "id": "ap25-cmp",
+              "action": "placed",
+              "order": "Comprehensive Metabolic Panel (CMP)",
+              "category": "lab"
+            },
+            {
+              "id": "ap25-lipid",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab"
+            },
+            {
+              "id": "ap25-a1c",
+              "action": "placed",
+              "order": "Hemoglobin A1c",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-10-10T09:55",
+              "body": "Annual exam, also closing the loop on the Bell palsy from June. He says his face has been back to normal for about a month. Eye closes completely, stopped the drops a few weeks ago and the ointment last week. Taste normal. No twitching or tearing with eating. Otherwise well. Still traveling for work. Weekend drinks unchanged, never smoker.\n\nMeds: none current. NKDA.\nROS negative.\n\nExam: vitals reviewed. Face symmetric at rest and with brow raise, tight eye closure, smile and puffing cheeks; no synkinesis seen. Corneas clear. Ears and throat normal. Neck without nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Neuro otherwise nonfocal. Skin unremarkable.\n\nPHQ-2 0.\n\nA/P:\n1. Right Bell palsy, fully recovered. Removed from active problems. Drops and ointment off the list. Told him it rarely returns but to call right away if it does, since treatment works best early.\n2. Health maintenance: CBC, CMP, lipids, A1c today. Flu and COVID vaccines given. Colorectal screening due after his 45th birthday in January 2027, we'll set it up then.\nNext physical in a year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "portal_message",
+          "start": "2025-10-14T08:10",
+          "orders": [
+            {
+              "id": "ap25-cbc",
+              "action": "done",
+              "date": "2025-10-11T10:30"
+            },
+            {
+              "id": "ap25-cmp",
+              "action": "done",
+              "date": "2025-10-11T10:30"
+            },
+            {
+              "id": "ap25-lipid",
+              "action": "done",
+              "date": "2025-10-11T10:30"
+            },
+            {
+              "id": "ap25-a1c",
+              "action": "done",
+              "date": "2025-10-11T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-10-14T08:10",
+              "body": "Morning Derek. Labs from Friday are normal across the board: blood counts, chemistries, cholesterol and A1c. No changes needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-09a",
+          "kind": "ed_visit",
+          "start": "2026-02-09T18:40",
+          "end": "2026-02-09T21:55",
+          "service": "Emergency Medicine",
+          "reason": "right facial droop",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-02-09T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2026-02-12T10:05",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT, brief visit summary\nDOS 02/09/2026. Pt: Pereira, Derek, 44M. Allergies: NKDA. Meds: none.\n\nCC: R face drooping x2 days.\nHPI: Similar episode last June, seen by ENT then, recovered. Two days ago abrupt onset of R facial asymmetry. Food pockets between his teeth and R cheek, keeps biting inside of R lip, liquids dribble from R side of mouth. Denies head injury, rash, ear pain, recent cold symptoms.\n\nExam: R nasolabial fold flat, R oral commissure droops, R eye does not fully close with blink, R forehead does not wrinkle on brow raise. Facial sensation intact to LT and pinprick. Hearing grossly intact. Remaining CNs normal.\n\nDx: Bell's palsy, R, recurrent.\nDispo: home. Rx prednisone 60 mg daily x5d then taper over 5d. Artificial tears daytime, lubricating ointment qhs. F/u ENT and PCP this week. Return for new weakness elsewhere, vision change, eye pain."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T07:32",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "It came back",
+              "author": "patient",
+              "date": "2026-02-10T07:32",
+              "body": "Bad news, the Bell's palsy is back, same side. Started Saturday, I figured I was imagining it but by Monday it was obvious so I went to the ER last night. They said same thing as last time and gave me prednisone again plus the eye drops and ointment. I still had some of the old ointment. They told me to see ENT and you. Is this normal for it to come back??"
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: It came back",
+              "author": "PCP",
+              "date": "2026-02-10T12:20",
+              "body": "Sorry Derek, that's frustrating. It does come back in a small number of people, sometimes on the same side. Take the full prednisone course as written, with food in the morning. Be strict about the eye: drops through the day, ointment and the shield at night if the lid isn't closing all the way. Please call the ENT office this week for a follow-up as the ER suggested. Anything new like weakness in an arm or leg, trouble speaking, eye pain or blurry vision, go back to the ED. Keep me posted on how it goes."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "portal_message",
+          "start": "2026-04-28T19:05",
+          "documents": [
+            {
+              "type": "Patient Communication",
+              "title": "Face update",
+              "author": "patient",
+              "date": "2026-04-28T19:05",
+              "body": "Checking in like you asked. Face is almost back to normal again, maybe a little slower than last time. Eye closes fine now. Thanks."
+            },
+            {
+              "type": "Patient Communication",
+              "title": "RE: Face update",
+              "author": "PCP",
+              "date": "2026-04-29T08:15",
+              "body": "Glad to hear it, thanks for letting me know. Reach out if anything changes."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

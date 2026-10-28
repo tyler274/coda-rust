@@ -49,7 +49,7 @@
           "start": "2022-05-03T13:00",
           "service": "Hepatology",
           "reason": "Cirrhosis surveillance",
-          "labs": [{"panel": null, "collected": "2022-05-03T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.7}]}],
+          "labs": [{"panel": null, "collected": "2022-05-03T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.7, "range": {"high": 10}}]}],
           "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2022-05-03T12:00", "text": "Nodular, coarsened liver without focal lesion. Portal vein patent with normal direction of flow. No ascites. Gallbladder and bile ducts normal.", "conclusion": "Cirrhosis without focal lesion."}],
           "documents": [
             {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2022-05-09T09:00", "body": "Hepatology 5/3/2022. Compensated, abstinent, no decompensating events. Ultrasound negative for focal lesion; AFP 4.7. Continue surveillance every 6 months. NKDA.\nHepatology"}
@@ -143,7 +143,7 @@
           "start": "2023-01-10T08:00",
           "service": "Radiology",
           "reason": "Liver lesion characterization",
-          "labs": [{"panel": null, "collected": "2023-01-10T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 18}]}],
+          "labs": [{"panel": null, "collected": "2023-01-10T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 18, "range": {"high": 10}}]}],
           "documents": [
             {"type": "Imaging Report", "title": "MRI Abdomen with and without Contrast (Liver Protocol)", "author": "radiology", "date": "2023-01-11T09:00", "body": "MRI abdomen, multiphase liver protocol, 01/10/2023.\nIndication: cirrhosis, new lesion on surveillance ultrasound.\nFindings: Cirrhotic liver morphology. Single 2.1 cm observation in segment VI with nonrim arterial phase hyperenhancement, nonperipheral washout on portal venous and delayed phases, and an enhancing capsule. No other observations. Hepatic and portal veins patent without tumor in vein. No ascites. Spleen, pancreas, adrenals and kidneys unremarkable. No adenopathy.\nImpression: 2.1 cm segment VI observation, LI-RADS 5 (definitely hepatocellular carcinoma). No vascular invasion."}
           ]
@@ -156,8 +156,8 @@
           "reason": "New liver lesion",
           "conditions": [{"label": "Liver cell carcinoma", "icd10": "C22.0", "action": "diagnosed", "onset": "2022-12-13", "note": "single 2.1 cm segment VI, LI-RADS 5"}],
           "orders": [
-            {"id": "ir-ablation", "action": "placed", "order": "Interventional radiology microwave ablation", "category": "procedure", "to": "Interventional Radiology", "reason": "hepatocellular carcinoma"},
-            {"id": "transplant-referral", "action": "placed", "order": "Liver transplant evaluation referral", "category": "referral", "to": "Transplant Hepatology", "reason": "hepatocellular carcinoma within criteria"}
+            {"id": "ir-ablation", "action": "placed", "order": "Interventional radiology microwave ablation", "category": "procedure", "to": "Radiology", "reason": "hepatocellular carcinoma", "snomed": "609232008"},
+            {"id": "transplant-referral", "action": "placed", "order": "Liver transplant evaluation referral", "category": "referral", "to": "Gastroenterology", "reason": "hepatocellular carcinoma within criteria"}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Hepatology Consultation - New HCC", "author": "hepatology", "date": "2023-01-20T16:00", "body": "Hepatology visit 01/19/2023.\nMr. Lindqvist's surveillance ultrasound in December showed a new right-lobe lesion. MRI on 1/10 characterizes it as a single 2.1 cm segment VI LI-RADS 5 observation without vascular invasion. AFP 18 ng/mL, up from 4-5 previously.\n\nAssessment: hepatocellular carcinoma, single lesion within Milan criteria, in compensated alcohol-associated cirrhosis (Child-Pugh A). Abstinent four years.\n\nPlan:\n1. Percutaneous microwave ablation with interventional radiology - referral placed.\n2. Referral to the transplant center for liver transplant evaluation. We were frank with him that his pulmonary fibrosis and oxygen need will weigh heavily in their decision.\n3. MRI and AFP about 3 months after ablation.\n\nMedications reviewed. NKDA.\nHepatology"}
@@ -283,7 +283,7 @@
           "start": "2023-06-13T08:00",
           "service": "Hepatology",
           "reason": "Post-ablation MRI",
-          "labs": [{"panel": null, "collected": "2023-06-13T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.2}]}],
+          "labs": [{"panel": null, "collected": "2023-06-13T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.2, "range": {"high": 10}}]}],
           "documents": [
             {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2023-06-15T16:00", "body": "Hepatology 06/13/2023.\nMRI liver protocol: segment VI ablation zone without arterial enhancement or washout, consistent with complete response. No new observations. No vascular invasion. No ascites.\nAFP 5.2, back to near baseline.\nPlan: MRI and AFP every 6 months. Transplant evaluation continues at the transplant center. NKDA.\nHepatology"}
           ]
@@ -354,7 +354,7 @@
           "start": "2023-12-05T08:00",
           "service": "Hepatology",
           "reason": "HCC surveillance MRI",
-          "labs": [{"panel": null, "collected": "2023-12-05T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.8}]}],
+          "labs": [{"panel": null, "collected": "2023-12-05T07:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.8, "range": {"high": 10}}]}],
           "documents": [
             {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2023-12-08T10:00", "body": "Hepatology 12/05/2023. MRI: treated segment VI zone without residual enhancement; no new liver observations; no ascites; pancreas and biliary tree reported unremarkable. AFP 4.8. No recurrence. Next MRI in 6 months. Transplant evaluation remains open. NKDA.\nHepatology"}
           ]

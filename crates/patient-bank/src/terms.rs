@@ -16,7 +16,7 @@ use regex::Regex;
 
 use crate::Result;
 use crate::catalog::{Catalog, Lookup};
-use crate::ledger::{Patient, Terms, VerifiedCode};
+use crate::ledger::{LabResult, Patient, RefRange, Terms, VerifiedCode};
 
 /// One strength: an amount of a base unit per one base unit of something, or a bare
 /// quantity (a pen's volume, a patch's wear time) when `per` is empty.
@@ -177,9 +177,21 @@ pub fn resolve_drug(look: &mut Lookup, text: &str) -> Result<Option<VerifiedCode
         code: code.into(),
         display: display.into(),
         ingredient: Some(first.clone()),
-        unit: None,
         receipt: receipt.into(),
+        ..VerifiedCode::default()
     };
+    // RxNorm's own name for this text ("calcium carbonate 600 MG Oral Tablet" names
+    // its 1500 MG tablet; "pyridoxine" names vitamin B6; "petrolatum Topical
+    // Ointment" names a dose form) is the drug itself
+    if let Some(rxcui) = look.rxnorm_exact(text)?
+        && let Some((tty, name)) = look.rxnorm_properties(&rxcui)?
+        && matches!(
+            tty.as_str(),
+            "SCD" | "SBD" | "GPCK" | "BPCK" | "SCDF" | "SBDF" | "SCDG" | "SBDG"
+        )
+    {
+        return Ok(Some(found(&rxcui, &name, "NLM RxNav rxcui (exact name)")));
+    }
     let candidates = look.rxnorm_candidates(text)?;
     let mut others = Vec::new();
     for rxcui in &candidates {
@@ -248,9 +260,8 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                         let v = VerifiedCode {
                             code,
                             display,
-                            ingredient: None,
-                            unit: None,
                             receipt: "NLM Clinical Tables ICD-10-CM".into(),
+                            ..VerifiedCode::default()
                         };
                         terms.conditions.insert(key, v);
                     }
@@ -263,7 +274,7 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                         .push(format!("condition {key} lookup failed: {e}")),
                 }
             }
-            for m in &ev.medications {
+            for m in ev.medications.iter().filter(|m| !m.uncoded) {
                 let Some(text) = m.drug_text.as_deref() else {
                     continue;
                 };
@@ -287,12 +298,13 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
             }
         }
     }
-    // Labs and studies the catalog lacks, by their LOINC code.
-    let mut extra: Vec<(bool, &str, &str, Option<&String>)> = Vec::new();
+    // Labs and studies the catalog lacks, by their LOINC code; an order for one is
+    // coded as a study.
+    let mut extra: Vec<(bool, &str, &str, Option<&LabResult>)> = Vec::new();
     for ev in patients.iter().flat_map(|p| &p.events) {
         for r in ev.labs.iter().flat_map(|l| &l.results) {
             if let (false, Some(code)) = (catalog.labs.contains_key(&r.test), &r.loinc) {
-                extra.push((true, &r.test, code, r.unit.as_ref()));
+                extra.push((true, &r.test, code, Some(r)));
             }
         }
         for r in &ev.reports {
@@ -300,8 +312,36 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                 extra.push((false, &r.study, code, None));
             }
         }
+        for o in &ev.orders {
+            if let (Some(what), Some(code)) = (&o.order, &o.loinc) {
+                extra.push((false, what, code, None));
+            }
+        }
     }
-    for (lab, label, code, unit) in extra {
+    // a name's unit comes from a result that states one, and one name is one test
+    extra.sort_by_key(|(_, _, _, r)| r.and_then(|r| r.unit.as_ref()).is_none());
+    for (lab, label, code, result) in extra {
+        let unit = result.and_then(|r| r.unit.as_deref());
+        if let (true, Some(v), Some(u)) = (lab, terms.labs.get(label), unit)
+            && v.unit.as_deref().is_some_and(|known| known != u)
+        {
+            terms.rejected.push(format!(
+                "lab {label:?} is given in {:?} and {u:?}; one name is one test",
+                v.unit.as_deref().unwrap_or_default()
+            ));
+        }
+        let none = |r: &RefRange| r.low.is_none() && r.high.is_none();
+        if let (true, Some(Some(known)), Some(r)) = (
+            lab,
+            terms.labs.get(label).map(|v| v.range.as_ref()),
+            result.and_then(|r| r.range.as_ref()),
+        ) && none(known) != none(r)
+        {
+            terms.rejected.push(format!(
+                "lab {label:?} has a reference range in one result and none in another; one \
+                 name is one test"
+            ));
+        }
         let known = if lab { &terms.labs } else { &terms.reports };
         if known.contains_key(label)
             || terms
@@ -313,14 +353,26 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
         }
         let kind = if lab { "lab" } else { "report" };
         let code = code.trim().to_string();
+        let unit = result.and_then(|r| r.unit.clone());
+        // a blank unit is no unit, and the service rejects the question
+        if let Some(u) = &unit
+            && (u.trim().is_empty() || !look.ucum(u)?)
+        {
+            terms.rejected.push(format!(
+                "{kind} {label:?} unit {u:?} is not a UCUM unit (mg/dL, 10*3/uL, [IU]/L, ...); \
+                 leave it out for a result with no unit"
+            ));
+            continue;
+        }
         match look.loinc(&code) {
             Ok(Some(display)) => {
                 let v = VerifiedCode {
                     code,
                     display,
-                    ingredient: None,
-                    unit: unit.cloned(),
+                    unit,
+                    range: result.and_then(|r| r.range.clone()),
                     receipt: "NLM Clinical Tables LOINC".into(),
+                    ..VerifiedCode::default()
                 };
                 let map = if lab {
                     &mut terms.labs
@@ -352,6 +404,11 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                 snomed.push((false, &x.procedure, code));
             }
         }
+        for o in &ev.orders {
+            if let (Some(what), Some(code)) = (&o.order, &o.snomed) {
+                snomed.push((false, what, code));
+            }
+        }
     }
     for (allergen, label, code) in snomed {
         let (kind, tags): (&str, &[&str]) = if allergen {
@@ -381,9 +438,8 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                 let v = VerifiedCode {
                     code,
                     display,
-                    ingredient: None,
-                    unit: None,
                     receipt: "tx.fhir.org SNOMED CT".into(),
+                    ..VerifiedCode::default()
                 };
                 let map = if allergen {
                     &mut terms.allergens

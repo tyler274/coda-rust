@@ -916,24 +916,39 @@
                   "test": "Leukocytes [#/volume] in Cerebral spinal fluid",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 22
                 },
                 {
                   "test": "Erythrocytes [#/volume] in Cerebral spinal fluid",
                   "loinc": "26454-9",
                   "unit": "/uL",
+                  "range": {
+                    "high": 0
+                  },
                   "value": 4
                 },
                 {
                   "test": "Protein [Mass/volume] in Cerebral spinal fluid",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 56
                 },
                 {
                   "test": "Glucose [Mass/volume] in Cerebral spinal fluid",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 60
                 }
               ]
@@ -1386,6 +1401,9 @@
                   "test": "Salicylates [Mass/volume] in Serum or Plasma",
                   "loinc": "4024-6",
                   "unit": "mg/dL",
+                  "range": {
+                    "high": 30
+                  },
                   "value": 58
                 },
                 {
@@ -1449,12 +1467,20 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.46
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 23
                 }
               ]
@@ -1531,6 +1557,9 @@
                   "test": "Salicylates [Mass/volume] in Serum or Plasma",
                   "loinc": "4024-6",
                   "unit": "mg/dL",
+                  "range": {
+                    "high": 30
+                  },
                   "value": 39
                 }
               ]
@@ -1543,6 +1572,9 @@
                   "test": "Salicylates [Mass/volume] in Serum or Plasma",
                   "loinc": "4024-6",
                   "unit": "mg/dL",
+                  "range": {
+                    "high": 30
+                  },
                   "value": 17
                 }
               ]
@@ -1687,7 +1719,7 @@
         "code": "311681",
         "display": "metronidazole 500 MG Oral Tablet",
         "ingredient": "metronidazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1700,42 +1732,68 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Erythrocytes [#/volume] in Cerebral spinal fluid": {
         "code": "26454-9",
         "display": "Erythrocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "high": 0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glucose [Mass/volume] in Cerebral spinal fluid": {
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Leukocytes [#/volume] in Cerebral spinal fluid": {
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein [Mass/volume] in Cerebral spinal fluid": {
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Salicylates [Mass/volume] in Serum or Plasma": {
         "code": "4024-6",
         "display": "Salicylates [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "high": 30
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

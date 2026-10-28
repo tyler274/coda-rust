@@ -1,0 +1,265 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001707",
+      "events": [
+        {
+          "id": "2022-01-27a",
+          "kind": "specialist_visit",
+          "start": "2022-01-27T14:00",
+          "service": "Endocrinology",
+          "reason": "Galactorrhea",
+          "conditions": [
+            {"label": "Hyperprolactinemia", "icd10": "E22.1", "action": "diagnosed", "onset": "2021-11-09"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-01-27T14:20", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": null, "collected": "2022-01-27T14:45", "results": [{"test": "Prolactin", "value": 35, "unit": "ng/mL"}, {"test": "Thyroid Stimulating Hormone", "value": 2.5}]}
+          ],
+          "orders": [
+            {"id": "endo-referral-2021", "action": "done", "date": "2022-01-27T14:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology consultation", "author": "endocrinology", "date": "2022-02-10T16:20", "body": "Outside endocrinology group\nNew consultation, seen 1/27/2022\nReferring: primary care\nReason: galactorrhea\n\nHPI: 33F (age 33 next month) with autoimmune hypothyroidism on replacement and remote anorexia nervosa, recently treated by gynecology for post-myomectomy intrauterine adhesions, sent for milky discharge from both breasts for roughly 3 months. The fluid looks like milk. No breast pain, no lumps she can feel. Cycles have been regular since the September hysteroscopy.\n\nMeds: levothyroxine 75 mcg daily. Allergies: NKDA.\nFH: maternal aunt autoimmune thyroid disease; mother depression; sister PCOS.\nSocial: marketing, never smoker, alcohol 1-2/wk.\n\nExam: vitals unremarkable. Breasts without tenderness or palpable mass; milky discharge expressed readily from both sides.\n\nLabs today: urine pregnancy negative. Prolactin 35 ng/mL (ref 4-23). TSH 2.5.\n\nAssessment: hyperprolactinemia with galactorrhea, persistent on repeat (31 at PCP in November). Not explained by thyroid status or medications. Need to exclude a pituitary lesion.\n\nPlan: MRI pituitary with and without contrast. Will call with results and discuss treatment.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "imaging",
+          "start": "2022-02-08T07:30",
+          "conditions": [
+            {"label": "Prolactinoma", "action": "diagnosed", "onset": "2022-02-08", "note": "6 mm microadenoma, left pituitary."}
+          ],
+          "reports": [
+            {"study": "MR Pituitary and Sella turcica WO and W contrast IV", "loinc": "24879-9", "performed": "2022-02-08T07:30", "issued": "2022-02-08T15:10", "text": "Indication: hyperprolactinemia, galactorrhea.\nTechnique: thin-section sagittal and coronal T1 and coronal T2 images through the sella before and after IV gadolinium, including dynamic coronal post-contrast imaging.\nFindings: There is a 6 x 5 mm focus of delayed enhancement relative to normal gland in the left aspect of the pituitary gland. The infundibulum is midline. The optic chiasm is normal in position and signal with clearance above the gland. The cavernous sinuses are symmetric without evidence of invasion; the cavernous carotid flow voids are normal. Sella is normal in size. Visualized brain is unremarkable.", "conclusion": "6 mm left-sided pituitary microadenoma. No mass effect on the optic chiasm. No cavernous sinus invasion."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "MRI pituitary", "author": "radiology", "date": "2022-02-09T08:00", "body": "Outside imaging center report received for MRI pituitary with and without contrast performed 2/8/2022 at the request of endocrinology. Impression: 6 mm left-sided pituitary microadenoma, chiasm clear, no cavernous sinus invasion. Routed to PCP."},
+            {"type": "Progress Notes", "title": "Result review", "author": "PCP", "date": "2022-02-09T12:40", "body": "MRI shows a 6 mm microadenoma, fits a prolactinoma with her prolactin. Chiasm clear. Endocrinology ordered this and will manage; will confirm the plan with her."}
+          ]
+        },
+        {
+          "id": "2022-02-17a",
+          "kind": "portal_message",
+          "start": "2022-02-17T21:05",
+          "documents": [
+            {"type": "Patient Message", "title": "New medication from endo", "author": "patient", "date": "2022-02-17T21:05", "body": "Hi! The endocrinologist called after the MRI. She said it's a small prolactinoma and started me on cabergoline, half a pill twice a week (0.5 mg pills, so 0.25). I started Monday. She said I can keep trying to get pregnant and to call her if I get a positive test. Just letting you know since it's not on my list here."},
+            {"type": "Patient Message", "title": "RE: New medication from endo", "author": "PCP", "date": "2022-02-18T08:10", "body": "Thanks for letting me know. Cabergoline is the standard treatment and usually works well for these. Some people get a little nausea or lightheadedness the first few weeks; taking it at bedtime with a snack helps. We'll update your med list at your next visit. Could you ask her office to send us their notes going forward?"}
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "office_visit",
+          "start": "2022-05-24T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, prolactinoma and thyroid",
+          "medications": [
+            {"drug_text": "cabergoline 0.5 MG Oral Tablet", "action": "historical", "sig": "Take one-half tablet (0.25 mg) by mouth twice weekly", "dose": {"value": 0.25, "unit": "mg"}, "frequency": "TWICE WEEKLY", "route": "Oral", "course": "chronic", "reason": "Prolactinoma; prescribed by endocrinology"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-05-24T16:30", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-05-24T16:00"},
+            {"procedure": "Venipuncture", "performed": "2022-05-24T16:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-05-24T16:40", "body": "S: Follow-up. Endocrinology started cabergoline 0.25 mg twice weekly in mid-February for a 6 mm prolactinoma (MRI 2/8 in chart). We still have no follow-up note from them. Discharge has slowed to almost nothing. Mild queasiness the first two weeks, gone now. Cycles regular. Still trying, no luck yet, discouraged at times but managing. Levothyroxine unchanged, no thyroid symptoms. Eating normally.\n\nO: vitals as charted. Thyroid normal. Breasts not examined today. Heart regular. Lungs clear.\n\nA/P:\n- Prolactinoma on cabergoline, per endocrinology. Added to med list. Will request their notes again.\n- Hashimoto: TSH.\n- Infertility: followed by gynecology.\nNext: physical in the fall."}
+          ]
+        },
+        {
+          "id": "2022-05-26a",
+          "kind": "telephone",
+          "start": "2022-05-26T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request and result", "author": "MA", "date": "2022-05-26T10:15", "body": "Faxed request to outside endocrinology for visit notes and labs since 1/2022. Left pt a voicemail that her thyroid test from Tuesday was normal, no change in dose."}
+          ]
+        },
+        {
+          "id": "2022-08-09a",
+          "kind": "specialist_visit",
+          "start": "2022-08-09T09:15",
+          "service": "Gynecology",
+          "reason": "Irregular cycles, infertility",
+          "conditions": [
+            {"label": "Hypergonadotropic hypogonadism", "icd10": "E28.39", "action": "diagnosed", "onset": "2022-08-09", "note": "Primary ovarian insufficiency; FSH 108, LH 95, estradiol 20."}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-08-09T09:40", "results": [
+              {"test": "Follicle Stimulating Hormone", "value": 108, "unit": "m[IU]/mL"},
+              {"test": "Luteinizing hormone", "loinc": "10501-5", "value": 95, "unit": "m[IU]/mL", "range": {}},
+              {"test": "Estradiol", "loinc": "2243-4", "value": 20, "unit": "pg/mL", "range": {}},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "Free Thyroxine", "value": 1.2, "unit": "ng/dL"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology follow-up", "author": "gynecology", "date": "2022-08-23T11:30", "body": "OUTSIDE GYNECOLOGY PRACTICE - FOLLOW-UP\nDate of service: 08/09/2022\nRe: Wendy Schmidt, DOB 12/16/1988\n\nMs. Schmidt is now 33, treated last fall for intrauterine adhesions and since followed by endocrinology for a small prolactinoma on cabergoline. Over the past 6 months her cycles first came closer together, from every 28 days down to about every 21, and then stopped altogether; no bleeding at all for 3 months. Still no pregnancy. She has not had hot flashes, sweats at night, or vaginal dryness.\n\nHer thyroid disease is well controlled on levothyroxine.\nFH: no relatives with early menopause that she knows of. A brother had a learning disability and behavior problems from a young age.\nAllergies: NKDA.\n\nExam: vitals normal. Thyroid not enlarged, nontender. Pelvic exam normal.\n\nLabs:\nFSH 108 mIU/mL (3.5-12.5)\nLH 95 mIU/mL (2.4-12.6)\nEstradiol 20 pg/mL (30-400)\nTSH 2.5\nFree T4 1.2 ng/dL (0.8-1.8)\n\nAssessment: hypergonadotropic hypogonadism, consistent with primary ovarian insufficiency, in a woman with infertility.\n\nPlan: reviewed the meaning of these results with her; return in 6 months with repeat hormone levels.\n\nAllergies: NKDA. cc: PCP; endocrinology"}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T08:10",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T08:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T08:17"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T08:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2022-10-11T08:30", "body": "Flu vaccine R deltoid and bivalent COVID booster L deltoid. Screening questions negative, not pregnant per pt. Observed 15 min, left feeling fine."}
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "annual_physical",
+          "start": "2022-11-17T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-11-17T10:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-17T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2022-11-17T10:40", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-11-17T10:00"},
+            {"procedure": "Venipuncture", "performed": "2022-11-17T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-11-17T11:05", "body": "Physical. Went through the August gyn letter together: FSH and LH in the menopausal range with a low estradiol, which they've labeled primary ovarian insufficiency. She has read a lot about it and is sad, understandably, but says gyn gave her room to ask questions and she has a follow-up in January. Periods are still absent. No hot flashes. Galactorrhea gone. Taking cabergoline twice a week, levothyroxine daily, folic acid.\n\nMood: down about the fertility news but working, sleeping, eating. PHQ-9 4. Denies any return of restrictive eating; I asked directly.\n\nExam: vitals as charted, weight stable. Thyroid normal. Cardiac and pulmonary normal. Abdomen benign. Skin warm, no lanugo.\n\nPlan:\n- Hashimoto: TSH, same dose.\n- POI and infertility: gynecology following.\n- Prolactinoma: endocrinology following; we still have no note from them since January despite two requests.\n- Labs: CBC, CMP.\n- Flu and bivalent COVID done in October.\nReturn in spring for physical (she wants to move it earlier in the year)."}
+          ]
+        },
+        {
+          "id": "2023-01-25a",
+          "kind": "specialist_visit",
+          "start": "2023-01-25T15:30",
+          "service": "Gynecology",
+          "reason": "Hot flashes, night sweats, vaginal dryness",
+          "labs": [
+            {"panel": null, "collected": "2023-01-25T15:55", "results": [
+              {"test": "Follicle Stimulating Hormone", "value": 108, "unit": "m[IU]/mL"},
+              {"test": "Luteinizing hormone", "loinc": "10501-5", "value": 95, "unit": "m[IU]/mL", "range": {}},
+              {"test": "Estradiol", "loinc": "2243-4", "value": 15, "unit": "pg/mL", "range": {}},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "Prolactin", "value": 14, "unit": "ng/mL"}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology follow-up", "author": "gynecology", "date": "2023-04-11T13:45", "body": "OUTSIDE GYNECOLOGY PRACTICE - PROGRESS NOTE (sent at request of PCP)\nDate of service: 01/25/2023\nRe: Wendy Schmidt, DOB 12/16/1988\n\nReturns for follow-up of her menstrual irregularity. Over the past year bleeding has come less and less often and is lighter when it does. New since last visit: hot flashes, sweating at night, and vaginal dryness. No galactorrhea. No excess hair growth.\nHashimoto thyroiditis, well controlled on levothyroxine. Anorexia nervosa history, in remission.\nAllergies: NKDA.\n\nExam: vital signs within normal limits. Pelvic: vaginal mucosa pale and thin, consistent with atrophy. Uterus and adnexa normal on bimanual exam.\n\nLabs:\nFSH 108 mIU/mL\nLH 95 mIU/mL\nEstradiol 15 pg/mL\nTSH 2.5\nProlactin 14 ng/mL (4-23)\n\nAssessment: hypergonadotropic hypogonadism, unchanged on repeat testing.\nPlan: follow up in 6 months.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "portal_message",
+          "start": "2023-02-21T18:40",
+          "medications": [
+            {"drug_text": "cabergoline 0.5 MG Oral Tablet", "action": "stop", "reason": "Patient stopped on her own after a normal prolactin"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Question about cabergoline", "author": "patient", "date": "2023-02-21T18:40", "body": "Hi, quick question. At my gyn appointment last month my prolactin was normal (14), so I stopped the cabergoline about two weeks ago. I figured if it's normal I don't need it? I haven't seen the endocrinologist since last year. Is that ok?"},
+            {"type": "Patient Message", "title": "RE: Question about cabergoline", "author": "PCP", "date": "2023-02-22T07:50", "body": "Hi Wendy. A normal prolactin on cabergoline usually means the medicine is doing its job, not that the tumor is gone, and prolactin can climb back up once it's stopped. The decision about stopping really belongs with your endocrinologist, who may want a recheck and an MRI first. Please call her office this week and tell them you've stopped. If the milky discharge comes back, or you notice headaches or vision changes, let us know."}
+          ]
+        },
+        {
+          "id": "2023-04-04a",
+          "kind": "telephone",
+          "start": "2023-04-04T09:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2023-04-04T09:20", "body": "Called gynecology office asking for the 1/25/23 visit note and labs, per PCP. They will fax. Also re-requested endocrinology notes; their office says the last visit on file is from 2022."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "annual_physical",
+          "start": "2023-05-16T08:20",
+          "reason": "Annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2023-05-15T16:05", "body": "Pt cancelled tomorrow's physical, product launch at work. Offered June dates, she'll call back to reschedule."}
+          ]
+        },
+        {
+          "id": "2023-07-11a",
+          "kind": "pharmacy",
+          "start": "2023-07-11T08:55",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: levothyroxine", "author": "MA", "date": "2023-07-11T08:55", "body": "Pharmacy refill request, levothyroxine 75 mcg 90-day. TSH 11/2022 in range, 1/2023 at gyn 2.5. Approved x1 with a note that she is overdue for her physical. Message sent to pt to schedule."}
+          ]
+        },
+        {
+          "id": "2023-08-02a",
+          "kind": "specialist_visit",
+          "start": "2023-08-02T13:30",
+          "service": "Endocrinology",
+          "reason": "Amenorrhea, galactorrhea, headaches",
+          "vitals": {"bp": [130, 85], "hr": 72},
+          "measure": ["weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-08-02T14:00", "results": [
+              {"test": "Prolactin", "value": 250, "unit": "ng/mL"},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "Follicle Stimulating Hormone", "value": 7.2, "unit": "m[IU]/mL"},
+              {"test": "Luteinizing hormone", "loinc": "10501-5", "value": 7.9, "unit": "m[IU]/mL", "range": {}},
+              {"test": "Estradiol", "loinc": "2243-4", "value": 45, "unit": "pg/mL", "range": {}}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology follow-up", "author": "endocrinology", "date": "2023-08-10T10:10", "body": "Outside endocrinology group\nFollow-up visit 8/2/2023\n\nInterval: known left pituitary microadenoma (6 mm, 2/2022) with hyperprolactinemia, controlled on cabergoline 0.25 mg twice weekly. She stopped the cabergoline herself in early February after a normal prolactin at gynecology. Since then, about 6 months without a period and milky discharge from both breasts again. Headaches over the temples, coming more often and harder over the summer. No change in her vision. Still hoping for a pregnancy; she has not pursued fertility treatment.\n\nMeds: levothyroxine 75 mcg daily. Allergies: NKDA.\n\nExam: BP 130/85, HR 72, BMI 20. Neurologic exam unremarkable, including cranial nerves.\n\nLabs today:\nProlactin 250 ng/mL\nTSH 2.5 mIU/L\nFSH 7.2 mIU/mL\nLH 7.9 mIU/mL\nEstradiol 45 pg/mL\nOf note, gonadotropins are not in the menopausal range on this draw, unlike the gynecology values from 2022 and January.\n\nAssessment: recurrent hyperprolactinemia off dopamine agonist, with headaches. Prolactinoma.\n\nPlan:\n1. Restart cabergoline 0.25 mg twice weekly. New prescription sent.\n2. Repeat MRI pituitary with and without contrast; our scheduler will call her.\n3. Recheck prolactin in 2 months.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T17:30",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T17:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T17:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T17:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2023-10-17T17:50", "body": "Influenza and 2023-24 COVID given, one in each arm. Tolerated well. Pt mentions headaches lately; advised to book with PCP, she will."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "office_visit",
+          "start": "2023-12-05T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Headaches, peripheral vision",
+          "medications": [
+            {"drug_text": "cabergoline 0.5 MG Oral Tablet", "action": "historical", "sig": "Take one-half tablet (0.25 mg) by mouth twice weekly", "dose": {"value": 0.25, "unit": "mg"}, "frequency": "TWICE WEEKLY", "route": "Oral", "course": "chronic", "reason": "Prolactinoma; restarted by endocrinology 8/2023"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-12-05T11:50", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-05T11:10"},
+            {"procedure": "Venipuncture", "performed": "2023-12-05T11:50"}
+          ],
+          "orders": [
+            {"id": "mri-pituitary-2023", "action": "placed", "order": "MR Pituitary and Sella turcica WO and W contrast IV", "category": "imaging", "reason": "Known prolactinoma, worsening headaches, peripheral vision complaints"},
+            {"id": "neuro-referral-2023", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Progressive headaches and reduced peripheral vision"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2023-12-05T12:05", "body": "CC: headaches\n\nHPI: 34F with prolactinoma, POI and Hashimoto. Endocrinology letter from August in chart: prolactin 250 after she stopped cabergoline on her own; they restarted it and ordered a repeat MRI. That MRI never got scheduled (she says no one called and she didn't chase it). Back on cabergoline since August.\n\nHeadaches: temples, most days now, worse over the last two months. And something new over about two months: she keeps being startled by people and cars that appear at her sides. No double vision. No nausea or vomiting. No weakness or numbness.\n\nStill no periods. Some milky discharge persists.\n\nExam: vitals as charted. Alert, appropriate. Pupils equal and reactive. Extraocular movements full. Fundi: discs sharp bilaterally. Face symmetric, strength and sensation intact, gait normal.\n\nA/P:\n1. Prolactinoma with progressive headaches and symptoms suggesting loss of side vision. Concern for growth. MRI pituitary with and without contrast ordered here, marked to be done in the next few weeks, rather than waiting on the old order. Neurology referral placed for the headaches and a formal field assessment. Messaged endocrinology about the visit.\n2. Cabergoline back on the list (0.25 mg twice weekly, endocrinology).\n3. No driving at night or in unfamiliar areas until her vision is assessed; she agreed.\n4. TSH today.\nCall with any sudden severe headache or sudden vision loss: go to the ED."}
+          ]
+        },
+        {
+          "id": "2023-12-07a",
+          "kind": "telephone",
+          "start": "2023-12-07T14:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "MRI and referral scheduling", "author": "front desk", "date": "2023-12-07T14:30", "body": "MRI pituitary approved by insurance, scheduled 1/16/24 at the outside imaging center (earliest with contrast and pituitary protocol). Neurology new consult 1/23/24. Pt informed. TSH from 12/5 normal per PCP, pt told."}
+          ]
+        }
+      ]
+    }
+  ]
+}

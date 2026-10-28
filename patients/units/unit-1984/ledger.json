@@ -1,12 +1,7 @@
 {
   "unit": "unit-1984",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001984/2020-08-11a: procedure order \"Outside records request, prior primary care\" names no one catalog lab, panel, study or procedure",
-    "MRN00001984/2021-03-22a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001984/2022-12-13a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001984/2026-03-16a: lab order \"Basic metabolic panel\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001984",
@@ -278,15 +273,6 @@
               "date": "2020-08-11T08:10"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Outside records request, prior primary care",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -338,13 +324,6 @@
           "id": "2020-09-22a",
           "kind": "outside_records",
           "start": "2020-09-22T11:30",
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2020-09-22T11:30"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -510,7 +489,7 @@
             {
               "id": "fit-2021",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -1290,7 +1269,7 @@
             {
               "id": "fit-2022",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening, annual"
             }
@@ -2518,7 +2497,7 @@
             {
               "id": "bmp-2wk",
               "action": "placed",
-              "order": "Basic metabolic panel",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "2 weeks after restarting lisinopril and HCTZ"
             }
@@ -2652,7 +2631,7 @@
         "code": "310965",
         "display": "ibuprofen 200 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     }
   }

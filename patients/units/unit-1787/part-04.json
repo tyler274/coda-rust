@@ -1,0 +1,807 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001787",
+   "events": [
+    {
+     "id": "2024-01-09a",
+     "kind": "hospital_admission",
+     "start": "2024-01-09T06:30",
+     "end": "2024-01-11T12:30",
+     "service": "Labor and Delivery",
+     "reason": "scheduled induction at 37 weeks",
+     "conditions": [
+      {
+       "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+       "icd10": "O09.90",
+       "action": "resolved"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2"
+     ],
+     "procedures": [
+      {
+       "procedure": "Induction of labor",
+       "snomed": "236958009",
+       "performed": "2024-01-09T08:00"
+      },
+      {
+       "procedure": "Vaginal delivery",
+       "snomed": "177184002",
+       "performed": "2024-01-09T23:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Obstetric discharge summary",
+       "author": "obstetrics",
+       "date": "2024-01-16T09:30",
+       "body": "Regional hospital, labor and delivery. Admitted 01/09/2024, discharged 01/11/2024.\n\nG2P0101 at 37 weeks 0 days admitted for planned induction given pulmonary arterial hypertension and prior preterm delivery for severe preeclampsia. Blood pressures normal throughout the pregnancy and the admission; no features of preeclampsia this time.\n\nCourse: cervical ripening and oxytocin; early epidural with cardiac anesthesia following; PH team consulted daily. Vaginal delivery of a liveborn infant late on 01/09. Uneventful recovery, no hemodynamic concerns, no angioedema.\n\nDischarge medications unchanged: tadalafil 40 mg daily, risperidone 4 mg nightly, prenatal vitamin, icatibant as needed.\nFollow-up: PCP or OB BP check in 1 to 2 weeks; PH center in 3 months; postpartum visit at 6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-22a",
+     "kind": "telephone",
+     "start": "2024-01-22T13:10",
+     "reason": "postpartum check",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Postpartum call",
+       "author": "RN",
+       "date": "2024-01-22T13:25",
+       "body": "Two weeks after delivery. She and the baby are home and well; the older one is adjusting. Home BP readings normal all week. No headache or visual change, breathing as usual, no swelling. OB is doing her BP check at their postpartum visit, so no visit here needed now. Psychiatry appointment already set for next week."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-27a",
+     "kind": "outside_records",
+     "start": "2024-02-27T11:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Postpartum visit",
+       "author": "obstetrics",
+       "date": "2024-02-27T11:00",
+       "body": "Postpartum visit 02/20/2024, 6 weeks after induced vaginal delivery at 37 weeks. BP normal. Mood good. Exam normal. Contraception again discussed given PAH; she declines. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-12a",
+     "kind": "specialist_visit",
+     "start": "2024-03-12T09:00",
+     "service": "Endocrinology",
+     "reason": "prolactinoma after pregnancy",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-03-12T09:00",
+       "results": [
+        {
+         "test": "Prolactin",
+         "value": 46
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "pituitary-mri-2024",
+       "action": "placed",
+       "order": "MRI pituitary with and without contrast",
+       "category": "imaging"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology follow-up",
+       "author": "endocrinology",
+       "date": "2024-03-14T12:00",
+       "body": "Outside endocrinology group. Visit 03/12/2024. Two pregnancies since her last visit with us, most recent delivery 01/09/2024; not breastfeeding now. No headaches, no visual symptoms, no galactorrhea. Prolactin 46 ng/mL. Will repeat pituitary MRI to confirm stability after two pregnancies. A dopamine agonist is not planned given PAH; observation if the lesion is stable. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-09a",
+     "kind": "imaging",
+     "start": "2024-04-09T17:45",
+     "service": "Radiology",
+     "orders": [
+      {
+       "id": "pituitary-mri-2024",
+       "action": "done",
+       "date": "2024-04-09T17:45"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI pituitary with and without contrast",
+       "loinc": "24879-9",
+       "performed": "2024-04-09T17:45",
+       "text": "Comparison 07/08/2020. Thin-section sellar protocol before and after gadolinium with dynamic coronal imaging. The left-sided hypoenhancing focus in the anterior pituitary again measures 3 mm. Gland height normal for age. Stalk midline. Optic chiasm normal. Cavernous sinuses unremarkable.",
+       "conclusion": "Stable 3 mm pituitary microadenoma.",
+       "issued": "2024-04-10T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "Pituitary MRI",
+       "author": "radiology",
+       "date": "2024-04-10T11:20",
+       "body": "Outside imaging report filed. Microadenoma unchanged at 3 mm since 2020."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-23a",
+     "kind": "specialist_visit",
+     "start": "2024-04-23T10:15",
+     "service": "Pulmonary Hypertension Center",
+     "reason": "PAH follow-up after second delivery",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-04-23T10:20",
+       "results": [
+        {
+         "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+         "value": 220
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "PH center follow-up",
+       "author": "pulmonary hypertension",
+       "date": "2024-04-26T14:40",
+       "body": "Regional pulmonary hypertension center. Visit 04/23/2024. Three months after a planned induction and uncomplicated vaginal delivery at 37 weeks. Functional class II. Six-minute walk 470 m. NT-proBNP 220. Loud P2, no edema. Continue tadalafil 40 mg daily. We reviewed again that pregnancy remains high risk; she is not using contraception. Next review in a year. Cc: PCP, OB."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-04a",
+     "kind": "portal_message",
+     "start": "2024-06-04T20:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Swelling and refill",
+       "author": "patient",
+       "date": "2024-06-04T20:10",
+       "body": "First attack in ages, left hand, after carrying the car seat around all day. Gave a dose at 5 and it's going down. Both my syringes are past their date anyway, can I get two new ones?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Swelling and refill",
+       "author": "PCP",
+       "date": "2024-06-05T07:30",
+       "body": "Sent two to the specialty pharmacy. Glad it responded. Face or throat involvement still means the ED."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-16a",
+     "kind": "outside_records",
+     "start": "2024-07-16T09:20",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Psychiatry update",
+       "author": "psychiatry",
+       "date": "2024-07-16T09:20",
+       "body": "Outpatient psychiatry, visit 07/09/2024. Six months postpartum, stable. No psychotic symptoms; sleeping when the baby allows. Binge episodes rare. Risperidone 4 mg nightly continues."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-12a",
+     "kind": "annual_physical",
+     "start": "2024-11-12T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical with Pap",
+     "state": {
+      "weight_kg": 71.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-11-12T08:00",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-11-12T08:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-11-12T08:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-12T08:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-12T07:50",
+       "results": [
+        {
+         "test": "High-risk HPV DNA",
+         "text": "Not detected"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Cervical cytology (Pap) with HPV",
+       "performed": "2024-11-12T07:50",
+       "text": "Liquid-based cervical specimen, satisfactory, endocervical/transformation zone cells present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+       "conclusion": "NILM; HPV not detected.",
+       "issued": "2024-11-18T15:30"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-11-12T08:10"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-11-12T08:12"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2024-11-12T07:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-11-12T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-11-12T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-11-12T08:55",
+       "body": "First yearly visit here since 2022; the 2023 pregnancy kept her with OB.\n\nInterval: second baby delivered 1/9 at 37 weeks by planned induction, no preeclampsia this time. PH center April: class II, walk distance up, tadalafil unchanged. Endocrinology: prolactin 46, MRI stable at 3 mm, watching without medication. Psychiatry: stable. One hand attack in June, home icatibant.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant 30 mg SC prn, prenatal vitamin.\nPHQ-9 2.\n\nExam: BP normal. Thyroid normal. Breasts without masses. Heart regular, loud P2. Lungs clear. Abdomen soft. Pelvic normal, co-test collected. No edema.\n\nA/P\n- Cervical screening co-test.\n- History of severe preeclampsia plus antipsychotic: lipids, A1c, CMP, CBC.\n- PAH, prolactinoma, schizophrenia, BED: per specialists, all stable.\n- Flu and COVID today."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-19a",
+     "kind": "portal_message",
+     "start": "2024-11-19T12:45",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Pap and labs",
+       "author": "PCP",
+       "date": "2024-11-19T12:45",
+       "body": "Michelle, your Pap is normal with no HPV, next one in 2029. Cholesterol, A1c, blood count, kidney and liver numbers are normal."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-21a",
+     "kind": "outside_records",
+     "start": "2025-01-21T10:00",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Psychiatry update",
+       "author": "psychiatry",
+       "date": "2025-01-21T10:00",
+       "body": "Outpatient psychiatry, visit 01/14/2025. One year after her second delivery, no relapse of psychosis. Managing two young children and a full teaching load. Binge eating episodes infrequent; she uses CBT skills on her own. Risperidone 4 mg nightly continues. No EPS. Return in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-11a",
+     "kind": "pharmacy",
+     "start": "2025-03-11T11:20",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Prior authorization: icatibant",
+       "author": "MA",
+       "date": "2025-03-11T11:20",
+       "body": "Insurer changed specialty pharmacies for the new plan year; icatibant needed a new PA. Submitted with HAE type I diagnosis and attack history. Approved 3/13. New pharmacy contacted pt to set up shipping."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-13a",
+     "kind": "specialist_visit",
+     "start": "2025-05-13T09:00",
+     "service": "Pulmonary Hypertension Center",
+     "reason": "PAH annual review",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-05-13T09:05",
+       "results": [
+        {
+         "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+         "value": 190
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2025-05-13T10:00",
+       "text": "Comparison 2021. Left ventricle normal in size and systolic function. Right ventricular hypertrophy, unchanged. Valves normal. No pericardial effusion.",
+       "conclusion": "Stable right ventricular hypertrophy; normal left ventricle."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "PH center annual review",
+       "author": "pulmonary hypertension",
+       "date": "2025-05-16T13:00",
+       "body": "Regional pulmonary hypertension center. Visit 05/13/2025. Functional class II, working full time, keeping up with two toddlers. NT-proBNP 190. Echo: RV hypertrophy unchanged, LV normal. Low-risk profile on tadalafil 40 mg daily; continue. Annual review. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-17a",
+     "kind": "specialist_visit",
+     "start": "2025-06-17T08:15",
+     "service": "Endocrinology",
+     "reason": "prolactinoma surveillance",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-06-17T08:15",
+       "results": [
+        {
+         "test": "Prolactin",
+         "value": 41
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Endocrinology follow-up",
+       "author": "endocrinology",
+       "date": "2025-06-19T10:30",
+       "body": "Outside endocrinology group. Visit 06/17/2025. Asymptomatic. Cycles irregular in her PCOS pattern. Prolactin 41 ng/mL, stable. Continue observation; prolactin yearly, MRI only for symptoms or a rising level. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-23a",
+     "kind": "annual_physical",
+     "start": "2025-09-23T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "appointment": "cancelled",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Cancellation",
+       "author": "front desk",
+       "date": "2025-09-22T16:05",
+       "body": "Pt called, both kids home sick, cannot make 7:30 tomorrow. Rebooked for November."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-18a",
+     "kind": "annual_physical",
+     "start": "2025-11-18T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-11-18T07:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-11-18T07:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-11-18T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-11-18T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-11-18T08:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-11-18T08:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2025-11-18T07:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-11-18T07:55"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-11-18T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-11-18T08:45",
+       "body": "Rescheduled from September.\n\nInterval: PH center May, low risk, echo stable. Endocrinology June, prolactin 41, observing. Psychiatry steady. No swelling attacks this year. Kids healthy now.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant prn, prenatal vitamin.\nPHQ-9 3.\n\nExam: BP normal. Heart regular, loud P2. Lungs clear. No edema. Skin: mild jawline acne.\n\nA/P\n- Metabolic labs for risperidone and preeclampsia history.\n- HAE: two in-date syringes confirmed.\n- Pap next 2029.\n- Flu and COVID today."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-20a",
+     "kind": "portal_message",
+     "start": "2025-11-20T16:30",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2025-11-20T16:30",
+       "body": "All of Tuesday's labs are normal. See you next fall unless something comes up sooner."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-20a",
+     "kind": "outside_records",
+     "start": "2026-01-20T10:40",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Psychiatry update",
+       "author": "psychiatry",
+       "date": "2026-01-20T10:40",
+       "body": "Outpatient psychiatry, visit 01/13/2026. Remains well on risperidone 4 mg nightly; no psychotic symptoms in many years. Binge eating disorder in good control. Continue; return in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-10a",
+     "kind": "portal_message",
+     "start": "2026-02-10T18:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Tadalafil shipment",
+       "author": "patient",
+       "date": "2026-02-10T18:05",
+       "body": "The specialty pharmacy says they need a new prescription for tadalafil. Is that you or the PH center?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Tadalafil shipment",
+       "author": "RN",
+       "date": "2026-02-11T08:40",
+       "body": "That one is the PH center's prescription. I called their nurse line this morning and they sent it; the pharmacy should reach you today."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-03a",
+     "kind": "ed_visit",
+     "start": "2026-07-03T14:20",
+     "end": "2026-07-03T21:00",
+     "service": "Emergency Medicine",
+     "reason": "lip and tongue swelling",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-07-03T14:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-07-03T14:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-03T14:45",
+       "results": [
+        {
+          "test": "C1 esterase inhibitor",
+          "loinc": "4477-6",
+          "unit": "mg/dL",
+          "value": 6,
+          "range": {
+            "low": 21,
+            "high": 39
+          }
+        },
+        {
+          "test": "Complement C4",
+          "loinc": "4498-2",
+          "unit": "mg/dL",
+          "value": 5,
+          "range": {
+            "low": 14,
+            "high": 48
+          }
+        },
+        {
+          "test": "Tryptase",
+          "loinc": "21582-2",
+          "unit": "ng/mL",
+          "value": 4.1,
+          "range": {
+            "high": 11.5
+          }
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-03T14:35",
+       "results": [
+        {
+         "test": "Pregnancy Test, Urine",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2026-07-03T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2026-07-07T10:00",
+       "body": "Regional hospital emergency department. Seen 07/03/2026.\n\nCC: lip and tongue swelling.\n\nHPI: 36-year-old woman with hereditary angioedema (C1 inhibitor deficiency) and pulmonary arterial hypertension on tadalafil arrives with two hours of steadily increasing swelling of the lips and tongue. No injury, no dental work, nothing new in her medicine list. She has had attacks before, in her hands and abdomen with severe abdominal pain, without clear trigger and settling over days, but never her mouth. No hives, itch or rash with any episode. She had not yet injected; her syringes were at home.\nPMH: HAE; PAH; schizophrenia; PCOS; binge eating disorder; pituitary microadenoma; prior severe preeclampsia. No surgeries.\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, prenatal vitamin, icatibant 30 mg SC as needed. NKDA.\nFH: mother and brother with HAE.\nSH: never smoker, no alcohol, teacher.\n\nExam: vital signs stable. Marked nonpitting edema of the lips and tongue, no erythema or warmth. No stridor, no drooling, voice normal, no respiratory distress. Lungs clear. Abdomen soft, nontender, no organomegaly. No urticaria.\n\nLabs: CBC and electrolytes normal. C1 inhibitor 6 mg/dL (low). C4 5 mg/dL (low). Tryptase 4.1 ng/mL (normal). Urine hCG negative.\n\nMDM: bradykinin-mediated angioedema from known HAE, not histaminergic. Airway watched closely with ENT aware.\nTreatment: icatibant 30 mg SC at 14:50. Swelling improving by 17:00, tongue near baseline at 20:30. Observed 6 hours, no airway compromise.\n\nDisposition: discharged home. Follow up with primary care this week and with allergy/immunology to discuss preventive therapy. Return immediately for throat tightness, voice change or trouble swallowing. Advised to carry icatibant at all times."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-06a",
+     "kind": "telephone",
+     "start": "2026-07-06T09:30",
+     "reason": "post-ED call",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-ED call",
+       "author": "RN",
+       "date": "2026-07-06T09:50",
+       "body": "Pt called to let us know she went to the ED Friday for lip and tongue swelling, first time in her mouth. Got icatibant there, sent home that night. Today lips back to normal, no throat symptoms. Has two syringes at home and will keep one in her bag. ED records requested. Offered visit this week; she is away with family until August and asked for the first week back. Booked 8/6. Told her to use her icatibant and go to the nearest ED for any recurrence in the mouth or throat."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-06a",
+     "kind": "office_visit",
+     "start": "2026-08-06T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after ED visit for angioedema",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-08-06T11:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-08-06T11:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "allergy-referral-2026",
+       "action": "placed",
+       "order": "Allergy and Immunology referral",
+       "category": "referral",
+       "to": "Allergy and Immunology",
+       "reason": "hereditary angioedema with first oropharyngeal attack; long-term prophylaxis"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-08-06T10:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-08-06T11:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-08-06T11:30",
+       "body": "Follow-up after the 7/3 ED visit for lip and tongue swelling. ED record reviewed: C1 inhibitor and C4 low, tryptase normal, treated with icatibant and observed, no airway compromise.\n\nNo further attacks since. She had not had an episode involving her mouth before, and it frightened her. Carries a syringe in her school bag now and has one at home. Before that, one hand attack in 2024 and none in 2025.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant 30 mg SC prn, prenatal vitamin. NKDA.\n\nExam: no lip, tongue or facial swelling. Oropharynx normal. Heart regular, loud P2. Lungs clear. No edema.\n\nA/P\n- Hereditary angioedema with a first oropharyngeal attack. Laryngeal risk is the concern now. She has not seen an immunologist in years; referral to allergy and immunology to discuss long-term prophylaxis and a written action plan. Continue icatibant on demand. ED for any throat symptoms even after injecting.\n- Lipids and A1c today (annual risperidone monitoring, due anyway).\n- PAH, prolactinoma, schizophrenia: stable with specialists.\nPhysical in November."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-07a",
+     "kind": "portal_message",
+     "start": "2026-08-07T15:15",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2026-08-07T15:15",
+       "body": "Cholesterol and A1c from yesterday are normal. The allergy office has your referral."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-18a",
+     "kind": "portal_message",
+     "start": "2026-08-18T12:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Allergy appointment",
+       "author": "patient",
+       "date": "2026-08-18T12:30",
+       "body": "The allergy office called. Their first new patient opening is October 6 but they put me on the cancellation list. Do they need anything else from you?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Allergy appointment",
+       "author": "front desk",
+       "date": "2026-08-18T14:05",
+       "body": "We faxed your ED record and last visit note with the referral, so they should have what they need. If you get an earlier slot, just let us know."
+      }
+     ]
+    },
+    {
+     "id": "2026-11-17a",
+     "kind": "annual_physical",
+     "start": "2026-11-17T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

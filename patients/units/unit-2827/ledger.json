@@ -1,9 +1,7 @@
 {
   "unit": "unit-2827",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): lab \"Synovial fluid leukocytes\" LOINC 99998-3 not found; closest real codes: 30410-5 Leukocytes other/Leukocytes in Synovial fluid; 17834-3 Eosinophils/Leukocytes in Synovial fluid; 26483-8 Lymphocytes/Leukocytes in Synovial fluid; 17833-5 Basophils/Leukocytes in Synovial fluid; 26522-3 Granulocytes/Leukocytes in Synovial fluid"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002827",
@@ -2092,14 +2090,16 @@
               "results": [
                 {
                   "test": "Synovial fluid leukocytes",
-                  "loinc": "99998-3",
+                  "loinc": "26469-7",
                   "unit": "/uL",
+                  "range": {},
                   "value": 18000
                 },
                 {
                   "test": "Synovial fluid neutrophils",
                   "loinc": "17836-8",
                   "unit": "%",
+                  "range": {},
                   "value": 75
                 },
                 {
@@ -3707,6 +3707,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 29.6
                 }
               ]
@@ -5577,6 +5581,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 26.1
                 }
               ]
@@ -6088,13 +6096,13 @@
         "code": "861365",
         "display": "0.6 ML fondaparinux sodium 12.5 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution": {
         "code": "1188426",
         "display": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
         "ingredient": "carboxymethylcellulose",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -6102,6 +6110,10 @@
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Synovial fluid Gram stain": {
@@ -6119,15 +6131,20 @@
         "display": "Bacteria identified in Specimen by Culture",
         "receipt": "NLM Clinical Tables LOINC"
       },
+      "Synovial fluid leukocytes": {
+        "code": "26469-7",
+        "display": "Leukocytes [#/volume] in Synovial fluid",
+        "unit": "/uL",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "Synovial fluid neutrophils": {
         "code": "17836-8",
         "display": "Neutrophils/Leukocytes in Synovial fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Synovial fluid leukocytes\" LOINC 99998-3 not found; closest real codes: 30410-5 Leukocytes other/Leukocytes in Synovial fluid; 17834-3 Eosinophils/Leukocytes in Synovial fluid; 26483-8 Lymphocytes/Leukocytes in Synovial fluid; 17833-5 Basophils/Leukocytes in Synovial fluid; 26522-3 Granulocytes/Leukocytes in Synovial fluid"
-    ]
+    }
   }
 }

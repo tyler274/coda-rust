@@ -502,6 +502,10 @@
                   "test": "Total T3",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
                   "value": 250
                 }
               ]
@@ -632,7 +636,10 @@
                 {
                   "test": "Thyrotropin receptor antibody",
                   "loinc": "5385-0",
-                  "unit": "IU/L",
+                  "unit": "[IU]/L",
+                  "range": {
+                    "high": 1.75
+                  },
                   "value": 6.8
                 }
               ]
@@ -760,6 +767,10 @@
                   "test": "Total T3",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
                   "value": 250
                 }
               ]
@@ -885,6 +896,10 @@
                   "test": "Total T3",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
                   "value": 240
                 }
               ]
@@ -1025,6 +1040,10 @@
                   "test": "Total T3",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
                   "value": 192
                 }
               ]
@@ -1058,13 +1077,20 @@
       "Thyrotropin receptor antibody": {
         "code": "5385-0",
         "display": "Thyrotropin receptor Ab [Units/volume] in Serum",
-        "unit": "IU/L",
+        "unit": "[IU]/L",
+        "range": {
+          "high": 1.75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Total T3": {
         "code": "3053-6",
         "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
         "unit": "ng/dL",
+        "range": {
+          "low": 80,
+          "high": 180
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

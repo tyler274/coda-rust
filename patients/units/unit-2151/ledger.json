@@ -1,0 +1,3183 @@
+{
+  "unit": "unit-2151",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002151",
+      "given": "Craig",
+      "family": "Roy",
+      "birth_date": "1970-05-19",
+      "address_line": "27 Petticoat Hill Road, Williamsburg, MA 01096",
+      "phone": "+1-917-555-0113",
+      "email": "craig.roy@example.test",
+      "marital_status": "single",
+      "summary": "Former construction worker on disability for seropositive erosive rheumatoid arthritis, with remote treated TB, asbestos exposure, and tobacco and alcohol use both stopped in 2023. Etanercept in 2024 was followed by recurrent cavitary pulmonary TB treated by the health department; he moved to rituximab and in 2026 had pneumococcal pneumonia seen in an outside ED.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:20",
+          "reason": "new patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-08-08T10:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer his primary care here. Says his old doctor's office in the valley closed its panel to Medicare disability patients and he wants someone closer to home. Sees an outside rheumatology group for RA, wants to keep them. Booked new-patient slot 8/22 at 9:00. Asked him to bring his pill bottles and any records he has. Records release form mailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T09:00",
+          "end": "2023-08-22T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Rheumatoid arthritis with rheumatoid factor of multiple sites without organ or systems involvement",
+              "action": "diagnosed",
+              "onset": "2022-03-01",
+              "note": "seropositive, erosive; followed by outside rheumatology",
+              "icd10": "M05.79"
+            },
+            {
+              "label": "Personal history of tuberculosis",
+              "action": "diagnosed",
+              "onset": "2004-01-01",
+              "note": "pulmonary, treated and completed in his thirties per patient"
+            },
+            {
+              "label": "Contact with and (suspected) exposure to asbestos",
+              "action": "diagnosed",
+              "onset": "1995-01-01",
+              "note": "occupational, construction",
+              "icd10": "Z77.090"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2023-06-01",
+              "note": "30 pack-years, quit about June 2023"
+            },
+            {
+              "label": "Alcohol use disorder, in remission",
+              "action": "diagnosed",
+              "onset": "2023-06-01",
+              "note": "in remission since about June 2023"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "diagnosed",
+              "onset": "2023-08-22"
+            },
+            {
+              "label": "Long term (current) use of systemic steroids",
+              "action": "diagnosed",
+              "onset": "2022-03-01",
+              "note": "prednisone 5 mg daily"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "methotrexate 2.5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 6 tablets (15 mg) by mouth once weekly on the same day each week",
+              "dose": {
+                "value": 15,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "with methotrexate"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily with breakfast",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis"
+            },
+            {
+              "drug_text": "calcium carbonate 1500 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (600 mg calcium) by mouth twice daily",
+              "dose": {
+                "value": 1500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bone protection on prednisone"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "dose": {
+                "value": 2000,
+                "unit": "[iU]"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "bone protection on prednisone"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 67,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 112.5,
+            "height_cm": 178.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            },
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Former heavy use, none since about June 2023"
+            },
+            {
+              "item": "Occupation",
+              "value": "Construction worker, on medical disability"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-22T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T10:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-22T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "30 pack-years, quit 2023"
+            },
+            {
+              "id": "dxa-2023",
+              "action": "placed",
+              "order": "DXA bone density, hip and spine",
+              "category": "imaging",
+              "reason": "long-term prednisone"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-22T09:00",
+              "author": "PCP",
+              "body": "53 y/o man, former construction worker, transferring primary care. Here to set up and get his preventive care sorted.\n\nRA: seropositive, erosive, diagnosed spring 2022 by an outside rheumatology group, who he keeps seeing every few months. On methotrexate 15 mg once a week (six 2.5 mg tabs, takes them Sunday nights), folic acid daily, prednisone 5 mg daily since diagnosis. Calcium and vitamin D for the steroid. Hands are stiff for about an hour on waking, manageable most days. Went on disability from the building trades because he can't grip tools for a full shift.\n\nTB: had pulmonary TB in his early thirties, around 2004. Says he took pills for six months through the health department and was told he was cured. No records of that.\n\nAsbestos: decades of demolition and renovation work, often around old insulation and pipe wrap, rarely with a mask.\n\nTobacco: 30 pack-years, stopped in June, about two months ago. No patch or meds, just quit. Alcohol: drank heavily for years, he calls it a long-term problem. Stopped at the same time. Not in a program. No withdrawal symptoms now, no cravings he can't manage.\n\nFamily: father COPD, mother thyroid disease (autoimmune), brother lung cancer.\nAllergies: none to medications.\nNo surgeries.\n\nROS: no cough, fevers, sweats or weight loss. No dyspnea. No GI symptoms.\n\nExam: BP and vitals as recorded. Large man, comfortable. Lungs clear throughout, no crackles. Heart regular, no murmur. Abdomen soft, no hepatomegaly. Hands: boggy synovial thickening over several MCPs on both sides, mild tenderness, full fist possible but slow. Wrists without effusion. No nodules. Skin unremarkable.\n\nA/P:\n1. RA - on MTX/folate/pred per rheum. CBC and CMP today, we can share the monitoring draws with rheum.\n2. Remote TB, treated. Noted.\n3. Former tobacco, 30 pack-years, quit 2 mo ago. Eligible for lung screening; ordered LDCT. Congratulated on quitting.\n4. Alcohol use disorder, early remission. AUDIT-C 0 since June. Offered counseling resources, he declines for now.\n5. Obesity, BMI 35.5. Discussed.\n6. Chronic prednisone - DXA ordered, on calcium/D. Vitamin D level today.\n7. HM: Tdap today. Lipids, A1c, hep C screen. Will request prior records for colonoscopy date. Flu/COVID/pneumococcal/shingles at a nurse visit in early October.\n\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              126,
+              80
+            ],
+            "weight_kg": 112.6,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-25a",
+          "kind": "portal_message",
+          "start": "2023-08-25T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-08-25T16:40",
+              "author": "PCP",
+              "body": "Hi Craig, your labs from Tuesday look fine. Blood counts and liver tests are normal, which is what we want on methotrexate. Kidney function normal. Cholesterol is acceptable, A1c 5.6 (no diabetes), hepatitis C screen negative, vitamin D 34 which is fine on your current supplement. No changes. The CT and bone density scheduling desk should call you this week."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T11:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-03-08T08:30",
+              "results": [
+                {
+                  "test": "Rheumatoid Factor",
+                  "value": 84
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "value": 142
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2021-04-13T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2023-09-05T11:00",
+              "author": "front desk",
+              "body": "Records received by fax from prior primary care office, 41 pages. Summary of relevant items:\n- Screening colonoscopy 04/13/2021: normal to the cecum, no polyps. Repeat in 10 years.\n- 03/2022 notes: hand and wrist pain, morning stiffness; labs 03/08/2022 rheumatoid factor 84 IU/mL (high), anti-CCP 142 U/mL (strongly positive). Referred to rheumatology, RA confirmed there.\n- Past history lists pulmonary TB treated in early 2000s, per patient.\n- Smoking and alcohol counseling at several visits.\nScanned under Media, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T14:15",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "date": "2023-09-12T14:15",
+              "author": "rheumatology",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nVisit date: 09/07/2023\nRe: Craig Roy, DOB 05/19/1970\n\nDear colleague,\n\nThank you for taking over Mr. Roy's primary care. I saw him for his regular follow-up of seropositive erosive rheumatoid arthritis. He describes morning stiffness of about an hour and intermittent MCP swelling. On examination today there was mild synovitis at both second and third MCPs.\n\nMedications: methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily, calcium carbonate 600 mg twice daily, vitamin D3 2000 IU daily.\nAllergies: NKDA.\n\nImpression: RA with ongoing low-grade synovitis, stable on the current program. He would like to avoid escalation for now. We will continue methotrexate and low-dose prednisone and revisit in 3 to 4 months. Please continue to share CBC and liver tests every 3 months.\n\nWith regards,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T13:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T13:37"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-10-03T13:39"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-10-03T13:41"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-03T13:30",
+              "author": "RN",
+              "body": "Here for vaccines per PCP plan. Screening questions negative, no fever today. On methotrexate and prednisone, no live vaccines given. Administered flu (L deltoid), COVID 2023-24 (R deltoid), PCV20 (L deltoid, separate site) and Shingrix #1 (R deltoid, separate site). Observed 15 minutes, tolerated well. Shingrix #2 due in 2-6 months, nurse visit booked for January. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "imaging",
+          "start": "2023-10-17T08:15",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-17T08:15",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING\nIndication: Former smoker, 30 pack-years, quit 2023. Baseline screen.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: No pulmonary nodules. No consolidation or interstitial abnormality. Airways patent. No pleural effusion, thickening or pleural plaques. Heart size normal. No mediastinal or hilar adenopathy. Upper abdomen unremarkable on limited views.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            },
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2023-10-17T09:00",
+              "text": "DXA BONE DENSITOMETRY\nIndication: Long-term glucocorticoid use.\nLumbar spine L1-L4: T-score -0.7.\nLeft femoral neck: T-score -0.9.\nLeft total hip: within normal range.",
+              "conclusion": "Normal bone density."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2023",
+              "action": "done",
+              "date": "2023-10-17T08:15"
+            },
+            {
+              "id": "dxa-2023",
+              "action": "done",
+              "date": "2023-10-17T09:00"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "portal_message",
+          "start": "2023-10-20T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT and bone density",
+              "date": "2023-10-20T09:05",
+              "author": "PCP",
+              "body": "Craig - good news on both scans. The lung screening CT shows no nodules and nothing worrisome; we repeat it once a year. Bone density is normal even with the prednisone. Keep the calcium and vitamin D going."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: CT and bone density",
+              "date": "2023-10-20T12:48",
+              "author": "patient",
+              "body": "Thanks doc. Relieved about the lungs given my brother. Still not smoking."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, RA and medication monitoring",
+          "vitals": {
+            "bp": [
+              129,
+              80
+            ],
+            "hr": 81,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 112.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-12T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-12T11:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-12-12T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-12-12T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-12-12T10:40",
+              "author": "PCP",
+              "body": "S: Doing OK. Hands about the same, worse on cold mornings. Taking MTX every Sunday, no missed doses, no mouth sores. Still off cigarettes and alcohol, six months now; says the hardest part is evenings. Saw rheum in Sept, no changes.\nO: Vitals as charted. Lungs clear. MCPs mildly puffy both hands, no warmth. No edema.\nA/P: RA stable on current regimen. Monitoring CBC/CMP today, will forward to rheum. Tobacco and alcohol remission holding, encouraged. Shingrix #2 next month. RTC 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "nurse_visit",
+          "start": "2024-01-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-01-16T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-01-16T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-01-16T14:00",
+              "author": "RN",
+              "body": "Shingrix #2 given L deltoid. Says the first one made his arm ache and he felt run down for a day and a half, ok with getting the second anyway. Series now complete. Observed, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "pharmacy",
+          "start": "2024-02-20T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: methotrexate, folic acid",
+              "date": "2024-02-20T09:30",
+              "author": "MA",
+              "body": "eRx refill request from pharmacy, methotrexate 2.5 mg #24 and folic acid 1 mg #90. Rheum is the usual prescriber for MTX but pt asked us since his rheum refill lapsed. December CBC/CMP normal. Routed to PCP: approved x1 each, pt told to ask rheum for future MTX refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hand pain worse",
+          "vitals": {
+            "bp": [
+              138,
+              85
+            ],
+            "hr": 82,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 113.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-19T15:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.13
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T15:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.03
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-19T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-19T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-2024",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "RA flaring on methotrexate, asking for an earlier visit"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-19T15:20",
+              "author": "PCP",
+              "body": "CC: hands worse.\n\nOver the last two or three months the stiffness in his hands and wrists has been lasting longer, two hours some mornings, loosening up by early afternoon. Trouble with buttons and the coffee pot. No new joints beyond hands/wrists. Taking MTX faithfully. Next rheum appt isn't until late June.\n\nExam: Tender and swollen MCPs and PIPs on both hands, worst R 2nd/3rd MCP. Wrists tender at extremes. Lungs clear. No rash.\n\nA/P: RA, not controlled on MTX 15 + pred 5. This is rheum's decision on escalation. Sent referral/message asking them to move his visit up. Not adjusting prednisone myself. Monitoring labs today. Tylenol as needed is fine. Remains off tobacco and alcohol.\n\nRTC after rheum visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "specialist_visit",
+          "start": "2024-06-10T13:00",
+          "service": "Rheumatology",
+          "reason": "worsening hand and wrist pain and stiffness",
+          "medications": [
+            {
+              "drug_text": "1 ML etanercept 50 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 50 mg under the skin once weekly",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis, prescribed by rheumatology"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-10T13:45",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 48
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 31
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Hand X-ray",
+              "performed": "2024-06-10T14:00",
+              "text": "BILATERAL HANDS AND WRISTS, 3 VIEWS EACH\nIndication: Rheumatoid arthritis, worsening symptoms.\nFindings: Periarticular osteopenia at the MCP joints bilaterally. Marginal erosions at several MCP joints of both hands. Joint spaces otherwise preserved. No fracture. No soft-tissue calcification.",
+              "conclusion": "Erosive changes consistent with rheumatoid arthritis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-2024",
+              "action": "done",
+              "date": "2024-06-10T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "date": "2024-06-14T10:20",
+              "author": "rheumatology",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nVisit date: 06/10/2024\nRe: Craig Roy, DOB 05/19/1970\n\nDear colleague,\n\nThanks for your note in March. Mr. Roy returns with escalating pain and stiffness in both hands and wrists. Mornings are the worst and he improves gradually as the day goes on.\n\nExam: tenderness and swelling across multiple MCP and PIP joints on both sides.\n\nLabs today: ESR 48 mm/h, CRP 31 mg/L.\nHand radiographs today: marginal MCP erosions with periarticular osteopenia, consistent with erosive RA.\n\nCurrent medications: methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily, calcium carbonate 600 mg twice daily, vitamin D3 2000 IU daily.\nAllergies: NKDA.\nHistory: pulmonary TB treated in the early 2000s; asbestos exposure; former smoker; alcohol use disorder in remission.\n\nAssessment: active seropositive erosive RA despite methotrexate.\nPlan: we discussed adding a TNF inhibitor and he agreed. Etanercept 50 mg subcutaneous weekly, in addition to methotrexate. Injection teaching done here; specialty pharmacy will ship and he plans his first dose next week. Continue prednisone 5 mg for now. Follow up in 3 months.\n\nSincerely,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "portal_message",
+          "start": "2024-06-20T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New shot from rheumatology",
+              "date": "2024-06-20T19:12",
+              "author": "patient",
+              "body": "Rheumatology started me on Enbrel, did my first shot Monday. The leaflet says a lot about infections. Anything I should watch for with you guys?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: New shot from rheumatology",
+              "date": "2024-06-21T08:30",
+              "author": "PCP",
+              "body": "Hi Craig, I saw their letter. The main thing is that it lowers your defenses a bit, so call us for a fever, a cough that won't quit, night sweats or a wound that isn't healing, rather than waiting it out. Your vaccines are up to date. Hope it helps the hands."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-09a",
+          "kind": "hospital_admission",
+          "start": "2024-08-09T17:40",
+          "end": "2024-08-17T12:30",
+          "service": "Internal Medicine",
+          "reason": "fever, night sweats, weight loss, productive cough",
+          "conditions": [
+            {
+              "label": "Tuberculosis of lung",
+              "action": "diagnosed",
+              "onset": "2024-07-15",
+              "note": "recurrent, cavitary, on etanercept",
+              "icd10": "A15.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "1 ML etanercept 50 MG/ML Prefilled Syringe",
+              "action": "stop",
+              "reason": "active tuberculosis"
+            },
+            {
+              "drug_text": "isoniazid 300 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily (directly observed)",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pulmonary tuberculosis, TB program"
+            },
+            {
+              "drug_text": "rifampin 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 2 capsules (600 mg) by mouth daily (directly observed)",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pulmonary tuberculosis, TB program"
+            },
+            {
+              "drug_text": "pyrazinamide 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 4 tablets (2000 mg) by mouth daily (directly observed)",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pulmonary tuberculosis, TB program"
+            },
+            {
+              "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 4 tablets (1600 mg) by mouth daily (directly observed)",
+              "dose": {
+                "value": 1600,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pulmonary tuberculosis, TB program"
+            },
+            {
+              "drug_text": "vitamin B6 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily with isoniazid",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "neuropathy prevention on isoniazid"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-08-09T17:50",
+              "bp": [
+                128,
+                76
+              ],
+              "hr": 102,
+              "rr": 22,
+              "temp_c": 38.6,
+              "spo2": 94,
+              "weight_kg": 107.7
+            },
+            {
+              "time": "2024-08-17T08:00",
+              "bp": [
+                122,
+                74
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 96
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-08-09T18:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 206
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-09T18:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 85
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-09T18:20",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-09T21:00",
+              "results": [
+                {
+                  "test": "Microscopic observation in Sputum by Acid fast stain",
+                  "loinc": "11477-7",
+                  "text": "Acid-fast bacilli seen (2+), specimen 1 of 3; specimens 2 and 3 also positive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-09T21:00",
+              "resulted": "2024-08-10T11:00",
+              "results": [
+                {
+                  "test": "Mycobacterium tuberculosis complex DNA in Specimen by NAA",
+                  "loinc": "38379-4",
+                  "text": "Detected. rpoB mutation (rifampin resistance) not detected."
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-08-09T18:05",
+              "text": "CHEST, PA AND LATERAL\nIndication: Fever, cough, weight loss; on TNF inhibitor; prior TB.\nFindings: Patchy airspace opacities in both lungs, predominantly in the upper lobes. Thick-walled cavity in the right upper lobe measuring 3.2 cm. No pleural effusion. No pneumothorax. Heart size normal. Mediastinal contours normal.",
+              "conclusion": "Bilateral upper-lobe-predominant airspace disease with right upper lobe cavitation, concerning for active tuberculosis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-08-09T20:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-08-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2024-08-19T08:45",
+              "author": "hospitalist",
+              "body": "REGIONAL HOSPITAL - MEDICINE SERVICE\nAdmitted 08/09/2024, discharged 08/17/2024\nPatient: Craig Roy, 54 M\n\nPrincipal diagnosis: Pulmonary tuberculosis, recurrent, smear positive, with right upper lobe cavity.\n\nHistory: 54-year-old man with seropositive erosive RA and pulmonary TB treated in the early 2000s, started on etanercept by his rheumatologist roughly eight weeks ago in addition to methotrexate and prednisone. He came in with three weeks of fevers, drenching night sweats, productive cough, weight loss and fatigue.\n\nOn arrival: T 38.6 C, HR 102, RR 22, BP 128/76, SpO2 94% on room air. Obese, BMI 34, weight 107.7 kg. Crackles throughout both lung fields.\n\nChest film: patchy bilateral upper-lobe opacities and a 3.2 cm thick-walled right upper lobe cavity.\n\nMicrobiology: sputum AFB smear positive on all three induced specimens. MTB complex PCR detected, no rifampin resistance mutation. Cultures pending at discharge. HIV Ag/Ab nonreactive.\n\nHospital course: placed in airborne isolation on arrival. Etanercept discontinued. Health department TB program notified. Four-drug therapy started 08/10: isoniazid 300 mg, rifampin 600 mg, pyrazinamide 2000 mg, ethambutol 1600 mg daily, with pyridoxine 50 mg. Tolerated without nausea or rash. Baseline liver tests normal. Fevers resolved by day 5. Methotrexate, folic acid and prednisone continued after discussion with his rheumatologist.\n\nDischarge medications: isoniazid 300 mg daily, rifampin 600 mg daily, pyrazinamide 2000 mg daily, ethambutol 1600 mg daily, pyridoxine 50 mg daily (all via TB program DOT); methotrexate 15 mg weekly; folic acid 1 mg daily; prednisone 5 mg daily; calcium carbonate 600 mg twice daily; vitamin D3 2000 IU daily.\nSTOPPED: etanercept.\nAllergies: NKDA.\n\nDisposition: home with home isolation until cleared by the TB program. DOT through the health department starts 08/18. Follow up with PCP within one week (video is fine while isolated) and with rheumatology."
+            }
+          ],
+          "state": {
+            "weight_kg": 107.7
+          }
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from hospital case manager",
+              "date": "2024-08-12T11:10",
+              "author": "RN",
+              "body": "Case manager from the regional hospital called: our patient admitted 8/9 with active pulmonary TB, smear positive, in isolation, started on four-drug treatment. Health dept involved. Expected discharge later this week; they want a PCP follow-up within 7 days, video ok since he'll be on home isolation. Message to PCP. Will book once discharge date is known."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "telehealth_visit",
+          "start": "2024-08-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-08-22T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Post-discharge",
+              "date": "2024-08-22T11:00",
+              "author": "PCP",
+              "body": "Video, pt at home on home isolation per TB program. Identity verified.\n\nDischarged 8/17 after admission for recurrent pulmonary TB, cavitary, smear positive, about 8 weeks after starting etanercept. Discharge summary reviewed.\n\nNow: no fever since the hospital. Cough still there but less sputum. Sleeping through without soaking the sheets. Appetite coming back. Health dept nurse comes daily for DOT, has had no missed doses. Orange urine, knows it's the rifampin. No nausea, no yellowing, no rash, no vision change.\n\nMeds reconciled: INH 300, rifampin 600, PZA 2000, ethambutol 1600, B6 50 daily via DOT; MTX 15 weekly; folate; pred 5; calcium; D3. Etanercept off.\n\nA/P:\n1. Pulmonary TB, recurrent, on RIPE via health dept. Agree with plan; they manage dosing and cultures. Reviewed liver warning signs and to stop drinking entirely (he already has). He asked whether the Enbrel caused this - told him it likely allowed old TB to wake up, and that rheumatology will need a non-TNF option later.\n2. RA on MTX/pred, biologic stopped. Rheum aware.\nIn-person visit once the TB program clears him from isolation. LFTs then."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "specialist_visit",
+          "start": "2024-09-04T10:00",
+          "service": "Public Health TB Clinic",
+          "reason": "TB treatment follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-10T06:00",
+              "resulted": "2024-09-03T14:00",
+              "results": [
+                {
+                  "test": "Mycobacterium sp identified in Sputum by Organism specific culture",
+                  "loinc": "539-7",
+                  "text": "Mycobacterium tuberculosis complex isolated. Susceptible to isoniazid, rifampin, pyrazinamide and ethambutol."
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2024-09-04T10:15",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB program progress note",
+              "date": "2024-09-10T13:30",
+              "author": "public health TB clinic",
+              "body": "HEALTH DEPARTMENT TUBERCULOSIS PROGRAM\nClinic visit: 09/04/2024\nClient: Craig Roy, DOB 05/19/1970\n\nWeek 4 of intensive phase (INH/RIF/PZA/EMB daily by DOT, started 08/10/2024). DOT log complete, no missed doses. Afebrile, cough improving, gaining weight back. No visual complaints; color vision screen normal. No GI upset, no rash, no paresthesias.\n\nCulture from 08/10 sputum: M. tuberculosis complex, pan-susceptible (INH, RIF, PZA, EMB).\nLFTs today within normal limits.\n\nPlan: continue four drugs to complete 8 weeks, then repeat sputum culture. Home isolation released 09/04 after three consecutive negative smears.\n\nTB nurse case manager, county health department"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "office_visit",
+          "start": "2024-10-08T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after TB admission",
+          "vitals": {
+            "bp": [
+              134,
+              75
+            ],
+            "hr": 67,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 108.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-08T10:05",
+              "results": [
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.06
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-08T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T10:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-08T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T10:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T10:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-10-08T09:40",
+              "author": "PCP",
+              "body": "First in-person visit since the TB admission. Cleared from isolation by health dept in early September.\n\nFeels much better. No fevers or sweats for over a month. Cough occasional, dry. Weight up about a kilo from the hospital. DOT daily, nothing missed. Finishing the 8 weeks of four drugs this week; TB clinic sent the 2-month sputum last week.\n\nHands: stiff without the Enbrel but tolerable on MTX + pred. Rheum visit end of the month.\n\nExam: afebrile, vitals as charted. Lungs: few faint crackles R upper field, otherwise clear. No jaundice. No rash. MCPs puffy.\n\nA/P:\n1. Pulmonary TB on treatment, improving. CMP for LFTs on INH/RIF/PZA plus MTX. TB clinic owns dosing.\n2. RA - per rheum. CBC today.\n3. Flu and COVID today.\n4. Still abstinent from alcohol and tobacco.\nRTC early November."
+            }
+          ],
+          "state": {
+            "weight_kg": 108.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "specialist_visit",
+          "start": "2024-10-10T10:30",
+          "service": "Public Health TB Clinic",
+          "reason": "end of intensive phase",
+          "medications": [
+            {
+              "drug_text": "pyrazinamide 500 MG Oral Tablet",
+              "action": "stop",
+              "reason": "intensive phase complete"
+            },
+            {
+              "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+              "action": "stop",
+              "reason": "intensive phase complete"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-01T06:15",
+              "resulted": "2024-10-09T15:00",
+              "results": [
+                {
+                  "test": "Mycobacterium sp identified in Sputum by Organism specific culture",
+                  "loinc": "539-7",
+                  "text": "No mycobacteria isolated."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB program letter",
+              "date": "2024-10-15T09:10",
+              "author": "public health TB clinic",
+              "body": "HEALTH DEPARTMENT TUBERCULOSIS PROGRAM\nClinic visit: 10/10/2024\nClient: Craig Roy, DOB 05/19/1970\n\nIntensive phase complete (8 weeks, 56 DOT doses). Two-month sputum culture collected 10/01/2024: negative. Isolate pan-susceptible.\n\nChanges: pyrazinamide and ethambutol stopped 10/10/2024. Continuation phase: isoniazid 300 mg, rifampin 600 mg and pyridoxine 50 mg daily by DOT for four months, planned end date 02/10/2025.\n\nPlease forward any LFTs drawn at your office. Thank you.\nTB nurse case manager, county health department"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "specialist_visit",
+          "start": "2024-10-31T14:00",
+          "service": "Rheumatology",
+          "reason": "RA follow-up after TB",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "date": "2024-11-05T11:40",
+              "author": "rheumatology",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nVisit date: 10/31/2024\nRe: Craig Roy, DOB 05/19/1970\n\nDear colleague,\n\nMr. Roy is seen after his hospitalization for reactivated pulmonary tuberculosis that developed on etanercept, which was stopped in August. He is in the continuation phase of treatment with the health department.\n\nToday he has active synovitis at the MCPs and wrists. We are continuing methotrexate 15 mg weekly with folic acid and prednisone 5 mg daily. No biologic will be given until his TB treatment is finished. At that point my plan is rituximab, which carries less TB risk than TNF blockade, after hepatitis B screening.\n\nFollow up in early 2025.\n\nSincerely,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "office_visit",
+          "start": "2024-11-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2024-11-11T15:25",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's 10:00, his ride fell through. Says he feels fine. Rebooked for January."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              82
+            ],
+            "hr": 79,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 109.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-14T13:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 272
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-01-14T13:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.08
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-14T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-14T13:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-14T13:20",
+              "author": "PCP",
+              "body": "S: Rebooked from November. Four weeks left on INH/rifampin, DOT going fine, nurse now comes on weekdays and he self-administers weekends under video check. No cough, no sweats. Weight back up. Hands stiff, he's counting down to the next rheum step.\nStill not smoking or drinking, about 19 months.\nO: Vitals as charted. Lungs clear today. No jaundice. Synovitis MCPs both hands.\nA/P:\n1. Pulmonary TB, continuation phase, doing well. LFTs/CBC today, copy to TB clinic.\n2. RA - rheum plans rituximab after TB treatment ends in February.\n3. Lung screening CT: will plan the next one for fall rather than now, he's had several chest films this year and the TB clinic will do an end-of-treatment film.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 110.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "specialist_visit",
+          "start": "2025-02-11T09:30",
+          "service": "Public Health TB Clinic",
+          "reason": "end of TB treatment",
+          "conditions": [
+            {
+              "label": "Tuberculosis of lung",
+              "action": "resolved",
+              "onset": "2024-07-15",
+              "note": "treatment completed 2025-02-10",
+              "icd10": "A15.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "isoniazid 300 MG Oral Tablet",
+              "action": "stop",
+              "reason": "treatment complete"
+            },
+            {
+              "drug_text": "rifampin 300 MG Oral Capsule",
+              "action": "stop",
+              "reason": "treatment complete"
+            },
+            {
+              "drug_text": "vitamin B6 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "isoniazid complete"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-02-11T09:00",
+              "text": "CHEST, PA AND LATERAL\nIndication: Completion of treatment for pulmonary tuberculosis.\nComparison: 08/09/2024.\nFindings: Marked interval improvement of the bilateral upper-lobe opacities. Residual linear scarring in the right upper lobe with mild volume loss. The previously seen cavity is no longer evident. No new consolidation. No pleural effusion. Heart and mediastinum normal.",
+              "conclusion": "Marked improvement. Residual right upper lobe scarring, no cavity."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB program completion letter",
+              "date": "2025-02-18T10:00",
+              "author": "public health TB clinic",
+              "body": "HEALTH DEPARTMENT TUBERCULOSIS PROGRAM\nCompletion of treatment\nClient: Craig Roy, DOB 05/19/1970\n\nMr. Roy completed six months of therapy for pan-susceptible pulmonary tuberculosis on 02/10/2025: two months of isoniazid, rifampin, pyrazinamide and ethambutol followed by four months of isoniazid and rifampin, all by DOT, with pyridoxine. Culture converted to negative at two months. No hepatotoxicity.\n\nEnd-of-treatment chest film 02/11/2025: marked improvement, residual right upper lobe scarring with mild volume loss, cavity resolved.\n\nIsoniazid, rifampin and pyridoxine stopped. His case is closed with our program. Given his immunosuppression, he knows to seek care promptly for cough, fever, sweats or weight loss.\n\nTB nurse case manager, county health department"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "specialist_visit",
+          "start": "2025-03-18T09:00",
+          "service": "Rheumatology",
+          "reason": "rituximab infusion",
+          "medications": [
+            {
+              "drug_text": "10 ML rituximab 10 MG/ML Injection",
+              "action": "historical",
+              "sig": "1000 mg IV on day 1 and day 15, repeated every 6 months (infusion center)",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "rheumatoid arthritis, rheumatology"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-25T10:00",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology letter: rituximab",
+              "date": "2025-03-25T15:05",
+              "author": "rheumatology",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nRe: Craig Roy, DOB 05/19/1970\n\nDear colleague,\n\nWith his TB treatment completed on 02/10, Mr. Roy started rituximab for seropositive erosive RA. Hepatitis B surface antigen 02/25/2025 negative. He received rituximab 1000 mg IV on 03/04/2025 and 03/18/2025 in our infusion suite with premedication; no infusion reactions.\n\nWe will repeat the two-infusion course every six months, next due September. He continues methotrexate 15 mg weekly with folic acid and prednisone 5 mg daily.\n\nMedications: methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily, calcium carbonate 600 mg twice daily, vitamin D3 2000 IU daily.\nAllergies: NKDA.\n\nSincerely,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              122,
+              81
+            ],
+            "hr": 74,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 110.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-04-22T11:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-22T11:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-04-22T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-22T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-22T11:00",
+              "author": "PCP",
+              "body": "Done with TB treatment in Feb, health dept closed his case. Two rituximab infusions in March, no problems. Hands noticeably looser the last couple weeks, mornings down to under an hour. No cough, fevers or sweats.\n\nExam: well. Lungs clear. MCP swelling less than January.\n\nA/P: TB treated, completed. RA improving on rituximab + MTX + pred 5 per rheum. CBC w diff and CMP today. Reminded him to call early for any fever or cough. Wellness visit in late summer. LDCT due in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: prednisone",
+              "date": "2025-06-17T08:50",
+              "author": "MA",
+              "body": "Pharmacy requesting prednisone 5 mg #90. Last filled March. Rheum letter March continues pred 5. Approved per PCP, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "annual_physical",
+          "start": "2025-08-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 71,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 111.4,
+            "height_cm": 178.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-26T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.98
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-26T08:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-26T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 54
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-26T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-08-26T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-26T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2025-08-26T08:30",
+              "author": "PCP",
+              "body": "Medicare AWV.\n\nInterval: TB treated and completed Feb 2025. Rituximab started March, second course due next month. Hands are the best they've been in two years. Off cigarettes and alcohol over two years now.\n\nFunctional: independent in ADLs and IADLs. Drives. No falls. Hearing and vision adequate by self report. PHQ-2 0, AUDIT-C 0.\n\nMeds: MTX 15 weekly, folic acid 1, pred 5, calcium 600 BID, D3 2000, rituximab q6mo (rheum).\nAllergies: NKDA.\n\nExam: BMI about 35, vitals as charted. Lungs clear. Heart regular. Abdomen soft. MCPs with minimal swelling. No edema. Skin without concerning lesions.\n\nPrevention:\n- Colonoscopy 2021 normal, next 2031.\n- Lung screening: LDCT this October.\n- Vaccines: Tdap 2023, PCV20 2023, Shingrix complete, flu/COVID this fall.\n- Hep C screened 2023, HIV tested 2024.\n- DXA 2023 normal; still on pred, can repeat in a couple of years.\n\nLabs today: CBC, CMP, lipids, A1c.\nPersonalized plan reviewed with him and printed. RTC December."
+            }
+          ],
+          "state": {
+            "weight_kg": 112.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "specialist_visit",
+          "start": "2025-09-23T09:00",
+          "service": "Rheumatology",
+          "reason": "rituximab infusion, course 2",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology letter",
+              "date": "2025-09-25T12:15",
+              "author": "rheumatology",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nRe: Craig Roy, DOB 05/19/1970\n\nSecond rituximab course given, 1000 mg IV on 09/09/2025 and 09/23/2025, uneventful. Disease activity is low at this point: one mildly tender MCP, no swollen joints. Continue methotrexate 15 mg weekly, folic acid, prednisone 5 mg daily. Next course March 2026. Please keep sharing quarterly CBC and CMP.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-07T15:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-10-07T15:10",
+              "author": "RN",
+              "body": "2025-26 flu (L deltoid) and COVID (R deltoid) given. Afebrile, no acute illness. Last rituximab 9/23; per PCP ok to vaccinate today. Tolerated, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "imaging",
+          "start": "2025-10-21T07:45",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-10-21T07:45",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING\nIndication: Former smoker, 30 pack-years, quit 2023. Annual screen. Treated pulmonary tuberculosis 2024-2025.\nComparison: LDCT 10/17/2023.\nFindings: Linear and band-like scarring in the right upper lobe with mild volume loss, consistent with post-inflammatory change at the site of treated tuberculosis. No cavity. No solid, part-solid or ground-glass nodule. No consolidation. No pleural effusion, thickening or plaques. Heart size normal. No adenopathy.",
+              "conclusion": "Lung-RADS 2: benign appearance. Right upper lobe post-inflammatory scarring. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung screening"
+            },
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-10-21T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "LDCT result",
+              "date": "2025-10-22T12:10",
+              "author": "PCP",
+              "body": "Lung-RADS 2, only the old TB scarring in the RUL, no nodules. Annual screen again next fall. Portal message sent to pt."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              133,
+              85
+            ],
+            "hr": 77,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 112.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-12-09T14:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-12-09T14:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-12-09T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-09T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-09T14:00",
+              "author": "PCP",
+              "body": "S: Quiet stretch. Hands good on rituximab. Shoveled the walk himself last week, first winter in a while he could. No cough, fevers, sweats. Not smoking, not drinking.\nO: Vitals as charted. Lungs clear. Joints without synovitis today.\nA/P: RA well controlled per rheum regimen. Quarterly CBC/CMP drawn. LDCT in Oct Lung-RADS 2, scarring only. RTC 3-4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "specialist_visit",
+          "start": "2026-03-24T09:00",
+          "service": "Rheumatology",
+          "reason": "rituximab infusion, course 3",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology letter",
+              "date": "2026-03-27T10:30",
+              "author": "rheumatology",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nRe: Craig Roy, DOB 05/19/1970\n\nThird rituximab course: 1000 mg IV 03/10/2026 and 03/24/2026, no reactions. RA remains in low disease activity. No change to methotrexate 15 mg weekly, folic acid 1 mg, prednisone 5 mg. Next course due September 2026.\n\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-03a",
+          "kind": "ed_visit",
+          "start": "2026-06-03T19:25",
+          "end": "2026-06-04T01:10",
+          "service": "Emergency Medicine",
+          "reason": "productive cough, fever, shortness of breath, pleuritic chest pain",
+          "conditions": [
+            {
+              "label": "Pneumonia due to Streptococcus pneumoniae",
+              "action": "diagnosed",
+              "onset": "2026-05-30",
+              "icd10": "J13"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 875,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "community-acquired pneumonia, ED"
+            },
+            {
+              "drug": "azithromycin 250 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (500 mg) on day 1, then 1 tablet daily on days 2-5",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "community-acquired pneumonia, ED"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-06-03T19:30",
+              "bp": [
+                118,
+                72
+              ],
+              "hr": 108,
+              "rr": 24,
+              "temp_c": 38.5,
+              "spo2": 93
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-03T19:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 13.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 84
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 11
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 3
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 11.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-03T19:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.05
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 83
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-03T19:55",
+              "resulted": "2026-06-08T09:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days (2 of 2 sets)"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-06-03T20:10",
+              "text": "CHEST, PA AND LATERAL\nIndication: Fever, productive cough, pleuritic chest pain; immunosuppressed.\nComparison: 02/11/2025.\nFindings: New right lower lobe consolidation with air bronchograms. Stable linear scarring in the right upper lobe. No cavity. No pleural effusion. No pneumothorax. Heart size normal.",
+              "conclusion": "Right lower lobe pneumonia. Stable right upper lobe scarring."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-03T19:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-06-05T07:30",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nArrived 06/03/2026 19:25, discharged 06/04/2026 01:10\nPatient: Craig Roy, 56 M\n\nHPI: Four days of productive cough, fevers with chills, shortness of breath and sharp right-sided chest pain on deep breaths. Has seropositive RA on rituximab infusions every six months plus methotrexate and prednisone. Treated pulmonary TB 2024-25. Former smoker, former heavy drinker, sober for three years. Long construction career with asbestos exposure.\n\nTriage: T 38.5 C, HR 108, RR 24, BP 118/72, SpO2 93% RA.\nExam: ill-appearing but conversant. Diminished breath sounds and crackles at the right base. Heart tachycardic, regular. No edema.\n\nResults: WBC 13.6 with 84% neutrophils. BMP unremarkable. Blood cultures x2 drawn. Sputum sent for Gram stain and culture.\nCXR: new right lower lobe consolidation; old RUL scarring unchanged.\n\nAssessment: right lower lobe community-acquired pneumonia in an immunosuppressed patient. Imaging pattern not suggestive of TB recurrence. Observed in the ED, tolerating oral intake and walking without distress.\n\nDisposition: discharged home. Amoxicillin-clavulanate 875/125 mg twice daily for 10 days and azithromycin 500 mg today then 250 mg daily for 4 days. Hold methotrexate until the antibiotic course is complete. Continue prednisone. Return for worsening breathing, chest pain or persistent fever. See PCP within one week.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "telephone",
+          "start": "2026-06-04T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pt call after ED visit",
+              "date": "2026-06-04T09:15",
+              "author": "RN",
+              "body": "Pt called: was in the ED last night, told it's pneumonia in the right lung, sent home on two antibiotics. Has picked them up and taken first doses. Feels wiped out, still running a fever this morning, taking Tylenol, breathing ok at rest. Told to hold his methotrexate as the ED said. Reviewed when to go back. Booked post-ED visit 6/11, ED records requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "outside_records",
+          "start": "2026-06-08T10:40",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-03T20:30",
+              "resulted": "2026-06-06T11:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Sputum by Culture",
+                  "loinc": "6460-0",
+                  "text": "Streptococcus pneumoniae, moderate growth. Penicillin susceptible."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED culture addendum",
+              "date": "2026-06-08T10:40",
+              "author": "emergency medicine",
+              "body": "ADDENDUM - REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nVisit 06/03/2026\nSputum culture (collected 06/03) final 06/06: Streptococcus pneumoniae, penicillin susceptible. Covered by discharge regimen. Blood cultures no growth at 5 days. Patient notified by phone; no change in therapy."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-11a",
+          "kind": "office_visit",
+          "start": "2026-06-11T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-ED follow-up, pneumonia",
+          "vitals": {
+            "bp": [
+              123,
+              75
+            ],
+            "hr": 66,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 110.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-06-11T10:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 217
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.05
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-11T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-11T10:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-followup-2026",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "document clearing of right lower lobe pneumonia, 6-8 weeks"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Post ED",
+              "date": "2026-06-11T10:20",
+              "author": "PCP",
+              "body": "Seen in the regional ED 6/3 for RLL pneumonia. ED record and culture addendum reviewed: sputum grew pneumococcus, pen-sensitive; blood cultures negative.\n\nDay 8 of 10 on amox-clav; azithro finished. Last fever Saturday. Cough looser, less of it, sputum now pale. Right-sided chest pain gone. Short of breath only on the stairs. Eating. Has been holding MTX since the ED as told. Still on pred 5.\n\nExam: afebrile, sat 97% RA, vitals as charted. A few crackles R base, otherwise clear. No dullness. Heart regular. No edema.\n\nA/P:\n1. Pneumococcal pneumonia RLL, improving on amox-clav (azithro done). Finish course. Repeat CBC today. Repeat PA/lat CXR in 6-8 wks to make sure it has cleared, given his smoking history and lung history; order placed.\n2. RA on rituximab q6mo/MTX/pred. Keep MTX on hold until antibiotics are finished, then restart at the usual dose; message me when done. Rheum next course due Sept - will let them know about the pneumonia.\n3. PCV20 given 2023. No further pneumococcal vaccine indicated now.\nRTC September, sooner if fevers return."
+            }
+          ],
+          "state": {
+            "weight_kg": 110.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-15a",
+          "kind": "portal_message",
+          "start": "2026-06-15T17:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Done with antibiotics",
+              "date": "2026-06-15T17:30",
+              "author": "patient",
+              "body": "Took the last antibiotic pill Saturday night. Feeling pretty much normal, some cough in the morning. OK to go back on the methotrexate this Sunday?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Done with antibiotics",
+              "date": "2026-06-16T08:05",
+              "author": "PCP",
+              "body": "Yes, restart methotrexate at your usual 6 tablets this Sunday. Your blood count from the visit was back to normal. Remember the chest x-ray late July or early August."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:00",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: prednisone, folic acid",
+              "date": "2026-07-14T09:00",
+              "author": "MA",
+              "body": "eRx request: prednisone 5 mg #90 and folic acid 1 mg #90. Seen 6/11. Approved per PCP standing refill plan, sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "portal_message",
+          "start": "2026-08-13T11:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest x-ray reminder",
+              "date": "2026-08-13T11:45",
+              "author": "MA",
+              "body": "Hi Craig, a reminder that the follow-up chest x-ray ordered in June hasn't been done yet. It's walk-in at the imaging center, no appointment needed."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Chest x-ray reminder",
+              "date": "2026-08-13T20:02",
+              "author": "patient",
+              "body": "Thanks, slipped my mind. Truck's in the shop, will get over there once it's back."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "office_visit",
+          "start": "2026-09-16T10:40",
+          "reason": "follow-up, RA and pneumonia",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Contact with and (suspected) exposure to asbestos|Z77.090": {
+        "code": "Z77.090",
+        "display": "Contact with and (suspected) exposure to asbestos",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pneumonia due to Streptococcus pneumoniae|J13": {
+        "code": "J13",
+        "display": "Pneumonia due to Streptococcus pneumoniae",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rheumatoid arthritis with rheumatoid factor of multiple sites without organ or systems involvement|M05.79": {
+        "code": "M05.79",
+        "display": "Rheumatoid arthritis with rheumatoid factor of multiple sites without organ or systems involvement",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tuberculosis of lung|A15.0": {
+        "code": "A15.0",
+        "display": "Tuberculosis of lung",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "1 ML etanercept 50 MG/ML Prefilled Syringe": {
+        "code": "727757",
+        "display": "1 ML etanercept 50 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "10 ML rituximab 10 MG/ML Injection": {
+        "code": "1657862",
+        "display": "10 ML rituximab 10 MG/ML Injection",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "calcium carbonate 1500 MG Oral Tablet": {
+        "code": "237420",
+        "display": "calcium carbonate 1500 MG Oral Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "ethambutol hydrochloride 400 MG Oral Tablet": {
+        "code": "995607",
+        "display": "ethambutol hydrochloride 400 MG Oral Tablet",
+        "ingredient": "ethambutol",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "isoniazid 300 MG Oral Tablet": {
+        "code": "197832",
+        "display": "isoniazid 300 MG Oral Tablet",
+        "ingredient": "isoniazid",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "pyrazinamide 500 MG Oral Tablet": {
+        "code": "198181",
+        "display": "pyrazinamide 500 MG Oral Tablet",
+        "ingredient": "pyrazinamide",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "rifampin 300 MG Oral Capsule": {
+        "code": "198202",
+        "display": "rifampin 300 MG Oral Capsule",
+        "ingredient": "rifampin",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "vitamin B6 50 MG Oral Tablet": {
+        "code": "639566",
+        "display": "vitamin B6 50 MG Oral Tablet",
+        "ingredient": "vitamin",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Bacteria identified in Sputum by Culture": {
+        "code": "6460-0",
+        "display": "Bacteria identified in Sputum by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Microscopic observation in Sputum by Acid fast stain": {
+        "code": "11477-7",
+        "display": "Microscopic observation [Identifier] in Sputum by Acid fast stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Mycobacterium sp identified in Sputum by Organism specific culture": {
+        "code": "539-7",
+        "display": "Mycobacterium sp identified in Sputum by Organism specific culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Mycobacterium tuberculosis complex DNA in Specimen by NAA": {
+        "code": "38379-4",
+        "display": "Mycobacterium tuberculosis complex DNA [Presence] in Specimen by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

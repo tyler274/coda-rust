@@ -1992,6 +1992,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 45
                 }
               ]
@@ -2412,6 +2416,10 @@
                   "test": "Clozapine",
                   "loinc": "6896-5",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 350,
+                    "high": 1000
+                  },
                   "value": 650
                 }
               ]
@@ -2763,12 +2771,20 @@
                   "test": "Osmolality, serum",
                   "loinc": "2692-2",
                   "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 260
                 },
                 {
                   "test": "Osmolality, urine",
                   "loinc": "2695-5",
                   "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 80
                 }
               ]
@@ -3715,19 +3731,19 @@
         "code": "349490",
         "display": "aripiprazole 15 MG Oral Tablet",
         "ingredient": "aripiprazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "clozapine 100 MG Oral Tablet": {
         "code": "197535",
         "display": "clozapine 100 MG Oral Tablet",
         "ingredient": "clozapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "risperidone 2 MG Oral Tablet": {
         "code": "312831",
         "display": "risperidone 2 MG Oral Tablet",
         "ingredient": "risperidone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3735,24 +3751,40 @@
         "code": "1798-8",
         "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 25,
+          "high": 125
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Clozapine": {
         "code": "6896-5",
         "display": "cloZAPine [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "low": 350,
+          "high": 1000
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality, serum": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
         "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality, urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
         "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Vaginal culture": {

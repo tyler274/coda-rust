@@ -1,0 +1,479 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002775",
+      "events": [
+        {
+          "id": "2021-03-17a",
+          "kind": "portal_message",
+          "start": "2021-03-17T19:42",
+          "documents": [
+            {"type": "Patient Message", "title": "Bruising and nosebleeds", "author": "patient", "date": "2021-03-17T19:42", "body": "Hi, I've been meaning to ask about this for a while. I bruise really easily, for a year and a half maybe, and I get nosebleeds a lot more than I used to. This week my gums are bleeding every time I brush. I also have little red dots on my shins. Is this something I should come in for? I'm free after 3 most days."},
+            {"type": "Patient Message", "title": "Re: Bruising and nosebleeds", "author": "PCP", "date": "2021-03-17T20:15", "body": "Yes, I'd like to see you tomorrow, and we'll check a blood count while you're here. The front desk will text you a 3:30 time. If you get a nosebleed that won't stop with 15 minutes of pressure, or any blood in urine or stool, go to the ER tonight. Skip ibuprofen and aspirin for now."}
+          ]
+        },
+        {
+          "id": "2021-03-18a",
+          "kind": "office_visit",
+          "start": "2021-03-18T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Easy bruising, nosebleeds, bleeding gums",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-03-18T15:30"},
+            {"procedure": "Venipuncture", "performed": "2021-03-18T16:10"}
+          ],
+          "orders": [
+            {"id": "heme-referral", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "platelets 11, bleeding symptoms"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2021-03-18T16:10", "resulted": "2021-03-18T18:40", "results": [
+              {"test": "Platelets", "value": 11},
+              {"test": "White Blood Cells"},
+              {"test": "Hemoglobin"},
+              {"test": "Neutrophils %"},
+              {"test": "Lymphocytes %"}
+            ]},
+            {"panel": null, "collected": "2021-03-18T16:10", "resulted": "2021-03-18T18:40", "results": [
+              {"test": "Platelets Large [Presence] in Blood by Light microscopy", "loinc": "32146-3", "text": "Present. Platelets decreased in number, many large forms. Red cells and white cells normal in appearance; no schistocytes, no blasts."}
+            ]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-03-18T16:20", "body": "S: Here for bruising. Says she's bruised easily for about 18 months, figured it was bumping into desks in the classroom. Nosebleeds have gotten more frequent over the same stretch, a few a month this winter, usually stop with pressure. Since the weekend her gums bleed with brushing. Noticed tiny red spots on both shins a few days ago. No blood in urine or stool, periods not heavier than usual, no recent dental work, no new medicines or supplements, no NSAIDs, no fevers, sweats or weight loss. No bleeding with her T&A or wisdom teeth. No family history of bleeding problems.\n\nO: Vitals as charted. Well, no distress. Scattered petechiae over both lower legs. Ecchymoses on both arms and both thighs, some yellow-green, some purple. Gums with a little dried blood at the margins, nothing active. No lymph nodes in neck, axillae or groin. Abdomen soft, no hepatomegaly, spleen not palpable. Heart and lungs normal.\n\nA/P: Mucocutaneous bleeding with petechiae in an otherwise well woman. Most worried about a low platelet count. CBC with diff and smear review drawn here, asked the lab to call with the result tonight.\n- No aspirin/NSAIDs, soft toothbrush, avoid contact sports and ladders.\n- Bleeding precautions reviewed; ED for a nosebleed that won't stop, blood in urine or stool, severe headache.\n- Will call her tonight with the count and arrange hematology."}
+          ]
+        },
+        {
+          "id": "2021-03-18b",
+          "kind": "telephone",
+          "start": "2021-03-18T19:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "CBC result call", "author": "PCP", "date": "2021-03-18T19:05", "body": "Lab called: platelets 11K, large platelets on smear, otherwise the count and smear look normal. Called pt at home. No active bleeding right now, gums stopped, no headache. Explained this looks like an immune process affecting platelets alone but needs hematology to confirm. Spoke with the on-call hematologist, who will see her this coming Wednesday and is comfortable with outpatient workup since she's stable with only skin and gum bleeding. Referral sent. Reviewed again: ED for any significant bleeding or headache. She will let her principal know she may need a day off."}
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "specialist_visit",
+          "start": "2021-03-24T10:00",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "Thrombocytopenia",
+          "state": {"labs": {"Platelets": 28, "Hemoglobin": 13.0}},
+          "orders": [{"id": "heme-referral", "action": "done", "date": "2021-03-24T10:00"}],
+          "conditions": [{"label": "Immune thrombocytopenic purpura", "action": "diagnosed", "onset": "2021-03-18"}],
+          "medications": [
+            {"drug": "prednisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Immune thrombocytopenic purpura"},
+            {"drug_text": "calcium carbonate 1500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (600 mg calcium) by mouth three times daily", "dose": {"value": 1500, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "bone protection on prednisone"},
+            {"drug": "cholecalciferol 0.05 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule (2000 IU) by mouth daily", "dose": {"value": 2000, "unit": "[iU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "bone protection on prednisone"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-03-24T10:20", "results": [
+              {"test": "Hemoglobin", "value": 13.2},
+              {"test": "White Blood Cells", "value": 7.2},
+              {"test": "Platelets", "value": 28}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-03-24T10:20", "results": [{"test": "Prothrombin Time", "value": 12}]},
+            {"panel": null, "collected": "2021-03-24T10:20", "results": [{"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 30, "range": {"low": 25, "high": 35}}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Consultation", "author": "hematology", "date": "2021-03-26T14:00", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nConsultation, seen 03/24/2021\nReferred by: primary care, for thrombocytopenia\n\nThank you for asking us to see Ms. Martel, a 41-year-old teacher. She describes roughly a year and a half of bruising with little or no trauma and nosebleeds that have become frequent, and in the past week bleeding from the gums with brushing. Your CBC last week showed a platelet count of 11,000 with large platelets and an otherwise unremarkable smear.\n\nPMH: none prior. PSH: tonsillectomy and adenoidectomy age 12, third molars removed age 20. Medications: none. Allergies: NKDA. FH: mother hypothyroid, father hypertensive, no bleeding disorders. SH: never smoker, rare alcohol, elementary teacher.\n\nExam: petechiae scattered over both lower extremities; several ecchymoses of differing ages on the arms and legs. No hepatosplenomegaly. No lymphadenopathy.\n\nLabs today: Hgb 13.2 g/dL, WBC 7.2 K/uL, platelets 28 K/uL. PT 12 sec (control 11-13.5), aPTT 30 sec (control 25-35).\n\nImpression: isolated thrombocytopenia with normal coagulation studies, normal other cell lines and large platelets on smear, without splenomegaly: immune thrombocytopenic purpura.\n\nPlan:\n1. Prednisone 10 mg daily, started today.\n2. Calcium carbonate 600 mg three times daily and vitamin D3 2000 IU daily while on steroid.\n3. Bleeding precautions, avoid NSAIDs and aspirin.\n4. Return next week with repeat counts.\n\nAllergies: NKDA. Thank you for the referral."}
+          ]
+        },
+        {
+          "id": "2021-04-01a",
+          "kind": "specialist_visit",
+          "start": "2021-04-01T09:30",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "ITP follow-up",
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-04-01T09:40", "results": [
+              {"test": "Hemoglobin", "value": 12.3},
+              {"test": "White Blood Cells", "value": 6.9},
+              {"test": "Platelets", "value": 9}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-04-01T09:40", "results": [{"test": "Prothrombin Time"}]},
+            {"panel": null, "collected": "2021-04-01T09:40", "results": [{"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 29, "range": {"low": 25, "high": 35}}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2021-04-02T11:30", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 04/01/2021\n\n42-year-old woman with ITP diagnosed here about a week ago. Since then more bruising, new nosebleeds and gums bleeding more with brushing. Taking prednisone 10 mg daily every morning, no side effects so far. No blood in urine, no dark stools, no headache or change in vision or strength, no falls or injuries.\n\nVitals stable.\nExam: new petechiae across both lower legs; ecchymoses on the forearms and thighs. Dried blood along the gumline, no active oozing. Liver and spleen not enlarged. No lymphadenopathy.\n\nLabs: Hgb 12.3, WBC 6.9, platelets 9 K/uL. PT and aPTT normal.\n\nAssessment: ITP, count lower this week on prednisone 10 mg.\nPlan: continue prednisone 10 mg daily, calcium and vitamin D. Counts weekly through the lab near her school. Strict bleeding precautions. Call us or go to the ED for heavy bleeding, headache or blood in urine or stool.\n\nMeds: prednisone 10 mg daily; calcium carbonate 600 mg TID; vitamin D3 2000 IU daily. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-04-08a",
+          "kind": "office_visit",
+          "start": "2021-04-08T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hematology",
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-04-08T15:45"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-04-08T16:15", "body": "Checking in after her first two hematology visits. Diagnosed with ITP, started prednisone 10 mg, calcium and vitamin D. Count was 9K last week. She is going for weekly counts. Gums stopped bleeding a few days ago, one short nosebleed. Bruises fading. Sleeping a bit worse on prednisone but otherwise fine. A little anxious about it all, and about being around 8-year-olds all day, but coping; not interested in counseling right now.\n\nExam: vitals as charted. Fading ecchymoses on both forearms, a few petechiae at ankles. Gums clean.\n\nA/P: ITP, under hematology. Reviewed the diagnosis together, answered questions. Reinforced precautions and no NSAIDs; acetaminophen fine for headaches. Take prednisone in the morning to help sleep. Updated her med list from the hematology letters. Note for school about limiting playground duty while her count is low. Follow up as needed; I'll keep getting the hematology letters."}
+          ]
+        },
+        {
+          "id": "2021-04-22a",
+          "kind": "specialist_visit",
+          "start": "2021-04-22T09:00",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "ITP follow-up",
+          "state": {"labs": {"Platelets": 30}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-04-22T09:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2021-04-23T10:00", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 04/22/2021\n\nITP. Weekly counts have climbed off the bottom. Bruising settling, no nosebleeds in two weeks, gums fine. Tolerating prednisone 10 mg with some insomnia.\n\nExam: few residual ecchymoses, no petechiae today. No splenomegaly.\nCBC today attached.\n\nPlan: continue prednisone 10 mg, calcium carbonate 600 mg TID, vitamin D3 2000 IU. Space counts to every two weeks. Return in 8 weeks. She asked about the COVID vaccine: fine to proceed, hold pressure on the site for several minutes.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-05-20a",
+          "kind": "pharmacy",
+          "start": "2021-05-20T16:30",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-20T16:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization record from pharmacy", "author": "front desk", "date": "2021-05-24T09:00", "body": "State immunization registry update: Pfizer-BioNTech COVID-19 vaccine dose 1 given 5/20/2021 at a community pharmacy. Added to chart."}
+          ]
+        },
+        {
+          "id": "2021-06-10a",
+          "kind": "pharmacy",
+          "start": "2021-06-10T16:15",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-06-10T16:15"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization record from pharmacy", "author": "front desk", "date": "2021-06-14T09:10", "body": "Registry update: Pfizer-BioNTech COVID-19 dose 2 on 6/10/2021, community pharmacy. Primary series complete. Added to chart."}
+          ]
+        },
+        {
+          "id": "2021-06-17a",
+          "kind": "specialist_visit",
+          "start": "2021-06-17T10:30",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "ITP follow-up",
+          "state": {"labs": {"Platelets": 36}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-17T10:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2021-06-18T13:20", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 06/17/2021\n\nITP on prednisone 10 mg daily. School year ending. Occasional bruise on the shins, no other bleeding. Completed COVID vaccination without problems.\n\nExam: two small shin ecchymoses. No petechiae. No adenopathy or splenomegaly.\nCBC attached; count stable in the 30s.\n\nPlan: continue prednisone 10 mg daily with calcium and vitamin D. Counts monthly over the summer. Return in two months.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-08-19a",
+          "kind": "specialist_visit",
+          "start": "2021-08-19T11:00",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "ITP follow-up",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-19T11:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2021-08-20T09:45", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 08/19/2021\n\nGood summer. One brief nosebleed in July that stopped with pressure. No gum bleeding. Back to school in two weeks.\n\nExam: no petechiae; one forearm bruise. Spleen not felt.\nCBC attached.\n\nPlan: no change. Prednisone 10 mg daily, calcium carbonate, vitamin D3. Return in about six weeks, sooner with bleeding.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "imaging",
+          "start": "2021-09-14T16:00",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2021-09-14T16:00", "text": "Bilateral screening mammogram with tomosynthesis, compared with 2019 and 2020. Heterogeneously dense tissue. No suspicious mass, calcification or distortion. No change.", "conclusion": "BI-RADS 1: negative."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Mammogram report received", "author": "front desk", "date": "2021-09-16T08:50", "body": "Screening mammogram from 9/14 received, BI-RADS 1. Filed; PCP reviewed."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "specialist_visit",
+          "start": "2021-10-05T14:00",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "More bruising, nosebleeds",
+          "measure": ["bp", "hr"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-10-05T14:10", "results": [
+              {"test": "Hemoglobin", "value": 13.0},
+              {"test": "Hematocrit", "value": 39},
+              {"test": "Mean Corpuscular Volume", "value": 86},
+              {"test": "Platelets", "value": 18},
+              {"test": "White Blood Cells", "value": 6.8}
+            ]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-10-05T14:10", "results": [{"test": "Prothrombin Time", "value": 12}]},
+            {"panel": null, "collected": "2021-10-05T14:10", "results": [{"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 30, "range": {"low": 25, "high": 35}}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2021-10-07T15:10", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 10/05/2021\n\nITP since March, on prednisone 10 mg. For the last two weeks more bruises on the arms and legs without any injury she can recall, and a few nosebleeds that have taken a long time to stop. No gum bleeding, no blood in urine or stool.\n\nExam: petechiae and ecchymoses on the extremities. No hepatosplenomegaly or lymphadenopathy. Neurologic exam normal.\n\nLabs: Hgb 13.0, Hct 39%, MCV 86, platelets 18 K/uL, WBC 6.8. PT 12 sec, PTT 30 sec.\n\nAssessment: ITP with a dip in the count and more bruising.\nPlan: continue prednisone 10 mg daily with calcium and vitamin D. Saline nasal gel and humidifier at night for the nosebleeds. Recheck counts in 2 weeks. ED for bleeding that will not stop.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-10-28a",
+          "kind": "nurse_visit",
+          "start": "2021-10-28T15:30",
+          "reason": "Flu shot",
+          "measure": ["temp_c"],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-28T15:35"}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-28T15:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2021-10-28T15:45", "body": "Flu vaccine. Has ITP; hematology says her recheck count last week was back in the 30s and fine to vaccinate. 25g needle L deltoid, firm pressure 3 minutes, no hematoma. Tolerated."}
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "annual_physical",
+          "start": "2021-11-16T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Yearly physical",
+          "state": {"weight_kg": 69.5, "labs": {"Platelets": 34}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-11-16T15:45"},
+            {"procedure": "Venipuncture", "performed": "2021-11-16T16:25"}
+          ],
+          "orders": [{"id": "dxa-2021", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging"}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2021-11-16T16:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-11-16T16:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-11-16T16:25", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-11-16T16:25", "results": [{"test": "Hemoglobin A1c", "value": 5.3}]},
+            {"panel": null, "collected": "2021-11-16T16:25", "results": [{"test": "25-hydroxy Vitamin D", "value": 36}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-11-16T16:35", "body": "42 y/o here for her physical, first in-person one since 2019.\n\nInterval: ITP diagnosed in March by hematology, on prednisone 10 mg daily since, with calcium carbonate 600 mg TID and D3 2000 IU. Counts have run in the 30s with a dip to 18 in early October with more bruising and nosebleeds; better since. Up about 3 kg since spring, feels hungrier on prednisone. Sleep okay if she takes it early.\n\nROS: no vision change, no thirst or frequent urination, no bone pain, mood fine. Bruising occasional.\n\nExam: vitals as charted, BP fine. A few small ecchymoses on shins, no petechiae. Heart RRR, lungs clear, abdomen soft, spleen not palpable. No edema. Breast exam normal.\n\nA/P\n1. ITP, followed by hematology on prednisone 10 mg. CBC today for the shared record.\n2. Long-term prednisone: A1c, vitamin D level, CMP today. Baseline DXA ordered since she has been on a steroid 8 months and counting.\n3. Health maintenance: mammogram done September, normal. Pap 2023. Flu shot done 10/28. COVID booster when eligible, likely next month at the pharmacy. Lipids today.\nRTC 1 year, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2021-11-17a",
+          "kind": "portal_message",
+          "start": "2021-11-17T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2021-11-17T12:30", "body": "Labs from yesterday: platelets in the mid 30s, about where hematology has been seeing them. Sugar test (A1c) 5.3, normal. Vitamin D 36, good. Kidney, liver and cholesterol all fine. The breast center will call to schedule your bone density scan."}
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "imaging",
+          "start": "2021-12-07T15:50",
+          "orders": [{"id": "dxa-2021", "action": "done", "date": "2021-12-07T15:50"}],
+          "reports": [
+            {"study": "DXA bone density, hip and spine", "performed": "2021-12-07T15:50", "text": "Indication: glucocorticoid therapy since 03/2021. Technique: dual-energy x-ray absorptiometry of the lumbar spine (L1-L4) and left hip. No prior for comparison. Lumbar spine L1-L4 T-score -0.4. Left femoral neck T-score -0.8. Left total hip T-score -0.3. No vertebrae excluded.", "conclusion": "Bone mineral density within normal limits."}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Bone density result", "author": "PCP", "date": "2021-12-08T08:40", "body": "Your bone density scan is normal. Keep up the calcium and vitamin D while you're on prednisone; we'll think about repeating it in a few years if you stay on it."}
+          ]
+        },
+        {
+          "id": "2021-12-09a",
+          "kind": "pharmacy",
+          "start": "2021-12-09T17:00",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-12-09T17:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization record from pharmacy", "author": "front desk", "date": "2021-12-13T09:00", "body": "Registry: COVID-19 booster (Pfizer-BioNTech) 12/9/2021 at a community pharmacy. Added."}
+          ]
+        },
+        {
+          "id": "2022-01-13a",
+          "kind": "specialist_visit",
+          "start": "2022-01-13T15:00",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "ITP follow-up",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-01-13T15:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2022-01-14T12:00", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 01/13/2022\n\nITP, nearly 10 months. Stable since the October dip. Occasional bruising, one short nosebleed over the holidays with a dry house.\n\nExam: unremarkable apart from a small thigh bruise. No splenomegaly.\nCBC attached, count in the 30s.\n\nPlan: continue prednisone 10 mg daily, calcium carbonate 600 mg TID, vitamin D3 2000 IU daily. Return 3 months.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-03-27a",
+          "kind": "ed_visit",
+          "start": "2022-03-27T13:20",
+          "end": "2022-03-27T18:05",
+          "service": "Emergency Medicine (outside)",
+          "reason": "Bruising, gum bleeding, prolonged nosebleed",
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2"],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2022-03-27T13:20"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-03-27T13:45", "results": [
+              {"test": "Hemoglobin", "value": 12.9},
+              {"test": "White Blood Cells", "value": 6.7},
+              {"test": "Platelets", "value": 14}
+            ]}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2022-03-28T08:30", "body": "REGIONAL HOSPITAL EMERGENCY DEPT - PHYSICIAN RECORD\nArrived 03/27/2022 13:20, Sunday\n\nCC: bruising and bleeding gums x5 days, nosebleed this morning lasting ~30 min.\n\nHPI: 42 yo F with chronic ITP since March 2021, followed by outside hematology, on prednisone 10 mg daily. Purple patches appeared on her thighs and upper arms on their own over the past 5 days. Last two days her gums bleed after brushing, and today a nosebleed went almost half an hour before it stopped. She had a mild cold about two weeks ago that cleared on its own. Denies blood in urine, black stools, heavy periods. No dental procedures or injuries. Takes no blood thinners or anti-inflammatories. No personal or family history of a bleeding disorder before the ITP.\n\nMeds: prednisone 10 mg daily, calcium carbonate 600 mg TID, vitamin D3 2000 IU daily. Allergies: NKDA.\nSH: never smoker, social alcohol, teacher.\n\nVitals: within normal limits, see flowsheet.\nExam: well appearing, NAD. Ecchymoses on arms and thighs, petechiae on both lower legs. Gums mildly erythematous with dried blood, no active bleeding. Nares without active bleeding. No hepatosplenomegaly, no lymphadenopathy. Heart and lungs normal. Neuro nonfocal. Pelvic exam unremarkable.\n\nLabs: Hgb 12.9, WBC 6.7, Plt 14.\n\nMDM: known ITP with mucocutaneous bleeding, no active hemorrhage now, stable hemoglobin, no neurologic signs. Discussed by phone with her hematology group's on-call physician: continue current prednisone, clinic will see her this week.\nDispo: discharged home. Bleeding precautions, return for any heavy bleeding, headache, or blood in urine/stool. Follow up with hematology and PCP."}
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "telephone",
+          "start": "2022-03-29T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-ED call", "author": "RN", "date": "2022-03-29T10:15", "body": "Called after ED record came in. Gums stopped yesterday, no further nosebleeds. Took Monday off school. Hematology called her and she sees them next week. Booked with PCP Thursday."}
+          ]
+        },
+        {
+          "id": "2022-03-31a",
+          "kind": "office_visit",
+          "start": "2022-03-31T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, ITP",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-03-31T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - ED Follow-up", "author": "PCP", "date": "2022-03-31T16:10", "body": "Seen in the ED Sunday for bruising, gum bleeding and a long nosebleed, platelets 14K. Sent home on her usual prednisone 10 mg after a call to her hematologist. She'd had a cold two weeks before. Since then no more bleeding. Turned 43 today, spent part of it here, she points out.\n\nExam: vitals as charted. Resolving ecchymoses on both thighs and upper arms, scattered petechiae at both ankles. Gums clean. No adenopathy, spleen not felt.\n\nA/P: ITP, now a year out, so chronic. Flare after a viral illness. Hematology visit next week will recheck counts and decide on any change. Reviewed precautions again; she has saline gel and a humidifier. Asked her to send me the hematology plan through the portal if the letter is slow."}
+          ]
+        },
+        {
+          "id": "2022-04-07a",
+          "kind": "specialist_visit",
+          "start": "2022-04-07T09:30",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "ITP follow-up after ED",
+          "state": {"labs": {"Platelets": 35}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-04-07T09:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2022-04-08T14:30", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 04/07/2022\n\nChronic ITP (onset 03/2021). ED visit 3/27 with count 14 K after a viral illness, managed at home. Bleeding has stopped. Count today back to her usual range.\n\nExam: fading bruises, no petechiae, no splenomegaly.\n\nPlan: continue prednisone 10 mg daily, calcium and vitamin D. Return 3 months, counts in between if symptomatic.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "pharmacy",
+          "start": "2022-06-21T09:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2022-06-21T09:10", "body": "Electronic request from pharmacy: prednisone 10 mg, last filled by hematology, prescriber out of office this week. PCP approved 30 tablets to bridge; hematology to continue prescribing. Pt notified by text."}
+          ]
+        },
+        {
+          "id": "2022-07-14a",
+          "kind": "specialist_visit",
+          "start": "2022-07-14T10:00",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "ITP follow-up",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-07-14T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2022-07-15T16:00", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 07/14/2022\n\nChronic ITP. Quiet spring and summer, no bleeding beyond small bruises. Counts stable.\n\nExam: no petechiae. Spleen not palpable.\n\nPlan: same regimen, prednisone 10 mg daily with calcium carbonate and vitamin D3. Return in 3 months.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "imaging",
+          "start": "2022-09-20T16:15",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-09-20T16:15", "text": "Bilateral screening mammogram with tomosynthesis, compared with prior studies back to 2019. Heterogeneously dense. No suspicious findings. Stable.", "conclusion": "BI-RADS 1: negative."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Mammogram report received", "author": "front desk", "date": "2022-09-22T09:00", "body": "Screening mammogram 9/20/2022 report received, negative. Filed for PCP review."}
+          ]
+        },
+        {
+          "id": "2022-10-03a",
+          "kind": "hospital_admission",
+          "start": "2022-10-03T11:40",
+          "end": "2022-10-05T13:00",
+          "service": "Internal Medicine (outside)",
+          "reason": "ITP with mucocutaneous bleeding",
+          "vitals": [
+            {"time": "2022-10-03T11:50", "bp": [118, 74], "hr": 78, "temp_c": 36.8, "rr": 16, "spo2": 99},
+            {"time": "2022-10-05T08:00", "bp": [114, 70], "hr": 72, "temp_c": 36.6, "rr": 14, "spo2": 99}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2022-10-03T14:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2022-10-05T12:30"}
+          ],
+          "medications": [
+            {"drug_text": "100 ML immunoglobulin G, human 100 MG/ML Injection", "action": "historical", "sig": "1 g/kg (70 g) IV once", "dose": {"value": 70, "unit": "g"}, "frequency": "ONCE", "route": "Intravenous", "course": "short", "reason": "Immune thrombocytopenic purpura with bleeding"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-03T12:00", "results": [
+              {"test": "Hemoglobin", "value": 12.9},
+              {"test": "White Blood Cells", "value": 6.7},
+              {"test": "Platelets", "value": 14}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-05T06:00", "results": [
+              {"test": "Hemoglobin"},
+              {"test": "White Blood Cells"},
+              {"test": "Platelets", "value": 68}
+            ]}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary", "author": "hospital medicine", "date": "2022-10-06T10:20", "body": "REGIONAL HOSPITAL - INTERNAL MEDICINE DISCHARGE SUMMARY\nAdmitted 10/03/2022, discharged 10/05/2022\nPCP: copy to primary care\n\nAdmitting diagnosis: chronic immune thrombocytopenic purpura with mucocutaneous bleeding.\n\nHistory: 43-year-old woman with chronic ITP since 03/2021 on prednisone 10 mg daily, seen in our ED six months ago with a similar flare. For 5 days she has had bruising and gum bleeding, with purplish patches on the thighs and upper arms that came up without injury; over the last 2 days bleeding after brushing and a nosebleed of close to 30 minutes. A mild upper respiratory infection about two weeks before admission resolved untreated. No hematuria, melena or menorrhagia. No recent dental work or trauma. Not taking anticoagulants or NSAIDs. No family history of bleeding disorders.\n\nExam on admission: vitals normal. Well appearing. Ecchymoses over the arms and thighs, petechiae on both lower extremities. Gums mildly erythematous with residual dried blood, no active bleeding. No hepatosplenomegaly or lymphadenopathy. Cardiopulmonary and neurologic exams normal. Pelvic exam unremarkable.\n\nLabs: admission Hgb 12.9, WBC 6.7, platelets 14 K. Day of discharge platelets 68 K.\n\nHospital course: admitted given recurrent bleeding with a count below 20 K. Hematology consulted. IVIG 1 g/kg (70 g) given once on 10/03, tolerated without infusion reaction. No further bleeding. Count 68 K on 10/05, discharged.\n\nDischarge medications: prednisone 10 mg daily (unchanged); calcium carbonate 600 mg TID; vitamin D3 2000 IU daily.\nAllergies: NKDA.\nFollow-up: outside hematology in 2 weeks; PCP within 1 week."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "office_visit",
+          "start": "2022-10-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "measure": ["bp", "hr", "temp_c", "weight_kg"],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2022-10-11T15:40"},
+            {"procedure": "Immunization administration", "performed": "2022-10-11T16:05"}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T16:05"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2022-10-06T14:00", "body": "TCM call within 2 business days of discharge. Home, feels fine, no bleeding since Monday. Has her discharge meds (no changes). Hospital follow-up booked 10/11, hematology 10/20."},
+            {"type": "Progress Notes", "title": "Office Visit - Hospital Follow-up", "author": "PCP", "date": "2022-10-11T16:20", "body": "Hospital follow-up. Admitted 10/3-10/5 for another ITP flare, count 14K, same story as March (cold, then bruising, gum bleeding, long nosebleed). Got one dose of IVIG, count 68K at discharge. Home on her usual prednisone 10 mg. Feels well, no headaches after the infusion, no bleeding since. Back at school yesterday.\n\nExam: vitals as charted. Fading bruises on thighs and upper arms, no new petechiae. Gums fine. IV site in L antecubital healing.\n\nA/P\n1. Chronic ITP, second bleed needing hospital-level care this year. Hematology visit 10/20. Discharge summary reviewed, med list reconciled, no changes.\n2. Flu vaccine today while her count is up; firm pressure, small needle.\n3. Bivalent COVID booster at the pharmacy, she plans next week."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "specialist_visit",
+          "start": "2022-10-20T09:15",
+          "service": "Hematology & Oncology (outside)",
+          "reason": "Post-hospital ITP follow-up",
+          "state": {"labs": {"Platelets": 47}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-20T09:25", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology Follow-up", "author": "hematology", "date": "2022-10-21T11:40", "body": "OUTSIDE HEMATOLOGY & ONCOLOGY GROUP\nFollow-up, seen 10/20/2022\n\nChronic ITP. Admitted 10/3-10/5 for bleeding with platelets 14 K, given IVIG once with response to 68 K. Two weeks out the count is drifting down as expected after IVIG but remains above her usual. No bleeding.\n\nExam: resolving ecchymoses only.\n\nPlan: continue prednisone 10 mg daily, calcium and vitamin D. Return in 4 months.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2022-10-20b",
+          "kind": "pharmacy",
+          "start": "2022-10-20T17:20",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T17:20"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Immunization record from pharmacy", "author": "front desk", "date": "2022-10-24T09:00", "body": "Registry: bivalent Pfizer COVID-19 booster 10/20/2022, community pharmacy. Added."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "annual_physical",
+          "start": "2022-11-29T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Yearly physical",
+          "state": {"labs": {"Platelets": 40}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-11-29T15:45"},
+            {"procedure": "Venipuncture", "performed": "2022-11-29T16:25"}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-11-29T16:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-11-29T16:25", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}]},
+            {"panel": "Lipid Panel", "collected": "2022-11-29T16:25", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-11-29T16:25", "results": [{"test": "Hemoglobin A1c", "value": 5.4}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-11-29T16:40", "body": "43 y/o, yearly. Rough year with the ITP: ED in March and an admission in October, both after colds, both 14K. One IVIG dose in October. Since then no bleeding. Still prednisone 10 mg daily from hematology, calcium and D. Weight steady since last fall. Working full time.\n\nROS otherwise negative. Mood good, PHQ-9 low.\n\nExam: vitals as charted. Skin with two small shin bruises, no petechiae. HEENT normal. Heart RRR, lungs clear. Abdomen soft, no splenomegaly. No edema. Breast exam normal.\n\nA/P\n1. Chronic ITP on prednisone 10 mg, hematology following. CBC today.\n2. Steroid monitoring: A1c, CMP. DXA last December normal.\n3. Health maintenance: mammogram September normal. Flu 10/11, bivalent COVID 10/20. Pap next year.\nRTC 6 months for a steroid check-in, physical next fall."}
+          ]
+        },
+        {
+          "id": "2022-11-30a",
+          "kind": "portal_message",
+          "start": "2022-11-30T11:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-11-30T11:20", "body": "Your platelets are around 40, a little better than this summer. A1c 5.4 and the chemistries and cholesterol are normal."}
+          ]
+        }
+      ]
+    }
+  ]
+}

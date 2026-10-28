@@ -1,0 +1,301 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002327",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "portal_message",
+          "start": "2025-01-14T19:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Metformin refill", "author": "patient", "date": "2025-01-14T19:40", "body": "Hello, the pharmacy says my metformin has no refills left. I have about 10 days of tablets. Could you send a new one? Same dose, one in the morning and one at supper. Thanks, Raymond Becker"},
+            {"type": "Patient Message", "title": "RE: Metformin refill", "author": "MA", "date": "2025-01-15T09:05", "body": "Hi Mr. Becker, a 90-day supply with refills went to your pharmacy this morning. You are due for your diabetes check in February; the front desk will reach out."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-02-11b",
+          "kind": "telephone",
+          "start": "2025-02-11T11:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2025-02-11T11:15", "body": "Called re: missed 9:30. Pt apologized, the driveway was iced over and he forgot to call. No new symptoms. Rebooked for 2/25 at 2 pm."}
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "office_visit",
+          "start": "2025-02-25T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-02-25T14:35", "results": [{"test": "Hemoglobin A1c", "value": 7.3}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-25T14:35", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-02-25T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-02-25T14:50", "body": "Rescheduled diabetes visit. Holiday baking and less walking this winter, he admits; meter readings drifted up to the 140s fasting. No lows. The lightheaded spells have not come back since the fall. No chest pain. Knees stiff in the mornings, loosen up after 15 minutes, acetaminophen once or twice a week.\nExam: vitals as charted. Pulse slow, grouped, as before. Lungs clear. No edema. Knees with crepitus, no effusion.\nA/P: T2DM, likely a bit higher today; A1c and BMP drawn. If over 7.5 we'll talk about a second agent, otherwise back to walking and recheck in summer. HTN at goal. AV block stable, cardiology yearly visit in April."}
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T12:20",
+          "documents": [
+            {"type": "Patient Message", "title": "A1c result", "author": "PCP", "date": "2025-02-27T12:20", "body": "Your A1c came back at 7.3, up a little from last summer but under the line where I'd add a medicine. Kidney function and potassium normal. Let's see what spring walking does and recheck at your July wellness visit."}
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "specialist_visit",
+          "start": "2025-04-09T10:30",
+          "service": "Cardiology",
+          "reason": "Yearly cardiology follow-up",
+          "measure": ["bp", "hr"],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-04-09T10:40", "text": "Sinus rhythm, ventricular rate 54. Intermittent progressive PR prolongation with a non-conducted P wave. Narrow QRS. No acute ST-T change. Unchanged from 09/2024.", "conclusion": "Sinus rhythm with second-degree AV block, type I, unchanged."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2025-04-11T09:00", "body": "Outside cardiology group. Date of service 04/09/2025. Copy to primary care.\n\nYearly visit for coronary disease with a 2022 RCA stent and type I second-degree AV block found last fall. No syncope. He describes perhaps one brief lightheaded moment a month when he stands too fast, nothing on exertion. No angina. Walks 2 miles most days.\n\nMedicines: metformin 1000 mg twice daily, lisinopril 20 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily, acetaminophen as needed.\nAllergies: penicillin, shellfish.\n\nExam: vitals as recorded; regular heart sounds with grouped beats, no murmur; lungs clear; no edema.\nECG: type I second-degree AV block, unchanged.\n\nAssessment: stable nodal-level block with minimal symptoms; no pacing indication. CAD stable on aspirin and statin; lipids per primary care.\nPlan: same medicines, continue to avoid AV-nodal agents, return in 12 months or sooner with syncope or chest pain."}
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual wellness visit",
+          "state": {"labs": {"Hemoglobin A1c": 7.0, "Low Density Lipoprotein": 84}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-07-22T09:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": null, "collected": "2025-07-22T09:10", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Lipid Panel", "collected": "2025-07-22T09:10", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-07-22T09:10", "results": [{"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-22T09:10", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-07-22T08:30"}],
+          "orders": [{"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung screening"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-07-22T09:45", "body": "Subsequent AWV, 72 y/o man.\nInterval: cardiology in April, block stable and no pacer. Back to daily walks since March, lost a couple of pounds. Tutoring two kids this summer.\nHRA: independent ADLs and IADLs. No falls. Hearing and vision adequate. Uses a pill box. PHQ-2 = 1 (some days feels a bit flat, not most). Clock and recall normal again.\nAdvance directive: copy of his proxy now scanned.\nExam: vitals as charted. Grouped irregular pulse, otherwise normal heart exam. Lungs clear. Feet normal: monofilament intact, pulses palpable, no lesions.\nPrevention: lung CT due October, ordered. Flu and COVID in fall. Nothing else due; colon screening finished.\nLabs: CMP, A1c, lipids, urine microalbumin, CBC drawn.\nRTC 4 to 5 months."}
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-08T13:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-08T13:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-08T13:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccine Visit", "author": "RN", "date": "2025-10-08T13:20", "body": "High-dose flu L arm, updated COVID R arm. No reactions last year. Waited 15 minutes, fine. RSV was given 10/2024 and does not repeat."}
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "imaging",
+          "start": "2025-10-28T15:00",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-10-28T15:00", "text": "Annual low-dose screening CT of the chest, non-contrast, compared with 10/30/2024. No pulmonary nodules. No consolidation, mass, or pleural effusion. Central airways clear. Heart size normal; coronary artery calcification and right coronary stent again noted. No adenopathy. Osseous structures intact.", "conclusion": "Lung-RADS 1: negative. Annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2025", "action": "done", "date": "2025-10-28T15:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "Lung CT result", "author": "PCP", "date": "2025-10-29T07:55", "body": "Third negative screening CT. Let him know by portal; next one October 2026."}
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "outside_records",
+          "start": "2025-11-19T16:30",
+          "documents": [
+            {"type": "Consult Note", "title": "Diabetic eye examination", "author": "ophthalmology", "date": "2025-11-19T16:30", "body": "Outside ophthalmology office. Exam 11/12/2025.\nType 2 diabetes, annual dilated examination. Reads comfortably with his glasses.\nVA cc: right 20/25, left 20/20. IOP 15 OU. Left IOL in good position. Fundus: no diabetic retinopathy OU, maculae dry.\nPlan: 1 year. Copy to primary care."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up, knee pain",
+          "state": {"labs": {"Hemoglobin A1c": 6.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-12-09T16:00", "results": [{"test": "Hemoglobin A1c", "value": 6.9}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-09T16:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-12-09T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-12-09T16:20", "body": "Pt here for diabetes check. Knees bother him more with the cold, the right a little more than the left, worst after raking. No swelling, no locking or giving way. Acetaminophen helps; he wondered about ibuprofen and I steered him away given aspirin. Lightheadedness rare. No chest symptoms. Fasting sugars 120s to 130s.\nExam: vitals as charted. Knees: crepitus, no effusion or warmth, ROM full. Heart with the usual grouped rhythm; lungs clear.\nA/P: T2DM, A1c and BMP today. HTN at goal. Knee OA: stay with acetaminophen as needed; quad strengthening sheet given. Next visit late spring."}
+          ]
+        },
+        {
+          "id": "2026-04-03a",
+          "kind": "ed_visit",
+          "start": "2026-04-03T06:20",
+          "end": "2026-04-03T07:25",
+          "service": "Emergency Medicine",
+          "reason": "Chest pain",
+          "vitals": [
+            {"time": "2026-04-03T06:24", "bp": [92, 60], "hr": 42, "spo2": 97},
+            {"time": "2026-04-03T06:50", "bp": [104, 66], "hr": 58}
+          ],
+          "conditions": [
+            {"label": "ST elevation (STEMI) myocardial infarction involving right coronary artery", "icd10": "I21.11", "action": "diagnosed", "onset": "2026-04-03"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-04-03T06:35", "results": [{"test": "Troponin I, High Sensitivity", "value": 62}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-03T06:35", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-03T06:35", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-04-03T06:26", "text": "Ventricular rate 42. Sinus P waves with grouped QRS complexes; PR interval lengthens until a P wave fails to conduct. ST-segment elevation in leads II, III and aVF. Narrow QRS.", "conclusion": "Acute inferior ST-elevation myocardial infarction. Second-degree AV block, type I."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-04-03T06:20"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-04-07T10:00", "body": "Regional hospital emergency department. Arrived 04/03/2026 06:20 by ambulance.\n\n72-year-old man with coronary disease (right coronary stent 2022) and a known type I second-degree AV block. Woke around 05:30 with abrupt crushing pain behind the breastbone running into the left arm and up into the jaw. Sweaty and a little nauseated on arrival. No vomiting, no syncope.\n\nHome medicines: metformin 1000 mg twice daily, lisinopril 20 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily, acetaminophen as needed.\nAllergies: penicillin (hives); shellfish (hives).\n\nTriage: BP 92/60, HR 42, SpO2 97% on room air. Pale, diaphoretic. Slow irregular pulse. Lungs clear. No JVD. No murmur.\n\nECG 06:26: ST elevation in II, III and aVF. Telemetry shows grouped beats with lengthening PR intervals and periodic dropped QRS complexes.\n\nCourse: STEMI alert called 06:28. Aspirin 324 mg chewed, clopidogrel 600 mg orally, heparin bolus per protocol. Atropine 0.5 mg IV once for the slow rate and low pressure; HR came up to 58 and BP to 104/66. Pads placed, not used. Initial high-sensitivity troponin I 62 ng/L. To the cath lab at 07:20.\n\nImpression: acute inferior STEMI; second-degree AV block, type I.\nDisposition: cath lab, then cardiac unit."}
+          ]
+        },
+        {
+          "id": "2026-04-03b",
+          "kind": "hospital_admission",
+          "start": "2026-04-03T07:25",
+          "end": "2026-04-06T12:30",
+          "service": "Cardiology",
+          "reason": "Inferior STEMI",
+          "labs": [
+            {"panel": null, "collected": "2026-04-03T13:00", "results": [{"test": "Troponin I, High Sensitivity", "value": 21350}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-05T05:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "reports": [
+            {"study": "Cardiac catheterization", "loinc": "18745-0", "performed": "2026-04-03T07:40", "text": "Emergent coronary angiography and PCI. Access: right radial artery, 6 French. Left main normal. Left anterior descending: mild nonobstructive disease. Circumflex: mild nonobstructive disease. Right coronary artery: acute thrombotic total occlusion of the proximal vessel, above the previously placed stent; the prior stent itself patent beyond. Thrombus aspiration not performed. Predilation, then one drug-eluting stent deployed in the proximal RCA with good expansion. Final TIMI 3 flow, no residual stenosis, no dissection. Heart rate 50s to 60s throughout without pacing. Radial band applied.", "conclusion": "Acute proximal RCA occlusion treated with one drug-eluting stent, TIMI 3 flow. Mild nonobstructive LAD and circumflex disease."},
+            {"study": "Transthoracic echocardiogram", "performed": "2026-04-04T11:00", "text": "Left ventricle normal in size with normal wall thickness. Hypokinesis of the inferior wall. Other segments contract normally. LVEF 50% by biplane method. Right ventricle normal in size and function. Atria normal in size. No significant valve disease. No pericardial effusion. Inferior vena cava normal with normal collapse.", "conclusion": "LVEF 50% with inferior wall hypokinesis. No significant valve disease. No effusion."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-04-03T07:25"},
+            {"procedure": "Angiography of coronary artery", "snomed": "33367005", "performed": "2026-04-03T07:40"},
+            {"procedure": "Coronary stent placement, single vessel", "performed": "2026-04-03T08:05"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-04-06T11:30"}
+          ],
+          "medications": [
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "stop", "reason": "Dose increased after MI"},
+            {"drug": "atorvastatin 80 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 80, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary disease after MI"},
+            {"drug": "clopidogrel 75 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 75, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Coronary stent, 12 months with aspirin"},
+            {"drug_text": "nitroglycerin 0.4 MG Sublingual Tablet", "action": "start", "sig": "Place 1 tablet under the tongue every 5 minutes as needed for chest pain, up to 3 doses; call 911 if pain persists", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "PRN", "route": "Sublingual", "course": "chronic", "reason": "Chest pain"}
+          ],
+          "orders": [{"id": "cardiac-rehab", "action": "placed", "order": "Cardiac rehabilitation", "category": "referral", "to": "Cardiology", "reason": "After STEMI and PCI"}],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "cardiology", "date": "2026-04-07T10:00", "body": "Regional hospital, cardiology service. Admitted 04/03/2026, discharged 04/06/2026.\nDiagnoses: acute inferior ST-elevation MI, proximal right coronary artery; coronary artery disease with prior RCA stent (2022); second-degree AV block, type I; hypertension; type 2 diabetes; hyperlipidemia.\nAllergies: penicillin (hives); shellfish (hives).\n\nCourse: Presented through our ED with an inferior STEMI and slow type I block (HR 42, BP 92/60), which responded to a single dose of atropine. Emergent angiography by the right radial route found an acute thrombotic occlusion of the proximal RCA above his old stent; treated with one drug-eluting stent, TIMI 3 flow. LAD and circumflex had only mild disease. High-sensitivity troponin I peaked at 21,350 ng/L. Echo 4/4: LVEF 50%, inferior hypokinesis, no significant valve disease. On telemetry after reperfusion he returned to his baseline sinus rhythm with intermittent type I block, rates 52 to 64; no temporary pacing was needed. Lisinopril was held the first day for soft pressures and restarted 4/5. Metformin held 48 hours after contrast; creatinine stayed normal, restarted at discharge. No beta-blocker given the AV block and resting rate. Pain free from the cath lab onward, walking the halls without symptoms.\n\nDischarge medicines:\n- aspirin 81 mg daily (continue indefinitely)\n- clopidogrel 75 mg daily (NEW; 12 months, do not stop without cardiology)\n- atorvastatin 80 mg daily (INCREASED from 40 mg)\n- lisinopril 20 mg daily\n- metformin 1000 mg twice daily (resume 4/6)\n- nitroglycerin 0.4 mg SL as needed for chest pain (NEW)\n- acetaminophen 500 mg as needed\n\nFollow-up: primary care within 7 to 14 days; cardiology clinic in 5 to 6 weeks; referral placed for phase II cardiac rehabilitation. No driving for 1 week, no lifting over 10 lb with the right arm for 48 hours. Radial site clean at discharge."}
+          ]
+        },
+        {
+          "id": "2026-04-07a",
+          "kind": "telephone",
+          "start": "2026-04-07T14:10",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2026-04-07T14:25", "body": "Transitional care call, discharge summary received this morning. Home since Monday afternoon. No chest pain, no need for nitro. Tired but up and about. Wrist site a small bruise, no swelling or bleeding. Picked up clopidogrel, atorvastatin 80 and the nitro tablets; we went through his list and he has stopped the 40 mg atorvastatin. Rehab has not called yet, gave him the number to follow up. Appointment with PCP 4/14 confirmed. Reviewed when to call 911."}
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up after heart attack",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-04-14T11:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2026-04-14T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2026-04-14T12:05", "body": "Seen 11 days after an inferior STEMI with a new drug-eluting stent in the proximal RCA (hospital 4/3 to 4/6; discharge summary and ED record reviewed). He's glad he called the ambulance instead of waiting. Since home: no chest pain, no nitro used, no lightheadedness. More tired than usual, napping in the afternoon. Walking 10 minutes twice a day. Rehab intake is 4/28.\nMeds reconciled against the discharge list: aspirin 81, clopidogrel 75 (new), atorvastatin 80 (up from 40), lisinopril 20, metformin 1000 BID, SL nitro prn, acetaminophen prn. No bleeding or bruising beyond the wrist, no muscle aches on the higher statin.\nExam: vitals as charted. R radial site healed, pulse 2+. Heart: slow grouped rhythm, no murmur or rub. Lungs clear. No edema.\nA/P\n1. Inferior STEMI s/p RCA DES: doing well. DAPT for 12 months, reinforced not to stop clopidogrel for any procedure without asking cardiology. Nitro instructions reviewed. Cardiac rehab start 4/28. Cardiology visit mid-May.\n2. AV block type I: unchanged, no beta-blocker per cardiology.\n3. HTN: pressure fine on lisinopril. BMP today after contrast and ACE restart.\n4. T2DM: metformin back on. A1c at the June visit.\n5. Lipids on atorvastatin 80: recheck in June.\nSee me in about 2 months."}
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "specialist_visit",
+          "start": "2026-05-13T09:00",
+          "service": "Cardiology",
+          "reason": "Post-MI follow-up",
+          "vitals": {"bp": [122, 72], "hr": 56},
+          "measure": ["weight_kg"],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-05-13T09:10", "text": "Sinus rhythm, ventricular rate 56, with intermittent progressive PR prolongation and non-conducted P waves. Q waves in II, III and aVF. ST segments returned to baseline. Narrow QRS.", "conclusion": "Second-degree AV block, type I. Inferior Q waves consistent with recent inferior infarction."}
+          ],
+          "orders": [{"id": "cardiac-rehab", "action": "done", "date": "2026-04-28T09:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2026-05-15T11:30", "body": "Outside cardiology group. Date of service 05/13/2026. Copy to primary care.\n\nSix weeks after an inferior STEMI treated with a proximal RCA drug-eluting stent. No angina, no nitroglycerin use, no dizziness or near-fainting. Began phase II cardiac rehabilitation 4/28 and is going three mornings a week. Energy improving.\n\nMedicines: aspirin 81 mg, clopidogrel 75 mg, atorvastatin 80 mg, lisinopril 20 mg, metformin 1000 mg twice daily, SL nitroglycerin as needed, acetaminophen as needed.\nAllergies: penicillin, shellfish.\n\nBP 122/72, HR 56. Heart sounds normal, no murmur. Lungs clear. No edema. Radial site healed.\nECG: type I second-degree AV block with inferior Q waves; ST segments back to baseline.\n\nAssessment and plan:\n- Recent inferior MI, recovering well. Continue DAPT through April 2027, then aspirin alone.\n- Atorvastatin 80 mg; please recheck a lipid panel at his next primary care visit.\n- Type I AV block, baseline; no beta-blocker. Continue to avoid AV-nodal agents.\n- Complete cardiac rehab. Return here in 6 months."}
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "office_visit",
+          "start": "2026-06-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and post-MI follow-up",
+          "conditions": [
+            {"label": "ST elevation (STEMI) myocardial infarction involving right coronary artery", "icd10": "I21.11", "action": "resolved", "onset": "2026-04-03"},
+            {"label": "Old myocardial infarction", "action": "diagnosed", "onset": "2026-04-03", "note": "Inferior STEMI April 2026, RCA drug-eluting stent"}
+          ],
+          "state": {"labs": {"Low Density Lipoprotein": 58, "Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-06-16T11:05", "results": [{"test": "Low Density Lipoprotein", "value": 58}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2026-06-16T11:05", "results": [{"test": "Hemoglobin A1c", "value": 7.0}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-16T11:05", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-16T11:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-16T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-06-16T11:20", "body": "Ten weeks out from the inferior MI. Cardiology letter from 5/13 reviewed: recovering well, DAPT to April 2027, asked us for lipids. Going to rehab three mornings a week and walking on the off days, up to 35 minutes on the treadmill there without symptoms. No chest pain, no nitro. Lightheadedness only the occasional quick stand. No bleeding. No muscle aches on atorvastatin 80. Mood good.\nExam: vitals as charted. Heart with the usual grouped rhythm, no murmur. Lungs clear. No edema. Feet intact.\nA/P\n1. CAD with recent inferior MI and RCA stents: aspirin + clopidogrel, atorvastatin 80, lisinopril. Lipids today per cardiology.\n2. Second-degree AV block, type I: stable, no nodal agents.\n3. T2DM: A1c today on metformin.\n4. HTN: at goal.\n5. Knee OA: quieter with all the walking.\nLabs today: lipid panel, A1c, CMP, CBC. Next visit in the fall, flu and COVID then."}
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T13:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from Tuesday", "author": "PCP", "date": "2026-06-18T13:45", "body": "Raymond, your LDL is 58 on the higher atorvastatin dose, a big drop and right where your cardiologist wants it after the heart attack. A1c is 7.0. Kidneys, liver tests and blood counts all normal on the two blood thinners. I'll forward the lipid result to cardiology. Keep up the rehab."},
+            {"type": "Patient Message", "title": "RE: Labs from Tuesday", "author": "patient", "date": "2026-06-18T18:30", "body": "That's good news. Thank you. Rehab finishes in August, they say."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "pharmacy",
+          "start": "2026-07-21T10:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2026-07-21T10:00", "body": "Electronic request from pharmacy: clopidogrel 75 mg and atorvastatin 80 mg, 90-day supplies (hospital scripts were 30 days + 2). Routed to PCP. Approved, 90 days with refills through April 2027 for clopidogrel per cardiology plan."}
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "outside_records",
+          "start": "2026-08-12T15:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Cardiac rehabilitation progress note", "author": "cardiac rehabilitation", "date": "2026-08-12T15:00", "body": "Outpatient cardiac rehabilitation program, regional hospital. Progress report through 08/07/2026.\nDiagnosis: inferior STEMI 04/2026, s/p RCA drug-eluting stent.\nAttendance: 20 of 36 sessions. Exercise: treadmill and recumbent bike, now 40 minutes at moderate intensity. Telemetry during sessions: baseline sinus rhythm with intermittent second-degree AV block, type I, as documented; no symptoms during exercise, no angina, appropriate heart rate and pressure response.\nEducation completed: medications, nutrition, warning signs.\nPlan: continue to complete the program. Copy to primary care and cardiology."}
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and cardiac follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

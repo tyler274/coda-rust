@@ -1,9 +1,7 @@
 {
   "unit": "unit-2208",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002208/2019-09-10a: procedure order \"Records request, prior primary care and urology\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002208",
@@ -314,15 +312,6 @@
               "performed": "2019-09-10T09:20"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2019",
-              "action": "placed",
-              "order": "Records request, prior primary care and urology",
-              "category": "procedure",
-              "reason": "transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -382,13 +371,6 @@
           "id": "2019-10-01a",
           "kind": "outside_records",
           "start": "2019-10-01T10:00",
-          "orders": [
-            {
-              "id": "prior-records-2019",
-              "action": "done",
-              "date": "2019-10-01T10:00"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1940,7 +1922,11 @@
                 {
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 190
                 }
               ]
@@ -4085,7 +4071,11 @@
       "Urine osmolality": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

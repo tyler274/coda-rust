@@ -226,14 +226,7 @@
       }
      ],
      "orders": [
-      {
-       "id": "records-prior-pcp",
-       "action": "placed",
-       "order": "Request records from prior primary care practice",
-       "category": "procedure",
-       "reason": "establishing care"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Progress Notes",
@@ -271,12 +264,7 @@
       }
      ],
      "orders": [
-      {
-       "id": "records-prior-pcp",
-       "action": "done",
-       "date": "2020-10-19T11:00"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Outside Records",
@@ -448,13 +436,6 @@
        "id": "vasc-referral-2021",
        "action": "done",
        "date": "2021-09-27T14:00"
-      },
-      {
-       "id": "records-vascular-2021",
-       "action": "placed",
-       "order": "Request records from vascular surgery",
-       "category": "procedure",
-       "reason": "femoral stent May 2021"
       }
      ],
      "documents": [
@@ -571,12 +552,7 @@
       }
      ],
      "orders": [
-      {
-       "id": "records-vascular-2021",
-       "action": "cancelled",
-       "date": "2022-03-28T09:30"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Progress Notes",
@@ -670,20 +646,21 @@
      ],
      "orders": [
       {
-       "id": "pft-2022",
-       "action": "placed",
-       "order": "Pulmonary function tests, complete with lung volumes",
-       "category": "procedure",
-       "to": "Pulmonary Function Lab",
-       "reason": "progressive exertional dyspnea, heavy smoker"
+        "id": "pft-2022",
+        "action": "placed",
+        "order": "Pulmonary function tests, complete with lung volumes",
+        "category": "procedure",
+        "to": "Pulmonology",
+        "reason": "progressive exertional dyspnea, heavy smoker",
+        "snomed": "23426006"
       },
       {
-       "id": "pulm-referral-2022",
-       "action": "placed",
-       "order": "Pulmonology referral",
-       "category": "referral",
-       "to": "Pulmonary & Critical Care",
-       "reason": "progressive exertional dyspnea, heavy smoker"
+        "id": "pulm-referral-2022",
+        "action": "placed",
+        "order": "Pulmonology referral",
+        "category": "referral",
+        "to": "Pulmonology",
+        "reason": "progressive exertional dyspnea, heavy smoker"
       }
      ],
      "documents": [
@@ -745,9 +722,9 @@
      ],
      "orders": [
       {
-       "id": "pft-2022",
-       "action": "done",
-       "date": "2022-10-24T08:00"
+        "id": "pft-2022",
+        "action": "done",
+        "date": "2022-10-24T08:00"
       }
      ]
     },

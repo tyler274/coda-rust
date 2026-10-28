@@ -1,0 +1,193 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001749",
+      "events": [
+        {
+          "id": "2024-01-08a",
+          "kind": "hospital_admission",
+          "start": "2024-01-08T04:40",
+          "end": "2024-01-10T12:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "spontaneous labor at 39 weeks",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "resolved", "onset": "2023-04-24", "note": "delivered 01/08/2024"},
+            {"label": "Third degree perineal laceration during delivery, unspecified", "icd10": "O70.20", "action": "diagnosed", "onset": "2024-01-08", "note": "external anal sphincter injury from episiotomy extension; repaired"}
+          ],
+          "measure": ["bp", "hr", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-01-09T05:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Episiotomy", "snomed": "85548006", "performed": "2024-01-08T13:52"},
+            {"procedure": "Anal sphincteroplasty for current obstetrical laceration", "snomed": "359944002", "performed": "2024-01-08T20:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Labor and delivery discharge summary", "author": "obstetrics", "date": "2024-01-12T09:40",
+             "body": "REGIONAL MEDICAL CENTER - LABOR & DELIVERY\nDischarge Summary\nAdmitted 01/08/2024 04:40   Discharged 01/10/2024 12:15\nPatient: Grace Paquette   DOB 11/02/1992\n\nAdmission: G2P1001 at 39w0d in spontaneous labor. Prenatal course without complications.\n\nHospital course: Labor advanced slowly but steadily. In the second stage she pushed for several hours with the vertex low and engaged and descent minimal. Given maternal fatigue and a tight perineum, an episiotomy was cut as the head crowned. She delivered a liveborn infant spontaneously at 13:58; no forceps or vacuum were used. Infant scores 8 and 9 at one and five minutes.\n\nAbout four hours after delivery she told nursing she could not feel when she needed to move her bowels and had one episode of leaking stool. On examination the episiotomy had extended past its intended margin into the external anal sphincter; the rectal mucosa was intact. Assessed as a third-degree perineal laceration. Taken to the OR at 20:15 and the external anal sphincter was repaired under her epidural, with layered closure of the perineum.\n\nRecovery thereafter was routine. Voiding without difficulty, passing soft stool by day 2, pain controlled with oral analgesics. Hemoglobin on postpartum day 1 acceptable.\n\nDischarge diagnoses: term vaginal delivery; third-degree perineal laceration (external anal sphincter injury), repaired. Recurrent genital HSV, no lesions this admission.\nAllergies: NKDA.\nDischarge instructions: high-fiber diet and fluids; avoid straining; sitz baths. Referral placed to pelvic floor physical therapy. Postpartum visit in 6 weeks with our office.\n\ncc: Primary care"}
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "telephone",
+          "start": "2024-01-17T13:30",
+          "reason": "post-discharge check",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-delivery check-in", "author": "RN", "date": "2024-01-17T13:30",
+             "body": "Called after discharge summary came in. Baby doing well, she's sore but up and around. Bowels moving. Still occasionally can't hold gas and had one small leak of stool this week - OB told her to expect this early on. PT eval scheduled for next Wed. No fever, incision not opening as far as she can tell, bleeding tapering. Mood good, sleeping in bits. Knows to call OB for fever, worsening pain or any foul discharge. Postpartum f/u with us in late Feb."}
+          ]
+        },
+        {
+          "id": "2024-01-24a",
+          "kind": "outside_records",
+          "start": "2024-01-25T15:10",
+          "reason": "pelvic floor physical therapy evaluation",
+          "documents": [
+            {"type": "Consult Note", "title": "Pelvic floor physical therapy: initial evaluation", "author": "physical therapy", "date": "2024-01-25T15:10",
+             "body": "PELVIC HEALTH PHYSICAL THERAPY\nInitial evaluation 01/24/2024\n\nReferral: obstetrics, s/p third-degree perineal laceration with sphincter repair 01/08/2024.\nSubjective: 16 days postpartum. Reduced awareness of rectal filling, occasional flatus she cannot hold back, one small episode of stool leakage since discharge. No urinary leakage.\nObjective (external exam only at this stage): perineum healing, sutures intact. Gentle voluntary contraction present, reduced endurance.\nAssessment: postpartum anal sphincter weakness after obstetric injury, good prognosis.\nPlan: biweekly visits x 8; graded pelvic floor strengthening, coordination and urge-deferral training; bowel habit education.\n\nPhysical therapist"}
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "outside_records",
+          "start": "2024-02-21T10:00",
+          "reason": "obstetrics postpartum visit letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: postpartum visit", "author": "obstetrics", "date": "2024-02-21T10:00",
+             "body": "OUTSIDE OBSTETRICS GROUP\nPostpartum visit 02/19/2024\n\nMs. Paquette is six weeks out from a vaginal delivery complicated by a third-degree laceration, repaired. Perineum well healed; anal sphincter intact and contracting on exam. Stool leakage has become rare and she is in pelvic floor PT. Bleeding has stopped. Mood screen negative.\n\nCounseled that the sphincter injury should be considered when planning any future delivery. Resume usual activity as tolerated.\nNo medication changes.\n\nObstetrics attending"}
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "office_visit",
+          "start": "2024-02-27T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum follow-up",
+          "state": {"weight_kg": 65.9, "labs": {"Hemoglobin": 12.6}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-27T16:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-02-27T15:45"},
+            {"procedure": "Venipuncture", "performed": "2024-02-27T16:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Postpartum Follow-up", "author": "PCP", "date": "2024-02-27T16:25",
+             "body": "Seven weeks after delivery (01/08, vaginal, episiotomy extended into a 3rd-degree tear, sphincter repaired same night - see L&D summary). OB postpartum visit last week was fine.\n\nShe's doing PT every other week and doing the exercises at home. Leakage was a few times in the first two weeks, nothing in the past 10 days. Can sense the urge again. No urinary symptoms. Tired but okay; husband home evenings. PHQ-9 3. Back to school after spring break.\n\nNo HSV flare since fall 2022.\n\nExam: Looks well. Heart/lungs normal. Abdomen soft. Deferred perineal exam, done by OB last week.\n\nA/P\n1. Obstetric anal sphincter injury, repaired - recovering well with PT. Keep it on the problem list; it matters for any future delivery. Call if leakage comes back.\n2. Postpartum - mood fine. CBC today; she was told her count was a little low after delivery.\n3. HSV - episodic valacyclovir as before.\nPhysical in the fall."}
+          ]
+        },
+        {
+          "id": "2024-02-28a",
+          "kind": "portal_message",
+          "start": "2024-02-28T11:15",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood count", "author": "PCP", "date": "2024-02-28T11:15",
+             "body": "Grace, your blood count has bounced back and is normal now. No need for iron."}
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "portal_message",
+          "start": "2024-05-07T20:40",
+          "reason": "positive pregnancy test",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2024-04-17"}
+          ],
+          "orders": [
+            {"id": "ob-2024", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "prenatal care; third-degree laceration 01/2024"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Surprise", "author": "patient", "date": "2024-05-07T20:40",
+             "body": "Well, this is earlier than we planned - positive test tonight. Last period started April 3. Can you send the referral to the same OB group? I know they'll want to talk about the tear."},
+            {"type": "Patient Message", "title": "RE: Surprise", "author": "PCP", "date": "2024-05-08T07:15",
+             "body": "Congratulations, and thanks for telling us. Referral to OB is in - they'll call you to set up the first visit around 8 weeks. Please hold off on valacyclovir unless OB says otherwise, same as last time. Let me know how you're doing."}
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "outside_records",
+          "start": "2024-05-29T14:00",
+          "reason": "obstetrics new patient letter",
+          "orders": [
+            {"id": "ob-2024", "action": "done", "date": "2024-05-29T14:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: new OB visit", "author": "obstetrics", "date": "2024-05-29T14:00",
+             "body": "OUTSIDE OBSTETRICS GROUP\nNew OB visit 05/28/2024\n\nG3P2002 at 8w0d by LMP 04/03/2024, consistent with ultrasound; EDD 01/08/2025. Single intrauterine pregnancy, cardiac activity seen.\n\nHistory: vaginal deliveries 2017 and 01/2024; the 2024 delivery was complicated by a third-degree laceration, repaired, with good recovery in PT. Recurrent genital HSV. NKDA.\nPrenatal labs drawn, results unremarkable.\n\nDelivery planning to be revisited in the third trimester. Routine prenatal care.\n\nObstetrics attending"}
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "office_visit",
+          "start": "2024-06-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2024-06-11T08:05",
+             "body": "Pt left VM cancelling tomorrow's check-in, last week of school and she has graduation duty. Says nothing pressing, will pick it up at her fall physical."}
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "outside_records",
+          "start": "2024-06-20T09:30",
+          "reason": "physical therapy discharge",
+          "documents": [
+            {"type": "Consult Note", "title": "Pelvic floor physical therapy: discharge summary", "author": "physical therapy", "date": "2024-06-20T09:30",
+             "body": "PELVIC HEALTH PHYSICAL THERAPY\nDischarge summary, 8 visits 01/24/2024 to 05/22/2024\n\nGoals met. Patient reports normal awareness of rectal filling and no fecal or flatal leakage since March. Pelvic floor strength and endurance improved and symmetric. Now early in a new pregnancy; cleared to continue her home program through pregnancy.\nDischarged to home exercise program.\n\nPhysical therapist"}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 70.9, "labs": {"Hemoglobin": 11.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-08T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T08:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T08:07"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-10-08T07:30"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T08:05"},
+            {"procedure": "Venipuncture", "performed": "2024-10-08T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Preventive Visit", "author": "PCP", "date": "2024-10-08T08:15",
+             "body": "Annual. 31F G3P2, 27 wks (EDD 1/8/25). OB following; she says all has been routine, glucose test passed.\nSphincter: no leakage since spring, still doing the PT exercises a few times a week.\nHSV: quiet, no outbreaks.\nNo alcohol in pregnancy. Mood good, PHQ-2 0.\n\nExam: BP fine. Gravid, fundus above umbilicus. Heart and lungs clear. No edema.\n\nA/P\n- Preventive: flu and Moderna updated COVID today. CBC for OB's 28-week labs at her request.\n- Delivery plans are OB's; she knows they'll discuss route given January.\n- Pap due 2026.\nSee in a year, or postpartum."},
+            {"type": "Patient Message", "title": "Blood count", "author": "PCP", "date": "2024-10-09T12:45",
+             "body": "Blood count looks as expected for 28 weeks. Copy sent to OB."}
+          ]
+        },
+        {
+          "id": "2024-11-27a",
+          "kind": "outside_records",
+          "start": "2024-11-27T11:20",
+          "reason": "obstetrics prenatal update",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2024-11-20T15:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: prenatal update", "author": "obstetrics", "date": "2024-11-27T11:20",
+             "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 11/20/2024, 33w1d\n\nUncomplicated so far. Growth and fluid normal on today's ultrasound; BP normal. Tdap given. After discussion of the prior third-degree laceration, she wishes to plan a vaginal birth and avoid episiotomy if possible; we will support this.\nWeekly visits from 36 weeks.\n\nObstetrics attending"}
+          ]
+        }
+      ]
+    }
+  ]
+}
