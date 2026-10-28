@@ -16,7 +16,7 @@ use serde_json::Number;
 use crate::catalog::Catalog;
 use crate::draw::{self, Draw, IDENTITIES, own_normal};
 use crate::labs::{normal, rounded};
-use crate::ledger::{Patient, State, Vital, VitalSet, Vitals, num};
+use crate::ledger::{LabResult, Patient, State, Vital, VitalSet, Vitals, num};
 use crate::rng::Rng;
 use crate::seeds::{Seed, Sex};
 use crate::time;
@@ -200,6 +200,14 @@ pub fn apply(seed: &Seed, p: &Patient, catalog: &Catalog) -> (Patient, Vec<Strin
             ev.vitals = Vitals::One(set);
         }
         let collected: Vec<_> = ev.labs.iter().map(|l| Timeline::collected(ev, l)).collect();
+        // Entries collected together are one specimen: a fasting glucose stated on
+        // one is the glucose of a panel drawn with it, not a second reading.
+        let fasting: Vec<_> = (ev.labs.iter().zip(&collected))
+            .filter_map(|(l, at)| {
+                let r = l.results.iter().find(|r| r.test == "Fasting Glucose")?;
+                Some((*at, r.value.clone()?))
+            })
+            .collect();
         for (k, lab) in ev.labs.iter_mut().enumerate() {
             if lab.pending {
                 continue;
@@ -207,6 +215,20 @@ pub fn apply(seed: &Seed, p: &Patient, catalog: &Catalog) -> (Patient, Vec<Strin
             let members = (lab.panel.as_ref())
                 .and_then(|p| catalog.panels.get(p))
                 .map_or(&[][..], |e| &e.members[..]);
+            if members.iter().any(|m| m == "Glucose")
+                && !lab.results.iter().any(|r| r.test == "Glucose")
+                && let Some((_, v)) = fasting.iter().find(|(at, _)| *at == collected[k])
+            {
+                lab.results.push(LabResult {
+                    test: "Glucose".into(),
+                    loinc: None,
+                    unit: None,
+                    range: None,
+                    value: Some(v.clone()),
+                    text: None,
+                    resulted: None,
+                });
+            }
             let d = Draw {
                 mrn: &p.mrn,
                 eid: &eid,

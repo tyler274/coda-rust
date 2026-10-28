@@ -343,6 +343,17 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
             ));
         }
         let known = if lab { &terms.labs } else { &terms.reports };
+        if let Some(v) = known.get(label)
+            && v.code != code.trim()
+        {
+            terms.rejected.push(format!(
+                "{} {label:?} is coded {:?} and {:?}; one name is one test",
+                if lab { "lab" } else { "study" },
+                v.code,
+                code.trim()
+            ));
+            continue;
+        }
         if known.contains_key(label)
             || terms
                 .rejected

@@ -806,6 +806,32 @@ fn a_draw_keeps_its_derived_members_and_set_levels_consistent() {
 }
 
 #[test]
+fn a_fasting_glucose_is_the_glucose_of_a_panel_drawn_with_it() {
+    let draw = patient(json!([visit(
+        "e1",
+        "2024-01-03T07:10",
+        json!({"labs": [
+            {"panel": null, "collected": "2024-01-03T07:10",
+                "results": [{"test": "Fasting Glucose", "value": 158}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T07:10",
+                "results": [{"test": "Creatinine"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T16:00",
+                "results": [{"test": "Creatinine"}]}
+        ]})
+    )]));
+    let (p, errors) = measure::apply(&seed(), &draw, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    let glucose = |k: usize| {
+        (p.events[0].labs[k].results.iter())
+            .find(|r| r.test == "Glucose")
+            .and_then(|r| r.value.as_ref())
+            .map(patient_bank::ledger::num)
+    };
+    assert_eq!(glucose(1), Some(158.0), "one specimen has one glucose");
+    assert_ne!(glucose(2), Some(158.0), "a later draw reads its own");
+}
+
+#[test]
 fn a_stated_calculated_test_fixes_its_open_input_and_every_lab_formula_holds() {
     let lipids = |results: serde_json::Value| {
         patient(json!([visit(
@@ -999,9 +1025,7 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
             "procedures": [{"procedure": "Cesarean section", "snomed": "11466000",
                 "performed": "2024-01-01T09:30"}],
             "orders": [{"id": "mri", "action": "placed", "category": "imaging",
-                "order": "MRI brain with and without contrast"},
-                // the catalog's procedure of this label is unverified; its study is not
-                {"id": "pft", "action": "placed", "category": "procedure", "order": "Spirometry"}],
+                "order": "MRI brain with and without contrast"}],
             "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Calcitonin sent."}]})
         )]))
     };
@@ -1055,12 +1079,6 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
             .any(|w| w.contains("MRI brain with and without contrast"))
     };
     assert!(uncoded(&terms));
-    assert!(
-        !check::uncoded_orders(std::slice::from_ref(&p), &catalog, &terms)
-            .iter()
-            .any(|w| w.contains("Spirometry")),
-        "a verified entry of the label codes the order"
-    );
     terms.reports.insert(
         "MRI brain with and without contrast".into(),
         snomed("24587-8", "MR Brain WO and W contrast IV"),

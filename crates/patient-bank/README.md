@@ -31,7 +31,7 @@ cargo run -q -p patient-bank -- brief|check|preview <unit>
 cargo run -q -p patient-bank -- find icd10|loinc|snomed|rxnorm <words>
 cargo run -q -p patient-bank -- build
 cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]
-cargo run -q -p patient-bank -- catalog
+cargo run -q -p patient-bank -- catalog [--cms-rvu <CMS PPRRVU*.txt>]
 ```
 
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
@@ -57,7 +57,9 @@ the terminology cache, the bank and the schema live under the ignored
   are run.
 - **Codes.** `data/catalog.json` holds verified ICD-10-CM, LOINC, RxNorm, SNOMED,
   CVX and CPT codes. A concept is added by writing its label and code there and
-  running `catalog`, which reads every entry back from its official service, every
+  running `catalog`, which reads every entry back from its official service (CPT,
+  which has none, from the `PPRRVU*.txt` of a CMS physician fee schedule relative
+  value file release, kept as `target/patient-bank/PPRRVU.txt`), every
   lab unit from UCUM, and requires each measured lab's reference range with its
   source (ABIM's January 2026 table, or coda-gym's; an empty range says the source
   gives none). `check` verifies any extra condition code, drug text, lab, study or
