@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.PermissionController
+import androidx.health.connect.client.changes.DeletionChange
+import androidx.health.connect.client.changes.UpsertionChange
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.ActiveCaloriesBurnedRecord
 import androidx.health.connect.client.records.BasalBodyTemperatureRecord
@@ -23,6 +25,7 @@ import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.Vo2MaxRecord
 import androidx.health.connect.client.records.WeightRecord
+import androidx.health.connect.client.request.ChangesTokenRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import java.time.Instant
@@ -114,6 +117,103 @@ object HealthConnectBridge {
             }
         }
     }
+
+    // ---- Type-independent changes feed (duet_health::native_adapters) ----
+    //
+    // Rust owns the scope gate (disabled until ENG-22 settles the type list),
+    // the committed token and coverage. These two calls only page the feed and
+    // report typed errors. No new permission is declared here.
+
+    /** `{"ok": "<token>"}` for the JSON array of record type simple names. */
+    @JvmStatic
+    fun getChangesToken(context: Context, typesJson: String): String = reply {
+        val names = JSONArray(typesJson)
+        val types = (0 until names.length()).mapNotNull { index ->
+            recordTypes.firstOrNull { it.simpleName == names.getString(index) }
+        }.toSet()
+        if (types.isEmpty()) return@reply errorJson("unsupported")
+        val token = runBlocking {
+            HealthConnectClient.getOrCreate(context).getChangesToken(ChangesTokenRequest(recordTypes = types))
+        }
+        JSONObject().put("ok", token)
+    }
+
+    /**
+     * One `getChanges(token)` page: `{"ok": {"upserts", "deleted",
+     * "next_token", "has_more", "token_expired"}}`. Upserts carry the record
+     * type, identity, times, offsets and `dataOrigin.packageName`. The exact
+     * value is left empty until the type-specific extraction is agreed; Rust
+     * reports such records as not extracted rather than uploading them.
+     */
+    @JvmStatic
+    fun getChanges(context: Context, token: String): String = reply {
+        val response = runBlocking { HealthConnectClient.getOrCreate(context).getChanges(token) }
+        val upserts = JSONArray()
+        val deleted = JSONArray()
+        for (change in response.changes) {
+            when (change) {
+                is UpsertionChange -> upserts.put(upsertJson(change.record))
+                is DeletionChange -> deleted.put(change.recordId)
+            }
+        }
+        JSONObject().put(
+            "ok",
+            JSONObject()
+                .put("upserts", upserts)
+                .put("deleted", deleted)
+                .put("next_token", response.nextChangesToken)
+                .put("has_more", response.hasMore)
+                .put("token_expired", response.changesTokenExpired),
+        )
+    }
+
+    private fun upsertJson(record: androidx.health.connect.client.records.Record): JSONObject {
+        val json = JSONObject()
+            .put("record_type", record::class.simpleName ?: "")
+            .put("id", record.metadata.id)
+            .put("value", "")
+            .put("writer_id", record.metadata.dataOrigin.packageName)
+        record.metadata.device?.let { device ->
+            listOfNotNull(device.manufacturer, device.model).joinToString(" ").takeIf { it.isNotEmpty() }?.let {
+                json.put("device", it)
+            }
+        }
+        when (record) {
+            is androidx.health.connect.client.records.InstantaneousRecord -> {
+                val at = offsetTime(record.time, record.zoneOffset)
+                json.put("start", at).put("end", at)
+            }
+            is androidx.health.connect.client.records.IntervalRecord -> {
+                json.put("start", offsetTime(record.startTime, record.startZoneOffset))
+                json.put("end", offsetTime(record.endTime, record.endZoneOffset))
+            }
+        }
+        json.put(
+            "metadata",
+            JSONObject()
+                .put("last_modified", record.metadata.lastModifiedTime.toString())
+                .put("client_record_id", record.metadata.clientRecordId ?: JSONObject.NULL)
+                .put("client_record_version", record.metadata.clientRecordVersion),
+        )
+        return json
+    }
+
+    private fun offsetTime(instant: Instant, offset: java.time.ZoneOffset?): String =
+        if (offset == null) instant.toString() else instant.atOffset(offset).toString()
+
+    private inline fun reply(block: () -> JSONObject): String = try {
+        block().toString()
+    } catch (error: SecurityException) {
+        errorJson("permission_denied").toString()
+    } catch (error: android.os.RemoteException) {
+        errorJson("store_unavailable").toString()
+    } catch (error: IllegalStateException) {
+        errorJson("store_unavailable").toString()
+    } catch (error: Throwable) {
+        JSONObject().put("error", JSONObject().put("code", "failed").put("message", error.toString())).toString()
+    }
+
+    private fun errorJson(code: String): JSONObject = JSONObject().put("error", JSONObject().put("code", code))
 
     private fun permissions(): Set<String> = recordTypes.map { HealthPermission.getReadPermission(it) }.toSet()
 
