@@ -1,0 +1,136 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002569",
+      "given": "Calvin",
+      "family": "Sawyer",
+      "birth_date": "1997-06-01",
+      "address_line": "27 Briar Hill Road",
+      "phone": "+1-802-555-0196",
+      "email": "calvin.sawyer@example.test",
+      "marital_status": "single",
+      "summary": "Healthy environmental field technician who joined in 2023 and was diagnosed with acute lymphoblastic leukemia after a practice CBC in fall 2025. Induction was complicated by febrile neutropenia, maintenance by Pseudomonas bacteremia with ecthyma gangrenosum, and in June 2026 he had Rocky Mountain spotted fever after a hiking trip; oncology runs his leukemia care.",
+      "events": [
+        {
+          "id": "2023-09-12a",
+          "kind": "telephone",
+          "start": "2023-09-12T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2023-09-12T10:20", "body": "Caller is a 26 y/o man who moved to the hilltowns for work last year and has not had a regular doctor since college. Wants to get established. Has commercial PPO through employer, card info taken. Scheduled new patient visit 9/19 at 8:00 am, first appointment of the day per his request (he is out in the field most days). Asked him to fill out the health history form in the portal before he comes."}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "establish_care",
+          "start": "2023-09-19T08:00",
+          "end": "2023-09-19T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Allergic rhinitis due to pollen", "action": "history", "onset": "2012-04-01", "note": "seasonal, spring and late summer"}
+          ],
+          "allergies": [
+            {"substance": "Sulfamethoxazole and trimethoprim", "snomed": "398731002", "category": "medication", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Iodinated contrast media", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 78.4, "height_cm": 180.3},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 2-3 drinks per week"},
+            {"item": "Occupation", "value": "Environmental field technician"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-19T08:45", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-19T08:45", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-19T08:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-19T08:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-09-19T08:00"},
+            {"procedure": "Venipuncture", "performed": "2023-09-19T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-09-19T08:50", "body": "26 y/o M establishing care. Last physical was through student health several years ago. No complaints today.\n\nPMH: seasonal allergies since his teens, worst in spring and again in late August. Gets by with avoiding mowing and showering after field days; does not take anything regularly.\nPSH: T&A at age 7.\nMeds: none.\nAllergies: Bactrim-type antibiotic (sulfamethoxazole-trimethoprim) as a kid, his mother told him his throat swelled and he needed epinephrine, so he treats it as anaphylaxis. IV contrast for a CT years ago gave him hives, he does not remember details.\nFH: father with high blood pressure, mother on thyroid replacement for hypothyroidism, paternal grandfather had AML in his mid-60s.\nSH: environmental field technician for a consulting firm, does soil and water sampling, a lot of time in brush and wetlands. Never smoked. 2-3 beers a week. No other substances. Single, lives alone, hikes and fishes on weekends.\n\nROS negative except as above.\n\nExam: well-appearing, vitals as charted. HEENT normal, TMs clear, mild pale nasal turbinates. Neck supple without adenopathy or thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, no organomegaly. Skin without rashes. Normal gait and affect.\n\nA/P:\n1. Health maintenance: CBC, CMP, lipids, one-time HIV and hep C screening today. Flu and COVID shots in October, will come in for a nurse visit. Tdap due next year by his recollection of his last one.\n2. Seasonal allergic rhinitis, mild: nonpharmacologic measures are working for him. Revisit if symptoms escalate.\n3. Allergies reviewed and entered. Discussed tick checks given his job.\nRTC one year."}
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2023-09-21T16:05", "body": "Hi Calvin, your blood counts, kidney and liver tests, and cholesterol all came back normal. HIV and hepatitis C screens were negative, and those don't need repeating unless something changes. Nice to meet you this week."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T07:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T07:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-17T07:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2023-10-17T07:55", "body": "Here before work for seasonal flu and the 2023-24 COVID booster. Afebrile, feels well. No egg or vaccine reactions in the past. Flu vaccine L deltoid, COVID R deltoid, lot numbers in the MAR. Waited 15 min in the lobby without issue. VIS sheets given."}
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "portal_message",
+          "start": "2024-04-09T12:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine record for work", "author": "patient", "date": "2024-04-09T12:14", "body": "Hi, my company is updating its field safety files and wants a copy of my vaccine history. Can you send what you have? Thanks, Calvin"},
+            {"type": "Patient Message", "title": "RE: Vaccine record for work", "author": "MA", "date": "2024-04-10T09:30", "body": "Hi Calvin, I uploaded your immunization record to the documents section of the portal. It has what we gave in October plus what you reported at your first visit. Let us know if your employer needs a signed form."}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 79.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T08:40", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2024-09-24T08:35"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-24T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T08:35"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-24T08:45", "body": "27M for yearly exam. Busy summer of fieldwork, feels fine. Allergy season was tolerable. No new meds.\n\nExam: vitals reviewed, BP normal. Pleasant, fit. Oropharynx clear. No lymphadenopathy. RRR, lungs clear. Abdomen soft, nontender, no hepatosplenomegaly. Skin: no rashes, no suspicious nevi. Neuro grossly normal.\n\nAssessment/plan:\n- Routine adult exam. CBC and CMP drawn. Lipids fine last year, skip this round.\n- Tdap given today, his last one could not be confirmed.\n- Allergic rhinitis, seasonal, stable without medication.\n- Flu shot and updated COVID vaccine at a nurse visit in late October once supply is in.\n- Tick bite prevention reviewed: permethrin-treated work clothes, repellent, daily checks.\nSee in a year."},
+            {"type": "Result Note", "title": "Annual labs", "author": "PCP", "date": "2024-09-25T13:10", "body": "CBC and metabolic panel normal. Released to portal with a short note."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T07:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T07:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T07:50"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2024-10-22T08:00", "body": "Seasonal influenza and 2024-25 COVID vaccine given, one in each arm. Tolerated well last year with only a sore arm. Observed 15 minutes, no reaction. Pt asked about Lyme vaccine for work; told him none is on the market for adults right now and to keep up with permethrin and tick checks."}
+          ]
+        }
+      ]
+    }
+  ]
+}

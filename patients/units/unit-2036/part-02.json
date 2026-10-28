@@ -1,0 +1,252 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002036",
+      "events": [
+        {
+          "id": "2021-03-02a",
+          "kind": "portal_message",
+          "start": "2021-03-02T18:05",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-02T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-23T10:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "COVID vaccine dates", "author": "patient", "date": "2021-03-02T18:05",
+             "body": "Got both Pfizer shots at the state clinic, Feb 2 and Feb 23. Photo of the card attached. Also I'd like to come in about my hands, they've been shaky for a while and it's getting annoying at work."},
+            {"type": "Patient Message", "title": "RE: COVID vaccine dates", "author": "MA", "date": "2021-03-03T09:12",
+             "body": "Thanks Brian, both doses entered in your record. You're booked with the doctor Tuesday 3/9 at 3:20 for the tremor."}
+          ]
+        },
+        {
+          "id": "2021-03-09a",
+          "kind": "office_visit",
+          "start": "2021-03-09T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hand tremor",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-03-09T15:55", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.62}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-03-09T15:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-03-09T15:20"}],
+          "orders": [
+            {"id": "neuro-ref-2021", "action": "placed", "order": "Neurology referral", "category": "referral", "to": "Neurology", "reason": "Bilateral hand tremor"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-03-09T15:50",
+             "body": "Shaky hands since around October, both sides. Notices it holding his coffee and signing things; coworkers have commented. Says a beer in the evening calms it. No falls, no change in walking, no voice change. No new meds. Caffeine 2 cups/day.\nBP still above goal. Fine bilateral tremor with arms outstretched, less at rest. Finger-nose ok. Normal tone, normal rapid alternating movements, gait normal.\nA/P: bilateral action tremor, sounds like essential tremor (father had a tremor too) but would like neurology to confirm. TSH and BMP today. Referral placed. He's already on a beta-blocker for his heart.\nHTN unchanged, discussed again, he wants to wait."}
+          ]
+        },
+        {
+          "id": "2021-03-10a",
+          "kind": "portal_message",
+          "start": "2021-03-10T13:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Thyroid and kidney tests", "author": "PCP", "date": "2021-03-10T13:30",
+             "body": "Thyroid and kidney/electrolyte labs normal. Neurology should call you to schedule."}
+          ]
+        },
+        {
+          "id": "2021-04-21a",
+          "kind": "outside_records",
+          "start": "2021-04-21T09:40",
+          "conditions": [
+            {"label": "Essential tremor", "action": "diagnosed", "onset": "2020-10-01", "note": "Neurology 4/14/2021"}
+          ],
+          "orders": [{"id": "neuro-ref-2021", "action": "done", "date": "2021-04-21T09:40"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Neurology consultation", "author": "neurology", "date": "2021-04-21T09:40",
+             "body": "Outside neurology practice. Date of service: 04/14/2021.\nReason for referral: hand tremor.\n\nHPI: 58-year-old right-handed man with six months of tremor in both hands. It is most noticeable when he holds a cup of coffee or writes, and he has noticed it lessens after a drink. No head trauma and no seizures. No stiffness or slowness.\n\nPMH: hypertension, coronary artery disease with LAD stent, paroxysmal atrial fibrillation.\nMedications: lisinopril and hydrochlorothiazide for blood pressure; also metoprolol succinate 50 mg daily, aspirin 81 mg daily, isosorbide mononitrate ER 30 mg daily.\nAllergies: no known drug allergies.\nFamily history: his father had a tremor of the hands; no other movement disorder in the family.\nSocial: office administrator. Former smoker (quit 2013, 20 pack-years). One to two drinks a week.\n\nExam: BP 142/88. Alert, fluent. Cranial nerves intact. Postural tremor of both upper extremities, low amplitude, symmetric, with mild kinetic component on finger-nose. No rest tremor. Tone normal, no rigidity. No bradykinesia on finger taps. Strength, reflexes and sensation normal. Gait and tandem normal.\n\nData: recent routine labs and TSH from his primary care office normal.\n\nImpression: essential tremor.\nPlan: reassurance; he is already on a beta-blocker (metoprolol succinate) for cardiac reasons, and he does not want another medication now. Discussed adaptive strategies for writing and cups. Return as needed.\n\nOutside neurology"}
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "office_visit",
+          "start": "2021-05-04T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension; discuss clinical trial enrollment",
+          "state": {"bp": [148, 93]},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-05-04T08:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-05-04T08:55",
+             "body": "Here to go over whether he'd qualify for the outside study of a new blood pressure medicine (saw the notice in our newsletter). BP has run above goal for the whole time I've known him on lisinopril 20 + HCTZ 25, home average about 145/91.\nNeurology saw him for the tremor, essential tremor, no new medicine.\nWent through the study criteria with him: uncontrolled pressure on 1-2 agents, stable cardiac disease - he fits on paper, final eligibility is the study team's call. Explained it is randomized and blinded, so he might get the study drug or a placebo on top of his usual pills, and that he keeps all his current medicines. Visits at the study site for 6 months. He'd like to do it.\nExam: BP above goal. Heart regular, lungs clear, no edema.\nA/P: HTN uncontrolled. Referral letter and recent labs sent to the study coordinator. Will see him for the baseline visit."}
+          ]
+        },
+        {
+          "id": "2021-06-01a",
+          "kind": "office_visit",
+          "start": "2021-06-01T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Clinical trial baseline visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-06-01T07:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2021-06-01T07:55",
+             "text": "12-lead ECG. Rate 62. Normal sinus rhythm. PR 168 ms, QRS 92 ms, QTc 418 ms. Normal axis. No ST-T abnormality.",
+             "conclusion": "Normal sinus rhythm. Normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2021-06-01T07:40"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2021-06-01T07:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Trial Baseline Visit", "author": "PCP", "date": "2021-06-01T08:20",
+             "body": "Baseline visit for the blood pressure study; the study team asked for a resting ECG and a chemistry from us. He was accepted and randomized last week to study drug or placebo, blinded; the site dispenses it and he takes it in addition to his usual lisinopril and HCTZ. Primary endpoint is change in systolic pressure at 6 months.\nFeels well. No palpitations in months.\nBP above goal (recorded for the site). ECG: sinus rhythm, normal.\nA/P: enrolled. No change in his own medicines. Baseline BMP today, results to the coordinator. He knows to call us or the site with any side effects."}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "portal_message",
+          "start": "2021-06-22T12:44",
+          "documents": [
+            {"type": "Patient Message", "title": "Study visits", "author": "patient", "date": "2021-06-22T12:44",
+             "body": "FYI the study wants me in every 4 weeks, last visit around Thanksgiving week. No problems with the pills so far. Do I need to tell the pharmacy?"},
+            {"type": "Patient Message", "title": "RE: Study visits", "author": "RN", "date": "2021-06-22T15:10",
+             "body": "No need to tell the pharmacy since the study supplies it. Just keep taking your regular medicines the same way. Thanks for the update."}
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "annual_physical",
+          "start": "2021-09-28T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-09-28T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-28T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-28T08:40", "results": [{"test": "Hemoglobin A1c", "value": 5.6}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-09-28T08:45"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-09-28T08:00"},
+            {"procedure": "Immunization administration", "performed": "2021-09-28T08:45"}
+          ],
+          "orders": [
+            {"id": "fit-2020", "action": "cancelled", "date": "2021-09-28T08:00"},
+            {"id": "ldct-2021", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-09-28T09:00",
+             "body": "58 yo here for yearly exam. In the BP study, month 4 of 6. Feels ok, a bit more tired than usual the last few weeks, puts it down to work being busy. Tremor about the same.\nNo chest pain beyond usual, rare palpitations.\nMeds: lisinopril 20, HCTZ 25, metoprolol succ 50, ISMN 30, ASA 81, plus blinded study drug. NKDA.\nExam: BP above goal. Well appearing. Lungs clear, heart regular, abdomen soft and nontender, no edema. Fine postural tremor both hands.\nA/P\n- HTN: stays in the study through November, then reassess.\n- Essential tremor: stable, no treatment wanted.\n- CAD, pAF: stable.\n- CRC screening: FIT never returned, closing that order. He agrees he really needs a colonoscopy; wants to finish the study first. Will bring it up again in the winter.\n- Lung LDCT due next month, ordered. Flu shot today.\nRTC 3 mo."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COVID booster",
+          "immunizations": [{"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-19T12:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T12:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "COVID booster", "author": "RN", "date": "2021-10-19T12:30",
+             "body": "Pfizer booster given R deltoid. Observed 15 min, no reaction. Card updated."}
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "imaging",
+          "start": "2021-10-26T14:00",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2021-10-26T14:00",
+             "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Annual. Comparison 10/20/2020. No pulmonary nodules. No consolidation or effusion. No adenopathy. Coronary stent and calcification unchanged. Upper abdomen: no acute finding in the visualized portions.",
+             "conclusion": "Lung-RADS 1, negative. Continue annual screening."}
+          ],
+          "orders": [{"id": "ldct-2021", "action": "done", "date": "2021-10-26T14:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2021-10-27T08:05",
+             "body": "Third negative screening CT. Released."}
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "outside_records",
+          "start": "2021-11-09T16:15",
+          "documents": [
+            {"type": "Outside Records", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2021-11-09T16:15",
+             "body": "Outside cardiology group, office visit 11/02/2021.\n\nMr. Goodwin returns for his annual review. He is enrolled in an outside blood pressure study. Angina remains infrequent and unchanged with exertion; palpitations rare. BP 144/90, HR 64. Exam unremarkable. ECG: sinus rhythm, normal QRS and intervals.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg; blinded study medication. NKDA.\n\nImpression: stable angina; paroxysmal AF, quiescent. Continue current therapy; one year.\n\nOutside cardiology"}
+          ]
+        },
+        {
+          "id": "2021-11-29a",
+          "kind": "portal_message",
+          "start": "2021-11-29T07:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Study done + feeling run down", "author": "patient", "date": "2021-11-29T07:55",
+             "body": "Finished the blood pressure study last Tuesday (11/23), they took me off the study pills. They won't tell me which one I had until the whole study is over. Separate thing - I've been really wiped out for a couple of months, sweating at night and I've lost weight without trying. Can I get in this week?"},
+            {"type": "Patient Message", "title": "RE: Study done + feeling run down", "author": "RN", "date": "2021-11-29T09:20",
+             "body": "Thanks for letting us know. The doctor wants to see you this week - you're booked Thursday 12/2 at 1:00. If you get a high fever, chest pain or feel faint before then, call us right away."}
+          ]
+        },
+        {
+          "id": "2021-12-02a",
+          "kind": "office_visit",
+          "start": "2021-12-02T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, weight loss, night sweats",
+          "state": {"weight_kg": 83.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-12-02T13:40", "resulted": "2021-12-02T16:10", "results": [
+              {"test": "White Blood Cells", "value": 64.0},
+              {"test": "Hemoglobin", "value": 8.5},
+              {"test": "Platelets", "value": 600}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-12-02T13:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2021-12-02T13:00"}],
+          "orders": [
+            {"id": "heme-ref-2021", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "Marked leukocytosis with left shift, anemia, thrombocytosis"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-02T13:45",
+             "body": "Three months of steadily worse fatigue. Wife told him he looks pale. Night sweats several nights a week, a few evenings of 99-100 F. Weight down about 6 kg since the physical without dieting. No cough, no urinary symptoms, no bleeding he's noticed, no chest pain. Off the study drug since 11/23.\nExam: pale. Weight 83 kg (89 in Sept). No lymphadenopathy in neck/axillae. Lungs clear. Heart regular. Abdomen soft, nontender, LUQ hard to assess with his body habitus. No rash or bruising.\nA/P: constitutional symptoms with pallor. CBC with smear review and CMP now, stat.\n\nAddendum 16:30: WBC 64.0 with a left shift - lab smear review shows metamyelocytes and promyelocytes. Hgb 8.5. Platelets 600. Called hematology on-call; urgent consult arranged for next week. Patient called (see phone note)."}
+          ]
+        },
+        {
+          "id": "2021-12-02b",
+          "kind": "telephone",
+          "start": "2021-12-02T16:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Abnormal blood count", "author": "PCP", "date": "2021-12-02T16:40",
+             "body": "Called pt with CBC. Explained the white count is very high with immature cells, he is anemic and platelets high - this needs a blood specialist promptly; could be a bone marrow problem such as a leukemia, and they will sort out exactly what. Hematology/oncology appt Fri 12/10 at 10 am. ED precautions for fever over 101, bleeding, chest pain or fainting. He understood; wife on speaker."}
+          ]
+        },
+        {
+          "id": "2021-12-17a",
+          "kind": "outside_records",
+          "start": "2021-12-17T10:30",
+          "conditions": [
+            {"label": "Chronic myeloid leukemia", "action": "diagnosed", "onset": "2021-12-10", "note": "BCR-ABL1 positive, chronic phase"}
+          ],
+          "medications": [
+            {"drug_text": "imatinib 400 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily with food and a full glass of water", "dose": {"value": 400, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Chronic myeloid leukemia (prescribed by hematology/oncology)"}
+          ],
+          "orders": [{"id": "heme-ref-2021", "action": "done", "date": "2021-12-17T10:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Hematology/Oncology consultation", "author": "hematology/oncology", "date": "2021-12-17T10:30",
+             "body": "Outside hematology/oncology clinic. Date of service: 12/10/2021, with marrow results 12/14/2021.\n\nReferred for leukocytosis with left shift, anemia and thrombocytosis.\n\nHPI: 58-year-old man, three months of progressive fatigue, pallor, unintentional weight loss, night sweats and intermittent low-grade fevers.\n\nPMH: hypertension, CAD with LAD stent 2016, paroxysmal atrial fibrillation, essential tremor.\nMedications: lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, isosorbide mononitrate ER 30 mg daily.\nAllergies: no known drug allergies.\nFamily history: father with hypertension, essential tremor and MI at 62; mother with type 2 diabetes.\nSocial: office administrator; former smoker, quit 2013; 1-2 drinks weekly.\n\nExam: HR 104. Pale conjunctivae. Spleen palpable below the left costal margin. No lymphadenopathy. Heart: mild tachycardia, regular. Lungs clear.\n\nLabs: hemoglobin 8.5 g/dL; leukocytosis with left shift including metamyelocytes and promyelocytes; platelets 600,000/uL.\n\nBone marrow aspirate and biopsy (12/10/2021): hypercellular marrow with increased granulopoiesis; blasts not increased. BCR-ABL1 fusion detected by FISH and quantitative PCR.\n\nImpression: chronic myeloid leukemia, BCR-ABL1 positive, chronic phase.\n\nPlan: imatinib 400 mg daily started 12/14/2021 via our specialty pharmacy. CBC every 2 weeks initially, quantitative BCR-ABL1 every 3 months. Reviewed side effects (fluid retention, cramps, nausea, rash, cytopenias). Return in 4 weeks.\n\nOutside hematology/oncology"}
+          ]
+        },
+        {
+          "id": "2021-12-21a",
+          "kind": "telehealth_visit",
+          "start": "2021-12-21T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after hematology consult",
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2021-12-21T12:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2021-12-21T12:30",
+             "body": "Video visit, pt at home. Hematology confirmed CML, chronic phase; on imatinib 400 daily since 12/14. A little queasy if he takes it without food, otherwise fine. Still tired, sweats a bit less. Lots of questions - went over what chronic phase means and that hematology will follow counts and the BCR-ABL level.\nMed list updated with imatinib. Reminded him to run any new medicines or supplements past hematology because of interactions.\nVaccines: due for pneumococcal now that he's on cancer treatment - PCV20 at a nurse visit in January.\nHTN, CAD, pAF unchanged. Study finished.\nRTC 3 months, sooner prn."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -418,174 +418,69 @@ impl Drop for Valkey {
     }
 }
 
+/// The physician chat-turn topology on the shared `pubsub::testing` emulator.
+///
+/// Always a fresh emulator on a port from this process's ledger, never a
+/// reused `PUBSUB_EMULATOR_HOST`: these suites use fixed resource names.
 pub struct Emulator {
     pub host: String,
-    directory: PathBuf,
-    process: Process,
+    inner: pubsub::testing::Emulator,
 }
 
 impl Emulator {
     pub async fn start() -> Self {
-        let port = free_port();
-        let host = format!("127.0.0.1:{port}");
-        let directory = std::env::temp_dir().join(format!(
-            "physician-scale-pubsub-{}-{}",
-            std::process::id(),
-            uuid::Uuid::new_v4().simple()
-        ));
-        std::fs::create_dir_all(directory.join("data")).expect("emulator directory");
-        let process = Process::spawn(
-            "pubsub",
-            "gcloud",
-            &[
-                "beta",
-                "emulators",
-                "pubsub",
-                "start",
-                &format!("--host-port={host}"),
-                &format!("--project={PROJECT}"),
-                &format!("--data-dir={}", directory.join("data").display()),
-                "--quiet",
-            ],
-            &[],
-            &directory,
-        );
-        let mut emulator = Self {
-            host: host.clone(),
-            directory,
-            process,
-        };
-        let deadline = Instant::now() + Duration::from_secs(90);
-        loop {
-            if let Some(code) = emulator.process.exited() {
-                panic!(
-                    "pubsub emulator exited ({code}): {}",
-                    emulator.process.tail()
-                );
-            }
-            if exchange(&host, "PUT", &format!("/v1/{}", topic()), &[], Some(b"{}"))
-                .await
-                .is_ok_and(|(status, _)| (200..300).contains(&status))
-            {
-                return emulator;
-            }
-            assert!(
-                Instant::now() < deadline,
-                "pubsub emulator startup: {}",
-                emulator.process.tail()
-            );
-            tokio::time::sleep(Duration::from_millis(100)).await;
+        let inner = pubsub::testing::Emulator::spawn(PROJECT, free_port()).await;
+        inner.create_topic("physician-chat-turns").await;
+        Self {
+            host: inner.host.clone(),
+            inner,
         }
     }
 
     pub fn tail(&self) -> String {
-        self.process.tail()
+        self.inner.tail()
     }
 
     pub async fn provision(&self, worker_port: u16) {
-        self.put(&dead_letter_topic(), &json!({})).await;
-        self.put(
-            &format!("projects/{PROJECT}/subscriptions/physician-chat-turns-dead-letter"),
-            &json!({ "topic": dead_letter_topic() }),
-        )
-        .await;
-        self.put(
-            &format!("projects/{PROJECT}/subscriptions/physician-chat-turns"),
-            &json!({
-                "topic": topic(),
-                "ackDeadlineSeconds": 60,
-                "pushConfig": {
-                    "pushEndpoint": format!("http://127.0.0.1:{worker_port}/pubsub/chat-turn")
-                },
-                "retryPolicy": {"minimumBackoff": "1s", "maximumBackoff": "2s"},
-                "deadLetterPolicy": {
-                    "deadLetterTopic": dead_letter_topic(),
-                    "maxDeliveryAttempts": 5
-                }
-            }),
-        )
-        .await;
-    }
-
-    async fn put(&self, resource: &str, body: &Value) {
-        let bytes = serde_json::to_vec(body).expect("json");
-        let (status, text) = exchange(
-            &self.host,
-            "PUT",
-            &format!("/v1/{resource}"),
-            &[("content-type", "application/json")],
-            Some(&bytes),
-        )
-        .await
-        .unwrap_or_else(|error| panic!("{error}: {}", self.process.tail()));
-        assert!(
-            (200..300).contains(&status),
-            "create {resource}: {status} {text}\n{}",
-            self.process.tail()
-        );
+        use pubsub::testing::Subscription;
+        let dead_letter = "physician-chat-turns-dead-letter";
+        self.inner.create_topic(dead_letter).await;
+        self.inner
+            .create_subscription(dead_letter, &Subscription::pull(dead_letter))
+            .await;
+        self.inner
+            .create_subscription(
+                "physician-chat-turns",
+                &Subscription::push(
+                    "physician-chat-turns",
+                    format!("http://127.0.0.1:{worker_port}/pubsub/chat-turn"),
+                )
+                .ack_deadline(60)
+                .retry(1, 2)
+                .dead_letter(dead_letter, 5),
+            )
+            .await;
     }
 
     pub async fn publish(&self, delivery: &Delivery) {
-        let data = base64::engine::general_purpose::STANDARD
-            .encode(serde_json::to_vec(delivery).expect("delivery"));
-        let body = serde_json::to_vec(&json!({ "messages": [{ "data": data }] })).expect("json");
-        let (status, text) = exchange(
-            &self.host,
-            "POST",
-            &format!("/v1/{}:publish", topic()),
-            &[("content-type", "application/json")],
-            Some(&body),
-        )
-        .await
-        .unwrap_or_else(|error| panic!("{error}: {}", self.process.tail()));
-        assert!(
-            (200..300).contains(&status),
-            "publish: {status} {text}\n{}",
-            self.process.tail()
-        );
+        let data = serde_json::to_vec(delivery).expect("delivery");
+        self.inner
+            .publish(&topic(), &[pubsub::testing::Outgoing::data(data)])
+            .await;
     }
 
     pub async fn pull_dead_letters(&self) -> Vec<Vec<u8>> {
-        let body = br#"{"maxMessages":10,"returnImmediately":true}"#;
-        let (status, text) = exchange(
-            &self.host,
-            "POST",
-            &format!("/v1/projects/{PROJECT}/subscriptions/physician-chat-turns-dead-letter:pull"),
-            &[("content-type", "application/json")],
-            Some(body),
-        )
-        .await
-        .unwrap_or_else(|error| panic!("{error}: {}", self.process.tail()));
-        assert!(
-            (200..300).contains(&status),
-            "pull dead letter: {status} {text}\n{}",
-            self.process.tail()
-        );
-        let value: Value = serde_json::from_str(&text).unwrap_or(json!({}));
-        value
-            .get("receivedMessages")
-            .and_then(Value::as_array)
-            .map(|messages| {
-                messages
-                    .iter()
-                    .filter_map(|message| {
-                        message
-                            .pointer("/message/data")
-                            .and_then(Value::as_str)
-                            .and_then(|data| {
-                                base64::engine::general_purpose::STANDARD.decode(data).ok()
-                            })
-                    })
-                    .collect()
-            })
-            .unwrap_or_default()
-    }
-}
-
-impl Drop for Emulator {
-    fn drop(&mut self) {
-        self.process.kill_now();
-        let _ = std::fs::remove_dir_all(&self.directory);
+        self.inner
+            .pull(
+                &self
+                    .inner
+                    .subscription_path("physician-chat-turns-dead-letter"),
+                10,
+            )
+            .await
+            .into_iter()
+            .map(|received| received.message.data)
+            .collect()
     }
 }
 
@@ -871,4 +766,61 @@ pub fn submit(workspace: &str, chat: &str, text: &str) -> Value {
             "physician_time_zone": "America/New_York"
         }
     })
+}
+
+/// Builds the physician page once per test binary (wasm32 + wasm-bindgen)
+/// into `target/physician-web`, the directory `PHYSICIAN_SITE_DIR` names
+/// for a spawned site. Browser journeys on this stack call it.
+pub fn page_dir() -> PathBuf {
+    static SITE: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+    SITE.get_or_init(|| {
+        let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let target = std::env::temp_dir().join("coda-physician-wasm");
+        let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
+        let mut cargo = Command::new(std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
+        cargo.env_clear();
+        for key in [
+            "PATH",
+            "HOME",
+            "USER",
+            "RUSTUP_HOME",
+            "CARGO_HOME",
+            "RUSTUP_TOOLCHAIN",
+            "TMPDIR",
+            "LD_LIBRARY_PATH",
+        ] {
+            if let Some(value) = std::env::var_os(key) {
+                cargo.env(key, value);
+            }
+        }
+        let status = cargo
+            .current_dir(&workspace)
+            .env("CARGO_TARGET_DIR", &target)
+            .args([
+                "build",
+                "-p",
+                "physician-app",
+                "--target",
+                "wasm32-unknown-unknown",
+                "--features",
+                "web",
+            ])
+            .status()
+            .expect("cargo build");
+        assert!(status.success(), "physician-app wasm build failed");
+        let site = workspace.join("target/physician-web");
+        std::fs::create_dir_all(&site).unwrap();
+        let bindgen = std::env::var_os("WASM_BINDGEN")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| "wasm-bindgen".into());
+        let status = Command::new(bindgen)
+            .args(["--target", "web", "--out-dir"])
+            .arg(&site)
+            .arg(&wasm)
+            .status()
+            .expect("wasm-bindgen 0.2.129 is required to build the physician page");
+        assert!(status.success(), "wasm-bindgen failed");
+        site.canonicalize().expect("page directory")
+    })
+    .clone()
 }

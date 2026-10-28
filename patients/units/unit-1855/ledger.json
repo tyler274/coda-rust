@@ -1,0 +1,915 @@
+{
+  "unit": "unit-1855",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001855",
+      "given": "Alyssa",
+      "family": "Rezendes",
+      "birth_date": "1995-08-10",
+      "address_line": "27 Orchard Ridge Ln",
+      "phone": "+1-347-555-0147",
+      "email": "alyssa.rezendes@example.test",
+      "marital_status": "single",
+      "summary": "Healthy graduate student who joined in fall 2023, developed progressive dysmenorrhea and deep dyspareunia in 2024 and was diagnosed clinically with endometriosis by gynecology; she stays on over-the-counter NSAIDs. Last seen on a video visit in December 2024; in July 2026 an outside ED saw her for a transient low blood pressure episode during a research study.",
+      "events": [
+        {
+          "id": "2023-09-18a",
+          "kind": "telephone",
+          "start": "2023-09-18T10:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-09-18T10:40",
+              "author": "front desk",
+              "body": "Caller is a 28 y/o grad student who moved to Belchertown for her program last year and has not had a local doctor since. Wants to sign up for membership and get a first physical in. Went over membership fee and that insurance still covers labs/specialists. Scheduled new patient physical 10/3 at 9:00. Emailed the records release for her old primary care office; she will sign and send back today. No acute issues per caller."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "establish_care",
+          "start": "2023-10-03T09:00",
+          "end": "2023-10-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "medications": [
+            {
+              "drug_text": "naproxen sodium 220 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 8 hours as needed for menstrual cramps",
+              "dose": {
+                "value": 220,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "menstrual cramps"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              71
+            ],
+            "hr": 81,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 56.5,
+            "height_cm": 164.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-03T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-03T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.63
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-03T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-03T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-03T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-10-03T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-03T09:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T09:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T09:56"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2023-10-03T10:00",
+              "author": "PCP",
+              "body": "28F, first visit with us. PhD student, came to the area last fall for her program. Last primary care visit was about a year and a half ago at her old office; release signed, records requested.\n\nNo complaints today. Feels well. Periods monthly and predictable, crampy the first day or two, takes OTC naproxen 220 mg up to every 8 h on those days and it does the job. Uses condoms. Never pregnant.\n\nPMH: nothing chronic. PSH: none. Meds: naproxen sodium 220 mg PRN cramps only. No supplements. Allergies: NKDA.\nFamily: mother has endometriosis. Mother's sister had trouble conceiving. No other family history she knows of.\nSocial: grad student, lives with a roommate. Never smoked. A drink or two a week, socially. Strict vegetarian for years, no meat or fish; eats a varied plant diet. Walks and bikes to campus.\n\nExam: vitals in flowsheet. Pleasant, well appearing. HEENT unremarkable, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Skin clear. No lymphadenopathy. Mood and affect normal.\nPHQ-2 negative.\n\nA/P\n- Health maintenance: baseline CBC, CMP, lipids; HIV and hep C screens once, she agreed. Flu and updated COVID shots given in clinic.\n- Cervical screening: per her, last Pap 2022 was normal. Will confirm from the records; next due 2025.\n- Diet: discussed plant-based nutrition briefly, she is well read on it.\n- Back in a year for a physical, or reach me by text for anything before then."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.2,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "portal_message",
+          "start": "2023-10-05T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-10-05T16:20",
+              "author": "PCP",
+              "body": "Hi Alyssa, everything from Tuesday came back fine: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to do. Nice to have you with us."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "outside_records",
+          "start": "2023-10-11T11:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-10-11T11:05",
+              "author": "outside primary care",
+              "body": "Received by fax, 14 pages, from the patient's previous primary care practice.\n\nContents: annual visit notes 2019 through spring 2022, immunization record, labs.\n- Problem list: none.\n- Medications: naproxen OTC PRN dysmenorrhea.\n- Allergies: NKDA.\n- Cervical cytology 2022: negative for intraepithelial lesion or malignancy.\n- Routine CBC and metabolic panel 2021: within reference ranges.\n\nReviewed by PCP. Nothing new; Pap date entered in health maintenance."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "office_visit",
+          "start": "2024-05-21T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Painful periods and pain with intercourse",
+          "medications": [
+            {
+              "drug_text": "ibuprofen 200 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (400 mg) by mouth every 6 hours as needed for pelvic pain",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pelvic pain"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              68
+            ],
+            "hr": 81,
+            "temp_c": 36.5,
+            "weight_kg": 57.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-05-21T14:40",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-21T14:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "progressive dysmenorrhea and deep dyspareunia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-05-21T15:05",
+              "author": "PCP",
+              "body": "S: Texted last week asking to come in. Since around January her cramps have been getting steadily worse each cycle, now hurting well beyond the first couple of days. Also a deep ache with intercourse that is new over the same stretch. Cycles still regular, roughly monthly, flow unchanged. Has been doubling up: naproxen 220 mg as before plus ibuprofen 400 mg every 6 h as needed for the pelvic pain. Says neither does much anymore. Missed a lab day last month because of it. No fever, no discharge, no urinary symptoms, no bowel changes. Condoms, same partner. Mom has endometriosis and she is worried that is what this is.\n\nO: Vitals in flowsheet. Comfortable. Abdomen soft, nontender, no mass, no guarding. Urine hCG negative in office. She would rather have the pelvic exam done by gyn; reasonable.\n\nA/P: Progressive dysmenorrhea with deep dyspareunia, regular cycles, family history in mother. Endometriosis is high on the list.\n- Referral to gynecology for evaluation and imaging as they see fit.\n- OK to continue the NSAIDs as she is using them, with food; don't take both at the same dose times.\n- Will watch for the consult letter."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-30a",
+          "kind": "telephone",
+          "start": "2024-05-30T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduling",
+              "date": "2024-05-30T09:15",
+              "author": "front desk",
+              "body": "Gyn office called back on the referral. First available is Fri 7/12 at 1:20 pm. Let pt know by phone, she is fine with that date and asked to be put on their wait list in case something earlier opens. Referral paperwork sent over."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-19a",
+          "kind": "outside_records",
+          "start": "2024-07-19T13:10",
+          "conditions": [
+            {
+              "label": "Endometriosis",
+              "action": "diagnosed",
+              "onset": "2024-01-10",
+              "note": "clinical diagnosis by gynecology 2024-07-12"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-12T13:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-12T13:50",
+              "results": [
+                {
+                  "test": "CA-125",
+                  "loinc": "10334-1",
+                  "unit": "U/mL",
+                  "value": 35
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-07-12T14:20",
+              "text": "TRANSVAGINAL PELVIC ULTRASOUND\nIndication: dysmenorrhea, dyspareunia.\nTechnique: transvaginal grayscale and color flow imaging.\nUterus: retroverted, normal in size and contour, homogeneous myometrium. Endometrium thin and uniform for cycle phase.\nRight ovary: normal size and appearance, normal follicles, normal flow.\nLeft ovary: normal size and appearance, normal follicles, normal flow.\nAdnexa: no mass. No endometrioma.\nCul-de-sac: no free fluid.",
+              "conclusion": "Normal transvaginal pelvic ultrasound."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral",
+              "action": "done",
+              "date": "2024-07-19T13:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2024-07-19T13:10",
+              "author": "gynecology",
+              "body": "Outside gynecology group\nDate of visit: 07/12/2024\nReason for referral: worsening menstrual pain, dyspareunia\n\nDear Doctor,\n\nThank you for sending Ms. Rezendes, a 28 year old G0, to see us. For about six months her menstrual pain has climbed cycle by cycle and she now has deep pain with intercourse as well; together they are cutting into her coursework and daily routine. Menses are regular. She has tried ibuprofen and naproxen over the counter without much benefit. Contraception is condoms. Her mother carries a diagnosis of endometriosis and a maternal aunt had infertility. No prior surgery. No drug allergies.\n\nCurrent medications: naproxen sodium 220 mg every 8 hours as needed for cramps; ibuprofen 400 mg every 6 hours as needed for pelvic pain.\n\nExamination: external genitalia and vagina normal; cervix without lesions. Bimanual exam with a retroverted uterus and tenderness in the posterior cul-de-sac. No adnexal mass palpable.\n\nLabs drawn here: hemoglobin 13.2, WBC 7.5, platelets 250. CA-125 35 U/mL, at the top of our reference range (0-35).\nTransvaginal ultrasound today was unremarkable; report attached.\n\nImpression: endometriosis, clinical diagnosis, given the history, the exam and the family history in a patient whose NSAIDs have stopped working. A normal ultrasound does not exclude it.\n\nPlan: we talked through options. First line from here would be hormonal suppression with a continuous combined oral contraceptive; diagnostic laparoscopy is an option if symptoms persist despite that. She would like to hold off on hormones for now and keep using the NSAIDs, and will call us if she wants to start. Happy to see her again at any time.\n\nAllergies: NKDA\n\nSincerely,\nGynecology"
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "portal_message",
+          "start": "2024-07-23T12:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gyn visit",
+              "date": "2024-07-23T12:45",
+              "author": "PCP",
+              "body": "Hi Alyssa, I got the letter from gynecology. Sounds like they think this is endometriosis, and the ultrasound and blood count looked fine. They mentioned you'd rather not start the pill right now. That is your call, and the option stays open. How are you doing with the pain this month?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gyn visit",
+              "date": "2024-07-23T19:02",
+              "author": "patient",
+              "body": "Thanks for checking. This month was a bit better honestly. I want to give the ibuprofen/naproxen a few more months before doing anything hormonal. I'll text if it gets bad again."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "annual_physical",
+          "start": "2024-10-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              120,
+              69
+            ],
+            "hr": 81,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 56.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T09:10"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T09:06"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-10-22T09:20",
+              "author": "PCP",
+              "body": "Annual. 29F.\n\nInterval: saw gyn in July, clinical dx endometriosis, normal TVUS. Declined hormonal suppression for now. Pain since then \"about the same,\" some months tolerable, a day or two each cycle where she uses the ibuprofen and naproxen. Not using them daily between periods. Dyspareunia still there, less frequent. Busy semester, sleeping OK. Mood fine.\n\nMeds: ibuprofen 400 PRN, naproxen 220 PRN. NKDA. Still strict vegetarian. Never smoker, a drink or two weekly.\n\nROS otherwise negative; no GI upset, no dark stools.\n\nExam: vitals per flowsheet. Well. Heart RRR. Lungs clear. Abdomen soft, nontender today. No edema. Skin normal.\nPHQ-9: 3.\n\nA/P\n1. Endometriosis, managing with as-needed NSAIDs by choice. CBC today given her regular NSAID use and painful cycles. Gyn option reviewed; she knows she can go back.\n2. Health maintenance: flu and COVID vaccines given. Pap due next year (last 2022 normal).\n3. Physical again next fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T08:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2024-10-24T08:10",
+              "author": "PCP",
+              "body": "Your blood count is normal, no sign of anemia. Good news, nothing further needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-23a",
+          "kind": "portal_message",
+          "start": "2024-12-23T21:37",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rough cycle",
+              "date": "2024-12-23T21:37",
+              "author": "patient",
+              "body": "Hi, sorry to bug you right before the holiday. This period has been really bad. I'm at my parents' place out of state for break. Could we do a quick video call sometime this week? Any day works, I'm not doing anything."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rough cycle",
+              "date": "2024-12-24T07:50",
+              "author": "PCP",
+              "body": "Not a bother. I'm around Wednesday morning, does 10 work? I'll send the video link."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-25a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-25T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Painful period",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-12-25T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2024-12-25T10:25",
+              "author": "PCP",
+              "body": "Video. Pt at her parents' home, out of state; identity confirmed; consents to video.\n\nThis cycle started 12/21 and the first three days were the worst she's had since summer. Ibuprofen 400 every 6 h with naproxen at other times took the edge off; today is better. No fever, no vomiting, no black or bloody stools, no stomach pain from the pills. Bleeding not heavier than usual. Not sexually active over break. No urinary symptoms.\n\nLooks comfortable on camera, speaking easily.\n\nA/P: Endometriosis, painful cycle, settling.\n- NSAIDs: take with food, stay within label maximums, and don't overlap the two at the same time; stop and call for any black stools or stomach pain.\n- Reminded her the gyn's offer of hormonal suppression stands and that laparoscopy is the next step after that if needed. She'll think about calling them after the new year.\n- No changes today. Physical due next fall; text me sooner if anything changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "portal_message",
+          "start": "2025-09-16T11:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your yearly physical",
+              "date": "2025-09-16T11:30",
+              "author": "front desk",
+              "body": "Hi Alyssa, our records show you're due for your annual physical, and your Pap is due this year as well. Reply here or call and we'll find a time that works around your classes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Time for your yearly physical",
+              "date": "2025-09-18T22:14",
+              "author": "patient",
+              "body": "Thanks! I'm teaching a section this fall on top of my own work so it's chaos. I'll reach out once things calm down to set something up."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "ed_visit",
+          "start": "2026-07-16T15:05",
+          "end": "2026-07-16T19:40",
+          "service": "Emergency Medicine",
+          "reason": "Low blood pressure during research study",
+          "vitals": [
+            {
+              "time": "2026-07-16T15:10",
+              "bp": [
+                88,
+                56
+              ],
+              "hr": 72,
+              "rr": 14,
+              "temp_c": 36.8,
+              "spo2": 99
+            },
+            {
+              "time": "2026-07-16T16:45",
+              "bp": [
+                96,
+                60
+              ],
+              "hr": 72,
+              "rr": 14,
+              "spo2": 99
+            },
+            {
+              "time": "2026-07-16T19:20",
+              "bp": [
+                102,
+                66
+              ],
+              "hr": 72,
+              "rr": 14,
+              "spo2": 99
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-16T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-16T15:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2026-07-24T10:15",
+              "author": "emergency medicine",
+              "body": "Received by fax 07/24/2026 from an outside hospital emergency department. Filed; reviewed by PCP.\n\nEMERGENCY DEPARTMENT PHYSICIAN NOTE\nDate of service: 07/16/2026\nArrival: brought over by staff of a university research study\n\nHPI: 30 year old woman enrolled as a volunteer in a university study comparing how men and women regulate blood pressure. During a session this afternoon study staff recorded a blood pressure lower than their protocol allows and sent her here for evaluation. She feels fine. Denies lightheadedness, palpitations, or tiredness. No syncope, chest pain, or shortness of breath. Eating and drinking normally. Activity level ordinary for her age.\n\nPMH: endometriosis.\nMedications: ibuprofen 400 mg every 6 hours as needed for pelvic pain; naproxen sodium 220 mg every 8 hours as needed for menstrual cramps.\nAllergies: NKDA.\nFamily history: mother with endometriosis; maternal aunt with infertility.\n\nExam: BMI 21. Alert, well appearing, in no distress. Mucous membranes moist. Heart regular, no murmur. Lungs clear. Abdomen soft. Extremities warm, cap refill brisk. Neuro nonfocal.\n\nVitals: triage BP 88/56, HR 72, SpO2 99% RA, T 36.8, RR 14. Repeat BP 96/60, HR 72. At discharge BP 102/66, HR 72. Over serial checks her mean arterial pressure stayed toward the low end of normal, and the study team notes this is lower than in male participants of similar age and fitness.\n\nLabs: electrolytes, renal function, and hemoglobin within normal limits.\n\nInformation from the research team (results not attached): her study screening showed normal renin, aldosterone and catecholamine levels; baroreceptor reflex testing preserved; sympathetic nerve activity normal; endothelium-dependent vasodilation enhanced on their testing.\n\nMDM: Asymptomatic young woman with a transient low pressure reading in a research setting, normal labs, normal heart rate, improving pressures without intervention, and a normal study workup by report. No evidence of bleeding, infection, or volume loss.\n\nImpression: hypotension, transient, resolved.\nDisposition: discharged home in good condition. Fluids and regular meals; return for fainting, chest pain, or feeling unwell. Follow up with primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-27a",
+          "kind": "portal_message",
+          "start": "2026-07-27T20:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "FYI ER visit",
+              "date": "2026-07-27T20:48",
+              "author": "patient",
+              "body": "Hi! Quick update, I ended up in the ER a couple weeks ago, kind of a silly story. I volunteered for a blood pressure study on campus and my pressure read too low for their protocol so they made me go get checked. I felt totally normal the whole time. They said everything was fine. Is there anything I should do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: FYI ER visit",
+              "date": "2026-07-28T07:35",
+              "author": "PCP",
+              "body": "Thanks for letting me know. I got their record last week and read it: your labs were normal, your pressure came up on its own, and you never had symptoms. Nothing you need to change. If you ever feel faint or lightheaded, tell me. Separately, it's been a while since I've seen you and your physical and Pap are overdue, so book something when your schedule allows."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "medications": {
+      "ibuprofen 200 MG Oral Tablet": {
+        "code": "310965",
+        "display": "ibuprofen 200 MG Oral Tablet",
+        "ingredient": "ibuprofen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "naproxen sodium 220 MG Oral Tablet": {
+        "code": "849574",
+        "display": "naproxen sodium 220 MG Oral Tablet",
+        "ingredient": "naproxen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "CA-125": {
+        "code": "10334-1",
+        "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
+        "unit": "U/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

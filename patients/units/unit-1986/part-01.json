@@ -1,0 +1,978 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001986",
+   "given": "Scott",
+   "family": "Dion",
+   "birth_date": "1966-05-19",
+   "address_line": "58 Kendall Hill Road",
+   "phone": "+1-978-555-0163",
+   "email": "scott.dion@example.test",
+   "marital_status": "married",
+   "summary": "Construction site supervisor with type 2 diabetes, hypertension, hyperlipidemia and old gout who joins in 2019. A stage IA nodular melanoma of the upper back is excised in 2021, lisinopril causes a cough and is replaced by hydrochlorothiazide, he completes a blood pressure drug trial, has an ED-diagnosed gout flare in 2024 and a drained parapneumonic effusion in 2025. A week after his last practice visit in June 2026 he is found to have a glioblastoma, resected and now in chemoradiation.",
+   "events": [
+    {
+     "id": "2019-08-27a",
+     "kind": "telephone",
+     "start": "2019-08-27T10:40",
+     "reason": "new patient request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2019-08-27T10:40",
+       "body": "Caller would like to transfer his primary care here; his longtime doctor's office is closing to adult patients. Works as a site supervisor for a commercial builder, prefers early morning appointments. Has diabetes and is on 'a couple of pills.' New patient visit booked 9/10 at 7:30. Release form emailed for his old office's records."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-10a",
+     "kind": "establish_care",
+     "start": "2019-09-10T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "diagnosed",
+       "onset": "2013-06-01",
+       "note": "diet first, then metformin"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2016-04-01",
+       "note": "diet-managed"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed",
+       "onset": "2014-01-01"
+      },
+      {
+       "label": "Gout",
+       "action": "diagnosed",
+       "onset": "2009-01-01",
+       "note": "a few flares years ago; none recently"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Sulfonamide antibiotics",
+       "reaction": "Rash",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "allergy"
+      }
+     ],
+     "state": {
+      "bp": [
+       136,
+       86
+      ],
+      "weight_kg": 99.0,
+      "height_cm": 180.0,
+      "labs": {
+       "Hemoglobin A1c": 7.0,
+       "Low Density Lipoprotein": 96,
+       "Glucose": 132
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-10T08:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-10T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-10T08:20",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T08:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T08:20",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 14
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T08:20",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-10T08:20",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Never smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "No alcohol use"
+      },
+      {
+       "item": "Occupation",
+       "value": "Construction site supervisor"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2019-09-10T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2019-09-10T07:30",
+       "body": "53-year-old man transferring care; prior PCP's office is closing its adult panel.\n\nDiabetes: told he had type 2 diabetes around 2013. Tried diet for a while, then metformin, now 1000 mg twice a day. Doesn't check sugars at home. No hypoglycemia. Last A1c 'around 7' per him.\nBlood pressure: flagged as high about three years ago. He was asked to cut salt and lose weight and never started a pill. No home cuff.\nCholesterol: atorvastatin 40 mg for years, no muscle aches.\nGout: two or three attacks in his forties, big toe each time, treated short-term. Nothing in years and never on a daily gout medicine.\n\nPSH: none.\nAllergies: sulfa antibiotic gave him a rash as a young adult.\nFamily: father with type 2 diabetes, mother with high blood pressure, a brother with melanoma.\nSocial: married. Supervises commercial construction sites, outdoors most of the day. Never a smoker. Does not drink.\n\nROS otherwise negative.\n\nExam: well-appearing, BP and weight as charted. Heart regular, no murmur. Lungs clear. Abdomen soft. Feet: intact skin, monofilament sensation normal, DP pulses 2+ both sides. No tophi on hands, elbows or ears.\n\nA/P\n1. Type 2 diabetes on metformin: A1c, CMP, urine microalbumin today. Eye exam due; given optometry list.\n2. Hypertension, lifestyle only: pressure is borderline today. Recheck at next visit before deciding on a drug.\n3. Hyperlipidemia: continue atorvastatin 40; lipids today.\n4. Gout, quiet for years: no treatment.\n5. Prevention: one-time hep C and HIV screens today. Will get colonoscopy and vaccine history from his old office. Flu shot next month when stock arrives.\nFollow-up about 5 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-12a",
+     "kind": "portal_message",
+     "start": "2019-09-12T16:05",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab results released",
+       "author": "PCP",
+       "date": "2019-09-12T16:05",
+       "body": "Hi Scott, your labs are back. Your A1c is right about where we want it on metformin. Kidney and liver numbers are normal, cholesterol is well controlled on atorvastatin, urine protein screen is normal, and the hepatitis C and HIV screens are negative. Nothing to change."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-01a",
+     "kind": "outside_records",
+     "start": "2019-10-01T11:00",
+     "reason": "prior primary care records",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2017-04-18T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2019-10-01T11:00",
+       "body": "Received 38 pages from his previous primary care office, covering 2012 to 2019. Abstracted by RN:\n- Type 2 diabetes listed since 2013; metformin titrated to 1000 mg twice daily by 2015.\n- Elevated blood pressure noted from 2016, lifestyle advice, no medication.\n- Atorvastatin 40 mg since 2014.\n- Gout flares 2009 and 2011, treated with short courses; no maintenance therapy.\n- Screening colonoscopy 2017-03: normal to the terminal ileum, no polyps; 10-year interval advised.\n- Tdap 04/2017.\n- Sulfonamide antibiotic allergy (rash).\nFiled to media; immunization entered."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-22a",
+     "kind": "nurse_visit",
+     "start": "2019-10-22T07:15",
+     "reason": "flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2019-10-22T07:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-22T07:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2019-10-22T07:15",
+       "body": "Quadrivalent flu vaccine 0.5 mL IM left deltoid. VIS given. No egg or vaccine reactions in the past. Waited 15 minutes, no issues."
+      }
+     ]
+    },
+    {
+     "id": "2020-01-28a",
+     "kind": "outside_records",
+     "start": "2020-01-28T09:30",
+     "reason": "diabetic eye exam",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam letter",
+       "author": "optometry",
+       "date": "2020-01-28T09:30",
+       "body": "Dilated diabetic eye examination performed 01/21/2020. Visual acuity 20/20 OD, 20/25 OS with current glasses. Intraocular pressures normal. Lens clear. Fundus: no diabetic retinopathy either eye, no macular edema. Recommend repeat dilated exam in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-11a",
+     "kind": "office_visit",
+     "start": "2020-02-11T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-02-11T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-02-11T07:50",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2020-02-11T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2020-02-11T07:30",
+       "body": "S: Slow season at work, says he's eating more junk in the truck. Taking metformin twice daily. No foot numbness, no vision changes. No gout.\nO: BP as charted, a touch above goal again. Lungs clear, heart regular. Feet unremarkable.\nA/P: Diabetes - A1c today. BP - borderline on two visits; he would rather keep working on diet and activity before a pill. Reasonable for now; recheck in a few months. Eye exam done in January, no retinopathy."
+      }
+     ]
+    },
+    {
+     "id": "2020-06-16a",
+     "kind": "telehealth_visit",
+     "start": "2020-06-16T12:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-06-09T07:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-06-09T07:10",
+       "results": [
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-06-16T12:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2020-06-16T12:15",
+       "body": "Video from his truck on a lunch break, consented to telehealth. Job sites stayed open through the spring with distancing rules. Feels fine. Labs from last week reviewed with him: A1c stable, kidney function normal. Hasn't bought a BP cuff yet; asked him to pick one up and send me a week of readings. Meds unchanged. Next in-person visit in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-20a",
+     "kind": "nurse_visit",
+     "start": "2020-10-20T07:10",
+     "reason": "flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2020-10-20T07:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-20T07:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "MA",
+       "date": "2020-10-20T07:10",
+       "body": "Flu vaccine given R deltoid, lot and expiration in the immunization record. Tolerated well. He asked about the shingles vaccine; will discuss with PCP at November visit."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-10a",
+     "kind": "office_visit",
+     "start": "2020-11-10T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-11-10T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-11-10T07:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-11-10T07:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2020-11-10T08:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-11-10T07:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-11-10T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2020-11-10T07:30",
+       "body": "Brought a handful of home readings on his phone, mostly 130s over mid-80s. No symptoms. Metformin and atorvastatin without trouble. Still working full days outside.\n\nExam: BP as charted. Heart and lungs normal. Foot exam: normal sensation to monofilament, pulses palpable.\n\nPlan: A1c, CMP and lipids today. Home pressures are borderline; continue lifestyle and keep logging. First Shingrix dose today, second in 2-6 months. Annual physical in the spring."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-16a",
+     "kind": "nurse_visit",
+     "start": "2021-02-16T07:05",
+     "reason": "second shingles vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-02-16T07:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-02-16T07:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "RN",
+       "date": "2021-02-16T07:05",
+       "body": "Shingrix dose 2 of 2, IM left deltoid. After the first dose he had a sore arm and felt run down for a day; aware it may repeat. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-06a",
+     "kind": "portal_message",
+     "start": "2021-04-06T19:22",
+     "reason": "COVID vaccine record",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-11T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-04-01T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "COVID shots",
+       "author": "patient",
+       "date": "2021-04-06T19:22",
+       "body": "Got both of my Pfizer shots at the county clinic, March 11 and April 1. Sending a picture of the card so you have it."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: COVID shots",
+       "author": "MA",
+       "date": "2021-04-07T08:40",
+       "body": "Thanks Scott, both doses are now in your chart."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-18a",
+     "kind": "annual_physical",
+     "start": "2021-05-18T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "state": {
+      "labs": {
+       "Microalbumin/Creatinine Ratio": 180
+      }
+     },
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-05-18T08:10",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-05-18T08:10",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-05-18T08:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-05-18T08:10",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 168
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "changing pigmented lesion, upper back; brother with melanoma"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2021-05-18T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2021-05-18T07:30",
+       "body": "55 yo here for his yearly exam. Feels well.\n\nOne new item: his wife has been after him about a mole in the middle of his upper back. She says it has gotten bigger and darker since late last fall. He can't see it himself. No bleeding or itch. He's shirtless or in a t-shirt on site much of the summer and doesn't use sunscreen. Brother had a melanoma removed.\n\nNo chest pain, no shortness of breath, no urinary symptoms. No gout flares.\nMeds: metformin 1000 BID, atorvastatin 40. Allergy: sulfa (rash).\n\nExam: vitals as charted. HEENT normal. Neck supple, no nodes. Heart RRR. Lungs clear. Abdomen soft, non-tender. Skin: about 1 cm pigmented lesion on the upper back left of midline with uneven color and an irregular edge; no other lesions of concern on a full skin check. No axillary or cervical adenopathy. Feet normal.\n\nA/P\n- Changing pigmented lesion, upper back, with a family history of melanoma: referred to dermatology, asked for a prompt slot.\n- Diabetes: labs today including urine microalbumin.\n- Hypertension: pressure still drifting above goal; we'll talk again once labs are back.\n- Hyperlipidemia: lipids today.\n- Prevention: colonoscopy 2017 normal, Tdap 2017, Shingrix done, COVID series done. Sunscreen and a hat on site."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-21a",
+     "kind": "portal_message",
+     "start": "2021-05-21T12:30",
+     "reason": "lab results",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Your physical labs",
+       "author": "PCP",
+       "date": "2021-05-21T12:30",
+       "body": "Scott, most of your labs look good: A1c is steady, cholesterol is well controlled and kidney function is normal. One new finding: the urine test for protein came back at 168, which is higher than it should be (under 30). That can be an early sign of strain on the kidneys from diabetes and blood pressure. I'd like to repeat it in a few months to make sure it's real. The dermatology office should call you this week; if you don't hear by Friday let us know."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-14a",
+     "kind": "specialist_visit",
+     "start": "2021-06-14T09:40",
+     "service": "Dermatology",
+     "reason": "changing lesion on upper back",
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "done",
+       "date": "2021-06-14T09:40"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Excisional biopsy of skin",
+       "snomed": "1251630002",
+       "performed": "2021-06-14T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology consultation",
+       "author": "dermatology",
+       "date": "2021-06-17T14:00",
+       "body": "Outside dermatology group. Visit date 06/14/2021.\n\nThank you for sending Mr. Dion, a 55-year-old construction supervisor, for a pigmented lesion of the upper back that has changed over roughly half a year. He is anxious about it given skin cancer in his family (a brother treated for melanoma). The site is exposed for much of his outdoor workday.\n\nHe has diabetes on metformin and takes atorvastatin; blood pressure is managed with diet. Allergy: sulfonamide antibiotics (rash). He reports no fevers, weight loss or night sweats.\n\nExam: Fitzpatrick type II. On the left upper back there is a 1.0 cm pigmented papule, asymmetric, with irregular borders and color ranging from brown to black. Dermoscopy: irregular streaks at the periphery and a blue-white veil centrally. No other atypical lesions on full skin exam. No palpable cervical, axillary or supraclavicular lymph nodes.\n\nImpression: lesion highly suspicious for melanoma.\n\nPlan: excisional biopsy with narrow margins done today under local anesthesia; layered closure, sutures out in 14 days. We will call him with pathology and plan definitive treatment from there."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-24a",
+     "kind": "outside_records",
+     "start": "2021-06-24T15:10",
+     "reason": "dermatopathology",
+     "conditions": [
+      {
+       "label": "Nodular melanoma of upper back",
+       "icd10": "C43.59",
+       "action": "diagnosed",
+       "onset": "2021-06-14"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2021-06-14T10:05",
+       "issued": "2021-06-22T16:00",
+       "text": "Specimen: skin, left upper back, excision. Gross: ellipse of skin 2.4 x 1.4 cm with a 1.0 cm pigmented lesion. Microscopic: invasive malignant melanoma, nodular type. Tumor thickness 0.7 mm. Ulceration absent. Dermal mitotic rate 2 per square millimeter. No lymphovascular or perineural invasion identified. Microsatellites absent. Peripheral and deep margins free of tumor; closest margin under 2 mm.",
+       "conclusion": "Malignant melanoma, nodular type, 0.7 mm thick, non-ulcerated, margins clear but narrow (pT1a). Wide re-excision recommended."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Dermatopathology report received",
+       "author": "front desk",
+       "date": "2021-06-24T15:10",
+       "body": "Pathology from the dermatology biopsy of 6/14 faxed by the dermatology office. Routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-25a",
+     "kind": "telephone",
+     "start": "2021-06-25T17:20",
+     "reason": "pathology result",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call re: melanoma pathology",
+       "author": "PCP",
+       "date": "2021-06-25T17:20",
+       "body": "Called Scott after reading the pathology. Dermatology had already spoken with him and he has the wider excision scheduled for July 13. Thin, early melanoma; explained that the wider excision is usually all that's needed at this depth and that he'll have regular skin checks with dermatology. Wife on the line too, many questions answered. Reminded him about sun protection at work."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-14a",
+     "kind": "lab_only",
+     "start": "2021-09-14T07:05",
+     "reason": "repeat urine microalbumin, A1c",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-09-14T07:05",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio",
+         "value": 192
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-14T07:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-09-14T07:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Repeat microalbumin",
+       "author": "PCP",
+       "date": "2021-09-15T13:00",
+       "body": "Urine albumin/creatinine 192, second abnormal value after 168 in May. Persistent albuminuria. Kidney function and potassium normal. Will discuss an ACE inhibitor at his October visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-19a",
+     "kind": "office_visit",
+     "start": "2021-10-19T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes, blood pressure, albuminuria",
+     "vitals": {
+      "bp": [
+       144,
+       90
+      ]
+     },
+     "state": {
+      "bp": [
+       144,
+       90
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension with albuminuria"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Wide local excision of skin lesion",
+       "snomed": "177302005",
+       "performed": "2021-07-13T08:00"
+      },
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-10-19T07:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-19T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2021-10-19T08:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-19T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2021-10-19T07:30",
+       "body": "Interval: had the wide excision on his upper back July 13 at the dermatology office. He says they told him the margins were clean and nothing else was left. We never received the operative or pathology note; front desk to request. Scar healed. First skin check with dermatology is in the new year.\n\nBP today 144/90; recheck after 5 minutes similar. Home readings in the high 130s to 140s. Urine microalbumin abnormal twice (168, 192). Feels fine.\n\nExam: heart regular, lungs clear, no edema. Upper back scar well healed, no nodules, no axillary nodes.\n\nA/P\n1. Hypertension, no longer controlled with lifestyle, now with persistent albuminuria in a diabetic: start lisinopril 20 mg daily for pressure and kidney protection. BMP in 2-3 weeks. Explained the common side effects including a dry cough.\n2. Diabetes: A1c in September at goal. Continue metformin.\n3. Melanoma, stage IA, post wide excision: dermatology surveillance.\n4. Flu shot and COVID booster given today."
+      }
+     ]
+    },
+    {
+     "id": "2021-11-09a",
+     "kind": "lab_only",
+     "start": "2021-11-09T07:00",
+     "reason": "BMP after lisinopril",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-11-09T07:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP",
+       "author": "PCP",
+       "date": "2021-11-09T15:30",
+       "body": "Creatinine and potassium unchanged after starting lisinopril. Continue."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-20a",
+     "kind": "office_visit",
+     "start": "2021-12-20T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "cough",
+     "vitals": {
+      "bp": [
+       136,
+       88
+      ],
+      "hr": 78,
+      "temp_c": 36.8
+     },
+     "state": {
+      "bp": [
+       134,
+       85
+      ]
+     },
+     "measure": [
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Adverse effect of ACE inhibitor (lisinopril cough)",
+       "icd10": "T46.4X5A",
+       "action": "diagnosed",
+       "onset": "2021-11-29"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "ACE inhibitors",
+       "snomed": "372733002",
+       "category": "medication",
+       "reaction": "Cough",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "intolerance"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "ACE-inhibitor cough"
+      },
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2021-12-20T16:25",
+       "results": [
+        {
+         "test": "Urine Protein",
+         "text": "2+ (100 mg/dL)"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-12-20T16:25",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-12-20T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Acute visit - cough",
+       "author": "PCP",
+       "date": "2021-12-20T16:00",
+       "body": "Came in after work. Three weeks of a dry, tickly cough that goes on through the day and is worst once he lies down at night; his wife is sleeping in the other room. Nothing comes up. No fever or chills, no chest pain, no wheeze, no shortness of breath, no runny nose or sore throat beforehand. Started lisinopril 20 mg on 10/19, so this began about six weeks in.\n\nT 36.8, BP 136/88, P 78, sat as charted. Throat clear. Lungs clear throughout, no wheeze. Heart regular, no murmur.\nUA today: protein 2+. BMP: creatinine and potassium normal.\n\nA/P\nCough from lisinopril - classic timing and character, exam normal. Stop lisinopril; ACE-inhibitor intolerance added to allergies. Cough may take a few weeks to fade.\nHypertension: start hydrochlorothiazide 25 mg each morning.\nAlbuminuria: protein again on today's UA; recheck urine microalbumin with spring labs.\nCall if cough persists beyond a month after stopping."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

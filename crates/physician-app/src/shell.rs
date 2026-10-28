@@ -3,8 +3,8 @@
 
 use physician_wire::{
     AutomationRun, CitationDestination, ClinicalSegment, ConnectedSource, PatientWorkspaceResponse,
-    PracticeDayResponse, SourcePresentation, TodayConnection, TodayListResponse, TodayRow,
-    VisitPreparation, WorkspaceReply,
+    PracticeDayResponse, ReplyRevisionRun, SourcePresentation, TodayConnection, TodayListResponse,
+    TodayRow, VisitPreparation, WorkspaceReply,
 };
 
 pub const TODAY_LOADING: &str = "Loading Today…";
@@ -34,6 +34,21 @@ pub const REPLY_TELL_CODA: &str = "Tell Coda what to change";
 pub const REPLY_ASK: &str = "Ask Coda to revise";
 /// Shown after the server accepts `reply.close`.
 pub const REPLY_CLOSED_NOTICE: &str = "Marked no reply needed";
+/// A revision request is waiting for the worker.
+pub const REPLY_REVISION_PENDING: &str = "Coda will revise this reply shortly.";
+/// The worker is revising the reply.
+pub const REPLY_REVISION_ACTIVE: &str = "Coda is revising this reply.";
+/// The latest revision replaced the saved draft.
+pub const REPLY_REVISION_COMPLETED: &str = "Coda revised this reply.";
+/// The latest revision ended without changing the draft.
+pub const REPLY_REVISION_FAILED: &str =
+    "Coda couldn’t revise this reply. The saved draft is unchanged.";
+/// A newer saved edit replaced the draft the revision started from.
+pub const REPLY_REVISION_SUPERSEDED: &str =
+    "A newer saved edit replaced the draft, so that revision was not applied.";
+/// The revision request named a draft that has since changed.
+pub const REPLY_REVISION_STALE: &str =
+    "Coda couldn’t take that revision. The current draft is shown; review it and ask again.";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TodayLine {
@@ -1187,20 +1202,48 @@ pub enum ReplyReviewAction {
 }
 
 /// Actions for a reply the projection already lists.
-/// A ready draft can be copied, closed, or sent back for revision.
+/// A recorded ready draft can be copied or closed. Only a draft a reply owner
+/// holds at an exact revision can be sent back for revision, and not while a
+/// revision is still pending or running; that owner has no close, send or
+/// other lifecycle action, so none is offered.
 /// A superseded or closed reply has no actions: the recording has no update, channel link, or reopen payload.
 pub fn reply_review_actions(reply: &WorkspaceReply) -> Vec<ReplyReviewAction> {
     if reply.state != "ready" {
         return Vec::new();
     }
+    let owned = reply.draft_revision.is_some();
     if reply.draft_text.trim().is_empty() {
-        return vec![ReplyReviewAction::NoReplyNeeded];
+        return if owned {
+            Vec::new()
+        } else {
+            vec![ReplyReviewAction::NoReplyNeeded]
+        };
     }
-    vec![
-        ReplyReviewAction::Copy,
-        ReplyReviewAction::NoReplyNeeded,
-        ReplyReviewAction::Revise,
-    ]
+    if !owned {
+        return vec![ReplyReviewAction::Copy, ReplyReviewAction::NoReplyNeeded];
+    }
+    let running = reply
+        .revision_run
+        .as_ref()
+        .is_some_and(ReplyRevisionRun::running);
+    if running {
+        vec![ReplyReviewAction::Copy]
+    } else {
+        vec![ReplyReviewAction::Copy, ReplyReviewAction::Revise]
+    }
+}
+
+/// What a reply's latest revision run says beside the draft, if anything.
+pub fn reply_revision_words(reply: &WorkspaceReply) -> Option<&'static str> {
+    let run = reply.revision_run.as_ref()?;
+    Some(match run.status.as_str() {
+        "pending" => REPLY_REVISION_PENDING,
+        "active" => REPLY_REVISION_ACTIVE,
+        "completed" => REPLY_REVISION_COMPLETED,
+        "failed" => REPLY_REVISION_FAILED,
+        "superseded" => REPLY_REVISION_SUPERSEDED,
+        _ => return None,
+    })
 }
 
 /// The channel name on a reply card. Unknown channels keep the server's word, capitalized.
@@ -1822,14 +1865,64 @@ mod tests {
         )
         .unwrap();
         assert_eq!(reply_channel_label(&ready.channel), "Spruce");
+        // A recorded reply has no owner revision: it cannot be revised.
         assert_eq!(
             reply_review_actions(&ready),
-            vec![
-                ReplyReviewAction::Copy,
-                ReplyReviewAction::NoReplyNeeded,
-                ReplyReviewAction::Revise,
-            ]
+            vec![ReplyReviewAction::Copy, ReplyReviewAction::NoReplyNeeded]
         );
+        assert_eq!(reply_revision_words(&ready), None);
+        // An owner-held draft revises from its exact revision and offers no
+        // close/send lifecycle action that owner does not support.
+        let owned = WorkspaceReply {
+            draft_revision: Some(3),
+            ..ready.clone()
+        };
+        assert_eq!(
+            reply_review_actions(&owned),
+            vec![ReplyReviewAction::Copy, ReplyReviewAction::Revise]
+        );
+        let run = |status: &str| WorkspaceReply {
+            revision_run: Some(physician_wire::ReplyRevisionRun {
+                run_id: "k".into(),
+                status: status.into(),
+            }),
+            ..owned.clone()
+        };
+        for status in ["pending", "active"] {
+            assert_eq!(
+                reply_review_actions(&run(status)),
+                vec![ReplyReviewAction::Copy],
+                "{status}"
+            );
+        }
+        for status in ["completed", "failed", "superseded"] {
+            assert_eq!(
+                reply_review_actions(&run(status)),
+                vec![ReplyReviewAction::Copy, ReplyReviewAction::Revise],
+                "{status}"
+            );
+        }
+        assert_eq!(
+            reply_revision_words(&run("pending")),
+            Some(REPLY_REVISION_PENDING)
+        );
+        assert_eq!(
+            reply_revision_words(&run("active")),
+            Some(REPLY_REVISION_ACTIVE)
+        );
+        assert_eq!(
+            reply_revision_words(&run("completed")),
+            Some(REPLY_REVISION_COMPLETED)
+        );
+        assert_eq!(
+            reply_revision_words(&run("failed")),
+            Some(REPLY_REVISION_FAILED)
+        );
+        assert_eq!(
+            reply_revision_words(&run("superseded")),
+            Some(REPLY_REVISION_SUPERSEDED)
+        );
+        assert_eq!(reply_revision_words(&run("unknown")), None);
         let superseded = WorkspaceReply {
             state: "superseded_by_correction".to_owned(),
             draft_text: String::new(),

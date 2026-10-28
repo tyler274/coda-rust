@@ -1,0 +1,263 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002699",
+      "events": [
+        {
+          "id": "2026-01-06a",
+          "kind": "nurse_visit",
+          "start": "2026-01-06T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2026-01-06T10:33"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2026-01-06T10:33"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Shingrix #2", "author": "MA", "date": "2026-01-06T10:30", "body": "Second Shingrix given, left deltoid. Series complete. Pt off this week for winter break, heading somewhere warm with family later in the month."}
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "ed_visit",
+          "start": "2026-01-28T18:40",
+          "end": "2026-01-28T23:55",
+          "service": "Emergency Medicine",
+          "reason": "Right lower leg pain, redness and swelling with fever",
+          "conditions": [
+            {"label": "Cellulitis of lower limb", "action": "diagnosed", "onset": "2026-01-26", "note": "right lower leg"}
+          ],
+          "medications": [
+            {"drug": "cephalexin 500 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth four times daily for 7 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "QID", "route": "Oral", "course": "short", "reason": "cellulitis, right lower leg"}
+          ],
+          "vitals": [
+            {"time": "2026-01-28T18:50", "temp_c": 38.4, "hr": 104, "bp": [136, 84], "rr": 18, "spo2": 98},
+            {"time": "2026-01-28T23:30", "temp_c": 37.6, "hr": 90, "bp": [130, 80], "rr": 16, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-01-28T19:10", "results": [{"test": "White Blood Cells", "value": 12.6}, {"test": "Neutrophils %", "value": 81}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-28T19:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "Lower extremity venous duplex", "performed": "2026-01-28T20:30", "text": "Right lower extremity venous duplex. Common femoral, femoral, popliteal, posterior tibial and peroneal veins fully compressible with normal phasic flow and augmentation. No intraluminal thrombus. Subcutaneous edema of the calf.", "conclusion": "No deep venous thrombosis in the right leg."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2026-01-28T18:40"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-01-29T08:20", "body": "Regional hospital emergency department. Seen 1/28/2026, 18:40.\n\nCC: right lower leg pain, redness, swelling; fever.\n\nHPI: 50-year-old woman with venous insufficiency and varicose veins, prior workups for leg swelling in 2023 and 2024. Returned 5 days ago from a family beach vacation, where she remembers stepping on something sharp barefoot in the sand but saw no wound. Over the last 2 days the right lower leg has become increasingly painful and swollen and it is now hard to walk. Chills, feels unwell.\n\nPMH: hypertension, obesity, venous insufficiency, varicose veins. Meds: hydrochlorothiazide 25 mg daily. NKDA. Tdap 2024.\n\nExam: T 38.4 C, HR 104, BP 136/84, RR 18, SpO2 98% RA. Alert, uncomfortable. Right lower leg diffusely red, warm and swollen from ankle to mid-calf, margins indistinct; winces with light touch. No crepitus, no fluctuance, no purulence. Tender, palpable right inguinal nodes. Dorsalis pedis pulses present. Left leg normal. Heart and lungs normal. No rash, no petechiae.\n\nResults: WBC 12.6 with 81% neutrophils. BMP normal. Right leg venous duplex: no DVT.\n\nED course: cephalexin first dose given. Tolerating oral intake, walking with a limp. Repeat temperature 37.6.\n\nDiagnosis: nonpurulent cellulitis of the right lower leg.\n\nDisposition: discharged. Cephalexin 500 mg four times daily for 7 days. Elevate the leg. Tetanus current. Return for spreading redness, worsening fever, or pain out of proportion. PCP follow-up in 2 days."}
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "portal_message",
+          "start": "2026-01-29T07:05",
+          "reason": "ED visit",
+          "documents": [
+            {"type": "Patient Message", "title": "ER last night", "author": "patient", "date": "2026-01-29T07:05", "body": "Ended up in the ER last night, my right leg got red and hot after our beach trip and I had chills. They said cellulitis, no clot, and gave me cephalexin. They told me to see you in a couple days."},
+            {"type": "Patient Message", "title": "RE: ER last night", "author": "RN", "date": "2026-01-29T08:30", "body": "Sorry you went through that. We have you Friday 1/30 at 9:20. Draw a pen line around the edge of the redness today so we can tell if it's shrinking. Keep the leg up and take every dose."}
+          ]
+        },
+        {
+          "id": "2026-01-30a",
+          "kind": "office_visit",
+          "start": "2026-01-30T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up: right leg cellulitis",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "rr"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-30T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED follow-up: cellulitis", "author": "PCP", "date": "2026-01-30T09:20", "body": "Seen in the ED 1/28 for right lower leg cellulitis after a beach trip (ED record reviewed: WBC 12.6, duplex without DVT). On cephalexin day 3, no missed doses.\n\nFeels much better. No chills since yesterday morning. Walking better.\n\nExam: afebrile, vitals as charted. Right lower leg: redness has pulled back well inside her pen line, now ankle to lower third of the calf, warmth much less, mild tenderness. No fluctuance, no wound. Inguinal nodes less tender. Toe webs clean and dry. Left leg baseline.\n\nA/P: Right leg cellulitis, responding. Finish all 7 days. Leg up when sitting, back into compression stockings once the tenderness settles; keeping the swelling down lowers the chance of this coming back. Message me if redness spreads or fever returns. Recheck at her March BP visit."}
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "portal_message",
+          "start": "2026-02-06T16:40",
+          "reason": "Cellulitis update",
+          "documents": [
+            {"type": "Patient Message", "title": "Leg update", "author": "patient", "date": "2026-02-06T16:40", "body": "Finished the cephalexin yesterday. Leg is back to its usual color, just my normal ankle swelling. Back in the stockings."},
+            {"type": "Patient Message", "title": "RE: Leg update", "author": "PCP", "date": "2026-02-06T17:55", "body": "Great to hear. Keep up the stockings and elevation."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and venous follow-up",
+          "conditions": [
+            {"label": "Cellulitis of lower limb", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-03-10T16:20", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-03-10T15:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: HTN, CVI", "author": "PCP", "date": "2026-03-10T15:45", "body": "S: Doing well. Leg fully back to baseline since early February. Stockings daily at school. HCTZ every morning; home BPs 120s-130s/80s.\nO: Vitals as charted. Heart RRR, lungs clear. Right lower leg: no erythema or warmth; usual pitting ankle edema, varicosities, medial ankle pigmentation and the old healed scar. Left similar. Skin intact, toe webs clean.\nA/P: Cellulitis resolved. CVI: continue compression and evening elevation, moisturize the skin. HTN controlled, BMP today. Physical in June."}
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T11:00",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "BMP March", "author": "PCP", "date": "2026-03-12T11:00", "body": "Your potassium and kidney numbers are normal. No changes needed."}
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "portal_message",
+          "start": "2026-05-05T20:20",
+          "reason": "Compression stockings",
+          "documents": [
+            {"type": "Patient Message", "title": "Stockings", "author": "patient", "date": "2026-05-05T20:20", "body": "My stockings are finally worn out. The medical supply place says if you write a prescription my insurance may cover two pairs. Knee-high, same strength as before."},
+            {"type": "Patient Message", "title": "RE: Stockings", "author": "PCP", "date": "2026-05-05T21:05", "body": "Done. Prescription for knee-high graduated compression stockings, 15-20 mmHg, two pairs, faxed to the supply store with the diagnosis of chronic venous insufficiency."}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Note", "title": "HCTZ", "author": "RN", "date": "2026-06-09T09:15", "body": "Hydrochlorothiazide 25 mg 90-day refill approved. Physical 6/23 on the books."}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "annual_physical",
+          "start": "2026-06-23T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 86.8},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "rr"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2026-06-23T09:55", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-23T09:55", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-23T09:55", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-06-23T09:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2026-06-23T09:10"}
+          ],
+          "orders": [
+            {"id": "mammo-2026", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2026-06-23T09:10", "body": "50F, annual.\n\nInterval: No further leg infections since January. New stockings working. School year finished last week. Daughter just turned two. Back and heel fine. Mood good; PHQ-9 2.\n\nMeds: HCTZ 25 daily. NKDA. Never smoker; alcohol 1-2 drinks a month.\n\nExam: vitals as charted. HEENT normal. Heart and lungs normal. Breasts without masses. Abdomen soft. Legs: varicosities, ankle pigmentation and pitting edema both sides, right medial ankle scar, skin intact, toe webs clean. No erythema.\n\nA/P\n- HTN: controlled on HCTZ. CMP.\n- CVI with varicose veins: compression daily, elevation, skin care. Reviewed signs of cellulitis given January's episode: spreading redness, heat, fever, call the same day.\n- Obesity: BMI 32, stable.\n- Prevention: mammogram due in August, order in. Lipids, A1c, CBC today. Shingrix complete. Colonoscopy 2031. Pap/HPV 2027. Flu and COVID in the fall.\nBP recheck after school starts."}
+          ]
+        },
+        {
+          "id": "2026-06-25a",
+          "kind": "portal_message",
+          "start": "2026-06-25T13:25",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs 2026", "author": "PCP", "date": "2026-06-25T13:25", "body": "Everything from your physical is normal: blood count, kidney and liver tests, potassium, A1c and cholesterol. Enjoy the summer."}
+          ]
+        },
+        {
+          "id": "2026-08-01a",
+          "kind": "office_visit",
+          "start": "2026-08-01T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right leg redness, swelling and fever",
+          "conditions": [
+            {"label": "Cellulitis of lower limb", "action": "diagnosed", "onset": "2026-07-30", "note": "recurrent, right lower leg"}
+          ],
+          "vitals": {"temp_c": 38.6, "hr": 106},
+          "measure": ["bp", "spo2", "rr", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2026-08-01T10:30"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "It's back", "author": "patient", "date": "2026-08-01T07:12", "body": "Sorry to text on a Saturday. Same leg as January. We got back from the beach on Monday and I think I stepped on something in the sand again. Since Thursday the right leg is red, hot and swollen, hard to walk, and I had chills all night. Can you see me?"},
+            {"type": "Progress Notes", "title": "Same-day visit: recurrent right leg cellulitis", "author": "PCP", "date": "2026-08-01T10:30", "body": "Saturday same-day visit, seen after her text this morning.\n\nHPI: Back 5 days from a family beach trip, likely stepped on something sharp barefoot but saw no cut. Two days of increasing pain, redness and swelling of the right lower leg, now limping. Chills overnight, feels unwell. Second episode in the same leg; the first was in late January, treated with cephalexin from the ED.\n\nExam: T 38.6, HR 106, other vitals as charted. Looks unwell but alert. Right lower leg diffusely red, warm and swollen from the ankle to mid-calf with ill-defined borders, tender to light touch. No crepitus, fluctuance or pus. Tender right inguinal nodes. DP pulse present. Left leg baseline. Heart and lungs normal. No rash.\n\nA/P: Recurrent nonpurulent cellulitis of the right leg on a background of venous insufficiency, now febrile and tachycardic and less well than in January. I don't think oral antibiotics at home are safe this time. Called the admitting hospitalist at the regional hospital and arranged a direct admission for IV antibiotics; her partner is driving her over now. Asked them to rule out a clot again. I'll follow her through the admission and see her after discharge."}
+          ]
+        },
+        {
+          "id": "2026-08-01b",
+          "kind": "hospital_admission",
+          "start": "2026-08-01T12:40",
+          "end": "2026-08-04T13:00",
+          "service": "Internal Medicine",
+          "reason": "Recurrent right lower leg cellulitis requiring IV antibiotics",
+          "vitals": [
+            {"time": "2026-08-01T12:50", "temp_c": 38.5, "hr": 104, "bp": [134, 82], "rr": 18, "spo2": 97},
+            {"time": "2026-08-03T08:00", "temp_c": 37.0, "hr": 80, "bp": [128, 80], "rr": 16, "spo2": 98}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-08-01T13:10", "results": [{"test": "White Blood Cells", "value": 14.3}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Neutrophils %", "value": 84}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-01T13:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2026-08-01T13:10", "results": [{"test": "C Reactive Protein", "value": 96}, {"test": "Lactate", "value": 1.4}]},
+            {"panel": null, "collected": "2026-08-01T13:15", "resulted": "2026-08-06T09:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days"}]}
+          ],
+          "reports": [
+            {"study": "Lower extremity venous duplex", "performed": "2026-08-01T16:00", "text": "Right lower extremity venous duplex. Deep veins from the common femoral through the calf veins compressible with normal flow and augmentation. No thrombus. Subcutaneous edema in the calf.", "conclusion": "No right lower extremity DVT."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-08-01T13:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-08-04T11:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2026-08-05T10:45", "body": "Regional hospital, internal medicine service. Admitted 8/1/2026 (direct admission from PCP), discharged 8/4/2026.\n\nDiagnosis: recurrent cellulitis of the right lower leg, nonpurulent.\n\nHistory: 50-year-old woman with chronic venous insufficiency, obesity and hypertension, with right leg cellulitis six months ago. Back 5 days from a family beach vacation; probable barefoot step on something sharp in the sand without a visible wound. Two days of worsening right lower leg pain and swelling, difficulty walking, chills, malaise.\n\nAdmission exam: T 38.5, HR 104. Right lower leg diffusely erythematous, warm and edematous with indistinct margins from ankle to mid-calf, tender to light palpation; no crepitus, fluctuance or purulence. Tender palpable right inguinal nodes. DP pulses present. Left leg normal. Alert, uncomfortable. Heart and lungs normal. No rash or petechiae.\n\nData: WBC 14.3 with 84% neutrophils. CRP 9.6 mg/dL (96 mg/L). Lactate 1.4. BMP normal. Blood cultures no growth (final no growth at 5 days, per lab). Right leg venous duplex: no DVT.\n\nCourse: IV cefazolin 2 g every 8 hours. Leg elevated. Afebrile by hospital day 2 with clear regression of erythema. Transitioned to oral cephalexin on 8/4.\n\nDischarge medications: cephalexin 500 mg four times daily to complete 10 days of antibiotics in total (through 8/10). Hydrochlorothiazide 25 mg daily, unchanged.\nAllergies: NKDA.\n\nInstructions: elevate the leg; resume compression stockings once the skin is no longer tender; daily skin and foot checks; return for spreading redness or fever.\nFollow-up: PCP within 1 to 2 weeks."}
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "telephone",
+          "start": "2026-08-06T10:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge call", "author": "RN", "date": "2026-08-06T10:40", "body": "Called pt 2 days after discharge. Discharge summary reviewed. Taking cephalexin four times a day, last dose due 8/10. No fever since the hospital. Redness fading, walking around the house without a limp. Elevating when sitting. Understands to call for spreading redness or fever. Follow-up with PCP booked 8/13 at 2:00."}
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "telephone",
+          "start": "2026-08-10T15:05",
+          "reason": "Reschedule follow-up",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Rescheduled follow-up", "author": "front desk", "date": "2026-08-10T15:05", "body": "Pt called to move Thursday's appointment: teacher workshops all week starting the 13th and the leg is nearly back to normal. Offered earlier slots, she couldn't make them. Rebooked for Tuesday 9/1 at 3:40. Told her to message the doctor if anything flares before then."}
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "office_visit",
+          "start": "2026-08-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:50",
+          "reason": "Antibiotics finished",
+          "documents": [
+            {"type": "Patient Message", "title": "Leg", "author": "patient", "date": "2026-08-18T19:50", "body": "Quick update: finished the antibiotics on the 10th, leg is pretty much back to normal, just the usual swelling at the end of the day. Back in my stockings. See you on the 1st."},
+            {"type": "Patient Message", "title": "RE: Leg", "author": "PCP", "date": "2026-08-18T21:15", "body": "Good. Keep the leg up in the evenings and wear the stockings for the workshops. On the 1st we'll go over the hospital stay and how to cut down the chances of a third round."}
+          ]
+        },
+        {
+          "id": "2026-09-01a",
+          "kind": "office_visit",
+          "start": "2026-09-01T15:40",
+          "reason": "Post-hospital follow-up: recurrent right leg cellulitis, venous insufficiency",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

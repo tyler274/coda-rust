@@ -1,0 +1,4723 @@
+{
+  "unit": "unit-2094",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002094",
+      "given": "Robert",
+      "family": "Nowak",
+      "birth_date": "1965-04-24",
+      "address_line": "212 Granby Road",
+      "phone": "+1-917-555-0172",
+      "email": "robert.nowak@example.test",
+      "marital_status": "single",
+      "summary": "Marine mechanic with transfusion-acquired hepatitis C who joins in 2018, decompensates with hepatocellular carcinoma in 2021, has a bridge resection and a liver transplant in 2022, then a perforated duodenal ulcer, tacrolimus nephrotoxicity, two ICU stays in 2025 (septic shock with central diabetes insipidus, then ARDS), and necrotizing fasciitis of the left leg in 2026 after the practice last saw him.",
+      "events": [
+        {
+          "id": "2018-09-05a",
+          "kind": "telephone",
+          "start": "2018-09-05T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2018-09-05T10:20",
+              "author": "front desk",
+              "body": "Mr. Nowak phoned about moving his primary care here. Says his old doctor retired over the summer and he has not had a physical in a couple of years. Works for himself fixing boat engines, schedule is flexible midweek. Explained the membership and that insurance still covers labs and specialists. Booked new patient visit 9/12 at 8:40. Records release form emailed for his prior office."
+            }
+          ]
+        },
+        {
+          "id": "2018-09-12a",
+          "kind": "establish_care",
+          "start": "2018-09-12T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {
+              "label": "Chronic hepatitis C",
+              "action": "diagnosed",
+              "onset": "1988-01-01",
+              "note": "Genotype 1a; acquired from transfusions in the 1980s; never treated"
+            },
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "diagnosed",
+              "onset": "2005-01-01",
+              "note": "History of a remote peptic ulcer, details not available"
+            },
+            {
+              "label": "Alcohol use disorder, in remission",
+              "action": "diagnosed",
+              "onset": "2016-01-01",
+              "note": "Former heavy drinking; abstinent since 2016"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "calcium carbonate 500 MG Chewable Tablet",
+              "action": "historical",
+              "sig": "Chew 1 tablet by mouth as needed for heartburn",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "dyspepsia"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              75
+            ],
+            "hr": 59,
+            "rr": 14,
+            "temp_c": 36.7,
+            "spo2": 95,
+            "weight_kg": 87.3,
+            "height_cm": 179.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-09-12T09:30",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-09-12T09:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 217
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2018-09-12T09:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 0.9
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 11.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-09-12T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-12T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Viral Load, PCR",
+                  "value": 1450000
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-09-12T09:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Former heavy drinker; none since 2016"
+            },
+            {
+              "item": "Occupation",
+              "value": "Self-employed marine mechanic"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2018-09-12T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-09-12T09:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-09-12T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2018-09-12T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2018-09-12T08:40",
+              "author": "PCP",
+              "body": "53M new to me. Previous PCP retired; records requested.\n\nHep C: picked up years ago, he thinks it came from blood he got in the 80s. Genotype 1a per what he remembers from old paperwork. Never treated. He was told at some point he could get the newer pills but never followed up on it. No jaundice, no swelling of the belly or legs, no confusion, no GI bleeding.\n\nReflux: on and off for 10+ years, uses calcium carbonate chews when it acts up, maybe twice a week. Had an ulcer a long time ago, can't recall the year or what was done, no surgery.\n\nAlcohol: drank heavily for many years. Stopped in 2016 on his own, nothing since. Father drank and died with cirrhosis, which he says is part of why he quit.\n\nPMH: as above. PSH: none. Meds: calcium carbonate 500 mg chew PRN. Allergies: none to medications.\nFH: father alcohol use disorder with cirrhosis; paternal uncle had liver cancer; mother type 2 diabetes.\nSH: self-employed, repairs outboard and inboard marine engines out of his own shop. Never smoked. No drugs. Single.\n\nROS: negative except heartburn as above.\n\nExam: well appearing. No scleral icterus. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly palpable, no fluid wave. No spider angiomas, no palmar erythema. No edema. Neuro grossly normal, no asterixis.\n\nA/P\n1. Chronic hepatitis C, untreated: CMP, CBC, INR, viral load today.\n2. GERD with remote PUD: stable on PRN calcium carbonate.\n3. Alcohol use disorder in remission since 2016: commended.\n4. Health maintenance: HIV screen with labs. Tdap today. Lipids. Will talk colon screening at his physical.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Alanine Aminotransferase": 61,
+              "Aspartate Aminotransferase": 52
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2018-09-14a",
+          "kind": "portal_message",
+          "start": "2018-09-14T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2018-09-14T16:05",
+              "author": "PCP",
+              "body": "Hi Robert, your labs are back. Your liver enzymes are mildly up, which is typical with hepatitis C. Your liver's protein production, clotting test and blood counts are normal. Hepatitis C virus level is 1.45 million. HIV test negative. Cholesterol and kidney function fine. We will keep watching these. Flu shots arrive next month, stop in any morning for one."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-10a",
+          "kind": "nurse_visit",
+          "start": "2018-10-10T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-10T09:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-10-10T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu Vaccine",
+              "date": "2018-10-10T09:10",
+              "author": "RN",
+              "body": "Walk-in for flu vaccine. No prior reactions, feels well. Quadrivalent flu given L deltoid, tolerated. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-19a",
+          "kind": "office_visit",
+          "start": "2019-03-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up hepatitis C, reflux",
+          "vitals": {
+            "bp": [
+              128,
+              78
+            ],
+            "hr": 64,
+            "spo2": 97,
+            "weight_kg": 87.6
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2019-03-19T14:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 47
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 56
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-03-19T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-03-19T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2019-03-19T14:00",
+              "author": "PCP",
+              "body": "S: Doing fine. Busy getting customers' boats ready for spring launch. Heartburn about the same, chews a calcium carbonate a couple times a week, more after spicy food. Still not drinking. No abdominal swelling, no yellowing, appetite good.\nO: Vitals as charted. Alert, not icteric. Abd soft, NT, no masses. No edema.\nA/P:\n- Hep C, chronic: recheck liver panel today.\n- GERD: lifestyle reviewed, keep PRN antacid.\n- Abstinent from alcohol, nearly 3 years.\nPhysical in September."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.2,
+            "labs": {
+              "Alanine Aminotransferase": 57,
+              "Aspartate Aminotransferase": 48
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-09-26a",
+          "kind": "annual_physical",
+          "start": "2019-09-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              71
+            ],
+            "hr": 75,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 86.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-26T09:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 56
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-26T09:10",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-26T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-26T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2019-09-26T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-26T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2019-09-26T08:30",
+              "author": "PCP",
+              "body": "54M for yearly exam.\n\nInterval: no new issues. Reflux controlled with occasional chews. Still sober, 3+ years.\n\nPrevention: colon cancer screening reviewed (colonoscopy vs stool test). He'd rather put it off until winter when work slows; will revisit. Tdap done 2018. Flu next month. A1c with labs given mother's diabetes.\n\nExam: NAD. HEENT normal, no icterus. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, liver and spleen not palpable. Skin: no spider angiomas. Ext: no edema. Neuro nonfocal.\n\nA/P: healthy-appearing 54M with chronic untreated hep C, GERD, alcohol use disorder in remission. Labs ordered. Follow up spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.4,
+            "labs": {
+              "Alanine Aminotransferase": 66,
+              "Aspartate Aminotransferase": 55
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-10-16a",
+          "kind": "nurse_visit",
+          "start": "2019-10-16T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-16T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-16T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Flu Vaccine",
+              "date": "2019-10-16T08:50",
+              "author": "MA",
+              "body": "Seasonal flu vaccine given R deltoid. Screening questions negative. Pt waited 10 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up by video",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-04-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-04-21T11:00",
+              "author": "PCP",
+              "body": "Video from his shop, consented to telehealth.\nMarinas are slow with the shutdown, he's doing mostly small engine work. Feels well. No yellow eyes, no belly swelling, no dark urine. Heartburn quiet. No alcohol.\nNo exam beyond general appearance: looks well, speaking full sentences, not jaundiced on camera.\nPlan: defer labs to fall physical unless symptoms. Reviewed when to call. Colon screening still on hold until things open up."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "annual_physical",
+          "start": "2020-10-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              69
+            ],
+            "hr": 67,
+            "rr": 14,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 87.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-10-13T09:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 59
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-10-13T09:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 216
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-10-13T09:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 175
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 127
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2020-10-13T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T09:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-10-13T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-10-13T09:00",
+              "author": "PCP",
+              "body": "55M annual. Masked visit.\nNo complaints. Good season at work despite everything. Sleeping fine, mood fine (PHQ-9 2). Not drinking. Heartburn rare.\nExam: comfortable. Anicteric. Cardiac and lung exams normal. Abdomen soft, no hepatosplenomegaly felt, no shifting dullness. No edema. Skin unremarkable.\nA/P\n- Chronic hep C: labs today.\n- GERD: fine.\n- Prevention: flu vaccine given. Colon screening again deferred by pt; he says after the holidays.\nSee in spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.0,
+            "labs": {
+              "Alanine Aminotransferase": 68,
+              "Aspartate Aminotransferase": 58
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-10a",
+          "kind": "pharmacy",
+          "start": "2021-03-10T13:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-02-17T10:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-10T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside COVID-19 Vaccine Doses",
+              "date": "2021-03-10T13:00",
+              "author": "MA",
+              "body": "Pt dropped off his vaccination card. Two Pfizer doses at a retail pharmacy clinic, 2/17/21 and 3/10/21. Entered into immunization history; state registry matches."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-24a",
+          "kind": "portal_message",
+          "start": "2021-05-24T07:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Feeling run down",
+              "date": "2021-05-24T07:12",
+              "author": "patient",
+              "body": "Hi doc. I've been dragging since around March and figured it was the busy season. Not hungry, pants are loose, and a buddy at the marina said my eyes look yellow. Pee has been dark the last couple weeks too. No fever. Can I come in this week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Feeling run down",
+              "date": "2021-05-24T08:30",
+              "author": "PCP",
+              "body": "Robert, yes, I want to see you soon. Front desk will call you with a Wednesday morning spot. Please don't eat after midnight before so we can draw labs. If you get confused, vomit blood, have black stools or a fever, go to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-26a",
+          "kind": "office_visit",
+          "start": "2021-05-26T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, weight loss, yellow eyes",
+          "vitals": {
+            "bp": [
+              132,
+              75
+            ],
+            "hr": 64,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 81.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-05-26T09:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 64
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 168
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-05-26T09:05",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 121
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.09
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-05-26T09:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 18.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2021-05-26T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-05-26T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2021",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "jaundice, weight loss, chronic hepatitis C"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-05-26T08:20",
+              "author": "PCP",
+              "body": "CC: tired, poor appetite, weight loss, yellow eyes.\n\nHPI: 56M with untreated chronic hep C. About 3 months of steadily worse fatigue and less appetite; fills up after a few bites. Weight down from 88 to 81 kg without trying. Vague ache across the upper belly, queasy on and off. Eyes yellow and urine tea-colored for ~2 wks. Denies fever, vomiting blood, black stools, travel. No alcohol since 2016, confirms again today. No new meds or supplements.\n\nExam: tired-appearing. Scleral icterus. Abdomen distended, mildly tender in the upper abdomen, hard to assess the liver edge with the distension. No asterixis. No edema.\n\nA/P: jaundice and weight loss in a man with long-standing hep C. Concerned for advanced liver disease, need to exclude a liver mass.\n- CMP, CBC, INR today.\n- Urgent GI referral; called their office, they can see him 6/9.\n- No alcohol, no NSAIDs, acetaminophen no more than 2 g a day if needed.\n- ER precautions reviewed."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.0,
+            "labs": {
+              "Alanine Aminotransferase": 64,
+              "Albumin": 2.9,
+              "Alkaline Phosphatase": 168,
+              "Aspartate Aminotransferase": 72,
+              "Bilirubin, Total": 3.6,
+              "Platelets": 121,
+              "Prothrombin Time-International Normalized Ratio": 1.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-05-27a",
+          "kind": "telephone",
+          "start": "2021-05-27T15:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results and GI appointment",
+              "date": "2021-05-27T15:40",
+              "author": "RN",
+              "body": "Called pt per PCP. Bilirubin 3.6, albumin 2.9, INR 1.5, platelets 121, liver enzymes up modestly. PCP wants him to keep the GI consult 6/9 at 10:30; he has the address. Reviewed reasons to go to the ED. Pt verbalized understanding, will bring a list of questions."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "specialist_visit",
+          "start": "2021-06-09T10:30",
+          "service": "Gastroenterology",
+          "reason": "jaundice, weight loss, chronic hepatitis C",
+          "conditions": [
+            {
+              "label": "Decompensated cirrhosis of liver",
+              "action": "diagnosed",
+              "onset": "2021-06-09",
+              "note": "Hepatitis C with prior alcohol use; jaundice and ascites",
+              "icd10": "K74.69"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "spironolactone 100 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ascites"
+            },
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "ascites"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              139,
+              70
+            ],
+            "hr": 60,
+            "weight_kg": 81.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-06-09T11:20",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 212
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2021-06-09T11:45",
+              "text": "Complete abdominal ultrasound. Liver is coarse in echotexture with a nodular surface, consistent with cirrhosis. A large irregular heterogeneous solid mass is seen in the right hepatic lobe. Main portal vein patent with hepatopetal flow. Moderate ascites. Gallbladder without stones or wall thickening. Common bile duct not dilated. Kidneys normal in size without hydronephrosis. Abdominal aorta of normal caliber.",
+              "conclusion": "Cirrhotic liver with a large irregular right hepatic lobe mass. Moderate ascites. Multiphase CT or MRI recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2021",
+              "action": "done",
+              "date": "2021-06-09T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2021-06-11T09:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY AND HEPATOLOGY GROUP\nDate of service: 06/09/2021\nThank you for referring Mr. Nowak, a 56-year-old marine mechanic with chronic hepatitis C, genotype 1a, from transfusions in the 1980s, never treated.\n\nHe has three months of worsening tiredness, poor appetite, early fullness, intermittent nausea and an indistinct abdominal ache, with weight loss. Over the past couple of weeks his eyes have turned yellow and his urine dark. No fever, hematemesis or travel. He drank heavily for years and stopped in 2016. He has never received hepatitis A or B vaccine.\n\nMeds: calcium carbonate as needed. Allergies: NKDA.\nFamily: father with alcohol-related cirrhosis; a paternal uncle with liver cancer; mother with type 2 diabetes.\n\nExam: chronically ill-appearing man with scleral icterus and mild temporal and shoulder-girdle wasting. The abdomen is distended with a fluid wave; a firm nodular liver edge is felt below the right costal margin.\n\nData: your labs from 5/26 show mildly raised AST and ALT, a raised alkaline phosphatase and a prolonged INR. Alpha-fetoprotein drawn today is 212 ng/mL. Ultrasound here today shows a cirrhotic liver with a large, irregular mass in the right lobe and ascites.\n\nImpression:\n1. Decompensated cirrhosis from hepatitis C and prior alcohol, with jaundice and ascites.\n2. Right hepatic lobe mass with raised AFP, highly concerning for hepatocellular carcinoma.\n\nPlan:\n- Multiphase CT abdomen within two weeks.\n- Spironolactone 100 mg daily with furosemide 40 mg daily; 2 g sodium diet; BMP in 2 to 3 weeks through your office.\n- Referral to transplant hepatology.\n- Please vaccinate against hepatitis A and B.\n- Continued abstinence; no NSAIDs.\nWe will see him back after imaging."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-06-23a",
+          "kind": "imaging",
+          "start": "2021-06-23T13:30",
+          "service": "Radiology",
+          "reason": "liver mass characterization",
+          "conditions": [
+            {
+              "label": "Hepatocellular carcinoma",
+              "action": "diagnosed",
+              "onset": "2021-06-23",
+              "note": "4.0 cm right lobe, LI-RADS 5; transplant candidate",
+              "icd10": "C22.0"
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2021-06-23T13:30",
+              "text": "Multiphase liver protocol: noncontrast, late arterial, portal venous and delayed phases through the abdomen, portal venous phase through the pelvis. The liver is small and nodular in contour, consistent with cirrhosis. In the right hepatic lobe there is a 4.0 cm lesion with arterial phase hyperenhancement, nonperipheral washout on portal venous and delayed phases, and an enhancing capsule. No other liver lesion. Portal and hepatic veins are patent without tumor thrombus. Moderate ascites. No adenopathy. Kidneys, adrenals and pancreas unremarkable. No bony lesion. Bowel unremarkable. Lung bases clear.",
+              "conclusion": "4.0 cm right hepatic lobe observation, LI-RADS 5, definite hepatocellular carcinoma. Cirrhosis with moderate ascites. No portal vein thrombosis. No extrahepatic disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "CT Abdomen and Pelvis, Liver Protocol",
+              "date": "2021-06-24T08:10",
+              "author": "radiology",
+              "body": "Outside imaging center report received by fax. Ordered by gastroenterology, copy to PCP. Findings: 4.0 cm right lobe lesion meeting LI-RADS 5 criteria in a cirrhotic liver; moderate ascites; portal vein patent; no spread outside the liver."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-25a",
+          "kind": "portal_message",
+          "start": "2021-06-25T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT results",
+              "date": "2021-06-25T17:20",
+              "author": "PCP",
+              "body": "Robert, I saw the CT report. GI called you yesterday, I know, but I wanted to check in myself. The spot in the liver is a liver cancer, and the scan shows it has not spread outside the liver. The transplant team referral is the right next step and GI has already sent it. Please come see me in a couple of weeks: we need a blood test on the water pills and we can start your hepatitis vaccines. Call me any time with questions."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: CT results",
+              "date": "2021-06-26T08:02",
+              "author": "patient",
+              "body": "Thanks for reaching out. Kind of numb about it still. I'll set up the appointment. Peeing a lot on the new pills but the belly feels a little better."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-08a",
+          "kind": "office_visit",
+          "start": "2021-07-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after GI, labs on diuretics, vaccines",
+          "vitals": {
+            "bp": [
+              132,
+              77
+            ],
+            "hr": 70,
+            "spo2": 96,
+            "weight_kg": 78.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-07-08T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-07-08T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-07-08T10:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-07-08T10:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2021-07-08T10:35"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2021-07-08T10:35"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-07-08T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-07-08T10:00",
+              "author": "PCP",
+              "body": "S: Here after GI and CT. Knows the diagnosis: HCC 4 cm in the R lobe, cirrhosis with ascites. Transplant hepatology intake call scheduled for August. Taking spironolactone 100 and furosemide 40 every morning. Abdomen less tight, weight down about 1.5 kg since GI. Eyes still a bit yellow. Some lightheadedness standing up quickly, no falls. Working half days.\nO: vitals as charted. Mild icterus. Abdomen distended, soft, shifting dullness. No edema. No asterixis.\nA/P:\n1. HCC, R lobe, LI-RADS 5: per GI and transplant hepatology.\n2. Decompensated cirrhosis with ascites on diuretics: BMP today.\n3. Never vaccinated for hep A/B: hep A #1 and hep B #1 today; hep B #2 in 1 month, both completed in January. PCV20 today.\n4. Low sodium diet reviewed; handout.\nFollow-up 3 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-07-09a",
+          "kind": "portal_message",
+          "start": "2021-07-09T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2021-07-09T12:10",
+              "author": "PCP",
+              "body": "Kidney function, sodium and potassium all fine on the water pills. No changes. Nurse visit in about 4 weeks for the second hepatitis B shot."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-04a",
+          "kind": "nurse_visit",
+          "start": "2021-08-04T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-08-04T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2021-08-04T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Hepatitis B Vaccine #2",
+              "date": "2021-08-04T08:45",
+              "author": "RN",
+              "body": "Hep B dose 2 given L deltoid. No reaction to dose 1. Next doses (hep A #2, hep B #3) due early January; reminder set."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "outside_records",
+          "start": "2021-08-13T11:00",
+          "reason": "transplant hepatology evaluation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Hepatology Evaluation",
+              "date": "2021-08-13T11:00",
+              "author": "transplant hepatology",
+              "body": "REGIONAL LIVER TRANSPLANT CENTER, HEPATOLOGY\nDate of visit: 08/11/2021\nMr. Nowak was seen for liver transplant evaluation on referral from his gastroenterologist.\nDiagnoses: decompensated cirrhosis from chronic hepatitis C genotype 1a and prior alcohol use (abstinent since 2016), with ascites on spironolactone and furosemide; a single 4.0 cm LI-RADS 5 hepatocellular carcinoma in the right lobe without vascular invasion or spread.\nAllergies: no known drug allergies.\nAssessment: he is a candidate for liver transplantation, and his tumor burden falls within standard transplant criteria. His sobriety history is documented and was reviewed with our social work team.\nPlan: complete the candidate evaluation (cardiac testing here, dental clearance). Please arrange a colonoscopy, which is required before listing. We note hepatitis A and B vaccination has begun in your office; please complete both series. Our surgical colleagues will review whether a bridging treatment of the tumor is appropriate while he awaits a graft.\nWe will keep you informed."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "procedure_visit",
+          "start": "2021-09-22T07:30",
+          "service": "Gastroenterology",
+          "reason": "colonoscopy for transplant evaluation",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2021-09-22T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy Report",
+              "date": "2021-09-23T10:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE ENDOSCOPY CENTER\nProcedure date: 09/22/2021\nIndication: colon cancer screening, required for liver transplant listing; no prior colonoscopy.\nSedation: monitored anesthesia care. Prep: good, mucosa well seen throughout.\nFindings: scope passed to the cecum, appendiceal orifice photographed, terminal ileum briefly entered and normal. No polyps, masses or bleeding. Retroflexion in the rectum unremarkable.\nImpression: normal colonoscopy.\nRecommendation: repeat screening in 10 years. Allergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "office_visit",
+          "start": "2021-10-05T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up cirrhosis, HCC; vaccines",
+          "vitals": {
+            "bp": [
+              113,
+              77
+            ],
+            "hr": 66,
+            "spo2": 96,
+            "weight_kg": 78.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-05T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 77
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 71
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 127
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-05T10:00",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 103
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.17
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-10-05T10:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 15.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-10-05T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T09:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-05T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T09:55"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-10-05T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-10-05T09:20",
+              "author": "PCP",
+              "body": "S: Colonoscopy done 9/22, normal. Transplant center finishing his evaluation; cardiac testing there next month. Yellow tint fading. Belly has stayed about the same size on the diuretics. Appetite a bit better. Still sober. Back to most of his usual work, avoiding heavy lifting.\nO: vitals as charted. Faint icterus. Abdomen mildly distended, nontender, shifting dullness present. No edema. No asterixis.\nA/P:\n- HCC R lobe, awaiting transplant center plan.\n- Decompensated cirrhosis: labs today (CMP, CBC, INR). Diuretics unchanged.\n- Vaccines: flu and first recombinant zoster dose today, before any immunosuppression. Hep A #2 / hep B #3 / zoster #2 in January.\nRTC 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.0,
+            "labs": {
+              "Alanine Aminotransferase": 70,
+              "Albumin": 3.1,
+              "Alkaline Phosphatase": 130,
+              "Aspartate Aminotransferase": 76,
+              "Bilirubin, Total": 2.4,
+              "Platelets": 115,
+              "Prothrombin Time-International Normalized Ratio": 1.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "specialist_visit",
+          "start": "2021-12-13T13:00",
+          "service": "Gastroenterology",
+          "reason": "increasing abdominal distension",
+          "conditions": [
+            {
+              "label": "Portal hypertension",
+              "action": "diagnosed",
+              "onset": "2021-12-13",
+              "icd10": "K76.6"
+            },
+            {
+              "label": "Thrombocytopenia",
+              "action": "diagnosed",
+              "onset": "2021-12-13"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              68
+            ],
+            "hr": 60,
+            "weight_kg": 79.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-12-13T13:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 110
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-12-13T13:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-13T13:40",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 400
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-12-13T14:30",
+              "results": [
+                {
+                  "test": "Hematocrit of peritoneal fluid",
+                  "loinc": "107175-2",
+                  "unit": "%",
+                  "value": 10
+                },
+                {
+                  "test": "Serum-ascites albumin gradient",
+                  "loinc": "63549-0",
+                  "unit": "g/dL",
+                  "value": 1.1
+                },
+                {
+                  "test": "Total protein, peritoneal fluid",
+                  "loinc": "2883-7",
+                  "unit": "g/dL",
+                  "value": 3.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2021-12-13T12:30",
+              "text": "Liver contour is nodular with coarse echotexture. Right hepatic lobe solid mass measuring 4 cm. Main portal vein patent with hepatopetal flow; no portal vein thrombus. Large volume ascites. Gallbladder unremarkable. No biliary dilatation. Kidneys normal in size without hydronephrosis.",
+              "conclusion": "Nodular cirrhotic liver with a 4 cm right lobe mass. No portal vein thrombosis. Large volume ascites; site marked for paracentesis."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Diagnostic aspiration of peritoneal cavity",
+              "snomed": "178016006",
+              "performed": "2021-12-13T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2021-12-15T16:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY AND HEPATOLOGY GROUP\nDate of service: 12/13/2021\nMr. Nowak, 56, with hepatitis C cirrhosis and a 4 cm right lobe HCC under transplant evaluation, comes back with two months of the abdomen steadily enlarging and uncomfortable despite spironolactone 100 mg and furosemide 40 mg. He has had no alcohol, no fever and no change in bowel habit.\nAllergies: NKDA. Meds: spironolactone, furosemide, calcium carbonate as needed.\nExam: tense distended abdomen with a fluid wave and shifting dullness. No jaundice. No lower extremity edema.\nUltrasound today: nodular liver, 4 cm right lobe mass, portal vein patent.\nDiagnostic paracentesis performed under ultrasound guidance, left lower quadrant, without complication. Fluid grossly bloody. Ascitic hematocrit 10%. SAAG 1.1 g/dL. Ascitic total protein 3.2 g/dL. Cytology sent and pending.\nBlood: hemoglobin 12.5, platelets 110,000, INR 1.2, AFP 400 ng/mL.\nAssessment: refractory-trending ascites with portal hypertension; bloody fluid in the setting of HCC raises concern for tumor-related bleeding or seeding, and the cytology is important before listing. Thrombocytopenia from portal hypertension. AFP rising.\nPlan: await cytology; we have discussed the case with the transplant team, who will see him early January about bridging therapy. Continue diuretics."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Bilirubin, Total": 1.8,
+              "Hemoglobin": 12.5,
+              "Platelets": 110,
+              "Prothrombin Time-International Normalized Ratio": 1.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "outside_records",
+          "start": "2021-12-20T14:00",
+          "reason": "ascitic fluid cytology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-12-13T14:30",
+              "resulted": "2021-12-20T09:00",
+              "results": [
+                {
+                  "test": "Peritoneal fluid cytology",
+                  "loinc": "55600-1",
+                  "text": "Negative for malignant cells. Blood and reactive mesothelial cells."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pathology Report",
+              "title": "Peritoneal Fluid Cytology",
+              "date": "2021-12-20T14:00",
+              "author": "pathology",
+              "body": "OUTSIDE PATHOLOGY\nSpecimen: peritoneal fluid, diagnostic paracentesis 12/13/2021.\nDiagnosis: negative for malignant cells. Background blood with reactive mesothelial cells and scattered lymphocytes.\nCopy to referring gastroenterologist and PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-07a",
+          "kind": "nurse_visit",
+          "start": "2022-01-07T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccine series completion",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-01-07T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2022-01-07T08:35"
+            },
+            {
+              "vaccine": "Hepatitis B, adult",
+              "date": "2022-01-07T08:35"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-01-07T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccine Series Completion",
+              "date": "2022-01-07T08:30",
+              "author": "RN",
+              "body": "Here to finish his series before surgery later this month. Hep A #2 R deltoid, hep B #3 L deltoid, recombinant zoster #2 L deltoid (separate site). Sore arm and tired for a day after the first zoster dose, nothing else. Observed 15 min, fine. Hep A, hep B and zoster series now complete; copy faxed to the transplant coordinator per their request."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-26a",
+          "kind": "hospital_admission",
+          "start": "2022-01-26T06:30",
+          "end": "2022-02-04T11:00",
+          "service": "Transplant Surgery",
+          "reason": "resection of right hepatic lobe hepatocellular carcinoma",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2022-01-26T09:10",
+              "text": "Specimen: liver, right lobe, partial hepatectomy. Gross: a portion of nodular liver containing a well-circumscribed tan-yellow tumor, 4.0 cm in greatest dimension. Microscopic: hepatocellular carcinoma. Background liver: established cirrhosis.",
+              "conclusion": "Hepatocellular carcinoma, 4.0 cm, in a cirrhotic liver.",
+              "issued": "2022-01-31T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Exploratory laparotomy",
+              "snomed": "74770008",
+              "performed": "2022-01-26T08:00"
+            },
+            {
+              "procedure": "Partial hepatectomy",
+              "snomed": "71273005",
+              "performed": "2022-01-26T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2022-02-07T10:30",
+              "author": "transplant surgery",
+              "body": "REGIONAL LIVER TRANSPLANT CENTER, SURGICAL SERVICE\nAdmitted: 01/26/2022  Discharged: 02/04/2022\nDiagnosis: hepatocellular carcinoma, right lobe, in hepatitis C cirrhosis; on the transplant waiting list.\nProcedure 01/26: exploratory laparotomy and partial hepatectomy of the right-lobe tumor, as a bridge while he awaits a donor liver. Tumor removed intact.\nCourse: extubated in the OR. Two days in the surgical ICU for monitoring, then the floor. Diuretics resumed day 4. Ambulating, tolerating a regular low-sodium diet at discharge.\nPathology: hepatocellular carcinoma, 4.0 cm, in a cirrhotic liver.\nAllergies: NKDA.\nDischarge meds: spironolactone 100 mg daily, furosemide 40 mg daily, calcium carbonate as needed.\nFollow-up: surgical clinic in 2 weeks; ultrasound in 6 weeks; hepatology in 4 months. PCP visit in 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-17a",
+          "kind": "office_visit",
+          "start": "2022-02-17T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after liver resection",
+          "vitals": {
+            "bp": [
+              133,
+              76
+            ],
+            "hr": 58,
+            "temp_c": 37.0,
+            "spo2": 96,
+            "weight_kg": 78.1
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-02-17T11:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-17T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-02-17T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2022-02-17T10:40",
+              "author": "PCP",
+              "body": "S: 13 days out from laparotomy and partial hepatectomy at the transplant center. Pain now just soreness at the incision, most days needs nothing for it. Eating ok, bowels moving. Walking a mile a day. Surgeon saw him Monday, staples out. Still on spironolactone/furosemide.\nO: afebrile, vitals as charted. Mild icterus no longer seen. Right subcostal incision healed, no redness or drainage. Abdomen soft, slight distension, no tenderness.\nA/P:\n- HCC s/p resection 1/26; path reviewed. Remains listed for transplant.\n- Cirrhosis: BMP today on diuretics.\n- No lifting over 10 lb for 6 weeks per surgery, so no engine work until March. He is not thrilled."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-09a",
+          "kind": "imaging",
+          "start": "2022-03-09T09:00",
+          "service": "Radiology",
+          "reason": "surveillance after partial hepatectomy",
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2022-03-09T09:00",
+              "text": "Status post partial right hepatectomy. Expected postsurgical appearance of the resection margin without collection. Liver nodular and coarse. No focal liver mass. Portal vein patent with hepatopetal flow. No ascites. Gallbladder unremarkable. No biliary dilatation. Spleen and kidneys unremarkable.",
+              "conclusion": "Postsurgical change after partial right hepatectomy. No new liver mass. No ascites."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Abdominal Ultrasound",
+              "date": "2022-03-10T08:00",
+              "author": "radiology",
+              "body": "Outside report received, ordered by transplant surgery. After the January resection: expected surgical change, no new mass, no ascites."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-06a",
+          "kind": "specialist_visit",
+          "start": "2022-06-06T14:00",
+          "service": "Gastroenterology",
+          "reason": "follow-up after resection, new abdominal swelling",
+          "vitals": {
+            "bp": [
+              123,
+              73
+            ],
+            "hr": 64,
+            "weight_kg": 78.0
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-06-06T14:40",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 75
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-06T14:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 110
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.03
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-06-06T14:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 15.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-06-06T14:40",
+              "results": [
+                {
+                  "test": "Alpha-1-Fetoprotein",
+                  "loinc": "1834-1",
+                  "unit": "ng/mL",
+                  "value": 150
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2022-06-08T12:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY AND HEPATOLOGY GROUP\nDate of service: 06/06/2022\nInterval: partial right hepatectomy for HCC in January at the transplant center; he remains on the waiting list. The March ultrasound after surgery showed no new mass and no ascites.\nOver about two months his belly has been swelling again with some discomfort. He denies any alcohol, fever or bowel change.\nMeds: spironolactone 100 mg daily, furosemide 40 mg daily, calcium carbonate as needed. Allergies: NKDA.\nExam: ascites with a fluid wave. Several spider angiomas over the upper chest and shoulders. Healed right subcostal incision.\nLabs today: platelets 110,000, INR 1.3, albumin 3.2, total bilirubin 2.1, AST 80, ALT 75, alkaline phosphatase 120. AFP 150 ng/mL, down from 400 before resection.\nAssessment: decompensated hepatitis C cirrhosis with recurrent ascites after resection; AFP falling but not normal.\nPlan: continue diuretics and 2 g sodium restriction; MELD labs every month per the transplant center; we can arrange a large-volume paracentesis if he becomes uncomfortable. Transplant hepatology to repeat cross-sectional imaging."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Alanine Aminotransferase": 75,
+              "Albumin": 3.2,
+              "Alkaline Phosphatase": 120,
+              "Aspartate Aminotransferase": 80,
+              "Bilirubin, Total": 2.1,
+              "Platelets": 110,
+              "Prothrombin Time-International Normalized Ratio": 1.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "office_visit",
+          "start": "2022-07-12T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up while on transplant list",
+          "vitals": {
+            "bp": [
+              128,
+              72
+            ],
+            "hr": 68,
+            "spo2": 95,
+            "weight_kg": 77.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-07-12T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-07-12T15:20",
+              "author": "PCP",
+              "body": "S: Belly fuller again since spring, GI aware. Monthly labs going to the transplant center. Keeps his phone on him at all times for the call. Took a smaller job this summer, rebuilding a lower unit at his own pace. Sober. Mood holding up, worries about the wait.\nO: vitals as charted. Spider angiomas upper chest. Abdomen distended, nontender, shifting dullness. No edema. No asterixis. Alert and oriented.\nA/P:\n- Decompensated cirrhosis, HCC s/p resection, waitlisted: plan per GI/transplant; diuretics unchanged. Reviewed signs of encephalopathy, bleeding and infection to report urgently.\n- Coping: offered counseling, declines for now.\nRTC 3 months or after transplant."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-09-19a",
+          "kind": "hospital_admission",
+          "start": "2022-09-19T02:10",
+          "end": "2022-09-30T13:00",
+          "service": "Transplant Surgery",
+          "reason": "orthotopic liver transplantation",
+          "conditions": [
+            {
+              "label": "Liver transplant status",
+              "action": "diagnosed",
+              "onset": "2022-09-19"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tacrolimus 1 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 2 capsules (2 mg) by mouth twice daily",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "liver transplant immunosuppression"
+            },
+            {
+              "drug_text": "mycophenolate mofetil 250 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 3 capsules (750 mg) by mouth twice daily",
+              "dose": {
+                "value": 750,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "liver transplant immunosuppression"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "liver transplant immunosuppression"
+            },
+            {
+              "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pneumocystis prophylaxis"
+            },
+            {
+              "drug_text": "spironolactone 100 MG Oral Tablet",
+              "action": "stop",
+              "reason": "ascites resolved after transplant"
+            },
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "stop",
+              "reason": "ascites resolved after transplant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Orthotopic liver transplant",
+              "snomed": "174425003",
+              "performed": "2022-09-19T06:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Liver Transplant Discharge Summary",
+              "date": "2022-10-03T09:15",
+              "author": "transplant surgery",
+              "body": "REGIONAL LIVER TRANSPLANT CENTER\nAdmitted: 09/19/2022  Discharged: 09/30/2022\nIndication: decompensated cirrhosis from chronic hepatitis C (genotype 1a) and prior alcohol use, with hepatocellular carcinoma treated by partial right hepatectomy in January 2022.\nProcedure 09/19: orthotopic deceased-donor liver transplantation. Uneventful anastomoses. Extubated postoperative day 1.\nCourse: graft function improved steadily with falling bilirubin and INR. Graft ultrasound on day 1 and day 5 showed patent vessels. Ascites resolved; diuretics stopped. Transferred from the ICU on day 3. Tacrolimus titrated to target trough.\nAllergies: no known drug allergies.\nDischarge medications:\n- tacrolimus 2 mg by mouth twice daily\n- mycophenolate mofetil 750 mg by mouth twice daily\n- prednisone 5 mg by mouth daily\n- trimethoprim-sulfamethoxazole 160/800 mg by mouth daily (Pneumocystis prophylaxis)\n- calcium carbonate 500 mg as needed for dyspepsia\nStopped: spironolactone, furosemide.\nFollow-up: transplant clinic twice weekly for the first month with labs, including tacrolimus troughs; then tapering visits. PCP within 2 to 3 weeks. No live vaccines. Inactivated influenza vaccine may be given after the first month."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "office_visit",
+          "start": "2022-10-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "first visit after liver transplant",
+          "conditions": [
+            {
+              "label": "Decompensated cirrhosis of liver",
+              "action": "resolved",
+              "icd10": "K74.69"
+            },
+            {
+              "label": "Portal hypertension",
+              "action": "resolved",
+              "icd10": "K76.6"
+            },
+            {
+              "label": "Thrombocytopenia",
+              "action": "resolved"
+            },
+            {
+              "label": "Hepatocellular carcinoma",
+              "action": "resolved",
+              "icd10": "C22.0"
+            },
+            {
+              "label": "History of hepatocellular carcinoma",
+              "action": "diagnosed",
+              "onset": "2022-09-19",
+              "note": "Resected January 2022; native liver explanted at transplant",
+              "icd10": "Z85.05"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              77
+            ],
+            "hr": 60,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-13T11:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 35
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 32
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 109
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-13T11:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 197
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-10-13T11:40",
+              "results": [
+                {
+                  "test": "Tacrolimus trough",
+                  "loinc": "11253-2",
+                  "unit": "ng/mL",
+                  "value": 7.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2022-10-13T11:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-13T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Transplant Visit",
+              "date": "2022-10-13T11:00",
+              "author": "PCP",
+              "body": "57M, 3.5 weeks after deceased-donor liver transplant (9/19). Discharge summary reviewed.\nS: Feels better than he has in two years, still tires by mid-afternoon. Eating well. Incision healing; seen by transplant clinic twice a week, labs Mon/Thu. Taking tacrolimus 2 mg BID, mycophenolate 750 mg BID, prednisone 5 mg, TMP-SMX DS daily. Uses a pill box and phone alarms. No fevers, no diarrhea.\nO: vitals as charted. No icterus. Chevron incision clean and dry, no erythema. Abdomen soft, no fluid wave. No edema.\nA/P:\n1. Liver transplant status: immunosuppression per transplant center. Problem list updated: cirrhosis, portal hypertension and low platelets resolved with the new liver; HCC moved to history. Platelets normal today.\n2. Chronic hepatitis C: remains on the list.\n3. Labs today as a courtesy for transplant clinic, results faxed there.\n4. Vaccines: inactivated flu and updated COVID in November once past the first month. No live vaccines ever going forward, reviewed.\nRTC 2 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0,
+            "labs": {
+              "Alanine Aminotransferase": 34,
+              "Albumin": 3.7,
+              "Alkaline Phosphatase": 96,
+              "Aspartate Aminotransferase": 31,
+              "Bilirubin, Total": 0.9,
+              "Hemoglobin": 14.4,
+              "Platelets": 186,
+              "Prothrombin Time-International Normalized Ratio": 1.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "nurse_visit",
+          "start": "2022-11-09T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-09T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-11-09T09:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-11-09T09:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Vaccines",
+              "date": "2022-11-09T09:05",
+              "author": "RN",
+              "body": "Transplant 9/19, team okayed inactivated vaccines now. Inactivated flu R deltoid, bivalent COVID L deltoid. Afebrile today. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-03a",
+          "kind": "hospital_admission",
+          "start": "2022-12-03T16:45",
+          "end": "2022-12-10T12:00",
+          "service": "General Surgery",
+          "reason": "sudden severe abdominal pain",
+          "conditions": [
+            {
+              "label": "Perforated duodenal ulcer",
+              "action": "diagnosed",
+              "onset": "2022-12-03",
+              "icd10": "K26.5"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily before meals for 8 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "perforated duodenal ulcer, after repair"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2022-12-03T16:50",
+              "bp": [
+                96,
+                60
+              ],
+              "hr": 112,
+              "temp_c": 38.2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2022-12-03T17:20",
+              "text": "Upright portable chest. Free air beneath both hemidiaphragms. Lungs clear. Heart size normal. No pleural effusion.",
+              "conclusion": "Pneumoperitoneum, consistent with hollow viscus perforation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2022-12-03T16:45"
+            },
+            {
+              "procedure": "Exploratory laparotomy",
+              "snomed": "74770008",
+              "performed": "2022-12-03T20:30"
+            },
+            {
+              "procedure": "Patch repair of perforated duodenal ulcer",
+              "snomed": "698496004",
+              "performed": "2022-12-03T21:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2022-12-12T09:00",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPT\nVisit 12/03/2022, arrived 16:45 by private car.\nCC: abdominal pain, sudden, 2 hours.\nHPI: 57-year-old man about 10 weeks after liver transplant. Abrupt severe pain across the whole abdomen that started while watching TV and has not let up; nothing makes it better or worse. For about a week, burning in the pit of the stomach after eating, which he treated with over-the-counter antacids now and then; did not call anyone. Takes prednisone and other transplant medicines. Never smoker, no alcohol.\nAllergies: NKDA.\nVitals: T 38.2 C, BP 96/60, HR 112.\nExam: lying very still, sweaty. Abdomen distended, tender everywhere with guarding and marked rebound. No bowel sounds.\nUpright CXR: free air under the diaphragm.\nImpression: perforated viscus, likely peptic, in an immunosuppressed patient. Fluids, IV antibiotics, IV PPI. Transplant team and general surgery at bedside; to the OR."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "date": "2022-12-12T09:05",
+              "author": "general surgery",
+              "body": "Date of operation: 12/03/2022\nPreoperative diagnosis: pneumoperitoneum. Postoperative diagnosis: perforated anterior duodenal ulcer.\nProcedure: exploratory laparotomy, omental (Graham) patch repair of perforated duodenal ulcer, washout.\nFindings: a small perforation of the anterior wall of the first part of the duodenum with bilious contamination of the upper abdomen. Liver graft appeared healthy. No other perforation.\nThe omental pedicle was secured over the defect with interrupted sutures; leak test negative. Abdomen irrigated. Fascia closed. EBL minimal. Patient to the surgical ICU in stable condition."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2022-12-12T09:10",
+              "author": "general surgery",
+              "body": "Admitted: 12/03/2022  Discharged: 12/10/2022\nDiagnosis: perforated duodenal ulcer, s/p Graham patch repair 12/03. Background: liver transplant 09/2022 on tacrolimus, mycophenolate, prednisone.\nCourse: one night in the surgical ICU, then the floor. IV antibiotics completed. Diet advanced from day 4. Tacrolimus continued with levels checked by the transplant team throughout. Wound healing well.\nAllergies: NKDA.\nDischarge medications: pantoprazole 40 mg twice daily for 8 weeks (new); tacrolimus 2 mg twice daily; mycophenolate mofetil 750 mg twice daily; prednisone 5 mg daily; trimethoprim-sulfamethoxazole DS daily.\nInstructions: avoid NSAIDs. Surgical clinic 2 weeks. PCP 1 to 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "office_visit",
+          "start": "2022-12-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ulcer surgery",
+          "vitals": {
+            "bp": [
+              140,
+              78
+            ],
+            "hr": 64,
+            "temp_c": 37.1,
+            "spo2": 97,
+            "weight_kg": 72.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-19T14:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 214
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2022-12-19T13:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-19T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2022-12-19T13:40",
+              "author": "PCP",
+              "body": "Hospital follow-up: perforated duodenal ulcer 12/3, Graham patch the same night. ED, op note and discharge summary reviewed.\nS: Sore along the new midline wound, otherwise ok. Eating small meals without burning. Taking pantoprazole 40 BID. Transplant meds unchanged, levels per transplant clinic. Says he should have called about the burning that week, assumed it was his usual heartburn.\nO: afebrile, vitals as charted. Midline incision clean, edges together, no drainage. Abdomen soft, appropriately tender near the wound.\nA/P:\n- Perforated DU s/p repair: pantoprazole 40 BID for 8 weeks total (to early Feb), then stop and reassess. No NSAIDs, ever; this is on his list. Low threshold to call for epigastric pain given prednisone.\n- Liver transplant: stable.\n- CBC today.\nRTC early Feb."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, end of pantoprazole course",
+          "conditions": [
+            {
+              "label": "Perforated duodenal ulcer",
+              "action": "resolved",
+              "icd10": "K26.5"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "pantoprazole 40 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "8-week course complete"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              73
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 77.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-07T11:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 32
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 34
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.7
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 108
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-02-07T11:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 182
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-07T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-02-07T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-02-07T10:20",
+              "author": "PCP",
+              "body": "S: 8 weeks of pantoprazole done this week. No epigastric pain, no black stools. Heartburn only now and then, uses calcium carbonate. Back in the shop part time, light work. Weight coming back.\nO: vitals as charted. Midline scar well healed, no hernia felt. Abdomen soft, nontender.\nA/P:\n- Perforated DU, repaired: course complete, pantoprazole stopped. Resolved. PRN calcium carbonate for heartburn.\n- Liver transplant: transplant clinic monthly now. CMP/CBC today, copy to them.\n- Hep C: on list.\nPhysical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "outside_records",
+          "start": "2023-04-14T10:00",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Clinic Letter",
+              "date": "2023-04-14T10:00",
+              "author": "transplant hepatology",
+              "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 04/12/2023\nMr. Nowak is now about 7 months after liver transplantation. He recovered from the December ulcer repair without problems. Graft function is stable and tacrolimus troughs have been in our target range on 2 mg twice daily. We are continuing mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily and trimethoprim-sulfamethoxazole daily.\nAllergies: NKDA.\nNext visit in 4 months with labs. Thank you for sharing his care."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "portal_message",
+          "start": "2023-07-18T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sulfa pill refill",
+              "date": "2023-07-18T09:30",
+              "author": "patient",
+              "body": "The transplant pharmacy mail order is running late and I have 2 of the sulfa pills left. Could you send a month to my local pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: refill",
+              "date": "2023-07-18T11:05",
+              "author": "PCP",
+              "body": "Done, 30 tablets of trimethoprim-sulfamethoxazole DS, one daily, sent to your local pharmacy. Keep the transplant pharmacy as your main supply."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "annual_physical",
+          "start": "2023-09-21T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              127,
+              74
+            ],
+            "hr": 67,
+            "rr": 12,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 81.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-21T09:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 32
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 33
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 105
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-21T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 174
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-21T09:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-09-21T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-09-21T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-21T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-09-21T08:40",
+              "author": "PCP",
+              "body": "58M, a year out from liver transplant.\nHow he's doing: working close to full days again on a lighter schedule. Energy good. No heartburn to speak of. Sober 7 years.\nMeds: tacrolimus 2 mg BID, mycophenolate 750 mg BID, prednisone 5 mg daily, TMP-SMX DS daily, calcium carbonate PRN. NKDA.\nFunctional: independent in all ADLs/IADLs. No falls. Hearing and vision ok.\nPrevention: colonoscopy 9/2021 normal (10 yr). Hep A/B, zoster, PCV20, Tdap complete. Flu/COVID next month at a nurse visit. Glucose and A1c checked given prednisone and family history: A1c 5.6.\nExam: well. Anicteric. Heart and lungs normal. Abdomen: well-healed chevron and midline scars, no hernia, no tenderness. Skin: no suspicious lesions on a full check. No edema.\nA/P: stable post-transplant. Labs as above, copy to transplant clinic. Sun protection reviewed given immunosuppression and outdoor work."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T08:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T08:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Fall Vaccines",
+              "date": "2023-10-11T08:50",
+              "author": "MA",
+              "body": "Inactivated flu (R arm) and 2023-24 COVID (L arm). Transplant pt, inactivated only. No issues after."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-15a",
+          "kind": "hospital_admission",
+          "start": "2024-02-15T18:20",
+          "end": "2024-02-17T14:00",
+          "service": "Nephrology",
+          "reason": "malaise, headache, decreased urine output",
+          "conditions": [
+            {
+              "label": "Calcineurin inhibitor nephrotoxicity",
+              "action": "diagnosed",
+              "onset": "2024-02-15",
+              "note": "Tacrolimus level 25 ng/mL",
+              "icd10": "N14.19"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-02-15T18:30",
+              "bp": [
+                162,
+                98
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-15T19:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.8
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 44
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 25
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-15T19:00",
+              "results": [
+                {
+                  "test": "Tacrolimus trough",
+                  "loinc": "11253-2",
+                  "unit": "ng/mL",
+                  "value": 25
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-02-15T19:20",
+              "results": [
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.03
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 0
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 0
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-17T06:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-02-15T18:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology Consultation",
+              "date": "2024-02-20T08:30",
+              "author": "nephrology",
+              "body": "COMMUNITY HOSPITAL, NEPHROLOGY CONSULT SERVICE (ED)\nDate: 02/15/2024\nAsked by the ED to see this 58-year-old man, liver transplant 09/2022 on tacrolimus, mycophenolate and prednisone, with a remote perforated duodenal ulcer repair. Two days of feeling unwell with headache and passing less urine. He says he takes his tacrolimus exactly as prescribed, 2 mg twice daily.\nAllergies: NKDA.\nBP 162/98. Mild edema of both lower legs. Otherwise unremarkable.\nCreatinine 2.8 mg/dL (his baseline 1.0). BUN 44. Potassium 5.2. Tacrolimus level 25 ng/mL against a target of 5 to 15. Urinalysis: specific gravity 1.030, protein negative, no cells.\nImpression: acute kidney injury from calcineurin inhibitor nephrotoxicity, with a supratherapeutic tacrolimus level. Bland, concentrated urine fits a hemodynamic, vasoconstrictive effect.\nRecommendations: hold tacrolimus and recheck the level daily; gentle IV fluids; avoid nephrotoxins and contrast; resume per transplant hepatology once the level is back in range. Discussed with the transplant center."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2024-02-20T08:40",
+              "author": "hospital medicine",
+              "body": "COMMUNITY HOSPITAL\nAdmitted 02/15/2024, discharged 02/17/2024.\nDiagnosis: calcineurin inhibitor nephrotoxicity with tacrolimus level 25 ng/mL.\nCourse: tacrolimus held on arrival. Urine output picked up overnight with IV fluids. Headache settled. In consultation with the transplant center, tacrolimus was restarted at 2 mg twice daily on 02/17 after the level returned to range. Creatinine 2.0 on the day of discharge.\nAllergies: NKDA.\nDischarge medications: tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed.\nFollow-up: BMP and tacrolimus level in 10 days through PCP or transplant clinic; PCP visit within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-28a",
+          "kind": "office_visit",
+          "start": "2024-02-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after kidney injury",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 64,
+            "spo2": 96,
+            "weight_kg": 82.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-28T07:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 64
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-28T07:10",
+              "results": [
+                {
+                  "test": "Tacrolimus trough",
+                  "loinc": "11253-2",
+                  "unit": "ng/mL",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-02-28T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-28T07:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2024-02-28T09:30",
+              "author": "PCP",
+              "body": "Seen after 2/15-2/17 admission for tacrolimus nephrotoxicity (level 25, Cr 2.8 from 1.0). Nephrology note and discharge summary reviewed.\nS: Feels back to normal. Peeing normally, headaches gone, ankles no longer puffy. Took a 12-hour trough this morning before coming in. Still on 2 mg BID per transplant. No new meds, no OTC pain relievers, no grapefruit.\nO: BP 128/80. No edema. Heart and lungs normal.\nResults this morning: creatinine 1.3, potassium 4.6, tacrolimus 8.6.\nA/P:\n- Calcineurin inhibitor nephrotoxicity: much improved, creatinine not quite back to old baseline. Faxed results to transplant clinic, who will manage dosing. Recheck creatinine at next visit.\n- BP normal today off any agent.\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 83.0,
+            "labs": {
+              "Creatinine": 1.25
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "office_visit",
+          "start": "2024-05-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-05-22b",
+          "kind": "telephone",
+          "start": "2024-05-22T16:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-05-22T16:30",
+              "author": "front desk",
+              "body": "Called re: missed 2 pm appt. Pt apologized, was out on a sea trial with a customer and lost track of time. Rebooked for 6/11 at 3:20."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "vitals": {
+            "bp": [
+              127,
+              74
+            ],
+            "hr": 69,
+            "spo2": 97,
+            "weight_kg": 83.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-11T15:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.27
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 65
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-11T15:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-11T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-06-11T15:20",
+              "author": "PCP",
+              "body": "S: Busy season, feels well. Transplant clinic saw him in April, no changes. No urinary issues, no swelling. Wears a long-sleeve sun shirt and a hat on the water now.\nO: vitals as charted, BP fine. No edema.\nA/P:\n- CNI nephrotoxicity: creatinine recheck today.\n- Liver transplant, hep C, history of HCC: per transplant center.\n- GERD: rare PRN calcium carbonate.\nPhysical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 83.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney test",
+              "date": "2024-06-12T12:40",
+              "author": "PCP",
+              "body": "Robert, creatinine is about 1.2, which looks like your new steady level since the February episode. Potassium fine. Nothing to change. I've sent a copy to the transplant team."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "outside_records",
+          "start": "2024-08-23T09:30",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Clinic Letter",
+              "date": "2024-08-23T09:30",
+              "author": "transplant hepatology",
+              "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 08/21/2024\nNearly two years after liver transplantation. Since the February admission for tacrolimus nephrotoxicity his troughs have stayed in range on 2 mg twice daily and his creatinine has settled around 1.2. Graft function is stable. No change to mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily or trimethoprim-sulfamethoxazole prophylaxis.\nAllergies: NKDA.\nNext visit 6 months. Please continue yearly inactivated influenza and COVID vaccines."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "annual_physical",
+          "start": "2024-10-03T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              129,
+              87
+            ],
+            "hr": 62,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 83.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-03T09:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.27
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 65
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-03T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 204
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.59
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-03T09:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-10-03T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-03T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-03T09:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-03T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-03T09:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-10-03T08:30",
+              "author": "PCP",
+              "body": "59M, two years post liver transplant.\nUpdates: no hospital stays since February. Working full days through the boat season, hauling boats out this month. Sober since 2016. Sleep and mood good.\nMeds/allergies reviewed and reconciled with the transplant clinic letter of 8/21. NKDA.\nScreening: colonoscopy 2021 normal. Vaccines: flu and 2024-25 COVID today. Others complete.\nExam: well. Anicteric. Heart RRR, lungs clear. Abdomen soft, scars healed. Skin check: no concerning lesions. No edema.\nA/P: stable. CMP, CBC, lipids today. Next visit spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-07a",
+          "kind": "hospital_admission",
+          "start": "2025-03-07T21:15",
+          "end": "2025-03-19T12:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "septic shock from pneumonia",
+          "conditions": [
+            {
+              "label": "Pneumonia, unspecified organism",
+              "action": "diagnosed",
+              "onset": "2025-03-07",
+              "icd10": "J18.9"
+            },
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "diagnosed",
+              "onset": "2025-03-07",
+              "icd10": "R65.21"
+            },
+            {
+              "label": "Central diabetes insipidus",
+              "action": "diagnosed",
+              "onset": "2025-03-07",
+              "note": "Inadequately controlled during septic shock; responded to vasopressin"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-03-07T23:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and Hospital Discharge Summary",
+              "date": "2025-03-21T10:00",
+              "author": "pulmonary and critical care",
+              "body": "REGIONAL MEDICAL CENTER, MEDICAL ICU\nAdmitted: 03/07/2025  Discharged: 03/19/2025\nPrincipal diagnosis: septic shock secondary to pneumonia.\nSecondary: central diabetes insipidus, inadequately controlled during the acute illness.\nBackground: 59-year-old man with chronic hepatitis C, prior hepatocellular carcinoma, liver transplant 09/2022 on tacrolimus, mycophenolate and prednisone; earlier tacrolimus nephrotoxicity (02/2024) and perforated duodenal ulcer repair (12/2022).\nCourse: admitted to the ICU from the ED with pneumonia and shock. He received high-volume IV fluids and broad-spectrum IV antibiotics. Over the first two days his pressure stayed low despite resuscitation and he became increasingly drowsy and confused, so norepinephrine was begun. Urine output remained over 4 liters a day even while he was hypotensive. Vasopressin was added; within about 12 hours nursing recorded a clear fall in urine output and he was noticeably less thirsty, consistent with central diabetes insipidus. He was fed enterally for several days with electrolytes replaced as needed. Exam during the stay showed no edema or JVD, unremarkable heart and lung sounds and no focal neurological deficit.\nPressors were weaned off by day 6, mental status cleared, and he finished his antibiotic course on the ward. At discharge urine output and serum sodium were normal without desmopressin.\nImmunosuppression: managed with the transplant center throughout; discharged on his usual doses.\nAllergies: NKDA.\nDischarge medications: tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed.\nFollow-up: PCP within 1 to 2 weeks; transplant clinic 2 weeks. Return for fever, cough, breathlessness, confusion, or heavy urination with thirst."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-26T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge follow-up",
+          "conditions": [
+            {
+              "label": "Pneumonia, unspecified organism",
+              "action": "resolved",
+              "icd10": "J18.9"
+            },
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "resolved",
+              "icd10": "R65.21"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2025-03-26T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit, Post-Discharge",
+              "date": "2025-03-26T11:30",
+              "author": "PCP",
+              "body": "Video, pt at home, consents. One week home after 3/7-3/19 ICU stay for septic shock from pneumonia; new label of central DI during the stay. Discharge summary reviewed.\nS: Weak, sleeping a lot, but eating. Cough mostly gone. No fever. Peeing a normal amount, not unusually thirsty. A neighbor is driving him to appointments. Transplant clinic visit set for next week.\nObs: looks tired, speaking full sentences, no distress on video.\nA/P:\n- Pneumonia with septic shock, treated: resolved, recovering.\n- Central diabetes insipidus: no polyuria or thirst off any treatment; recheck sodium at in-person visit; call for heavy urination.\n- Immunosuppression per transplant.\nIn-person visit in about 4 weeks. Call or ER for fever, shortness of breath or confusion."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-04a",
+          "kind": "hospital_admission",
+          "start": "2025-04-04T15:40",
+          "end": "2025-04-29T13:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "recurrent septic shock from pneumonia, respiratory failure",
+          "conditions": [
+            {
+              "label": "Pneumonia, unspecified organism",
+              "action": "diagnosed",
+              "onset": "2025-04-04",
+              "icd10": "J18.9"
+            },
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "diagnosed",
+              "onset": "2025-04-04",
+              "icd10": "R65.21"
+            },
+            {
+              "label": "Acute respiratory distress syndrome",
+              "action": "diagnosed",
+              "onset": "2025-04-04",
+              "note": "Refractory hypoxemia on mechanical ventilation",
+              "icd10": "J80"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-07T10:30",
+              "resulted": "2025-04-10T09:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Bronchoalveolar lavage by Culture",
+                  "loinc": "105917-9",
+                  "text": "No growth"
+                },
+                {
+                  "test": "Pneumocystis jirovecii DNA in Bronchoalveolar lavage",
+                  "loinc": "105613-4",
+                  "text": "Not detected"
+                },
+                {
+                  "test": "Galactomannan Ag in Bronchoalveolar lavage",
+                  "loinc": "115626-4",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-04-06T05:30",
+              "text": "Portable AP chest, supine. Endotracheal tube and enteric tube in standard position. Right internal jugular central line, tip at the cavoatrial junction. Bilateral patchy airspace opacities. Heart size normal. No pneumothorax.",
+              "conclusion": "Bilateral patchy opacities without cardiomegaly. Lines and tubes in position."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-04-06T11:00",
+              "text": "Limited bedside study, mechanically ventilated. Left ventricle normal in size with preserved systolic function. Right ventricle normal in size and function. No significant valvular abnormality. No pericardial effusion.",
+              "conclusion": "Preserved left ventricular systolic function. No significant valvular disease."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-04-04T17:00"
+            },
+            {
+              "procedure": "Bronchoscopy and bronchoalveolar lavage",
+              "snomed": "397397002",
+              "performed": "2025-04-07T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU and Hospital Discharge Summary",
+              "date": "2025-05-02T14:00",
+              "author": "pulmonary and critical care",
+              "body": "REGIONAL MEDICAL CENTER, MEDICAL ICU\nAdmitted: 04/04/2025  Discharged home: 04/29/2025\nDiagnoses: septic shock secondary to pneumonia (readmission four weeks after the March ICU stay); acute respiratory distress syndrome with refractory hypoxemia.\nBackground: 59-year-old liver transplant recipient (09/2022) on tacrolimus, mycophenolate mofetil and prednisone, with central diabetes insipidus identified during the March admission.\nCourse: returned with pneumonia and shock and needed fluid resuscitation, broad-spectrum IV antibiotics, vasopressors and intubation with mechanical ventilation on arrival to the ICU.\nICU day 3 (04/06): oxygenation had deteriorated over 24 hours with steadily rising inspired oxygen requirements. He was febrile and tachypneic, with diffuse crackles through both lungs. Arterial gases showed hypoxemia that did not correct with supplemental oxygen. Chest film: bilateral patchy opacities, no cardiomegaly. Echocardiogram: preserved LV systolic function and no significant valve disease, arguing against a cardiac cause. Diagnosis: ARDS with refractory hypoxemia.\nLung-protective ventilation was used. Because he is immunosuppressed, bronchoscopy with BAL was done on 04/07 to look for an opportunistic infection: bacterial culture no growth, Pneumocystis PCR not detected, galactomannan negative. Antibiotics were completed for bacterial pneumonia.\nOxygenation improved over the following week. Extubated 04/15. Stepped down to the ward 04/18 and worked with physical therapy until discharge. Room air at discharge.\nImmunosuppression adjusted day to day with the transplant team and resumed at usual doses before discharge.\nAllergies: NKDA.\nDischarge medications: tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed.\nFollow-up: PCP 2 to 3 weeks; transplant clinic 1 to 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "office_visit",
+          "start": "2025-05-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ICU admission for ARDS",
+          "conditions": [
+            {
+              "label": "Acute respiratory distress syndrome",
+              "action": "resolved",
+              "icd10": "J80"
+            },
+            {
+              "label": "Pneumonia, unspecified organism",
+              "action": "resolved",
+              "icd10": "J18.9"
+            },
+            {
+              "label": "Severe sepsis with septic shock",
+              "action": "resolved",
+              "icd10": "R65.21"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              72
+            ],
+            "hr": 55,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 94,
+            "weight_kg": 74.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-16T10:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.3
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 34
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 63
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-16T10:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 182
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2025-05-16T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-16T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-05-16T10:00",
+              "author": "PCP",
+              "body": "Second ICU admission in two months: 4/4-4/29, recurrent septic shock from pneumonia, intubated, ARDS with refractory hypoxemia on 4/6. BAL negative for opportunistic organisms. Extubated 4/15. Discharge summary reviewed in full.\nS: Home 2.5 weeks. Weak legs, walks the driveway and back twice a day, using a cane outside. Breathing better each week, winded on stairs. No fever, minimal cough. Eating three meals, weight down to 75 kg from 83 last fall. Urinating normally, no excess thirst at night. Saw transplant clinic last week; no med changes. Not back at work and not sure when.\nO: SpO2 94% on room air at rest. Vitals otherwise as charted. Thin, tired but in no distress. Lungs: clear to auscultation. Heart regular. Abdomen soft. No edema. Gait slow but steady.\nA/P:\n1. ARDS after septic shock from pneumonia: recovering, on room air. Resolved off the active list; recovery will take months.\n2. Central diabetes insipidus: no polyuria; sodium today.\n3. Calcineurin inhibitor nephrotoxicity: creatinine today.\n4. Liver transplant on tacrolimus/mycophenolate/prednisone: per transplant center.\n5. Deconditioning: home walking plan reviewed, increase gradually.\nCMP and CBC today. Return in about 2 months, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0,
+            "labs": {
+              "Creatinine": 1.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-19a",
+          "kind": "portal_message",
+          "start": "2025-05-19T13:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Friday",
+              "date": "2025-05-19T13:15",
+              "author": "PCP",
+              "body": "Robert, your sodium is 139, right where it should be, so no sign the diabetes insipidus is acting up. Creatinine 1.3, close to your usual. Blood counts fine. Copy sent to transplant clinic. Let's plan to see you in July; the front desk will reach out to book."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "telephone",
+          "start": "2025-07-01T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2025-07-01T10:05",
+              "author": "front desk",
+              "body": "Called to book his July follow-up. Pt says transplant clinic is seeing him every month for now and he'd rather not add another trip while he's still building up strength. Will call us when ready. Left the recall open."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "outside_records",
+          "start": "2025-07-25T09:00",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Clinic Letter",
+              "date": "2025-07-25T09:00",
+              "author": "transplant hepatology",
+              "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 07/23/2025\nRecovering steadily after the spring ICU admissions for septic shock and ARDS. Off oxygen, walking longer distances, back in his shop for a few hours a day. Graft function stable; tacrolimus troughs in range on 2 mg twice daily. Continuing mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily and trimethoprim-sulfamethoxazole.\nAllergies: NKDA.\nReturn in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "pharmacy",
+          "start": "2025-10-08T15:00",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-06T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside Influenza Vaccine",
+              "date": "2025-10-08T15:00",
+              "author": "MA",
+              "body": "Notification from retail pharmacy: inactivated trivalent influenza vaccine given 10/6/2025. Added to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "outside_records",
+          "start": "2026-01-23T09:00",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Transplant Clinic Letter",
+              "date": "2026-01-23T09:00",
+              "author": "transplant hepatology",
+              "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 01/21/2026\nThree years and four months after liver transplantation. Doing well and back to work. Graft function stable. Tacrolimus 2 mg twice daily with troughs in range; mycophenolate mofetil 750 mg twice daily; prednisone 5 mg daily; trimethoprim-sulfamethoxazole daily.\nAllergies: NKDA.\nNext visit in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "pharmacy",
+          "start": "2026-03-11T08:40",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Refill Request",
+              "date": "2026-03-11T08:40",
+              "author": "RN",
+              "body": "Local pharmacy faxed a bridge refill request for trimethoprim-sulfamethoxazole DS daily, mail-order shipment delayed again. Last office visit 5/2025. Approved 30 days per PCP; pt reminded to schedule a visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "hospital_admission",
+          "start": "2026-06-04T19:50",
+          "end": "2026-06-18T12:00",
+          "service": "General Surgery",
+          "reason": "left lower leg pain and swelling after a laceration",
+          "vitals": [
+            {
+              "time": "2026-06-04T19:55",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 112,
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-04T20:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-04T20:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 2.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 69
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.8
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 103
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-06-04T20:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 16
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-04T19:50"
+            },
+            {
+              "procedure": "Debridement",
+              "snomed": "36777000",
+              "performed": "2026-06-04T23:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-06-22T10:00",
+              "author": "emergency medicine",
+              "body": "REGIONAL MEDICAL CENTER EMERGENCY DEPT\nSeen 06/04/2026 at 19:50.\nCC: left lower leg pain and swelling for 24 hours.\nHPI: 61-year-old liver transplant recipient. Yesterday he nicked the front of his left shin while cleaning his boat; within a few hours it began to hurt badly and swell, and it has worsened since. History of chronic hepatitis C and past alcohol misuse.\nMeds: tacrolimus, mycophenolate mofetil, prednisone, trimethoprim-sulfamethoxazole, calcium carbonate as needed. Allergies: NKDA.\nVitals: T 38.9 C, HR 112, BP 90/60.\nExam: left lower leg red, swollen and very tender, with several blood-filled bullae. Small laceration on the anterior shin.\nLabs: WBC 18,000, hemoglobin 13.2, platelets 230,000, sodium 135, potassium 4.5, creatinine 1.2, AST 80, ALT 72, total bilirubin 2.1, PT 16 seconds, INR 1.4.\nImpression: necrotizing soft tissue infection of the left leg with sepsis in an immunosuppressed patient.\nPlan: IV fluids, broad-spectrum IV antibiotics, blood cultures; emergency general surgery consult; transplant team notified. To the OR tonight."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "date": "2026-06-22T10:05",
+              "author": "general surgery",
+              "body": "Date of operation: 06/04/2026\nPreoperative and postoperative diagnosis: necrotizing fasciitis, left lower extremity.\nProcedure: extensive surgical debridement of skin, subcutaneous tissue and fascia of the left lower leg.\nFindings: grayish, nonviable fascia with thin dishwater fluid, separating easily from the underlying muscle along the anterior and lateral leg. Muscle viable. All nonviable tissue excised back to bleeding, healthy tissue. Tissue sent for culture and pathology.\nWound packed and dressed."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-06-22T10:10",
+              "author": "general surgery",
+              "body": "REGIONAL MEDICAL CENTER\nAdmitted: 06/04/2026  Discharged: 06/18/2026\nDiagnosis: necrotizing fasciitis, left lower extremity, after a minor laceration.\nProcedures: emergency extensive surgical debridement of the left lower leg on 06/04; wound managed with packing and dressing changes.\nCourse: monitored in the surgical ICU for the first 48 hours; blood pressure recovered with fluids. Broad-spectrum IV antibiotics, narrowed and completed in hospital in consultation with infectious disease. Immunosuppression continued in coordination with the transplant center. Fever resolved, white count normalized, and the wound bed is healthy and granulating.\nAllergies: NKDA.\nDischarge medications: unchanged from admission (tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed).\nDischarged home with visiting nurse wound care and dressing changes three times weekly.\nFollow-up: surgical clinic in 1 week; transplant clinic in 2 weeks; PCP at his convenience."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "portal_message",
+          "start": "2026-06-24T18:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Out of the hospital",
+              "date": "2026-06-24T18:40",
+              "author": "patient",
+              "body": "Wanted you to know I was in the hospital two weeks for a bad leg infection after I cut my shin on the boat. They operated on it. Home now, nurse comes three times a week for the dressing. Surgeon sees me Friday. Do you need me to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Out of the hospital",
+              "date": "2026-06-25T08:15",
+              "author": "PCP",
+              "body": "Robert, thank you for telling me, and I'm sorry you went through that. I have the hospital records. For now the surgeons and the wound nurse are the right people for the leg. Once you're getting around, call the front desk and we'll find a time to catch up; it has been a while. Any fever, spreading redness or feeling faint, go straight to the ER."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute respiratory distress syndrome|J80": {
+        "code": "J80",
+        "display": "Acute respiratory distress syndrome",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Calcineurin inhibitor nephrotoxicity|N14.19": {
+        "code": "N14.19",
+        "display": "Nephropathy induced by other drugs, medicaments and biological substances",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Decompensated cirrhosis of liver|K74.69": {
+        "code": "K74.69",
+        "display": "Other cirrhosis of liver",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hepatocellular carcinoma|C22.0": {
+        "code": "C22.0",
+        "display": "Liver cell carcinoma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of hepatocellular carcinoma|Z85.05": {
+        "code": "Z85.05",
+        "display": "Personal history of malignant neoplasm of liver",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Perforated duodenal ulcer|K26.5": {
+        "code": "K26.5",
+        "display": "Chronic or unspecified duodenal ulcer with perforation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pneumonia, unspecified organism|J18.9": {
+        "code": "J18.9",
+        "display": "Pneumonia, unspecified organism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Portal hypertension|K76.6": {
+        "code": "K76.6",
+        "display": "Portal hypertension",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe sepsis with septic shock|R65.21": {
+        "code": "R65.21",
+        "display": "Severe sepsis with septic shock",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "calcium carbonate 500 MG Chewable Tablet": {
+        "code": "308907",
+        "display": "calcium carbonate 500 MG Chewable Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "mycophenolate mofetil 250 MG Oral Capsule": {
+        "code": "199058",
+        "display": "mycophenolate mofetil 250 MG Oral Capsule",
+        "ingredient": "mycophenolate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "spironolactone 100 MG Oral Tablet": {
+        "code": "198222",
+        "display": "spironolactone 100 MG Oral Tablet",
+        "ingredient": "spironolactone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "tacrolimus 1 MG Oral Capsule": {
+        "code": "198377",
+        "display": "tacrolimus 1 MG Oral Capsule",
+        "ingredient": "tacrolimus",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Alpha-1-Fetoprotein": {
+        "code": "1834-1",
+        "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bacteria identified in Bronchoalveolar lavage by Culture": {
+        "code": "105917-9",
+        "display": "Bacteria identified in Bronchoalveolar lavage by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Galactomannan Ag in Bronchoalveolar lavage": {
+        "code": "115626-4",
+        "display": "Galactomannan Ag in Bronchoalveolar lavage",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hematocrit of peritoneal fluid": {
+        "code": "107175-2",
+        "display": "Hematocrit [Volume Fraction] of Peritoneal fluid",
+        "unit": "%",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Peritoneal fluid cytology": {
+        "code": "55600-1",
+        "display": "Microscopic observation [Identifier] in Peritoneal fluid by Cyto stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Pneumocystis jirovecii DNA in Bronchoalveolar lavage": {
+        "code": "105613-4",
+        "display": "Pneumocystis jirovecii DNA [Presence] in Bronchoalveolar lavage by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Serum-ascites albumin gradient": {
+        "code": "63549-0",
+        "display": "Albumin in serum - albumin in peritoneal fluid [Mass concentration difference]",
+        "unit": "g/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Tacrolimus trough": {
+        "code": "11253-2",
+        "display": "Tacrolimus [Mass/volume] in Blood",
+        "unit": "ng/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Total protein, peritoneal fluid": {
+        "code": "2883-7",
+        "display": "Protein [Mass/volume] in Peritoneal fluid",
+        "unit": "g/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Bronchoscopy and bronchoalveolar lavage": {
+        "code": "397397002",
+        "display": "Bronchoscopy and bronchoalveolar lavage",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Debridement": {
+        "code": "36777000",
+        "display": "Debridement",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Diagnostic aspiration of peritoneal cavity": {
+        "code": "178016006",
+        "display": "Diagnostic aspiration of peritoneal cavity",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Exploratory laparotomy": {
+        "code": "74770008",
+        "display": "Exploratory laparotomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Orthotopic liver transplant": {
+        "code": "174425003",
+        "display": "Orthotopic liver transplant",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Partial hepatectomy": {
+        "code": "71273005",
+        "display": "Partial hepatectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Patch repair of perforated duodenal ulcer": {
+        "code": "698496004",
+        "display": "Patch repair of perforated duodenal ulcer",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

@@ -1,0 +1,739 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002138",
+   "events": [
+    {
+     "id": "2023-04-18a",
+     "kind": "office_visit",
+     "start": "2023-04-18T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-04-18T07:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-04-18T07:45",
+       "body": "Spring check-in. Bowels about the same, PEG most days, goes every 1-2 days. A little more bloating after big meals. No pain, no bleeding. Weight about where it has been.\n\nExam: abdomen soft, mildly distended, NT. Cardiopulmonary normal.\n\nMegacolon: stable on PEG. Return for physical in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-29a",
+     "kind": "office_visit",
+     "start": "2023-08-29T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2023-08-29T09:05",
+       "body": "No-show for 7:20 slot. Called cell, voicemail full. Sent portal message to reschedule."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "office_visit",
+     "start": "2023-10-10T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "food getting stuck",
+     "conditions": [
+      {
+       "label": "Dysphagia",
+       "icd10": "R13.10",
+       "action": "diagnosed",
+       "onset": "2023-08-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth daily before breakfast",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "dysphagia, possible reflux"
+      }
+     ],
+     "state": {
+      "weight_kg": 61.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-10T07:55"
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-ref-2023",
+       "action": "placed",
+       "order": "Gastroenterology referral",
+       "category": "referral",
+       "to": "Gastroenterology",
+       "reason": "dysphagia with weight loss"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-10-10T07:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T07:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-10-10T07:58",
+       "body": "S: Missed his August slot (working out of town). About two months of food hanging up behind the breastbone, mostly bread and meat; he drinks water to push it down. No pain with swallowing. Some burning after meals. Eating less because of it, pants looser. Bowels unchanged on PEG, still bloats.\n\nO: weight 61.0 kg, down from 63.5 a year ago. Thin, NAD. Oropharynx clear. Neck without mass or nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, mild distension, NT.\n\nA/P\n1. Dysphagia to solids with regurgitation and weight loss. Needs GI evaluation, referring back to the group that did his colonoscopy, asked for a prompt slot. Trial omeprazole 20 mg daily meanwhile for the burning. Soft foods, small bites, sit up after meals.\n2. Megacolon: stable.\n3. Flu vaccine today.\n\nCall if he cannot keep liquids down."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 61.0
+     }
+    },
+    {
+     "id": "2023-12-05a",
+     "kind": "portal_message",
+     "start": "2023-12-05T19:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "GI appointment",
+       "author": "patient",
+       "date": "2023-12-05T19:40",
+       "body": "Hi doctor, the stomach doctor office gave me January 31 as first opening. The medicine helps the burning but food still gets stuck. Is it ok to wait?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: GI appointment",
+       "author": "PCP",
+       "date": "2023-12-06T07:15",
+       "body": "Hi Javier, I called their office and you are on the cancellation list. If you can't keep liquids down or the weight keeps dropping, call me and I will see you the same day. Otherwise January is okay. Keep the omeprazole going."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-02a",
+     "kind": "outside_records",
+     "start": "2024-02-02T10:30",
+     "conditions": [
+      {
+       "label": "Chronic Chagas disease with cardiac and digestive involvement",
+       "icd10": "B57.2",
+       "action": "diagnosed",
+       "onset": "2024-01-31"
+      },
+      {
+       "label": "Megaesophagus in Chagas disease",
+       "icd10": "B57.31",
+       "action": "diagnosed",
+       "onset": "2024-01-31"
+      },
+      {
+       "label": "Megacolon in Chagas disease",
+       "icd10": "B57.32",
+       "action": "diagnosed",
+       "onset": "2021-06-09"
+      },
+      {
+       "label": "Megacolon",
+       "icd10": "K59.39",
+       "action": "resolved",
+       "note": "reclassified as Chagas megacolon"
+      },
+      {
+       "label": "Dysphagia",
+       "icd10": "R13.10",
+       "action": "resolved",
+       "note": "explained by megaesophagus"
+      }
+     ],
+     "state": {
+      "weight_kg": 58.5
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-01-31T10:40",
+       "resulted": "2024-02-01T15:20",
+       "results": [
+        {
+         "test": "Trypanosoma cruzi Ab [Presence] in Serum or Plasma by Immunoassay",
+         "loinc": "57320-4",
+         "text": "Positive"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Barium swallow, esophagram",
+       "loinc": "30633-2",
+       "performed": "2024-01-31T08:15",
+       "text": "EXAM: Esophagram with thin and thick barium.\nINDICATION: progressive solid-food dysphagia, weight loss.\nTECHNIQUE: upright and prone oblique views during swallows of thin and thick barium; a timed upright image at 1 and 5 minutes.\nFINDINGS: The esophagus is markedly dilated with a column of retained barium and debris. Primary peristalsis is absent in the body. The distal esophagus tapers smoothly to a narrow bird's-beak segment at the gastroesophageal junction, with slow trickle of contrast into the stomach. No mucosal irregularity, shouldering or filling defect. No hiatal hernia. No aspiration. The stomach fills normally once contrast passes.",
+       "conclusion": "Markedly dilated aperistaltic esophagus with smooth bird's-beak narrowing at the gastroesophageal junction, consistent with megaesophagus / achalasia pattern."
+      },
+      {
+       "study": "12-lead ECG",
+       "performed": "2024-01-31T10:20",
+       "text": "Sinus rhythm, rate 72. PR 168 ms. QRS 138 ms with rSR' in V1 and broad slurred S waves in I and V6. QTc 448 ms. No acute ST elevation.",
+       "conclusion": "Sinus rhythm with right bundle branch block."
+      }
+     ],
+     "orders": [
+      {
+       "id": "gi-ref-2023",
+       "action": "done",
+       "date": "2024-02-02T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Gastroenterology Consultation",
+       "author": "gastroenterology",
+       "date": "2024-02-02T10:30",
+       "body": "OUTSIDE GASTROENTEROLOGY GROUP\nDate of service: 01/31/2024\nReferred by: primary care, re-referral (seen in our office 2021 for megacolon)\n\nHPI: 45-year-old man with known megacolon from his 2021 colonoscopy, now with roughly six months of steadily worsening trouble swallowing. Solids feel lodged in the lower chest and he eats slowly, washing food down. He estimates a 10-pound weight loss over that period. Constipation remains intermittent despite daily PEG. Omeprazole since October helped heartburn but not swallowing.\n\nMedications: polyethylene glycol 3350 17 g daily as needed; omeprazole 20 mg daily.\nAllergies: NKDA.\nFamily: mother died at 58 of what was thought to be Chagas-related heart failure. Father with hypertension and diabetes. Sister with hypothyroidism.\nSocial: raised in a rural area of Central America; construction work; no tobacco, alcohol or drugs.\n\nExam: weight 58.5 kg. Cachectic appearance with temporal wasting. Soft systolic murmur at the apex. Lungs clear. Abdomen normal on exam today.\n\nData:\n- Esophagram today: markedly dilated esophagus with a bird's-beak taper at the GE junction.\n- T. cruzi antibody (immunoassay), drawn today: POSITIVE (resulted 02/01).\n- ECG today: sinus rhythm, right bundle branch block.\n\nAssessment: Megaesophagus and megacolon with positive T. cruzi serology and a right bundle branch block in a man from an endemic area whose mother likely died of Chagas cardiomyopathy. This is chronic Chagas disease with digestive involvement and probable cardiac involvement (conduction disease).\n\nPlan:\n1. Upper endoscopy with biopsies to exclude a malignant cause of the distal narrowing before any treatment.\n2. Second T. cruzi serology by a different method to confirm, per standard practice; we have asked primary care to draw this.\n3. Cardiology evaluation including echocardiogram through primary care.\n4. If endoscopy is benign, plan pneumatic dilation.\n5. Continue PEG daily and omeprazole. Soft or liquid diet as needed, upright after meals.\n\nAllergies: no known drug allergies."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-06a",
+     "kind": "office_visit",
+     "start": "2024-02-06T07:20",
+     "end": "2024-02-06T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "review GI consult",
+     "conditions": [
+      {
+       "label": "Right bundle branch block",
+       "icd10": "I45.10",
+       "action": "diagnosed",
+       "onset": "2024-01-31"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-02-06T08:05",
+       "resulted": "2024-02-09T11:30",
+       "results": [
+        {
+         "test": "Trypanosoma cruzi Ab [Presence] in Serum by Confirmatory method",
+         "loinc": "107158-8",
+         "text": "Positive"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-ref-2024",
+       "action": "placed",
+       "order": "Cardiology referral",
+       "category": "referral",
+       "to": "Cardiology",
+       "reason": "Chagas disease with RBBB; echo needed"
+      },
+      {
+       "id": "id-ref-2024",
+       "action": "placed",
+       "order": "Infectious Disease referral",
+       "category": "referral",
+       "to": "Infectious Disease",
+       "reason": "chronic Chagas disease, antiparasitic therapy question"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2024-02-06T07:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-02-06T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-02-06T08:10",
+       "body": "Here to talk through the GI letter. GI found a very wide esophagus with a tight bottom end on the swallow study, and his blood test for the Chagas parasite was positive. ECG there showed a right bundle branch block. He knows the disease by name; it is what his family believed took his mother. Upset but asking good questions. Swallowing unchanged, mostly liquids and soft food. No palpitations, chest pain, fainting, leg swelling or breathlessness with work.\n\nExam: thin. BP and HR per flowsheet. Heart regular, no murmur heard today, no gallop, no JVD. Lungs clear. Abdomen soft, mildly distended. No edema.\n\nA/P\n1. Chronic Chagas disease with megaesophagus and megacolon, and conduction disease (RBBB). Second confirmatory antibody drawn today per GI. Updated problem list: megacolon now attributed to Chagas.\n2. Cardiac evaluation: referral to cardiology for echo and baseline assessment. Reviewed warning signs (fainting, racing heart, swelling, breathlessness) that should send him to the ED.\n3. Infectious disease referral to discuss whether antiparasitic treatment makes sense at this stage.\n4. Megaesophagus: endoscopy scheduled by GI 2/21. Continue omeprazole, PEG.\n5. He should not donate blood. Told him his sister may want to be tested; ID can advise.\n\nWill message with the confirmatory result."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-09a",
+     "kind": "portal_message",
+     "start": "2024-02-09T12:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Confirmatory test",
+       "author": "PCP",
+       "date": "2024-02-09T12:05",
+       "body": "Javier, the second Chagas antibody test, done a different way, is also positive. That confirms the diagnosis. Cardiology and infectious disease referrals are in; their offices will call. Your endoscopy on the 21st is still on."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-27a",
+     "kind": "outside_records",
+     "start": "2024-02-27T14:10",
+     "procedures": [
+      {
+       "procedure": "Upper endoscopy with biopsy",
+       "performed": "2024-02-21T09:40"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-02-21T09:40",
+       "issued": "2024-02-23T13:00",
+       "text": "SPECIMEN: Esophagus, distal, biopsies.\nGROSS: Six tan-white fragments, 0.2-0.3 cm.\nMICROSCOPIC: Squamous mucosa with normal maturation. No intraepithelial eosinophils above background, no fungal organisms, no dysplasia.",
+       "conclusion": "Distal esophageal squamous mucosa without dysplasia or malignancy."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Upper Endoscopy Report",
+       "author": "gastroenterology",
+       "date": "2024-02-27T14:10",
+       "body": "OUTSIDE GASTROENTEROLOGY GROUP — ENDOSCOPY UNIT\nProcedure date: 02/21/2024\nProcedure: EGD with biopsy\nIndication: megaesophagus on esophagram, positive T. cruzi serology; exclude pseudoachalasia\nSedation: monitored anesthesia care, after 48 hours of clear liquids\nAllergies: NKDA\n\nFindings:\n- Esophagus dilated along its length with retained clear liquid and food particles, suctioned.\n- Gastroesophageal junction at 41 cm, puckered and closed; scope passed into the stomach with mild resistance. No mass, ulcer or stricture at the junction on retroflexion.\n- Stomach and duodenum normal.\n- Distal esophageal biopsies taken.\n\nImpression: dilated esophagus with retained contents and a tight but benign-appearing GE junction. No mass.\n\nPlan: pending biopsies, pneumatic dilation. Pathology 02/23: benign squamous mucosa. Dilation booked 04/10/2024."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-19a",
+     "kind": "outside_records",
+     "start": "2024-03-19T09:50",
+     "conditions": [
+      {
+       "label": "Chagas cardiomyopathy",
+       "icd10": "I43",
+       "action": "diagnosed",
+       "onset": "2024-03-13"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "enalapril maleate 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Chagas cardiomyopathy"
+      },
+      {
+       "drug": "carvedilol 3.125 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with food",
+       "dose": {
+        "value": 3.125,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Chagas cardiomyopathy"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2024-03-13T10:30",
+       "text": "Indication: chronic Chagas disease, right bundle branch block.\nLeft ventricle: normal cavity size. Thinning of the apex with a small apical aneurysm; no apical thrombus seen. Remaining walls contract normally. Mild global systolic dysfunction, LVEF 45% by biplane Simpson. Diastolic function indeterminate.\nRight ventricle: normal size and function.\nAtria: normal size.\nValves: structurally normal; no significant regurgitation or stenosis.\nPericardium: no effusion.\nIVC: normal size with normal respiratory variation.",
+       "conclusion": "Apical thinning with a small apical aneurysm and mild LV systolic dysfunction, LVEF 45%. Normal right ventricle. No thrombus."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cards-ref-2024",
+       "action": "done",
+       "date": "2024-03-19T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Consultation",
+       "author": "cardiology",
+       "date": "2024-03-19T09:50",
+       "body": "OUTSIDE CARDIOLOGY GROUP\nDate of visit: 03/13/2024\nReason for referral: chronic Chagas disease, RBBB on ECG\n\nMr. Perez is a 45-year-old construction worker with recently confirmed chronic Chagas disease (two positive serologies) and megaesophagus and megacolon. ECG in January showed RBBB. He denies exertional chest pain, palpitations, syncope, orthopnea or edema; he is still doing full workdays, limited more by eating than by breathing.\n\nMeds: omeprazole 20 mg daily, PEG 17 g daily as needed. Allergies: NKDA.\nFamily: mother died at 58, presumed chagasic heart failure.\n\nExam: BP and pulse normal, thin. JVP not elevated. Regular rhythm, normal S1, split S2, no murmur or gallop today. Lungs clear. No edema.\n\nEcho today: apical thinning with a small apical aneurysm, no thrombus, mild LV systolic dysfunction with LVEF 45%; normal RV and valves.\n\nAssessment: Chagas cardiomyopathy with conduction disease (RBBB), apical aneurysm and mildly reduced ejection fraction, NYHA class I.\n\nPlan:\n- Start enalapril 5 mg daily and carvedilol 3.125 mg twice daily, uptitrate as tolerated.\n- Basic metabolic panel in 1-2 weeks after starting enalapril (primary care or here).\n- Return in about 8 weeks.\n- No anticoagulation at present; no thrombus seen.\n- Return precautions for palpitations, presyncope or syncope."
+      }
+     ]
+    },
+    {
+     "id": "2024-03-27a",
+     "kind": "lab_only",
+     "start": "2024-03-27T07:10",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-03-27T07:10",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-03-27T07:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "BMP after enalapril start",
+       "author": "PCP",
+       "date": "2024-03-27T15:40",
+       "body": "Potassium and creatinine normal two weeks into enalapril. Copy faxed to cardiology. Pt notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-08a",
+     "kind": "portal_message",
+     "start": "2024-04-08T20:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Work note",
+       "author": "patient",
+       "date": "2024-04-08T20:15",
+       "body": "Can I get a letter for my boss that I have a procedure on Wednesday and need two days off? Thank you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Work note",
+       "author": "MA",
+       "date": "2024-04-09T08:40",
+       "body": "Hi Javier, the letter is attached in your portal under Letters. It covers April 10 and 11. Good luck Wednesday."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-16a",
+     "kind": "outside_records",
+     "start": "2024-04-16T11:00",
+     "procedures": [
+      {
+       "procedure": "Balloon dilation of achalasia of esophagus",
+       "snomed": "386784009",
+       "performed": "2024-04-10T08:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Pneumatic Dilation Report",
+       "author": "gastroenterology",
+       "date": "2024-04-16T11:00",
+       "body": "OUTSIDE GASTROENTEROLOGY GROUP — ENDOSCOPY UNIT\nProcedure date: 04/10/2024\nProcedure: EGD with pneumatic balloon dilation of the lower esophageal sphincter under fluoroscopy\nIndication: Chagas megaesophagus, benign biopsies\nAllergies: NKDA\n\nRetained liquid suctioned. A 30 mm achalasia balloon positioned across the GE junction under fluoroscopy, waist effaced at moderate pressure and held for 60 seconds. Post-dilation inspection showed expected mucosal tearing at the junction without deep injury. Post-procedure esophagram with water-soluble contrast: no leak.\n\nRecovery: observed 4 hours, tolerated liquids, discharged home.\n\nPlan: liquids today, soft diet tomorrow, then advance. Call for chest pain, fever or vomiting blood. Clinic follow-up 6-8 weeks; a second dilation at a larger size if symptoms recur.\n\nPhone check 04/12/2024: swallowing much easier, eating soft solids without hang-up."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-30a",
+     "kind": "outside_records",
+     "start": "2024-04-30T13:30",
+     "orders": [
+      {
+       "id": "id-ref-2024",
+       "action": "done",
+       "date": "2024-04-30T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Infectious Disease Consultation",
+       "author": "infectious disease",
+       "date": "2024-04-30T13:30",
+       "body": "OUTSIDE INFECTIOUS DISEASE CLINIC\nDate of visit: 04/24/2024\nQuestion: antiparasitic treatment for chronic Chagas disease\n\nSummary: 45-year-old man raised in an endemic rural area with Trypanosoma cruzi infection confirmed by two serologic methods. Established cardiac disease (RBBB, apical aneurysm, LVEF 45%, now on enalapril and carvedilol) and digestive disease (megaesophagus treated by pneumatic dilation this month; megacolon).\n\nAllergies: NKDA.\n\nDiscussion: In adults with established Chagas cardiomyopathy, trypanocidal therapy has not been shown to slow cardiac progression, and it carries frequent side effects (rash, neuropathy, GI upset) in someone who has just regained weight. After a long conversation in Spanish and English he prefers not to take it, and I agree that the expected benefit is low.\n\nRecommendations:\n1. No antiparasitic therapy.\n2. He should not donate blood, organs or tissue.\n3. Family members with shared exposure, including his sister, should be offered serologic testing through their own clinicians.\n4. Ongoing care with cardiology and GI. No routine ID follow-up; happy to see again if questions arise."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-28a",
+     "kind": "outside_records",
+     "start": "2024-05-28T10:15",
+     "medications": [
+      {
+       "drug_text": "enalapril maleate 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "dose increased"
+      },
+      {
+       "drug": "carvedilol 3.125 MG Oral Tablet",
+       "action": "stop",
+       "reason": "dose increased"
+      },
+      {
+       "drug_text": "enalapril maleate 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Chagas cardiomyopathy"
+      },
+      {
+       "drug": "carvedilol 6.25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with food",
+       "dose": {
+        "value": 6.25,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Chagas cardiomyopathy"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology Follow-up",
+       "author": "cardiology",
+       "date": "2024-05-28T10:15",
+       "body": "OUTSIDE CARDIOLOGY GROUP\nDate of visit: 05/22/2024\n\nFollow-up of Chagas cardiomyopathy (LVEF 45%, apical aneurysm, RBBB). Tolerating enalapril 5 mg and carvedilol 3.125 mg twice daily without dizziness. Swallowing much better since dilation, eating more, weight up a little. No palpitations or syncope.\n\nMeds: enalapril 5 mg daily, carvedilol 3.125 mg BID, omeprazole 20 mg daily, PEG as needed. NKDA.\n\nExam: BP and HR acceptable for titration. Euvolemic, regular rhythm, no murmur.\nBMP from 03/27 reviewed: normal potassium and creatinine.\n\nPlan: increase enalapril to 10 mg daily and carvedilol to 6.25 mg twice daily. New prescriptions sent. Repeat BMP in 2 weeks (primary care fine). Follow up in one year or sooner for symptoms."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-18a",
+     "kind": "office_visit",
+     "start": "2024-06-18T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up, Chagas disease",
+     "state": {
+      "weight_kg": 60.5,
+      "bp": [
+       106,
+       66
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-06-18T07:50",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Sodium"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2024-06-18T07:45"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-06-18T07:20"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-06-18T07:45"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-06-18T07:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2024-06-18T08:05",
+       "body": "Catching up after a busy spring of specialist visits. Dilation in April made a big difference: eating rice, chicken, tortillas without things sticking, an occasional slow bite with dry bread. Weight 60.5 from 58.5 in January. Cardiology raised enalapril to 10 and carvedilol to 6.25 twice a day last month. No dizziness, no palpitations, no swelling. ID visit: decided against antiparasitic pills. Bowels every 1-2 days on PEG.\n\nMeds reconciled: enalapril 10 mg daily, carvedilol 6.25 mg BID, omeprazole 20 mg daily, PEG 17 g daily PRN. NKDA.\n\nExam: BP 106/66, HR in the 60s. No JVD. Heart regular, no murmur. Lungs clear. Abdomen soft, mild distension. No edema.\n\nA/P\n1. Chagas cardiomyopathy, LVEF 45%, NYHA I: BMP today after the dose increase. Pressure low-normal and he feels fine.\n2. Megaesophagus after dilation: much improved, weight recovering.\n3. Megacolon: stable.\n4. PCV20 today given heart disease.\n5. Physical in October."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 60.5,
+      "bp": [
+       106,
+       66
+      ]
+     }
+    },
+    {
+     "id": "2024-06-20a",
+     "kind": "portal_message",
+     "start": "2024-06-20T12:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab result",
+       "author": "PCP",
+       "date": "2024-06-20T12:10",
+       "body": "Your kidney function and potassium are normal on the higher doses of enalapril and carvedilol. I sent a copy to cardiology. No changes."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-06a",
+     "kind": "pharmacy",
+     "start": "2024-08-06T11:25",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization",
+       "author": "MA",
+       "date": "2024-08-06T11:25",
+       "body": "Pharmacy says MassHealth now wants a PA for omeprazole beyond 6 months. Completed the form: dx megaesophagus in Chagas disease after pneumatic dilation, GI recommends continuing. Faxed. Approval came back same afternoon, 12 months. Pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-22a",
+     "kind": "annual_physical",
+     "start": "2024-10-22T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "state": {
+      "weight_kg": 61.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-22T08:20"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-22T08:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2024-10-22T07:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-22T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-10-22T08:35",
+       "body": "PHYSICAL\n\nGood year overall after a rough start. Swallowing holding up since the April dilation; rare hang-up with steak. Working full time, no breathlessness on ladders or carrying loads. No palpitations, no fainting. Bowels okay on PEG. Mood fine, PHQ-2 1 (some worry about his heart).\n\nMeds: enalapril 10 daily, carvedilol 6.25 BID, omeprazole 20 daily, PEG PRN. NKDA. Never smoker, no alcohol.\n\nExam: weight 61.5. Thin but no longer wasted. Neck normal. Heart regular, no murmur, no S3. Lungs clear. Abdomen soft, mild distension, NT. No edema. Skin normal.\n\nA/P\n- Chagas cardiomyopathy: stable, cardiology yearly. BMP in June normal.\n- Megaesophagus s/p dilation, megacolon: stable.\n- Prevention: colon screening done 2021. Lipids normal 2021, recheck next year. PCV20 done. Flu and updated COVID today.\n- RTC 4-5 months."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 61.5
+     }
+    },
+    {
+     "id": "2024-11-26a",
+     "kind": "pharmacy",
+     "start": "2024-11-26T10:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill request",
+       "author": "MA",
+       "date": "2024-11-26T10:20",
+       "body": "Pharmacy request for carvedilol 6.25 mg BID and enalapril 10 mg daily, 90-day supplies. Cardiology asked that PCP handle routine refills. Sent per PCP with 3 refills each."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

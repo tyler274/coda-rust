@@ -1,0 +1,862 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002297",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "imaging",
+          "start": "2025-01-21T13:30",
+          "reason": "lung cancer screening",
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-01-21T13:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-01-21T13:30",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (baseline)\nIndication: 67-year-old former smoker, 35 pack-years, quit 2024.\nTechnique: Low-dose helical CT of the chest without IV contrast.\nComparison: None available.\nFindings: No pulmonary nodules. No consolidation, effusion or pneumothorax. Airways patent. Heart size normal; coronary stent noted in the LAD territory. No mediastinal or hilar lymphadenopathy. Visualized upper abdomen unremarkable. No suspicious osseous lesion.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening with low-dose CT in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "portal_message",
+          "start": "2025-01-23T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT Scan Result",
+              "author": "PCP",
+              "date": "2025-01-23T12:10",
+              "body": "Chad — your screening CT scan of the lungs showed no nodules or spots of concern. The radiologist calls it Lung-RADS 1, the best category. We'll repeat it once a year. See you in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "annual_physical",
+          "start": "2025-02-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {
+            "weight_kg": 84.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-02-11T10:20"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-11T10:22"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "one-time AAA screening, male ever-smoker 65-75"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2025-02-11T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-11T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-02-11T10:35",
+              "body": "INITIAL AWV\n\nFeeling back to himself after the December meningitis admission; energy close to normal now, regained some weight. Walking most days when the roads aren't icy. Still no cigarettes, five months now. No chest pain, breathing at baseline, albuterol a couple of times a week.\n\nFunctional: independent in all ADLs/IADLs, drives, manages his own pills with a weekly box. No falls. Hearing — no change noticed by him or his wife. Vision: readers only.\nMood: PHQ-2 = 0.\nCognition: alert, three-word recall 3/3, clock normal.\nHome safety reviewed. Advance directive: wife is his health care proxy; he'll bring the form in.\n\nExam: vitals as charted. Lungs diminished bilaterally, no wheeze. Heart regular. No edema.\n\nPrevention:\n- PCV20 today (pneumococcal meningitis 12/2024, COPD).\n- Shingrix #1 today; #2 in 2-6 months, nurse visit.\n- Flu and COVID done in October.\n- Tdap 2019 on file.\n- Colonoscopy 2019 normal, next 2029.\n- LDCT 1/2025 Lung-RADS 1, annual.\n- AAA screening: ultrasound ordered.\n- Hep C neg 10/2024.\n\nChronic problems: CAD s/p LAD stent, COPD, HTN, hyperlipidemia — stable, labs from October and December reviewed, no changes.\n\nPersonalized plan given. Follow-up in ~3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "imaging",
+          "start": "2025-03-04T08:15",
+          "reason": "AAA screening",
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2025-03-04T08:15"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2025-03-04T08:15",
+              "text": "ULTRASOUND, ABDOMINAL AORTA (AAA SCREENING)\nIndication: Male, 67, former smoker.\nFindings: The abdominal aorta is visualized from the diaphragm to the bifurcation. Maximal anteroposterior diameter 2.0 cm in the infrarenal segment. No aneurysmal dilation. Common iliac arteries normal in caliber where seen.",
+              "conclusion": "Normal caliber abdominal aorta. No abdominal aortic aneurysm."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-03a",
+          "kind": "hospital_admission",
+          "start": "2025-04-03T05:50",
+          "end": "2025-04-12T11:45",
+          "service": "Pulmonary & Critical Care",
+          "reason": "acute hypoxemic respiratory failure",
+          "conditions": [
+            {
+              "label": "Acute hypoxemic respiratory failure without hypercapnic encephalopathy",
+              "icd10": "J96.01",
+              "action": "diagnosed",
+              "onset": "2025-04-03"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-04-08T07:30",
+              "temp_c": 37.2,
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 88,
+              "spo2": 94,
+              "rr": 16
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-08T07:00",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "value": 7.32,
+                  "unit": "[pH]"
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "value": 45,
+                  "unit": "mm[Hg]"
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "value": 78,
+                  "unit": "mm[Hg]"
+                },
+                {
+                  "test": "Inhaled oxygen concentration",
+                  "loinc": "3150-0",
+                  "value": 40,
+                  "unit": "%"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Endotracheal intubation, emergency procedure",
+              "snomed": "16883004",
+              "performed": "2025-04-03T06:20"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-04-03T05:50"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-04-12T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ICU Progress Note — Extubation Assessment",
+              "author": "critical care",
+              "date": "2025-04-14T09:20",
+              "body": "COUNTY MEDICAL CENTER — MEDICAL ICU\nNote date: 04/08/2025 08:10\n\n67-year-old man, COPD GOLD II, CAD with MI and LAD stent in 9/2024, pneumococcal meningitis treated 12/2024. Intubated 04/03 for acute hypoxemic respiratory failure; ventilator day 5.\n\nCurrent support: pressure support 5 cm H2O, PEEP 5 cm H2O.\nVS: T 37.2 C, BP 135/85, HR 88, RR 16, SpO2 94% on these settings.\nABG (drawn ~30 min prior, same settings, FiO2 40%): pH 7.32 / PaCO2 45 / PaO2 78.\n\nExam: awake and alert off sedation, follows commands consistently, sustains a head lift off the pillow for 5 seconds. Strong cough with suctioning. Breath sounds diminished bilaterally, no wheeze.\n\nAssessment: tolerating minimal support with good mental status, airway protection and cough. Meets our criteria for extubation.\nPlan: extubate this morning to nasal cannula; incentive spirometry, early mobility; resume home inhalers.\n\nAddendum 11:40: extubated without difficulty at 09:15. Comfortable on 2 L, speaking full sentences.\n\nReceived with discharge packet 4/14."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary — Critical Care",
+              "author": "critical care",
+              "date": "2025-04-14T09:20",
+              "body": "COUNTY MEDICAL CENTER — DISCHARGE SUMMARY\nAdmit 04/03/2025 — Discharge 04/12/2025\n\nDIAGNOSIS: Acute hypoxemic respiratory failure without hypercapnic encephalopathy.\nCOMORBIDITIES: COPD GOLD II; CAD, MI with LAD drug-eluting stent 9/2024; hypertension; hyperlipidemia; pneumococcal meningitis 12/2024, treated.\n\nCOURSE: Admitted early on 04/03 in acute hypoxemic respiratory failure and intubated in the ED; transferred to the ICU. Mechanically ventilated for five days. On 04/08 tolerated pressure support 5/5 with an acceptable gas and good mental status and cough, and was extubated the same morning. Weaned to room air over the next two days. Transferred to the floor, worked with PT, ambulating the hallway independently before discharge. No reintubation.\n\nALLERGIES: NKDA\n\nDISCHARGE MEDICATIONS: no changes from home — aspirin 81 mg daily, atorvastatin 40 mg daily, metoprolol succinate 50 mg daily, lisinopril 10 mg daily, tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 BID, albuterol 90 mcg q4-6h PRN.\n\nFOLLOW-UP: PCP in 1-2 weeks. Outpatient pulmonology recommended.\n\nReviewed by PCP 4/14. RN TCM call 4/14: home, breathing OK, appointment 4/22."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-04a",
+          "kind": "telephone",
+          "start": "2025-04-04T08:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Wife Calling — Patient Admitted",
+              "author": "RN",
+              "date": "2025-04-04T08:35",
+              "body": "Patient's wife called. Chad was taken in by ambulance early yesterday with trouble breathing; he's on a breathing machine in the ICU at the county medical center. Team told her they hope to start weaning in the next few days. She is understandably shaken. Offered support, confirmed we'd get the records and see him after discharge. Gave her our direct line. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, respiratory failure",
+          "conditions": [
+            {
+              "label": "Acute hypoxemic respiratory failure without hypercapnic encephalopathy",
+              "icd10": "J96.01",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 80.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-22T14:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-22T14:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Bicarbonate"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "COPD GOLD II, ICU stay for hypoxemic respiratory failure 4/2025"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-04-22T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-22T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ICU Follow-up",
+              "author": "PCP",
+              "date": "2025-04-22T14:50",
+              "body": "Ten days out from a 4/3-4/12 ICU admission for acute hypoxemic respiratory failure, intubated five days, extubated 4/8. Discharge summary and ICU notes reviewed.\n\nHe says the week is mostly a blank. Since home: sore throat from the tube is gone, voice back to normal. Short of breath on the stairs, about where he was before. Using albuterol once or twice a day this week, tapering off. No fevers, no chest pain. Sleeping in his own bed, flat. Lost about 4 lb in hospital.\nInhalers — showed me his technique for both, good. Still not smoking.\n\nExam: vitals as charted, room air sat acceptable at rest and after a lap of the hallway. Alert, a little deconditioned. Lungs with diminished breath sounds both sides, no wheeze or crackles. Heart regular. No edema. Calves soft.\n\nA/P\n- Acute hypoxemic respiratory failure, resolved; recovering at home.\n- COPD GOLD II: no changes to tiotropium or fluticasone/salmeterol. Referral to pulmonology — he has not had a lung doctor since his old office, and after an ICU stay he should.\n- CAD/HTN: stable, same meds.\n- CBC, BMP today.\n- Shingrix #2 due — nurse visit next month.\nCall right away for worsening breathing. RTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-23a",
+          "kind": "portal_message",
+          "start": "2025-04-23T16:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs From Your Visit",
+              "author": "PCP",
+              "date": "2025-04-23T16:30",
+              "body": "Your blood counts and chemistry panel from yesterday are normal. Nothing to change. The pulmonology office should call you to schedule; let us know if you haven't heard in a week."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "nurse_visit",
+          "start": "2025-05-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-05-13T11:05"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-05-13T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse Visit — Vaccine",
+              "author": "RN",
+              "date": "2025-05-13T11:15",
+              "body": "Here for 2nd Shingrix. Feeling well, afebrile. Had a tired, achy day after the first dose in Feb, nothing else. Dose given left deltoid, lot recorded. Tolerated without issue. Series now complete. Reminded about pulmonology appointment 6/11."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-02a",
+          "kind": "telephone",
+          "start": "2025-06-02T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral Status",
+              "author": "MA",
+              "date": "2025-06-02T11:20",
+              "body": "Pulmonology office confirms receipt of referral and records; pt scheduled 6/11 at 10:30. Pt aware, told to bring all inhalers and to hold albuterol the morning of the visit if he can, per their breathing-test instructions."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "specialist_visit",
+          "start": "2025-06-11T10:30",
+          "service": "Pulmonology",
+          "reason": "COPD after ICU stay",
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2025-06-11T10:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Spirometry",
+              "performed": "2025-06-11T10:45",
+              "text": "Spirometry with bronchodilator. Acceptable and repeatable efforts. Post-bronchodilator FEV1/FVC 0.62. Post-bronchodilator FEV1 61% of predicted.",
+              "conclusion": "Obstructive ventilatory defect consistent with COPD, GOLD 2 (moderate) by post-bronchodilator FEV1."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Spirometry",
+              "performed": "2025-06-11T10:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation",
+              "author": "pulmonology",
+              "date": "2025-06-13T15:30",
+              "body": "Outside pulmonary group — consultation\nDate of service: 06/11/2025\nReferring: PCP\n\nReason: COPD, recent ICU admission (4/2025) for acute hypoxemic respiratory failure.\n\nHistory: 68-year-old former smoker (35 pack-years, stopped 9/2024 after an MI). Known COPD for years on tiotropium and fluticasone/salmeterol with albuterol as needed. ICU admission in April with intubation for five days, extubated without event. Also hospitalized for pneumococcal meningitis in December 2024. Since April he is back at his baseline: dyspnea after a flight of stairs or a brisk walk uphill, none at rest. Albuterol a few times a week. No regular sputum.\n\nMeds: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 BID, albuterol PRN. NKDA.\n\nExam: comfortable at rest, room air saturation normal. Mildly prolonged expiration, diminished breath sounds, no wheeze or crackles. No clubbing. No edema.\n\nSpirometry today: post-bronchodilator FEV1/FVC 0.62; FEV1 61% predicted.\n\nImpression: COPD, GOLD 2, confirmed by spirometry. Currently stable on his maintenance regimen.\n\nRecommendations:\n1. Continue tiotropium and fluticasone/salmeterol as prescribed; albuterol as needed.\n2. Stay up to date with vaccines — he has had PCV20 this year; flu and COVID each fall; RSV vaccine is reasonable this fall.\n3. Continue abstinence from tobacco.\n4. Follow up here in one year, sooner if needed.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "3-month follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "telephone",
+          "start": "2025-07-23T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "author": "front desk",
+              "date": "2025-07-23T10:05",
+              "body": "Called re: missed 7/22 appointment. Pt apologized, had it on the calendar for August. Feeling fine. Rebooked 9/9 at 10:40 since he'd like to get his fall shots at the same time. PCP ok with that interval."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "pharmacy",
+          "start": "2025-08-05T13:25",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Prior Authorization — fluticasone/salmeterol",
+              "author": "MA",
+              "date": "2025-08-05T13:25",
+              "body": "Part D plan sent a PA request for fluticasone propionate/salmeterol 250/50 diskus (formulary change for his plan). Submitted with dx COPD J44.9, spirometry 6/2025 GOLD 2, maintenance with LAMA, ICU admission 4/2025. Approved 8/6 for 12 months. Pharmacy notified; pt has about a week left of his current device, no gap."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T15:15",
+          "service": "Cardiology",
+          "reason": "CAD follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up Letter",
+              "author": "cardiology",
+              "date": "2025-08-21T08:40",
+              "body": "Outside cardiology group — follow-up letter\nVisit 08/19/2025\n\nMr. Wojcik returns for routine follow-up of coronary disease, eleven months after his LAD drug-eluting stent (9/2024). Interval history notable for two admissions unrelated to the heart: pneumococcal meningitis in December and respiratory failure with intubation in April, both recovered. He has had no angina, no exertional chest discomfort, no palpitations. Exercise is limited mostly by his lungs. Remains off tobacco.\n\nExam: BP controlled, heart rate in the 60s, regular. No murmur. Lungs diminished bilaterally. No edema.\n\nMedications reviewed: aspirin 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, inhalers. NKDA.\n\nAssessment: CAD with prior MI, stable without angina.\nPlan: no changes. See again in about 7 months.\n\n— Cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "office_visit",
+          "start": "2025-09-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic disease follow-up, vaccines",
+          "state": {
+            "weight_kg": 82.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-09T11:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-09T11:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-09-09T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-09-09T11:07"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2025-09-09T11:09"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-09T10:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-09T11:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-09T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-09-09T11:30",
+              "body": "Chronic f/u (rebooked from the July no-show).\n\nSummer was good. Weight back up a few pounds from the spring. Walks to the end of the road and back most mornings. Breathing: the usual — stairs slow him down, albuterol a few times a week, no flares. Pulm saw him in June, confirmed GOLD 2, no changes. Cardiology in August, no changes. No CP, no edema, no lightheadedness. One year off cigarettes this month.\n\nMeds unchanged. PA for the fluticasone/salmeterol went through in August.\n\nExam: vitals as charted. Lungs diminished, no wheeze. RRR. No edema.\n\nA/P\n1. COPD GOLD 2 — stable on LAMA + ICS/LABA. Fall vaccines: flu (high dose), updated COVID and RSV given today, per pulm recommendation.\n2. CAD s/p MI/LAD stent — asymptomatic. Continue regimen.\n3. HTN — at goal.\n4. HLD — lipids and CMP today.\n5. Tobacco — 12 months abstinent, congratulated again.\nLDCT due January. RTC ~3-4 months, AWV in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-10a",
+          "kind": "portal_message",
+          "start": "2025-09-10T17:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2025-09-10T17:45",
+              "body": "Hi Chad, labs from yesterday are fine: kidneys, liver and electrolytes normal, LDL 74, close to where it has been on the atorvastatin. Nothing to change. If your arm is sore from three shots, that's expected for a day or two."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "hospital_admission",
+          "start": "2025-10-01T21:10",
+          "end": "2025-10-11T13:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "septic shock from pneumonia",
+          "conditions": [
+            {
+              "label": "Pneumonia, unspecified organism",
+              "icd10": "J18.9",
+              "action": "diagnosed",
+              "onset": "2025-10-01"
+            },
+            {
+              "label": "Severe sepsis with septic shock",
+              "icd10": "R65.21",
+              "action": "diagnosed",
+              "onset": "2025-10-01"
+            },
+            {
+              "label": "Accidental arterial cannulation during central venous catheter placement",
+              "icd10": "I97.51",
+              "action": "diagnosed",
+              "note": "10/02/2025, needle only, no sequelae"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-02T10:30",
+              "bp": [
+                90,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-02T10:48",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "value": 7.45,
+                  "unit": "[pH]"
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "value": 35,
+                  "unit": "mm[Hg]"
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "value": 95,
+                  "unit": "mm[Hg]"
+                },
+                {
+                  "test": "Bicarbonate [Moles/volume] in Arterial blood",
+                  "loinc": "1960-4",
+                  "value": 24,
+                  "unit": "mmol/L"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T23:30",
+              "resulted": "2025-10-03T14:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Sputum by Culture",
+                  "loinc": "6460-0",
+                  "text": "Normal respiratory flora. No predominant pathogen isolated."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-10-01T21:10"
+            },
+            {
+              "procedure": "Insertion of nontunneled central venous catheter",
+              "snomed": "449860009",
+              "performed": "2025-10-02T11:05"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-10-11T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "ICU Procedure Note — Central Venous Catheter",
+              "author": "critical care",
+              "date": "2025-10-14T10:15",
+              "body": "COUNTY MEDICAL CENTER — MEDICAL ICU PROCEDURE NOTE\nDate: 10/02/2025\n\nPatient: 68M with COPD GOLD II, CAD with MI and LAD stent 9/2024, prior ICU stay 4/2025 for hypoxemic respiratory failure, now in septic shock from pneumonia requiring norepinephrine.\nIndication: central venous access for vasopressor and multiple infusions.\nPre-procedure VS: BP 90/60, HR 110, RR 22, SpO2 92% on 2 L NC.\nConsent from patient and wife. Time-out performed. Full sterile barrier.\n\nFirst site, ultrasound guidance: vessel accessed, but the guidewire would not pass and aspirate through the needle was bright red and brisk. Needle held in place and a blood gas sent from that syringe immediately: pH 7.45, PaCO2 35, PaO2 95, HCO3 24 — consistent with arterial puncture. No dilator or catheter was passed. Needle withdrawn and firm pressure held for 10 minutes with hemostasis; no hematoma on repeat ultrasound.\nSecond site, ultrasound guidance: venous position confirmed before dilation; triple-lumen catheter placed without difficulty, good blood return all ports, position confirmed.\n\nComplication: accidental arterial cannulation (needle only), recognized and managed as above, without apparent harm.\nPatient tolerated the procedure. Vasopressor moved to the central line.\n\nReceived 10/14 with discharge records."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary — Critical Care",
+              "author": "critical care",
+              "date": "2025-10-14T10:15",
+              "body": "COUNTY MEDICAL CENTER — DISCHARGE SUMMARY\nAdmission 10/01/2025 — Discharge 10/11/2025\n\nPRINCIPAL DIAGNOSIS: Septic shock due to pneumonia.\nSECONDARY: Accidental arterial cannulation during central venous catheter placement (10/02), no sequelae. COPD GOLD II. CAD, MI with LAD drug-eluting stent 9/2024. Hypertension. Hyperlipidemia. Prior: acute hypoxemic respiratory failure 4/2025, resolved; pneumococcal meningitis 12/2024, treated.\n\nCOURSE: Presented the evening of 10/01 with pneumonia and hypotension and was admitted to the ICU. Sputum sent for culture on admission; grew normal respiratory flora without a predominant pathogen. Treated with broad IV antibiotics. Required norepinephrine; central venous access on 10/02 was complicated by arterial puncture at the first site, recognized before dilation and held without hematoma, with the line placed at a second site. Vasopressor weaned off over the following 48 hours. Did not require intubation; oxygen weaned to room air before transfer to the floor. Antibiotic course completed in hospital. Central line removed before discharge, site clean. Walking independently with PT at discharge.\n\nALLERGIES: NKDA\n\nDISCHARGE MEDICATIONS: unchanged home regimen — aspirin 81 mg daily, atorvastatin 40 mg daily, metoprolol succinate 50 mg daily, lisinopril 10 mg daily, tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 BID, albuterol PRN. No antibiotics at discharge.\n\nFOLLOW-UP: PCP 1-2 weeks; repeat chest imaging in 6-8 weeks.\n\nReviewed by PCP 10/14."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "office_visit",
+          "start": "2025-10-21T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pneumonia with septic shock",
+          "conditions": [
+            {
+              "label": "Pneumonia, unspecified organism",
+              "icd10": "J18.9",
+              "action": "resolved"
+            },
+            {
+              "label": "Severe sepsis with septic shock",
+              "icd10": "R65.21",
+              "action": "resolved"
+            },
+            {
+              "label": "Accidental arterial cannulation during central venous catheter placement",
+              "icd10": "I97.51",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 79.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-21T13:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-21T13:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-followup",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "follow-up after pneumonia 10/2025"
+            },
+            {
+              "id": "ldct-2026",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual screening, due January 2026"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-21T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-21T13:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "author": "PCP",
+              "date": "2025-10-21T14:05",
+              "body": "Third hospitalization in under a year. 10/1-10/11, ICU: septic shock from pneumonia, on norepinephrine, not intubated this time. Central line placement 10/2 complicated by an arterial puncture at the first site — needle only, held, no hematoma — line went in at a second site. Sputum culture: normal flora. IV antibiotics finished in hospital. Discharge summary and procedure note reviewed.\n\nToday: tired but improving daily. Cough mostly gone, no sputum, no fevers. Dyspnea at his baseline. Both line sites healed; no neck swelling, pain or bruising. Eating well. Meds as before.\nHe and his wife are frustrated with how the year has gone; he asks whether something is \"wrong with his immune system.\" We talked it through — each illness has had its own cause, and his vaccines are now up to date (PCV20 in Feb, flu/COVID/RSV in Sept). He seemed reassured.\n\nExam: vitals as charted, afebrile, room air sat normal. Neck: no hematoma, no bruit, puncture sites healed. Lungs diminished, no crackles. Heart regular. No edema.\n\nA/P\n1. Pneumonia with septic shock — resolved clinically. CXR in ~4 weeks per discharge plan. CBC/BMP today.\n2. Arterial cannulation during CVC placement — no sequelae, resolved.\n3. COPD, CAD, HTN, HLD — no changes.\n4. LDCT due in January; ordered.\nReturn sooner for fever, worse breathing, or any neck swelling."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-22a",
+          "kind": "portal_message",
+          "start": "2025-10-22T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Post-Hospital Labs",
+              "author": "PCP",
+              "date": "2025-10-22T12:40",
+              "body": "Hi Chad — blood counts and kidney function from yesterday are back to normal after the hospital stay. The chest x-ray order is in; any time in mid-November at the imaging center works."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "imaging",
+          "start": "2025-11-18T09:10",
+          "reason": "follow-up after pneumonia",
+          "orders": [
+            {
+              "id": "cxr-followup",
+              "action": "done",
+              "date": "2025-11-18T09:10"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-11-18T09:10",
+              "text": "CHEST, PA AND LATERAL\nIndication: Follow-up after pneumonia, October 2025.\nComparison: none on file at this facility.\nFindings: Lungs are clear. No consolidation, effusion or pneumothorax. Heart size normal. Coronary stent noted. Mediastinal contours normal. Bones intact.",
+              "conclusion": "No acute cardiopulmonary process. Clear lungs."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "portal_message",
+          "start": "2025-11-19T08:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Chest X-ray",
+              "author": "PCP",
+              "date": "2025-11-19T08:30",
+              "body": "Good news — yesterday's chest x-ray is clear. The pneumonia has fully cleared. Nothing more to do for it. Next on the list is the screening CT in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "portal_message",
+          "start": "2025-12-09T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Inhaler Refills",
+              "author": "patient",
+              "date": "2025-12-09T19:40",
+              "body": "Hi, I'm going to be at my brother's for two weeks over the holidays. Can you send through the Spiriva and the albuterol early so I have enough? Thanks, Chad\n\n---\nRN reply 12/10: Sent early refills of tiotropium and albuterol to your pharmacy. Your plan allows one early fill for travel. Safe travels."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

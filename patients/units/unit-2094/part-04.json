@@ -1,0 +1,208 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002094",
+      "events": [
+        {
+          "id": "2022-09-19a",
+          "kind": "hospital_admission",
+          "start": "2022-09-19T02:10",
+          "end": "2022-09-30T13:00",
+          "service": "Transplant Surgery",
+          "reason": "orthotopic liver transplantation",
+          "conditions": [
+            {"label": "Liver transplant status", "action": "diagnosed", "onset": "2022-09-19"}
+          ],
+          "medications": [
+            {"drug_text": "tacrolimus 1 MG Oral Capsule", "action": "start", "sig": "Take 2 capsules (2 mg) by mouth twice daily", "dose": {"value": 2, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "liver transplant immunosuppression"},
+            {"drug_text": "mycophenolate mofetil 250 MG Oral Capsule", "action": "start", "sig": "Take 3 capsules (750 mg) by mouth twice daily", "dose": {"value": 750, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "liver transplant immunosuppression"},
+            {"drug": "prednisone 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "liver transplant immunosuppression"},
+            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pneumocystis prophylaxis"},
+            {"drug_text": "spironolactone 100 MG Oral Tablet", "action": "stop", "reason": "ascites resolved after transplant"},
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "stop", "reason": "ascites resolved after transplant"}
+          ],
+          "procedures": [
+            {"procedure": "Orthotopic liver transplant", "snomed": "174425003", "performed": "2022-09-19T06:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Liver Transplant Discharge Summary", "author": "transplant surgery", "date": "2022-10-03T09:15", "body": "REGIONAL LIVER TRANSPLANT CENTER\nAdmitted: 09/19/2022  Discharged: 09/30/2022\nIndication: decompensated cirrhosis from chronic hepatitis C (genotype 1a) and prior alcohol use, with hepatocellular carcinoma treated by partial right hepatectomy in January 2022.\nProcedure 09/19: orthotopic deceased-donor liver transplantation. Uneventful anastomoses. Extubated postoperative day 1.\nCourse: graft function improved steadily with falling bilirubin and INR. Graft ultrasound on day 1 and day 5 showed patent vessels. Ascites resolved; diuretics stopped. Transferred from the ICU on day 3. Tacrolimus titrated to target trough.\nAllergies: no known drug allergies.\nDischarge medications:\n- tacrolimus 2 mg by mouth twice daily\n- mycophenolate mofetil 750 mg by mouth twice daily\n- prednisone 5 mg by mouth daily\n- trimethoprim-sulfamethoxazole 160/800 mg by mouth daily (Pneumocystis prophylaxis)\n- calcium carbonate 500 mg as needed for dyspepsia\nStopped: spironolactone, furosemide.\nFollow-up: transplant clinic twice weekly for the first month with labs, including tacrolimus troughs; then tapering visits. PCP within 2 to 3 weeks. No live vaccines. Inactivated influenza vaccine may be given after the first month."}
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "office_visit",
+          "start": "2022-10-13T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "first visit after liver transplant",
+          "conditions": [
+            {"label": "Decompensated cirrhosis of liver", "icd10": "K74.69", "action": "resolved"},
+            {"label": "Portal hypertension", "icd10": "K76.6", "action": "resolved"},
+            {"label": "Thrombocytopenia", "action": "resolved"},
+            {"label": "Hepatocellular carcinoma", "icd10": "C22.0", "action": "resolved"},
+            {"label": "History of hepatocellular carcinoma", "icd10": "Z85.05", "action": "diagnosed", "onset": "2022-09-19", "note": "Resected January 2022; native liver explanted at transplant"}
+          ],
+          "state": {"weight_kg": 74.0, "labs": {"Platelets": 186, "Bilirubin, Total": 0.9, "Albumin": 3.7, "Aspartate Aminotransferase": 31, "Alanine Aminotransferase": 34, "Alkaline Phosphatase": 96, "Prothrombin Time-International Normalized Ratio": 1.1, "Hemoglobin": 14.4}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-10-13T11:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-10-13T11:40", "results": [{"test": "Platelets"}, {"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2022-10-13T11:40", "results": [{"test": "Tacrolimus trough", "loinc": "11253-2", "unit": "ng/mL", "value": 7.9}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2022-10-13T11:00"},
+            {"procedure": "Venipuncture", "performed": "2022-10-13T11:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Transplant Visit", "author": "PCP", "date": "2022-10-13T11:00", "body": "57M, 3.5 weeks after deceased-donor liver transplant (9/19). Discharge summary reviewed.\nS: Feels better than he has in two years, still tires by mid-afternoon. Eating well. Incision healing; seen by transplant clinic twice a week, labs Mon/Thu. Taking tacrolimus 2 mg BID, mycophenolate 750 mg BID, prednisone 5 mg, TMP-SMX DS daily. Uses a pill box and phone alarms. No fevers, no diarrhea.\nO: vitals as charted. No icterus. Chevron incision clean and dry, no erythema. Abdomen soft, no fluid wave. No edema.\nA/P:\n1. Liver transplant status: immunosuppression per transplant center. Problem list updated: cirrhosis, portal hypertension and low platelets resolved with the new liver; HCC moved to history. Platelets normal today.\n2. Chronic hepatitis C: remains on the list.\n3. Labs today as a courtesy for transplant clinic, results faxed there.\n4. Vaccines: inactivated flu and updated COVID in November once past the first month. No live vaccines ever going forward, reviewed.\nRTC 2 months."}
+          ]
+        },
+        {
+          "id": "2022-11-09a",
+          "kind": "nurse_visit",
+          "start": "2022-11-09T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-11-09T09:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-11-09T09:12"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-11-09T09:10"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2022-11-09T09:05", "body": "Transplant 9/19, team okayed inactivated vaccines now. Inactivated flu R deltoid, bivalent COVID L deltoid. Afebrile today. Tolerated."}
+          ]
+        },
+        {
+          "id": "2022-12-03a",
+          "kind": "hospital_admission",
+          "start": "2022-12-03T16:45",
+          "end": "2022-12-10T12:00",
+          "service": "General Surgery",
+          "reason": "sudden severe abdominal pain",
+          "conditions": [
+            {"label": "Perforated duodenal ulcer", "icd10": "K26.5", "action": "diagnosed", "onset": "2022-12-03"}
+          ],
+          "medications": [
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily before meals for 8 weeks", "dose": {"value": 40, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "perforated duodenal ulcer, after repair"}
+          ],
+          "vitals": [
+            {"time": "2022-12-03T16:50", "temp_c": 38.2, "bp": [96, 60], "hr": 112}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2022-12-03T17:20", "text": "Upright portable chest. Free air beneath both hemidiaphragms. Lungs clear. Heart size normal. No pleural effusion.", "conclusion": "Pneumoperitoneum, consistent with hollow viscus perforation."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2022-12-03T16:45"},
+            {"procedure": "Exploratory laparotomy", "snomed": "74770008", "performed": "2022-12-03T20:30"},
+            {"procedure": "Patch repair of perforated duodenal ulcer", "snomed": "698496004", "performed": "2022-12-03T21:00"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2022-12-12T09:00", "body": "REGIONAL HOSPITAL EMERGENCY DEPT\nVisit 12/03/2022, arrived 16:45 by private car.\nCC: abdominal pain, sudden, 2 hours.\nHPI: 57-year-old man about 10 weeks after liver transplant. Abrupt severe pain across the whole abdomen that started while watching TV and has not let up; nothing makes it better or worse. For about a week, burning in the pit of the stomach after eating, which he treated with over-the-counter antacids now and then; did not call anyone. Takes prednisone and other transplant medicines. Never smoker, no alcohol.\nAllergies: NKDA.\nVitals: T 38.2 C, BP 96/60, HR 112.\nExam: lying very still, sweaty. Abdomen distended, tender everywhere with guarding and marked rebound. No bowel sounds.\nUpright CXR: free air under the diaphragm.\nImpression: perforated viscus, likely peptic, in an immunosuppressed patient. Fluids, IV antibiotics, IV PPI. Transplant team and general surgery at bedside; to the OR."},
+            {"type": "Operative Note", "title": "Operative Report", "author": "general surgery", "date": "2022-12-12T09:05", "body": "Date of operation: 12/03/2022\nPreoperative diagnosis: pneumoperitoneum. Postoperative diagnosis: perforated anterior duodenal ulcer.\nProcedure: exploratory laparotomy, omental (Graham) patch repair of perforated duodenal ulcer, washout.\nFindings: a small perforation of the anterior wall of the first part of the duodenum with bilious contamination of the upper abdomen. Liver graft appeared healthy. No other perforation.\nThe omental pedicle was secured over the defect with interrupted sutures; leak test negative. Abdomen irrigated. Fascia closed. EBL minimal. Patient to the surgical ICU in stable condition."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "general surgery", "date": "2022-12-12T09:10", "body": "Admitted: 12/03/2022  Discharged: 12/10/2022\nDiagnosis: perforated duodenal ulcer, s/p Graham patch repair 12/03. Background: liver transplant 09/2022 on tacrolimus, mycophenolate, prednisone.\nCourse: one night in the surgical ICU, then the floor. IV antibiotics completed. Diet advanced from day 4. Tacrolimus continued with levels checked by the transplant team throughout. Wound healing well.\nAllergies: NKDA.\nDischarge medications: pantoprazole 40 mg twice daily for 8 weeks (new); tacrolimus 2 mg twice daily; mycophenolate mofetil 750 mg twice daily; prednisone 5 mg daily; trimethoprim-sulfamethoxazole DS daily.\nInstructions: avoid NSAIDs. Surgical clinic 2 weeks. PCP 1 to 2 weeks."}
+          ]
+        },
+        {
+          "id": "2022-12-19a",
+          "kind": "office_visit",
+          "start": "2022-12-19T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ulcer surgery",
+          "state": {"weight_kg": 72.6},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-19T14:15", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2022-12-19T13:40"},
+            {"procedure": "Venipuncture", "performed": "2022-12-19T14:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2022-12-19T13:40", "body": "Hospital follow-up: perforated duodenal ulcer 12/3, Graham patch the same night. ED, op note and discharge summary reviewed.\nS: Sore along the new midline wound, otherwise ok. Eating small meals without burning. Taking pantoprazole 40 BID. Transplant meds unchanged, levels per transplant clinic. Says he should have called about the burning that week, assumed it was his usual heartburn.\nO: afebrile, vitals as charted. Midline incision clean, edges together, no drainage. Abdomen soft, appropriately tender near the wound.\nA/P:\n- Perforated DU s/p repair: pantoprazole 40 BID for 8 weeks total (to early Feb), then stop and reassess. No NSAIDs, ever; this is on his list. Low threshold to call for epigastric pain given prednisone.\n- Liver transplant: stable.\n- CBC today.\nRTC early Feb."}
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, end of pantoprazole course",
+          "conditions": [
+            {"label": "Perforated duodenal ulcer", "icd10": "K26.5", "action": "resolved"}
+          ],
+          "medications": [
+            {"drug": "pantoprazole 40 MG Delayed Release Oral Tablet", "action": "stop", "reason": "8-week course complete"}
+          ],
+          "state": {"weight_kg": 76.8},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-02-07T11:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-02-07T11:00", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-02-07T10:20"},
+            {"procedure": "Venipuncture", "performed": "2023-02-07T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-02-07T10:20", "body": "S: 8 weeks of pantoprazole done this week. No epigastric pain, no black stools. Heartburn only now and then, uses calcium carbonate. Back in the shop part time, light work. Weight coming back.\nO: vitals as charted. Midline scar well healed, no hernia felt. Abdomen soft, nontender.\nA/P:\n- Perforated DU, repaired: course complete, pantoprazole stopped. Resolved. PRN calcium carbonate for heartburn.\n- Liver transplant: transplant clinic monthly now. CMP/CBC today, copy to them.\n- Hep C: on list.\nPhysical in the fall."}
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "outside_records",
+          "start": "2023-04-14T10:00",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant Clinic Letter", "author": "transplant hepatology", "date": "2023-04-14T10:00", "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 04/12/2023\nMr. Nowak is now about 7 months after liver transplantation. He recovered from the December ulcer repair without problems. Graft function is stable and tacrolimus troughs have been in our target range on 2 mg twice daily. We are continuing mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily and trimethoprim-sulfamethoxazole daily.\nAllergies: NKDA.\nNext visit in 4 months with labs. Thank you for sharing his care."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "portal_message",
+          "start": "2023-07-18T09:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Sulfa pill refill", "author": "patient", "date": "2023-07-18T09:30", "body": "The transplant pharmacy mail order is running late and I have 2 of the sulfa pills left. Could you send a month to my local pharmacy?"},
+            {"type": "Patient Message", "title": "RE: refill", "author": "PCP", "date": "2023-07-18T11:05", "body": "Done, 30 tablets of trimethoprim-sulfamethoxazole DS, one daily, sent to your local pharmacy. Keep the transplant pharmacy as your main supply."}
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "annual_physical",
+          "start": "2023-09-21T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 82.2},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-21T09:20", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-21T09:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-21T09:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-09-21T09:20", "results": [{"test": "Hemoglobin A1c", "value": 5.6}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2023-09-21T08:40"},
+            {"procedure": "Venipuncture", "performed": "2023-09-21T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-09-21T08:40", "body": "58M, a year out from liver transplant.\nHow he's doing: working close to full days again on a lighter schedule. Energy good. No heartburn to speak of. Sober 7 years.\nMeds: tacrolimus 2 mg BID, mycophenolate 750 mg BID, prednisone 5 mg daily, TMP-SMX DS daily, calcium carbonate PRN. NKDA.\nFunctional: independent in all ADLs/IADLs. No falls. Hearing and vision ok.\nPrevention: colonoscopy 9/2021 normal (10 yr). Hep A/B, zoster, PCV20, Tdap complete. Flu/COVID next month at a nurse visit. Glucose and A1c checked given prednisone and family history: A1c 5.6.\nExam: well. Anicteric. Heart and lungs normal. Abdomen: well-healed chevron and midline scars, no hernia, no tenderness. Skin: no suspicious lesions on a full check. No edema.\nA/P: stable post-transplant. Labs as above, copy to transplant clinic. Sun protection reviewed given immunosuppression and outdoor work."}
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-11T08:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-11T08:57"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-11T08:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Fall Vaccines", "author": "MA", "date": "2023-10-11T08:50", "body": "Inactivated flu (R arm) and 2023-24 COVID (L arm). Transplant pt, inactivated only. No issues after."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -263,6 +263,65 @@ async fn duplicate_calls_and_oversized_batches_execute_nothing() {
 }
 
 #[tokio::test]
+async fn malformed_and_unknown_siblings_preserve_successful_result_and_order() {
+    let calls = vec![
+        call("malformed", "save", "{broken"),
+        call("good", "save", " { \"revision\" : 7 } "),
+        call("unknown", "not_registered", "{}"),
+    ];
+    let mut provider = Script::new(vec![turn(calls.clone()), turn(vec![text("Done.")])]);
+    let mut owner = Owner::default();
+    let result = run(
+        &mut provider,
+        &mut owner,
+        "siblings",
+        vec![],
+        &limits(),
+        &Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(result.text, "Done.");
+    assert_eq!(owner.executed, 1);
+    assert_eq!(&provider.requests[1].items[..3], calls.as_slice());
+    let results: Vec<_> = provider.requests[1]
+        .items
+        .iter()
+        .filter_map(|item| {
+            if let Item::Result { call_id, output } = item {
+                Some((call_id.as_str(), output.as_str()))
+            } else {
+                None
+            }
+        })
+        .collect();
+    assert_eq!(results.len(), 3);
+    assert_eq!(results[0].0, "malformed");
+    assert_eq!(results[1], ("good", "saved"));
+    assert_eq!(results[2].0, "unknown");
+    assert!(results[0].1.contains("error"));
+    assert!(results[2].1.contains("error"));
+    let returned: Vec<_> = owner
+        .events
+        .iter()
+        .filter_map(|event| {
+            if let EventKind::ToolReturned {
+                call_id, output, ..
+            } = &event.kind
+            {
+                Some((call_id.as_str(), output.as_str()))
+            } else {
+                None
+            }
+        })
+        .collect();
+    assert_eq!(
+        returned, results,
+        "all feedback is acknowledged before redispatch"
+    );
+}
+
+#[tokio::test]
 async fn malformed_unknown_and_denied_tools_return_feedback() {
     for (invocation, deny) in [
         (call("c", "save", "bad json"), false),

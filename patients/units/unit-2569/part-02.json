@@ -1,0 +1,169 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002569",
+      "events": [
+        {
+          "id": "2025-08-05a",
+          "kind": "telephone",
+          "start": "2025-08-05T16:40",
+          "reason": "cancel appointment",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2025-08-05T16:40", "body": "Pt called to cancel his 8/12 physical. Out on a multi-week sampling job through the end of the month. Will call back to rebook for the fall."}
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "annual_physical",
+          "start": "2025-08-12T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-26a",
+          "kind": "portal_message",
+          "start": "2025-09-26T19:22",
+          "documents": [
+            {"type": "Patient Message", "title": "Tired and bruising", "author": "patient", "date": "2025-09-26T19:22", "body": "Hi, I never rebooked my physical but something seems off. I've been wiped out for about three weeks, way more than a long field season should do, and I keep finding bruises on my shins that I don't remember getting. Can I get in early next week?"},
+            {"type": "Patient Message", "title": "RE: Tired and bruising", "author": "RN", "date": "2025-09-26T19:58", "body": "Hi Calvin, thanks for writing. I've put you on the doctor's schedule Monday 9/29 at 8:30 and we will draw labs at that visit. If you have any bleeding that won't stop, black stools, fever or feel faint over the weekend, go to the ED."}
+          ]
+        },
+        {
+          "id": "2025-09-29a",
+          "kind": "office_visit",
+          "start": "2025-09-29T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue and easy bruising",
+          "state": {"weight_kg": 77.1},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-09-29T08:55", "resulted": "2025-09-29T13:40", "results": [
+              {"test": "White Blood Cells", "value": 2.4},
+              {"test": "Hemoglobin", "value": 10.1},
+              {"test": "Platelets", "value": 64},
+              {"test": "Absolute Neutrophil Count", "value": 0.9},
+              {"test": "Neutrophils %", "value": 38},
+              {"test": "Lymphocytes %", "value": 56},
+              {"test": "Monocytes %", "value": 4},
+              {"test": "Eosinophils %", "value": 1},
+              {"test": "Basophils %", "value": 1}
+            ]},
+            {"panel": null, "collected": "2025-09-29T08:55", "resulted": "2025-09-29T15:10", "results": [
+              {"test": "Blasts/Leukocytes in Blood by Manual count", "loinc": "709-6", "unit": "%", "value": 22}
+            ]}
+          ],
+          "orders": [
+            {"id": "heme-referral", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "pancytopenia with circulating blasts"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2025-09-29T08:30"},
+            {"procedure": "Venipuncture", "performed": "2025-09-29T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-09-29T09:10", "body": "S: 28M with roughly three weeks of fatigue out of proportion to his workload. Bruises on both shins without trauma he can recall. No fevers, sweats, nosebleeds, gum bleeding, melena or hematuria. No new medicines or supplements. No recent illness.\n\nO: Vitals as charted, afebrile. Looks pale and tired. Conjunctival pallor. Oropharynx without petechiae. No cervical, axillary or inguinal nodes. Heart regular, no murmur. Lungs clear. Abdomen soft, liver and spleen not palpable. Skin: several 1-3 cm ecchymoses over both anterior shins at different stages, no petechiae elsewhere.\n\nA/P: Fatigue with unexplained bruising in a previously well young man. Worried about a marrow process. CBC with diff drawn now, asked lab to call critical values and do a smear review. Will call him today with results."},
+            {"type": "Result Note", "title": "CBC and smear", "author": "PCP", "date": "2025-09-29T15:30", "body": "WBC 2.4, Hgb 10.1, plt 64, ANC 0.9. Analyzer flagged the lymphocyte count; pathologist smear review shows 22% blasts. Called the on-call hematologist at the regional cancer center, who will see him Wednesday 10/1 with marrow that day. Urgent referral placed. Called patient, see phone note."},
+            {"type": "Telephone Encounter", "title": "Results call", "author": "PCP", "date": "2025-09-29T15:45", "body": "Reached pt. Explained his counts are low and there are immature cells in the blood that need a bone marrow exam, and that leukemia is on the list. He took it calmly, asked good questions, a friend will drive him Wednesday. Bleeding and fever precautions reviewed, no contact sports or heavy lifting at work this week. He knows to call or go to the ED for fever 38 or above."}
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "telephone",
+          "start": "2025-09-30T11:05",
+          "reason": "referral coordination",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral faxed", "author": "MA", "date": "2025-09-30T11:05", "body": "Referral, visit note, CBC and smear report faxed to the cancer center hematology intake. Confirmed receipt by phone; pt is on their schedule 10/1 at 9:00. Pt notified via portal."}
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "outside_records",
+          "start": "2025-10-08T10:15",
+          "reason": "hematology/oncology consult letter",
+          "conditions": [
+            {"label": "Acute lymphoblastic leukemia not having achieved remission", "icd10": "C91.00", "action": "diagnosed", "onset": "2025-10-01"}
+          ],
+          "procedures": [
+            {"procedure": "Bone marrow biopsy, needle or trocar", "snomed": "56241004", "performed": "2025-10-01T10:30"},
+            {"procedure": "Implantation of venous access port", "snomed": "80402001", "performed": "2025-10-02T13:00"}
+          ],
+          "orders": [
+            {"id": "heme-referral", "action": "done", "date": "2025-10-08T10:15"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Hematology/Oncology Consultation", "author": "hematology/oncology", "date": "2025-10-08T10:15", "body": "Regional cancer center, Leukemia Service. Date of consultation 10/01/2025.\n\nThank you for the prompt referral of Mr. Sawyer, a 28-year-old man with three weeks of fatigue and bruising, found by you to have pancytopenia with 22% circulating blasts.\n\nHistory, medications (none) and family history reviewed; of note his paternal grandfather had AML in his sixties. Allergies: sulfamethoxazole-trimethoprim (anaphylaxis, by report), iodinated contrast (urticaria).\n\nExam today matched yours: pallor, shin ecchymoses, no adenopathy or organomegaly.\n\nBone marrow aspirate and biopsy were performed today. Morphology and immunophenotyping show a hypercellular marrow replaced by lymphoblasts, diagnostic of acute lymphoblastic leukemia.\n\nPlan: right subclavian port placed by interventional radiology 10/02 without complication. Admitted 10/03 to begin induction chemotherapy on our inpatient leukemia unit. We discussed the diagnosis, treatment phases and expected length of therapy with him at length. We will keep you updated with letters at each phase.\n\nHematology/Oncology attending, Leukemia Service"},
+            {"type": "Result Note", "title": "Consult letter reviewed", "author": "PCP", "date": "2025-10-08T13:00", "body": "Reviewed. ALL confirmed, inpatient induction started 10/3. Problem list updated. Sent him a note wishing him well and letting him know we're here for anything outside oncology."}
+          ]
+        },
+        {
+          "id": "2025-10-12a",
+          "kind": "hospital_admission",
+          "start": "2025-10-03T14:00",
+          "end": "2025-10-31T11:30",
+          "service": "Hematology & Oncology",
+          "reason": "induction chemotherapy",
+          "vitals": [
+            {"time": "2025-10-12T03:10", "temp_c": 40.1}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-10-12T03:40", "results": [
+              {"test": "White Blood Cells", "value": 0.38},
+              {"test": "Hemoglobin", "value": 8.4},
+              {"test": "Mean Corpuscular Volume", "value": 89},
+              {"test": "Platelets", "value": 58},
+              {"test": "Absolute Neutrophil Count", "value": 0.02}
+            ]},
+            {"panel": null, "collected": "2025-10-12T03:45", "resulted": "2025-10-17T08:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days"}]}
+          ],
+          "procedures": [
+            {"procedure": "Bone marrow biopsy, needle or trocar", "snomed": "56241004", "performed": "2025-10-30T10:00"}
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "outside_records",
+          "start": "2025-11-04T09:40",
+          "reason": "induction discharge summary",
+          "conditions": [
+            {"label": "Acute lymphoblastic leukemia not having achieved remission", "icd10": "C91.00", "action": "resolved"},
+            {"label": "Acute lymphoblastic leukemia, in remission", "icd10": "C91.01", "action": "diagnosed", "onset": "2025-10-30"},
+            {"label": "Agranulocytosis secondary to cancer chemotherapy", "icd10": "D70.1", "action": "diagnosed", "onset": "2025-10-12"},
+            {"label": "Thrombocytopenia", "action": "diagnosed", "onset": "2025-10-12"}
+          ],
+          "medications": [
+            {"drug_text": "valacyclovir 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 500, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "antiviral prophylaxis during chemotherapy"},
+            {"drug": "ciprofloxacin 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily during neutropenic periods as directed by oncology", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "antibacterial prophylaxis when neutropenic"},
+            {"drug_text": "0.5 ML filgrastim 0.6 MG/ML Prefilled Syringe", "action": "historical", "sig": "Inject 300 mcg under the skin daily during nadir periods as directed by oncology", "dose": {"value": 300, "unit": "mcg"}, "frequency": "DAILY", "route": "Subcutaneous", "course": "chronic", "reason": "neutropenia during chemotherapy"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary, Leukemia Service", "author": "hematology/oncology", "date": "2025-11-04T09:40", "body": "Admitted 10/03/2025, discharged 10/31/2025.\nPrincipal diagnosis: acute lymphoblastic leukemia, induction chemotherapy.\nSecondary: febrile neutropenia due to chemotherapy; chemotherapy-related thrombocytopenia.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis by patient report; desensitized per our protocol), iodinated contrast (urticaria).\n\nHospital course: Induction began 10/03 through his right subclavian port. On hospital day 10 (10/12) he had rigors with a temperature of 40.1 C. He looked unwell, but a careful exam found no source: port site clean, lungs clear, no mucositis, skin intact. Labs that morning: WBC 0.38, ANC 0.02, Hgb 8.4, MCV 89, platelets 58. Blood cultures from the port and a peripheral site were sent, and IV cefepime was begun right after. Counts stayed profoundly low over the next several days, and after team discussion filgrastim was added. He defervesced on day 3 of cefepime; cultures had no growth at 5 days and cefepime was stopped after count recovery.\n\nEnd-of-induction bone marrow 10/30: morphologic complete remission.\n\nDischarge medications: valacyclovir 500 mg daily; ciprofloxacin 500 mg twice daily whenever ANC falls below 500, per written instructions; filgrastim 300 mcg subcut daily during nadir periods per written instructions.\n\nFollow-up: outpatient leukemia clinic weekly, next cycle per protocol. Return precautions for fever 38.0 C or higher.\n\nLeukemia Service hospitalist"},
+            {"type": "Result Note", "title": "Discharge summary reviewed", "author": "PCP", "date": "2025-11-04T12:20", "body": "Summary reviewed. Induction complicated by culture-negative febrile neutropenia, now in remission. Lists updated with oncology's prophylaxis meds and the neutropenia and thrombocytopenia. Front desk to book a check-in next week."}
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "office_visit",
+          "start": "2025-11-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital check-in",
+          "state": {"weight_kg": 73.2},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-11-12T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-11-12T10:35", "body": "Here to check in after his month-long induction stay. Tired, appetite coming back slowly, down about 4 kg since September. No fevers since discharge. Sleeping OK. Getting his next chemotherapy cycle at the cancer center clinic; they draw counts there and he knows when to start cipro and filgrastim. On leave from work.\n\nMeds reconciled: valacyclovir daily; cipro and filgrastim per oncology's nadir instructions. Allergies unchanged.\n\nExam: thin, alert, wearing a mask. Afebrile, vitals as charted. Port R upper chest, clean, nontender. No oral ulcers. Lungs clear, heart regular. A few fading bruises on the legs.\n\nA/P:\n1. ALL in remission after induction, on active therapy with oncology. Counts and chemotherapy decisions stay with them.\n2. History of febrile neutropenia: fever plan reviewed, he goes straight to the cancer center ED, not urgent care.\n3. Weight loss with treatment, encouraged calorie-dense foods.\n4. Flu vaccine: will ask oncology about timing, inactivated only, no live vaccines while on treatment.\nCheck in again in 2 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "portal_message",
+          "start": "2025-12-03T14:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Leave paperwork", "author": "patient", "date": "2025-12-03T14:48", "body": "HR at my company sent a medical leave certification form. Oncology already did one but HR wants my regular doctor to sign the section about how long I'll be out. Can I drop it off?"},
+            {"type": "Patient Message", "title": "RE: Leave paperwork", "author": "PCP", "date": "2025-12-03T17:10", "body": "Sure. Drop it at the front desk or upload it here. I'll fill in that I agree with oncology's estimate and refer HR to them for the specifics of your treatment schedule."},
+            {"type": "Administrative Note", "title": "Form completed", "author": "MA", "date": "2025-12-08T11:30", "body": "Leave certification signed by PCP, copy scanned, original faxed to employer HR per pt's release."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2128 @@
+{
+  "unit": "unit-2046",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002046",
+      "given": "Adam",
+      "family": "Walsh",
+      "birth_date": "1978-04-16",
+      "address_line": "41 Larkspur Lane",
+      "phone": "+1-603-555-0163",
+      "email": "adam.walsh@example.test",
+      "marital_status": "single",
+      "summary": "Logistics coordinator who joined in 2023 with hypertension on hydrochlorothiazide and recurrent calcium oxalate stones. Two ureteral stones in 2024 (right, CT-proven; left, clinical) passed after ED visits, then an adhesive small bowel obstruction in late 2025 from a 2013 open appendectomy, managed without surgery.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:14",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-08-08T10:14",
+              "author": "front desk",
+              "body": "Caller Adam Walsh, 45, moving his primary care to us. His previous doctor's office in town cut back hours and he wants somewhere he can actually reach. Has commercial PPO through work, card info taken. Takes one blood pressure pill. Booked new patient visit Tue 8/22 at 8:00 am, first slot since he starts work at 9:30. Records release form emailed to him to sign and send to the old office."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T08:00",
+          "end": "2023-08-22T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2019-01-01",
+              "note": "on hydrochlorothiazide from prior primary care"
+            },
+            {
+              "label": "Kidney stone",
+              "action": "diagnosed",
+              "onset": "2018-01-01",
+              "note": "recurrent calcium oxalate nephrolithiasis by patient report; prior stones passed spontaneously"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              82
+            ],
+            "hr": 64,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 85.7,
+            "height_cm": 179.9
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 96
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 131
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Logistics coordinator"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency appendectomy",
+              "snomed": "174036004",
+              "performed": "2013-06-01T00:00"
+            },
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-22T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T08:48"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-22T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-22T08:50",
+              "author": "PCP",
+              "body": "45M new to the practice. Previous PCP was across town; records release signed, list requested.\n\nConcerns today: none really. Wants his BP pill continued and a doctor he can text.\n\nHTN: told he had high pressures at a work screening and then at his old office about four years ago. On HCTZ 25 mg every morning since, no side effects, no dizziness. Doesn't check at home.\n\nKidney stones: says he has had stones 'more than once' before coming here, all passed on their own, one of them was sent off and came back calcium oxalate. Can't give years without looking. His dad has had a string of stones too. Nothing recent.\n\nPMH: hypertension, recurrent calcium oxalate stones.\nPSH: open appendectomy around 2013, appendix had ruptured, a few days in the hospital. Nothing since.\nMeds: hydrochlorothiazide 25 mg daily.\nAllergies: none to medications.\nFH: father with recurrent kidney stones. Mother has hypertension.\nSH: logistics coordinator for a distributor, a lot of time on the warehouse floor and on the phone. Never smoked. A drink or two a month at most. Lives alone in Amherst.\n\nROS: no chest pain, no shortness of breath, no headaches, no urinary symptoms, bowels regular.\n\nExam: vitals as recorded, BP fine. Well appearing. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed RLQ transverse scar, no hernia. No CVA tenderness. Extremities without edema. Skin warm.\n\nA/P\n1. Essential hypertension, controlled on HCTZ 25. Continue. CMP for K, Na, Ca and creatinine.\n2. Recurrent calcium oxalate nephrolithiasis, quiet. Encouraged steady water through the day. We can talk more about prevention if he gets another one.\n3. Health maintenance: lipids, A1c, CBC. One-time hep C and HIV screen, he agrees. FIT kit given for colon cancer screening at 45. Tdap given today, last tetanus shot he thinks was in his twenties. PHQ-2 negative.\n\nFollow up 6 months for BP, sooner if needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              130,
+              82
+            ],
+            "weight_kg": 86.2,
+            "height_cm": 179.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-08-24T16:40",
+              "author": "PCP",
+              "body": "Hi Adam, your bloodwork from Tuesday is all in the normal range: kidney function, potassium and sodium (which we watch on hydrochlorothiazide), calcium, blood counts, cholesterol and sugar. Hep C and HIV screens were negative. Nothing to change. Don't forget to drop off that stool kit when you get a chance."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T11:05",
+          "reason": "records from prior primary care",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2023-09-12T11:05",
+              "author": "outside primary care",
+              "body": "Records received by fax from the patient's previous primary care office (2 pages).\n\nActive problems: essential hypertension; nephrolithiasis, recurrent, calcium oxalate.\nPast surgery: appendectomy.\nCurrent medications: hydrochlorothiazide 25 mg tablet, one daily.\nAllergies: NKDA.\n\nNo visit notes, imaging or lab values included. Filed to chart, PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "lab_only",
+          "start": "2023-10-04T09:30",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-02T07:00",
+              "resulted": "2023-10-04T09:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-10-04T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2023-10-04T13:12",
+              "author": "RN",
+              "body": "FIT negative. Result released to portal with a note that we will send a new kit next year. Due again 10/2024."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.9
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T17:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T17:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2023-10-17T17:30",
+              "author": "RN",
+              "body": "Came after work for his flu shot and the 2023-24 COVID booster. Screening questions negative, no prior reactions. Flu in L deltoid, COVID in R deltoid. Observed 15 min, left feeling fine."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "vitals": {
+            "bp": [
+              129,
+              79
+            ],
+            "hr": 65,
+            "spo2": 96,
+            "weight_kg": 86.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-13T08:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-13T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-02-13T08:30",
+              "author": "PCP",
+              "body": "S: Six-month BP check. Taking HCTZ every morning, misses maybe one dose a month. Busy season at work is over. No headaches, no lightheadedness on standing, no cramps. No stone pain since he joined.\n\nO: BP and vitals as charted, at goal. Heart RRR, lungs clear, no edema.\n\nA/P: HTN controlled on hydrochlorothiazide 25. BMP today for electrolytes. Refills good through summer. See in the fall for a physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-30a",
+          "kind": "pharmacy",
+          "start": "2024-04-30T09:02",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2024-04-30T09:02",
+              "author": "MA",
+              "body": "Pharmacy requested a 90-day supply of hydrochlorothiazide 25 mg, 1 tab daily. Last BMP 2/13 normal, seen 2/13. Approved 90 days with 1 refill per standing order."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "ed_visit",
+          "start": "2024-06-04T13:40",
+          "end": "2024-06-04T19:10",
+          "service": "Emergency Medicine",
+          "reason": "right flank pain",
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "action": "diagnosed",
+              "onset": "2024-06-02",
+              "note": "5 mm right ureteral calculus on non-contrast CT",
+              "icd10": "N20.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily until the stone passes, up to 4 weeks",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "right ureteral stone"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, with food",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "renal colic"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-06-04T13:48",
+              "bp": [
+                135,
+                85
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-06-04T14:05",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "Present"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "0-2"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.5
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis without contrast",
+              "loinc": "36952-0",
+              "performed": "2024-06-04T15:10",
+              "text": "Indication: right flank pain radiating to the groin, history of stones. Technique: axial non-contrast images of the abdomen and pelvis with coronal reformats. Findings: 5 mm calculus within the right ureter. No hydronephrosis. Both kidneys normal in size. Bladder unremarkable. Appendix surgically absent. No free fluid. Visualized bowel unremarkable.",
+              "conclusion": "5 mm right ureteral calculus."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-06-04T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department note",
+              "date": "2024-06-05T08:20",
+              "author": "emergency medicine",
+              "body": "Regional emergency department, visit 06/04/2024. Brief note sent to primary care.\n\n46 y/o M, known calcium oxalate stone former, on HCTZ for HTN. Two days of right flank pain, comes and goes in spasms, goes down into the groin. Nauseated, threw up twice. Denies fever, burning with urination or dark urine. NKDA. Prior appendectomy.\n\nExam: afebrile, BP 135/85. Right CVA tenderness. Abdomen otherwise soft.\nUA: blood present, no pyuria, no bacteria.\nCT A/P without contrast: 5 mm stone in the right ureter.\n\nTreated with IV ketorolac and IV ondansetron with relief. Asked about what to eat to avoid more stones, told to take it up with his PCP.\n\nDx: right ureterolithiasis.\nDispo: home. Tamsulosin 0.4 mg daily until passed, ibuprofen 600 mg q6h prn, ondansetron 4 mg ODT prn. Strain urine. Return for fever, uncontrolled pain or vomiting. PCP follow-up within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "portal_message",
+          "start": "2024-06-05T07:12",
+          "reason": "ED follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney stone ER visit",
+              "date": "2024-06-05T07:12",
+              "author": "patient",
+              "body": "Hi, I ended up in the ER yesterday with another stone, right side this time, they said 5 mm. Got sent home with tamsulosin and pain pills. They told me to see you within a week. Also I'd like to finally talk about what I should be eating to stop getting these. Next Tuesday early morning works if you have it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney stone ER visit",
+              "date": "2024-06-05T08:41",
+              "author": "front desk",
+              "body": "Sorry to hear it, Adam. You're booked Tue 6/11 at 7:40 am. Doctor says keep straining your urine and call or text if you get a fever or the pain gets out of hand."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for kidney stone",
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "action": "resolved",
+              "onset": "2024-06-02",
+              "icd10": "N20.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              84
+            ],
+            "hr": 69,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 86.4
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-06-11T07:55",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.012
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.4
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-11T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-11T08:15",
+              "author": "PCP",
+              "body": "S: ED 6/4 for R flank pain, CT showed a 5 mm R ureteral stone. Passed it Friday 6/7 in the shower, felt a sharp twinge then relief; didn't catch it in the strainer. No pain since, off the ibuprofen and ondansetron, finishing tamsulosin today. No fever, no urinary symptoms.\n\nWants to talk prevention. Typical day: coffee in the morning, a water bottle he forgets in the truck, eats out at lunch a lot.\n\nO: vitals as charted, afebrile. No CVA tenderness. Abdomen soft, nontender.\nUA today: no blood.\n\nA/P\n1. R ureteral stone, passed. Resolved. Stop tamsulosin.\n2. Recurrent calcium oxalate nephrolithiasis. Went through prevention: aim for enough fluid to make about 2.5 L of urine a day (he'll keep a 32 oz bottle at his desk and refill it three times), cut back on salty restaurant food, keep meat portions moderate, don't cut out dairy since normal calcium in food helps. HCTZ is also doing double duty here, so stays as is. Handout on low-oxalate foods given.\n3. HTN: BP fine.\n\nSee in September for physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              133,
+              86
+            ],
+            "hr": 67,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 86.9,
+            "height_cm": 178.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 98
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 108
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 294
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.11
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-10T08:45",
+              "author": "PCP",
+              "body": "46M annual exam.\n\nInterval: R ureteral stone in June, passed after an ED visit. Says he's better about water on weekdays, worse on weekends. No flank pain since. BP meds no issues.\n\nMeds: HCTZ 25 mg daily. NKDA.\nHabits: never smoker, rare drink. Walks the warehouse all day, no other exercise. Sleep ok.\nPHQ-2: 0.\n\nROS negative across systems.\n\nExam: vitals as charted. Well appearing. Eyes, ears, throat normal. No lymphadenopathy. Thyroid not enlarged. Heart regular without murmur. Lungs clear bilaterally. Abdomen soft, nontender, old appendectomy scar. No CVA tenderness. Normal gait. No edema. Skin without suspicious lesions.\n\nA/P\n- Health maintenance: CMP, lipids, CBC. FIT kit #2 given. Flu and COVID shots when the fall vaccines are in, nurse visit.\n- HTN controlled, continue HCTZ.\n- Nephrolithiasis: keep up the fluids.\n\nNext physical in a year, BP check in between."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "lab_only",
+          "start": "2024-09-26T10:10",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-24T06:30",
+              "resulted": "2024-09-26T10:10",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-09-26T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT and physical labs",
+              "date": "2024-09-26T12:30",
+              "author": "PCP",
+              "body": "FIT negative. Labs from the physical normal, K and creatinine fine on HCTZ. Sent to portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.3
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-22T17:20",
+              "author": "RN",
+              "body": "Seasonal flu and 2024-25 COVID vaccines given, left and right deltoid. No reactions last year. Tolerated, waited 15 minutes, no issues."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-12-14a",
+          "kind": "ed_visit",
+          "start": "2024-12-14T14:25",
+          "end": "2024-12-14T18:40",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain",
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "action": "diagnosed",
+              "onset": "2024-12-14",
+              "note": "left-sided, clinical diagnosis without imaging",
+              "icd10": "N20.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily until the stone passes, up to 4 weeks",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "left ureteral stone"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, with food",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "renal colic"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-12-14T14:31",
+              "bp": [
+                152,
+                92
+              ],
+              "hr": 104,
+              "temp_c": 37.1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-12-14T14:50",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "Present"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "0-2"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-12-14T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department note",
+              "date": "2024-12-17T09:05",
+              "author": "emergency medicine",
+              "body": "Regional emergency department, date of service 12/14/2024 (Saturday). Copy faxed to PCP.\n\nCC: L flank pain x3 hrs.\nHPI: 46M with HTN and recurrent calcium oxalate stones, R ureteral stone in June. Today at work had abrupt onset of severe L flank pain, steady with surges that double him over, no better lying still or moving around. Nausea, emesis x2. No diarrhea, no dysuria, no fever. Admits he drinks very little water at work and a lot of tea, eats red meat most days.\nMeds: HCTZ 25 mg daily. NKDA.\n\nExam: BP 152/92, HR 104, T 37.1. Restless, pacing the room, can't get comfortable. L CVA tenderness. Abdomen without rebound or guarding.\nUA: microscopic hematuria, no pyuria or bacteriuria.\n\nMDM: presentation typical for recurrent stone, prior CT-confirmed stone 6 months ago, no signs of infection. Imaging deferred. IV ketorolac, IV ondansetron, pain improved to tolerable.\n\nImpression: L ureterolithiasis.\nPlan: discharge. Tamsulosin 0.4 mg daily, ibuprofen 600 mg q6h prn, ondansetron 4 mg ODT q8h prn, strain urine. Return for fever or worsening pain. Increase fluids. PCP f/u."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-15a",
+          "kind": "portal_message",
+          "start": "2024-12-15T10:47",
+          "reason": "ED visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Another stone",
+              "date": "2024-12-15T10:47",
+              "author": "patient",
+              "body": "Back in the ER yesterday afternoon, left side this time. They didn't do a scan, said it was obviously another stone. Same meds as June. Pain is a dull ache today, the pills are handling it. Do I need to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Another stone",
+              "date": "2024-12-15T13:20",
+              "author": "PCP",
+              "body": "Sorry you're dealing with this again. Keep straining and drink plenty. If you get a fever, chills, or pain the pills can't touch, go back in. Let's do a quick video visit Thursday so I can check how it's going. The front desk will reach out with a time."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for kidney stone",
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "action": "resolved",
+              "onset": "2024-12-14",
+              "icd10": "N20.1"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-12-19T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-12-19T12:40",
+              "author": "PCP",
+              "body": "Video from his car on lunch break, identity verified.\n\nS: ED 12/14 for L flank pain, treated as a stone, no imaging there. Pain stopped abruptly Tuesday 12/17 evening, thinks it passed, strainer came up empty. No pain since, eating fine, no fever, urine looks normal. Stopped the ibuprofen Monday.\n\nCandid that he slid on the water plan since summer. During the workday drinks maybe two cups of water, but 4 to 5 mugs of black tea, and red meat most nights.\n\nO: comfortable on camera, speaking full sentences, no distress.\n\nA/P\n1. L ureteral stone, passed per symptoms. Resolved. Can stop tamsulosin.\n2. Recurrent calcium oxalate nephrolithiasis, second stone this year. Went back over it: water first, tea is fine in moderation but black tea is high in oxalate so swap at least half for water, red meat a few nights a week rather than most, keep salt down. Continue HCTZ. He'll set phone reminders for water.\n3. HTN: ED pressure was up with pain; recheck at next office visit.\n\nOffice visit in March for BP."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "office_visit",
+          "start": "2025-03-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-03-10T15:22",
+              "author": "front desk",
+              "body": "Pt called to cancel 3/11 7:40 BP visit, has a shipment audit at work all week. Rebooked for Tue 3/25 7:40 am."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "vitals": {
+            "bp": [
+              139,
+              82
+            ],
+            "hr": 61,
+            "spo2": 98,
+            "weight_kg": 86.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-25T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-25T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-25T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-03-25T08:05",
+              "author": "PCP",
+              "body": "BP follow-up. The 152/92 in the ED in December was during a stone. Today back in his usual range on HCTZ 25. No stone pain since the one he passed 12/17. Phone reminders for water are working most days, tea down to two mugs.\n\nExam: vitals as charted. Heart regular, lungs clear, no edema, no CVA tenderness.\n\nPlan: no change. BMP. Physical in September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T08:35",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2025-06-17T08:35",
+              "author": "MA",
+              "body": "eRx request from pharmacy: hydrochlorothiazide 25 mg, #90. Last visit 3/25, BMP normal. Sent 90-day supply with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-16a",
+          "kind": "annual_physical",
+          "start": "2025-09-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 58,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 85.4,
+            "height_cm": 178.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 93
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-16T08:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-09-16T08:30",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.011
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.6
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-16T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-16T08:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-16T08:40",
+              "author": "PCP",
+              "body": "47M yearly physical.\n\nSince last year: two stones, R in June 2024 and L in December, both passed after ED visits; nothing since December. Keeping water up most weekdays. HTN on HCTZ 25 without trouble.\n\nMeds: hydrochlorothiazide 25 mg daily. Allergies: NKDA.\nNever smoker, drinks rarely. PHQ-2 0.\n\nROS: negative, specifically no flank pain, hematuria, abdominal pain or change in bowel habits.\n\nExam: vitals as charted. Alert, well. HEENT normal. Neck without masses. Heart RRR, no murmurs. Lungs clear. Abdomen soft and nontender with healed old RLQ incision. No CVA tenderness. Extremities warm, no edema. Skin normal.\n\nA/P\n- Annual labs: CMP, lipids, A1c, and a UA.\n- FIT kit, third year.\n- Flu shot at a nurse visit in October.\n- HTN controlled. Continue.\n- Stones: continue fluids and diet changes.\n\nReturn for BP check in spring, physical next September."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "lab_only",
+          "start": "2025-10-02T11:20",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-30T06:45",
+              "resulted": "2025-10-02T11:20",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-10-02T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2025-10-02T14:00",
+              "author": "RN",
+              "body": "FIT negative, third negative yearly result. Physical labs from 9/16 were all normal and were released last month. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "vitals": {
+            "temp_c": 36.5
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T17:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T17:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2025-10-21T17:25",
+              "author": "RN",
+              "body": "Flu vaccine given L deltoid, tolerated. Offered this season's COVID vaccine, he declined for now, says he'll think about it. Waited 15 min, fine."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "hospital_admission",
+          "start": "2025-11-26T06:10",
+          "end": "2025-11-30T11:30",
+          "service": "General Surgery",
+          "reason": "abdominal pain, distension and vomiting",
+          "conditions": [
+            {
+              "label": "Intestinal adhesions [bands], unspecified as to partial versus complete obstruction",
+              "action": "diagnosed",
+              "onset": "2025-11-23",
+              "note": "adhesive small bowel obstruction after 2013 open appendectomy",
+              "icd10": "K56.50"
+            },
+            {
+              "label": "Dehydration",
+              "action": "diagnosed",
+              "onset": "2025-11-25",
+              "icd10": "E86.0"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-11-26T06:18",
+              "bp": [
+                104,
+                68
+              ],
+              "hr": 112,
+              "rr": 22,
+              "temp_c": 37.3
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal X-ray, upright",
+              "loinc": "37046-0",
+              "performed": "2025-11-26T06:55",
+              "text": "Upright view of the abdomen. Multiple dilated loops of small bowel with air-fluid levels. No free intraperitoneal air beneath the diaphragm. Osseous structures unremarkable.",
+              "conclusion": "Findings consistent with small bowel obstruction. No free air."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-26T08:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-30T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2025-12-05T10:15",
+              "author": "general surgery",
+              "body": "Regional hospital, general surgery service. Admitted 11/26/2025, discharged 11/30/2025.\n\nReason for admission: adhesive small bowel obstruction.\n\nHistory: 47M with HTN on HCTZ and recurrent calcium oxalate nephrolithiasis with prior ureteral stones. Several days of worsening abdominal discomfort and eating little, then no stool or flatus since the day before admission and 12 hours of diffuse cramping pain, bloating and repeated vomiting. Denied fever, hematemesis, melena, bright red blood or urinary symptoms. Prior open appendectomy for a perforated appendix about 12 years ago. NKDA.\n\nOn arrival: T 37.3, BP 104/68, HR 112, RR 22. Uncomfortable and mildly dry. Abdomen distended with high-pitched bowel sounds throughout, diffusely tender, no rebound or guarding. Rectal exam unremarkable.\nUpright abdominal film: dilated small bowel loops with air-fluid levels, no free air.\n\nDiagnoses: adhesive small bowel obstruction; dehydration.\n\nCourse: managed nonoperatively. NPO, nasogastric tube to suction, IV fluids. HCTZ held. Tachycardia settled with fluids. Flatus returned hospital day 3 (11/28); NG removed, diet advanced over 2 days. Tolerating regular diet with bowel movement before discharge. No operation.\n\nDischarge meds: resume hydrochlorothiazide 25 mg daily.\nInstructions: small meals for a few days, return for vomiting, distension or inability to pass gas. Follow up with PCP in 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-28a",
+          "kind": "telephone",
+          "start": "2025-11-28T15:40",
+          "reason": "patient call from hospital",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient call from hospital",
+              "date": "2025-11-28T15:40",
+              "author": "RN",
+              "body": "Pt called from his hospital room. Admitted Wednesday for a bowel blockage, surgery team says it's scar tissue from his old appendix operation. Has had a tube in his nose and IV fluids, no surgery so far. Passed gas this morning and they're talking about taking the tube out. Wanted us to know. Told him we'll see him after discharge; he'll call when he's home. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "office_visit",
+          "start": "2025-12-03T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization",
+          "conditions": [
+            {
+              "label": "Intestinal adhesions [bands], unspecified as to partial versus complete obstruction",
+              "action": "resolved",
+              "onset": "2025-11-23",
+              "icd10": "K56.50"
+            },
+            {
+              "label": "Dehydration",
+              "action": "resolved",
+              "onset": "2025-11-25",
+              "icd10": "E86.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              89
+            ],
+            "hr": 66,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 86.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-03T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-12-03T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-03T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-12-03T08:35",
+              "author": "PCP",
+              "body": "Hospital follow-up. Summary not yet received; history from patient and his discharge instruction sheet.\n\nAdmitted 11/26 to 11/30 with an adhesive small bowel obstruction, adhesions from the 2013 open appendectomy. Treated with NG tube, bowel rest and fluids, no surgery. Told he was dehydrated on arrival. HCTZ was held in the hospital and he restarted it 12/1 per the sheet.\n\nNow: eating regular meals, smaller portions. BMs daily, normal. No pain, no bloating, no vomiting. Back at work Monday. Drinking well.\n\nExam: vitals as charted, BP in his usual range. Looks well. Abdomen soft, nondistended, nontender, normal bowel sounds, incision healed.\n\nA/P\n1. Adhesive SBO, resolved without surgery. Reviewed warning signs: crampy pain with bloating, vomiting, no gas. Go straight to the ED if it recurs.\n2. Dehydration, resolved. BMP today after the vomiting and IV fluids, and back on the thiazide.\n3. HTN: continue HCTZ 25.\n\nWill request the discharge summary."
+            },
+            {
+              "type": "Result Note",
+              "title": "BMP result",
+              "date": "2025-12-04T09:10",
+              "author": "PCP",
+              "body": "BMP normal, electrolytes and kidney function back to baseline. Portal message sent to patient."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telehealth_visit",
+          "start": "2026-03-10T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension check",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2026-03-10T12:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2026-03-10T12:50",
+              "author": "PCP",
+              "body": "Video visit, pt at his desk at work, identity confirmed.\n\nBP check. Bought a home cuff after the hospital stay. Sent a photo of his log: two weeks of morning readings mostly in the high 120s to low 130s over low 80s. No symptoms. Taking HCTZ daily.\nNo abdominal pain or bloating since December, bowels normal. No flank pain.\n\nAssessment: HTN at goal on home readings. Continue HCTZ 25. Office visit with labs in late summer, physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T09:12",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "date": "2026-05-19T09:12",
+              "author": "MA",
+              "body": "Hydrochlorothiazide 25 mg #90 requested by pharmacy. Video visit 3/10, BMP 12/2025 normal. Approved 90 days, no refills; due for labs at August visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "office_visit",
+          "start": "2026-08-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "vitals": {
+            "bp": [
+              141,
+              78
+            ],
+            "hr": 70,
+            "spo2": 95,
+            "weight_kg": 85.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-19T08:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-19T08:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 92
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-08-19T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-19T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-08-19T08:05",
+              "author": "PCP",
+              "body": "S: BP follow-up, 48 now. Home log still 120s-130s/80s. On HCTZ 25 daily, no side effects. No stone episodes since 12/2024. No abdominal symptoms since the obstruction last November. Summer heat at the warehouse, says he's been good about water.\n\nO: vitals as charted. Heart RRR. Lungs clear. Abdomen soft, nontender. No edema.\n\nA/P\n1. HTN controlled. Continue hydrochlorothiazide 25 mg. BMP today.\n2. Recurrent nephrolithiasis: quiet, continue fluids.\n3. Lipids today since we're drawing anyway.\n\nPhysical booked for September; will refill HCTZ when the labs are back."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-21a",
+          "kind": "portal_message",
+          "start": "2026-08-21T11:45",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results from Wednesday",
+              "date": "2026-08-21T11:45",
+              "author": "PCP",
+              "body": "Adam, everything from Wednesday's draw looks normal: potassium, sodium, kidney function, calcium and cholesterol. Keep going with the hydrochlorothiazide."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "portal_message",
+          "start": "2026-08-25T19:30",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP pill refill",
+              "date": "2026-08-25T19:30",
+              "author": "patient",
+              "body": "Thanks for the results. I'm down to about a week of the water pill, can you send the refill to the same pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP pill refill",
+              "date": "2026-08-26T08:50",
+              "author": "MA",
+              "body": "Done, hydrochlorothiazide 25 mg 90-day supply with 3 refills went to your pharmacy this morning. See you at your physical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-23a",
+          "kind": "annual_physical",
+          "start": "2026-09-23T08:00",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Calculus of ureter|N20.1": {
+        "code": "N20.1",
+        "display": "Calculus of ureter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dehydration|E86.0": {
+        "code": "E86.0",
+        "display": "Dehydration",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Intestinal adhesions [bands], unspecified as to partial versus complete obstruction|K56.50": {
+        "code": "K56.50",
+        "display": "Intestinal adhesions [bands], unspecified as to partial versus complete obstruction",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "reports": {
+      "Abdominal X-ray, upright": {
+        "code": "37046-0",
+        "display": "XR Abdomen Upright",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "CT abdomen and pelvis without contrast": {
+        "code": "36952-0",
+        "display": "CT Abdomen and Pelvis WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Emergency appendectomy": {
+        "code": "174036004",
+        "display": "Emergency appendectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

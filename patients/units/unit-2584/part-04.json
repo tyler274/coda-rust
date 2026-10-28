@@ -1,0 +1,215 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002584",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T15:30",
+          "reason": "Six-month follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2025-01-14T16:15",
+             "body": "No-show for 3:30 follow-up. Left voicemail to reschedule. Portal reminder sent."}
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "ed_visit",
+          "start": "2025-06-30T23:20",
+          "end": "2025-07-01T05:10",
+          "service": "Emergency Medicine",
+          "reason": "Chest discomfort and agitation after alcohol and unknown substance",
+          "vitals": [
+            {"time": "2025-06-30T23:25", "temp_c": 38.1, "bp": [168, 96], "hr": 128, "rr": 24}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-06-30T23:45", "results": [
+              {"test": "Troponin I, High Sensitivity", "value": 4},
+              {"test": "Cocaine metabolite, urine screen", "loinc": "14314-9", "text": "Positive"}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-30T23:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-06-30T23:30",
+             "text": "Sinus tachycardia, rate 126. Normal intervals and axis. No ST elevation or depression. No acute ischemic changes.",
+             "conclusion": "Sinus tachycardia without acute ischemic change."}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2025-07-03T09:40",
+             "body": "Emergency department record from a regional medical center. Date of service 06/30/2025. Received 07/03/2025.\n\nCC: chest discomfort, agitation and anxiety.\n\nHPI: 32-year-old man with alpha-1 antitrypsin deficiency (ZZ) brought in by friends from a party. They say he had been drinking and took something earlier in the night; he then became restless, chatty and elated. For the last hour he has felt keyed up, with waves of intense anxiety between bursts of energy, and complains of discomfort in his chest. No hallucinations. Pacing the room, talking fast. Patient says he only drank.\n\nPMH: AATD with emphysema; right radial nerve injury 2024, followed for radial tunnel pain. Meds: tiotropium, albuterol PRN, weekly Prolastin-C, ibuprofen PRN. NKDA.\n\nTriage: T 38.1 C, BP 168/96, HR 128, RR 24.\n\nExam: diaphoretic, pupils markedly dilated. Tachycardic, regular, no murmur. Lungs clear. Moving all extremities, no focal deficit.\n\nECG: sinus tachycardia, no acute ischemic changes. hs-troponin I within normal limits. Urine drug screen positive for cocaine. Chemistry unremarkable.\n\nCourse: lorazepam 2 mg IV given with good effect; calmer, heart rate and pressure came down, chest discomfort resolved. Observed several hours.\n\nDiagnosis: cocaine intoxication; alcohol use.\n\nDisposition: discharged early morning with friend. Counseled about cocaine and chest pain risk; resources for substance use given. Follow up with PCP within one week."}
+          ]
+        },
+        {
+          "id": "2025-07-02a",
+          "kind": "telephone",
+          "start": "2025-07-02T09:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ED follow-up request", "author": "front desk", "date": "2025-07-02T09:20",
+             "body": "Pt called to book a follow-up the ER asked for after a visit Monday night. Feels fine now. Booked 7/8 10:00. Will request ER records."}
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "conditions": [
+            {"label": "Cocaine intoxication", "icd10": "F14.120", "action": "diagnosed", "onset": "2025-06-30"},
+            {"label": "Cocaine intoxication", "icd10": "F14.120", "action": "resolved", "onset": "2025-06-30"},
+            {"label": "Cocaine use disorder", "icd10": "F14.10", "action": "diagnosed", "onset": "2025-06-30", "note": "Patient denies use; positive ED urine screen"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 8}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-07-08T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: ED Follow-up", "author": "PCP", "date": "2025-07-08T10:50",
+             "body": "S: ER 6/30 (record received 7/3, reviewed). At a party, drank, then got wired, anxious, chest felt tight; friends brought him in. ER found temp 38.1, BP 168/96, HR 128, dilated pupils, sweating; ECG sinus tach, troponin normal, urine screen positive for cocaine; settled with IV lorazepam. He feels completely fine since. No chest discomfort at rest or with walking. Breathing at baseline.\n\nI went over the urine result with him. He says he did not take cocaine and thinks someone must have slipped something into a drink. Not upset with the question, just firm. Drinking: weekends, a lot at that party. AUDIT-C 8.\n\nO: calm, well appearing. BP and pulse normal today. Pupils equal, normal size. Heart RRR no murmur. Lungs prolonged expiration, no wheeze. No tremor.\n\nA/P\n1. Cocaine intoxication 6/30, resolved. Cocaine use disorder, recorded on the basis of the toxicology and presentation; he denies use. Explained plainly what cocaine does to heart rhythm and blood pressure, and with his lungs, why it worries me. Offered addiction medicine referral, which can be confidential and outside of school; he declines. Will keep it open.\n2. Alcohol use disorder: ongoing. Counseled again; declines medication or counseling.\n3. AATD with emphysema: stable, continue regimen.\n4. Exercise-induced chest discomfort: not recurring with his current activity.\nPhysical in October."}
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "pharmacy",
+          "start": "2025-08-25T14:05",
+          "documents": [
+            {"type": "Prior Authorization", "title": "Prolastin-C reauthorization", "author": "front desk", "date": "2025-08-25T14:05",
+             "body": "Specialty pharmacy calling about Prolastin-C renewal for September; insurer has nothing from pulmonology yet. Gave them pulm's number again and faxed our July note when asked. Pharmacy will update us if infusions get held."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "annual_physical",
+          "start": "2025-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 63.0},
+          "measure": ["bp", "hr", "spo2", "rr", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 7},
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-07T16:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-10-07T16:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2025-10-07T16:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-10-07T16:20", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T16:10"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T16:11"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-10-07T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-07T17:00",
+             "body": "Annual. Feels well. Breathing about the same as last year; no flares, albuterol a couple times a week on hills. Infusions continued without a gap after the renewal went through. Hasn't had a pulm visit this summer that we've heard about; he thinks he's due and will call them. Right forearm ache only after long days.\n\nAlcohol: weekends, fewer big nights. AUDIT-C 7. Denies any drugs. PHQ-9 3.\n\nExam: thin, no distress. Prolonged expiration, no wheeze. Heart RRR. Abdomen soft, no liver or spleen enlargement. Mild tenderness right radial tunnel, strength normal.\n\nA/P\n1. AATD, ZZ, with panacinar emphysema: stable. Flu and updated COVID today. Asked him to book the yearly pulmonology visit.\n2. Liver monitoring: CMP and GGT. Lipids due.\n3. Alcohol use disorder, cocaine use disorder (denies use): counseled; referral offer stands.\n4. Radial tunnel syndrome, right: stable on PRN ibuprofen.\nRTC spring."}
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "portal_message",
+          "start": "2025-10-09T13:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from your physical", "author": "PCP", "date": "2025-10-09T13:00",
+             "body": "Eli, labs from Tuesday are normal, liver tests and GGT included, and your cholesterol is fine. See you in the spring."}
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T08:45",
+          "documents": [
+            {"type": "Refill Request", "title": "Tiotropium refill", "author": "RN", "date": "2026-01-20T08:45",
+             "body": "eRx renewal request, tiotropium 18 mcg inhalation capsules. Active on list, approved 90 days x3 per PCP."}
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "office_visit",
+          "start": "2026-04-24T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "measure": ["bp", "hr", "spo2", "rr", "weight_kg"],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 6}],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-04-24T16:10", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-24T16:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2026-04-24T16:10", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-04-24T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Follow-up", "author": "PCP", "date": "2026-04-24T16:30",
+             "body": "Spring follow-up.\n\nLungs: no change in what he can do; walks most places, still not back on the bike. Weekly infusions ongoing. Tiotropium daily, albuterol 1-2 times a week. No exacerbations. Says he did not get to pulmonology last year and has a visit with them this summer.\n\nForearm: flares after report-card week, ibuprofen a few times, settles.\n\nAlcohol: says he has cut back, a few drinks on a weekend night, a couple of dry weekends this spring. AUDIT-C 6. Denies cocaine or other drugs.\n\nExam: thin, comfortable. Prolonged expiration, no wheeze or crackles. Heart RRR. Abdomen soft, no hepatomegaly. Right forearm minimal tenderness, normal strength.\n\nA/P\n1. AATD with panacinar emphysema: stable. Continue tiotropium, albuterol, augmentation per pulm; glad he has a pulm visit set.\n2. Liver monitoring: hepatic panel and GGT, plus CBC today.\n3. Alcohol use disorder: real improvement by his report; encouraged. Cocaine use disorder: denies; offer of help stands.\n4. Radial tunnel syndrome, right: stable.\nPhysical booked for October with flu and COVID vaccines."}
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "portal_message",
+          "start": "2026-04-27T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2026-04-27T12:15",
+             "body": "Hi Eli, Friday's blood work is normal, including your liver tests. Keep up the progress with the drinking."}
+          ]
+        },
+        {
+          "id": "2026-07-05a",
+          "kind": "ed_visit",
+          "start": "2026-07-05T01:40",
+          "end": "2026-07-06T08:30",
+          "service": "Emergency Medicine",
+          "reason": "Collapse with agitation and chest pain",
+          "vitals": [
+            {"time": "2026-07-05T01:45", "bp": [188, 102], "hr": 132, "rr": 24}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-07-05T02:00", "results": [
+              {"test": "Troponin I, High Sensitivity", "value": 3},
+              {"test": "Cocaine metabolite, urine screen", "loinc": "14314-9", "text": "Positive"}
+            ]},
+            {"panel": null, "collected": "2026-07-05T05:00", "results": [{"test": "Troponin I, High Sensitivity", "value": 5}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-05T02:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-07-05T01:55",
+             "text": "Sinus tachycardia, rate 130, with frequent premature ventricular complexes. Normal axis and intervals. No ST elevation.",
+             "conclusion": "Sinus tachycardia with frequent PVCs. No ST elevation."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Emergency Department Observation Summary", "author": "emergency medicine", "date": "2026-08-19T11:25",
+             "body": "Emergency department and observation summary, area hospital. Dates 07/05/2026 to 07/06/2026. Received by fax 08/19/2026.\n\nPresentation: 33-year-old man with alpha-1 antitrypsin deficiency (ZZ) and panacinar emphysema, brought by friends after he collapsed at a nightclub, confused, hyperactive and talking rapidly. Friends report hours of drinking, unusual energy and nonstop talking, with repeated trips to the bathroom after which he seemed recharged. They also mention he sometimes gets chest discomfort when exercising. A similar ED visit last summer is in our records.\n\nPMH: AATD with emphysema, alcohol use disorder, cocaine intoxication 2025, radial tunnel syndrome right. Meds: tiotropium, albuterol, Prolastin-C weekly IV, ibuprofen PRN. NKDA.\n\nArrival: BP 188/102, HR 132, RR 24. Diaphoretic, very agitated and combative, pupils widely dilated, mucous membranes dry. Limited neuro exam without focal findings. Monitor showed frequent PVCs; he grabbed his chest describing severe substernal pain.\n\nCourse: lorazepam 2 mg IV with improvement in agitation, then heart rate and blood pressure. ECG sinus tachycardia with frequent PVCs, no ST elevation. hs-troponin I normal at arrival and at 3 hours. Urine drug screen positive for cocaine. Chemistry unremarkable. Chest pain resolved; PVCs settled on monitoring overnight.\n\nDiagnoses: cocaine intoxication with chest pain; alcohol intoxication.\n\nDisposition: discharged home 07/06 morning, alert and calm. Advised to avoid cocaine and alcohol; addiction treatment resources given. Follow up with primary care."}
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "portal_message",
+          "start": "2026-07-09T22:10",
+          "documents": [
+            {"type": "Patient Message", "title": "ER over the weekend", "author": "patient", "date": "2026-07-09T22:10",
+             "body": "Just so you know, I ended up in the ER Saturday night into Sunday. Heart racing and chest pain, they kept me overnight and said my heart was fine. Feeling ok now. Can it wait until my physical?"},
+            {"type": "Patient Message", "title": "RE: ER over the weekend", "author": "PCP", "date": "2026-07-10T07:45",
+             "body": "Thanks for telling me, Eli. I'm glad you're feeling better. I haven't received anything from the hospital yet; we'll request the records. I'd rather see you before October to go over what happened. Front desk can find a summer slot, or a video visit works. Any chest pain, fainting or a racing heart again, go straight to the ER."},
+            {"type": "Patient Message", "title": "RE: ER over the weekend", "author": "patient", "date": "2026-07-10T17:30",
+             "body": "Ok. I'm away visiting family most of July, I'll just keep the October one if that's alright."}
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T09:10",
+          "documents": [
+            {"type": "Refill Request", "title": "Albuterol refill", "author": "RN", "date": "2026-08-04T09:10",
+             "body": "Pharmacy refill request albuterol HFA 90 mcg. Active on list, sent 1 inhaler with 2 refills per PCP."}
+          ]
+        },
+        {
+          "id": "2026-10-13a",
+          "kind": "annual_physical",
+          "start": "2026-10-13T15:30",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

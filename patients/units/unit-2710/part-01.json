@@ -1,0 +1,224 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002710",
+      "given": "Paula",
+      "family": "Delaney",
+      "birth_date": "1972-03-31",
+      "address_line": "118 Bardwell Street",
+      "phone": "+1-860-555-0103",
+      "email": "paula.delaney@example.test",
+      "marital_status": "single",
+      "summary": "International sales manager with hypertension on hydrochlorothiazide and a remote DVT who joined the practice in 2020 and was last seen in April 2024. Afterward she had three pulmonary emboli tied to long-haul travel (ED June 2024, ICU February 2025, ICU December 2025), all reaching the chart only as outside records; she is now on indefinite apixaban through pulmonology.",
+      "events": [
+        {
+          "id": "2020-06-30a",
+          "kind": "telephone",
+          "start": "2020-06-30T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2020-06-30T10:20",
+             "body": "Caller is looking for a new primary care doctor; her previous office in the area is closing its internal medicine side. Commercial PPO, card info taken. Works in sales and is on the road a lot, asked for a morning slot. Booked new patient visit 7/14 at 8:40. Release of information form emailed so we can pull records from the old office. Reminded her masks are required in the building."}
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "establish_care",
+          "start": "2020-07-14T08:40",
+          "end": "2020-07-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; hypertension",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "diagnosed", "onset": "2014-01-01", "note": "On hydrochlorothiazide, well controlled"},
+            {"label": "History of deep vein thrombosis", "action": "diagnosed", "onset": "2008-01-01", "note": "Remote DVT, treated years ago; no current anticoagulation"},
+            {"label": "Acquired absence of gallbladder", "action": "diagnosed", "onset": "2015-06-01", "note": "Laparoscopic cholecystectomy 2015"}
+          ],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Essential hypertension"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [123, 78], "weight_kg": 71.6, "height_cm": 165.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use, 1-2 glasses of wine per week"},
+            {"item": "Occupation", "value": "International sales manager"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-07-14T09:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Blood Urea Nitrogen"}, {"test": "Chloride"}, {"test": "Bicarbonate"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-07-14T09:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2020-07-14T09:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-07-14T09:35", "results": [{"test": "Hemoglobin A1c", "value": 5.3}]},
+            {"panel": null, "collected": "2020-07-14T09:35", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.62}]},
+            {"panel": null, "collected": "2020-07-14T09:35", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2020-07-14T09:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "orders": [
+            {"id": "mammo-2020", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Routine breast cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-07-14T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-07-14T09:40",
+             "body": "48 y/o woman transferring care; former PCP office is closing its adult medicine practice.\n\nHTN: diagnosed about six years ago. Has been on HCTZ 25 mg every morning the whole time, no side effects she notices, no dizziness or cramping. Checks pressure at home once in a while, usually high 120s over low 80s.\n\nPMH: hypertension. Remote DVT many years ago, treated with blood thinners for a limited course at the time and off them since; she doesn't remember the specifics and no clot since. \nPSH: laparoscopic cholecystectomy 2015.\nMeds: hydrochlorothiazide 25 mg daily.\nAllergies: no known drug allergies.\nFamily: mother had a pulmonary embolism at 68. Father with hypertension and high cholesterol. A sister had a DVT.\nSocial: international sales manager, travels often, many long flights and long drives between accounts. Never smoked. A glass or two of wine a week. Single, lives in Belchertown.\n\nROS: no chest pain, no dyspnea, no leg swelling, no headaches. Otherwise negative.\n\nExam: vitals as charted, pressure controlled. Well appearing. HEENT unremarkable. Neck supple, no thyromegaly. Heart regular, no murmur. Lungs clear. Abdomen soft, healed laparoscopic scars. Legs without edema, calves nontender, no varicosities. Skin no rashes.\n\nA/P:\n1. Essential hypertension, controlled on HCTZ. Continue. BMP today for sodium and potassium.\n2. History of DVT, remote. With her travel schedule and family history, talked about long-flight habits: aisle seat, get up every hour or two, calf pumps, fluids, and knee-high compression stockings on anything over four hours. No drug prophylaxis. She should call right away for one-sided leg swelling or sudden shortness of breath.\n3. Health maintenance: CBC, lipids, A1c, TSH. One-time hep C and HIV screening, she agrees. Last mammogram about a year ago per her report, ordering screening mammogram. Cervical screening history to come with old records. Colon screening at 50.\n4. Records release signed.\n\nRTC 6 months for BP, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2020-07-16a",
+          "kind": "portal_message",
+          "start": "2020-07-16T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2020-07-16T16:05",
+             "body": "Hi Paula, your labs from Tuesday all came back fine. Kidney function, sodium and potassium are normal on the hydrochlorothiazide, blood count normal, cholesterol in a good range, A1c normal, thyroid normal, and the hepatitis C and HIV screens were negative. Nothing to change. Enjoy the rest of the summer."}
+          ]
+        },
+        {
+          "id": "2020-07-28a",
+          "kind": "outside_records",
+          "start": "2020-07-28T11:30",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2020-07-28T11:30",
+             "body": "Records received by fax from the patient's previous internal medicine office (42 pages), covering 2014 through spring 2020.\n\nSummary for chart:\n- Hypertension, on hydrochlorothiazide 25 mg daily throughout; office pressures in the 120s to low 130s systolic.\n- Remote deep vein thrombosis listed in past history; no anticoagulant on any medication list in these records.\n- Laparoscopic cholecystectomy 2015 (operative note not included).\n- Screening mammogram 2019: BI-RADS 1, negative.\n- Cervical cytology 2016: negative for intraepithelial lesion; HPV negative.\n- Tdap 2011.\n- Allergies: NKDA.\n\nFiled to media. Reviewed by PCP."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "imaging",
+          "start": "2020-09-22T07:50",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2020-09-22T07:50",
+             "text": "Bilateral digital screening mammogram with tomosynthesis. Comparison: prior outside study, 2019. The breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+             "conclusion": "BI-RADS 1: Negative. Routine screening recommended."}
+          ],
+          "orders": [
+            {"id": "mammo-2020", "action": "done", "date": "2020-09-22T07:50"}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-06T16:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2020-10-06T16:35"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2020-10-06T16:45",
+             "body": "Here after work for her seasonal flu shot. Feeling well, no fever. No prior vaccine reactions, no egg issues. Quadrivalent flu given IM left deltoid, lot and expiration in the immunization record. VIS given. Waited 15 minutes, fine on departure."}
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "telehealth_visit",
+          "start": "2021-01-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2021-01-19T12:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2021-01-19T12:40",
+             "body": "Video visit; patient in her car parked outside a client's office, private. Identity confirmed by DOB.\n\nBP follow-up. Travel is mostly paused, working from home most days. Taking HCTZ every morning. Sent a photo of her home cuff log: 10 readings over two weeks, range 122-131 / 76-84. No headaches, no lightheadedness, no leg cramps.\n\nNo exam beyond appearance: comfortable, speaking full sentences.\n\nA/P: Hypertension, at goal by home readings. Continue hydrochlorothiazide 25 mg, 90-day supply with refills sent. Physical with fasting labs in June. She'll get the COVID vaccine when her group opens up."}
+          ]
+        },
+        {
+          "id": "2021-04-06a",
+          "kind": "outside_records",
+          "start": "2021-04-06T09:10",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-09T14:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-30T14:20"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "COVID-19 vaccination record", "author": "MA", "date": "2021-04-06T09:10",
+             "body": "Patient uploaded her vaccination card through the portal. Pfizer-BioNTech primary series, dose 1 3/9/21 and dose 2 3/30/21, both at a retail pharmacy clinic. Entered into immunization history; state registry matches."}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "annual_physical",
+          "start": "2021-06-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-06-22T08:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-22T08:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-06-22T08:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2021-06-22T08:30", "issued": "2021-06-25T10:00",
+             "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+             "conclusion": "NILM, HPV negative. Co-testing interval 5 years."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2021-06-22T08:45"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-06-22T08:00"},
+            {"procedure": "Immunization administration", "performed": "2021-06-22T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-06-22T09:05",
+             "body": "Annual exam. Feels well. Fully vaccinated for COVID in March. Expects to start flying for work again in the fall.\n\nMeds: HCTZ 25 mg daily. NKDA.\nInterval: nothing new. No chest pain, dyspnea, palpitations, leg swelling. Periods regular.\nFamily and social history unchanged from intake.\n\nExam: BP and vitals as charted. Alert, well. Eyes, ears, throat normal. No lymphadenopathy, thyroid normal. Heart RRR, no murmurs. Lungs clear throughout. Breasts symmetric without masses, skin changes or axillary nodes. Abdomen soft, nontender. Pelvic: normal external genitalia, vagina and cervix normal, Pap with HPV collected. Extremities without edema or calf tenderness. Skin unremarkable.\n\nPHQ-2 negative.\n\nA/P:\n1. Health maintenance: Pap/HPV done (last 2016). Tdap today, last was 2011. Mammogram due again fall 2022. Colonoscopy referral next year when she turns 50. Fasting BMP, CBC, lipids drawn.\n2. Hypertension, controlled. Continue HCTZ.\n3. Remote DVT: refreshed the long-flight plan before travel picks back up.\n\nSee me in about 6 months."}
+          ]
+        },
+        {
+          "id": "2021-06-25a",
+          "kind": "portal_message",
+          "start": "2021-06-25T15:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical results", "author": "PCP", "date": "2021-06-25T15:40",
+             "body": "Paula, everything from your physical looks good. The Pap smear is normal and the HPV test negative, so no cervical screening for five years. Metabolic panel, blood count and cholesterol are all normal. Talk soon."},
+            {"type": "Patient Message", "title": "RE: Physical results", "author": "patient", "date": "2021-06-25T19:12",
+             "body": "Great news, thank you. My arm was achy from the tetanus shot for a couple of days but it's fine now."}
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza vaccine",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-12T07:50"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2021-10-12T07:50"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "MA", "date": "2021-10-12T07:58",
+             "body": "Flu vaccine before an early flight tomorrow. Afebrile, no complaints. Quadrivalent given right deltoid. Tolerated well, observed per protocol, left at 8:05."}
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "office_visit",
+          "start": "2021-12-07T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-11-16T13:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2021-12-07T17:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-12-07T17:25",
+             "body": "S: BP recheck. Back on the road since October, two overseas trips so far and one more before the holidays. Took her HCTZ along, no missed doses. Wore stockings on the flights and walked the aisle. No leg swelling, no shortness of breath, no chest pain. COVID booster at a pharmacy 11/16, card shown today and entered.\n\nO: vitals as charted. Heart regular. Lungs clear. Calves soft and symmetric, no edema.\n\nA: Hypertension, controlled on HCTZ 25 mg.\n\nP: No changes. Refills on file. Physical with labs in late spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

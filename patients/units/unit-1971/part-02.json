@@ -1,0 +1,187 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001971",
+      "events": [
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T14:02",
+          "documents": [
+            {"type": "Refill Request", "title": "Omeprazole Refill", "author": "MA", "date": "2026-01-13T14:02", "body": "Electronic request for omeprazole 20 mg capsules, 90-day supply. Seen 11/20, on list. Approved by PCP, sent with 1 refill."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T19:25",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical", "author": "patient", "date": "2026-03-10T19:25", "body": "Got the reminder for my physical. Spring is our busiest stretch at the parts counter, can I push it to the summer? I'll call when things calm down."},
+            {"type": "Patient Message", "title": "RE: Physical", "author": "front desk", "date": "2026-03-11T09:10", "body": "No problem, we'll keep a note on your file. Call or message us when you're ready and we'll find an early morning."}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "ed_visit",
+          "start": "2026-05-12T02:35",
+          "end": "2026-05-12T07:10",
+          "service": "Emergency Medicine",
+          "reason": "chest pain and shortness of breath after vomiting",
+          "vitals": [
+            {"time": "2026-05-12T02:40", "bp": [150, 90], "hr": 110, "temp_c": 37.8}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T02:55", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 13.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2026-05-12T02:55", "results": [{"test": "Amylase, serum", "loinc": "1798-8", "unit": "U/L", "value": 90}]},
+            {"panel": null, "collected": "2026-05-12T03:05", "results": [
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-05-12T03:00", "text": "Portable AP upright chest. Large left pleural effusion. Lucency tracking along the mediastinal borders consistent with pneumomediastinum. Right lung clear. No pneumothorax on the right. Heart size difficult to assess with the effusion.", "conclusion": "Large left pleural effusion and pneumomediastinum."},
+            {"study": "CT chest", "performed": "2026-05-12T04:10", "issued": "2026-05-12T04:45", "text": "CT of the chest after oral water-soluble contrast and IV contrast. Oral contrast extravasates from the distal esophagus into the left pleural space. Pneumomediastinum. Large left pleural effusion with compressive atelectasis of the adjacent lung. Right lung clear. No pericardial effusion. Aorta normal in caliber.", "conclusion": "Distal esophageal perforation with contrast leak into the left pleural space, pneumomediastinum and large left pleural effusion."}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-05-12T02:35"}],
+          "documents": [
+            {"type": "ED Record", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-05-14T10:40", "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 05/12/2026 02:35 by ambulance.\n\nHPI: 52 M with reflux and hypertension. Ate a large late dinner with several drinks, then retched and vomited forcefully several times. Right after, abrupt sharp chest pain boring through to his back and trouble catching his breath.\n\nPMH: GERD, HTN, obesity. PSH: inguinal hernia repair, tonsillectomy.\nMeds: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics (rash); latex (contact dermatitis).\nSocial: former smoker, weekend heavy drinking.\n\nTriage: BP 150/90, HR 110, T 37.8 C.\nExam: diaphoretic and in obvious distress. Breath sounds reduced over the left chest. Crepitus palpable above the left clavicle. Heart tachycardic, regular. Abdomen soft.\n\nLabs: WBC 18.0, Hgb 13.5, Plt 250. Serum amylase 90 (ref 30-110). ABG: pH 7.45, pCO2 32, pO2 60, HCO3 24.\nPortable chest film: large left effusion, pneumomediastinum.\nCT chest with oral contrast: leak from the distal esophagus into the left pleural space.\n\nMDM: spontaneous esophageal perforation after emesis (Boerhaave picture). NPO, IV fluids, IV analgesia, supplemental oxygen, broad IV antibiotics and antifungal started (no sulfa agents). Thoracic surgery at bedside; left chest tube placed by surgery in the department.\n\nDisposition: admitted to thoracic surgery, critical.\n\nFaxed to primary care 05/14."}
+          ]
+        },
+        {
+          "id": "2026-05-12b",
+          "kind": "hospital_admission",
+          "start": "2026-05-12T07:10",
+          "end": "2026-05-23T11:30",
+          "service": "Thoracic Surgery",
+          "reason": "esophageal perforation",
+          "conditions": [
+            {"label": "Esophageal rupture with pleural effusion", "icd10": "K22.3", "action": "diagnosed", "onset": "2026-05-12"}
+          ],
+          "medications": [
+            {"drug_text": "piperacillin 4000 MG / tazobactam 500 MG Injection", "action": "start", "sig": "4.5 g IV every 8 hours", "dose": {"value": 4.5, "unit": "g"}, "frequency": "Q8H", "route": "Intravenous", "course": "short", "reason": "esophageal perforation"},
+            {"drug_text": "200 ML fluconazole 2 MG/ML Injection", "action": "start", "sig": "400 mg IV daily", "dose": {"value": 400, "unit": "mg"}, "frequency": "DAILY", "route": "Intravenous", "course": "short", "reason": "esophageal perforation"},
+            {"drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every 6 hours as needed for pain. Dispense 20.", "dose": {"value": 1, "unit": "tablet"}, "frequency": "Q6H PRN", "route": "Oral", "course": "short", "reason": "postoperative pain"}
+          ],
+          "vitals": [
+            {"time": "2026-05-12T07:30", "bp": [145, 90]}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-05-12T06:20", "results": [
+              {"test": "Amylase, pleural fluid", "loinc": "1796-2", "unit": "U/L", "value": 3000},
+              {"test": "pH of Pleural fluid", "loinc": "2750-8", "unit": "[pH]", "value": 6.0}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-05-12T07:45", "results": [{"test": "Blood Urea Nitrogen", "value": 21}, {"test": "Creatinine", "value": 1.0}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-12T07:45", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 13.5}]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2026-05-12T07:20", "text": "Portable AP chest after left chest tube placement. Widened mediastinal silhouette. Left pleural effusion. Left chest tube in place. No pneumothorax.", "conclusion": "Mediastinal widening and left pleural effusion; chest tube in position."},
+            {"study": "Esophagram", "loinc": "24678-5", "performed": "2026-05-19T10:00", "text": "Water-soluble oral contrast followed by thin barium. Contrast passes freely through the esophagus into the stomach. No extraluminal contrast at the repair or elsewhere. Normal esophageal caliber.", "conclusion": "No leak after repair of distal esophageal perforation."}
+          ],
+          "procedures": [
+            {"procedure": "Insertion of pleural tube drain", "snomed": "264957007", "performed": "2026-05-12T05:30"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-05-12T07:30"},
+            {"procedure": "Repair of rupture of esophagus", "snomed": "173605003", "performed": "2026-05-12T21:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-05-23T10:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Thoracic Surgery Discharge Summary", "author": "thoracic surgery", "date": "2026-06-26T15:20", "body": "THORACIC SURGERY - DISCHARGE SUMMARY\nAdmitted 05/12/2026, discharged 05/23/2026.\n\nDiagnosis: spontaneous rupture of the distal esophagus with left pleural effusion.\n\nPresentation: came through our ED after forceful vomiting that followed a heavy meal with alcohol; sharp chest pain into the back and dyspnea. On our evaluation he was distressed, breathing fast with a fast pulse, with poor air entry in the left lower chest and subcutaneous air in the neck. BP 145/90. WBC 18.0, Hgb 13.5, BUN 21, creatinine 1.0. Chest tube drainage: pleural fluid amylase 3000 IU/L, pleural fluid pH 6.0. Post-tube film: wide mediastinum, left effusion. CT with oral contrast had shown the leak into the left chest.\n\nHospital course: left chest tube placed in the ED. Taken to the OR the evening of 05/12 for left thoracotomy, primary repair of the distal esophageal tear, pleural washout and drainage - latex-free room. NPO with NG decompression. Piperacillin-tazobactam 4.5 g IV q8h and fluconazole 400 mg IV daily; sulfa allergy noted. Aspirin held. Esophagram 05/19: no leak. NG out, clear liquids, then soft diet tolerated. Chest tubes removed. Walking the halls, pain controlled on oral medication.\n\nDischarge medications: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily (resume), oxycodone-acetaminophen 5/325 one tab q6h prn pain, #20.\nAllergies: sulfonamide antibiotics, latex.\n\nInstructions: soft diet until clinic review, no alcohol, no lifting over 10 lb for six weeks, keep incision dry. Thoracic surgery clinic in about two weeks. See primary care.\n\nReceived by fax 06/26/2026."}
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "portal_message",
+          "start": "2026-05-26T13:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Was in the hospital", "author": "patient", "date": "2026-05-26T13:50", "body": "Wanted you to know I was in the hospital almost two weeks. Threw up hard after a big dinner and drinks and it tore my esophagus. They opened my chest on the left side and sewed it up. Home since Saturday. They said see my regular doctor. Can I get an appointment? I'm out of work for now."},
+            {"type": "Patient Message", "title": "RE: Was in the hospital", "author": "PCP", "date": "2026-05-26T15:30", "body": "Steven, I'm glad you messaged and that you're home. We have the ER record from the 12th but nothing from the surgical team yet - I've asked for the discharge summary. Our nurse will call you tomorrow to go over your medicines, and the front desk will set up a visit after your surgery check."}
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "telephone",
+          "start": "2026-05-27T10:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-Discharge Call", "author": "RN", "date": "2026-05-27T10:15", "body": "Called pt 4 days after discharge. Reports incision is clean, no drainage, no fever. Eating soft foods, swallowing OK. Pain manageable, using the oxycodone tablets about twice a day. Taking omeprazole, amlodipine and aspirin as before - read the labels to me. No alcohol since. Has surgical clinic 6/9. Discharge summary still not received; second request faxed to the hospital. Visit with PCP booked 6/18 at 8:00. Told to call for fever, worsening chest pain, trouble swallowing or shortness of breath."}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "specialist_visit",
+          "start": "2026-06-09T13:30",
+          "service": "Thoracic Surgery",
+          "reason": "postoperative visit",
+          "measure": ["bp", "hr", "spo2"],
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2026-06-09T13:10", "text": "PA and lateral chest. Postoperative changes of left thoracotomy. Left lung expanded. No pleural effusion. No pneumothorax. Mediastinum normal width. Heart size normal.", "conclusion": "Expected postoperative changes; left lung expanded."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Thoracic Surgery Postoperative Visit", "author": "thoracic surgery", "date": "2026-07-21T09:05", "body": "THORACIC SURGERY CLINIC\nDate of visit: 06/09/2026\n\nMr. Wilder returns 2.5 weeks after left thoracotomy and primary repair of a distal esophageal rupture. Eating soft foods without difficulty swallowing. Stopped the oxycodone last week. No fever. No alcohol.\n\nMedications: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics, latex.\n\nExam: well, comfortable. Thoracotomy incision healing well, no erythema, no drainage. Former tube sites closed. Breath sounds equal.\n\nChest film today: left lung expanded, postoperative changes only.\n\nPlan: advance to a regular diet as tolerated. Continue to avoid alcohol. Lifting restriction through six weeks. Return to clinic in three months.\n\ncc: primary care\n(Letter received 07/21/2026.)"}
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "office_visit",
+          "start": "2026-06-18T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization",
+          "state": {"bp": [146, 90], "weight_kg": 94.0},
+          "vitals": {"bp": [146, 90], "weight_kg": 94.0},
+          "measure": ["hr", "spo2", "temp_c"],
+          "medications": [
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "stop", "reason": "dose increased"},
+            {"drug": "amlodipine 10 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-18T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-18T08:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 6}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-18T08:00"},
+            {"procedure": "Venipuncture", "performed": "2026-06-18T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Follow-up", "author": "PCP", "date": "2026-06-18T08:50", "body": "Follow-up after hospitalization.\n\nAdmitted 5/12-5/23 to thoracic surgery for a ruptured esophagus after forceful vomiting (big dinner, alcohol). We have the ED record; the discharge summary still hasn't come despite two requests, so the hospital course below is from Steven and his discharge paperwork: left chest tube, left thoracotomy and repair the same night, IV antibiotics and antifungal, a swallow study that showed no leak, then soft diet and home. Saw the surgeon 6/9 - told him it's healing well and he can move toward a regular diet.\n\nToday: feels tired but better each week. Eating soft and some regular food, no trouble swallowing, no heartburn on omeprazole. Mild incisional soreness, off the pain pills. No fever, no cough, breathing comfortable on stairs. Has not had a drink since 5/11.\n\nAlcohol: AUDIT-C 6 for the past year (his usual weekends before this). Told him plainly the drinking was part of what put him on the operating table. He says he plans to stay off it at least until the surgeon's 3-month check; open to talking about it again. PHQ-2 0, mood OK, frustrated about being out of work.\n\nMeds: omeprazole 20 daily, amlodipine 5 daily, aspirin 81 daily.\nAllergies: sulfonamide antibiotics, latex.\n\nExam: BP 146/90. Weight 94 kg, about 4 kg under his usual before the admission. Tired-appearing but comfortable. Left thoracotomy incision well healed, no redness or drainage; tube sites closed. No crepitus in the neck. Lungs clear, equal breath sounds both sides. Heart regular. Abdomen soft. No leg swelling.\n\nA/P\n1. Esophageal rupture with left pleural effusion, s/p thoracotomy repair 5/12 - recovering as expected. Problem list updated. Diet per surgery. CBC and BMP today after the admission.\n2. HTN - above goal at every visit here. Increasing amlodipine to 10 mg daily; stop the 5s. Watch for ankle swelling.\n3. GERD - continue omeprazole 20.\n4. Alcohol - counseled as above; revisit at next visit.\n5. Will look for the discharge summary when it arrives.\n\nRTC in 3 months for BP."}
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "portal_message",
+          "start": "2026-06-19T11:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2026-06-19T11:40", "body": "Your blood count and kidney/electrolyte tests from yesterday are back to normal. Good news after everything. Start the 10 mg amlodipine when you pick it up, one a day, and let me know about any ankle swelling."}
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "pharmacy",
+          "start": "2026-07-16T09:20",
+          "documents": [
+            {"type": "Refill Request", "title": "Amlodipine 10 mg Refill", "author": "MA", "date": "2026-07-16T09:20", "body": "Pharmacy asking for a 90-day supply of amlodipine 10 mg (started 6/18 as a 30-day fill). On the current list. PCP approved 90 days with 1 refill."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T20:05",
+          "documents": [
+            {"type": "Patient Message", "title": "September appointment", "author": "patient", "date": "2026-08-11T20:05", "body": "Back at work part time. Just checking I'm still on for September 17. No swelling on the new pill."},
+            {"type": "Patient Message", "title": "RE: September appointment", "author": "front desk", "date": "2026-08-12T08:15", "body": "Yes, you're set for 9/17 at 7:40. We can do your flu shot that morning too."}
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T07:40",
+          "reason": "blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

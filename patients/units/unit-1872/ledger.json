@@ -1,0 +1,1448 @@
+{
+  "unit": "unit-1872",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001872",
+      "given": "Jada",
+      "family": "Owusu",
+      "birth_date": "2000-11-09",
+      "address_line": "18 Plumtree Road",
+      "phone": "+1-603-555-0176",
+      "email": "jada.owusu@example.test",
+      "marital_status": "single",
+      "summary": "Young administrative assistant with HbSS sickle cell disease and HIV diagnosed in April 2025, never treated, who joins the practice in August 2025. She becomes pregnant in January 2026; two acute chest syndrome admissions and an abdominal vaso-occlusive crisis at 28 weeks follow, and inpatient ID finally starts ART in late July 2026, after her last practice visit.",
+      "events": [
+        {
+          "id": "2025-08-12a",
+          "kind": "establish_care",
+          "start": "2025-08-12T09:20",
+          "end": "2025-08-12T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, sickle cell disease and HIV",
+          "conditions": [
+            {
+              "label": "Sickle-cell disease without crisis",
+              "action": "history",
+              "onset": "2000-11-09",
+              "note": "HbSS genotype"
+            },
+            {
+              "label": "Asymptomatic human immunodeficiency virus [HIV] infection status",
+              "action": "history",
+              "onset": "2025-04-10",
+              "note": "diagnosed at prior clinic April 2025; never on ART",
+              "icd10": "Z21"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "sickle cell disease"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfamethoxazole",
+              "snomed": "363528007",
+              "category": "medication",
+              "criticality": "high",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              105,
+              59
+            ],
+            "hr": 74,
+            "rr": 12,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 58.4,
+            "height_cm": 165.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-12T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 18.7
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-12T10:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-08-12T09:55",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2025-08-19T15:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2025-08-12T09:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-08-12T10:08"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-08-12T10:08"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral",
+              "action": "placed",
+              "order": "Infectious Disease referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "HIV, not on antiretroviral therapy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2025-08-12T10:40",
+              "author": "PCP",
+              "body": "24F transferring care after a move to Sunderland. Works as an administrative assistant.\n\nHbSS sickle cell disease since birth. Usual hemoglobin runs mid-9s per her. Takes folic acid 1 mg daily. No hospital stays reported. Not on hydroxyurea.\n\nHIV: tested positive at her old clinic in April of this year. Was given a name of an HIV clinic there but never went, then moved. Has never taken antiretrovirals. Feels well, no fevers, weight steady, no thrush, no rashes.\n\nAllergy: sulfamethoxazole, listed by her old clinic as an anaphylaxis risk. She does not remember the episode herself.\n\nFamily: younger brother has sickle cell disease. Mom and dad both carry the trait. A paternal aunt has lupus.\nSocial: never smoked, no alcohol, no drug use. Single.\n\nExam: well appearing. Sclerae anicteric. Oropharynx clear, no thrush. No lymphadenopathy. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without rash. Pelvic: normal external genitalia, cervix without lesions, Pap collected.\n\nA/P\n1. HIV, untreated. Explained that treatment keeps her well and protects partners. Referral to Infectious Disease placed today. She agrees to call them.\n2. HbSS. CBC and CMP today. Continue folic acid.\n3. Health maintenance: Pap today. PCV20 given (sickle cell and HIV both qualify). Flu and COVID when available this fall. PHQ-2 negative.\nReturn in about 4 months."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Immunization Record",
+              "date": "2025-08-12T10:12",
+              "author": "MA",
+              "body": "PCV20 0.5 mL IM, left deltoid. VIS reviewed. Tolerated well, no reaction during 15 minute wait."
+            }
+          ],
+          "state": {
+            "bp": [
+              108,
+              66
+            ],
+            "weight_kg": 58.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Bilirubin, Total": 1.9,
+              "Hemoglobin": 9.5,
+              "Red Cell Distribution Width": 19.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-08-15a",
+          "kind": "portal_message",
+          "start": "2025-08-15T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-08-15T08:40",
+              "author": "PCP",
+              "body": "Hi Jada, your blood counts are right where you said they usually run, hemoglobin 9.5. Kidney function and liver enzymes are normal. Bilirubin is a little high at 1.9, which is expected with sickle cell. Nothing to change. The Pap result takes about a week. Please do call the infectious disease clinic if you haven't yet."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "portal_message",
+          "start": "2025-08-20T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2025-08-20T12:15",
+              "author": "PCP",
+              "body": "Your Pap came back normal. With HIV we repeat it every year, so we'll do the next one next summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap result",
+              "date": "2025-08-20T17:48",
+              "author": "patient",
+              "body": "ok thank you!! ID clinic said first opening is october, i'm on the list"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fall vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:38"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:38"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit",
+              "date": "2025-10-07T16:55",
+              "author": "RN",
+              "body": "In after work for influenza and the 2025-26 COVID vaccine. Afebrile, no illness today. Influenza right deltoid, COVID left deltoid. Sulfa allergy noted, not relevant to either. Waited 15 min without issue."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "office_visit",
+          "start": "2025-12-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, sickle cell disease and HIV",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2025-12-09T16:30",
+              "author": "front desk",
+              "body": "No-show for 3:40 follow-up. Left voicemail to reschedule."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "pharmacy",
+          "start": "2026-01-06T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-01-06T11:05",
+              "author": "RN",
+              "body": "Electronic request from pharmacy: folic acid 1 mg, #90 with 3 refills. On active list, approved per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-18a",
+          "kind": "portal_message",
+          "start": "2026-02-18T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "positive test",
+              "date": "2026-02-18T20:12",
+              "author": "patient",
+              "body": "Hi, I took a home pregnancy test tonight and it was positive. My last period started Jan 13. I know with my sickle cell this is a big deal. What do I do next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: positive test",
+              "date": "2026-02-19T08:20",
+              "author": "RN",
+              "body": "Hi Jada, we have a spot today at 2:00 with your doctor. Keep taking your folic acid. Reply here if that time doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-19a",
+          "kind": "office_visit",
+          "start": "2026-02-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "diagnosed",
+              "onset": "2026-01-13",
+              "note": "LMP 2026-01-13, EDD 2026-10-20; HbSS and HIV",
+              "icd10": "O09.90"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              67
+            ],
+            "hr": 76,
+            "temp_c": 36.1,
+            "spo2": 98,
+            "weight_kg": 59.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-19T14:10",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-19T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "high-risk prenatal care, HbSS and HIV"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-19T14:45",
+              "author": "PCP",
+              "body": "S: Home test positive last night. LMP 1/13/2026, so about 5 weeks. Planned enough, she says, and she is happy about it. Mild nausea in the mornings, no bleeding, no cramping, no pain crises since we met. Still on folic acid 1 mg. Never made it to the ID clinic visit in the fall.\n\nO: Vitals as charted. Well, comfortable. Abdomen soft, nontender.\nUrine hCG positive in office.\n\nA/P\nIntrauterine pregnancy presumed, ~5 wk, EDD 10/20/2026. High risk: HbSS and untreated HIV.\n- Referred to high-risk obstetrics today; asked them for an early slot.\n- Prenatal vitamin daily, keep folic acid 1 mg.\n- HIV: talked plainly about why treatment matters now, for her and for the baby. ID referral from August is still open; she will call them this week, and OB will know too.\n- Hydration, avoid getting chilled, call early for any pain or fever."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-23a",
+          "kind": "specialist_visit",
+          "start": "2026-04-23T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal follow-up",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus [HIV] disease complicating pregnancy, second trimester",
+              "action": "diagnosed",
+              "onset": "2026-04-23",
+              "icd10": "O98.712"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              98,
+              71
+            ],
+            "hr": 78,
+            "temp_c": 36.3,
+            "weight_kg": 59.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-04-23T11:05",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 15000
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-23T11:05",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 450
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-23T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 204
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 17.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-23T11:05",
+              "results": [
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-23T11:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal Visit Letter",
+              "date": "2026-04-28T09:15",
+              "author": "obstetrics",
+              "body": "Outside high-risk obstetrics clinic. Prenatal visit 04/23/2026. Received 04/28/2026.\n\nDear colleague,\n\nWe saw Ms. Owusu, 25, G1, for her scheduled prenatal visit at 14 weeks 2 days by her January 13 LMP (EDD 10/20/2026). She is followed here for HbSS sickle cell disease and HIV in pregnancy.\n\nHer main question today was how likely she is to pass HIV to the baby. Her HIV was found about a year ago and she has not started treatment. Apart from the sickle cell disease and HIV, her history is unremarkable. Never smoker, no alcohol. Works as an administrative assistant.\n\nMedications: folic acid 1 mg daily, prenatal vitamin daily.\nAllergies: sulfamethoxazole (anaphylaxis risk).\nFamily history: brother with sickle cell disease; both parents carry sickle cell trait; paternal aunt with lupus.\n\nVital signs normal. Examination unremarkable.\n\nLabs 04/23: HIV-1 RNA 15,000 copies/mL. CD4 450 cells/mm3. CBC stable at her baseline, hemoglobin 9.5. Hepatitis B surface antigen negative, hepatitis C antibody nonreactive.\n\nAssessment: HIV infection complicating pregnancy, second trimester, untreated; HbSS sickle cell disease.\n\nWe told her that with effective treatment and an undetectable viral load the chance of transmission to the baby is very low, and that the sooner treatment starts the better. We are coordinating with Infectious Disease for antiretroviral therapy. Continue folic acid and prenatal vitamin. Return in 4 weeks.\n\nHigh-risk obstetrics"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-08a",
+          "kind": "office_visit",
+          "start": "2026-05-08T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, pregnancy with sickle cell disease and HIV",
+          "vitals": {
+            "bp": [
+              111,
+              69
+            ],
+            "hr": 68,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 62.2
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-05-08T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.07
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 19.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-05-08T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-05-08T09:30",
+              "author": "PCP",
+              "body": "Follow-up. 16w3d.\n\nOB letter from 4/23 reviewed with her: HIV viral load 15,000, CD4 450, hep B and C negative, CBC at baseline. OB is working with ID on starting treatment. She has not heard from ID yet. Feels well, nausea better, no pain episodes, no fevers, no cough. Taking folic acid and the prenatal vitamin.\n\nVitals as charted. Lungs clear. Heart regular. Abdomen soft, gravid, nontender. No edema.\nPHQ-9 3.\n\nA/P\n1. HIV in pregnancy, untreated. Re-sent the ID referral today marked urgent, copy to her OB clinic. Front desk will call ID Monday to confirm a date.\n2. HbSS. CBC today. Reviewed warning signs: fever, chest pain, cough or shortness of breath, pain not settling at home. Go straight to the ED for any of those.\n3. Pregnancy: OB following; next OB visit later this month.\nI'll see her after the baby comes, sooner if needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0,
+            "labs": {
+              "Hemoglobin": 9.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "portal_message",
+          "start": "2026-05-11T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2026-05-11T12:40",
+              "author": "PCP",
+              "body": "Jada, your hemoglobin from Friday is steady, 9.4, about your usual. White count and platelets fine. Our front desk left ID a message this morning and will let you know the date."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "hospital_admission",
+          "start": "2026-05-27T21:30",
+          "end": "2026-05-31T13:00",
+          "service": "Obstetrics",
+          "reason": "Acute chest syndrome in pregnancy",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-27T22:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 22.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 19.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-31T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 19.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transfusion of packed red blood cells",
+              "snomed": "71493000",
+              "performed": "2026-05-28T04:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2026-06-03T10:20",
+              "author": "hospital medicine",
+              "body": "Outside hospital discharge summary. Admitted 05/27/2026, discharged 05/31/2026. Received 06/03/2026.\n\nPatient: 25-year-old G1 at about 19 weeks with HbSS sickle cell disease and HIV, not on antiretroviral therapy.\nAllergy: sulfamethoxazole (anaphylaxis risk).\n\nPresented with fever and chest pain. Chest X-ray showed a new infiltrate, and oxygen saturation was low on room air. Admission hemoglobin 7.4.\n\nDiagnosis: acute chest syndrome.\n\nCourse: ceftriaxone and azithromycin, supplemental oxygen, incentive spirometry and IV analgesia. Simple transfusion of 2 units packed red blood cells on hospital day 1 with steady improvement. Off oxygen before discharge. Fetal heart tones normal throughout; obstetrics followed daily. Discharge hemoglobin 9.2.\n\nDischarge medications: folic acid 1 mg daily, prenatal vitamin daily.\nFollow-up: high-risk obstetrics within 1 week; primary care as scheduled. Continue incentive spirometry at home."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "portal_message",
+          "start": "2026-06-04T09:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "home from hospital",
+              "date": "2026-06-04T09:02",
+              "author": "patient",
+              "body": "Just wanted you to know I was in the hospital last week with acute chest. They gave me blood. Baby is ok. I'm home and seeing OB on Tuesday."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: home from hospital",
+              "date": "2026-06-04T12:30",
+              "author": "PCP",
+              "body": "Thanks for letting me know, Jada. Their summary came in yesterday. Glad you're home. Keep doing the breathing exercises and come in or go to the ED right away if the fever or chest pain comes back."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "hospital_admission",
+          "start": "2026-06-29T18:45",
+          "end": "2026-07-03T11:30",
+          "service": "Obstetrics",
+          "reason": "Acute chest syndrome in pregnancy, second episode",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-29T19:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 22.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 19.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-03T06:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.91
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 19.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transfusion of packed red blood cells",
+              "snomed": "71493000",
+              "performed": "2026-06-30T02:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2026-07-07T14:05",
+              "author": "hospital medicine",
+              "body": "Outside hospital discharge summary. Admitted 06/29/2026, discharged 07/03/2026. Received 07/07/2026.\n\n25-year-old G1 at about 24 weeks with HbSS disease and untreated HIV; second admission this pregnancy for acute chest syndrome (first in late May).\nAllergy: sulfamethoxazole (anaphylaxis risk).\n\nFever and chest pain with a new infiltrate on chest X-ray and low oxygen saturation. Admission hemoglobin 7.8.\n\nTreated with ceftriaxone and azithromycin, oxygen, incentive spirometry and IV analgesia. Simple transfusion of 1 unit packed red blood cells. Weaned to room air. Fetal monitoring reassuring. Discharge hemoglobin 9.0.\n\nDischarge medications: folic acid 1 mg daily, prenatal vitamin daily.\nFollow-up: high-risk obstetrics in 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-07-14T10:20",
+              "author": "RN",
+              "body": "Pharmacy asking for refills on the prenatal vitamin and folic acid together. Both on list. Sent 90 days each."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "ed_visit",
+          "start": "2026-07-28T09:40",
+          "end": "2026-07-28T14:05",
+          "service": "Emergency Medicine",
+          "reason": "Severe abdominal pain, 28 weeks pregnant, sickle cell disease",
+          "vitals": [
+            {
+              "time": "2026-07-28T09:48",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 105,
+              "rr": 22,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-28T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 350
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 24.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 19.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-28T10:05",
+              "results": [
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 3.4
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-28T10:05",
+              "results": [
+                {
+                  "test": "Bilirubin, indirect",
+                  "loinc": "1971-1",
+                  "unit": "mg/dL",
+                  "value": 3.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-28T10:05",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "value": 486
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-28T10:05",
+              "results": [
+                {
+                  "test": "Haptoglobin",
+                  "loinc": "4542-7",
+                  "unit": "mg/dL",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-07-28T10:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-08-03T11:10",
+              "author": "emergency medicine",
+              "body": "Outside hospital ED physician record, seen 07/28/2026. Received 08/03/2026.\n\nCC: abdominal pain.\n\nHPI: 25-year-old G1 at 28 weeks 0 days with HbSS disease and HIV (not on antiretroviral therapy), about three months after her 04/23 prenatal visit. Six hours of severe abdominal pain, sharp and constant. Drank fluids and rested at home without relief. No vaginal bleeding or discharge. Two admissions this pregnancy for acute chest syndrome, each needing transfusion. Keeping up with her prenatal visits.\n\nMeds: folic acid 1 mg daily, prenatal vitamin daily.\nAllergies: sulfamethoxazole (anaphylaxis risk).\nFamily history: brother with sickle cell disease; parents with sickle cell trait; paternal aunt with lupus.\nSocial: never smoker, no alcohol. Administrative assistant.\n\nTriage: T 37.8 C (100.0 F), BP 130/85, HR 105, RR 22.\n\nExam: uncomfortable. Abdomen diffusely tender, no rebound, no guarding. Fetal heart tones normal.\n\nLabs: hemoglobin 8.2 (her baseline 9.5), WBC 15.0, platelets 350. LDH 486. Total bilirubin 3.4, direct 0.4, indirect 3.0. Haptoglobin 8. Urinalysis unremarkable.\n\nMDM: picture of an abdominal vaso-occlusive crisis with ongoing hemolysis in a 28-week pregnancy. IV fluids and IV opioid started. Obstetrics at bedside, fetal monitoring placed.\n\nImpression: sickle cell vaso-occlusive crisis.\nDisposition: admitted to the antepartum unit."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-28b",
+          "kind": "hospital_admission",
+          "start": "2026-07-28T14:05",
+          "end": "2026-07-31T12:30",
+          "service": "Obstetrics",
+          "reason": "Vaso-occlusive crisis at 28 weeks; untreated HIV",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-31T05:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 18.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge Summary",
+              "date": "2026-08-04T15:40",
+              "author": "hospital medicine",
+              "body": "Outside hospital discharge summary. Admitted 07/28/2026, discharged 07/31/2026. Received 08/04/2026.\n\nAdmitting diagnosis: sickle cell vaso-occlusive crisis, abdominal, at 28 weeks. Secondary: HIV in pregnancy, untreated; HbSS disease; two acute chest syndrome admissions earlier this pregnancy.\nAllergy: sulfamethoxazole (anaphylaxis risk).\n\nCourse: IV fluids and IV opioid analgesia with steady improvement; pain gone by day 3. Continuous fetal monitoring was reassuring. Hematology and maternal-fetal medicine followed. No transfusion this admission. Discharge hemoglobin 8.6.\n\nInfectious Disease consulted on 07/29: HIV-1 viral load and resistance genotype sent. Treatment started the same day without waiting for the genotype, given the gestational age: dolutegravir 50 mg daily plus emtricitabine/tenofovir alafenamide 200/25 mg daily. Counseled on daily adherence.\n\nDischarge medications: dolutegravir 50 mg daily (new); emtricitabine/tenofovir alafenamide 200/25 mg daily (new); folic acid 1 mg daily; prenatal vitamin daily.\nFollow-up: ID clinic in about 3 weeks; high-risk obstetrics within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "specialist_visit",
+          "start": "2026-08-19T13:20",
+          "service": "Infectious Disease",
+          "reason": "HIV follow-up after starting treatment",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-08-19T13:50",
+              "results": [
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 290
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease Clinic Letter",
+              "date": "2026-08-24T09:30",
+              "author": "infectious disease",
+              "body": "Outside infectious disease clinic. Visit 08/19/2026. Received 08/24/2026.\n\nDear colleague,\n\nMs. Owusu returned three weeks after we started her on dolutegravir 50 mg with emtricitabine/tenofovir alafenamide 200/25 mg daily during her July admission. She is 31 weeks pregnant. She has missed no doses by her account and reports no side effects.\n\nThe resistance genotype sent in July showed no resistance mutations. Today's HIV-1 RNA is 290 copies/mL, down from 15,000 in April.\n\nPlan: continue the same regimen. Repeat viral load in 4 weeks, and we will share results with obstetrics for delivery planning.\n\nAllergies reviewed: sulfamethoxazole (anaphylaxis risk).\n\nInfectious Disease clinic"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-25a",
+          "kind": "portal_message",
+          "start": "2026-08-25T19:16",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "appointment",
+              "date": "2026-08-25T19:16",
+              "author": "patient",
+              "body": "Hi, ID said I should check in with you too since I've been in the hospital a lot this summer. Can I get an appointment in September? Mornings are better."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: appointment",
+              "date": "2026-08-26T09:05",
+              "author": "front desk",
+              "body": "Hi Jada, you're booked Thursday 9/10 at 9:20 with your doctor."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T09:20",
+          "reason": "Follow-up after hospital stays",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Asymptomatic human immunodeficiency virus [HIV] infection status|Z21": {
+        "code": "Z21",
+        "display": "Asymptomatic human immunodeficiency virus [HIV] infection status",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Human immunodeficiency virus [HIV] disease complicating pregnancy, second trimester|O98.712": {
+        "code": "O98.712",
+        "display": "Human immunodeficiency virus [HIV] disease complicating pregnancy, second trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of high risk pregnancy, unspecified, unspecified trimester|O09.90": {
+        "code": "O09.90",
+        "display": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Bilirubin, indirect": {
+        "code": "1971-1",
+        "display": "Bilirubin.indirect [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Haptoglobin": {
+        "code": "4542-7",
+        "display": "Haptoglobin [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Sulfamethoxazole": {
+        "code": "363528007",
+        "display": "Sulfamethoxazole",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    },
+    "procedures": {
+      "Transfusion of packed red blood cells": {
+        "code": "71493000",
+        "display": "Transfusion of packed red blood cells",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    },
+    "rejected": [
+      "drug \"prenatal multivitamin Oral Tablet\""
+    ]
+  }
+}

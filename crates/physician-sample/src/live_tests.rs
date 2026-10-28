@@ -191,6 +191,154 @@ async fn reply_http_reads_exact_source_commits_and_survives_owner_restart() {
     std::fs::remove_file(path.with_extension("lock")).unwrap();
 }
 
+/// A scripted inline revision model. Each exchange sees the request and
+/// returns the next call; the first records a lab, as if it arrived while
+/// the model was working.
+struct Scripted {
+    live: Arc<live::Live>,
+    lab: local_product::physician_sources::SourceRevision,
+    seen: Vec<harness::execution::Request>,
+}
+
+impl harness::execution::Provider for Scripted {
+    async fn exchange(
+        &mut self,
+        request: &harness::execution::Request,
+        _: &harness::execution::Cancellation,
+        _: &mut (dyn FnMut(harness::execution::StreamEvent) -> Result<(), String> + Send),
+    ) -> Result<ModelResponse, String> {
+        self.seen.push(request.clone());
+        let finish = harness::execution::Call {
+            id: format!("finish-{}", self.seen.len()),
+            name: "finish_reply_revision".into(),
+            arguments: json!({"text":"revised with the new lab","review_basis":"Read lab-new."}),
+        };
+        let call = match self.seen.len() {
+            1 => {
+                assert!(self.live.record_source(self.lab.clone()).unwrap());
+                finish
+            }
+            // Finishing without reading what changed is refused too.
+            2 => finish,
+            3 => harness::execution::Call {
+                id: "read-new".into(),
+                name: "read_patient_sources".into(),
+                arguments: json!({"references":["lab-new"],"max_result_bytes":4096}),
+            },
+            _ => finish,
+        };
+        Ok(ModelResponse {
+            text: String::new(),
+            calls: vec![call],
+            usage: Usage::default(),
+            provenance: json!({"mode":"scripted"}),
+        })
+    }
+}
+
+#[tokio::test]
+async fn inline_revision_reads_a_source_that_arrives_before_it_finishes() {
+    use harness::execution::{self, Item};
+    use local_product::physician_sources::SourceRevision;
+    let workspace = WORKSPACE_IDS[0];
+    let target = "inline-arrival-target";
+    let source = |id: &str, content: &str| SourceRevision {
+        workspace: workspace.into(),
+        candidate_id: id.into(),
+        revision: "immutable-1".into(),
+        content: content.into(),
+        sha256: local_product::sha256_hex(content.as_bytes()),
+        provenance: json!({"synthetic": true}),
+    };
+    let original = source("lab-old", "Potassium 4.1 mmol/L");
+    let lab = source("lab-new", "Potassium 5.9 mmol/L");
+    let mut session = PhysicianSession::memory();
+    session
+        .save_draft(workspace, target, 0, "physician saved wording")
+        .unwrap();
+    let live = live::Live::on(
+        live::ChatModel::Fixed("unused".into()),
+        session,
+        vec![original.clone()],
+    )
+    .unwrap();
+    let (version, pinned) = live.observed_sources(workspace);
+    assert_eq!(pinned, vec![original.clone()]);
+    let work = {
+        let mut session = live.session.lock().unwrap();
+        let request = local_product::runtime::reply::request(
+            "scripted",
+            "low",
+            "physician saved wording",
+            "make concise",
+            "UTC",
+            &pinned,
+        );
+        let work = session
+            .revise("inline-arrival", workspace, target, 1, request)
+            .unwrap();
+        session.pin_sources(&work, version, pinned).unwrap()
+    };
+    let mut provider = Scripted {
+        live: live.clone(),
+        lab: lab.clone(),
+        seen: vec![],
+    };
+    let mut owner = live::LiveOwner {
+        live: live.clone(),
+        work: work.clone(),
+        auth_ctx: None,
+    };
+    execution::run(
+        &mut provider,
+        &mut owner,
+        work.request.clone(),
+        &mut execution::Progress::default(),
+        execution::Limits::default(),
+        &execution::Cancellation::default(),
+        &mut |_| Ok(()),
+    )
+    .await
+    .unwrap();
+
+    let outcome = |request: &harness::execution::Request| match request.items.last() {
+        Some(Item::Result { value, .. }) => value["outcome"].as_str().map(str::to_owned),
+        _ => None,
+    };
+    assert_eq!(provider.seen.len(), 4);
+    assert_eq!(
+        outcome(&provider.seen[1]).as_deref(),
+        Some("sources_changed")
+    );
+    assert_eq!(
+        outcome(&provider.seen[2]).as_deref(),
+        Some("sources_unread")
+    );
+    let read = |request: &harness::execution::Request| {
+        request.items.iter().any(|item| {
+            matches!(item, Item::Result { value, .. }
+                if value["results"][0]["content"] == lab.content.as_str())
+        })
+    };
+    assert!(!read(&provider.seen[2]));
+    assert!(
+        read(&provider.seen[3]),
+        "the lab was read before the finish"
+    );
+
+    let session = live.session.lock().unwrap();
+    let (revision, text, restore) = session.draft(workspace, target).unwrap();
+    assert_eq!(revision, 2);
+    assert_eq!(text, "revised with the new lab");
+    assert_eq!(restore.as_deref(), Some("physician saved wording"));
+    let settled = session.work(&work).unwrap();
+    assert_eq!(settled.sources, vec![original.clone(), lab.clone()]);
+    assert_eq!(settled.refreshes.len(), 1);
+    assert_eq!(settled.refreshes[0].from_version, version);
+    assert_eq!(settled.refreshes[0].added, vec![lab]);
+    assert_eq!(settled.sources_version, settled.refreshes[0].to_version);
+}
+
 #[tokio::test]
 async fn inline_workspace_lists_the_chat_a_physician_started() {
     let store = Arc::new(MemoryAuthStore::new());
@@ -542,4 +690,197 @@ fn chat_titles_are_one_line_and_cut_at_a_word() {
         live::chat_title(&unbroken).chars().count(),
         live::CHAT_TITLE_CHARS + 1
     );
+}
+
+/// Signs one seeded account in on the memory auth store.
+async fn sign_in_memory(
+    store: &MemoryAuthStore,
+    email: &str,
+) -> (physician_auth::PhysicianIdentity, String) {
+    let sign = store.begin_sign_in(email, auth::now()).await.unwrap();
+    store
+        .complete_sign_in(email, &sign, auth::now())
+        .await
+        .unwrap()
+}
+
+#[tokio::test]
+async fn the_synthetic_reply_opens_once_under_authority_and_only_when_enabled() {
+    let store = Arc::new(MemoryAuthStore::new());
+    store.seed_account(
+        auth::STAGING_PRACTICE_ID,
+        "staging-physician",
+        "physician@codahealth.test",
+        "Physician",
+        true,
+    );
+    store.seed_account(
+        auth::STAGING_PRACTICE_ID,
+        "colleague",
+        "colleague@codahealth.test",
+        "Colleague",
+        false,
+    );
+    let auth = auth::Auth::on(
+        store.clone(),
+        Arc::new(front_door::MemoryFrontDoorStore::new()),
+    )
+    .await;
+    let (_, token) = sign_in_memory(&store, "physician@codahealth.test").await;
+    let (colleague_identity, colleague) = sign_in_memory(&store, "colleague@codahealth.test").await;
+    let workspace = synthetic_reply::workspace();
+    let serve = |live: Arc<live::Live>| {
+        let app = auth::required_router(live_router_on(live), auth.clone());
+        async move {
+            let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+            let base = format!("http://{}", listener.local_addr().unwrap());
+            let task = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+            (base, task)
+        }
+    };
+    let client = reqwest::Client::new();
+    let replies = |base: &str, token: &str| {
+        let request = client
+            .get(format!("{base}/patient-workspaces/{workspace}"))
+            .bearer_auth(token);
+        async move {
+            let response = request.send().await.unwrap();
+            let status = response.status();
+            let body = response.json::<Value>().await.unwrap_or_default();
+            (status, body["replies"].clone())
+        }
+    };
+
+    // Off by default: the recorded workspace has no reply and none is opened.
+    let off = live::Live::on(
+        live::ChatModel::Fixed("unused".into()),
+        PhysicianSession::memory(),
+        vec![],
+    )
+    .unwrap();
+    let (base, task) = serve(off.clone()).await;
+    let (status, listed) = replies(&base, &token).await;
+    assert_eq!(status, StatusCode::OK);
+    assert!(
+        listed.as_array().is_none_or(Vec::is_empty),
+        "switch off must list no reply: {listed}"
+    );
+    let target = reply::target(
+        &auth::AuthContext {
+            auth: auth.clone(),
+            token: token.clone(),
+            identity: physician_auth::PhysicianIdentity {
+                practice_id: auth::STAGING_PRACTICE_ID.into(),
+                physician_id: "staging-physician".into(),
+            },
+        },
+        synthetic_reply::REPLY_ID,
+    );
+    assert!(
+        off.session
+            .lock()
+            .unwrap()
+            .draft(workspace, &target)
+            .is_none()
+    );
+    task.abort();
+
+    let live = live::Live::on(
+        live::ChatModel::Fixed("unused".into()),
+        PhysicianSession::memory(),
+        vec![],
+    )
+    .unwrap();
+    live.enable_synthetic_reply();
+    let (base, task) = serve(live.clone()).await;
+    let (status, listed) = replies(&base, &token).await;
+    assert_eq!(status, StatusCode::OK, "{listed}");
+    let reply = &listed[0];
+    assert_eq!(reply["reply_work_id"], synthetic_reply::REPLY_ID);
+    assert_eq!(reply["draft_text"], synthetic_reply::FIRST_DRAFT);
+    assert_eq!(reply["draft_revision"], 1);
+    assert_eq!(reply["revision_run"], Value::Null);
+    assert_eq!(reply["state"], "ready");
+
+    // A physician save advances the draft; opening again keeps it.
+    let route = format!(
+        "{base}/physician-state/reply-drafts/{workspace}/{}",
+        synthetic_reply::REPLY_ID
+    );
+    let saved = client
+        .put(&route)
+        .bearer_auth(&token)
+        .json(&json!({"revision": 1, "text": "Physician's own wording."}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(saved.status(), StatusCode::OK);
+    for _ in 0..2 {
+        let (_, listed) = replies(&base, &token).await;
+        assert_eq!(listed[0]["draft_text"], "Physician's own wording.");
+        assert_eq!(listed[0]["draft_revision"], 2);
+    }
+
+    // Another physician with patient access gets their own draft, never this one.
+    store
+        .set_membership(
+            &colleague_identity,
+            workspace,
+            physician_auth::Membership::Allowed,
+        )
+        .await;
+    let (_, theirs) = replies(&base, &colleague).await;
+    assert_eq!(theirs[0]["draft_text"], synthetic_reply::FIRST_DRAFT);
+    assert_eq!(theirs[0]["draft_revision"], 1);
+
+    // Off the panel, a same-clinic physician sees demographics only: no
+    // reply is projected, and none can be read or saved.
+    store
+        .set_membership(
+            &colleague_identity,
+            workspace,
+            physician_auth::Membership::Denied,
+        )
+        .await;
+    let (status, listed) = replies(&base, &colleague).await;
+    assert_eq!(status, StatusCode::OK);
+    assert!(listed.as_array().is_none_or(Vec::is_empty), "{listed}");
+    let route_status = client
+        .get(&route)
+        .bearer_auth(&colleague)
+        .send()
+        .await
+        .unwrap()
+        .status();
+    assert_eq!(route_status, StatusCode::NOT_FOUND);
+    let refused = client
+        .put(&route)
+        .bearer_auth(&colleague)
+        .json(&json!({"revision": 1, "text": "demographic-only overwrite"}))
+        .send()
+        .await
+        .unwrap();
+    assert_ne!(refused.status(), StatusCode::OK);
+
+    // A missing reply cannot be created through a save or a revision.
+    let missing = format!("{base}/physician-state/reply-drafts/{workspace}/not-a-reply");
+    let refused = client
+        .put(&missing)
+        .bearer_auth(&token)
+        .json(&json!({"revision": 0, "text": "invented"}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(refused.status(), StatusCode::CONFLICT);
+    assert_eq!(
+        client
+            .get(&missing)
+            .bearer_auth(&token)
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        StatusCode::NOT_FOUND
+    );
+    task.abort();
 }

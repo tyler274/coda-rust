@@ -1,0 +1,843 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002076",
+   "events": [
+    {
+     "id": "2025-02-18a",
+     "kind": "office_visit",
+     "start": "2025-02-18T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "conditions": [
+      {
+       "label": "Cellulitis of lower limb",
+       "action": "resolved"
+      },
+      {
+       "label": "Tinea pedis",
+       "icd10": "B35.3",
+       "action": "resolved"
+      }
+     ],
+     "state": {
+      "weight_kg": 92.0,
+      "labs": {
+       "Hemoglobin A1c": 8.1,
+       "Glucose": 165
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-02-18T08:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.1
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2025-02-18T08:05",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-02-18T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2025-02-18T08:15",
+       "body": "S: The leg infection scared him. Since December he's been taking both metformin doses, packing lunch instead of the drive-through, down 2 kg. No new rash. Leg normal.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, IVIG q6wk.\nO: Vitals as charted, weight 92. Left leg: normal skin, no swelling beyond his usual trace ankle edema. Toe webs dry and clear.\nA/P:\n1. Cellulitis, tinea pedis - resolved.\n2. DM2 - A1c and BMP today. If A1c hasn't moved, we'll talk about a second agent.\nRTC 3 mo."
+      }
+     ]
+    },
+    {
+     "id": "2025-02-20a",
+     "kind": "portal_message",
+     "start": "2025-02-20T12:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "A1c result",
+       "author": "PCP",
+       "date": "2025-02-20T12:05",
+       "body": "A1c 8.1 - down from 9.2 in November. That's the effort showing. Kidney labs normal. Keep it up and we'll recheck in May."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-20a",
+     "kind": "office_visit",
+     "start": "2025-05-20T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-05-20T16:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2025-05-20T16:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2025-05-20T16:55",
+       "body": "S: Still packing lunches. Walking a loop around the neighborhood after work. No complaints.\nO: vitals as charted. Feet intact.\nPOC A1c 7.6 today.\nA/P: DM2 improving on metformin alone with diet and steadier dosing - continue. Physical in September with full labs."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-10a",
+     "kind": "pharmacy",
+     "start": "2025-06-10T08:30",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request: metformin",
+       "author": "MA",
+       "date": "2025-06-10T08:30",
+       "body": "Electronic request from mail-order pharmacy for metformin 1000 mg BID, 90 days. Seen 5/20, A1c 7.6. Approved per protocol with 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-08a",
+     "kind": "specialist_visit",
+     "start": "2025-09-08T10:30",
+     "service": "Neurology",
+     "reason": "CIDP follow-up",
+     "medications": [
+      {
+       "drug_text": "100 ML immunoglobulin G, human 100 MG/ML Injection",
+       "action": "stop",
+       "reason": "Tapered off; CIDP stable"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology follow-up",
+       "author": "neurology",
+       "date": "2025-09-08T11:15",
+       "body": "Outside neurology group, 09/08/2025. CIDP. IVIG was spaced to every 6 weeks last August and tapered over the spring; final infusion in July. He has noticed no weakness between or since. Exam: full proximal strength, distal strength symmetric, right foot dorsiflexion 5-/5; reflexes diminished; mild distal sensory loss unchanged. Assessment: CIDP in remission off IVIG. Plan: IVIG stopped. Continue gabapentin 300 mg TID. Call promptly for any new weakness, trouble with stairs or lifting; otherwise return in one year."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-30a",
+     "kind": "annual_physical",
+     "start": "2025-09-30T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.4,
+       "Glucose": 145
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-09-30T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-09-30T08:30",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2025-09-30T08:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-09-30T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-09-30T08:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-09-30T08:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "placed",
+       "order": "Fecal Immunochemical Test",
+       "category": "lab"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-09-30T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-09-30T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-09-30T09:20",
+       "body": "46 y/o M, annual.\nInterval: neurology stopped IVIG this month, CIDP quiet. No infections since last November. A1c trending down.\nROS: negative; evening ankle swelling only.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40. IVIG stopped. NKDA.\nSocial: same job, no tobacco since 2019, rare alcohol.\nPHQ-9: 1.\nExam: vitals as charted. HEENT normal. Lungs clear. Heart regular. Abdomen soft. Trace ankle edema. Skin without rash. Feet intact, toe webs dry, pulses intact. Strength full.\nA/P: Labs today. Flu and updated COVID given. FIT kit given. RTC 4-5 months."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-02a",
+     "kind": "portal_message",
+     "start": "2025-10-02T14:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical results",
+       "author": "PCP",
+       "date": "2025-10-02T14:40",
+       "body": "A1c 7.4 - back close to where you were when you joined. Cholesterol, kidney, liver and blood counts fine. Don't forget the FIT kit."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "lab_only",
+     "start": "2025-10-14T09:10",
+     "orders": [
+      {
+       "id": "fit-2025",
+       "action": "done",
+       "date": "2025-10-14T09:10"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-10-11T06:30",
+       "resulted": "2025-10-14T09:10",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "PCP",
+       "date": "2025-10-14T12:20",
+       "body": "FIT negative again. Next one fall 2026. Pt notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-20a",
+     "kind": "specialist_visit",
+     "start": "2025-10-20T09:00",
+     "service": "Nephrology",
+     "reason": "Nephrotic syndrome follow-up",
+     "state": {
+      "labs": {
+       "Albumin": 3.5,
+       "Creatinine": 1.0,
+       "Total Protein": 6.2,
+       "Calcium": 9.1
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2025-10-20T08:30",
+       "results": [
+        {
+         "test": "Protein/Creatinine [Mass Ratio] in Urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 1.6
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-10-20T08:30",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 3.5
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.0
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2025-10-20T10:00",
+       "body": "Outside nephrology practice, 10/20/2025. Nephrotic syndrome, partial remission. Feels well. Mild ankle edema at day's end. Urine protein/creatinine 1.6 g/g; albumin 3.5; creatinine 1.0, potassium normal. Plan: no change - lisinopril 10 mg, furosemide 40 mg, sodium restriction. Annual visit."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-28a",
+     "kind": "outside_records",
+     "start": "2025-10-28T10:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye exam report",
+       "author": "optometry",
+       "date": "2025-10-28T10:30",
+       "body": "Optometry exam 10/21/2025: dilated exam shows no diabetic retinopathy in either eye. Annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-10a",
+     "kind": "office_visit",
+     "start": "2026-02-10T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 92.0,
+      "labs": {
+       "Hemoglobin A1c": 7.1,
+       "Glucose": 135
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2026-02-10T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.1
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-02-10T07:55",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-02-10T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2026-02-10T08:00",
+       "body": "S: Doing well through the winter. No missed doses he can think of. Off IVIG 5 months, no weakness.\nO: vitals as charted, weight 92. Trace ankle edema. Feet intact.\nA/P: DM2 - A1c and BMP today; continue metformin. CIDP, nephrotic syndrome stable per specialists. RTC in 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-12a",
+     "kind": "portal_message",
+     "start": "2026-02-12T11:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2026-02-12T11:15",
+       "body": "A1c 7.1. Best number in three years. Kidney labs normal. See you in the summer."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-23a",
+     "kind": "hospital_admission",
+     "start": "2026-05-23T03:20",
+     "end": "2026-06-26T13:00",
+     "service": "Burn Surgery",
+     "reason": "Thermal burns from house fire",
+     "conditions": [
+      {
+       "label": "Burns involving 30-39% of body surface with 20-29% third degree burns",
+       "icd10": "T31.32",
+       "action": "diagnosed",
+       "onset": "2026-05-23"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "acetaminophen 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "Q8H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Burn pain"
+      },
+      {
+       "drug": "hydroxyzine hydrochloride 25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every 8 hours as needed for itching",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "Q8H PRN",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Post-burn itching"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2026-05-23T04:00"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2026-05-23T03:25",
+       "bp": [
+        110,
+        70
+       ],
+       "hr": 120,
+       "rr": 22,
+       "temp_c": 37.8
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-05-23T03:40",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 16.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 14.5
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-05-23T03:40",
+       "results": [
+        {
+         "test": "Sodium",
+         "value": 145
+        },
+        {
+         "test": "Potassium",
+         "value": 4.2
+        },
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Glucose",
+         "value": 200
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Tangential excision of burnt skin",
+       "snomed": "302431005",
+       "performed": "2026-05-27T08:30"
+      },
+      {
+       "procedure": "Split thickness graft of skin to skin",
+       "snomed": "265675003",
+       "performed": "2026-05-27T09:30"
+      },
+      {
+       "procedure": "Tangential excision of burnt skin",
+       "snomed": "302431005",
+       "performed": "2026-06-03T08:30"
+      },
+      {
+       "procedure": "Split thickness graft of skin to skin",
+       "snomed": "265675003",
+       "performed": "2026-06-03T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Burn center emergency and ICU admission note",
+       "author": "emergency medicine",
+       "date": "2026-05-23T05:30",
+       "body": "Regional burn center, emergency department and burn ICU. Date of service 05/23/2026.\n\nCC: burns from a house fire.\n\nHPI: 46-year-old man with CIDP and nephrotic syndrome brought by ambulance after a fire at home overnight. Second- and third-degree burns over the whole chest, abdomen and both arms. Awake and talking. Denies being trapped in smoke; no hoarseness or cough.\n\nPMH: type 2 diabetes, well controlled on metformin; CIDP; nephrotic syndrome; lumbar disc herniation with radiculopathy; anorectal fistula; recurrent tinea. PSH: perianal abscess drainage.\nHome meds: metformin 1000 mg BID, gabapentin 300 mg TID, lisinopril 10 mg daily, furosemide 40 mg daily, atorvastatin 20 mg daily. Allergies: NKDA.\nFamily history: father type 2 diabetes with diabetic nephropathy; mother hypertension; sister autoimmune thyroid disease.\nSocial: warehouse supervisor; former smoker; social alcohol.\n\nVitals on arrival: BP 110/70, HR 120, RR 22, T 37.8 C.\n\nExam: airway patent, no soot in the mouth or nares, no singed nasal hair, voice normal; lungs clear. Burned areas over chest, abdomen and both upper extremities. Chest and both arms dry, leathery, white and charred, without blisters, and he reports little pain there; abdomen with partial-thickness injury. Estimated 36% total body surface area. Face, neck, hands' palms, genitals and legs spared. Distal pulses present in both arms.\n\nLabs: WBC 16.0, hemoglobin 14.5, sodium 145, potassium 4.2, creatinine 1.1, glucose 200.\n\nAssessment: thermal burns, 36% TBSA, full thickness to chest and both upper extremities, partial thickness abdomen. No inhalation injury.\n\nPlan: burn ICU. Formula-guided crystalloid resuscitation titrated to urine output. Tdap given. Insulin infusion for glucose control; hold metformin, lisinopril and furosemide. Wound care with antimicrobial dressings. Early excision and grafting planned. Nutrition consult."
+      },
+      {
+       "type": "Operative Note",
+       "title": "Operative report: excision and grafting, stage 1",
+       "author": "burn surgery",
+       "date": "2026-05-27T12:00",
+       "body": "Regional burn center. Date of surgery 05/27/2026.\nDiagnosis: full-thickness burns, chest and both upper extremities.\nProcedure: tangential excision of full-thickness burn of the anterior chest and right upper extremity to viable bed; split-thickness autograft from the right thigh, meshed, secured with staples and negative-pressure dressing.\nAnesthesia: general. Blood loss replaced per protocol. No complications. To burn ICU."
+      },
+      {
+       "type": "Operative Note",
+       "title": "Operative report: excision and grafting, stage 2",
+       "author": "burn surgery",
+       "date": "2026-06-03T12:00",
+       "body": "Regional burn center. Date of surgery 06/03/2026.\nProcedure: tangential excision of full-thickness burn of the left upper extremity and remaining chest; split-thickness autograft harvested from the left thigh, meshed and applied. Prior grafts inspected: excellent take on chest and right arm.\nNo complications."
+      },
+      {
+       "type": "Discharge Summary",
+       "title": "Burn center discharge summary",
+       "author": "burn surgery",
+       "date": "2026-06-26T13:00",
+       "body": "Regional burn center. Admitted 05/23/2026, discharged 06/26/2026.\n\nDiagnoses: thermal burns 36% TBSA from a house fire - full thickness chest and both upper extremities, partial thickness abdomen. No inhalation injury. Type 2 diabetes. CIDP. Nephrotic syndrome.\n\nCourse: Burn ICU for resuscitation, transferred to the burn unit floor after the first week. Formula-guided fluid resuscitation. Insulin infusion then subcutaneous insulin while inpatient; metformin resumed on 06/22 with good glucose control. Lisinopril and furosemide held during resuscitation and resumed once fluid shifts settled. Staged tangential excision and split-thickness autografting: chest and right arm 05/27, left arm and remaining chest 06/03, donor sites both thighs. Graft take good. Abdomen healed with dressings. High-protein nutrition. Occupational and physical therapy daily; fitted for pressure garments.\n\nDischarge condition: walking independently, grafts adherent, small open areas on the left forearm and chest healing, donor sites healed.\n\nDischarge medications: metformin 1000 mg BID, gabapentin 300 mg TID, lisinopril 10 mg daily, furosemide 40 mg daily, atorvastatin 20 mg daily; acetaminophen 1000 mg every 8 hours as needed; hydroxyzine 25 mg every 8 hours as needed for itching.\n\nFollow-up: burn clinic in 2 weeks; outpatient occupational therapy; pressure garments 23 hours a day; moisturize grafts; sun protection. Primary care within 2 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-26a",
+     "kind": "telephone",
+     "start": "2026-05-26T09:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call from patient's sister",
+       "author": "RN",
+       "date": "2026-05-26T09:15",
+       "body": "Pt's sister called: there was a fire at his house early Saturday, he has serious burns and is in the ICU at the regional burn center. He asked her to let us know. HIPAA release on file lists her. Told her we'll watch for records and to call when discharge is planned. PCP informed."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-29a",
+     "kind": "telephone",
+     "start": "2026-06-29T10:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Post-discharge call",
+       "author": "RN",
+       "date": "2026-06-29T10:30",
+       "body": "Transitional care call, discharged from burn center Fri 6/26. Discharge summary received. Home; his sister staying with him this week. Pain controlled with acetaminophen, itching at night helped by hydroxyzine. Taking metformin, gabapentin, lisinopril, furosemide, atorvastatin. Wearing garments. Burn clinic 7/10. OT starting this week. Sugars at home 120s-150s. Video visit with PCP 7/8."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-08a",
+     "kind": "telehealth_visit",
+     "start": "2026-07-08T12:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Transitional care after burn center discharge",
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2026-07-08T12:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Telehealth: transitional care visit",
+       "author": "PCP",
+       "date": "2026-07-08T12:55",
+       "body": "Video, pt at home, sister present.\nReviewed burn center discharge summary: 36% TBSA burns from the house fire, excision and grafting 5/27 and 6/3 to chest and both arms, abdomen healed. No inhalation injury.\nS: Tired, sleeping a lot. Pain 3/10, acetaminophen twice a day. Itching worst at night, hydroxyzine helps. Eating well. Home glucose 110s-150s on metformin. Ankles a bit swollen, no more than usual. No fever.\nO (video): grafts on forearms look pink and flat; he shows a small dressing on the left forearm. Moving arms well.\nMed rec: metformin 1000 BID, gabapentin 300 TID, lisinopril 10, furosemide 40, atorvastatin 20, acetaminophen PRN, hydroxyzine PRN. Updated.\nA/P: Burns, recovering. Burn clinic 7/10, OT 2x/week. Out of work - FMLA paperwork completed. Office visit end of July with labs."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-10a",
+     "kind": "specialist_visit",
+     "start": "2026-07-10T09:30",
+     "service": "Burn Surgery",
+     "reason": "Burn clinic follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Burn clinic follow-up",
+       "author": "burn surgery",
+       "date": "2026-07-10T10:15",
+       "body": "Regional burn center outpatient clinic, 07/10/2026. Two weeks post discharge. Grafts on chest and both arms have taken well. Small open areas on the left forearm and lower chest, granulating, clean. Donor sites healed. Abdomen healed. Range of motion at shoulders and elbows good. Plan: continue dressings to open areas, pressure garments, OT for hands and shoulders, emollient twice daily. Return in 4 to 5 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-31a",
+     "kind": "office_visit",
+     "start": "2026-07-31T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after burn admission",
+     "state": {
+      "weight_kg": 87.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-07-31T11:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-07-31T11:10",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-31T11:10",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-07-31T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit: follow-up after burns",
+       "author": "PCP",
+       "date": "2026-07-31T11:30",
+       "body": "S: Five weeks home. Energy coming back, walking 20 minutes a day. Itching less, using hydroxyzine maybe every other night. Acetaminophen rarely. Wearing garments all day. OT twice a week, working on shoulder reach. Not back at work yet. Metformin all doses. No fevers.\nMeds: metformin 1000 BID, gabapentin 300 TID, lisinopril 10, furosemide 40, atorvastatin 20, acetaminophen PRN, hydroxyzine PRN.\nO: vitals as charted, weight 87 kg (92 in February). Chest and both arms: meshed grafts healed, pink, flat; a coin-sized area on the lower left forearm still under a light dressing, clean. Abdomen healed. Thigh donor sites healed. Lungs clear. Trace ankle edema. Strength full.\nA/P:\n1. Burns s/p grafting - healing well, per burn clinic. Continue garments, OT, emollients.\n2. Weight down 5 kg since the admission - expected after a large burn; protein-rich meals, recheck next visit.\n3. DM2 - CBC, CMP, A1c today.\n4. CIDP, nephrotic syndrome - stable, per specialists.\n5. FMLA extended through September.\nFollow up after the next burn clinic visit; he'll call to schedule."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-03a",
+     "kind": "portal_message",
+     "start": "2026-08-03T13:35",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2026-08-03T13:35",
+       "body": "Your labs from Friday look good - blood counts back to normal, kidney function and potassium normal, A1c still right around 7 even through the hospital stay. Nothing to change."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-14a",
+     "kind": "specialist_visit",
+     "start": "2026-08-14T09:00",
+     "service": "Burn Surgery",
+     "reason": "Burn clinic follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Burn clinic follow-up",
+       "author": "burn surgery",
+       "date": "2026-08-14T09:45",
+       "body": "Regional burn center outpatient clinic, 08/14/2026. All burn and graft areas now closed, including the left forearm. Scars early, soft. Shoulder and elbow range nearly full. Plan: continue pressure garments, hand therapy with OT, emollients, sunscreen. Itching medicine as needed. Return in 2 months for scar review."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-19a",
+     "kind": "pharmacy",
+     "start": "2026-08-19T08:50",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request: gabapentin",
+       "author": "MA",
+       "date": "2026-08-19T08:50",
+       "body": "Pharmacy sent a gabapentin 300 mg TID refill request here. Prescriber of record is his neurologist; forwarded request to the neurology office and let the pharmacy know. Pt has 10 days left."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

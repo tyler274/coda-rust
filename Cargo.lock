@@ -3652,8 +3652,11 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "base64 0.23.1",
+ "gmail",
+ "google-cloud-pubsub",
  "jsonwebtoken 10.4.0",
  "lettre",
+ "pubsub",
  "reqwest 0.12.28",
  "serde",
  "serde_json",
@@ -6367,6 +6370,7 @@ dependencies = [
  "js-sys",
  "physician-client",
  "physician-wire",
+ "serde",
  "serde_json",
  "ui",
  "wasm-bindgen",
@@ -6437,6 +6441,7 @@ dependencies = [
  "physician-bus",
  "physician-wire",
  "public-site",
+ "pubsub",
  "reqwest 0.12.28",
  "sea-orm",
  "serde",
@@ -6775,6 +6780,21 @@ checksum = "6f42ea446cab60335f76979ec15e12619a2165b5ae2c12166bef27d283a9fadf"
 dependencies = [
  "idna",
  "psl-types",
+]
+
+[[package]]
+name = "pubsub"
+version = "0.1.0"
+dependencies = [
+ "base64 0.23.1",
+ "google-cloud-auth",
+ "google-cloud-pubsub",
+ "pubsub",
+ "reqwest 0.12.28",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]

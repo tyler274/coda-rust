@@ -26,6 +26,7 @@ mod publication_tests;
 pub mod queue;
 mod reply;
 mod simulation;
+mod synthetic_reply;
 
 /// The staging practice id and the auth/front-door wiring, for tests.
 pub use auth::{STAGING_PRACTICE_ID, authed_router, authed_router_on};
@@ -520,6 +521,12 @@ async fn site_from_env(
         let store = local_product::runtime::Store::connect(&database)
             .await
             .map_err(|_| "physician runtime store unavailable".to_string())?;
+        // The retained snapshot is the stand-in source owner's only import
+        // path. Importing it again changes nothing, so every instance can.
+        store
+            .import_sources(&live::source_snapshot()?)
+            .await
+            .map_err(|_| "physician source import failed".to_string())?;
         let emulator = configured(&get, "PUBSUB_EMULATOR_HOST");
         let queue = queue::PubSubQueue::connect(&topic, emulator.as_deref(), hosted).await?;
         let chat =
@@ -797,8 +804,31 @@ async fn workspace(
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
         merge_chats(&mut enriched, chats);
+        let name = enriched["display_name"]
+            .as_str()
+            .unwrap_or_default()
+            .to_owned();
+        match synthetic_reply::project(live, ctx, &id, &name).await {
+            Ok(Some(reply)) => add_reply(&mut enriched, reply),
+            Ok(None) => {}
+            Err(()) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+        }
     }
     Json(enriched).into_response()
+}
+
+/// Lists an owner-held reply first, replacing a recorded one with its id.
+fn add_reply(workspace: &mut Value, reply: Value) {
+    let mut replies = vec![reply.clone()];
+    if let Some(recorded) = workspace["replies"].as_array() {
+        replies.extend(
+            recorded
+                .iter()
+                .filter(|r| r["reply_work_id"] != reply["reply_work_id"])
+                .cloned(),
+        );
+    }
+    workspace["replies"] = Value::Array(replies);
 }
 
 /// Puts runtime chats first and keeps recorded chats the runtime doesn't have.

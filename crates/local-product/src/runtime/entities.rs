@@ -108,6 +108,54 @@ pub(super) mod reply_draft {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// One patient workspace's source version. Recording a change bumps it under
+/// this row's exclusive lock; a revision commit holds it shared, so a source
+/// arriving during a commit either is seen by it or waits for it.
+pub(super) mod source_version {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_source_versions")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        /// Monotonic; moves only when a recorded observation changes.
+        pub version: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Append-only source observations. A correction or withdrawal is a new row
+/// at a later version; no row is ever rewritten.
+pub(super) mod source {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_sources")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        /// The source owner's opaque candidate ID.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub candidate: String,
+        /// The workspace version this observation took effect at.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub observed_at_version: i64,
+        /// The validated `SourceRevision`; null records a withdrawal.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub revision: Option<Json>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
 /// Append-only history: one row per earlier revision of a reply draft, with
 /// its retained execution evidence. Written when the next revision is
 /// accepted, so the draft row holds only current work. Afterwards only late

@@ -75,6 +75,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0016_public_budget_misses",
         include_str!("../migrations/0016_public_budget_misses.sql"),
     ),
+    (
+        "0017_conversation_steers",
+        include_str!("../migrations/0017_conversation_steers.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {
@@ -150,7 +154,7 @@ pub async fn migrate(migration_url: &str, runtime_role: &str) -> Result<(), sqlx
          grant select,insert,update,delete on public.doctor_collection_items,public.duet_doctor_proposals,public.duet_doctor_saves,public.duet_device_snapshots,public.duet_publications to {role}; \
          grant usage, select on sequence public.canonical_evidence_revisions_revision_seq to {role}; \
          grant select,insert,update on public.duet_model_calls to {role}; \
-         grant select,insert,update,delete on public.duet_conversations,public.duet_commands,public.duet_execution_records,public.duet_tool_effects,public.duet_private_memory,public.duet_conversation_events to {role}; \
+         grant select,insert,update,delete on public.duet_conversations,public.duet_commands,public.duet_execution_records,public.duet_tool_effects,public.duet_private_memory,public.duet_conversation_events,public.duet_command_steers to {role}; \
          grant usage,select on sequence public.duet_execution_records_ordinal_seq, public.duet_conversation_events_sequence_seq to {role}; \
          grant select on public.duet_pending_commands,public.health_contexts,public.follow_ups,public.insight_cycles,public.duet_follow_up_origins,public.duet_follow_up_occurrences,public.duet_follow_up_settings to {role}; \
          grant select on public.duet_legacy_privacy_accounts to {role}; \

@@ -2,6 +2,11 @@
 
 Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#retained-physician-infrastructure-references) says what each root owns.
 
+The mail-only <a href="/infra/gcp/shared-mail/README%2Emd">shared-mail root</a> is owned here
+for production SMTP in `coda-health-prod`, with separate state and explicit
+saved-plan approval. This exception grants no authority over the referenced
+production application or clinical-evidence roots.
+
 ## Public marketing site preparation
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root prepares the
@@ -36,7 +41,7 @@ Vercel retirement.
 | Flake output | Image | Role | Entrypoint binary |
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
-| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker |
+| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker, loading the skill catalog at `PHYSICIAN_SKILLS_DIR` |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
@@ -190,9 +195,13 @@ runs on pushes to `main`, after every check job, when the repository variable
 `staging` environment's `GCP_WORKLOAD_IDENTITY_PROVIDER` and
 `GCP_DEPLOYER_SERVICE_ACCOUNT` (with `GCP_PROJECT_ID` and `GCP_REGION`), then:
 
-1. builds the physician and Duet runtime and migration images and
-   `physician-worker-image`, and pushes each to `apps/` tagged with the commit,
-   recording its digest;
+1. downloads the successful `images` job's tested archives by immutable artifact
+   ID from the same workflow run. [`staging_images.py`](/scripts/staging_images.py)
+   checks the complete manifest, source revision and archive checksums before
+   cloud authentication. It pushes those archives to `apps/` tagged with the
+   commit, checks that each published image's configuration digest (including
+   its uncompressed layer identities) matches the tested image, and records the
+   registry digest. It never rebuilds an image;
 2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
@@ -201,8 +210,15 @@ runs on pushes to `main`, after every check job, when the repository variable
    once that service exists. The first push, before the scaling plan creates the
    service, still publishes the digest for `images.physician.worker` and leaves
    the service alone;
-4. uploads a receipt (digests, executions, revisions) as the
+4. uploads a receipt (tested-archive manifest, digests, executions, revisions) as the
    `release-receipt-*` artifact.
+
+The tested archive artifact is produced only while staging deployment is enabled
+and retained for three days. A failed-job rerun uses
+the original successful image job's artifact ID; rerunning the image job creates
+a new artifact for that attempt. A missing, expired or invalid artifact stops the
+release; rerun the image proof to produce a new handoff. PR image proofs and their
+separate operator qualification artifacts retain their existing behavior.
 
 Cloud Run moves traffic only to a revision that passes its `/readyz` startup
 probe, so a failed rollout leaves the previous revision serving; fix forward.
@@ -372,7 +388,13 @@ and budget steps, are in [Apply commands for Dev](#apply-commands-for-dev).
      `gcloud pubsub subscriptions pull physician-chat-turns-dead-letter --project coda-rust-staging --limit 10`.
 
 Workstations use `valkey` and the Pub/Sub emulator from `nix develop`. Unset
-`PHYSICIAN_REDIS_URL` keeps the in-process bus.
+`PHYSICIAN_REDIS_URL` keeps the in-process bus. Tests start the emulator through
+the shared harness in [`crates/pubsub`](/crates/pubsub/src/testing.rs)
+(`test-util` feature), which reuses a loopback `PUBSUB_EMULATOR_HOST` when one is
+set. [`crates/gmail/tests/push_wake.rs`](/crates/gmail/tests/push_wake.rs) uses it to
+prove the Gmail push-wake contract: a push only wakes `history.list` from the
+stored cursor, under duplicates, reordering, redelivery, dead letters and
+ordering keys. Push OIDC and real Gmail stay unproven there.
 
 To turn scaling off, set `enable_physician_scale = false` and apply a reviewed
 saved plan. The plan removes the cache, topics, subscriptions, and worker.
@@ -635,6 +657,8 @@ Source: <a href="/submodules/coda-app/infra/gcp/README%2Emd#dated-release-and-se
 ## Shared mail service
 
 Products hosted outside the Rust VPC can use the `mail-relay` binary in `crates/gmail`.
+The mail-only <a href="/infra/gcp/shared-mail/README%2Emd">production root</a> owns its separate
+deployment in `coda-health-prod`; `rust-environments` continues to own staging.
 It wraps the existing `SmtpRelay`; it does not own product sign-in, message templates,
 recipients, send records or retry decisions. The physician server continues to use
 that same transport directly. There is one SMTP implementation and no additional
@@ -652,19 +676,24 @@ Cloud Run service, a runtime identity with no application-data roles, and a
 service-scoped invoker binding. `enable_physician_smtp_relay` must already be enabled:
 the adapter uses that existing network, subnet and NAT address, preserving the
 Workspace IP allowlist. It needs no Doppler token. Runtime settings are
-`MAIL_FROM=signin@codahealth.ai` and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
+`MAIL_FROM=signin@codahealth.ai`, `MAIL_NOTIFICATION_FROM=notifications@codahealth.ai`
+(the binary default), and `MAIL_LISTEN_ADDR=0.0.0.0:8080`.
 
 For Gym staging, the named caller is
 `serviceAccount:workspace-web-staging@coda-gym.iam.gserviceaccount.com`.
-Production would use `serviceAccount:workspace-web@coda-gym.iam.gserviceaccount.com`
-on its own production relay and authorized egress. This repository's infrastructure
-root remains staging-only: production preparation belongs to its separately authorized
-infrastructure owner and must not be planned or applied from this root. Do not grant a public invoker or
-route production through staging. The `mail_relay_url` output is both the caller's
+Production uses `serviceAccount:workspace-web@coda-gym.iam.gserviceaccount.com`
+on its own relay and authorized egress, managed by `infra/gcp/shared-mail` in a
+separate state. Production must not be planned or applied from the Rust staging
+root. Neither root grants a public invoker or routes production through staging.
+The `mail_relay_url` output is both the caller's
 base URL and ID-token audience. Cloud Run IAM checks identity; the adapter does
 not add a second token verifier.
 
-`POST /send` accepts JSON `{to, subject, text, html?}`. The server fixes the sender.
+`POST /send` accepts JSON `{purpose, to, subject, text, html?}`. `purpose` is
+`signin` or `notification`; the service maps it to its two configured identities.
+Callers cannot supply an arbitrary From address. Omitted purpose retains the sign-in
+sender for older callers during relay-first deployment; unknown purposes are refused
+before SMTP. Qualify a new image on staging before separately approving production.
 HTTP 204 means the SMTP server accepted the message, not that a mailbox received it.
 HTTP 422 means invalid headers or an explicit SMTP refusal. HTTP 503 means acceptance
 could not be established; a caller must not assume it is safe to retry. No message

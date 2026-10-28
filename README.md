@@ -6,7 +6,7 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 
 - `crates/` is one Cargo workspace. Duet is `duet-app` and `duet-api`. The physician page is `physician-app`. `physician-sample` serves that page and a recorded projection of the synthetic practice. `local-product` is the model-execution owner. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`: physician chat uses the Codex CLI subscription. `record` and `replay` use a cassette and do not read an API key. `api` answers physician chat through OpenAI Responses when `CODA_ALLOW_MODEL_CALLS=1`. `ui`, `http`, and the product-neutral `harness` and its neutral supporting libraries are shared; each product keeps its own authority, state and recovery.
 - `platform/` holds the iPhone and Android bindings for the shared Duet client.
-- `skills/` is the clinical skill catalog, read by `agent-skills` for `harness`; no product runtime loads it yet.
+- `skills/` is the clinical skill catalog, read by `agent-skills` for `harness`; hosted physician chat in `physician-worker` loads it at startup.
 - `verification/` holds product statecharts, their design decisions, Verus models and scoped runtime evidence. Start with [verification](verification/README.md) and the [physician experience](verification/physician-experience/README.md). `.agents/skills/` holds the engineering workflows used to maintain them; it is separate from the clinical catalog.
 - `crates/workspace-tools/` owns workspace commands. `scripts/` holds supporting checks and adapters; `scripts/duet-wire/` groups the OpenAPI composer, finalizer and templates behind `cargo run -p workspace-tools -- generate-duet-wire`. See [API generation](book/src/backend-architecture.md#api-and-clients) for inputs and drift checks.
 - `book/` documents Rust owners, setup, operational procedures and proof boundaries. Build with `mdbook build book`, serve this repository with `python3 -m http.server` from `nix develop`, and open `/target/book/reading.html`. `mdbook serve` cannot see `/crates` or `/submodules`. `scripts/check-book-links.sh` builds the book and checks every link against this checkout, offline; CI runs it without submodules, so links into them are checked only in a checkout that has them.
@@ -14,9 +14,8 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 
 Where a change belongs, and how the dev shell, Doppler, and CI fit, is [AGENTS.md](AGENTS.md).
 
-The [personal engineering workstation recipe](infra/engineering-workstation/README.md)
-captures the Ubuntu/GCP desktop setup, private access, native scheduled tasks and
-the boundary between host packages, the Nix toolchain and account sign-in.
+Agent VM and sandbox recipes live in [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/deploy).
+This repository owns the Coda toolchain, dev-container setup and repository hook described below.
 
 ## Start
 
@@ -61,6 +60,19 @@ cargo run -p physician-sample
 `CODA_LOCAL_MODEL_EXECUTION=api` still calls OpenAI Responses and requires `CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`.
 
 A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the sample server and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
+
+### Unattended development
+
+`nix develop .#agent` uses the same locked toolchain as the default shell,
+without Cursor or automatic Doppler credential discovery/loading. Use
+`nix develop .#agent --command <command>` for builds, tests and Git commits;
+the existing commit checks then run inside that environment.
+
+[`.openinspect/setup.sh`](.openinspect/setup.sh) materializes this profile using
+Nix supplied by the sandbox image. Machine installation, persistent command paths,
+agent CLIs and sandbox lifecycle belong to
+[Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/packages/sandbox-images).
+The hook prepares the store; subsequent commands still enter the Nix shell.
 
 ### Dev container
 

@@ -1,10 +1,10 @@
-//! Product-neutral execution. The adapter is the only durable owner.
+//! Compatibility types and forwarding for [`crate::engine`].
+//! The product adapter is the only durable owner; orchestration lives in engine.
 //!
 //! Admission, claims, authorization, exact reads, effect reconciliation, recovery
 //! and final publication belong to `Owner`, not to this loop. In particular a
 //! successful provider response is not a completed product operation.
 
-use std::collections::HashSet;
 use std::future::Future;
 use std::sync::{
     Arc,
@@ -168,7 +168,7 @@ pub enum Record {
 /// Product authority and execution-record interface. Each callback must be
 /// fenced by the durable claim/accepted work captured inside the adapter.
 /// `dispatch` reconciles uncertain/duplicate effects in that same owner.
-pub trait Owner {
+pub trait Owner: Send {
     /// Product-defined terminal tool exchange. Returning true routes the entire
     /// response to atomic completion, without executing its calls as effects.
     fn terminal(&self, _response: &Response) -> bool {
@@ -197,6 +197,31 @@ pub trait Owner {
     /// Commits completion and staged effects atomically under the product fence.
     /// Must reject stale completion even if the preceding `check` succeeded.
     fn complete(&mut self, response: &Response) -> impl Future<Output = Result<(), String>> + Send;
+    /// Settles a terminal exchange. The default commits through `complete`.
+    /// A product may instead decline to publish because its inputs moved
+    /// after the model last read them, and return `Finish::Continue` with a
+    /// structured result for each terminal call. The run then makes another
+    /// provider call under the same call and token bounds; nothing is
+    /// published for the declined exchange.
+    fn finish(
+        &mut self,
+        response: &Response,
+    ) -> impl Future<Output = Result<Finish, String>> + Send {
+        async move {
+            self.complete(response).await?;
+            Ok(Finish::Committed)
+        }
+    }
+}
+
+/// How a terminal exchange settled.
+#[derive(Debug, Clone, PartialEq)]
+pub enum Finish {
+    /// The product committed the completion.
+    Committed,
+    /// The product declined to commit. The value is returned to the model as
+    /// the result of each terminal call, and the run continues.
+    Continue(Value),
 }
 
 /// Per-work resource bounds. Exhaustion leaves recovery to the product owner.
@@ -284,181 +309,13 @@ impl Progress {
 pub async fn run<P: Provider, O: Owner>(
     provider: &mut P,
     owner: &mut O,
-    mut request: Request,
+    request: Request,
     progress: &mut Progress,
     limits: Limits,
     cancel: &Cancellation,
     emit: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
 ) -> Result<Response, String> {
-    let mut seen: HashSet<String> = request
-        .items
-        .iter()
-        .filter_map(|item| {
-            if let Item::Call(call) = item {
-                Some(call.id.clone())
-            } else {
-                None
-            }
-        })
-        .collect();
-    loop {
-        cancel.check()?;
-        owner.check().await?;
-        if progress.calls >= limits.max_calls || progress.known_tokens > limits.max_known_tokens {
-            return Err("execution usage bound reached".into());
-        }
-        bounded(&request, limits.max_context_bytes)?;
-        progress.calls = progress
-            .calls
-            .checked_add(1)
-            .ok_or("call counter overflow")?;
-        let sequence = progress.calls;
-        owner
-            .record(Record::Dispatch {
-                sequence,
-                request: request.clone(),
-            })
-            .await?;
-        cancel.check()?;
-        owner.check().await?;
-        let mut observed_usage = Usage::default();
-        let mut observed_identity = Value::Null;
-        // Drain provider observations into the existing owner while the HTTP
-        // stream is still open. Bounded backpressure fails the call rather than
-        // accumulating unbounded unjournaled provider evidence.
-        let (observations, mut pending_observations) = tokio::sync::mpsc::channel(64);
-        let mut deliver = |event: StreamEvent| {
-            match &event {
-                StreamEvent::Usage(usage) => observed_usage = usage.clone(),
-                StreamEvent::ProviderIdentity(identity) => observed_identity = identity.clone(),
-                StreamEvent::Text(_) => {}
-            }
-            let pending = match &event {
-                StreamEvent::Text(text) => Err(text.clone()),
-                _ => Ok(Record::Observation {
-                    sequence,
-                    usage: observed_usage.clone(),
-                    provenance: observed_identity.clone(),
-                }),
-            };
-            observations
-                .try_send(pending)
-                .map_err(|_| "provider observation backpressure".to_owned())?;
-            cancel.check()?;
-            emit(event)
-        };
-        let result = {
-            let exchange = provider.exchange(&request, cancel, &mut deliver);
-            tokio::pin!(exchange);
-            let mut delivery_error = None;
-            let result = loop {
-                tokio::select! {
-                    biased;
-                    Some(observation) = pending_observations.recv() => match observation {
-                        Ok(record) => owner.record(record).await?,
-                        Err(text) if delivery_error.is_none() => {
-                            if let Err(error) = owner.provisional(sequence, &text).await {
-                                delivery_error = Some(error);
-                                cancel.cancel();
-                            }
-                        },
-                        Err(_) => {},
-                    },
-                    result = &mut exchange => break result,
-                    _ = tokio::time::sleep(std::time::Duration::from_millis(100)) => {
-                        if owner.check().await.is_err() { cancel.cancel(); }
-                    }
-                }
-            };
-            while let Ok(observation) = pending_observations.try_recv() {
-                match observation {
-                    Ok(record) => owner.record(record).await?,
-                    Err(text) if delivery_error.is_none() => {
-                        if let Err(error) = owner.provisional(sequence, &text).await {
-                            delivery_error = Some(error);
-                            cancel.cancel();
-                        }
-                    }
-                    Err(_) => {}
-                }
-            }
-            // Retain successful late response usage even after presentation
-            // was fenced off. Cancellation below prevents publication.
-            match result {
-                Ok(response) => Ok(response),
-                Err(error) => Err(delivery_error.unwrap_or(error)),
-            }
-        };
-        let response = match result {
-            Ok(mut response) => {
-                response.usage.input_tokens =
-                    response.usage.input_tokens.or(observed_usage.input_tokens);
-                response.usage.output_tokens = response
-                    .usage
-                    .output_tokens
-                    .or(observed_usage.output_tokens);
-                response
-            }
-            Err(reason) => {
-                progress.known_tokens = progress
-                    .known_tokens
-                    .saturating_add(observed_usage.input_tokens.unwrap_or(0))
-                    .saturating_add(observed_usage.output_tokens.unwrap_or(0));
-                if observed_usage.input_tokens.is_none() || observed_usage.output_tokens.is_none() {
-                    progress.unknown_usage = progress.unknown_usage.saturating_add(1);
-                }
-                owner
-                    .record(Record::Observation {
-                        sequence,
-                        usage: observed_usage,
-                        provenance: observed_identity,
-                    })
-                    .await?;
-                owner
-                    .record(Record::Failure {
-                        sequence,
-                        reason: reason.clone(),
-                    })
-                    .await?;
-                return Err(reason);
-            }
-        };
-        owner
-            .record(Record::Exchange {
-                sequence,
-                response: response.clone(),
-            })
-            .await?;
-        progress.known_tokens = progress
-            .known_tokens
-            .saturating_add(response.usage.input_tokens.unwrap_or(0))
-            .saturating_add(response.usage.output_tokens.unwrap_or(0));
-        if response.usage.input_tokens.is_none() || response.usage.output_tokens.is_none() {
-            progress.unknown_usage = progress.unknown_usage.saturating_add(1);
-        }
-        cancel.check()?;
-        owner.check().await?;
-        bounded(&response, limits.max_context_bytes)?;
-        if progress.known_tokens > limits.max_known_tokens
-            || response.calls.len() > limits.max_tools_per_response
-        {
-            return Err("execution usage bound reached".into());
-        }
-        // Validate the whole batch before any effect, not halfway through it.
-        for call in &response.calls {
-            if call.id.trim().is_empty()
-                || call.name.trim().is_empty()
-                || !seen.insert(call.id.clone())
-            {
-                return Err("invalid or repeated tool invocation identity".into());
-            }
-        }
-        if response.calls.is_empty() || owner.terminal(&response) {
-            owner.complete(&response).await?;
-            return Ok(response);
-        }
-        request = resume_tools(owner, request, &response, cancel).await?;
-    }
+    crate::engine::run_compatibility(provider, owner, request, progress, limits, cancel, emit).await
 }
 
 /// Reconciles the tool batch of an already retained exchange without making
@@ -468,45 +325,16 @@ pub async fn run<P: Provider, O: Owner>(
 /// identity. This function does not decide whether a product may resume.
 pub async fn resume_tools<O: Owner>(
     owner: &mut O,
-    mut request: Request,
+    request: Request,
     response: &Response,
     cancel: &Cancellation,
 ) -> Result<Request, String> {
-    if response.calls.is_empty() || owner.terminal(response) {
-        return Err("terminal exchange must use product completion recovery".into());
-    }
-    let mut ids = HashSet::new();
-    for call in &response.calls {
-        if call.id.trim().is_empty() || call.name.trim().is_empty() || !ids.insert(&call.id) {
-            return Err("invalid or repeated tool invocation identity".into());
-        }
-    }
-    if !response.text.is_empty() {
-        request.items.push(Item::Message {
-            role: "assistant".into(),
-            text: response.text.clone(),
-        });
-    }
-    request
-        .items
-        .extend(response.calls.iter().cloned().map(Item::Call));
-    for call in &response.calls {
-        cancel.check()?;
-        owner.check().await?;
-        let value = owner.dispatch(call, cancel).await?;
-        request.items.push(Item::Result {
-            call_id: call.id.clone(),
-            value,
-        });
-    }
-    Ok(request)
+    crate::engine::resume_tools(owner, request, response, cancel).await
 }
 
-fn bounded(value: &impl Serialize, max: usize) -> Result<(), String> {
-    let bytes = serde_json::to_vec(value).map_err(|e| e.to_string())?;
-    if bytes.len() > max {
-        Err("execution context byte bound reached".into())
-    } else {
-        Ok(())
-    }
+/// The request after a declined terminal exchange: the exchange itself, then
+/// the product's result for each terminal call. Exposed so recovery can rebuild
+/// the same context from retained records.
+pub fn continued(request: Request, response: &Response, value: &Value) -> Request {
+    crate::engine::continued(request, response, value)
 }

@@ -1,0 +1,5324 @@
+{
+  "unit": "unit-2076",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002076",
+      "given": "Jason",
+      "family": "Kane",
+      "birth_date": "1979-07-03",
+      "address_line": "112 Loudville Road",
+      "phone": "+1-518-555-0198",
+      "email": "jason.kane@example.test",
+      "marital_status": "single",
+      "summary": "Warehouse supervisor with type 2 diabetes who joins in 2020 and over six years develops CIDP (IVIG at neurology), an anal fistula (fistulotomy), nephrotic syndrome with a left renal vein thrombosis, tinea corporis, a recurrent L4-L5 radiculopathy and a left leg cellulitis. In May 2026 he is burned over 36% of his body in a house fire and is grafted at a burn center; last seen 2026-07-31.",
+      "events": [
+        {
+          "id": "2020-08-24a",
+          "kind": "telephone",
+          "start": "2020-08-24T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2020-08-24T10:20",
+              "author": "front desk",
+              "body": "Caller is a 41 y/o man moving his care here; his old office is going to a hospital system and he wants a doctor he can text. Has type 2 diabetes, on two meds. Membership info emailed. New patient visit set for Mon 9/14 at 8:40, fasting. Records release form sent for his prior primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-14a",
+          "kind": "establish_care",
+          "start": "2020-09-14T08:40",
+          "end": "2020-09-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care, diabetes",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2016-03-01",
+              "note": "Diagnosed about 2016 at prior practice; on metformin"
+            },
+            {
+              "label": "Dermatophytosis, unspecified",
+              "action": "history",
+              "onset": "2012-01-01",
+              "note": "Recurrent athlete's foot over the years, OTC creams",
+              "icd10": "B35.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "atorvastatin 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Diabetes, cardiovascular risk"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              76
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 94.1,
+            "height_cm": 180.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-09-14T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-14T09:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 54
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-14T09:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 125
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 166
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-09-14T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T09:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-14T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Warehouse supervisor"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-14T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-09-14T09:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-09-14T09:35"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2020-09-14T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-14T09:40",
+              "author": "PCP",
+              "body": "41 y/o man establishing care. Prior PCP office is consolidating; he wanted a smaller practice.\n\nDM2: diagnosed around 2016. Metformin 1000 BID, takes it most days, admits the evening dose gets skipped when he works late. No hypoglycemia. Last A1c he remembers was 'around 7.' No known eye or kidney problems; last eye exam over a year ago.\n\nOther hx: right-sided sciatica 2017 from a lumbar disc, MRI at the time showed a herniation per pt, did PT for 2 months and it went away. No back or leg symptoms now. Gets athlete's foot every so often, treats with drugstore creams. Perianal abscess drained at an urgent care in 2019, healed, no recurrence.\n\nMeds: metformin 1000 mg BID, atorvastatin 20 mg daily.\nAllergies: NKDA.\nFHx: father DM2, had kidney disease from it. Mother HTN. Sister has autoimmune thyroid disease.\nSocial: supervises a warehouse floor, on his feet most of the shift. Quit cigarettes in 2019. Beer socially, 1-2 a week. Lives in Easthampton.\n\nExam: well appearing. Vitals as charted. Lungs clear. RRR, no murmur. Abd soft, nontender. Back: no tenderness, SLR negative bilaterally. Feet: skin intact, mild scaling between 4th-5th toes bilaterally, monofilament intact, DP pulses 2+.\n\nA/P\n1. DM2 - A1c, CMP, lipids, CBC, urine microalbumin today. Continue metformin. Eye exam referral to optometry.\n2. Lipids - continue atorvastatin 20.\n3. Hx lumbar disc herniation - quiescent.\n4. Recurrent tinea pedis - currently minimal, OTC terbinafine cream if it flares.\n5. HCM - Hep C screen today. Flu and Tdap given today. Requesting old records.\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 94.0,
+            "height_cm": 180.0,
+            "labs": {
+              "Glucose": 140,
+              "Hemoglobin": 14.2,
+              "Hemoglobin A1c": 7.1,
+              "Low Density Lipoprotein": 92,
+              "Microalbumin/Creatinine Ratio": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2020-09-16a",
+          "kind": "portal_message",
+          "start": "2020-09-16T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2020-09-16T16:05",
+              "author": "PCP",
+              "body": "Hi Jason, your A1c came back at 7.1, which is right about where we want it. Cholesterol (LDL 92) is fine on the atorvastatin, kidney and liver tests normal, no protein in the urine, blood counts normal, hepatitis C screen negative. Keep doing what you're doing and try to catch that evening metformin. See you in March."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "outside_records",
+          "start": "2020-10-06T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2020-10-06T11:00",
+              "author": "front desk",
+              "body": "Records received by fax from patient's previous primary care office, 38 pages, covering 2014 to 2020. Includes problem list (type 2 diabetes since 2016, lumbar disc herniation 2017), medication list matching current, A1c values 6.8 to 7.4 since 2017, normal colorectal screening not yet due, normal annual labs, PT discharge summary from 2017 noting resolved right leg symptoms, urgent care note from 2019 for perianal abscess drainage. Indexed and routed to PCP. PCP reviewed: nothing new, consistent with history given."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "pharmacy",
+          "start": "2020-12-08T09:15",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request: metformin, atorvastatin",
+              "date": "2020-12-08T09:15",
+              "author": "MA",
+              "body": "Pharmacy requested 90-day supplies of metformin 1000 mg BID and atorvastatin 20 mg daily for mail order. Last visit 9/14, A1c 7.1. Sent per protocol, 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "office_visit",
+          "start": "2021-03-16T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              72
+            ],
+            "hr": 56,
+            "spo2": 96,
+            "weight_kg": 93.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-16T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-16T08:15",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 143
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-03-16T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2021-03-16T08:20",
+              "author": "PCP",
+              "body": "S: Here before his shift. Feels fine. Using a pill box now, says he misses maybe one dose a week. Walking the warehouse floor counts as exercise, he says. Eye appointment still not made - gave him the optometry number again.\nMeds: metformin 1000 BID, atorvastatin 20.\nO: vitals as charted. Feet: no lesions, sensation intact. Toe webs clear today.\nA/P: DM2, stable. A1c and BMP today. Keep current regimen. COVID vaccine - eligible soon through his employer group, encouraged. Physical in September."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-03-17a",
+          "kind": "portal_message",
+          "start": "2021-03-17T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2021-03-17T12:40",
+              "author": "PCP",
+              "body": "A1c 7.0 - slightly better than September. Kidney function and potassium normal. Nice work with the pill box."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-09a",
+          "kind": "pharmacy",
+          "start": "2021-04-09T17:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization: COVID-19 dose 1",
+              "date": "2021-04-12T09:00",
+              "author": "MA",
+              "body": "State registry shows Pfizer COVID-19 dose 1 given 4/9/21 at a community pharmacy clinic. Added to record."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-30a",
+          "kind": "pharmacy",
+          "start": "2021-04-30T17:10",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization: COVID-19 dose 2",
+              "date": "2021-05-03T09:10",
+              "author": "MA",
+              "body": "Registry update: Pfizer dose 2 on 4/30/21. Primary series complete."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "annual_physical",
+          "start": "2021-09-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              84
+            ],
+            "hr": 65,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 93.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-09-20T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-20T08:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 136
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-20T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 86
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 158
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-20T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-20T08:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-09-20T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-20T08:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-09-20T08:45"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-09-20T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-09-20T09:00",
+              "author": "PCP",
+              "body": "42 y/o M, annual.\nInterval: no illnesses. Two COVID shots in April. Still hasn't seen optometry; says he'll go this month.\nROS: negative except occasional low back stiffness after long shifts, no leg symptoms.\nMeds: metformin 1000 BID, atorvastatin 20. NKDA.\nSocial: unchanged; no tobacco since 2019.\nPHQ-2: 0.\n\nExam: Vitals as charted. HEENT normal. Neck supple, no thyroid enlargement. Lungs clear. Heart regular, no murmurs. Abdomen soft. Skin: no rashes. Extremities without swelling. Neuro: strength 5/5 throughout, reflexes 2+ and symmetric. Diabetic foot exam: intact skin, monofilament normal, pulses present.\n\nA/P:\n- DM2: A1c, CMP, lipids, CBC, urine microalbumin.\n- Vaccines: flu and PCV20 given (diabetes indication). Booster when eligible.\n- Colon screening at 45.\nRTC 6 mo."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "portal_message",
+          "start": "2021-09-22T15:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2021-09-22T15:30",
+              "author": "PCP",
+              "body": "Labs look good overall. A1c 7.3, a touch higher than spring but still fine. Urine protein check normal, cholesterol fine, kidneys and liver normal."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "outside_records",
+          "start": "2021-10-19T10:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam report",
+              "date": "2021-10-19T10:00",
+              "author": "optometry",
+              "body": "Outside optometry practice, date of exam 10/12/2021. Dilated fundus exam both eyes: no diabetic retinopathy, no macular edema. Visual acuity 20/20 OD, 20/25 OS with correction. Recommend annual dilated exam."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-23a",
+          "kind": "pharmacy",
+          "start": "2021-11-23T18:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-23T18:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "Outside immunization: COVID-19 booster",
+              "date": "2021-11-29T08:50",
+              "author": "MA",
+              "body": "Registry shows Pfizer booster given 11/23/21 at a retail pharmacy. Recorded."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-22a",
+          "kind": "office_visit",
+          "start": "2022-02-22T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Weakness in arms and legs",
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 68,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 93.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-02-22T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-02-22T16:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 134
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-02-22T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-22T16:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-22T16:00",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 533
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-02-22T16:00",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 131
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-22T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "progressive symmetric weakness with reduced reflexes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: weakness",
+              "date": "2022-02-22T16:10",
+              "author": "PCP",
+              "body": "CC: weak arms and legs.\n\nHPI: Since sometime in November (he isn't sure of the week) he's noticed his legs giving out on the stairs at work and he has trouble getting boxes up onto the top racks. Gradual, worse over 3 months. Some pins-and-needles in fingers and soles, comes and goes. No back pain, no bowel or bladder change, no double vision or trouble swallowing, no recent illness or diarrhea before it started. No new meds.\n\nExam: vitals as charted. Alert, speech normal, cranial nerves intact. Strength 4/5 hip flexors and shoulder abductors both sides, 4+/5 grip and ankle dorsiflexion both sides. Reflexes 1+ biceps, trace patellar, absent ankles - symmetric. Sensation to pinprick a bit reduced in fingertips and toes. Gait slow but steady, can't rise from a squat without using his hands.\n\nA/P: Symmetric proximal and distal weakness with hyporeflexia over ~3 months in a diabetic - this is more than diabetic neuropathy. Checking CBC, CMP, TSH, B12, CK, A1c. Neurology referral, asked for an early slot. Told him to go to the ED for any trouble breathing, swallowing or rapid worsening. Light duty note for work."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Creatine Kinase": 138,
+              "Hemoglobin A1c": 7.4,
+              "Thyroid Stimulating Hormone": 1.7,
+              "Vitamin B12": 512
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-02-24a",
+          "kind": "portal_message",
+          "start": "2022-02-24T07:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurology appointment?",
+              "date": "2022-02-24T07:45",
+              "author": "patient",
+              "body": "Hey doc, haven't heard from neurology yet. Is there anything I should do in the meantime? Stairs are the same, not worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neurology appointment?",
+              "date": "2022-02-24T12:10",
+              "author": "PCP",
+              "body": "Hi Jason - the referral went out Tuesday and our referral coordinator is calling them today to push for something sooner. Your labs came back normal: thyroid, B12, muscle enzyme (CK), kidney and liver tests and blood counts. A1c 7.4. Normal labs are useful, they rule out several common causes. Same precautions as we talked about - any trouble breathing or swallowing, go straight to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "specialist_visit",
+          "start": "2022-05-16T13:00",
+          "service": "Neurology",
+          "reason": "Progressive symmetric weakness",
+          "conditions": [
+            {
+              "label": "Chronic inflammatory demyelinating polyneuritis",
+              "action": "diagnosed",
+              "onset": "2021-11-01",
+              "icd10": "G61.81"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "gabapentin 300 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth three times daily",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Paresthesias, CIDP"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2022-05-05T09:00",
+              "text": "Motor and sensory nerve conduction studies of the upper and lower limbs bilaterally with needle EMG of selected muscles. Motor conduction velocities are slowed in the median, ulnar, peroneal and tibial nerves bilaterally, with prolonged distal motor latencies. Sensory responses are reduced in amplitude in the hands and feet. Needle EMG: no spontaneous activity; reduced recruitment in distal muscles.",
+              "conclusion": "Diffuse, symmetric demyelinating sensorimotor polyneuropathy."
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral",
+              "action": "done",
+              "date": "2022-05-16T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2022-05-16T15:30",
+              "author": "neurology",
+              "body": "Outside neurology group. Date of visit 05/16/2022. Referred by primary care.\n\nReason for consult: weakness of all four limbs.\n\nMr. Kane is a 42-year-old warehouse supervisor with type 2 diabetes on metformin who describes roughly half a year of steadily increasing weakness in both arms and both legs. Stairs have become hard and he cannot lift stock above shoulder height. Intermittent tingling of the hands and feet.\n\nPMH: type 2 diabetes; prior lumbar disc herniation 2017; remote perianal abscess drainage. Medications: metformin 1000 mg twice daily, atorvastatin 20 mg daily. Allergies: none known. Family history: father type 2 diabetes with kidney disease, mother hypertension, sister autoimmune thyroid disease. Former smoker, quit 2019; occasional alcohol.\n\nExamination: weakness in both proximal and distal muscle groups of all four limbs, symmetric. Reflexes diminished throughout. Mild loss of sensation in a glove-and-stocking pattern. Cranial nerves normal.\n\nStudies: Nerve conduction studies 05/05/2022 with slowed conduction velocities and prolonged distal latencies (report enclosed). Lumbar puncture 05/09/2022: CSF protein elevated, cell count normal.\n\nImpression: chronic inflammatory demyelinating polyneuropathy.\n\nPlan:\n1. IVIG induction, 2 g/kg divided over 5 days, then maintenance 1 g/kg every 3 weeks; we are obtaining insurance authorization and will schedule at our infusion center.\n2. Gabapentin 300 mg three times daily for the paresthesias.\n3. Physical therapy for strengthening.\n4. Follow-up in 3 to 4 months.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "telephone",
+          "start": "2022-05-19T11:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Neurology letter review",
+              "date": "2022-05-19T11:30",
+              "author": "RN",
+              "body": "Called pt after PCP reviewed neurology letter. He has started gabapentin 300 TID, a little drowsy on day one, better now. Neurology's office is working on authorization for IVIG; he has not heard a start date. Med list updated. Follow-up with PCP booked mid June."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up, CIDP",
+          "medications": [
+            {
+              "drug_text": "100 ML immunoglobulin G, human 100 MG/ML Injection",
+              "action": "historical",
+              "sig": "1 g/kg IV every 3 weeks at neurology infusion center (interval per neurology)",
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "CIDP"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              82
+            ],
+            "hr": 63,
+            "spo2": 97,
+            "weight_kg": 93.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-06-14T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: CIDP",
+              "date": "2022-06-14T08:45",
+              "author": "PCP",
+              "body": "S: Neurology letter reviewed with him - CIDP. Five days of IVIG loading finished 6/6 through 6/10 at the neurology infusion suite, mild headache day 2, nothing else. Next dose late June, then every 3 weeks. Too early to tell if stronger. Gabapentin helping the tingling at night. Started PT twice a week.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, IVIG per neurology.\nO: vitals as charted. Proximal strength 4/5 legs, unchanged. Feet intact.\nA/P:\n- CIDP: on IVIG per neurology. Med list updated.\n- DM2: A1c 7.4 in Feb; recheck at physical.\n- Work: extended light duty note through August."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-07-05a",
+          "kind": "office_visit",
+          "start": "2022-07-05T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Perianal pain and drainage",
+          "vitals": {
+            "bp": [
+              114,
+              71
+            ],
+            "hr": 60,
+            "temp_c": 36.8,
+            "weight_kg": 94.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-07-05T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral",
+              "action": "placed",
+              "order": "General Surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "suspected anal fistula"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: perianal pain",
+              "date": "2022-07-05T16:30",
+              "author": "PCP",
+              "body": "S: Embarrassed to bring it up. For about six months, on and off, pain near the anus that's worse when he has a BM, and a smelly discharge that stains his underwear. Near where the abscess was drained in 2019. No fever, no rectal bleeding, no diarrhea or weight loss.\nO: afebrile. Perianal skin: small opening just beside the anal verge with mild redness and tenderness around it, a bit of discharge on the gauze. No fluctuance.\nA/P: Probable anal fistula after the old abscess. Referral to general surgery. Sitz baths, keep area clean and dry. Call if fever or a painful swelling develops."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-07-21a",
+          "kind": "specialist_visit",
+          "start": "2022-07-21T10:30",
+          "service": "General Surgery",
+          "reason": "Perianal pain and discharge",
+          "conditions": [
+            {
+              "label": "Anal fistula, unspecified",
+              "action": "diagnosed",
+              "onset": "2022-01-10",
+              "icd10": "K60.30"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-07-21T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 9.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 286
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.33
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-21T08:00",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 160
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-21T08:00",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 2.8
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gensurg-referral",
+              "action": "done",
+              "date": "2022-07-21T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General surgery consultation",
+              "date": "2022-07-21T12:00",
+              "author": "general surgery",
+              "body": "Outside general surgery group. Date of service 07/21/2022. Referred by primary care for perianal symptoms.\n\nHistory: 42-year-old man with type 2 diabetes and CIDP diagnosed this spring, now on IVIG. Six months of intermittent pain around the anus, worse with bowel movements, and persistent malodorous drainage. Perianal abscess drained in 2019.\n\nMedications: metformin 1000 mg BID, atorvastatin 20 mg daily, gabapentin 300 mg TID, IVIG every 3 weeks. Allergies: none known.\n\nExam: Perianal erythema and tenderness. A small external opening is present adjacent to the anal verge. Digital rectal exam is painful and there is induration in the perianal tissue; no mass felt in the rectum, prostate unremarkable.\n\nLabs this morning: WBC 9.0, hemoglobin 13.5, fasting glucose 160, CRP 2.8 mg/L.\n\nAssessment: anorectal fistula, likely from the prior abscess.\n\nPlan: exam under anesthesia with fistulotomy as a day surgery case; scheduled 08/11. Pre-op instructions given. Hold metformin the morning of surgery."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-11a",
+          "kind": "procedure_visit",
+          "start": "2022-08-11T07:30",
+          "end": "2022-08-11T13:00",
+          "service": "General Surgery",
+          "reason": "Exam under anesthesia, fistulotomy",
+          "procedures": [
+            {
+              "procedure": "Incision of anal fistula",
+              "snomed": "79567008",
+              "performed": "2022-08-11T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report: EUA and fistulotomy",
+              "date": "2022-08-11T10:15",
+              "author": "general surgery",
+              "body": "Outside ambulatory surgery center. Date of surgery 08/11/2022.\nPreoperative and postoperative diagnosis: anorectal fistula.\nProcedure: examination under anesthesia, fistulotomy.\nAnesthesia: general with local infiltration. Position: prone jackknife.\nFindings: external opening beside the anal verge; a single tract probed to an internal opening at the dentate line, involving only a small portion of the sphincter. No other openings, no abscess cavity. Anoscopy otherwise normal.\nProcedure: tract opened over the probe, granulation tissue curetted, edges marsupialized. Hemostasis with cautery. Dressing applied.\nEBL minimal. No complications. Discharged home the same day with sitz baths, stool softener and acetaminophen. Follow-up in 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "specialist_visit",
+          "start": "2022-09-08T14:00",
+          "service": "General Surgery",
+          "reason": "Post-op check",
+          "conditions": [
+            {
+              "label": "Anal fistula, unspecified",
+              "action": "resolved",
+              "icd10": "K60.30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General surgery follow-up",
+              "date": "2022-09-08T14:30",
+              "author": "general surgery",
+              "body": "Outside general surgery group, 09/08/2022. Four weeks after fistulotomy. No pain, drainage stopped about 10 days after surgery, continent. Wound fully epithelialized, no residual opening, no induration. Fistula healed. Discharged from our care; return if symptoms recur."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "specialist_visit",
+          "start": "2022-09-12T11:00",
+          "service": "Neurology",
+          "reason": "CIDP follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2022-09-12T12:00",
+              "author": "neurology",
+              "body": "Outside neurology group, 09/12/2022. CIDP on maintenance IVIG 1 g/kg every 3 weeks since June induction. He reports he can take stairs at work again and is lifting to shoulder height; overhead still hard by the end of a shift. Tingling improved on gabapentin. Exam: strength improved to 4+/5 proximally and 5-/5 distally; reflexes remain diminished; sensory exam stable. Plan: continue IVIG every 3 weeks and gabapentin; continue home exercise program; return in 6 to 9 months."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "annual_physical",
+          "start": "2022-09-27T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              81
+            ],
+            "hr": 67,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 93.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-09-27T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-27T08:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 143
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-27T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 124
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-27T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-27T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-27T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-27T09:10",
+              "author": "PCP",
+              "body": "43 y/o M. Busy year: CIDP diagnosed in May, on IVIG q3wk, clearly stronger - walked in without the railing today. Fistulotomy in August, healed per surgery. Back at full duty since Labor Day.\nROS: tingling feet at night improved. No chest pain, dyspnea, swelling. Bowel habits normal.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, IVIG q3wk (neurology). NKDA.\nPHQ-9: 3 - says the spring was stressful, fine now.\nExam: vitals as charted. Lungs clear, heart regular. Abdomen benign. Legs without edema. Strength 4+/5 hip flexors, reflexes reduced (known). Feet: monofilament diminished at toes (CIDP), skin intact, pulses good.\nA/P: DM2 - labs today. CIDP - per neurology. Flu and bivalent COVID today. Eye exam due next month. Colon screening discussion at 45."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-09-29a",
+          "kind": "portal_message",
+          "start": "2022-09-29T13:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2022-09-29T13:20",
+              "author": "PCP",
+              "body": "Your A1c is 7.2. Cholesterol, kidney, liver and blood counts all look fine. No changes needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "outside_records",
+          "start": "2022-10-11T09:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam report",
+              "date": "2022-10-11T09:30",
+              "author": "optometry",
+              "body": "Optometry exam 10/06/2022. Dilated exam OU: no diabetic retinopathy. Mild refractive change, new glasses prescribed. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "office_visit",
+          "start": "2022-10-27T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg swelling",
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 62,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 98.9
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-10-27T14:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.013
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-10-27T14:10",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 4.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 139
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-10-27T13:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "nephro-referral",
+              "action": "placed",
+              "order": "Nephrology referral",
+              "category": "referral",
+              "to": "Nephrology",
+              "reason": "edema with heavy proteinuria and low albumin"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: leg swelling",
+              "date": "2022-10-27T14:30",
+              "author": "PCP",
+              "body": "S: Over the last few weeks both legs have been swelling, socks leave deep marks, boots tight by noon. Scale says he's up about 11 lb and he hasn't been eating more. Some dull discomfort in the left flank, no burning with urination, no blood he's noticed, urine maybe foamy. No chest pain or shortness of breath, sleeps flat. Last IVIG 10/18.\nO: weight 99 kg (94 at the physical a month ago). BP and HR as charted. Lungs clear. Heart regular. Abdomen soft, nontender, no CVA tenderness on the right, mild discomfort to deep palpation in the left flank. 2+ pitting edema to mid-shin both sides.\nUA dip in office: protein 3+.\nA/P: New edema with heavy proteinuria in a diabetic - concern for nephrotic syndrome. CMP sent. Urgent nephrology referral. Leg elevation, low salt. Will call with labs."
+            }
+          ],
+          "state": {
+            "weight_kg": 99.0,
+            "labs": {
+              "Albumin": 2.5,
+              "Calcium": 8.5,
+              "Creatinine": 0.9,
+              "Total Protein": 5.0
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-10-28a",
+          "kind": "telephone",
+          "start": "2022-10-28T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results call",
+              "date": "2022-10-28T09:05",
+              "author": "PCP",
+              "body": "Called pt. Albumin 2.5 (low), creatinine 0.9 (kidney filtration fine). With the urine protein this looks like nephrotic syndrome. Our coordinator got him a nephrology new-patient slot 11/14; asked them to put him on the cancellation list. Reviewed: ED for shortness of breath, chest pain, or sudden leg pain/swelling on one side. He understands."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-14a",
+          "kind": "specialist_visit",
+          "start": "2022-11-14T09:00",
+          "service": "Nephrology",
+          "reason": "Edema and proteinuria",
+          "conditions": [
+            {
+              "label": "Nephrotic syndrome",
+              "action": "diagnosed",
+              "onset": "2022-10-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Proteinuria"
+            },
+            {
+              "drug": "furosemide 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Edema, nephrotic syndrome"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-11-14T08:30",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.014
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-14T08:30",
+              "results": [
+                {
+                  "test": "Protein/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-11-14T08:30",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 4.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 149
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 79
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "nephro-referral",
+              "action": "done",
+              "date": "2022-11-14T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology consultation",
+              "date": "2022-11-14T11:00",
+              "author": "nephrology",
+              "body": "Outside nephrology practice. Date of visit 11/14/2022. Referred by primary care.\n\nHPI: 43-year-old man with type 2 diabetes, CIDP on IVIG and a recent fistulotomy, sent for swelling of both legs that has been building over several weeks with unintended weight gain. Also describes discomfort in the left flank.\n\nMedications: metformin 1000 mg BID, atorvastatin 20 mg daily, gabapentin 300 mg TID, IVIG every 3 weeks. He takes no anticoagulant or antiplatelet agent. Allergies: none known.\n\nFamily history: father with diabetic kidney disease. Former smoker (quit 2019).\n\nExam: vital signs stable. Pitting edema of both lower extremities. Abdomen soft and nontender. On standing there is palpable fullness above the left testis.\n\nData: urinalysis with marked proteinuria. Urine protein/creatinine ratio 6.8 g/g. Serum albumin 2.4. Creatinine 0.9, filtration preserved.\n\nAssessment: nephrotic syndrome with preserved kidney function. The left flank discomfort and left-sided scrotal fullness raise concern for left renal vein involvement.\n\nPlan:\n1. Lisinopril 10 mg daily for proteinuria.\n2. Furosemide 40 mg daily for edema; 2 g sodium diet.\n3. CT abdomen and pelvis with contrast, venous phase, this week.\n4. BMP in 2 to 3 weeks through primary care.\n5. Return in 3 months, sooner pending imaging."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 2.4,
+              "Calcium": 8.4,
+              "Creatinine": 0.9,
+              "Total Protein": 4.9
+            }
+          }
+        },
+        {
+          "id": "2022-11-18a",
+          "kind": "imaging",
+          "start": "2022-11-18T15:00",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2022-11-18T15:00",
+              "text": "Indication: nephrotic syndrome, left flank pain. Technique: CT of the abdomen and pelvis with IV contrast including a delayed venous phase. Findings: Filling defect expanding the left renal vein from the renal hilum toward the inferior vena cava, consistent with thrombus. IVC patent. Kidneys normal in size with symmetric enhancement; no hydronephrosis, no renal mass. Liver, spleen, pancreas and adrenals unremarkable. No lymphadenopathy. Small amount of subcutaneous edema. Bowel and bladder unremarkable. No free fluid.",
+              "conclusion": "Left renal vein thrombosis."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "specialist_visit",
+          "start": "2022-11-21T10:00",
+          "service": "Nephrology",
+          "reason": "Imaging result, renal vein thrombosis",
+          "conditions": [
+            {
+              "label": "Embolism and thrombosis of renal vein",
+              "action": "diagnosed",
+              "onset": "2022-11-18",
+              "icd10": "I82.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth twice daily for 7 days, then 1 tablet twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Left renal vein thrombosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology addendum",
+              "date": "2022-11-21T10:30",
+              "author": "nephrology",
+              "body": "Outside nephrology practice, addendum 11/21/2022. CT 11/18 shows left renal vein thrombosis, IVC clear. Spoke with the patient by phone today. Starting apixaban 10 mg twice daily for 7 days, then 5 mg twice daily, planned for about 12 months while nephrotic and pending repeat imaging. Bleeding precautions reviewed. Prescription sent. Copy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "telephone",
+          "start": "2022-11-22T12:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication reconciliation",
+              "date": "2022-11-22T12:15",
+              "author": "PCP",
+              "body": "Called pt after nephrology letters came in. Taking lisinopril 10, furosemide 40 (peeing a lot, legs a little better), started apixaban last night - knows the 2-pills-twice-a-day week then 1 twice a day. No NSAIDs; acetaminophen for aches. Told him to let neurology's infusion team know he is on a blood thinner. BMP at nurse visit 12/6. List updated."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "nurse_visit",
+          "start": "2022-12-06T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Lab check after new medications",
+          "vitals": {
+            "bp": [
+              115,
+              69
+            ],
+            "hr": 65,
+            "weight_kg": 95.4
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-06T07:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 138
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-06T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Nurse visit: BMP and weight",
+              "date": "2022-12-06T08:00",
+              "author": "RN",
+              "body": "Here for labs ordered after nephrology started lisinopril and furosemide. Weight 96 kg, down 3 kg from 10/27. Swelling better, ankles still puffy by evening. No dizziness on standing. Apixaban without bleeding. BP as charted. BMP drawn. Routed to PCP."
+            }
+          ],
+          "state": {
+            "weight_kg": 96.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "portal_message",
+          "start": "2022-12-07T10:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BMP result",
+              "date": "2022-12-07T10:50",
+              "author": "PCP",
+              "body": "Potassium and kidney function are normal on the new medicines. I sent a copy to nephrology. Keep the salt down and keep going."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "pharmacy",
+          "start": "2023-01-10T14:20",
+          "documents": [
+            {
+              "type": "Prior Authorization",
+              "title": "Apixaban prior authorization",
+              "date": "2023-01-10T14:20",
+              "author": "MA",
+              "body": "Pharmacy says his plan wants a PA for apixaban past the first fill. Nephrology prescribed it; called their office, they had already submitted. Approved through 1/2024 per insurer portal. Pt notified by text, picking up tomorrow."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-20a",
+          "kind": "specialist_visit",
+          "start": "2023-02-20T09:30",
+          "service": "Nephrology",
+          "reason": "Nephrotic syndrome follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-02-20T09:00",
+              "results": [
+                {
+                  "test": "Protein/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-02-20T09:00",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 141
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2023-02-20T11:00",
+              "author": "nephrology",
+              "body": "Outside nephrology practice, 02/20/2023. Nephrotic syndrome with left renal vein thrombosis, on lisinopril 10 mg, furosemide 40 mg and apixaban 5 mg BID. Edema much improved, trace at the ankles. Weight 95 kg. Left flank discomfort gone. No bleeding.\nLabs: urine protein/creatinine 3.9 g/g (from 6.8), albumin 2.9, creatinine and potassium normal.\nPlan: no changes. Continue apixaban; repeat renal vein imaging in the fall. Return in 6 to 9 months with labs."
+            }
+          ],
+          "state": {
+            "weight_kg": 95.0,
+            "labs": {
+              "Albumin": 2.9,
+              "Calcium": 8.7,
+              "Total Protein": 5.4
+            }
+          }
+        },
+        {
+          "id": "2023-04-18a",
+          "kind": "portal_message",
+          "start": "2023-04-18T21:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rash",
+              "date": "2023-04-18T21:40",
+              "author": "patient",
+              "body": "I've got a rash on my stomach and side that keeps getting bigger, red ring and kind of clear in the middle. Itches like crazy. Also in my groin and between my toes again. Tried the athlete's foot cream on the big one, didn't do much. Can someone look at it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rash",
+              "date": "2023-04-18T22:05",
+              "author": "front desk",
+              "body": "Hi Jason, booked you Thursday 4/20 at 7:20 am. Come fasting if you can, the doctor may add your diabetes labs."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "office_visit",
+          "start": "2023-04-20T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Spreading itchy rash",
+          "vitals": {
+            "bp": [
+              115,
+              85
+            ],
+            "hr": 69,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 95.1
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-20T07:50",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 210
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-20T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-20T07:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 283
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-20T07:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-04-20T07:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "extensive annular rash trunk, groin, feet"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: rash",
+              "date": "2023-04-20T08:05",
+              "author": "PCP",
+              "body": "S: About 6 weeks of an itchy rash that started as a small red spot on the left flank and has spread out in rings, now palm-sized patches across the trunk. Similar smaller patches in both groin folds and between toes. OTC terbinafine cream hasn't touched it. No new soaps, no travel, nobody at home with a rash. Diabetes: admits he's been sloppy with metformin and eating on the run since the fall.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, apixaban 5 BID, IVIG q3wk.\nO: Multiple annular red scaly plaques with raised edges and clearer centers over trunk, largest ~8 cm. Similar in inguinal folds. Toe webs scaly. Toenails thick and yellowed.\nA/P:\n1. Widespread annular rash, looks dermatophyte. Given the extent, his immune therapy and the recurrences, sending to dermatology rather than guessing. Fasting labs today: glucose, A1c, CBC; also one-time HIV screen, he agrees.\n2. DM2 - will review A1c when back.\nRTC after derm."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Glucose": 205,
+              "Hemoglobin A1c": 9.2
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "portal_message",
+          "start": "2023-04-24T17:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-04-24T17:10",
+              "author": "PCP",
+              "body": "Jason - blood counts normal, HIV screen negative. Your fasting sugar was 210 and A1c 9.2, up a lot from 7.2 in September. That fits with what you told me about missed doses and meals on the go. Let's give the pill box and the evening dose another real try before we talk about adding anything - I'd like to see you in about 3 months. Dermatology has you on 5/11."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-11a",
+          "kind": "specialist_visit",
+          "start": "2023-05-11T14:15",
+          "service": "Dermatology",
+          "reason": "Annular rash trunk, groin, feet",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "action": "diagnosed",
+              "onset": "2023-03-01",
+              "icd10": "B35.4"
+            },
+            {
+              "label": "Tinea cruris",
+              "action": "diagnosed",
+              "onset": "2023-03-01",
+              "icd10": "B35.6"
+            },
+            {
+              "label": "Tinea pedis",
+              "action": "diagnosed",
+              "onset": "2023-03-01",
+              "icd10": "B35.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "terbinafine 250 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily for 14 days",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Tinea corporis, cruris, pedis"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-11T14:30",
+              "results": [
+                {
+                  "test": "Fungus [Presence] in Skin by KOH preparation",
+                  "loinc": "55303-2",
+                  "text": "Positive: septate fungal hyphae seen"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral",
+              "action": "done",
+              "date": "2023-05-11T14:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2023-05-11T15:00",
+              "author": "dermatology",
+              "body": "Outside dermatology office. Date of visit 05/11/2023. Referred by primary care.\n\nHistory: 43-year-old man with diabetes, nephrotic syndrome under nephrology care, CIDP on IVIG, and recurrent dermatophyte infections. Itchy scaling rash on the trunk for several weeks; it began as one small red patch and has grown outward with clearing in the center. Smaller similar lesions in the groin and between the toes. No travel, no sick contacts.\n\nMedications: metformin, atorvastatin, gabapentin, lisinopril, furosemide, apixaban, IVIG. Allergies: none known.\n\nExam: sharply bordered erythematous annular plaques with elevated scaly edges and central clearing over the trunk. Similar lesions in both inguinal folds and in the interdigital spaces of the feet. Toenails are thickened and discolored.\n\nKOH preparation from a trunk border today: fungal hyphae present.\n\nRecent labs from primary care: fasting glucose 210, A1c 9.2, CBC normal, HIV negative.\n\nAssessment: tinea corporis, with tinea cruris and tinea pedis.\n\nPlan: oral terbinafine 250 mg daily for 2 weeks given the extent. Keep feet and groin dry, change socks midday, wash gym and work clothes hot. Better glucose control will help prevent recurrences. Return as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "specialist_visit",
+          "start": "2023-06-12T10:40",
+          "service": "Neurology",
+          "reason": "CIDP follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2023-06-12T11:30",
+              "author": "neurology",
+              "body": "Outside neurology group, 06/12/2023. CIDP, one year on IVIG. Working full duty, managing stairs and overhead lifting. Paresthesias mild. Exam: strength 5-/5 proximally, 5/5 distally; reflexes diminished but present; sensation stable. Given sustained response we will lengthen IVIG to 1 g/kg every 4 weeks and reassess. Continue gabapentin 300 mg TID. Follow-up in about a year, sooner for any decline between infusions."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "conditions": [
+            {
+              "label": "Tinea corporis",
+              "action": "resolved",
+              "icd10": "B35.4"
+            },
+            {
+              "label": "Tinea cruris",
+              "action": "resolved",
+              "icd10": "B35.6"
+            },
+            {
+              "label": "Tinea pedis",
+              "action": "resolved",
+              "icd10": "B35.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              107,
+              85
+            ],
+            "hr": 56,
+            "spo2": 97,
+            "weight_kg": 95.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-22T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-08-22T16:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 205
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-08-22T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2023-08-22T17:00",
+              "author": "PCP",
+              "body": "S: Rash gone after the 2 weeks of terbinafine from derm; groin and toes clear too. Says diabetes 'about the same' - honest that the evening dose is still hit or miss with overtime this summer. No polyuria. IVIG now every 4 weeks.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, apixaban 5 BID, IVIG q4wk.\nO: Vitals as charted. Skin: trunk clear, faint post-inflammatory color only. Toe webs dry. Trace ankle edema.\nA/P:\n1. Tinea corporis/cruris/pedis - resolved.\n2. DM2 - A1c and BMP today. Again reviewed timing of doses; he'll set a phone alarm.\n3. Nephrotic syndrome, RVT - per nephrology.\nPhysical in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "annual_physical",
+          "start": "2023-10-03T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              111,
+              86
+            ],
+            "hr": 65,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 94.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-03T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-03T08:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 201
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 2.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 74
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-03T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 128
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-03T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 263
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-10-03T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-03T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-10-03T09:15",
+              "author": "PCP",
+              "body": "44 y/o M, annual.\nInterval: tinea cleared in the summer. Nephrology plans a repeat scan of the kidney vein next month. Strength holding on IVIG q4wk.\nROS: no chest pain, no dyspnea, no bleeding on apixaban, ankles a little puffy by evening. No bowel complaints.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, apixaban 5 BID, IVIG q4wk. NKDA.\nSocial: same job, no tobacco since 2019, rare beer.\nPHQ-9: 2.\nExam: vitals as charted. Eyes, ears, throat normal. Neck: no thyroid enlargement. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. Perianal not examined. Trace ankle edema. Reflexes diminished (known). Feet: skin intact, toe webs clear, nails thick, pulses intact.\nA/P: labs today (A1c, CMP, lipids, CBC). Flu and updated COVID given. Eye exam this month. Colon screening at 45 next year - FIT vs colonoscopy discussed, he prefers FIT."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-10-05a",
+          "kind": "portal_message",
+          "start": "2023-10-05T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2023-10-05T12:30",
+              "author": "PCP",
+              "body": "Labs back. A1c is still running around 9. Kidney filtration normal, albumin still on the low side (nephrology is following that), cholesterol and blood counts fine. Keep at the evening dose - we'll check again in a few months."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "outside_records",
+          "start": "2023-10-17T10:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam report",
+              "date": "2023-10-17T10:15",
+              "author": "optometry",
+              "body": "Optometry, exam 10/12/2023. Dilated fundus exam: no diabetic retinopathy either eye. No macular edema. Continue yearly."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "specialist_visit",
+          "start": "2023-11-13T09:00",
+          "service": "Nephrology",
+          "reason": "Nephrotic syndrome and renal vein thrombosis follow-up",
+          "conditions": [
+            {
+              "label": "Embolism and thrombosis of renal vein",
+              "action": "resolved",
+              "icd10": "I82.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Renal vein patent on repeat duplex; course complete"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-13T08:30",
+              "results": [
+                {
+                  "test": "Protein/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 2.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-13T08:30",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 213
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "US doppler renal vessels, left",
+              "loinc": "103905-6",
+              "performed": "2023-11-13T07:45",
+              "text": "Duplex ultrasound of the left renal vein and artery. The left renal vein is patent from hilum to IVC with normal phasic flow and no intraluminal thrombus. Left renal artery flow normal. Left kidney normal in size and echotexture, no hydronephrosis.",
+              "conclusion": "Patent left renal vein; no residual thrombus."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2023-11-13T10:30",
+              "author": "nephrology",
+              "body": "Outside nephrology practice, 11/13/2023. One year after left renal vein thrombosis. Duplex this morning shows the left renal vein patent with normal flow and no remaining thrombus. Urine protein/creatinine down to 2.2 g/g; albumin 3.3; creatinine normal. Edema minimal. Plan: stop apixaban today - treatment course complete and proteinuria much lower. Continue lisinopril 10 mg and furosemide 40 mg. Labs and visit in about a year, sooner for new flank pain or swelling."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.3,
+              "Calcium": 8.9,
+              "Total Protein": 5.9
+            }
+          }
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-01-23b",
+          "kind": "telephone",
+          "start": "2024-01-23T17:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2024-01-23T17:20",
+              "author": "front desk",
+              "body": "Pt missed 4:40 diabetes visit. Reached him on cell - got held over at work for inventory, forgot to call. Rebooked Tue 2/6 at 7:30."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "office_visit",
+          "start": "2024-02-06T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 56,
+            "spo2": 97,
+            "weight_kg": 92.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-06T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-06T07:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 204
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-06T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2024-02-06T08:05",
+              "author": "PCP",
+              "body": "S: Sorry about the missed visit. Off apixaban since November per nephrology. Says the phone alarm works 'most nights'. No symptoms of high sugars. Strength fine.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, IVIG q4wk.\nO: vitals as charted, weight 93.5. Trace edema. Feet intact.\nA/P: DM2 - A1c and BMP today. Continue metformin. Nephrotic syndrome - stable per nephrology. RTC 3-4 mo."
+            }
+          ],
+          "state": {
+            "weight_kg": 93.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-08a",
+          "kind": "portal_message",
+          "start": "2024-02-08T11:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-02-08T11:45",
+              "author": "PCP",
+              "body": "A1c still around 9. Kidney labs and potassium normal. Same plan for now; see you in the spring."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-25a",
+          "kind": "office_visit",
+          "start": "2024-04-25T12:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low back pain into right leg",
+          "vitals": {
+            "bp": [
+              116,
+              86
+            ],
+            "hr": 65,
+            "weight_kg": 93.6
+          },
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 7
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-25T12:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "lumbar-mri",
+              "action": "placed",
+              "order": "MRI lumbar spine without contrast",
+              "category": "imaging"
+            },
+            {
+              "id": "ortho-referral",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "right L-spine radiculopathy with foot weakness"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: back and right leg pain",
+              "date": "2024-04-25T12:40",
+              "author": "PCP",
+              "body": "S: Three weeks ago lifting a pallet jack handle, felt his low back grab. Now pain shoots down the back and outside of the right leg, with tingling on the outer thigh and calf. Last week noticed his right foot slapping and catching on the dock plate. Different from the CIDP - one leg, and it hurts. No bowel or bladder change, no saddle numbness, no fever. Like 2017 but worse.\nO: Lumbar paraspinals tender on the right. SLR positive on the right. Right ankle dorsiflexion and big toe extension weak, about 4-/5; left normal. Reduced pinprick over right lateral calf and top of foot. Reflexes diminished throughout (baseline), right ankle less than left.\nA/P: Right-sided lumbar radiculopathy with motor weakness, likely recurrent disc herniation. MRI L-spine ordered given the weakness. Ortho referral. Continue gabapentin; acetaminophen for pain, avoid NSAIDs with his kidneys. Off ladders and heavy lifting at work. ED for any bowel/bladder change or numbness in the saddle area."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-29a",
+          "kind": "telephone",
+          "start": "2024-04-29T10:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "MRI authorization",
+              "date": "2024-04-29T10:10",
+              "author": "front desk",
+              "body": "Insurance approved lumbar MRI. Scheduled at the imaging center Mon 5/6 at 6:30 pm. Pt aware, no metal implants, no claustrophobia."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-06a",
+          "kind": "imaging",
+          "start": "2024-05-06T18:30",
+          "reports": [
+            {
+              "study": "MRI lumbar spine without contrast",
+              "performed": "2024-05-06T18:30",
+              "text": "Indication: right leg radiculopathy with foot weakness. Technique: multiplanar multisequence MRI of the lumbar spine without contrast. Findings: Normal lumbar alignment. Vertebral body heights preserved; marrow signal normal. Conus terminates normally. L1-L2 through L3-L4: no significant disc bulge, canal or foraminal narrowing. L4-L5: disc herniation extending to the right, compressing the right nerve root in the lateral recess. L5-S1: no significant narrowing. Paraspinal soft tissues unremarkable.",
+              "conclusion": "L4-L5 disc herniation with right nerve root compression."
+            }
+          ],
+          "orders": [
+            {
+              "id": "lumbar-mri",
+              "action": "done",
+              "date": "2024-05-06T18:30"
+            }
+          ]
+        },
+        {
+          "id": "2024-05-20a",
+          "kind": "specialist_visit",
+          "start": "2024-05-20T13:30",
+          "service": "Orthopedic Surgery",
+          "reason": "Right leg radiculopathy",
+          "conditions": [
+            {
+              "label": "Intervertebral disc disorders with radiculopathy, lumbar region",
+              "action": "diagnosed",
+              "onset": "2024-04-04",
+              "icd10": "M51.16"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-referral",
+              "action": "done",
+              "date": "2024-05-20T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic spine consultation",
+              "date": "2024-05-20T14:30",
+              "author": "orthopedics",
+              "body": "Outside orthopedic group, spine clinic. Date of visit 05/20/2024. Referred by primary care.\n\nHistory: 44-year-old man with a known lumbar disc herniation (2017) and CIDP, evaluated for low back pain radiating down the right leg with tingling along the lateral thigh and calf and trouble clearing the right foot when walking. Diabetes on metformin.\n\nMedications: metformin, atorvastatin, gabapentin 300 mg TID, lisinopril, furosemide, IVIG every 4 weeks. Allergies: none known.\n\nExam: decreased sensation over the lateral thigh, calf and dorsum of the foot on the right. Weakness of great toe extension and of ankle dorsiflexion, inversion and eversion on the right. Positive straight leg raise on the right at 30 degrees. Right ankle reflex diminished.\n\nImaging: MRI lumbar spine 05/06/2024 - L4-L5 herniated disc compressing the nerve root.\n\nAssessment: right lumbar radiculopathy from the L4-L5 disc herniation.\n\nPlan: formal physical therapy, 2 to 3 sessions a week for 8 weeks. Continue gabapentin. Activity modification at work. We discussed that surgery may be considered if strength does not recover; he prefers to try therapy first. Follow-up in 3 months, sooner for worsening weakness."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-19a",
+          "kind": "specialist_visit",
+          "start": "2024-08-19T10:00",
+          "service": "Orthopedic Surgery",
+          "reason": "Radiculopathy follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic spine follow-up",
+              "date": "2024-08-19T10:40",
+              "author": "orthopedics",
+              "body": "Outside orthopedic spine clinic, 08/19/2024. Completed 8 weeks of physical therapy. Right leg pain much better, occasional ache after a long shift. Foot no longer catching. Exam: right ankle dorsiflexion and great toe extension 4+/5. Sensation still reduced on the dorsum of the right foot. Straight leg raise negative today. Plan: continue home exercise program; no surgery indicated now. Follow up as needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-26a",
+          "kind": "specialist_visit",
+          "start": "2024-08-26T11:15",
+          "service": "Neurology",
+          "reason": "CIDP follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2024-08-26T12:00",
+              "author": "neurology",
+              "body": "Outside neurology group, 08/26/2024. CIDP, stable on IVIG every 4 weeks. Recent right L5-pattern radiculopathy from a disc herniation, improving with therapy per orthopedics; distinct from his CIDP. Proximal strength full; distal strength symmetric except the right foot findings noted by orthopedics. Reflexes diminished. Plan: lengthen IVIG interval to every 6 weeks as the next step toward a taper. Continue gabapentin. Return in a year or with any decline."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              110,
+              78
+            ],
+            "hr": 65,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 93.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 215
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 5.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 93
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-24T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-09-24T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T09:15",
+              "author": "PCP",
+              "body": "45 y/o M, annual.\nInterval: right leg radiculopathy this spring, PT, foot strength nearly back per ortho. IVIG stretched to every 6 weeks by neurology. Off apixaban.\nROS: occasional right calf ache, no weakness now. No chest pain, dyspnea. Mild ankle swelling evenings. Bowels normal, no blood.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, IVIG q6wk. NKDA.\nPHQ-9: 1.\nExam: vitals as charted. Lungs clear, heart regular. Abdomen soft. Trace ankle edema. Right dorsiflexion near full. Feet: mild scaling between left toes, otherwise intact; pulses intact.\nA/P:\n- DM2: labs today.\n- Colorectal screening: FIT kit given.\n- Flu and updated COVID today.\n- Feet: told him to use the antifungal cream on the left toe webs and keep them dry.\nRTC 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "lab_only",
+          "start": "2024-10-08T09:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-05T07:00",
+              "resulted": "2024-10-08T09:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-10-08T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2024-10-08T13:00",
+              "author": "PCP",
+              "body": "FIT negative. Repeat in one year. Message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "specialist_visit",
+          "start": "2024-10-21T09:00",
+          "service": "Nephrology",
+          "reason": "Nephrotic syndrome follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-21T08:30",
+              "results": [
+                {
+                  "test": "Protein/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-21T08:30",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 200
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2024-10-21T10:15",
+              "author": "nephrology",
+              "body": "Outside nephrology practice, 10/21/2024. Nephrotic syndrome, partial remission. No flank pain. Mild evening ankle edema. Labs: urine protein/creatinine 1.8 g/g, albumin 3.4, creatinine and potassium normal. Plan: continue lisinopril 10 mg and furosemide 40 mg, low-sodium diet. Return in one year."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.4,
+              "Calcium": 9.0,
+              "Total Protein": 6.1
+            }
+          }
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "outside_records",
+          "start": "2024-10-29T09:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam report",
+              "date": "2024-10-29T09:40",
+              "author": "optometry",
+              "body": "Optometry, exam 10/24/2024. Dilated retinal exam: no diabetic retinopathy OU. Return in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-15a",
+          "kind": "ed_visit",
+          "start": "2024-11-15T19:10",
+          "end": "2024-11-16T00:40",
+          "service": "Emergency Medicine",
+          "reason": "Painful red swollen left lower leg",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "diagnosed",
+              "onset": "2024-11-12"
+            },
+            {
+              "label": "Tinea pedis",
+              "action": "diagnosed",
+              "onset": "2024-08-01",
+              "icd10": "B35.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cefazolin 2000 MG Injection",
+              "action": "historical",
+              "sig": "2 g IV once in the emergency department",
+              "dose": {
+                "value": 2000,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "Cellulitis"
+            },
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Cellulitis, left lower leg"
+            },
+            {
+              "drug_text": "terbinafine hydrochloride 10 MG/ML Topical Cream",
+              "action": "historical",
+              "sig": "Apply to the toe webs of both feet twice daily for 4 weeks",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "short",
+              "reason": "Tinea pedis"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-11-15T19:15",
+              "bp": [
+                134,
+                82
+              ],
+              "hr": 96,
+              "rr": 18,
+              "temp_c": 38.1,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-11-15T19:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 80
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 15
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 3
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 11.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-15T19:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-15T19:40",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "unit": "mg/L",
+                  "value": 18
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-11-15T19:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 205
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-11-15T19:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2024-11-16T00:40",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, visit date 11/15/2024.\n\nCC: left leg pain, redness and swelling.\n\nHPI: 45-year-old man with type 2 diabetes, nephrotic syndrome and recurrent dermatophyte infections seen previously by dermatology. Three days of a painful, red, swollen left lower leg that feels warm, with low-grade fevers at home. No injury. He has had a rash on his foot for several months that he has not been treating.\n\nPMH: type 2 diabetes, poorly controlled; CIDP; nephrotic syndrome; lumbar disc herniation with radiculopathy; anorectal fistula; recurrent tinea. PSH: perianal abscess drainage, fistulotomy.\nMeds: metformin 1000 mg BID, gabapentin 300 mg TID, lisinopril 10 mg daily, furosemide 40 mg daily, atorvastatin 20 mg daily. Allergies: NKDA.\nSocial: warehouse supervisor; former smoker, quit 2019; occasional alcohol.\n\nTriage vitals: T 38.1, HR 96, BP 134/82, RR 18, SpO2 98% RA.\n\nExam: left lower leg red, swollen and tender from ankle to below the knee, warm; no crepitus, no fluctuance; dorsalis pedis and posterior tibial pulses intact. Left foot interdigital spaces scaly and macerated. Right leg normal.\n\nLabs: WBC 14.0 with 80% neutrophils; A1c 9.2; CRP 18 mg/L; BMP unremarkable.\n\nMDM: nonpurulent cellulitis of the left lower leg, entry likely through tinea pedis. No signs of necrotizing infection; hemodynamically stable. Cefazolin 2 g IV given. Tolerated oral intake.\n\nDiagnoses: cellulitis of left lower leg; tinea pedis.\n\nDisposition: discharged home on cephalexin 500 mg four times daily for 7 days and terbinafine 1% cream twice daily to the toe webs for 4 weeks. Elevate the leg. Leg margin marked. Follow up with primary care in 2 to 3 days; return for spreading redness, high fever or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-18a",
+          "kind": "telephone",
+          "start": "2024-11-18T08:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "ED follow-up call",
+              "date": "2024-11-18T08:35",
+              "author": "RN",
+              "body": "ED notification received over the weekend. Called pt: on day 3 of cephalexin, redness staying inside the pen line, fever gone since Saturday. Using the cream. Booked with PCP tomorrow 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after ED, left leg cellulitis",
+          "vitals": {
+            "bp": [
+              124,
+              73
+            ],
+            "hr": 72,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 93.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-19T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED Visit: left leg cellulitis",
+              "date": "2024-11-19T16:35",
+              "author": "PCP",
+              "body": "S: ED Friday for left leg cellulitis; cefazolin there, now day 4 of cephalexin QID, terbinafine cream BID. Pain much less, no fever since Saturday. Admits he ignored the foot rash I mentioned in September.\nO: afebrile, vitals as charted. Left shin: redness has pulled back about 3 cm inside the ED marking, mild warmth, minimal tenderness. Left toe webs still macerated, less so. Pulses intact.\nA/P:\n1. Cellulitis L leg - improving. Finish cephalexin course. Elevate.\n2. Tinea pedis - cream for the full 4 weeks, dry between toes, change socks midday.\n3. DM2 - ED A1c 9.2. We're coming up on 18 months at this level. Talked frankly about infection risk with high sugars. He wants another try at taking every dose and cutting the drive-through; I'd like an A1c in 3 months.\nRTC Feb, sooner if leg worsens."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "portal_message",
+          "start": "2024-12-02T19:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg update",
+              "date": "2024-12-02T19:25",
+              "author": "patient",
+              "body": "Finished the antibiotic last week. Leg looks normal again, just a little dry skin. Still using the foot cream. Do I need to come in before February?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leg update",
+              "date": "2024-12-02T21:00",
+              "author": "PCP",
+              "body": "Glad to hear it. No need to come in sooner - finish the 4 weeks of cream and keep the feet dry. See you in February."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "office_visit",
+          "start": "2025-02-18T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "resolved"
+            },
+            {
+              "label": "Tinea pedis",
+              "action": "resolved",
+              "icd10": "B35.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              76
+            ],
+            "hr": 63,
+            "spo2": 97,
+            "weight_kg": 91.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-18T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-02-18T08:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 163
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-02-18T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2025-02-18T08:15",
+              "author": "PCP",
+              "body": "S: The leg infection scared him. Since December he's been taking both metformin doses, packing lunch instead of the drive-through, down 2 kg. No new rash. Leg normal.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, IVIG q6wk.\nO: Vitals as charted, weight 92. Left leg: normal skin, no swelling beyond his usual trace ankle edema. Toe webs dry and clear.\nA/P:\n1. Cellulitis, tinea pedis - resolved.\n2. DM2 - A1c and BMP today. If A1c hasn't moved, we'll talk about a second agent.\nRTC 3 mo."
+            }
+          ],
+          "state": {
+            "weight_kg": 92.0,
+            "labs": {
+              "Glucose": 165,
+              "Hemoglobin A1c": 8.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "portal_message",
+          "start": "2025-02-20T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "date": "2025-02-20T12:05",
+              "author": "PCP",
+              "body": "A1c 8.1 - down from 9.2 in November. That's the effort showing. Kidney labs normal. Keep it up and we'll recheck in May."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              108,
+              83
+            ],
+            "hr": 78,
+            "weight_kg": 91.9
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-20T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-20T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2025-05-20T16:55",
+              "author": "PCP",
+              "body": "S: Still packing lunches. Walking a loop around the neighborhood after work. No complaints.\nO: vitals as charted. Feet intact.\nPOC A1c 7.6 today.\nA/P: DM2 improving on metformin alone with diet and steadier dosing - continue. Physical in September with full labs."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T08:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request: metformin",
+              "date": "2025-06-10T08:30",
+              "author": "MA",
+              "body": "Electronic request from mail-order pharmacy for metformin 1000 mg BID, 90 days. Seen 5/20, A1c 7.6. Approved per protocol with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "specialist_visit",
+          "start": "2025-09-08T10:30",
+          "service": "Neurology",
+          "reason": "CIDP follow-up",
+          "medications": [
+            {
+              "drug_text": "100 ML immunoglobulin G, human 100 MG/ML Injection",
+              "action": "stop",
+              "reason": "Tapered off; CIDP stable"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology follow-up",
+              "date": "2025-09-08T11:15",
+              "author": "neurology",
+              "body": "Outside neurology group, 09/08/2025. CIDP. IVIG was spaced to every 6 weeks last August and tapered over the spring; final infusion in July. He has noticed no weakness between or since. Exam: full proximal strength, distal strength symmetric, right foot dorsiflexion 5-/5; reflexes diminished; mild distal sensory loss unchanged. Assessment: CIDP in remission off IVIG. Plan: IVIG stopped. Continue gabapentin 300 mg TID. Call promptly for any new weakness, trouble with stairs or lifting; otherwise return in one year."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "annual_physical",
+          "start": "2025-09-30T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              77
+            ],
+            "hr": 65,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 92.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-30T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-30T08:30",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.4
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-09-30T08:30",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 161
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-30T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-09-30T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-30T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-30T08:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-09-30T08:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-09-30T09:20",
+              "author": "PCP",
+              "body": "46 y/o M, annual.\nInterval: neurology stopped IVIG this month, CIDP quiet. No infections since last November. A1c trending down.\nROS: negative; evening ankle swelling only.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40. IVIG stopped. NKDA.\nSocial: same job, no tobacco since 2019, rare alcohol.\nPHQ-9: 1.\nExam: vitals as charted. HEENT normal. Lungs clear. Heart regular. Abdomen soft. Trace ankle edema. Skin without rash. Feet intact, toe webs dry, pulses intact. Strength full.\nA/P: Labs today. Flu and updated COVID given. FIT kit given. RTC 4-5 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Glucose": 145,
+              "Hemoglobin A1c": 7.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "portal_message",
+          "start": "2025-10-02T14:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical results",
+              "date": "2025-10-02T14:40",
+              "author": "PCP",
+              "body": "A1c 7.4 - back close to where you were when you joined. Cholesterol, kidney, liver and blood counts fine. Don't forget the FIT kit."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "lab_only",
+          "start": "2025-10-14T09:10",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-11T06:30",
+              "resulted": "2025-10-14T09:10",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-10-14T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2025-10-14T12:20",
+              "author": "PCP",
+              "body": "FIT negative again. Next one fall 2026. Pt notified via portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "specialist_visit",
+          "start": "2025-10-20T09:00",
+          "service": "Nephrology",
+          "reason": "Nephrotic syndrome follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-20T08:30",
+              "results": [
+                {
+                  "test": "Protein/Creatinine [Mass Ratio] in Urine",
+                  "loinc": "2890-2",
+                  "unit": "g/g",
+                  "value": 1.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-10-20T08:30",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 3.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 134
+                },
+                {
+                  "test": "Calcium",
+                  "value": 8.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 63
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Nephrology follow-up",
+              "date": "2025-10-20T10:00",
+              "author": "nephrology",
+              "body": "Outside nephrology practice, 10/20/2025. Nephrotic syndrome, partial remission. Feels well. Mild ankle edema at day's end. Urine protein/creatinine 1.6 g/g; albumin 3.5; creatinine 1.0, potassium normal. Plan: no change - lisinopril 10 mg, furosemide 40 mg, sodium restriction. Annual visit."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Albumin": 3.5,
+              "Calcium": 9.1,
+              "Creatinine": 1.0,
+              "Total Protein": 6.2
+            }
+          }
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "outside_records",
+          "start": "2025-10-28T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye exam report",
+              "date": "2025-10-28T10:30",
+              "author": "optometry",
+              "body": "Optometry exam 10/21/2025: dilated exam shows no diabetic retinopathy in either eye. Annual follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "office_visit",
+          "start": "2026-02-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              69
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 91.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-02-10T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-10T07:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 134
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-02-10T07:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes Follow-up",
+              "date": "2026-02-10T08:00",
+              "author": "PCP",
+              "body": "S: Doing well through the winter. No missed doses he can think of. Off IVIG 5 months, no weakness.\nO: vitals as charted, weight 92. Trace ankle edema. Feet intact.\nA/P: DM2 - A1c and BMP today; continue metformin. CIDP, nephrotic syndrome stable per specialists. RTC in 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 92.0,
+            "labs": {
+              "Glucose": 135,
+              "Hemoglobin A1c": 7.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T11:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-02-12T11:15",
+              "author": "PCP",
+              "body": "A1c 7.1. Best number in three years. Kidney labs normal. See you in the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-23a",
+          "kind": "hospital_admission",
+          "start": "2026-05-23T03:20",
+          "end": "2026-06-26T13:00",
+          "service": "Burn Surgery",
+          "reason": "Thermal burns from house fire",
+          "conditions": [
+            {
+              "label": "Burns involving 30-39% of body surface with 20-29% third degree burns",
+              "action": "diagnosed",
+              "onset": "2026-05-23",
+              "icd10": "T31.32"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Burn pain"
+            },
+            {
+              "drug": "hydroxyzine hydrochloride 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 8 hours as needed for itching",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-burn itching"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-23T03:25",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-23T03:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-23T03:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 145
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.1
+                },
+                {
+                  "test": "Glucose",
+                  "value": 200
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Tangential excision of burnt skin",
+              "snomed": "302431005",
+              "performed": "2026-05-27T08:30"
+            },
+            {
+              "procedure": "Split thickness graft of skin to skin",
+              "snomed": "265675003",
+              "performed": "2026-05-27T09:30"
+            },
+            {
+              "procedure": "Tangential excision of burnt skin",
+              "snomed": "302431005",
+              "performed": "2026-06-03T08:30"
+            },
+            {
+              "procedure": "Split thickness graft of skin to skin",
+              "snomed": "265675003",
+              "performed": "2026-06-03T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-05-23T04:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Burn center emergency and ICU admission note",
+              "date": "2026-05-23T05:30",
+              "author": "emergency medicine",
+              "body": "Regional burn center, emergency department and burn ICU. Date of service 05/23/2026.\n\nCC: burns from a house fire.\n\nHPI: 46-year-old man with CIDP and nephrotic syndrome brought by ambulance after a fire at home overnight. Second- and third-degree burns over the whole chest, abdomen and both arms. Awake and talking. Denies being trapped in smoke; no hoarseness or cough.\n\nPMH: type 2 diabetes, well controlled on metformin; CIDP; nephrotic syndrome; lumbar disc herniation with radiculopathy; anorectal fistula; recurrent tinea. PSH: perianal abscess drainage.\nHome meds: metformin 1000 mg BID, gabapentin 300 mg TID, lisinopril 10 mg daily, furosemide 40 mg daily, atorvastatin 20 mg daily. Allergies: NKDA.\nFamily history: father type 2 diabetes with diabetic nephropathy; mother hypertension; sister autoimmune thyroid disease.\nSocial: warehouse supervisor; former smoker; social alcohol.\n\nVitals on arrival: BP 110/70, HR 120, RR 22, T 37.8 C.\n\nExam: airway patent, no soot in the mouth or nares, no singed nasal hair, voice normal; lungs clear. Burned areas over chest, abdomen and both upper extremities. Chest and both arms dry, leathery, white and charred, without blisters, and he reports little pain there; abdomen with partial-thickness injury. Estimated 36% total body surface area. Face, neck, hands' palms, genitals and legs spared. Distal pulses present in both arms.\n\nLabs: WBC 16.0, hemoglobin 14.5, sodium 145, potassium 4.2, creatinine 1.1, glucose 200.\n\nAssessment: thermal burns, 36% TBSA, full thickness to chest and both upper extremities, partial thickness abdomen. No inhalation injury.\n\nPlan: burn ICU. Formula-guided crystalloid resuscitation titrated to urine output. Tdap given. Insulin infusion for glucose control; hold metformin, lisinopril and furosemide. Wound care with antimicrobial dressings. Early excision and grafting planned. Nutrition consult."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative report: excision and grafting, stage 1",
+              "date": "2026-05-27T12:00",
+              "author": "burn surgery",
+              "body": "Regional burn center. Date of surgery 05/27/2026.\nDiagnosis: full-thickness burns, chest and both upper extremities.\nProcedure: tangential excision of full-thickness burn of the anterior chest and right upper extremity to viable bed; split-thickness autograft from the right thigh, meshed, secured with staples and negative-pressure dressing.\nAnesthesia: general. Blood loss replaced per protocol. No complications. To burn ICU."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative report: excision and grafting, stage 2",
+              "date": "2026-06-03T12:00",
+              "author": "burn surgery",
+              "body": "Regional burn center. Date of surgery 06/03/2026.\nProcedure: tangential excision of full-thickness burn of the left upper extremity and remaining chest; split-thickness autograft harvested from the left thigh, meshed and applied. Prior grafts inspected: excellent take on chest and right arm.\nNo complications."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Burn center discharge summary",
+              "date": "2026-06-26T13:00",
+              "author": "burn surgery",
+              "body": "Regional burn center. Admitted 05/23/2026, discharged 06/26/2026.\n\nDiagnoses: thermal burns 36% TBSA from a house fire - full thickness chest and both upper extremities, partial thickness abdomen. No inhalation injury. Type 2 diabetes. CIDP. Nephrotic syndrome.\n\nCourse: Burn ICU for resuscitation, transferred to the burn unit floor after the first week. Formula-guided fluid resuscitation. Insulin infusion then subcutaneous insulin while inpatient; metformin resumed on 06/22 with good glucose control. Lisinopril and furosemide held during resuscitation and resumed once fluid shifts settled. Staged tangential excision and split-thickness autografting: chest and right arm 05/27, left arm and remaining chest 06/03, donor sites both thighs. Graft take good. Abdomen healed with dressings. High-protein nutrition. Occupational and physical therapy daily; fitted for pressure garments.\n\nDischarge condition: walking independently, grafts adherent, small open areas on the left forearm and chest healing, donor sites healed.\n\nDischarge medications: metformin 1000 mg BID, gabapentin 300 mg TID, lisinopril 10 mg daily, furosemide 40 mg daily, atorvastatin 20 mg daily; acetaminophen 1000 mg every 8 hours as needed; hydroxyzine 25 mg every 8 hours as needed for itching.\n\nFollow-up: burn clinic in 2 weeks; outpatient occupational therapy; pressure garments 23 hours a day; moisturize grafts; sun protection. Primary care within 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "telephone",
+          "start": "2026-05-26T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's sister",
+              "date": "2026-05-26T09:15",
+              "author": "RN",
+              "body": "Pt's sister called: there was a fire at his house early Saturday, he has serious burns and is in the ICU at the regional burn center. He asked her to let us know. HIPAA release on file lists her. Told her we'll watch for records and to call when discharge is planned. PCP informed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "telephone",
+          "start": "2026-06-29T10:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-06-29T10:30",
+              "author": "RN",
+              "body": "Transitional care call, discharged from burn center Fri 6/26. Discharge summary received. Home; his sister staying with him this week. Pain controlled with acetaminophen, itching at night helped by hydroxyzine. Taking metformin, gabapentin, lisinopril, furosemide, atorvastatin. Wearing garments. Burn clinic 7/10. OT starting this week. Sugars at home 120s-150s. Video visit with PCP 7/8."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "telehealth_visit",
+          "start": "2026-07-08T12:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Transitional care after burn center discharge",
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2026-07-08T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth: transitional care visit",
+              "date": "2026-07-08T12:55",
+              "author": "PCP",
+              "body": "Video, pt at home, sister present.\nReviewed burn center discharge summary: 36% TBSA burns from the house fire, excision and grafting 5/27 and 6/3 to chest and both arms, abdomen healed. No inhalation injury.\nS: Tired, sleeping a lot. Pain 3/10, acetaminophen twice a day. Itching worst at night, hydroxyzine helps. Eating well. Home glucose 110s-150s on metformin. Ankles a bit swollen, no more than usual. No fever.\nO (video): grafts on forearms look pink and flat; he shows a small dressing on the left forearm. Moving arms well.\nMed rec: metformin 1000 BID, gabapentin 300 TID, lisinopril 10, furosemide 40, atorvastatin 20, acetaminophen PRN, hydroxyzine PRN. Updated.\nA/P: Burns, recovering. Burn clinic 7/10, OT 2x/week. Out of work - FMLA paperwork completed. Office visit end of July with labs."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "specialist_visit",
+          "start": "2026-07-10T09:30",
+          "service": "Burn Surgery",
+          "reason": "Burn clinic follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Burn clinic follow-up",
+              "date": "2026-07-10T10:15",
+              "author": "burn surgery",
+              "body": "Regional burn center outpatient clinic, 07/10/2026. Two weeks post discharge. Grafts on chest and both arms have taken well. Small open areas on the left forearm and lower chest, granulating, clean. Donor sites healed. Abdomen healed. Range of motion at shoulders and elbows good. Plan: continue dressings to open areas, pressure garments, OT for hands and shoulders, emollient twice daily. Return in 4 to 5 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "office_visit",
+          "start": "2026-07-31T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after burn admission",
+          "vitals": {
+            "bp": [
+              114,
+              77
+            ],
+            "hr": 57,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 87.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-31T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-31T11:10",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 144
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Albumin",
+                  "value": 3.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-31T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-31T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: follow-up after burns",
+              "date": "2026-07-31T11:30",
+              "author": "PCP",
+              "body": "S: Five weeks home. Energy coming back, walking 20 minutes a day. Itching less, using hydroxyzine maybe every other night. Acetaminophen rarely. Wearing garments all day. OT twice a week, working on shoulder reach. Not back at work yet. Metformin all doses. No fevers.\nMeds: metformin 1000 BID, gabapentin 300 TID, lisinopril 10, furosemide 40, atorvastatin 20, acetaminophen PRN, hydroxyzine PRN.\nO: vitals as charted, weight 87 kg (92 in February). Chest and both arms: meshed grafts healed, pink, flat; a coin-sized area on the lower left forearm still under a light dressing, clean. Abdomen healed. Thigh donor sites healed. Lungs clear. Trace ankle edema. Strength full.\nA/P:\n1. Burns s/p grafting - healing well, per burn clinic. Continue garments, OT, emollients.\n2. Weight down 5 kg since the admission - expected after a large burn; protein-rich meals, recheck next visit.\n3. DM2 - CBC, CMP, A1c today.\n4. CIDP, nephrotic syndrome - stable, per specialists.\n5. FMLA extended through September.\nFollow up after the next burn clinic visit; he'll call to schedule."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T13:35",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-08-03T13:35",
+              "author": "PCP",
+              "body": "Your labs from Friday look good - blood counts back to normal, kidney function and potassium normal, A1c still right around 7 even through the hospital stay. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-14a",
+          "kind": "specialist_visit",
+          "start": "2026-08-14T09:00",
+          "service": "Burn Surgery",
+          "reason": "Burn clinic follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Burn clinic follow-up",
+              "date": "2026-08-14T09:45",
+              "author": "burn surgery",
+              "body": "Regional burn center outpatient clinic, 08/14/2026. All burn and graft areas now closed, including the left forearm. Scars early, soft. Shoulder and elbow range nearly full. Plan: continue pressure garments, hand therapy with OT, emollients, sunscreen. Itching medicine as needed. Return in 2 months for scar review."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-19a",
+          "kind": "pharmacy",
+          "start": "2026-08-19T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request: gabapentin",
+              "date": "2026-08-19T08:50",
+              "author": "MA",
+              "body": "Pharmacy sent a gabapentin 300 mg TID refill request here. Prescriber of record is his neurologist; forwarded request to the neurology office and let the pharmacy know. Pt has 10 days left."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Anal fistula, unspecified|K60.30": {
+        "code": "K60.30",
+        "display": "Anal fistula, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Burns involving 30-39% of body surface with 20-29% third degree burns|T31.32": {
+        "code": "T31.32",
+        "display": "Burns involving 30-39% of body surface with 20-29% third degree burns",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chronic inflammatory demyelinating polyneuritis|G61.81": {
+        "code": "G61.81",
+        "display": "Chronic inflammatory demyelinating polyneuritis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dermatophytosis, unspecified|B35.9": {
+        "code": "B35.9",
+        "display": "Dermatophytosis, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Embolism and thrombosis of renal vein|I82.3": {
+        "code": "I82.3",
+        "display": "Embolism and thrombosis of renal vein",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Intervertebral disc disorders with radiculopathy, lumbar region|M51.16": {
+        "code": "M51.16",
+        "display": "Intervertebral disc disorders with radiculopathy, lumbar region",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tinea corporis|B35.4": {
+        "code": "B35.4",
+        "display": "Tinea corporis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tinea cruris|B35.6": {
+        "code": "B35.6",
+        "display": "Tinea cruris",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Tinea pedis|B35.3": {
+        "code": "B35.3",
+        "display": "Tinea pedis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "100 ML immunoglobulin G, human 100 MG/ML Injection": {
+        "code": "1809421",
+        "display": "100 ML immunoglobulin G, human 100 MG/ML Injection",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "cefazolin 2000 MG Injection": {
+        "code": "1665060",
+        "display": "cefazolin 2000 MG Injection",
+        "ingredient": "cefazolin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "terbinafine hydrochloride 10 MG/ML Topical Cream": {
+        "code": "992528",
+        "display": "terbinafine hydrochloride 10 MG/ML Topical Cream",
+        "ingredient": "terbinafine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Fungus [Presence] in Skin by KOH preparation": {
+        "code": "55303-2",
+        "display": "Fungus [Presence] in Skin by KOH preparation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein/Creatinine [Mass Ratio] in Urine": {
+        "code": "2890-2",
+        "display": "Protein/Creatinine [Mass Ratio] in Urine",
+        "unit": "g/g",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "US doppler renal vessels, left": {
+        "code": "103905-6",
+        "display": "US.doppler Renal vessels - left",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Incision of anal fistula": {
+        "code": "79567008",
+        "display": "Incision of anal fistula",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Split thickness graft of skin to skin": {
+        "code": "265675003",
+        "display": "Split thickness graft of skin to skin",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Tangential excision of burnt skin": {
+        "code": "302431005",
+        "display": "Tangential excision of burnt skin",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

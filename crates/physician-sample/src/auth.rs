@@ -3003,6 +3003,7 @@ mod tests {
                 gmail::Endpoints {
                     send: "http://127.0.0.1:9/gmail/v1/users/me/messages/send".into(),
                     token: "http://127.0.0.1:9/token".into(),
+                    ..gmail::Endpoints::google()
                 },
                 "",
                 "",

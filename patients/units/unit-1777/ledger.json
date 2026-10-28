@@ -1,0 +1,4310 @@
+{
+  "unit": "unit-1777",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001777",
+      "given": "Lauren",
+      "family": "Cote",
+      "birth_date": "1994-02-21",
+      "address_line": "47 Silver Birch Lane",
+      "phone": "+1-413-555-0162",
+      "email": "lauren.cote@example.test",
+      "marital_status": "partnered",
+      "summary": "Preschool teacher with type 1 diabetes since age 11 (outside endocrinology) and lifelong heavy periods who joins in 2019. Celiac disease with dermatitis herpetiformis surfaces in late 2022, bringing recurrent iron deficiency anemia needing IV iron and vitamin D deficiency; a right dacryocystitis in 2025; a first pregnancy ends in a planned cesarean for breech in June 2026.",
+      "events": [
+        {
+          "id": "2019-04-23a",
+          "kind": "telephone",
+          "start": "2019-04-23T10:12",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2019-04-23T10:12",
+              "author": "front desk",
+              "body": "Caller is a 25 y/o woman looking for a primary care doctor nearer to where she lives and works now; her old office was an hour away and she has not been back since she moved. Has type 1 diabetes, sees an endocrinologist who will stay her diabetes doctor. Insurance through her school employer, verified. Booked new patient visit 5/14 at 3:40 (after her teaching day). Sent records release for prior primary care office. Asked her to bring insulin pens and the name of her endocrinology group."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-14a",
+          "kind": "establish_care",
+          "start": "2019-05-14T15:40",
+          "end": "2019-05-14T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Type 1 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2005-03-01",
+              "note": "Diagnosed at age 11; managed by outside endocrinology"
+            },
+            {
+              "label": "Heavy menstrual bleeding",
+              "action": "diagnosed",
+              "onset": "2008-01-01",
+              "note": "Heavy periods since adolescence; ibuprofen for cramps"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject 24 units under the skin at bedtime",
+              "dose": {
+                "value": 24,
+                "unit": "U"
+              },
+              "frequency": "DAILY",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes; prescribed by endocrinology"
+            },
+            {
+              "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+              "action": "historical",
+              "sig": "Inject under the skin with meals per sliding scale",
+              "frequency": "TID",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Type 1 diabetes; prescribed by endocrinology"
+            },
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for menstrual cramps",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Menstrual cramps; over the counter"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              76
+            ],
+            "hr": 65,
+            "rr": 18,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 54.9,
+            "height_cm": 162.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-05-14T16:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Rare"
+            },
+            {
+              "item": "Occupation",
+              "value": "Preschool teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-05-14T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-05-14T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-05-14T16:30",
+              "author": "PCP",
+              "body": "NEW PATIENT, 25F, preschool teacher.\n\nHere to set up primary care after a move; last PCP visit maybe two years ago, records requested.\n\nT1DM since age 11. Followed by an outside endocrine group twice a year, uses pens, glargine 24 u at bedtime and lispro with meals by a correction scale. Checks fingersticks 4-5x/day. Last A1c she remembers was around 7. No severe lows, no DKA admissions as an adult. Has never been told of eye or kidney problems; gets a yearly eye exam.\n\nGYN: periods have always been heavy, since about 14. Regular monthly, 6-7 days, first 3 days soak through a pad every couple of hours. Cramps managed with OTC ibuprofen 400 every 6 h for a day or two. Not sexually active with anyone but her partner, not planning pregnancy right now. Last Pap last year, normal per her.\n\nMeds: glargine, lispro, ibuprofen prn. NKDA.\nPMH: T1DM. PSH: none.\nFH: father T1DM. Mother autoimmune thyroid disease. Maternal aunt with celiac.\nSH: lives with partner. Never smoker. Alcohol a glass of wine a few times a year. No drugs. Works with 4-year-olds, walks most evenings.\n\nROS negative except heavy menses.\n\nExam: well appearing, vitals per flowsheet. HEENT normal. Thyroid not enlarged. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin: injection sites on abdomen without lipohypertrophy. Feet: intact sensation to monofilament, pulses 2+.\n\nA/P\n1. T1DM - stays with endocrinology, will request their notes. Urine microalbumin, lipids, CMP today. Yearly eye exam continues.\n2. Heavy menses - longstanding, no anemia symptoms. CBC today. Ibuprofen as needed. Offered GYN eval, she declines for now, says it has always been this way.\n3. Health maintenance: HIV/HCV once today. Pap due 2021 if last year's is confirmed normal. PHQ-2 negative. Flu shot in the fall.\nRTC 1 yr for physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 55.0,
+            "height_cm": 162.0,
+            "labs": {
+              "Hemoglobin A1c": 7.0,
+              "Microalbumin/Creatinine Ratio": 8,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "rr",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-05-21a",
+          "kind": "outside_records",
+          "start": "2019-05-21T09:05",
+          "reason": "Prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "date": "2019-05-21T09:05",
+              "author": "front desk",
+              "body": "34 pages received by fax from her previous family medicine office, indexed.\n\nSummary of contents: well visits 2014-2018. Cervical cytology 06/2018 negative for intraepithelial lesion or malignancy. HPV vaccine 3-dose series completed in adolescence. Tdap 2016. Diabetes managed by endocrinology, copies of two consult letters. CBC 2017 normal. No hospitalizations. Allergies: none listed."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-23a",
+          "kind": "portal_message",
+          "start": "2019-05-23T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "date": "2019-05-23T12:20",
+              "author": "PCP",
+              "body": "Hi Lauren, everything from Tuesday came back fine. Blood count is normal, so the heavy periods haven't run your iron down, kidney and liver tests are normal, cholesterol is good, thyroid is normal, and no protein in the urine. The HIV and hepatitis C screens are negative. Your old office sent your records and your Pap from last year was normal, so you're not due for another until 2021. See you next spring."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "outside_records",
+          "start": "2019-08-20T14:00",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-08-13T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2019-08-20T14:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group\nDate of visit: 08/13/2019\n\nDear Doctor,\nThank you for letting us share care of Ms. Cote, now 25, with type 1 diabetes since childhood. She is doing well on glargine 24 units at bedtime and lispro with meals using a correction scale. Meter download shows most readings in range, a few mild lows after afternoon recess duty that she treats herself. A1c today 7.1%. Feet normal. BP normal.\nMedications: insulin glargine, insulin lispro, ibuprofen as needed. Allergies: NKDA.\nPlan: no basal change; small snack before afternoon outdoor time. Return in 6 months.\nRegards,\nEndocrinology"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.1
+            }
+          }
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "nurse_visit",
+          "start": "2019-10-08T16:00",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-08T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-08T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2019-10-08T16:10",
+              "author": "RN",
+              "body": "Flu vaccine given L deltoid, lot recorded. No prior reactions. VIS given. Tolerated, waited 10 min, left without issue."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "outside_records",
+          "start": "2019-12-10T11:30",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2019-12-10T11:30",
+              "author": "optometry",
+              "body": "Optometry report, exam 12/03/2019.\nDilated fundus exam both eyes: no diabetic retinopathy, no macular edema. Visual acuity 20/20 OU with correction. Mild myopia, glasses updated.\nRecommend repeat dilated exam in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "annual_physical",
+          "start": "2020-02-11T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              73
+            ],
+            "hr": 81,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 55.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-02-11T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-02-11T16:30",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-02-11T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-02-11T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-02-11T16:25",
+              "author": "PCP",
+              "body": "Annual exam. 25F with T1DM.\n\nFeels well. Busy year at school. Endo every 6 months, last A1c 7.1. A couple of mild lows a month, always aware of them. Periods unchanged, still heavy the first few days, ibuprofen helps cramps. No fatigue, no dizziness. Diet varied, eats meat a couple of times a week.\nMeds/allergies reviewed, NKDA.\n\nExam: NAD. Weight stable. Skin clear. Thyroid normal. RRR without murmur. Lungs clear. Abdomen benign. Feet with normal sensation and pulses.\n\nA/P: Healthy visit. T1DM with endo, eye exam UTD with no retinopathy. Rechecking CBC given the heavy periods, and urine microalbumin. Pap next year. Flu done in the fall. Return 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 54.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "portal_message",
+          "start": "2020-03-24T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endocrinology appointment",
+              "date": "2020-03-24T19:40",
+              "author": "patient",
+              "body": "Hi, my endocrinology office switched my spring visit to video and I have plenty of pens, but my pharmacy said I need a new prescription for pen needles by next month. Should that come from you or from them? School is closed so I can do a call any time."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endocrinology appointment",
+              "date": "2020-03-25T08:55",
+              "author": "RN",
+              "body": "Hi Lauren, best to ask your endocrinology office since they write your insulin, so everything stays on one prescriber. If you have any trouble reaching them, let us know and we can bridge it. Stay well."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "outside_records",
+          "start": "2020-07-21T10:15",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-07-08T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Telehealth Letter",
+              "date": "2020-07-21T10:15",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, video visit 07/14/2020.\nType 1 diabetes. Home from school since March, more snacking, readings a bit higher in the evening. Lab-only A1c 07/08 7.3%. No severe hypoglycemia.\nMeds: glargine 24 units at bedtime, lispro per scale. NKDA.\nPlan: reviewed carb counting for evening meal; keep basal the same. Pen needles renewed. Return in 6 months, in person if possible."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          }
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T15:50",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-13T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-13T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2020-10-13T16:00",
+              "author": "MA",
+              "body": "Screened at door, masked. Influenza vaccine R deltoid. Pt tolerated well. Asked about her physical, told her to call in January to book."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "outside_records",
+          "start": "2020-12-08T13:20",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2020-12-08T13:20",
+              "author": "optometry",
+              "body": "Optometry, exam date 12/01/2020. Dilated exam OU: retina flat, no hemorrhages, exudates or neovascularization. No diabetic retinopathy. VA 20/20 OU corrected. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-19a",
+          "kind": "outside_records",
+          "start": "2021-01-19T10:05",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-01-12T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2021-01-19T10:05",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, visit 01/12/2021 (in person).\nType 1 diabetes, doing well back in the classroom with hybrid teaching. A1c 7.0%. Rare mild lows. Injection sites rotated, no lipohypertrophy.\nMedications: insulin glargine 24 units at bedtime, insulin lispro per correction scale, ibuprofen as needed. NKDA.\nBP 114/72. Monofilament normal both feet. Urine microalbumin normal.\nPlan: continue. Return 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-09a",
+          "kind": "portal_message",
+          "start": "2021-02-09T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine question",
+              "date": "2021-02-09T20:15",
+              "author": "patient",
+              "body": "Does type 1 diabetes put me in an earlier group for the COVID shot? I'm also back in the classroom so I'm not sure which group I fall under. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine question",
+              "date": "2021-02-10T07:50",
+              "author": "PCP",
+              "body": "Good question. Both count. Type 1 diabetes is on the state's list of conditions, and teachers have their own phase too, whichever opens first for you. The state sign-up site and the larger pharmacies are booking; we don't have supply in the office yet. Please send us the dates once you have them so we can add them to your chart."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-23a",
+          "kind": "annual_physical",
+          "start": "2021-03-23T15:40",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2021-03-22T13:10",
+              "author": "front desk",
+              "body": "Pt cancelled tomorrow's annual, has a staff meeting after school she can't miss. Said she would call back to reschedule after April vacation."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2021-04-20a",
+          "kind": "outside_records",
+          "start": "2021-04-20T11:00",
+          "reason": "Vaccine record",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-30T14:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy Immunization Record",
+              "date": "2021-04-20T11:00",
+              "author": "front desk",
+              "body": "Patient uploaded photo of her vaccination card via portal. Pfizer dose 1 on 3/30/21 and dose 2 on 4/20/21 at a retail pharmacy clinic. Entered in immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "outside_records",
+          "start": "2021-07-13T09:30",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-07-06T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2021-07-13T09:30",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, office visit 07/06/2021.\nType 1 diabetes, age 27. Summer break, more activity, two mild lows a week now that she is hiking. A1c 6.9%. Reviewed treatment of lows with fast carbohydrate.\nMeds: insulin glargine 24 units nightly, insulin lispro by correction scale, ibuprofen PRN. NKDA.\nExam: BP 112/70, weight stable, feet intact.\nPlan: reduce lispro the meal before long hikes, basal unchanged. Follow up in 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.9
+            }
+          }
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "nurse_visit",
+          "start": "2021-10-12T16:05",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-12T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-12T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2021-10-12T16:15",
+              "author": "RN",
+              "body": "Seasonal influenza vaccine IM L deltoid. No adverse reaction observed. Reminded her the annual is overdue, front desk to call."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "portal_message",
+          "start": "2021-11-16T17:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for school",
+              "date": "2021-11-16T17:30",
+              "author": "patient",
+              "body": "Our center needs an updated staff health form signed by a doctor by December. I can upload it. Do I need to come in for that, or can you sign from my last physical?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form for school",
+              "date": "2021-11-17T09:20",
+              "author": "MA",
+              "body": "Hi Lauren, please upload it here. Your physical was in February 2020, so the doctor can sign it from that, but she'd really like to see you for a check-up this spring. I filled in your immunizations including the COVID doses. Form will be ready for pick-up or sent back here by Friday."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "outside_records",
+          "start": "2021-12-07T14:10",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2021-12-07T14:10",
+              "author": "optometry",
+              "body": "Optometry, exam 11/30/2021. Dilated exam both eyes: no diabetic retinopathy. VA 20/20 OU with glasses. Return 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "outside_records",
+          "start": "2022-02-08T14:40",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-01-25T08:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2022-02-08T14:40",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Seen 02/01/2022.\nShe is well. A1c 7.2% (01/25). Download reviewed, overnight readings flat on glargine 24 units, post-lunch spikes on school days.\nCurrent medications: glargine, lispro, ibuprofen as needed. No known allergies.\nBP 110/68. Feet normal. Eye exam reported up to date without retinopathy. Urine microalbumin and lipids normal this year.\nPlan: pre-bolus lunch 15 min earlier. Next visit summer."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.2
+            }
+          }
+        },
+        {
+          "id": "2022-04-12a",
+          "kind": "annual_physical",
+          "start": "2022-04-12T15:40",
+          "reason": "Annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2022-04-12T16:20",
+              "author": "front desk",
+              "body": "No show for 3:40 annual. Called cell, left message to rebook. Letter not sent, first missed visit."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Recall Call",
+              "date": "2022-08-16T11:05",
+              "author": "front desk",
+              "body": "Overdue physical recall. Spoke with pt, she will call back once she has her fall school schedule. Offered late afternoon slots in October."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "telehealth_visit",
+          "start": "2022-10-04T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Loose stools and rash",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2022-10-04T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "chronic loose stools, bloating, weight loss, vesicular rash"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2022-10-04T16:50",
+              "author": "PCP",
+              "body": "Video, she is at home after school; identity and consent confirmed.\n\nCC: loose stools for a few months.\n\nSince about July: 3-4 loose stools a day, lots of bloating and gas, worse later in the day. Clothes looser, she thinks she's lost about 5 pounds without trying. Tired, though she blames back-to-school. Also an itchy rash on both elbows and the fronts of the knees, little blisters that she scratches open. No blood in stool, no fever, no vomiting. No travel, no antibiotics. Glucose readings more erratic, some lows after meals she didn't absorb.\n\nOn video: rash on elbows shown to camera, clusters of small excoriated papules and a few vesicles, symmetric. Appears thin but comfortable.\n\nFH matters here: maternal aunt with celiac, she has T1DM.\n\nA/P: chronic diarrhea with weight loss and a symmetric vesicular extensor rash in a T1DM pt with a family history of celiac. Celiac high on the list; the rash fits dermatitis herpetiformis. Referring to GI for serology and endoscopy rather than piecemeal testing here. Asked her NOT to start a gluten-free diet before GI sees her, it makes testing unreliable. Told her to let endo know about the post-meal lows. Will come in for flu shot next week."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T16:00",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-11T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2022-10-11T16:15",
+              "author": "RN",
+              "body": "Influenza L arm, bivalent COVID booster R arm. Both tolerated. GI referral status checked for her: appointment 11/11 with outside GI."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-14a",
+          "kind": "outside_records",
+          "start": "2022-11-14T10:30",
+          "reason": "Gastroenterology consult",
+          "conditions": [
+            {
+              "label": "Dermatitis herpetiformis",
+              "action": "diagnosed",
+              "onset": "2022-07-01",
+              "note": "Clinical diagnosis by gastroenterology",
+              "icd10": "L13.0"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-11T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2022-11-11T11:20",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 450
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 15
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral",
+              "action": "done",
+              "date": "2022-11-14T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2022-11-14T10:30",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY ASSOCIATES\nNew consult, seen 11/11/2022. Referred by her primary care physician for diarrhea and rash.\n\nHPI: 28-year-old teacher with type 1 diabetes. Several months of loose stools, abdominal bloating and weight she did not intend to lose. She has noticed the bloating is clearly worse after bread or pasta. Persistent tiredness. Itchy, blistering rash over both elbows and knees.\n\nPMH: type 1 diabetes (endocrinology). Heavy menstrual periods.\nMedications: insulin glargine 24 units at bedtime; insulin lispro with meals by scale; ibuprofen 400 mg as needed for cramps.\nAllergies: no known drug allergies.\nFamily history: father with type 1 diabetes; mother with autoimmune thyroiditis; maternal aunt with celiac disease.\nSocial: never smoker, alcohol rarely, preschool teacher.\n\nExam: Weight 50 kg. Thin young woman, pale. Abdomen soft. Skin: clusters of tense small vesicles over the extensor elbows and knees, some excoriated.\n\nLabs today: Hgb 9.8 g/dL, MCV 74 fL. Iron 30 mcg/dL, TIBC 450 mcg/dL, ferritin 15 ng/mL. Tissue transglutaminase IgA sent, pending.\n\nImpression:\n1. Chronic diarrhea, bloating, weight loss with gluten-related symptoms, strong family and personal autoimmune history: celiac disease suspected; serology pending.\n2. Rash typical of dermatitis herpetiformis.\n3. Microcytic anemia with low iron indices.\n\nPlan: We will call with the tTG. If positive, upper endoscopy with duodenal biopsies. Please continue a normal gluten-containing diet until biopsies are taken. The anemia needs evaluation and iron replacement; we would appreciate your team managing this. Letter copied to patient.\n\nGastroenterology"
+            }
+          ],
+          "state": {
+            "weight_kg": 50.0,
+            "labs": {
+              "Ferritin": 15,
+              "Hemoglobin": 9.8,
+              "Mean Corpuscular Volume": 74,
+              "Red Cell Distribution Width": 16.5
+            }
+          }
+        },
+        {
+          "id": "2022-11-18a",
+          "kind": "outside_records",
+          "start": "2022-11-18T15:10",
+          "reason": "Gastroenterology result letter",
+          "conditions": [
+            {
+              "label": "Celiac disease",
+              "action": "diagnosed",
+              "onset": "2022-07-01",
+              "note": "Serologic diagnosis; biopsy pending"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-11-11T11:20",
+              "resulted": "2022-11-16T14:00",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 142
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology Result Letter",
+              "date": "2022-11-18T15:10",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology, result communication.\nTissue transglutaminase IgA 142 U/mL (reference under 15), strongly positive. Discussed with Ms. Cote by phone 11/17: findings are consistent with celiac disease. Upper endoscopy with duodenal biopsies recommended to confirm before lifelong diet change. She would prefer to schedule it during a school break; she understands she should keep eating gluten until then. Our schedulers will contact her."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Tissue Transglutaminase IgA": 142
+            }
+          }
+        },
+        {
+          "id": "2022-11-21a",
+          "kind": "portal_message",
+          "start": "2022-11-21T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI visit and your blood count",
+              "date": "2022-11-21T08:40",
+              "author": "PCP",
+              "body": "Hi Lauren, I got the GI notes. Sorry about the celiac news, though it explains a lot, and it is very treatable. They also found your blood count is low and your iron stores are low, which likely accounts for some of the tiredness. I'd like to see you in the office to go over the anemia and start treatment. The front desk will reach out; early January is fine if December is hard with school."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: GI visit and your blood count",
+              "date": "2022-11-21T21:05",
+              "author": "patient",
+              "body": "Thank you. December is crazy with the holiday program, I'll take the first week of January after school. I'm still eating normally like GI said."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "outside_records",
+          "start": "2022-12-13T09:50",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-06T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2022-12-13T09:50",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, seen 12/06/2022.\nType 1 diabetes with newly found celiac disease by serology (GI note reviewed). More post-meal lows and unexplained highs this fall, likely from variable absorption. A1c 7.4%. Lispro timing changed to right after meals while GI symptoms are active. Glargine unchanged at 24 units. Celiac makes us watchful for thyroid disease as well; thyroid testing was normal this year. NKDA.\nReturn in 3 to 4 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.4
+            }
+          }
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "outside_records",
+          "start": "2022-12-20T11:45",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2022-12-20T11:45",
+              "author": "optometry",
+              "body": "Optometry, exam 12/13/2022. Dilated fundus exam: no diabetic retinopathy or macular edema either eye. Glasses prescription unchanged. Return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "office_visit",
+          "start": "2023-01-09T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, low blood count",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2022-09-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Iron deficiency anemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              74
+            ],
+            "hr": 104,
+            "rr": 19,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 49.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-09T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 71
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 17.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-09T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-01-09T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-09T16:40",
+              "author": "PCP",
+              "body": "S: 28F, T1DM, celiac by serology in November (EGD pending). Here about the low blood count GI found, and she is wiped out. Three months of getting steadily more tired, can't keep up on the playground the way she used to, gets lightheaded a lot, standing up or after recess, and is having a hard time focusing in the classroom by afternoon. Periods have been heavy since she was a teenager, nothing new there; still takes OTC ibuprofen for cramps. Admits she hasn't had a real check-up since early 2020. Eating has been whatever is fast: toast, tea, a can of soup most nights. Still eating gluten per GI. No black or bloody stools, no chest pain.\n\nMeds: glargine 24 u qhs, lispro per scale, ibuprofen 400 prn. NKDA.\n\nO: HR 104, rest of vitals as charted. Thin. Conjunctivae pale. Heart regular, a soft systolic flow murmur at the left sternal border, no gallop. Lungs clear. Abdomen soft, nontender. DRE with chaperone: brown stool, guaiac negative. Skin: elbow rash fading.\nCBC in office: Hgb 9.1, Hct 28, MCV 71, RDW elevated.\nGI iron studies 11/11 reviewed: iron 30, TIBC 450, ferritin 15.\n\nA/P\n1. Iron deficiency anemia, microcytic, symptomatic but stable. Causes: heavy menses plus celiac malabsorption, poor intake. Stool guaiac negative, no GI bleeding symptoms. Start ferrous sulfate 325 daily, with orange juice, away from tea and coffee. Mild resting tachycardia and flow murmur fit the anemia; ER precautions for chest pain, fainting.\n2. Heavy menstrual bleeding - longstanding, contributing. Ibuprofen ok for now.\n3. Celiac disease - EGD to be scheduled by GI.\n4. Overdue for physical and Pap: booking March, will recheck CBC then."
+            }
+          ],
+          "state": {
+            "weight_kg": 49.5,
+            "labs": {
+              "Hemoglobin": 9.1,
+              "Mean Corpuscular Volume": 71,
+              "Red Cell Distribution Width": 17.5
+            }
+          },
+          "measure": [
+            "bp",
+            "temp_c",
+            "spo2",
+            "rr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-11a",
+          "kind": "portal_message",
+          "start": "2023-01-11T18:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron pills",
+              "date": "2023-01-11T18:25",
+              "author": "patient",
+              "body": "Picked up the iron. Is it better at night or morning? I take my long-acting insulin at bedtime if that matters."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Iron pills",
+              "date": "2023-01-12T08:10",
+              "author": "RN",
+              "body": "Doesn't interact with your insulin. Morning on an empty stomach absorbs best, with some juice or vitamin C, but if it upsets your stomach it's fine with breakfast. Keep it two hours away from tea or coffee. It will turn your stool dark, that's expected."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "pharmacy",
+          "start": "2023-02-14T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2023-02-14T10:00",
+              "author": "MA",
+              "body": "Electronic request from pharmacy: ferrous sulfate 325 mg #30. Approved per PCP with 5 refills."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "annual_physical",
+          "start": "2023-03-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical and Pap",
+          "vitals": {
+            "bp": [
+              135,
+              69
+            ],
+            "hr": 84,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 49.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-21T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.96
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 18.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-21T16:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 128
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-21T16:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-03-21T16:05",
+              "text": "Specimen: ThinPrep cervical sample. Adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2023-03-24T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-03-21T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-21T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-21T16:35",
+              "author": "PCP",
+              "body": "Physical, 29F.\n\nOn iron 10 weeks, taking it most days. A bit less lightheaded, still tired by the end of the week. Stools still loose a few times a day; EGD not booked yet, she wants to do it over the summer so she doesn't miss class. Periods unchanged. Endo following sugars, says they're harder since fall.\nMeds: glargine, lispro, ferrous sulfate, ibuprofen prn. NKDA. Never smoker, rare alcohol.\nPHQ-9 2.\n\nExam: thin, mild pallor. Thyroid normal. Heart RRR, soft flow murmur still present. Lungs clear. Abdomen soft, nontender. Breasts deferred per pt preference, no concerns. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin: elbows clear now.\n\nA/P\n1. IDA on oral iron, recheck CBC today.\n2. Celiac - encouraged her to get the EGD on the calendar now for July so that the diet can start.\n3. Heavy menses - unchanged.\n4. HM: Pap today. Lipids, BMP. Flu/COVID in fall. HIV/HCV done 2019.\nRTC after EGD or sooner."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2023-03-23T12:30",
+              "author": "PCP",
+              "body": "Hgb 9.6, up a little from 9.1 in January but slow, as expected with ongoing malabsorption. Continue iron. Cholesterol and kidney function normal. Portal message sent."
+            }
+          ],
+          "state": {
+            "weight_kg": 49.8,
+            "labs": {
+              "Hemoglobin": 9.6,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 17.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-03-24a",
+          "kind": "portal_message",
+          "start": "2023-03-24T13:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2023-03-24T13:15",
+              "author": "PCP",
+              "body": "Your Pap smear is normal. Next one in 3 years. Your blood count went up a bit to 9.6, so the iron is helping, just slowly; it should pick up once the celiac is treated."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "portal_message",
+          "start": "2023-05-09T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endoscopy scheduled",
+              "date": "2023-05-09T19:50",
+              "author": "patient",
+              "body": "FYI GI got me in for the endoscopy and a visit on July 7, first week of summer break. My partner will drive me. Can I finally stop eating bread after that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endoscopy scheduled",
+              "date": "2023-05-10T07:35",
+              "author": "PCP",
+              "body": "Great, thank you for letting me know. Yes, once the biopsies are taken GI will start you on a gluten-free diet, and we'll get you set up with a dietitian. Hang in there until then."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "outside_records",
+          "start": "2023-06-13T11:20",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-06T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2023-06-13T11:20",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, seen 06/06/2023.\nType 1 diabetes; celiac disease awaiting endoscopy in July; iron deficiency anemia on oral iron. A1c 7.3%; note the A1c may read differently while she is anemic, so we are relying on the meter download, which shows reasonable control with some post-meal variability. Glargine 24 units, lispro by scale.\nMedications: insulin glargine, insulin lispro, ferrous sulfate 325 mg daily, ibuprofen as needed. NKDA.\nUrine microalbumin normal, lipids normal.\nPlan: once gluten-free, expect absorption and insulin needs to shift; call us with patterns. Return 6 months."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.3
+            }
+          }
+        },
+        {
+          "id": "2023-07-10a",
+          "kind": "outside_records",
+          "start": "2023-07-10T09:15",
+          "reason": "Gastroenterology visit and endoscopy",
+          "vitals": [
+            {
+              "time": "2023-07-07T08:00",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 78,
+              "rr": 14,
+              "temp_c": 37.2,
+              "weight_kg": 48.3
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 18.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 8
+                },
+                {
+                  "test": "Iron",
+                  "value": 27
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 499
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-07T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-07T08:30",
+              "resulted": "2023-07-09T15:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No Salmonella, Shigella, Campylobacter or Shiga toxin-producing E. coli isolated"
+                },
+                {
+                  "test": "Ova and parasites identified in Stool by Light microscopy",
+                  "loinc": "10704-5",
+                  "text": "No ova or parasites seen"
+                },
+                {
+                  "test": "Leukocytes [Presence] in Stool by Light microscopy",
+                  "loinc": "13655-6",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2023-07-07T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up",
+              "date": "2023-07-10T09:15",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY ASSOCIATES\nFollow-up visit 07/07/2023, with upper endoscopy the same morning.\n\n29-year-old with type 1 diabetes, celiac disease on serology since November 2022 and iron deficiency anemia found in January 2023, back for persistent GI symptoms and the planned endoscopy. Symptoms have been going on for roughly a year and clearly worse since early spring. Four to six loose bowel movements a day, bulky and foul-smelling, often a couple of hours after eating. Bloating with pasta, bread, pastries and some breakfast cereals. Fatigue and trouble concentrating. No fevers, no night sweats, no recent travel. Cycles regular, though flow has been heavier for several months. On and off mouth sores this past year that she put down to stress. Occasional vague aching in her bones. Nails more brittle. She has kept her diet unchanged as we asked, though she sometimes skips meals because of the bloating. Probiotics and a fiber supplement did not help.\n\nROS: no rash currently; on questioning remembers an itchy rash on the elbows last year that went away on its own. No joint swelling, back pain or visual change. No urinary symptoms or leg swelling.\n\nMedications: insulin glargine 24 units at bedtime, insulin lispro with meals, ferrous sulfate 325 mg daily, ibuprofen 400 mg as needed. NKDA.\nFamily history: father type 1 diabetes; mother autoimmune thyroiditis; maternal aunt celiac. No inflammatory bowel disease or colon cancer in the family.\nSocial: preschool teacher, lives with her partner. No sick contacts, no hospital stays, no antibiotics in the past year. No pets. City water. Does not smoke; no alcohol or drugs.\n\nVitals: T 37.2 C, BP 108/66, P 78, RR 14. BMI 18.4.\nExam: alert, cooperative, thin. Mouth: one shallow, sharply bordered ulcer on the left buccal mucosa. Abdomen mildly distended, hyperactive bowel sounds, mild diffuse tenderness most in the upper abdomen; no organomegaly, no masses. No edema. Neuro nonfocal.\n\nLabs 07/07: Hgb 10.8, MCV 74, ferritin 8. Liver enzymes normal. TSH normal. Stool culture and ova/parasite exam negative. Fecal leukocytes positive.\n\nProcedure: EGD today, report attached. Scalloping of the duodenal folds; biopsies taken.\n\nImpression: celiac disease, clinically and endoscopically active, with iron deficiency from malabsorption. Final plan after pathology."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Upper Endoscopy Report",
+              "date": "2023-07-10T09:15",
+              "author": "gastroenterology",
+              "body": "Procedure: esophagogastroduodenoscopy with biopsies, 07/07/2023.\nIndication: positive tissue transglutaminase IgA, diarrhea, iron deficiency anemia.\nSedation: monitored anesthesia care. ASA II.\nFindings: Esophagus normal. Stomach normal; no ulcers. Duodenum: scalloped appearance of the mucosal folds in the bulb and second portion. Four biopsies from the second portion and two from the bulb.\nComplications: none. Estimated blood loss minimal.\nImpression: duodenal scalloping, consistent with celiac disease. Await pathology."
+            }
+          ],
+          "state": {
+            "weight_kg": 48.3,
+            "labs": {
+              "Ferritin": 8,
+              "Hemoglobin": 10.8,
+              "Iron": 28,
+              "Mean Corpuscular Volume": 74,
+              "Total Iron-Binding Capacity": 520
+            }
+          }
+        },
+        {
+          "id": "2023-07-14a",
+          "kind": "outside_records",
+          "start": "2023-07-14T14:30",
+          "reason": "Pathology and gastroenterology letter",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-07-07T10:40",
+              "text": "Specimen A: duodenum, second portion, biopsies (4). Specimen B: duodenal bulb, biopsies (2).\nMicroscopic: small bowel mucosa with villous atrophy, crypt hyperplasia and increased intraepithelial lymphocytes. No granulomas, no dysplasia, no organisms identified.",
+              "conclusion": "Duodenal biopsies with villous atrophy, crypt hyperplasia and increased intraepithelial lymphocytes, consistent with celiac disease in the appropriate serologic context.",
+              "issued": "2023-07-12T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gastroenterology Letter After Biopsy",
+              "date": "2023-07-14T14:30",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology.\nBiopsies from 07/07 confirm celiac disease. Discussed with Ms. Cote by phone 07/13. Starting a strict lifelong gluten-free diet now. We strongly recommend a visit with a dietitian experienced in celiac disease; please place the referral if your system requires it. Continue iron. We will repeat tTG in about a year to gauge adherence. Follow-up in GI as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "telehealth_visit",
+          "start": "2023-07-25T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Celiac follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-07-25T10:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "nutrition-referral",
+              "action": "placed",
+              "order": "Nutrition referral",
+              "category": "referral",
+              "to": "Nutrition",
+              "reason": "new celiac disease, gluten-free diet teaching"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2023-07-25T10:55",
+              "author": "PCP",
+              "body": "Video visit from home.\nBiopsy-confirmed celiac now. Gluten-free 10 days. Already less bloating, stools down to twice a day. Overwhelmed by labels and worried about the classroom (playdough, snacks, art supplies). Sugars running lower after meals, endo aware and adjusting lispro.\nMeds unchanged. NKDA.\n\nA/P: Celiac disease, new diet started. Nutrition referral placed for celiac teaching. Discussed cross-contact at home and work in broad strokes; dietitian will go deeper. Continue ferrous sulfate; expect better absorption over months. CBC at a visit in the fall. Flu/COVID in October."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "outside_records",
+          "start": "2023-08-22T15:00",
+          "reason": "Dietitian letter",
+          "orders": [
+            {
+              "id": "nutrition-referral",
+              "action": "done",
+              "date": "2023-08-22T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Nutrition Consultation",
+              "date": "2023-08-22T15:00",
+              "author": "nutrition",
+              "body": "Registered dietitian consult, 08/17/2023.\nReason: newly diagnosed celiac disease. Reviewed hidden gluten sources (soups, sauces, oats not labeled gluten-free, shared toasters), label reading and certified gluten-free products, dining out. Discussed her work exposures: gluten-containing playdough and craft flour; suggested gloves and handwashing before eating. Carbohydrate counting for gluten-free substitutes reviewed with her insulin dosing. Iron-rich gluten-free foods and vitamin C pairing reviewed. She prefers not to eat much red meat; discussed poultry, beans, eggs and fortified gluten-free cereal.\nFollow-up as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:00",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-10T16:15",
+              "author": "MA",
+              "body": "Flu L deltoid, updated COVID R deltoid. No issues. She mentioned still being tired, scheduled her with PCP in November."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, anemia follow-up",
+          "vitals": {
+            "bp": [
+              115,
+              75
+            ],
+            "hr": 70,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 50.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-14T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.12
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 17.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2023-11-14T16:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 9
+                },
+                {
+                  "test": "Iron",
+                  "value": 25
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 524
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-14T15:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-14T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "iron deficiency anemia not responding to oral iron, celiac disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-11-14T16:45",
+              "author": "PCP",
+              "body": "29F, celiac (gluten-free since July), T1DM, IDA on ferrous sulfate since January.\n\nGI side much better: one or two formed stools a day, bloating mostly gone, up about 2 kg. But still exhausted, short of breath on the stairs at school, dizzy when she stands quickly. Taking the iron daily, no GI side effects. Periods still heavy.\n\nExam: pale, conjunctival pallor. RRR, flow murmur. Lungs clear. Abdomen soft.\n\nLabs today: Hgb 9.7, ferritin 9. Essentially no response after 10 months of oral iron.\n\nA/P\n1. IDA refractory to oral iron - malabsorption from celiac plus ongoing menstrual loss. Referring to hematology for IV iron. Continue oral iron in the meantime.\n2. Celiac - improving on diet.\n3. Heavy menses - ongoing.\nHematology referral sent; she prefers a late afternoon or a vacation-week appointment."
+            }
+          ],
+          "state": {
+            "weight_kg": 50.5,
+            "labs": {
+              "Ferritin": 9,
+              "Hemoglobin": 9.7,
+              "Iron": 32,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 18,
+              "Total Iron-Binding Capacity": 510
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "outside_records",
+          "start": "2023-12-04T10:40",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2023-12-04T10:40",
+              "author": "optometry",
+              "body": "Optometry, exam 11/28/2023. Dilated fundus exam OU: no diabetic retinopathy, maculae normal. VA 20/20 OU with glasses. Next exam 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-03a",
+          "kind": "outside_records",
+          "start": "2024-01-03T09:40",
+          "reason": "Hematology consultation",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-01T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 18
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.15
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-01-01T10:15",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 600
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 5
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral",
+              "action": "done",
+              "date": "2024-01-03T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "date": "2024-01-03T09:40",
+              "author": "hematology",
+              "body": "Outside hematology and oncology practice. Consultation 01/01/2024 (holiday clinic session).\nReason: iron deficiency anemia with celiac disease, not responding to oral iron.\n\nShe tells us she still feels drained, gets winded with exertion and lightheaded if she stands up fast. Appetite has been poor. Celiac disease confirmed by biopsy in July; gluten-free since. Long history of heavy periods.\n\nMedications: insulin glargine 24 units at bedtime, insulin lispro with meals, ferrous sulfate 325 mg daily (taking it regularly), ibuprofen 400 mg as needed. No known drug allergies.\nFamily: father type 1 diabetes, mother autoimmune thyroiditis, maternal aunt celiac.\nSocial: never smoker, alcohol rarely, preschool teacher.\n\nExam: pallor of skin and conjunctivae. Spoon-shaped nails on several fingers.\n\nLabs today: Hgb 9.8 g/dL, MCV 72 fL, RDW 18%. Iron 30 mcg/dL, TIBC 600 mcg/dL, transferrin saturation 5%.\n\nAssessment: iron deficiency anemia from duodenal malabsorption and menstrual loss, with a full year of oral iron unable to keep up.\nPlan: IV ferric carboxymaltose 750 mg, two doses one week apart, at our infusion center. Continue oral ferrous sulfate for now. CBC and ferritin in 6 to 8 weeks. Thank you for the referral."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 9.8,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 18
+            }
+          }
+        },
+        {
+          "id": "2024-01-19a",
+          "kind": "outside_records",
+          "start": "2024-01-19T11:10",
+          "reason": "Infusion record",
+          "procedures": [
+            {
+              "procedure": "Intravenous infusion of iron",
+              "snomed": "718520009",
+              "performed": "2024-01-08T13:00"
+            },
+            {
+              "procedure": "Intravenous infusion of iron",
+              "snomed": "718520009",
+              "performed": "2024-01-16T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infusion Center Record",
+              "date": "2024-01-19T11:10",
+              "author": "hematology",
+              "body": "Infusion center treatment summary.\n01/08/2024: ferric carboxymaltose 750 mg IV over 15 minutes. Vitals stable before and after. No reaction. Observed 30 minutes.\n01/16/2024: ferric carboxymaltose 750 mg IV, second and final dose of this course. Tolerated without reaction.\nTotal 1,500 mg. Labs to be drawn in about 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "outside_records",
+          "start": "2024-01-23T09:15",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-01-16T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2024-01-23T09:15",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, seen 01/16/2024.\nType 1 diabetes; celiac disease on a gluten-free diet since July 2023; iron deficiency anemia, IV iron through hematology this month. A1c 7.1%, interpret with caution given recent anemia. Post-meal readings steadier since going gluten-free; two mild lows a week before lunch, lispro breakfast dose trimmed.\nMedications: insulin glargine 24 units at bedtime, insulin lispro, ferrous sulfate 325 mg daily, ibuprofen as needed. NKDA.\nUrine microalbumin normal. Next visit June."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "portal_message",
+          "start": "2024-02-06T20:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update",
+              "date": "2024-02-06T20:30",
+              "author": "patient",
+              "body": "Just wanted to say the iron infusions are working, I have actual energy at the end of the school day for the first time in a year. Hematology wants labs in March. Should I keep the iron pills too?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Update",
+              "date": "2024-02-06T21:10",
+              "author": "PCP",
+              "body": "So glad to hear it! Yes, keep the pills going unless hematology tells you otherwise, they help top off stores with your periods. I'll watch for the March labs."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-08a",
+          "kind": "outside_records",
+          "start": "2024-03-08T10:00",
+          "reason": "Hematology follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-05T09:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 81
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 26.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 262
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-03-05T09:20",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 96
+                },
+                {
+                  "test": "Iron",
+                  "value": 97
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 282
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 34
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "date": "2024-03-08T10:00",
+              "author": "hematology",
+              "body": "Outside hematology. Follow-up 03/05/2024.\nGood response to IV iron: Hgb 12.3, ferritin 96. Energy much better, no dizziness. Continue ferrous sulfate 325 mg daily and gluten-free diet. Given ongoing heavy menses and celiac, we suggest CBC and ferritin every 6 months through your office; please refer back if Hgb falls below 11 or ferritin below 15."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 96,
+              "Hemoglobin": 12.3,
+              "Iron": 98,
+              "Mean Corpuscular Volume": 83,
+              "Red Cell Distribution Width": 15.2,
+              "Total Iron-Binding Capacity": 300
+            }
+          }
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "annual_physical",
+          "start": "2024-04-16T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              76
+            ],
+            "hr": 78,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 53.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-16T16:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-04-16T16:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 125
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 186
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-16T16:25",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-04-16T15:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-04-16T16:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-16T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-04-16T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-04-16T16:35",
+              "author": "PCP",
+              "body": "30F annual.\n\nFeeling like herself again after the January infusions. Gluten-free 9 months; mostly strict at home, harder at school events and eating out, admits a few slips. Bowels mostly normal. Weight up 3 kg since fall. Periods still heavy. Endo visit coming in June.\nMeds: glargine 24 u qhs, lispro per scale, ferrous sulfate daily, ibuprofen prn. NKDA. Never smoker.\n\nExam: color much better. Thyroid normal. RRR, no murmur today. Lungs clear. Abdomen soft, nondistended. Skin clear. Feet normal.\n\nA/P\n1. IDA - responded to IV iron (Hgb 12.3, ferritin 96 in March). Continue oral iron; CBC/ferritin every 6 months per hematology.\n2. Celiac - doing well; reviewed that even small exposures matter.\n3. T1DM - endo. Urine microalbumin, CMP, lipids today.\n4. HM: PCV20 today given diabetes. Pap 2026. Flu/COVID in fall.\nRTC fall for labs and visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 53.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-01a",
+          "kind": "outside_records",
+          "start": "2024-07-01T13:30",
+          "reason": "Endocrinology letter",
+          "conditions": [
+            {
+              "label": "Vitamin D deficiency",
+              "action": "diagnosed",
+              "onset": "2024-03-01",
+              "note": "With elevated PTH; celiac malabsorption"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ergocalciferol 1.25 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (50,000 units) by mouth once weekly for 8 weeks",
+              "dose": {
+                "value": 1.25,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vitamin D deficiency; prescribed by endocrinology"
+            },
+            {
+              "drug_text": "calcium carbonate 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with food",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vitamin D deficiency; prescribed by endocrinology"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-27T09:10",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 8.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Glucose",
+                  "value": 101
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-06-27T09:10",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 2.5
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 95
+                },
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 12
+                },
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 38
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.0
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Visit Letter",
+              "date": "2024-07-01T13:30",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Seen 06/27/2024 for her scheduled diabetes visit.\n\nShe raised two new problems: aching bones, mostly in the legs, and frequent muscle cramps over the spring. She also reports that the diarrhea and bloating have crept back, especially after bread and pasta; she thinks she has been getting gluten at school functions and from shared kitchen items. Family history is notable for autoimmune disease.\n\nMedications: insulin glargine 24 units at bedtime, insulin lispro by scale, ferrous sulfate 325 mg daily, ibuprofen as needed. NKDA.\n\nExam: pale. Abdomen slightly distended, soft. Tenderness over the shins and thighs on palpation; proximal leg strength mildly reduced.\n\nLabs 06/27: calcium 8.1 mg/dL, phosphorus 2.5 mg/dL, alkaline phosphatase 120 U/L, intact PTH 95 pg/mL, 25-hydroxyvitamin D 12 ng/mL. tTG IgA 38 U/mL (down from 142 at diagnosis but not normal). A1c 7.0%.\n\nAssessment:\n1. Vitamin D deficiency with a raised PTH, from celiac malabsorption, explaining the bone pain and cramps.\n2. Celiac disease with ongoing gluten exposure by history and serology.\n3. Type 1 diabetes, at target.\n\nPlan: ergocalciferol 50,000 units weekly for 8 weeks, calcium carbonate 500 mg twice daily with food (separate from iron). Recheck calcium, PTH and vitamin D in 3 months. Recommend a return visit with her dietitian. Diabetes regimen unchanged."
+            }
+          ],
+          "state": {
+            "weight_kg": 52.5,
+            "labs": {
+              "25-hydroxy Vitamin D": 12,
+              "Alkaline Phosphatase": 120,
+              "Calcium": 8.1,
+              "Hemoglobin A1c": 7.0,
+              "Parathyroid Hormone, Intact": 95,
+              "Phosphorus": 2.5,
+              "Tissue Transglutaminase IgA": 38
+            }
+          }
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "portal_message",
+          "start": "2024-07-09T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pill timing",
+              "date": "2024-07-09T14:05",
+              "author": "patient",
+              "body": "Endo started me on vitamin D once a week and calcium twice a day. They said keep the calcium away from the iron. Is it ok if I do iron in the morning and calcium with lunch and dinner?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pill timing",
+              "date": "2024-07-09T16:40",
+              "author": "RN",
+              "body": "That schedule works well. Iron first thing, calcium with lunch and dinner, vitamin D any day of the week with a meal. I've added them to your med list."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "outside_records",
+          "start": "2024-09-27T10:20",
+          "reason": "Endocrinology recheck",
+          "medications": [
+            {
+              "drug_text": "ergocalciferol 1.25 MG Oral Capsule",
+              "action": "stop",
+              "reason": "Repletion course completed"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2,000 units) by mouth daily",
+              "dose": {
+                "value": 0.05,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Vitamin D deficiency, maintenance; prescribed by endocrinology"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 31
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 58
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-09-24T08:45",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 112
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Endocrinology Lab Follow-up",
+              "date": "2024-09-27T10:20",
+              "author": "endocrinology",
+              "body": "Outside endocrinology, result letter for labs 09/24/2024.\n25-hydroxyvitamin D 31 ng/mL, PTH 58 pg/mL, calcium 9.0 mg/dL. Repletion complete; cramps and bone aches much improved per phone check-in. Ergocalciferol finished; start cholecalciferol 2,000 units daily as maintenance and continue calcium carbonate 500 mg twice daily. Repeat vitamin D at her next visit."
+            }
+          ],
+          "state": {
+            "labs": {
+              "25-hydroxy Vitamin D": 31,
+              "Alkaline Phosphatase": 96,
+              "Calcium": 9.0,
+              "Parathyroid Hormone, Intact": 58,
+              "Phosphorus": 3.3
+            }
+          }
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "office_visit",
+          "start": "2024-10-22T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, labs",
+          "vitals": {
+            "bp": [
+              122,
+              71
+            ],
+            "hr": 84,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 52.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-22T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 76
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 17.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-10-22T16:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 10
+                },
+                {
+                  "test": "Iron",
+                  "value": 27
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 476
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-22T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T16:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T16:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T16:27"
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2",
+              "action": "placed",
+              "order": "Hematology referral",
+              "category": "referral",
+              "to": "Hematology",
+              "reason": "recurrent iron deficiency anemia, Hgb 10.4, ferritin 10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-10-22T16:40",
+              "author": "PCP",
+              "body": "S: 30F with celiac, T1DM, IDA. Due for the 6-month CBC that hematology asked for, and she is tired again, slowly since about July, more out of breath carrying kids' bins upstairs. Vitamin D course done per endo, cramps gone. Since the endo visit she has gone back over her dietitian handouts and tightened up the diet. Periods unchanged, heavy. Taking ferrous sulfate most days. Eats very little red meat, never has liked it.\nMeds: glargine, lispro, ferrous sulfate, cholecalciferol 2000 u daily, calcium carbonate 500 bid, ibuprofen prn. NKDA.\n\nO: mild pallor. RRR. Lungs clear. Abdomen soft, nontender.\nHgb 10.4, ferritin 10 today.\n\nA/P\n1. Recurrent iron deficiency anemia - stores depleted again 9 months after IV iron. Back to hematology per their threshold. Continue oral iron.\n2. Celiac - recent gluten exposure likely played a part; better adherence now.\n3. Vitamin D deficiency - repleted, on maintenance per endo.\n4. Flu and COVID given today.\nHematology referral placed."
+            }
+          ],
+          "state": {
+            "weight_kg": 53.5,
+            "labs": {
+              "Ferritin": 10,
+              "Hemoglobin": 10.4,
+              "Iron": 35,
+              "Mean Corpuscular Volume": 76,
+              "Red Cell Distribution Width": 17,
+              "Total Iron-Binding Capacity": 470
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T09:30",
+          "reason": "Eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Examination",
+              "date": "2024-12-10T09:30",
+              "author": "optometry",
+              "body": "Optometry, exam 12/03/2024. Dilated retinal exam both eyes without diabetic retinopathy. Optic nerves healthy. VA 20/20 OU corrected. Return 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "outside_records",
+          "start": "2025-01-13T11:45",
+          "reason": "Hematology follow-up",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-01-09T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 72
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 18
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 28.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 23.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 258
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-01-09T09:50",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 30
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 600
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 8
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "heme-referral-2",
+              "action": "done",
+              "date": "2025-01-13T11:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up Letter",
+              "date": "2025-01-13T11:45",
+              "author": "hematology",
+              "body": "Outside hematology and oncology practice. Return visit 01/09/2025.\n\n30-year-old with celiac disease and iron deficiency anemia, treated with IV iron a year ago, referred back. About six months of fatigue, looking pale per her family, and breathlessness with exertion. She describes her periods as regular with a moderate flow. She eats little red meat by choice.\n\nMedications: insulin glargine 24 units at bedtime, insulin lispro with meals, ferrous sulfate 325 mg daily, cholecalciferol, calcium carbonate, ibuprofen 400 mg as needed. NKDA.\nFamily: father type 1 diabetes, mother autoimmune thyroiditis, maternal aunt celiac.\n\nExam: pale, with pale conjunctivae. No lymph node enlargement. Liver and spleen not palpable.\n\nLabs: Hgb 9.2 g/dL, MCV 72 fL, RDW 18%. Peripheral smear: microcytic, hypochromic red cells. Iron 30 mcg/dL, TIBC 600 mcg/dL, ferritin 8 ng/mL, transferrin saturation 5%.\n\nAssessment: recurrent iron deficiency anemia; malabsorption from celiac disease with recent gluten exposure, limited dietary iron, menstrual losses.\nPlan: repeat ferric carboxymaltose 750 mg IV x2, one week apart. Continue oral iron. CBC and ferritin in 2 months via PCP. Continue strict gluten-free diet."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Ferritin": 8,
+              "Hemoglobin": 9.2,
+              "Mean Corpuscular Volume": 72,
+              "Red Cell Distribution Width": 18
+            }
+          }
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "outside_records",
+          "start": "2025-01-28T10:30",
+          "reason": "Infusion record",
+          "procedures": [
+            {
+              "procedure": "Intravenous infusion of iron",
+              "snomed": "718520009",
+              "performed": "2025-01-16T14:00"
+            },
+            {
+              "procedure": "Intravenous infusion of iron",
+              "snomed": "718520009",
+              "performed": "2025-01-23T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Infusion Center Record",
+              "date": "2025-01-28T10:30",
+              "author": "hematology",
+              "body": "Infusion summary. 01/16/2025 ferric carboxymaltose 750 mg IV, tolerated. 01/23/2025 ferric carboxymaltose 750 mg IV, tolerated; course complete. No hypersensitivity reactions. Post-infusion labs at PCP in about 8 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "annual_physical",
+          "start": "2025-03-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, post-infusion labs",
+          "vitals": {
+            "bp": [
+              121,
+              82
+            ],
+            "hr": 77,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 58.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-18T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 83
+                },
+                {
+                  "test": "Platelets",
+                  "value": 260
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2025-03-18T16:25",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 74
+                },
+                {
+                  "test": "Iron",
+                  "value": 98
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 315
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 31
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-18T16:25",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 9
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-03-18T16:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 55
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-03-18T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-18T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-03-18T16:35",
+              "author": "PCP",
+              "body": "Annual, 31F.\n\nIV iron again in January, energy back within a few weeks. Strict about gluten now: has her own toaster, packs lunch every day, gloves for playdough. Bowels normal, no bloating. Weight up to 58 kg, best she has felt in years. Cramps and bone aches gone on vitamin D. Periods still heavy for 2-3 days, ibuprofen helps. She and her partner are talking about trying for a baby in the next year or so; she knows to talk with endo first about tighter sugars.\nMeds: glargine 24 u qhs, lispro per scale, ferrous sulfate 325 daily, cholecalciferol 2000 u daily, calcium carbonate 500 bid, ibuprofen prn. NKDA.\nPHQ-9 1.\n\nExam: well, good color. Thyroid normal. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Feet: sensation and pulses normal.\n\nA/P\n1. Recurrent IDA - CBC/ferritin today after second IV course. Continue oral iron.\n2. Celiac - tTG today to check adherence.\n3. T1DM - endo. TSH, microalbumin, lipids.\n4. Vitamin D deficiency - on maintenance via endo.\n5. Preconception: advised to loop in endo and to see us when ready.\n6. HM: Pap due 2026. Flu/COVID in fall."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-03-20T12:10",
+              "author": "PCP",
+              "body": "Hgb 12.0, ferritin 74, nice response. tTG 9, now normal: diet is working. TSH, urine microalbumin and lipids normal. Pt notified via portal."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.0,
+            "labs": {
+              "Ferritin": 74,
+              "Hemoglobin": 12.0,
+              "Hemoglobin A1c": 6.8,
+              "Iron": 96,
+              "Mean Corpuscular Volume": 84,
+              "Red Cell Distribution Width": 14.8,
+              "Thyroid Stimulating Hormone": 2.2,
+              "Tissue Transglutaminase IgA": 9,
+              "Total Iron-Binding Capacity": 310
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "outside_records",
+          "start": "2025-05-20T13:40",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-13T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Follow-up Letter",
+              "date": "2025-05-20T13:40",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, visit 05/13/2025.\nType 1 diabetes. She and her partner are planning a pregnancy in the coming year. A1c 6.8%. Preconception targets reviewed: A1c under 6.5% if achievable without lows, folic acid once trying or at the first positive test per her PCP and obstetrician, early obstetric referral. Continues cholecalciferol 2,000 units daily.\nMedications: insulin glargine 24 units at bedtime, insulin lispro, ferrous sulfate, cholecalciferol, calcium carbonate, ibuprofen as needed. NKDA.\nPlan: tighten pre-meal targets gradually; call with a positive test. Return 4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "outside_records",
+          "start": "2025-06-27T08:30",
+          "reason": "Emergency department record",
+          "conditions": [
+            {
+              "label": "Acute dacryocystitis of right lacrimal passage",
+              "action": "diagnosed",
+              "onset": "2025-06-23",
+              "icd10": "H04.321"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 10 days",
+              "dose": {
+                "value": 875,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute dacryocystitis, right; prescribed in the emergency department"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-06-26T19:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-06-27T08:30",
+              "author": "emergency medicine",
+              "body": "AREA EMERGENCY DEPARTMENT\nArrival 06/26/2025 19:40. Discharged 22:05.\n\nChief complaint: right eye swelling.\n\nHPI: 31-year-old woman with type 1 diabetes, celiac disease and iron deficiency anemia, followed in GI and hematology clinics. Three days of pain, redness and swelling at the inner corner of the right eye with watery discharge, and her vision on that side is a little blurry. No fever, no injury, no recent illness. Diabetes well controlled on insulin per patient.\n\nMeds: insulin glargine 24 units at bedtime, insulin lispro with meals, ferrous sulfate 325 mg daily, ibuprofen 400 mg as needed. Allergies: NKDA.\nSocial: never smoker, alcohol rarely, preschool teacher.\n\nVitals: afebrile, hemodynamically normal.\nExam: Right medial canthus: erythema and tenderness over the lacrimal sac; pressure over the sac expresses pus from the punctum. Visual acuity slightly reduced on the right compared with the left. No foreign body seen. Conjunctiva otherwise quiet, cornea clear, pupils equal and reactive, extraocular movements full and painless, no proptosis. Left eye normal.\n\nMDM: presentation consistent with acute dacryocystitis of the right lacrimal sac, no signs of orbital involvement.\n\nDisposition: discharged home. Amoxicillin-clavulanate 875/125 mg by mouth twice daily for 10 days. Warm compresses with gentle massage four times a day. Ophthalmology follow-up within a few days; return for fever, worsening swelling, eye pain with movement or further vision loss. Glucose checks as usual. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "office_visit",
+          "start": "2025-06-30T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, right eye",
+          "vitals": {
+            "bp": [
+              135,
+              79
+            ],
+            "hr": 82,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 59.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-06-30T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "right acute dacryocystitis, ED follow-up"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-06-30T10:45",
+              "author": "PCP",
+              "body": "Post-ED visit. Seen in the ED Thursday night for a red, swollen right inner eye corner, told it was an infected tear sac. On amoxicillin-clavulanate since Thursday, day 4 of 10. Much less swollen, discharge almost gone, vision clearer. No fever. Sugars a little higher over the weekend, now settling.\n\nExam: afebrile. Right medial canthus with mild residual redness, minimal tenderness, no fluctuance, no discharge expressed today. Eye movements full and painless. Conjunctiva quiet. Vision grossly equal.\n\nA/P: Acute dacryocystitis, right, improving on oral antibiotic. Finish the 10 days, warm compresses. ED asked for ophthalmology follow-up: referral placed, office reached and seeing her Thursday. Return precautions reviewed."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "outside_records",
+          "start": "2025-07-08T13:15",
+          "reason": "Ophthalmology letter",
+          "orders": [
+            {
+              "id": "ophtho-referral",
+              "action": "done",
+              "date": "2025-07-08T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology Consultation",
+              "date": "2025-07-08T13:15",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology. Seen 07/03/2025.\nReferred after ED diagnosis of right acute dacryocystitis, now on day 7 of amoxicillin-clavulanate.\nSwelling and discharge nearly resolved. Visual acuity 20/20 OD, 20/20 OS with correction, back to her baseline. Minimal residual erythema at the right medial canthus, no tenderness, no reflux from the punctum on pressure. Anterior segment quiet. Dilated fundus exam: no diabetic retinopathy.\nAssessment: right acute dacryocystitis, resolving.\nPlan: complete antibiotic course. No further intervention now. Return promptly if swelling or discharge recur."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "portal_message",
+          "start": "2025-08-19T15:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Staff health form",
+              "date": "2025-08-19T15:30",
+              "author": "patient",
+              "body": "Hi! Our center needs the staff health form again before September. Uploading it now. Eye is totally fine by the way."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Staff health form",
+              "date": "2025-08-20T10:05",
+              "author": "MA",
+              "body": "Got it, Lauren. Signed by the doctor from your March physical and sent back through the portal. Glad the eye cleared up."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-06a",
+          "kind": "portal_message",
+          "start": "2025-10-06T06:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2025-10-06T06:50",
+              "author": "patient",
+              "body": "Good morning, I just got a positive home pregnancy test! First day of my last period was September 1. We were trying. I already emailed endo. What do I do first? Should I keep taking the ibuprofen and all my pills?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test",
+              "date": "2025-10-06T08:05",
+              "author": "PCP",
+              "body": "Congratulations! Please stop the ibuprofen for now; acetaminophen is the safer choice for cramps or aches. Keep your insulin, iron, vitamin D and calcium. I have you Thursday at 3:30 so we can confirm, start folic acid and get you to obstetrics quickly, which matters with type 1."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "office_visit",
+          "start": "2025-10-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Acute dacryocystitis of right lacrimal passage",
+              "action": "resolved",
+              "icd10": "H04.321"
+            },
+            {
+              "label": "Pre-existing type 1 diabetes mellitus, in pregnancy, first trimester",
+              "action": "diagnosed",
+              "onset": "2025-09-15",
+              "icd10": "O24.011"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Pregnancy"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy with pre-existing diabetes"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              67
+            ],
+            "hr": 83,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 60.7
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-09T15:35",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-09T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-09T16:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.5
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-09T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-09T16:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-10-09T16:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-09T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-09T16:07"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "intrauterine pregnancy about 5 weeks, pre-existing type 1 diabetes"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-09T16:20",
+              "author": "PCP",
+              "body": "31F G1, LMP 9/1/25, so about 5w4d. Positive home test Monday, planned. No bleeding, no pain. Stopped ibuprofen. Endo already moved up her visit and is tightening targets.\nMeds: glargine 24 u qhs, lispro per scale, ferrous sulfate 325 daily, cholecalciferol 2000 u daily, calcium carbonate 500 bid. NKDA. No alcohol since trying.\n\nExam: well. Abdomen soft, nontender.\nUrine hCG positive in office.\n\nA/P\n1. Early pregnancy with pre-existing T1DM - high-risk; referral to obstetrics placed today, they will arrange MFM input and dating ultrasound. Folic acid 1 mg daily started. A1c, TSH, CBC today. Endo co-managing insulin.\n2. Recurrent IDA - continue iron; CBC today.\n3. Celiac - stable on diet.\n4. Right dacryocystitis in June - resolved, off the active list.\n5. Flu and COVID vaccines given today, both recommended in pregnancy.\nAcetaminophen as needed instead of ibuprofen."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-10-10T13:00",
+              "author": "PCP",
+              "body": "A1c 6.5, TSH normal, Hgb 11.9. Copied to OB and endo. Message to pt."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.5,
+            "labs": {
+              "Hemoglobin": 11.9,
+              "Hemoglobin A1c": 6.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-06a",
+          "kind": "outside_records",
+          "start": "2025-11-06T14:20",
+          "reason": "Obstetrics first prenatal visit",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-30T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 270
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 27.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-30T09:00",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, first trimester",
+              "loinc": "11525-3",
+              "performed": "2025-10-30T10:15",
+              "text": "Transvaginal ultrasound. Single intrauterine pregnancy. Crown-rump length corresponds to 8 weeks 3 days, consistent with dates by LMP. Fetal cardiac activity present. Adnexa unremarkable.",
+              "conclusion": "Single live intrauterine pregnancy, 8w3d, concordant with LMP. EDD 06/08/2026."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-11-06T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics New Prenatal Visit",
+              "date": "2025-11-06T14:20",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology group, high-risk prenatal clinic. New OB visit 10/30/2025.\n\nG1P0 at 8w3d by LMP 09/01/2025, confirmed by ultrasound today. EDD 06/08/2026.\nHistory: type 1 diabetes since childhood (endocrinology co-managing), celiac disease on a gluten-free diet, iron deficiency anemia treated with IV iron, vitamin D deficiency on maintenance, heavy menses.\nMedications: insulin glargine 24 units at bedtime, insulin lispro with meals, ferrous sulfate 325 mg daily, folic acid 1 mg daily, cholecalciferol, calcium carbonate, ibuprofen as needed (listed). NKDA.\n\nPrenatal labs: Hgb 11.6; HIV, hepatitis B surface antigen and syphilis screen negative; urine culture no growth. All within normal limits.\n\nPlan: low-dose aspirin 81 mg daily beginning at 12 weeks given pre-existing diabetes. Detailed anatomy ultrasound at 18 to 20 weeks. Shared glucose logs with endocrinology every 1-2 weeks. Return 4 weeks."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 11.6
+            }
+          }
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "outside_records",
+          "start": "2025-12-02T09:40",
+          "reason": "Endocrinology letter",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-11-25T08:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology Pregnancy Letter",
+              "date": "2025-12-02T09:40",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group, visit 11/25/2025, 12 weeks pregnant.\nType 1 diabetes in pregnancy. A1c 6.2%. Some first-trimester lows mid-morning; lispro ratios at breakfast adjusted down, correction scale tightened for pregnancy targets. Glargine continues.\nMedications: insulin glargine 24 units at bedtime, insulin lispro, ferrous sulfate, folic acid, cholecalciferol, calcium carbonate, aspirin 81 mg starting this week per OB. NKDA.\nPlan: logs to us every 2 weeks; we will adjust as insulin needs rise in the second and third trimester."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 6.2
+            }
+          }
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "outside_records",
+          "start": "2026-01-13T10:50",
+          "reason": "Obstetrics letter, anatomy ultrasound",
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pregnancy with pre-existing diabetes; started by obstetrics at 12 weeks"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, anatomy survey",
+              "loinc": "11525-3",
+              "performed": "2026-01-12T09:30",
+              "text": "Transabdominal ultrasound, single intrauterine pregnancy at 19 weeks 0 days. Fetal biometry consistent with dates. Detailed anatomy survey: intracranial structures, face, spine, four-chamber heart and outflow tracts, abdominal wall, stomach, kidneys, bladder and limbs appear normal. Placenta posterior, clear of the cervix. Amniotic fluid normal. Cervical length normal.",
+              "conclusion": "Normal anatomy survey at 19w0d. Growth appropriate for dates."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Letter",
+              "date": "2026-01-13T10:50",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology group. Prenatal visit 01/12/2026, 19w0d.\nFeeling well, quickening felt. Glucose logs reviewed with endocrinology, at target. Taking aspirin 81 mg daily since 12 weeks. BP normal. Fundal height appropriate. Fetal heart tones present.\nAnatomy ultrasound today normal.\nMedications: insulin glargine, insulin lispro, aspirin 81 mg daily, folic acid 1 mg, ferrous sulfate 325 mg, cholecalciferol, calcium carbonate, ibuprofen as needed (listed). NKDA.\nPlan: growth ultrasound at 28 weeks; Tdap at 28 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-16a",
+          "kind": "outside_records",
+          "start": "2026-03-16T16:10",
+          "reason": "Obstetrics letter, 28 weeks",
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, growth",
+              "loinc": "11525-3",
+              "performed": "2026-03-16T10:30",
+              "text": "Single intrauterine pregnancy at 28 weeks 0 days. Biometry concordant with dates, estimated fetal weight near the 50th percentile. Amniotic fluid normal. Placenta posterior, not low lying. Fetal heart activity normal.",
+              "conclusion": "Normal interval growth at 28w0d."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-03-16T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Letter",
+              "date": "2026-03-16T16:10",
+              "author": "obstetrics",
+              "body": "Outside obstetrics. Visit 03/16/2026 at 28w0d.\nDoing well, good fetal movement. Endocrinology increasing mealtime lispro as expected for the third trimester. BP normal, weight gain on track. Growth ultrasound normal.\nTdap given today in the left deltoid.\nPlan: visits every 2 weeks with weekly fetal testing from 32 weeks per our diabetes protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-04-14T09:20",
+              "author": "MA",
+              "body": "Pharmacy refill request for ferrous sulfate 325 mg daily, 90-day supply. Pt is pregnant, OB continuing iron. Sent per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "outside_records",
+          "start": "2026-05-13T12:40",
+          "reason": "Obstetrics letter, 36 weeks",
+          "conditions": [
+            {
+              "label": "Maternal care for breech presentation, not applicable or unspecified",
+              "action": "diagnosed",
+              "onset": "2026-05-11",
+              "icd10": "O32.1XX0"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-11T09:40",
+              "bp": [
+                120,
+                78
+              ],
+              "weight_kg": 78.7
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, presentation",
+              "loinc": "11525-3",
+              "performed": "2026-05-11T10:00",
+              "text": "Single live intrauterine pregnancy at 36 weeks 0 days. Fetal heart rate 140 bpm. Breech presentation. Amniotic fluid normal. Placenta posterior, fundal. Estimated fetal weight appropriate for gestational age.",
+              "conclusion": "Breech presentation at 36w0d."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Letter",
+              "date": "2026-05-13T12:40",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology group. Routine prenatal visit 05/11/2026, 36w0d.\n\n32-year-old G1 with type 1 diabetes, celiac disease and recurrent iron deficiency anemia. Pregnancy has gone smoothly; prenatal labs all normal and glucose well controlled on insulin with endocrinology. She came in today worried that she might end up needing a cesarean.\n\nMedications: insulin glargine 24 units at bedtime, insulin lispro per scale, ferrous sulfate 325 mg daily, ibuprofen 400 mg as needed (on her list, not in use), aspirin 81 mg, folic acid, cholecalciferol, calcium carbonate. NKDA.\nSocial: never smoker, alcohol none in pregnancy, preschool teacher.\n\nBP 120/78. BMI 30.\nFetal heart rate 140.\nUltrasound today: breech presentation.\n\nAssessment: 36 weeks, breech presentation, pre-existing type 1 diabetes, otherwise uncomplicated.\nPlan: discussed options. External cephalic version offered at 37 weeks on labor and delivery; she would like to try it, as she hopes to avoid a cesarean. If unsuccessful or the baby turns back, scheduled cesarean at 39 weeks. Weekly fetal testing continues."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.7
+          }
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "outside_records",
+          "start": "2026-05-20T17:30",
+          "reason": "External cephalic version record",
+          "procedures": [
+            {
+              "procedure": "External cephalic version",
+              "snomed": "240278000",
+              "performed": "2026-05-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Labor and Delivery Procedure Note",
+              "date": "2026-05-20T17:30",
+              "author": "obstetrics",
+              "body": "Hospital birthing center, obstetric triage. 05/20/2026, 37w2d.\nProcedure: external cephalic version for breech presentation.\nPre-procedure ultrasound: breech, normal fluid. Reactive nonstress test. Two attempts made under ultrasound guidance; fetus did not rotate. Procedure stopped.\nPost-procedure monitoring 60 minutes: reassuring fetal heart tracing, no contractions, no bleeding.\nOutcome: unsuccessful version. Scheduled cesarean delivery at 39w0d on 06/01/2026. Patient disappointed but comfortable with the plan."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-05a",
+          "kind": "outside_records",
+          "start": "2026-06-05T11:00",
+          "reason": "Delivery discharge summary",
+          "medications": [
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain; prescribed at hospital discharge"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Post-cesarean pain; prescribed at hospital discharge"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cesarean section",
+              "snomed": "11466000",
+              "performed": "2026-06-01T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-06-05T11:00",
+              "author": "obstetrics",
+              "body": "Hospital birthing center.\nAdmitted 06/01/2026. Discharged 06/03/2026.\n\nAdmission diagnosis: intrauterine pregnancy at 39w0d, breech presentation after unsuccessful external cephalic version; pre-existing type 1 diabetes.\nProcedure 06/01/2026: scheduled low transverse cesarean section under spinal anesthesia. Delivered a healthy girl, 3.2 kg, vigorous at birth, to the newborn nursery with her mother. Placenta delivered intact. Blood loss within the usual range for cesarean. No complications.\nDiabetes: insulin infusion during surgery, then glargine and lispro back to her pre-pregnancy doses per endocrinology's written plan; glucose stable.\nCourse: uncomplicated. Tolerating diet, ambulating, voiding, incision clean and dry.\n\nDischarge medications: insulin glargine 24 units at bedtime; insulin lispro with meals per her pre-pregnancy scale; ibuprofen 600 mg every 6 hours as needed; acetaminophen 1,000 mg every 6 hours as needed; ferrous sulfate 325 mg daily; cholecalciferol; calcium carbonate. Aspirin stopped at delivery.\nAllergies: NKDA.\nFollow-up: obstetrics incision check at 2 weeks, postpartum visit at 6 weeks; endocrinology in 2 weeks; PCP as scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "portal_message",
+          "start": "2026-06-08T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Baby is here",
+              "date": "2026-06-08T13:40",
+              "author": "patient",
+              "body": "Hi, just wanted to let you know our daughter arrived June 1! The version didn't work so it ended up being the planned C-section, but everything went fine. Home and recovering. Sugars are a roller coaster but endo is on it. Do I need to see you after my OB checks?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Baby is here",
+              "date": "2026-06-08T17:25",
+              "author": "PCP",
+              "body": "Congratulations to you both! I'm so glad you're both well. Yes, let's see you in about 5 weeks to go over your iron, thyroid and diabetes labs and update your medication list. Front desk will send you a time. Call us any time before that if needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-10a",
+          "kind": "office_visit",
+          "start": "2026-07-10T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Postpartum follow-up",
+          "conditions": [
+            {
+              "label": "Maternal care for breech presentation, not applicable or unspecified",
+              "action": "resolved",
+              "icd10": "O32.1XX0"
+            },
+            {
+              "label": "Pre-existing type 1 diabetes mellitus, in pregnancy, first trimester",
+              "action": "resolved",
+              "icd10": "O24.011"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "Stopped at delivery"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Pregnancy completed"
+            },
+            {
+              "drug_text": "ibuprofen 400 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for menstrual cramps",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Menstrual cramps"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              77
+            ],
+            "hr": 75,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 67.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-10T11:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 78
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 25.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 15.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2026-07-10T11:20",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 22
+                },
+                {
+                  "test": "Iron",
+                  "value": 54
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 434
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-10T11:20",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.3
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-10T10:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-10T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-07-10T11:30",
+              "author": "PCP",
+              "body": "Postpartum check-in, 32F, 5.5 weeks after a scheduled cesarean (breech, ECV unsuccessful). Baby along in the car seat, doing well.\n\nRecovering well. Incision healed per OB at 2 weeks, mild soreness only with lifting. Off the post-op ibuprofen and acetaminophen. Bleeding finished. Sleep broken but mood good, enjoying the baby, partner home for the summer; PHQ-9 3. Endo put her back on her pre-pregnancy insulin plan right after delivery, sugars settling, a couple of lows on night feeds that she treats. Aspirin stopped at delivery. Gluten-free, no GI symptoms. Asks if she can use ibuprofen again for cramps once periods return.\nMeds: glargine 24 u qhs, lispro per scale, ferrous sulfate 325 daily, cholecalciferol 2000 u daily, calcium carbonate 500 bid; finished folic acid. NKDA.\n\nExam: well appearing. BP and HR normal. Thyroid not enlarged, nontender. Heart RRR. Lungs clear. Abdomen soft, low transverse cesarean scar well healed, no erythema. No calf tenderness or edema.\n\nA/P\n1. Postpartum after cesarean for breech - healing well; breech and diabetes-in-pregnancy entries resolved. OB postpartum visit next week.\n2. T1DM - back on pre-pregnancy insulin via endo. A1c today.\n3. Recurrent IDA - CBC and ferritin today after delivery; continue ferrous sulfate.\n4. Thyroid: TSH today given T1DM, celiac and family history, postpartum timing.\n5. Celiac, vitamin D deficiency - stable on current plan.\n6. Heavy menses/cramps - ibuprofen 400 prn back on her list.\n7. Aspirin and folic acid off the list.\nFollow-up mid-September, booked."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0,
+            "labs": {
+              "Ferritin": 22,
+              "Hemoglobin": 11.2,
+              "Hemoglobin A1c": 6.6,
+              "Iron": 55,
+              "Mean Corpuscular Volume": 80,
+              "Red Cell Distribution Width": 15.6,
+              "Total Iron-Binding Capacity": 400
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "portal_message",
+          "start": "2026-07-13T12:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2026-07-13T12:15",
+              "author": "PCP",
+              "body": "Hgb 11.2 and ferritin 22: lower than spring 2025 after the delivery but holding; continue daily iron and we'll recheck in September. A1c 6.6. TSH normal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your results",
+              "date": "2026-07-13T12:20",
+              "author": "PCP",
+              "body": "Hi Lauren, your blood count is 11.2 and iron stores are on the low side of normal after the delivery, so please keep taking the iron every day. Thyroid is normal and your A1c is 6.6. We'll repeat the blood count when I see you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T15:30",
+          "reason": "Obstetrics postpartum letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit",
+              "date": "2026-07-14T15:30",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology group. Postpartum visit 07/13/2026, six weeks after scheduled cesarean for breech presentation.\nRecovering well. Incision healed. Lochia resolved. Mood good. Pelvic exam normal; uterus involuted.\nMedications: insulin glargine, insulin lispro, ferrous sulfate, cholecalciferol, calcium carbonate. NKDA.\nContraception options reviewed; she will decide and let us know.\nCleared for usual activity including exercise. Annual gynecology visit in one year; Pap with HPV co-testing due then."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-08-18T09:45",
+              "author": "MA",
+              "body": "Pharmacy e-request: ferrous sulfate 325 mg, 90 day. Approved per PCP protocol, visit scheduled 9/17."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T15:40",
+          "reason": "Diabetes and anemia follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute dacryocystitis of right lacrimal passage|H04.321": {
+        "code": "H04.321",
+        "display": "Acute dacryocystitis of right lacrimal passage",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dermatitis herpetiformis|L13.0": {
+        "code": "L13.0",
+        "display": "Dermatitis herpetiformis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Maternal care for breech presentation, not applicable or unspecified|O32.1XX0": {
+        "code": "O32.1XX0",
+        "display": "Maternal care for breech presentation, not applicable or unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pre-existing type 1 diabetes mellitus, in pregnancy, first trimester|O24.011": {
+        "code": "O24.011",
+        "display": "Pre-existing type 1 diabetes mellitus, in pregnancy, first trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "calcium carbonate 500 MG Oral Tablet": {
+        "code": "318076",
+        "display": "calcium carbonate 500 MG Oral Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ergocalciferol 1.25 MG Oral Capsule": {
+        "code": "1367410",
+        "display": "ergocalciferol 1.25 MG Oral Capsule",
+        "ingredient": "ergocalciferol",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "ibuprofen 400 MG Oral Tablet": {
+        "code": "197805",
+        "display": "ibuprofen 400 MG Oral Tablet",
+        "ingredient": "ibuprofen",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Bacteria identified in Stool by Culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Leukocytes [Presence] in Stool by Light microscopy": {
+        "code": "13655-6",
+        "display": "Leukocytes [Presence] in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ova and parasites identified in Stool by Light microscopy": {
+        "code": "10704-5",
+        "display": "Ova and parasites identified in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound, anatomy survey": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, first trimester": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, growth": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, presentation": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Cesarean section": {
+        "code": "11466000",
+        "display": "Cesarean section",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "External cephalic version": {
+        "code": "240278000",
+        "display": "External cephalic version",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Intravenous infusion of iron": {
+        "code": "718520009",
+        "display": "Intravenous infusion of iron",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

@@ -1,0 +1,4652 @@
+{
+  "unit": "unit-2699",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002699",
+      "given": "Andrea",
+      "family": "Keegan",
+      "birth_date": "1975-08-25",
+      "address_line": "88 Ryan Road",
+      "phone": "+1-518-555-0128",
+      "email": "andrea.keegan@example.test",
+      "marital_status": "partnered",
+      "summary": "Retail cashier turned high school science teacher with hypertension on HCTZ, obesity and varicose veins who joins in 2021. Chronic low back pain and chronic venous insufficiency in 2023, abnormal bleeding with a benign biopsy, then an unexpected first pregnancy at 48 delivered in May 2024. Right plantar fasciitis in 2025 and right-leg cellulitis in January 2026, recurring in August 2026 with a hospital admission.",
+      "events": [
+        {
+          "id": "2021-08-30a",
+          "kind": "telephone",
+          "start": "2021-08-30T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-08-30T10:20",
+              "author": "front desk",
+              "body": "Ms. Keegan phoned about membership. Her old primary care office is cutting hours and she wants a doctor she can actually reach. Explained the membership and that insurance still covers labs and specialists. Booked new patient visit 9/14 at 8:40. Release of information form emailed for her prior office; she will sign and return today. Reminded her to bring her pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "outside_records",
+          "start": "2021-09-08T14:05",
+          "reason": "Records from prior primary care office",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-27T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2021-09-08T14:05",
+              "author": "outside primary care",
+              "body": "Faxed records, 23 pages, from the patient's previous family practice, covering 2015 to 2021.\n\nProblem list on their summary: essential hypertension (on treatment since about 2017), obesity, varicose veins of both legs. Status post laparoscopic cholecystectomy around 2011.\nMedications: hydrochlorothiazide 25 mg daily.\nAllergies: NKDA.\nLast office BP on file 130/82. Weight 192 lb at the last visit.\nPap 2019 negative per their note. Last labs 2020: BMP normal, potassium 4.1.\nImmunizations: COVID-19 Pfizer x2, March and April 2021. Tdap 2013.\n\nFiled to chart. Reviewed for the new patient visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:40",
+          "end": "2021-09-14T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2017-03-01"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Varicose veins of lower extremities",
+              "action": "history",
+              "onset": "2010-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              86
+            ],
+            "hr": 81,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 87.8,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 216
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.48
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retail cashier"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T08:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2021",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "average-risk colorectal cancer screening"
+            },
+            {
+              "id": "mammo-2021",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T08:40",
+              "author": "PCP",
+              "body": "46 yo woman new to me. Previous office records reviewed (faxed 9/8).\n\nHTN since roughly 2017, on HCTZ 25 every morning, doesn't check at home. No headaches, chest pain, palpitations. Weight has been her struggle for about ten years; she's tried a couple of commercial programs. Varicose veins both legs for years, mother has the same. Legs ache a bit after long shifts but no real swelling she's noticed.\n\nPSH: lap chole ~age 35.\nMeds: HCTZ 25 daily. Allergies: none to medications.\nFHx: mother HTN and varicose veins. Father obese with type 2 DM. Maternal aunt had endometrial cancer at 50.\nSocial: works the register at a grocery store, long hours on her feet. Lives with her partner. Never smoked. A drink or two a month. Periods regular. Never pregnant.\nCOVID vaccines x2 this spring. Tdap 2013.\n\nExam: vitals as charted, BMI 32. Well appearing. Heart regular, no murmur. Lungs clear. Abdomen soft, healed lap scars. Legs: scattered varicosities on both calves, no edema, skin intact, pulses good.\n\nA/P\n1. HTN: at goal on HCTZ. CMP today for K and Cr.\n2. Obesity, BMI 32: talked through food and activity in broad terms; she'd like to revisit once she's settled in. A1c and lipids today given father's diabetes.\n3. Varicose veins: asymptomatic, observe.\n4. Health maintenance: due for colon screening at 46, GI referral placed. Screening mammogram ordered. HCV and HIV one-time screens with today's draw. Flu and COVID booster at a nurse visit next month. Pap last 2019, normal; due next year.\nFollow up 6 months for BP."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 88.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2021-09-16a",
+          "kind": "portal_message",
+          "start": "2021-09-16T17:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-16T17:10",
+              "author": "PCP",
+              "body": "Hi Andrea, all of your blood work from Tuesday looks good. Kidney function and potassium are normal on the water pill, A1c is in the normal range, cholesterol is fine, and the hepatitis C and HIV screens are negative. Nothing to change. Gastroenterology should be calling you about the colonoscopy."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              126,
+              72
+            ],
+            "hr": 66
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-05T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-05T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-05T15:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2021-10-05T15:30",
+              "author": "RN",
+              "body": "Here after work for flu and COVID booster. Booster eligibility reviewed per current guidance (BMI over 30). Flu L deltoid, Pfizer booster R deltoid, both tolerated. Observed 15 min, no reaction. BP checked while here, see vitals. VIS given."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "imaging",
+          "start": "2021-10-19T09:00",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2021-10-19T09:00",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies available for comparison. The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and axillae unremarkable.",
+              "conclusion": "BI-RADS 1, negative. Routine screening in one year."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2021",
+              "action": "done",
+              "date": "2021-10-19T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2021-10-20T12:15",
+              "author": "PCP",
+              "body": "Screening mammogram negative, BI-RADS 1. Dense tissue noted. Letter to patient via portal. Repeat next fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-23a",
+          "kind": "outside_records",
+          "start": "2021-11-23T11:40",
+          "reason": "Colonoscopy report",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2021-11-18T08:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "colo-2021",
+              "action": "done",
+              "date": "2021-11-23T11:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Screening colonoscopy report",
+              "date": "2021-11-23T11:40",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group. Procedure date 11/18/2021.\nIndication: first screening colonoscopy, age 46, no family history of colon cancer.\nAllergies: NKDA. Medications: hydrochlorothiazide.\nSedation: monitored anesthesia care. Prep: good (Boston-type score 8 of 9 per report).\nFindings: scope advanced to the cecum, appendiceal orifice photographed. Mucosa normal throughout. No polyps, no diverticula. Small internal hemorrhoids on retroflexion.\nImpression: normal screening colonoscopy.\nRecommendation: next screening colonoscopy in 10 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "pharmacy",
+          "start": "2021-12-14T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ refill",
+              "date": "2021-12-14T09:05",
+              "author": "RN",
+              "body": "Electronic request from her pharmacy, previous prescriber's script out of refills. HCTZ 25 mg #90 with 3 refills sent under PCP per protocol. BMP 9/2021 normal."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "office_visit",
+          "start": "2022-03-08T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              83
+            ],
+            "hr": 66,
+            "spo2": 99,
+            "weight_kg": 87.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-03-08T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-03-08T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: hypertension",
+              "date": "2022-03-08T16:00",
+              "author": "PCP",
+              "body": "S: Six-month BP check. Taking HCTZ most mornings, misses maybe one a week when she opens early. No lightheadedness or cramps. Busy winter at the store. Not much exercise.\nO: BP and weight per vitals. Heart RRR. No leg edema; varicosities unchanged.\nA/P: HTN at goal. Continue HCTZ 25. BMP today. Suggested pairing the pill with her morning coffee. Weight: she is interested in walking with her partner once the weather turns; we'll revisit. Physical in the summer; Pap due then."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-10a",
+          "kind": "portal_message",
+          "start": "2022-03-10T08:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BMP result",
+              "date": "2022-03-10T08:30",
+              "author": "PCP",
+              "body": "Andrea, your potassium, sodium and kidney numbers are all normal. Keep going with the HCTZ as you are. See you this summer for your physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "annual_physical",
+          "start": "2022-07-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              80
+            ],
+            "hr": 72,
+            "rr": 14,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 88.1
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-07-19T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 120
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-07-19T10:10",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-07-19T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-07-19T09:50",
+              "text": "ThinPrep liquid-based cervical cytology. Specimen adequate, transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV DNA not detected.",
+              "conclusion": "NILM, HPV negative. Co-testing interval 5 years."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-07-19T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-07-19T09:20",
+              "author": "PCP",
+              "body": "Annual exam, 46F.\n\nInterval: no new issues. Walking some evenings with her partner, irregularly. Still on her feet all day at work. Periods regular, monthly. No breast concerns. Sleeping ok. PHQ-9 2.\n\nMeds: HCTZ 25 daily. NKDA. Never smoker, rare alcohol.\n\nExam: vitals as charted. HEENT normal. Thyroid not enlarged. Heart and lungs normal. Breasts symmetric, no masses, no nipple discharge, axillae clear. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix normal in appearance, Pap with HPV collected; bimanual unremarkable. Legs with varicosities, no edema. Skin without suspicious lesions.\n\nA/P\n- HTN: at goal. CMP.\n- Obesity: weight stable. Encouraged the walking, 30 minutes most days, and fewer meals out of the break room vending machine.\n- Preventive: Pap/HPV today. Colonoscopy 2021 normal, next 2031. Mammogram this fall. Lipids and A1c today. Flu and the new COVID booster in September.\nReturn 6-8 months for BP, physical next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "portal_message",
+          "start": "2022-07-26T13:40",
+          "reason": "Pap and lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap smear and labs",
+              "date": "2022-07-26T13:40",
+              "author": "PCP",
+              "body": "Good news: your Pap smear is normal and the HPV test is negative, so you won't need another one for five years. Cholesterol, sugar (A1c) and kidney tests from your physical are all normal too."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "nurse_visit",
+          "start": "2022-09-27T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              129,
+              79
+            ],
+            "hr": 77
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T16:12"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-09-27T16:12"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-09-27T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu and COVID bivalent",
+              "date": "2022-09-27T16:10",
+              "author": "MA",
+              "body": "Flu vaccine and Pfizer bivalent booster given, one in each arm. Pt denies prior reactions. Waited 15 minutes, fine. Next mammogram reminder given, she will call radiology to schedule."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-11-01a",
+          "kind": "imaging",
+          "start": "2022-11-01T08:10",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-11-01T08:10",
+              "text": "Bilateral screening mammogram with tomosynthesis, compared with the October 2021 study. Heterogeneously dense breast tissue. No new mass, distortion or suspicious calcification. Stable appearance bilaterally.",
+              "conclusion": "BI-RADS 1, negative. Annual screening recommended."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram 2022",
+              "date": "2022-11-02T07:55",
+              "author": "PCP",
+              "body": "Negative, stable. Patient notified through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "pharmacy",
+          "start": "2022-12-06T10:45",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ renewal",
+              "date": "2022-12-06T10:45",
+              "author": "RN",
+              "body": "Pharmacy asking for new HCTZ 25 mg script, last refill used. Seen 7/2022 with normal CMP. Renewed #90 x3 per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "portal_message",
+          "start": "2023-01-09T20:14",
+          "reason": "Back pain",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lower back",
+              "date": "2023-01-09T20:14",
+              "author": "patient",
+              "body": "Hi, my lower back has been bothering me since last summer and it's not going away. It's a dull ache all the time, sometimes into my rear. Sitting through the staff meeting today was awful, walking around actually helps. No fall or anything. Could I get an appointment next week?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lower back",
+              "date": "2023-01-10T08:05",
+              "author": "front desk",
+              "body": "Hi Andrea, you're booked Tuesday 1/17 at 3:20. If you get numbness, weakness in a leg, or trouble with bladder or bowels before then, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "office_visit",
+          "start": "2023-01-17T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Low back pain",
+          "conditions": [
+            {
+              "label": "Chronic low back pain",
+              "action": "diagnosed",
+              "onset": "2022-07-15",
+              "note": "mechanical; normal inflammatory markers"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              143,
+              88
+            ],
+            "hr": 70,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 87.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-01-17T16:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-01-17T16:00",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 20
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-01-17T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-back",
+              "action": "placed",
+              "order": "Physical therapy referral",
+              "category": "referral",
+              "to": "Physical Therapy",
+              "reason": "chronic mechanical low back pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: low back pain",
+              "date": "2023-01-17T15:20",
+              "author": "PCP",
+              "body": "47F with HTN, here for low back pain.\n\nHPI: Started around July, so about six months. Steady dull ache across the low back, now and then into both buttocks, never past the knees. Sitting is the worst (long meetings, driving); walking eases it. No injury. No fevers, no weight loss, no night pain that wakes her, no bowel or bladder change, no numbness or weakness.\n\nMeds: HCTZ 25. NKDA.\n\nExam: BMI 32. Comfortable sitting but shifts often. Tender over the lumbar paraspinals both sides, no midline bony tenderness. SLR negative on both sides. Strength 5/5 in both legs, sensation intact to light touch, patellar and ankle reflexes 2+ and symmetric. Gait normal.\n\nLabs today: Hgb 13.8, WBC 7.2, ESR 20, CRP 0.8 mg/dL (reported as 8 mg/L).\n\nA/P: Chronic mechanical low back pain. No red flags, neuro exam normal, and the blood work doesn't point to anything inflammatory. No imaging needed. PT referral for core and hip strengthening. Asked her to walk daily, which she says already helps; also gets her moving on the weight. Stand up every 30 minutes at work. Heat as needed. Recheck if not better after PT."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-01-19a",
+          "kind": "portal_message",
+          "start": "2023-01-19T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back pain labs",
+              "date": "2023-01-19T12:30",
+              "author": "PCP",
+              "body": "Your blood count and the inflammation markers came back normal, which fits the muscle-and-mechanics kind of back pain we talked about. PT should be calling you to set up the first visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "outside_records",
+          "start": "2023-02-14T15:50",
+          "reason": "Physical therapy evaluation",
+          "procedures": [
+            {
+              "procedure": "Physical therapy evaluation, low complexity",
+              "performed": "2023-02-08T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical therapy initial evaluation",
+              "date": "2023-02-14T15:50",
+              "author": "physical therapy",
+              "body": "Outpatient physical therapy. Date of evaluation 2/8/2023.\nReferral: chronic mechanical low back pain.\nSubjective: 7 months of low back ache with occasional buttock spread; worse with prolonged sitting, eased by walking. Pain 4/10 today.\nObjective: lumbar range of motion full with end-range discomfort. Neuro screen negative. No directional preference.\nAssessment: mechanical low back pain, deconditioned core. Good prognosis.\nPlan: 2x weekly for 6 weeks: core stabilization, hip strengthening, sitting tolerance and ergonomic training, home exercise program."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-20a",
+          "kind": "portal_message",
+          "start": "2023-03-20T21:02",
+          "reason": "Leg swelling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Swollen ankles",
+              "date": "2023-03-20T21:02",
+              "author": "patient",
+              "body": "Back is a lot better with PT, thank you. New thing: both my ankles and lower legs have been puffing up, it's been building since around September. Fine in the morning, by the end of a shift at the register my socks leave deep marks. No chest pain or trouble breathing. Can I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Swollen ankles",
+              "date": "2023-03-21T09:12",
+              "author": "RN",
+              "body": "Thanks for letting us know. Since it's both legs and you feel well otherwise, a visit next week is fine. Booked Monday 3/27 at 4:00. If one leg suddenly gets more painful or swollen than the other, or you get short of breath, call us that day."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-27a",
+          "kind": "office_visit",
+          "start": "2023-03-27T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Bilateral leg swelling",
+          "conditions": [
+            {
+              "label": "Chronic venous insufficiency",
+              "action": "diagnosed",
+              "onset": "2022-09-15"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              81
+            ],
+            "hr": 82,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 85.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-03-27T16:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-27T16:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-03-27T16:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 59
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-27T16:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-03-27T16:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.8
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-27T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: leg swelling",
+              "date": "2023-03-27T16:00",
+              "author": "PCP",
+              "body": "Seen two months ago for her back, which is much improved with PT.\n\nHPI: Six months of gradually increasing swelling in both lower legs. Minimal on waking, worse through the day, worst after long shifts standing at the register. No chest pain, dyspnea, orthopnea or recent travel. No new meds. Known varicose veins.\n\nExam: vitals within normal limits. Heart regular, no murmur, no JVD. Lungs clear. Abdomen soft, no masses. Legs: pitting edema both sides, most at the ankles, with brownish hyperpigmentation of the overlying skin; varicosities over both calves. Calves nontender, pedal pulses intact. Skin intact.\n\nLabs today: CBC normal, creatinine 0.9, UA negative for protein and blood, liver panel normal, TSH normal.\n\nA/P: Chronic venous insufficiency with varicose veins, made worse by standing all day. Kidney, liver and thyroid workup unremarkable, no sign of a heart cause on exam. Knee-high graduated compression stockings, 15-20 mmHg to start, on in the morning. Elevate legs in the evenings, calf pumps during shifts. Keep walking. HCTZ unchanged. Physical in June."
+            }
+          ],
+          "state": {
+            "weight_kg": 85.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "portal_message",
+          "start": "2023-03-29T07:50",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Swelling workup",
+              "date": "2023-03-29T07:50",
+              "author": "PCP",
+              "body": "Andrea, your kidney, liver and thyroid tests and the urine test were all normal, and the blood count was fine. This all fits the vein explanation. Give the compression stockings a few weeks and let me know how they feel."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Swelling workup",
+              "date": "2023-03-29T19:31",
+              "author": "patient",
+              "body": "Got them at the medical supply place. Not glamorous but my legs feel better at night already."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "outside_records",
+          "start": "2023-04-11T14:20",
+          "reason": "Physical therapy discharge",
+          "procedures": [
+            {
+              "procedure": "Physical therapy, therapeutic exercise",
+              "performed": "2023-03-29T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pt-back",
+              "action": "done",
+              "date": "2023-04-11T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Physical therapy discharge summary",
+              "date": "2023-04-11T14:20",
+              "author": "physical therapy",
+              "body": "Discharge from outpatient PT after 11 visits (2/8 to 3/29/2023). Low back pain now 1/10, intermittent. Sitting tolerance improved from 20 to over 60 minutes. Independent with home program; she is walking 30 to 40 minutes most days. Goals met. Discharged to home exercise."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "annual_physical",
+          "start": "2023-06-27T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              136,
+              69
+            ],
+            "hr": 86,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 82.4
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-27T10:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 187
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 102
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-06-27T10:45",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-27T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "Retail cashier; starting as a high school science teacher in August"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-06-27T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-2023",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "irregular, heavy menstrual bleeding"
+            },
+            {
+              "id": "mammo-2023",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-27T10:00",
+              "author": "PCP",
+              "body": "Annual, 47F.\n\nInterval: Back pain essentially gone after PT; she has kept up daily walks and is down about 5 kg since January without trying any diet program. Wearing compression stockings at work, ankles much better. Big news: she starts as a high school science teacher in late August, leaving the store this week.\n\nGYN: periods have been off since about April. Coming every two to three weeks, heavier than her usual, some lasting a week. Before that, regular monthly, 4-5 days. No bleeding after intercourse. Partner, condoms not always. Aunt had uterine cancer at 50 so she is worried.\n\nPHQ-9 3. Meds HCTZ 25. NKDA.\n\nExam: vitals as charted, BMI about 30. Heart, lungs normal. Breasts without masses. Abdomen soft, no palpable mass. Legs with trace ankle edema, varicosities, hyperpigmentation at the ankles, stockings on.\n\nA/P\n- Irregular heavy bleeding at 47 with family history of endometrial cancer: needs an endometrial evaluation. Gynecology referral placed, asked them to see her this summer.\n- HTN: controlled. BMP.\n- CVI: better with stockings, continue.\n- Back pain: resolved for practical purposes, keep exercises.\n- Weight: real progress with walking; encouraged.\n- Prevention: mammogram due, ordered. Lipids, A1c today. Pap/HPV 2022 normal. Colonoscopy 2021 normal. Flu and COVID in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2023-07-06a",
+          "kind": "imaging",
+          "start": "2023-07-06T08:30",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2023-07-06T08:30",
+              "text": "Bilateral screening mammogram with tomosynthesis. Compared with 2021 and 2022. Heterogeneously dense tissue. No suspicious mass, calcification or distortion. No change.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2023",
+              "action": "done",
+              "date": "2023-07-06T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram 2023",
+              "date": "2023-07-07T11:00",
+              "author": "PCP",
+              "body": "Negative. Portal letter sent."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-31a",
+          "kind": "specialist_visit",
+          "start": "2023-07-31T13:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Abnormal uterine bleeding",
+          "conditions": [
+            {
+              "label": "Abnormal uterine bleeding concerning for endometrial hyperplasia or malignancy",
+              "action": "diagnosed",
+              "onset": "2023-04-15",
+              "icd10": "N93.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              86
+            ],
+            "hr": 89,
+            "weight_kg": 81.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-07-31T13:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-07-31T13:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Choriogonadotropin beta subunit, serum",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "Negative (<5)"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2023-07-31T14:45",
+              "text": "Transabdominal and transvaginal pelvic ultrasound. Uterus anteverted, mildly enlarged for age, homogeneous myometrium without a discrete mass. Endometrium 9 mm, uniform, no focal lesion or fluid. Right and left ovaries normal in size and appearance. No adnexal mass. No free fluid.",
+              "conclusion": "Mildly enlarged uterus. Endometrium 9 mm without focal abnormality. Normal ovaries."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Endometrial biopsy",
+              "snomed": "386802000",
+              "performed": "2023-07-31T14:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-2023",
+              "action": "done",
+              "date": "2023-07-31T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2023-08-02T09:15",
+              "author": "gynecology",
+              "body": "Outside obstetrics and gynecology practice. Date of service 7/31/2023. Referred by her primary care physician.\n\nReason: irregular heavy menses x 3 months.\n\nHistory: 47-year-old G0. Cycles used to be regular, 4 to 5 days, moderate flow. Since spring, bleeding every 2 to 3 weeks and lasting as long as 7 days, heavier. She denies any change in weight, appetite or stress. Sexually active with one male partner, condoms inconsistently. Pap about a year ago normal. Medical: hypertension on hydrochlorothiazide, obesity, venous insufficiency, recent back pain. PSH: lap chole. NKDA. FHx: maternal aunt with endometrial cancer at 50. Never smoker.\n\nExam: BP 132/86, BMI 30. Abdomen benign. Speculum: normal cervix and vagina. Bimanual: uterus slightly enlarged, nontender, mobile; adnexa without mass or tenderness.\n\nLabs: Hgb 11.2, platelets 250K, TSH 2.5, serum beta-hCG negative.\n\nAssessment: abnormal uterine bleeding at 47 with obesity and a family history of endometrial cancer; endometrial hyperplasia or carcinoma must be excluded.\n\nProcedures today: office endometrial biopsy with Pipelle, two passes, adequate tissue, tolerated well. Pelvic ultrasound: endometrium 9 mm, no focal lesion, ovaries normal.\n\nPlan: pathology to follow. Bleeding diary. Return in about 3 months or sooner depending on the pathology."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              86
+            ],
+            "weight_kg": 81.8
+          },
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-08-04a",
+          "kind": "outside_records",
+          "start": "2023-08-04T16:10",
+          "reason": "Endometrial biopsy pathology",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-07-31T14:20",
+              "text": "Specimen: endometrium, office biopsy. Gross: multiple fragments of tan-red soft tissue and blood, 1.2 cc in aggregate, entirely submitted. Microscopic: proliferative-phase endometrium with tubular glands and cellular stroma. Glands evenly spaced; no crowding, no cytologic atypia. No hyperplasia. No malignancy identified.",
+              "conclusion": "Benign proliferative endometrium. Negative for hyperplasia, atypia and malignancy.",
+              "issued": "2023-08-04T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology result note",
+              "date": "2023-08-04T16:10",
+              "author": "gynecology",
+              "body": "Pathology reviewed with patient by phone. Benign proliferative endometrium, no hyperplasia or cancer. Together with a 9 mm endometrium and normal ovaries, the bleeding is most consistent with perimenopausal anovulatory cycles. Concern for hyperplasia or malignancy set aside. She prefers to watch for now rather than start hormonal treatment. Keep the bleeding diary, follow-up visit in about 3 months. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-07a",
+          "kind": "portal_message",
+          "start": "2023-08-07T12:05",
+          "reason": "Gynecology results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Biopsy result",
+              "date": "2023-08-07T12:05",
+              "author": "PCP",
+              "body": "Hi Andrea, I got the gynecologist's note. The biopsy is benign, no precancer and no cancer. That's the answer we were hoping for, especially with your aunt's history. The irregular periods are most likely the hormonal shifts that come before menopause. Good luck with the new job this month!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Biopsy result",
+              "date": "2023-08-07T18:40",
+              "author": "patient",
+              "body": "Huge relief. Thank you. Classroom setup starts in two weeks, nervous and excited."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              127,
+              80
+            ],
+            "hr": 79
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:48"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:48"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-10T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "date": "2023-10-10T15:45",
+              "author": "MA",
+              "body": "Came after school. Flu shot left arm, updated Moderna COVID right arm. No problems after 15 minutes. She mentioned she's been more tired than usual since starting teaching; advised to bring it up at her gyn follow-up next month or call us."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-01a",
+          "kind": "specialist_visit",
+          "start": "2023-11-01T14:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Gynecology follow-up: no menses, fatigue",
+          "conditions": [
+            {
+              "label": "Abnormal uterine bleeding concerning for endometrial hyperplasia or malignancy",
+              "action": "resolved",
+              "icd10": "N93.9"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              85
+            ],
+            "hr": 80,
+            "weight_kg": 82.0
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-11-01T14:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.4
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-01T14:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Fasting Glucose",
+                  "value": 98
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-01T14:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 211
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-01T14:40",
+              "resulted": "2023-11-02T10:20",
+              "results": [
+                {
+                  "test": "Choriogonadotropin beta subunit, serum",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "value": 48200
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up",
+              "date": "2023-11-01T14:00",
+              "author": "gynecology",
+              "body": "Outside obstetrics and gynecology practice. Date of service 11/1/2023.\n\nThree-month follow-up after the July visit for abnormal bleeding (benign endometrial biopsy). Since early August she has had no bleeding at all; last episode started about 8/6. For roughly three months she has also been sleeping poorly, tired, and has gained a little weight. New teaching job this fall; she thinks it is stress and that menopause is starting. No hot flashes, no vaginal dryness, no mood swings.\n\nExam: BP 135/85, BMI 30. Breasts: no masses, no skin or nipple change, axillae clear. Pelvic: uterus enlarged and soft, no masses; adnexa normal.\n\nUA negative for protein and glucose. Fasting glucose 98, TSH 2.5, CBC normal. Serum hCG sent.\n\nAssessment: secondary amenorrhea with an enlarged, soft uterus. Pregnancy must be excluded before attributing this to perimenopause.\n\nPlan: will call with hCG. The abnormal bleeding has stopped and the biopsy was benign; that problem is closed."
+            }
+          ],
+          "state": {
+            "bp": [
+              135,
+              85
+            ],
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2023-11-03a",
+          "kind": "specialist_visit",
+          "start": "2023-11-03T08:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Positive pregnancy test, dating ultrasound",
+          "conditions": [
+            {
+              "label": "Supervision of elderly primigravida",
+              "action": "diagnosed",
+              "onset": "2023-08-20",
+              "note": "first pregnancy at 48; chronic hypertension; EDD 2024-05-12",
+              "icd10": "O09.519"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime until 36 weeks",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "preeclampsia prevention, chronic hypertension in pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              90
+            ],
+            "hr": 78,
+            "weight_kg": 83.4
+          },
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, first trimester",
+              "loinc": "11525-3",
+              "performed": "2023-11-03T08:45",
+              "text": "Transvaginal and transabdominal obstetric ultrasound. Single intrauterine gestation. Crown-rump length corresponds to 12 weeks 5 days, concordant with the last menstrual period of 8/6/2023. Cardiac activity present, fetal heart rate 158 bpm. Placenta forming posteriorly. Normal amniotic fluid. Ovaries unremarkable.",
+              "conclusion": "Single live intrauterine pregnancy at 12 weeks 5 days. EDD 5/12/2024."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetric intake",
+              "date": "2023-11-06T10:30",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology practice. Date of service 11/3/2023.\n\nSerum quantitative hCG from 11/1 returned at 48,200 mIU/mL. Patient called and seen this morning for dating.\n\n48-year-old G1P0, spontaneous conception. Ultrasound: single live IUP, CRL 12w5d, FHR 158. EDD 5/12/2024. She is surprised and, after some time to talk with her partner, wants to continue the pregnancy.\n\nRisk factors: maternal age 48, chronic hypertension on hydrochlorothiazide (well controlled: 135/85 on 11/1), obesity.\n\nPlan:\n- Continue hydrochlorothiazide 25 mg daily, her long-standing agent with good control; home BP cuff, goal under 140/90.\n- Start low-dose aspirin 81 mg nightly now through 36 weeks for preeclampsia risk reduction.\n- Cell-free DNA screening offered and drawn today.\n- Anatomy survey at 20-22 weeks; early glucose screen deferred to 24-28 weeks.\n- Prenatal visits every 4 weeks. Copy to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-03b",
+          "kind": "portal_message",
+          "start": "2023-11-03T19:22",
+          "reason": "Pregnancy",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Not menopause",
+              "date": "2023-11-03T19:22",
+              "author": "patient",
+              "body": "So... not menopause. I'm 12 weeks pregnant. Still processing. The OB is keeping me on my blood pressure pill and added a baby aspirin. Do I need to see you for anything, or is it all them now?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Not menopause",
+              "date": "2023-11-04T09:10",
+              "author": "PCP",
+              "body": "Andrea, what news. The OB team will run your prenatal care and your blood pressure during the pregnancy, and they'll copy me on their notes. You don't need anything extra from me right now. Keep your stockings on, the legs often swell more as pregnancy goes on, and reach out any time, about anything."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-27a",
+          "kind": "outside_records",
+          "start": "2023-11-27T13:00",
+          "reason": "Prenatal screening result",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cell-free DNA screen",
+              "date": "2023-11-27T13:00",
+              "author": "obstetrics",
+              "body": "Prenatal cell-free DNA screen, collected 11/3/2023, resulted 11/13/2023. Fetal fraction adequate. Low risk for trisomy 21, trisomy 18 and trisomy 13. Result discussed with patient by the obstetric nurse. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ 90-day supply",
+              "date": "2023-12-05T09:40",
+              "author": "RN",
+              "body": "Refill request for hydrochlorothiazide 25 mg. OB is continuing it in pregnancy per their 11/6 note. Renewed #90 x3."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-04a",
+          "kind": "outside_records",
+          "start": "2024-01-04T10:15",
+          "reason": "Anatomy ultrasound",
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, anatomy survey",
+              "loinc": "11525-3",
+              "performed": "2024-01-02T09:30",
+              "text": "Detailed fetal anatomic survey at 21 weeks 1 day by dates. Single live intrauterine fetus, cephalic. Fetal heart rate 146 bpm. Biometry concordant with dates; estimated fetal weight at the 48th percentile. Head, face, spine, heart (four-chamber and outflow views), abdominal wall, stomach, kidneys, bladder and limbs seen and normal. Three-vessel cord. Placenta posterior, well clear of the internal os. Amniotic fluid normal. Cervix long and closed.",
+              "conclusion": "Normal anatomy survey. Growth appropriate. Posterior placenta, no previa."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anatomy scan report",
+              "date": "2024-01-04T10:15",
+              "author": "obstetrics",
+              "body": "Ultrasound report from the patient's obstetric practice, scan date 1/2/2024, faxed for the PCP's records. Normal anatomy, appropriate growth. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "specialist_visit",
+          "start": "2024-02-20T15:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 28 weeks",
+          "vitals": {
+            "bp": [
+              128,
+              80
+            ],
+            "hr": 78,
+            "weight_kg": 88.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-02-20T15:00",
+              "results": [
+                {
+                  "test": "Glucose, 1 hour post 50 g glucose",
+                  "loinc": "1504-0",
+                  "unit": "mg/dL",
+                  "value": 118
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-02-20T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit 28 weeks",
+              "date": "2024-02-23T08:40",
+              "author": "obstetrics",
+              "body": "Outside obstetric practice, prenatal visit 2/20/2024, 28w3d.\nFeeling well, active fetal movement. No headaches, visual change, RUQ pain. Mild ankle swelling by evening, as before pregnancy, wearing compression stockings.\nBP well controlled on hydrochlorothiazide; aspirin 81 mg nightly. Fundal height appropriate, FHR 140s.\n1-hour glucose challenge 118 mg/dL, normal.\nTdap given today.\nPlan: visits every 2 weeks from 32 weeks with BP checks; growth scan at 32 weeks; aspirin through 36 weeks; discussed induction at 39 weeks given age and chronic hypertension. Copy to PCP."
+            }
+          ],
+          "state": {
+            "weight_kg": 88.4
+          },
+          "measure": [
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T20:48",
+          "reason": "Leg swelling in pregnancy",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Legs",
+              "date": "2024-03-26T20:48",
+              "author": "patient",
+              "body": "Hi, I'm 33 weeks now. My legs have been getting more swollen and achy since the fall and now the right one is worse than the left. OB checked my BP and urine last week and said those are fine and that legs swell in pregnancy, but with my veins and my blood pressure history I'd feel better if you looked. Standing in front of the class all day is rough."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Legs",
+              "date": "2024-03-27T07:30",
+              "author": "PCP",
+              "body": "Happy to see you. Front desk will find you a spot next week. If the right calf becomes suddenly painful, red or much bigger, or you're short of breath, go to labor and delivery or the ED that day rather than waiting for me."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-05a",
+          "kind": "office_visit",
+          "start": "2024-04-05T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Leg swelling, 34 weeks pregnant",
+          "vitals": {
+            "bp": [
+              136,
+              77
+            ],
+            "hr": 69,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 91.9
+          },
+          "social": [
+            {
+              "item": "Occupation",
+              "value": "High school science teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-05T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-2024",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "progressive leg edema in late pregnancy with chronic hypertension; exclude cardiac cause"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: leg swelling in pregnancy",
+              "date": "2024-04-05T15:40",
+              "author": "PCP",
+              "body": "48F G1 at 34w5d, EDD 5/12, prenatal care with outside OB. Chronic HTN on HCTZ, aspirin 81 through 36 weeks. Known CVI and varicose veins.\n\nHPI: Since the fall, both lower legs swelling and aching more, now right more than left, worst late in the teaching day. No chest pain, no dyspnea at rest or lying flat, no headaches or visual change. Wears stockings most days.\n\nExam: vitals as charted, BP in her usual range. Gravid. Heart regular, no murmur, lungs clear, no JVD. Legs: pitting edema both sides, right a bit more, varicosities, ankle hyperpigmentation. Calves soft, not tender. Pulses intact.\n\nA/P: Worsening edema on top of her venous insufficiency in the third trimester. OB's BP and urine checks reassuring. With her hypertension she would like a heart evaluation before delivery, and I think that's reasonable: cardiology referral, asked for a visit within 2-3 weeks. Continue stockings, elevate in the evening, sit for part of each class period if she can."
+            }
+          ],
+          "state": {
+            "weight_kg": 91.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "outside_records",
+          "start": "2024-04-16T12:20",
+          "reason": "Prenatal visit, 36 weeks",
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "36 weeks gestation, per plan"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit 36 weeks",
+              "date": "2024-04-16T12:20",
+              "author": "obstetrics",
+              "body": "Outside obstetric practice, visit 4/14/2024 (36w1d). BP controlled on HCTZ. No symptoms of preeclampsia. Growth scan at 32 weeks appropriate. Cephalic. Low-dose aspirin stopped today as planned. Induction scheduled for 5/6 at 39 weeks. Copy to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "specialist_visit",
+          "start": "2024-04-22T10:30",
+          "service": "Cardiology",
+          "reason": "Lower extremity swelling",
+          "vitals": {
+            "bp": [
+              138,
+              86
+            ],
+            "hr": 78,
+            "spo2": 99,
+            "weight_kg": 92.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-22T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 219
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-04-22T11:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 79
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-22T11:15",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-04-22T11:10",
+              "results": [
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL FEU",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "cards-2024",
+              "action": "done",
+              "date": "2024-04-22T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology consultation",
+              "date": "2024-04-25T14:00",
+              "author": "cardiology",
+              "body": "Outside cardiology group. Visit date 4/22/2024. Requested by PCP.\n\nQuestion: progressive leg edema in late pregnancy with chronic hypertension.\n\nHPI: 48-year-old woman, G1 at 37 weeks, with hypertension on hydrochlorothiazide and obesity, who had similar leg complaints evaluated in March 2023 and was found to have venous insufficiency. Six months of increasing swelling and aching of both lower legs, worse by evening and after standing. No chest pain, no shortness of breath, no recent travel.\n\nMeds: hydrochlorothiazide 25 mg daily (aspirin recently stopped by OB). NKDA.\nPMH: hypertension, obesity, chronic venous insufficiency, varicose veins, pregnancy. PSH: cholecystectomy.\nSocial: teacher, never smoker.\n\nExam: BP 138/86, HR 78, BMI 34. Gravid, comfortable. JVP not elevated. Heart regular, normal S1 and S2, no murmur. Lungs clear. Legs: pitting edema on both sides, more on the right; brown pigmentation around the medial malleoli; several dilated, tortuous veins on the calves. No open ulcer; healed ulcer scar over the right medial ankle.\n\nData: CBC normal. Creatinine 0.9. UA without protein or blood. D-dimer negative.\n\nImpression: edema from chronic venous insufficiency with varicose veins, aggravated by late pregnancy. No clinical evidence of heart failure or another cardiac cause. Normal creatinine and no proteinuria.\n\nRecommendations: continue graduated compression stockings and leg elevation; reassess after delivery. No cardiac testing needed. Happy to see her again if symptoms change."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              86
+            ],
+            "weight_kg": 92.7
+          },
+          "measure": [
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-05-06a",
+          "kind": "hospital_admission",
+          "start": "2024-05-06T07:00",
+          "end": "2024-05-09T11:30",
+          "service": "Obstetrics",
+          "reason": "Induction of labor at 39 weeks",
+          "conditions": [
+            {
+              "label": "Supervision of elderly primigravida",
+              "action": "resolved",
+              "note": "vaginal delivery 2024-05-07",
+              "icd10": "O09.519"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 80,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-05-06T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-05-06T07:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 62
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Vaginal delivery",
+              "snomed": "700000006",
+              "performed": "2024-05-07T03:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2024-05-13T15:10",
+              "author": "obstetrics",
+              "body": "Regional hospital, labor and birth unit. Admitted 5/6/2024, discharged 5/9/2024.\n\nAdmitting diagnosis: pregnancy at 39w1d, advanced maternal age, chronic hypertension; scheduled induction.\nHospital course: cervical ripening and oxytocin induction. Spontaneous vaginal delivery 5/7/2024 at 03:42 of a liveborn female, 3,280 g, vigorous at birth. Estimated blood loss 350 mL. Blood pressures 120s-130s/70s-80s throughout; preeclampsia labs (CBC, creatinine, liver enzymes) normal on admission. Uncomplicated postpartum course; ambulating, voiding, pain controlled.\n\nDischarge medications: hydrochlorothiazide 25 mg daily (continued).\nFollow-up: obstetrics in 6 weeks; BP check at home, call for BP over 150/100 or headache. Copy to PCP."
+            }
+          ],
+          "state": {
+            "bp": [
+              134,
+              84
+            ]
+          },
+          "measure": [
+            "hr",
+            "temp_c",
+            "spo2",
+            "rr"
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "portal_message",
+          "start": "2024-05-14T12:45",
+          "reason": "After delivery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Welcome, baby",
+              "date": "2024-05-14T12:45",
+              "author": "PCP",
+              "body": "Andrea, I saw the hospital summary come through. I'm so glad you and your daughter are both well. Keep checking your blood pressure at home these first weeks; if it's over 150/100 or you get a bad headache, call the OB right away. Let's get you in for your physical this summer once things settle."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Welcome, baby",
+              "date": "2024-05-14T22:10",
+              "author": "patient",
+              "body": "Thank you! Exhausted and happy. BPs at home 120s/80. Legs are already less puffy."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "specialist_visit",
+          "start": "2024-06-18T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "vitals": {
+            "bp": [
+              123,
+              83
+            ],
+            "hr": 74,
+            "weight_kg": 86.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Postpartum visit",
+              "date": "2024-06-20T09:00",
+              "author": "obstetrics",
+              "body": "Outside obstetric practice, comprehensive postpartum visit 6/18/2024, 6 weeks after vaginal delivery. Recovering well. Lochia resolved. BP controlled on hydrochlorothiazide. Mood screen negative. Contraception discussed: she and her partner will use condoms; she declines hormonal methods. Return to routine gynecologic care; Pap/HPV next due 2027. Copy to PCP."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.4
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-25a",
+          "kind": "pharmacy",
+          "start": "2024-06-25T11:20",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ refill",
+              "date": "2024-06-25T11:20",
+              "author": "RN",
+              "body": "Pharmacy request for hydrochlorothiazide 25 mg. Postpartum, OB continued it. Refilled x 90 days. Physical booked 7/23."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "annual_physical",
+          "start": "2024-07-23T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              139,
+              83
+            ],
+            "hr": 72,
+            "rr": 15,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 86.1
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-07-23T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 56
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 91
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-07-23T09:50",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Glucose",
+                  "value": 81
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-23T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-07-23T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-07-23T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-07-23T09:00",
+              "author": "PCP",
+              "body": "48F, 11 weeks postpartum. Baby came along in the car seat and slept through it.\n\nInterval: Uncomplicated induction and vaginal delivery 5/7. Postpartum visit with OB normal, using condoms. Sleep fragmented but mood good, partner sharing nights; PHQ-9 2. Back fine. Legs much better since delivery, still wears stockings on school days. Going back to the classroom in late August.\n\nMeds: HCTZ 25 daily. NKDA. No tobacco; alcohol rare.\n\nExam: vitals as charted. Heart and lungs normal. Breasts normal. Abdomen soft, nontender, diastasis not palpable. Legs: trace ankle edema, varicosities, ankle pigmentation, healed scar right medial ankle, skin intact.\n\nA/P\n- HTN: back at her baseline on HCTZ. CMP.\n- CVI: improved after delivery. Continue stockings and elevation.\n- Weight: BMI about 32, near her pre-pregnancy weight. Walking with the stroller.\n- Prevention: mammogram this fall (ordered). Labs today: lipids, A1c, CBC. Tdap given in pregnancy. Pap/HPV 2022, next 2027. Colonoscopy 2031. Flu and COVID in October.\nBP follow-up in about 4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              82
+            ],
+            "weight_kg": 86.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2024-07-25a",
+          "kind": "portal_message",
+          "start": "2024-07-25T16:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2024-07-25T16:00",
+              "author": "PCP",
+              "body": "All normal: blood count, kidney and liver tests, potassium, A1c and cholesterol. Nice to see the blood count fully recovered after delivery."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "imaging",
+          "start": "2024-09-10T16:20",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-09-10T16:20",
+              "text": "Bilateral screening mammogram with tomosynthesis. Compared with July 2023. Heterogeneously dense breasts, symmetric. No suspicious mass, calcification or architectural distortion.",
+              "conclusion": "BI-RADS 1, negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-09-10T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram 2024",
+              "date": "2024-09-11T08:20",
+              "author": "PCP",
+              "body": "Normal screening mammogram. Patient notified."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              132,
+              79
+            ],
+            "hr": 70
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:52"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:52"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu and COVID 2024",
+              "date": "2024-10-08T15:50",
+              "author": "MA",
+              "body": "Trivalent flu and 2024-25 Pfizer COVID given. Tolerated. BP recorded. She'll book the BP follow-up for November at the desk."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-12-02a",
+          "kind": "portal_message",
+          "start": "2024-12-02T21:35",
+          "reason": "Heel pain",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Heel",
+              "date": "2024-12-02T21:35",
+              "author": "patient",
+              "body": "Sorry I cancelled in November, the baby had a cold. Can I reschedule? Also my right heel has been killing me since the summer. First steps out of bed are like stepping on a nail, then it loosens up, then it's bad again after a day on my feet teaching. I didn't hurt it that I know of."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Heel",
+              "date": "2024-12-03T08:10",
+              "author": "front desk",
+              "body": "No problem at all. You're booked Tuesday 12/10 at 3:40 for your blood pressure and the heel."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right heel pain; blood pressure",
+          "vitals": {
+            "bp": [
+              136,
+              81
+            ],
+            "hr": 81,
+            "spo2": 99,
+            "weight_kg": 85.7
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-10T16:15",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-12-10T15:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-2025",
+              "action": "placed",
+              "order": "Orthopedics referral",
+              "category": "referral",
+              "to": "Orthopedics",
+              "reason": "right heel pain for about 5 months"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: heel pain, HTN",
+              "date": "2024-12-10T15:40",
+              "author": "PCP",
+              "body": "S: Right heel pain about 5 months, sharp, worst with the first steps in the morning and after long days standing in the classroom. No injury. Has tried different sneakers. BP fine on HCTZ, home readings 120s-130s/80s.\nO: Vitals as charted. Right foot: tender over the inner heel, no swelling or redness, normal ankle motion. Legs with varicosities and trace edema, unchanged.\nA/P:\n1. Right heel pain, sounds like plantar fascia. She'd like orthopedics to look and decide on any imaging; referral placed. Meanwhile calf stretches before getting out of bed.\n2. HTN controlled. BMP today. Continue HCTZ.\n3. CVI stable with stockings.\nPhysical next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "pharmacy",
+          "start": "2024-12-17T10:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ renewal",
+              "date": "2024-12-17T10:05",
+              "author": "RN",
+              "body": "Renewal request for hydrochlorothiazide 25 mg daily. BMP 12/10 normal. Sent #90 with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-20a",
+          "kind": "specialist_visit",
+          "start": "2025-01-20T09:15",
+          "service": "Orthopedics",
+          "reason": "Right heel pain",
+          "conditions": [
+            {
+              "label": "Plantar fasciitis, unspecified foot",
+              "action": "diagnosed",
+              "onset": "2024-07-10",
+              "note": "right"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              89
+            ],
+            "hr": 71
+          },
+          "reports": [
+            {
+              "study": "Foot X-ray",
+              "performed": "2025-01-20T09:00",
+              "text": "Right foot, three views (AP, oblique, lateral), weight-bearing. Bones normally mineralized. No fracture or dislocation. Joint spaces preserved. No calcaneal spur or erosion. Soft tissues unremarkable.",
+              "conclusion": "Normal right foot radiographs."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ortho-2025",
+              "action": "done",
+              "date": "2025-01-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Orthopedic consultation: right heel",
+              "date": "2025-01-23T13:30",
+              "author": "orthopedics",
+              "body": "Outside orthopedic and sports medicine group. Seen 1/20/2025 at the request of her PCP.\n\nCC: right heel pain x 6 months.\n\nHPI: 49-year-old teacher with obesity, hypertension and venous insufficiency, previously seen elsewhere for leg swelling with standing. Sharp, stabbing pain under the right heel, worst with the first steps in the morning, a little better after a few minutes of walking, then worse again after standing for long stretches at school. No trauma.\n\nPMH (from the referral packet): obesity, hypertension, chronic venous insufficiency, varicose veins, chronic low back pain, abnormal uterine bleeding, pregnancy. Meds: hydrochlorothiazide 25 mg daily. NKDA.\n\nExam: right foot tender at the medial calcaneal tubercle and along the proximal plantar fascia. Passive dorsiflexion of the toes reproduces the pain. Ankle dorsiflexion normal. No swelling or erythema. Neurovascularly intact.\n\nImaging: right foot X-rays today, no fracture or bony abnormality.\n\nAssessment: right plantar fasciitis.\n\nPlan: plantar fascia and calf stretching three times daily, cushioned heel inserts in school shoes, night splint, ice massage after work. Expect gradual improvement over 2 to 4 months. Return if not better by spring to discuss further options."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T19:05",
+          "reason": "Night splint",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Night splint",
+              "date": "2025-01-27T19:05",
+              "author": "patient",
+              "body": "Ortho said plantar fasciitis and gave me stretches, heel cups and a night splint. The splint is not cheap at the store. Is it worth it? And does my insurance cover it if you write it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Night splint",
+              "date": "2025-01-28T07:45",
+              "author": "PCP",
+              "body": "The splint does help a lot of people with the morning pain, so I'd give it a try. Orthopedics wrote the plan, so ask their office to send the order to a medical supply store; that's usually how insurance will cover it. The stretches are the most important part."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              79
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 86.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-03-18T16:10",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-03-18T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: HTN, heel",
+              "date": "2025-03-18T15:40",
+              "author": "PCP",
+              "body": "BP visit. Taking HCTZ daily. Heel noticeably better with the splint and stretches, morning pain now mild. Legs ok in stockings. Toddler keeping her busy.\nExam: BP and weight per vitals. Heart RRR, lungs clear. Right heel mildly tender medially. Ankles with trace edema, skin intact.\nA/P: HTN at goal, BMP today, continue HCTZ. Plantar fasciitis improving, keep the program. CVI stable. Physical in July."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs 3/18",
+              "date": "2025-03-20T12:10",
+              "author": "PCP",
+              "body": "Potassium and kidney function normal. No changes."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ",
+              "date": "2025-06-10T09:30",
+              "author": "RN",
+              "body": "Pharmacy fax for hydrochlorothiazide 25 mg, 90 days. Last BMP 3/2025 normal. Approved."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {
+              "label": "Plantar fasciitis, unspecified foot",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              80
+            ],
+            "hr": 84,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 99,
+            "weight_kg": 86.9
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-22T10:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 183
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 97
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-22T10:25",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-22T10:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-07-22T09:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-22T09:40",
+              "author": "PCP",
+              "body": "49F, turning 50 next month.\n\nInterval: Heel pain gone since about May; still stretches some mornings, stopped the night splint. Back fine. Legs swell a little in hot weather, wears the stockings for school. Summer off, walking with the stroller most mornings. Mood good, PHQ-9 1.\n\nMeds: HCTZ 25 daily. NKDA. Never smoker. Alcohol a couple of drinks a month.\n\nExam: vitals as charted. HEENT normal. Heart and lungs normal. Breasts without masses. Abdomen benign. Legs: varicosities both calves, ankle pigmentation, healed right medial ankle scar, trace edema, skin intact. Right heel nontender.\n\nA/P\n- HTN: well controlled. CMP.\n- Plantar fasciitis, right: resolved.\n- CVI/varicose veins: stable, stockings.\n- Obesity: BMI 32; we talked about realistic goals now that she has more time to walk.\n- Prevention: mammogram due in August, ordered. Lipids and A1c today. At 50 she is due for Shingrix, 2 doses, first with the flu shot this fall. Colonoscopy 2031. Pap/HPV 2027.\nRTC 6-8 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 87.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "portal_message",
+          "start": "2025-07-24T08:15",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs 2025",
+              "date": "2025-07-24T08:15",
+              "author": "PCP",
+              "body": "Hi Andrea, cholesterol, A1c, kidneys, liver and potassium are all normal again this year."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "imaging",
+          "start": "2025-08-19T10:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-08-19T10:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison September 2024 and prior. Heterogeneously dense breasts. No suspicious finding in either breast. Stable.",
+              "conclusion": "BI-RADS 1, negative. Annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-08-19T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram 2025",
+              "date": "2025-08-20T09:30",
+              "author": "PCP",
+              "body": "Negative. Letter sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "nurse_visit",
+          "start": "2025-09-30T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "vitals": {
+            "bp": [
+              125,
+              83
+            ],
+            "hr": 74
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-30T15:37"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-30T15:37"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-09-30T15:40"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-09-30T15:43"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall 2025 vaccines",
+              "date": "2025-09-30T15:35",
+              "author": "RN",
+              "body": "Flu, updated Moderna COVID, and Shingrix dose 1 today; flu and COVID left arm, Shingrix right. Warned that Shingrix can cause a sore arm and a day of feeling run down. Dose 2 due in 2 to 6 months, she'll book for early January during school break. Monitored 15 minutes without issue."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "telephone",
+          "start": "2025-11-12T12:20",
+          "reason": "Vaccine question",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Shingrix dose 2",
+              "date": "2025-11-12T12:20",
+              "author": "RN",
+              "body": "Pt called at lunch. First Shingrix left her arm sore for about a day. Asking if dose 2 can wait until January. Yes, up to 6 months is fine. Nurse visit booked 1/6."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T08:55",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ renewal",
+              "date": "2025-12-09T08:55",
+              "author": "RN",
+              "body": "New prescription needed for hydrochlorothiazide 25 mg. CMP 7/2025 normal. Sent #90 x3 per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "nurse_visit",
+          "start": "2026-01-06T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "vitals": {
+            "bp": [
+              136,
+              86
+            ],
+            "hr": 72
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-01-06T10:33"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2026-01-06T10:33"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix #2",
+              "date": "2026-01-06T10:30",
+              "author": "MA",
+              "body": "Second Shingrix given, left deltoid. Series complete. Pt off this week for winter break, heading somewhere warm with family later in the month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "ed_visit",
+          "start": "2026-01-28T18:40",
+          "end": "2026-01-28T23:55",
+          "service": "Emergency Medicine",
+          "reason": "Right lower leg pain, redness and swelling with fever",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "diagnosed",
+              "onset": "2026-01-26",
+              "note": "right lower leg"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cephalexin 500 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth four times daily for 7 days",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "QID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "cellulitis, right lower leg"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-01-28T18:50",
+              "bp": [
+                136,
+                84
+              ],
+              "hr": 104,
+              "rr": 18,
+              "temp_c": 38.4,
+              "spo2": 98
+            },
+            {
+              "time": "2026-01-28T23:30",
+              "bp": [
+                130,
+                80
+              ],
+              "hr": 90,
+              "rr": 16,
+              "temp_c": 37.6,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-28T19:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 81
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 15
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 3
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-28T19:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2026-01-28T20:30",
+              "text": "Right lower extremity venous duplex. Common femoral, femoral, popliteal, posterior tibial and peroneal veins fully compressible with normal phasic flow and augmentation. No intraluminal thrombus. Subcutaneous edema of the calf.",
+              "conclusion": "No deep venous thrombosis in the right leg."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-01-28T18:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-01-29T08:20",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Seen 1/28/2026, 18:40.\n\nCC: right lower leg pain, redness, swelling; fever.\n\nHPI: 50-year-old woman with venous insufficiency and varicose veins, prior workups for leg swelling in 2023 and 2024. Returned 5 days ago from a family beach vacation, where she remembers stepping on something sharp barefoot in the sand but saw no wound. Over the last 2 days the right lower leg has become increasingly painful and swollen and it is now hard to walk. Chills, feels unwell.\n\nPMH: hypertension, obesity, venous insufficiency, varicose veins. Meds: hydrochlorothiazide 25 mg daily. NKDA. Tdap 2024.\n\nExam: T 38.4 C, HR 104, BP 136/84, RR 18, SpO2 98% RA. Alert, uncomfortable. Right lower leg diffusely red, warm and swollen from ankle to mid-calf, margins indistinct; winces with light touch. No crepitus, no fluctuance, no purulence. Tender, palpable right inguinal nodes. Dorsalis pedis pulses present. Left leg normal. Heart and lungs normal. No rash, no petechiae.\n\nResults: WBC 12.6 with 81% neutrophils. BMP normal. Right leg venous duplex: no DVT.\n\nED course: cephalexin first dose given. Tolerating oral intake, walking with a limp. Repeat temperature 37.6.\n\nDiagnosis: nonpurulent cellulitis of the right lower leg.\n\nDisposition: discharged. Cephalexin 500 mg four times daily for 7 days. Elevate the leg. Tetanus current. Return for spreading redness, worsening fever, or pain out of proportion. PCP follow-up in 2 days."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-29a",
+          "kind": "portal_message",
+          "start": "2026-01-29T07:05",
+          "reason": "ED visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER last night",
+              "date": "2026-01-29T07:05",
+              "author": "patient",
+              "body": "Ended up in the ER last night, my right leg got red and hot after our beach trip and I had chills. They said cellulitis, no clot, and gave me cephalexin. They told me to see you in a couple days."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER last night",
+              "date": "2026-01-29T08:30",
+              "author": "RN",
+              "body": "Sorry you went through that. We have you Friday 1/30 at 9:20. Draw a pen line around the edge of the redness today so we can tell if it's shrinking. Keep the leg up and take every dose."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-30a",
+          "kind": "office_visit",
+          "start": "2026-01-30T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up: right leg cellulitis",
+          "vitals": {
+            "bp": [
+              127,
+              91
+            ],
+            "hr": 75,
+            "rr": 14,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 86.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-30T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED follow-up: cellulitis",
+              "date": "2026-01-30T09:20",
+              "author": "PCP",
+              "body": "Seen in the ED 1/28 for right lower leg cellulitis after a beach trip (ED record reviewed: WBC 12.6, duplex without DVT). On cephalexin day 3, no missed doses.\n\nFeels much better. No chills since yesterday morning. Walking better.\n\nExam: afebrile, vitals as charted. Right lower leg: redness has pulled back well inside her pen line, now ankle to lower third of the calf, warmth much less, mild tenderness. No fluctuance, no wound. Inguinal nodes less tender. Toe webs clean and dry. Left leg baseline.\n\nA/P: Right leg cellulitis, responding. Finish all 7 days. Leg up when sitting, back into compression stockings once the tenderness settles; keeping the swelling down lowers the chance of this coming back. Message me if redness spreads or fever returns. Recheck at her March BP visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "portal_message",
+          "start": "2026-02-06T16:40",
+          "reason": "Cellulitis update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg update",
+              "date": "2026-02-06T16:40",
+              "author": "patient",
+              "body": "Finished the cephalexin yesterday. Leg is back to its usual color, just my normal ankle swelling. Back in the stockings."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leg update",
+              "date": "2026-02-06T17:55",
+              "author": "PCP",
+              "body": "Great to hear. Keep up the stockings and elevation."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure and venous follow-up",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              87
+            ],
+            "hr": 51,
+            "spo2": 98,
+            "weight_kg": 86.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T16:20",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 16
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-10T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up: HTN, CVI",
+              "date": "2026-03-10T15:45",
+              "author": "PCP",
+              "body": "S: Doing well. Leg fully back to baseline since early February. Stockings daily at school. HCTZ every morning; home BPs 120s-130s/80s.\nO: Vitals as charted. Heart RRR, lungs clear. Right lower leg: no erythema or warmth; usual pitting ankle edema, varicosities, medial ankle pigmentation and the old healed scar. Left similar. Skin intact, toe webs clean.\nA/P: Cellulitis resolved. CVI: continue compression and evening elevation, moisturize the skin. HTN controlled, BMP today. Physical in June."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T11:00",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BMP March",
+              "date": "2026-03-12T11:00",
+              "author": "PCP",
+              "body": "Your potassium and kidney numbers are normal. No changes needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "portal_message",
+          "start": "2026-05-05T20:20",
+          "reason": "Compression stockings",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stockings",
+              "date": "2026-05-05T20:20",
+              "author": "patient",
+              "body": "My stockings are finally worn out. The medical supply place says if you write a prescription my insurance may cover two pairs. Knee-high, same strength as before."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stockings",
+              "date": "2026-05-05T21:05",
+              "author": "PCP",
+              "body": "Done. Prescription for knee-high graduated compression stockings, 15-20 mmHg, two pairs, faxed to the supply store with the diagnosis of chronic venous insufficiency."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Refill Note",
+              "title": "HCTZ",
+              "date": "2026-06-09T09:15",
+              "author": "RN",
+              "body": "Hydrochlorothiazide 25 mg 90-day refill approved. Physical 6/23 on the books."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "annual_physical",
+          "start": "2026-06-23T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              133,
+              85
+            ],
+            "hr": 73,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 87.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-23T09:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 61
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-23T09:55",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-23T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-23T09:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2026-06-23T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-06-23T09:10",
+              "author": "PCP",
+              "body": "50F, annual.\n\nInterval: No further leg infections since January. New stockings working. School year finished last week. Daughter just turned two. Back and heel fine. Mood good; PHQ-9 2.\n\nMeds: HCTZ 25 daily. NKDA. Never smoker; alcohol 1-2 drinks a month.\n\nExam: vitals as charted. HEENT normal. Heart and lungs normal. Breasts without masses. Abdomen soft. Legs: varicosities, ankle pigmentation and pitting edema both sides, right medial ankle scar, skin intact, toe webs clean. No erythema.\n\nA/P\n- HTN: controlled on HCTZ. CMP.\n- CVI with varicose veins: compression daily, elevation, skin care. Reviewed signs of cellulitis given January's episode: spreading redness, heat, fever, call the same day.\n- Obesity: BMI 32, stable.\n- Prevention: mammogram due in August, order in. Lipids, A1c, CBC today. Shingrix complete. Colonoscopy 2031. Pap/HPV 2027. Flu and COVID in the fall.\nBP recheck after school starts."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "rr"
+          ]
+        },
+        {
+          "id": "2026-06-25a",
+          "kind": "portal_message",
+          "start": "2026-06-25T13:25",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs 2026",
+              "date": "2026-06-25T13:25",
+              "author": "PCP",
+              "body": "Everything from your physical is normal: blood count, kidney and liver tests, potassium, A1c and cholesterol. Enjoy the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-01a",
+          "kind": "office_visit",
+          "start": "2026-08-01T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Right leg redness, swelling and fever",
+          "conditions": [
+            {
+              "label": "Cellulitis of lower limb",
+              "action": "diagnosed",
+              "onset": "2026-07-30",
+              "note": "recurrent, right lower leg"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              84
+            ],
+            "hr": 106,
+            "rr": 13,
+            "temp_c": 38.6,
+            "spo2": 97,
+            "weight_kg": 86.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-08-01T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "It's back",
+              "date": "2026-08-01T07:12",
+              "author": "patient",
+              "body": "Sorry to text on a Saturday. Same leg as January. We got back from the beach on Monday and I think I stepped on something in the sand again. Since Thursday the right leg is red, hot and swollen, hard to walk, and I had chills all night. Can you see me?"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Same-day visit: recurrent right leg cellulitis",
+              "date": "2026-08-01T10:30",
+              "author": "PCP",
+              "body": "Saturday same-day visit, seen after her text this morning.\n\nHPI: Back 5 days from a family beach trip, likely stepped on something sharp barefoot but saw no cut. Two days of increasing pain, redness and swelling of the right lower leg, now limping. Chills overnight, feels unwell. Second episode in the same leg; the first was in late January, treated with cephalexin from the ED.\n\nExam: T 38.6, HR 106, other vitals as charted. Looks unwell but alert. Right lower leg diffusely red, warm and swollen from the ankle to mid-calf with ill-defined borders, tender to light touch. No crepitus, fluctuance or pus. Tender right inguinal nodes. DP pulse present. Left leg baseline. Heart and lungs normal. No rash.\n\nA/P: Recurrent nonpurulent cellulitis of the right leg on a background of venous insufficiency, now febrile and tachycardic and less well than in January. I don't think oral antibiotics at home are safe this time. Called the admitting hospitalist at the regional hospital and arranged a direct admission for IV antibiotics; her partner is driving her over now. Asked them to rule out a clot again. I'll follow her through the admission and see her after discharge."
+            }
+          ],
+          "measure": [
+            "bp",
+            "spo2",
+            "rr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-01b",
+          "kind": "hospital_admission",
+          "start": "2026-08-01T12:40",
+          "end": "2026-08-04T13:00",
+          "service": "Internal Medicine",
+          "reason": "Recurrent right lower leg cellulitis requiring IV antibiotics",
+          "vitals": [
+            {
+              "time": "2026-08-01T12:50",
+              "bp": [
+                134,
+                82
+              ],
+              "hr": 104,
+              "rr": 18,
+              "temp_c": 38.5,
+              "spo2": 97
+            },
+            {
+              "time": "2026-08-03T08:00",
+              "bp": [
+                128,
+                80
+              ],
+              "hr": 80,
+              "rr": 16,
+              "temp_c": 37.0,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-08-01T13:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 14.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 224
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 84
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 12
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 3
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 12.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-08-01T13:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-01T13:10",
+              "results": [
+                {
+                  "test": "C Reactive Protein",
+                  "value": 96
+                },
+                {
+                  "test": "Lactate",
+                  "value": 1.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-01T13:15",
+              "resulted": "2026-08-06T09:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2026-08-01T16:00",
+              "text": "Right lower extremity venous duplex. Deep veins from the common femoral through the calf veins compressible with normal flow and augmentation. No thrombus. Subcutaneous edema in the calf.",
+              "conclusion": "No right lower extremity DVT."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-08-01T13:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-08-04T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-08-05T10:45",
+              "author": "hospital medicine",
+              "body": "Regional hospital, internal medicine service. Admitted 8/1/2026 (direct admission from PCP), discharged 8/4/2026.\n\nDiagnosis: recurrent cellulitis of the right lower leg, nonpurulent.\n\nHistory: 50-year-old woman with chronic venous insufficiency, obesity and hypertension, with right leg cellulitis six months ago. Back 5 days from a family beach vacation; probable barefoot step on something sharp in the sand without a visible wound. Two days of worsening right lower leg pain and swelling, difficulty walking, chills, malaise.\n\nAdmission exam: T 38.5, HR 104. Right lower leg diffusely erythematous, warm and edematous with indistinct margins from ankle to mid-calf, tender to light palpation; no crepitus, fluctuance or purulence. Tender palpable right inguinal nodes. DP pulses present. Left leg normal. Alert, uncomfortable. Heart and lungs normal. No rash or petechiae.\n\nData: WBC 14.3 with 84% neutrophils. CRP 9.6 mg/dL (96 mg/L). Lactate 1.4. BMP normal. Blood cultures no growth (final no growth at 5 days, per lab). Right leg venous duplex: no DVT.\n\nCourse: IV cefazolin 2 g every 8 hours. Leg elevated. Afebrile by hospital day 2 with clear regression of erythema. Transitioned to oral cephalexin on 8/4.\n\nDischarge medications: cephalexin 500 mg four times daily to complete 10 days of antibiotics in total (through 8/10). Hydrochlorothiazide 25 mg daily, unchanged.\nAllergies: NKDA.\n\nInstructions: elevate the leg; resume compression stockings once the skin is no longer tender; daily skin and foot checks; return for spreading redness or fever.\nFollow-up: PCP within 1 to 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "telephone",
+          "start": "2026-08-06T10:40",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-08-06T10:40",
+              "author": "RN",
+              "body": "Called pt 2 days after discharge. Discharge summary reviewed. Taking cephalexin four times a day, last dose due 8/10. No fever since the hospital. Redness fading, walking around the house without a limp. Elevating when sitting. Understands to call for spreading redness or fever. Follow-up with PCP booked 8/13 at 2:00."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "telephone",
+          "start": "2026-08-10T15:05",
+          "reason": "Reschedule follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Rescheduled follow-up",
+              "date": "2026-08-10T15:05",
+              "author": "front desk",
+              "body": "Pt called to move Thursday's appointment: teacher workshops all week starting the 13th and the leg is nearly back to normal. Offered earlier slots, she couldn't make them. Rebooked for Tuesday 9/1 at 3:40. Told her to message the doctor if anything flares before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "office_visit",
+          "start": "2026-08-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T19:50",
+          "reason": "Antibiotics finished",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leg",
+              "date": "2026-08-18T19:50",
+              "author": "patient",
+              "body": "Quick update: finished the antibiotics on the 10th, leg is pretty much back to normal, just the usual swelling at the end of the day. Back in my stockings. See you on the 1st."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leg",
+              "date": "2026-08-18T21:15",
+              "author": "PCP",
+              "body": "Good. Keep the leg up in the evenings and wear the stockings for the workshops. On the 1st we'll go over the hospital stay and how to cut down the chances of a third round."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-01a",
+          "kind": "office_visit",
+          "start": "2026-09-01T15:40",
+          "reason": "Post-hospital follow-up: recurrent right leg cellulitis, venous insufficiency",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Abnormal uterine bleeding concerning for endometrial hyperplasia or malignancy|N93.9": {
+        "code": "N93.9",
+        "display": "Abnormal uterine and vaginal bleeding, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of elderly primigravida|O09.519": {
+        "code": "O09.519",
+        "display": "Supervision of elderly primigravida, unspecified trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Choriogonadotropin beta subunit, serum": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "ug/mL FEU",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, 1 hour post 50 g glucose": {
+        "code": "1504-0",
+        "display": "Glucose [Mass/volume] in Serum or Plasma --1 hour post 50 g glucose PO",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound, anatomy survey": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, first trimester": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Endometrial biopsy": {
+        "code": "386802000",
+        "display": "Endometrial biopsy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Vaginal delivery": {
+        "code": "700000006",
+        "display": "Vaginal delivery of fetus",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

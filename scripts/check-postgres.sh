@@ -29,6 +29,9 @@ cargo test --locked -p duet-api --lib conversation_execution::tests::postgres_di
 DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" cargo test --locked -p duet-api --test database_foundation -- --exact fresh_and_upgrade_keep_identity_and_enforce_account_scope
 # Typed moments retain account scoping, ordering and the privacy-journal gate.
 DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" cargo test --locked -p duet-api --test pg_moments
+# ENG-200: a same-conversation message steers the reply in progress; one paid
+# run, idempotent retries, restart survival and the ENG-191 refusals.
+DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" cargo test --locked -p duet-api --test steering
 # Exercises fixed GCS transport against loopback HTTP plus the real journal owner.
 cargo test --locked -p duet-api --lib privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart -- --exact
 # Explicitly select ignored real-database proofs; serial execution prevents
@@ -52,12 +55,17 @@ cargo test --locked -p physician-sample --test try_again -- --test-threads=1
 # Composer chat drafts: cross-site reads, stale-revision conflicts and physician
 # ownership, without a worker. The runtime draft-fence proof runs above.
 cargo test --locked -p physician-sample --test chat_draft -- --test-threads=1
-# Hosted reply revisions: duplicate acceptance, pinned retries, cross-site reads,
-# physician-save fencing, missing/foreign draft isolation, earlier revisions'
-# evidence kept in their own history table, and a failed revision visible over HTTP.
+# Hosted reply revisions: duplicate acceptance, retries re-pinning the newest
+# sources, a source arriving mid-revision read before publishing, a chart that
+# keeps changing exhausting the call bound, cross-site reads, physician-save
+# fencing, missing/foreign draft isolation, earlier revisions' evidence kept in
+# their own history table, and a failed revision visible over HTTP.
 # Receipt compaction and the pre-accepted_at upgrade proof run with runtime::tests above.
 cargo test --locked -p physician-sample --test reply_revision -- --test-threads=1
 # A site instance that dies before its publish lands: another instance's sweep
 # finishes the turn. Exhausted worker leases fail the turn, announce it and
 # dead-letter its wakeup.
 cargo test --locked -p physician-sample --test instance_loss -- --test-threads=1
+# Gmail push wake on the Pub/Sub emulator: the shared harness, then wake-only,
+# duplicates, redelivery, dead letters, ordering keys and cursor expiry.
+cargo test --locked -p pubsub --test emulator -p gmail --test push_wake -- --test-threads=1

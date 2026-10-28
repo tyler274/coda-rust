@@ -1,0 +1,251 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002036",
+      "events": [
+        {
+          "id": "2022-01-11a",
+          "kind": "nurse_visit",
+          "start": "2022-01-11T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pneumococcal vaccine",
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-01-11T08:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-01-11T08:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "PCV20", "author": "RN", "date": "2022-01-11T08:45",
+             "body": "PCV20 given L deltoid, single dose, no further pneumococcal doses needed. Pt says energy a little better, sweats gone. Tolerating imatinib with breakfast."}
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "outside_records",
+          "start": "2022-03-29T14:05",
+          "documents": [
+            {"type": "Outside Records", "title": "Hematology/Oncology follow-up", "author": "hematology/oncology", "date": "2022-03-29T14:05",
+             "body": "Outside hematology/oncology clinic. Date of service: 03/22/2022.\n\nCML, chronic phase, on imatinib 400 mg daily since 12/14/2021. Energy improving, night sweats resolved. Spleen no longer palpable.\n\nCBC today: hemoglobin 13.4, WBC 7.6, platelets 286, normal differential.\nQuantitative BCR-ABL1 (IS), 3 months: 7.1%.\n\nAssessment: complete hematologic response; early molecular response on track.\nPlan: continue imatinib 400 mg daily. CBC monthly, BCR-ABL1 every 3 months.\n\nOutside hematology/oncology"}
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "office_visit",
+          "start": "2022-05-24T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood on toilet paper",
+          "state": {"weight_kg": 86.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-24T11:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-24T10:40"}],
+          "orders": [
+            {"id": "gi-ref-2022", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "3 months minimal rectal bleeding; never had colorectal screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-05-24T11:20",
+             "body": "Since about February he's seen a little bright red blood on the paper after BMs, maybe once a week. No pain, no change in his bowel pattern, no blood in the bowl. Weight back up (86 kg). Feeling much better since starting imatinib; hematology says his counts are normal now.\nExam: BP above goal. Abdomen soft, nontender, no mass. Declined rectal exam today, prefers GI do it.\nA/P: minimal rectal bleeding, likely hemorrhoidal but he is 59 and has never been screened - GI referral for evaluation and colonoscopy. He agrees this time. BMP today for his BP meds. HTN otherwise unchanged."}
+          ]
+        },
+        {
+          "id": "2022-06-17a",
+          "kind": "outside_records",
+          "start": "2022-06-17T11:50",
+          "conditions": [
+            {"label": "Hemorrhoids", "action": "diagnosed", "onset": "2022-06-13", "note": "External hemorrhoids on GI exam"}
+          ],
+          "orders": [{"id": "gi-ref-2022", "action": "done", "date": "2022-06-17T11:50"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Gastroenterology consultation", "author": "gastroenterology", "date": "2022-06-17T11:50",
+             "body": "Outside gastroenterology group. Date of service: 06/13/2022.\n\nReason: rectal bleeding.\n\nHPI: 59-year-old man with chronic myeloid leukemia on imatinib, referred for about three months of small amounts of bright red blood seen on the tissue after bowel movements. No significant pain, no change in bowel habit, no weight loss. Has never had a colonoscopy.\n\nPMH: hypertension, controlled per patient on lisinopril; CAD with LAD stent; paroxysmal atrial fibrillation; essential tremor; CML.\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg daily.\nAllergies: NKDA.\nFamily history: no colorectal cancer in the family.\nSocial: former smoker; occasional alcohol.\n\nExam: external hemorrhoids. Abdomen soft, nontender, no masses. Digital rectal exam: no blood on the examining finger; prostate nontender, normal size.\n\nImpression: minimal outlet-type bleeding with external hemorrhoids; colonoscopy indicated given his age, no prior screening and the bleeding.\nPlan: colonoscopy with split-dose prep, scheduled 6/28. Hold aspirin not required. Fiber supplement.\n\nOutside gastroenterology"}
+          ]
+        },
+        {
+          "id": "2022-06-30a",
+          "kind": "outside_records",
+          "start": "2022-06-30T15:20",
+          "conditions": [
+            {"label": "Malignant neoplasm of colon", "action": "diagnosed", "onset": "2022-06-28", "note": "Ascending colon adenocarcinoma, moderately differentiated"}
+          ],
+          "procedures": [
+            {"procedure": "Colonoscopy with biopsy", "performed": "2022-06-28T09:15"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-06-28T09:30", "issued": "2022-06-30T12:00",
+             "text": "SURGICAL PATHOLOGY. Specimen: ascending colon mass, cold forceps biopsies (6 fragments). Microscopic: invasive gland-forming adenocarcinoma with desmoplastic stroma, moderately differentiated.",
+             "conclusion": "Ascending colon, biopsy: invasive adenocarcinoma, moderately differentiated."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2022-06-30T15:20",
+             "body": "Outside gastroenterology endoscopy unit. Procedure date: 06/28/2022.\nIndication: rectal bleeding; no prior screening.\nSedation: monitored anesthesia care. Prep: good (BBPS 8).\nFindings: cecum reached, appendiceal orifice and ileocecal valve photographed. A friable, partly circumferential mass about 4 cm in the ascending colon, non-obstructing; biopsied and tattooed distally. Remainder of the colon normal. Retroflexion: small hemorrhoids.\nImpression: ascending colon mass, suspicious for malignancy. Hemorrhoids.\nPlan: await pathology; CT staging; surgical referral.\n\nAddendum 06/30/2022: pathology shows invasive adenocarcinoma. Patient informed by phone; CT chest/abdomen/pelvis and colorectal surgery consultation arranged.\n\nOutside gastroenterology"}
+          ]
+        },
+        {
+          "id": "2022-07-01a",
+          "kind": "telephone",
+          "start": "2022-07-01T08:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Colon biopsy result", "author": "PCP", "date": "2022-07-01T08:45",
+             "body": "Called Brian after GI's report came in. He already knows it's cancer from GI yesterday. Shaken but has a plan: CT next week, surgeon visit after. Answered questions about how this fits with the CML - two separate problems; hematology already aware. Told him we're here and to message any time. Will see him after surgery."}
+          ]
+        },
+        {
+          "id": "2022-07-08a",
+          "kind": "outside_records",
+          "start": "2022-07-08T10:10",
+          "reports": [
+            {"study": "CT chest", "performed": "2022-07-06T13:40",
+             "text": "CT CHEST WITH CONTRAST. Indication: staging, colon adenocarcinoma. Lungs clear without nodules or masses. No effusion. No mediastinal, hilar or axillary adenopathy. Heart normal in size; coronary stent.",
+             "conclusion": "No evidence of thoracic metastatic disease."},
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2022-07-06T13:40",
+             "text": "CT ABDOMEN AND PELVIS WITH IV CONTRAST. Focal circumferential wall thickening of the ascending colon at the site of the known mass, with a few subcentimeter adjacent mesenteric nodes. Two subcentimeter hypodensities in the liver, too small to characterize. Spleen normal in size. Kidneys, adrenals, pancreas unremarkable. No ascites. Bladder and prostate unremarkable.",
+             "conclusion": "Ascending colon mass. Two subcentimeter liver hypodensities, too small to characterize; MRI could be considered."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "CT staging reports received", "author": "front desk", "date": "2022-07-08T10:10",
+             "body": "CT chest and CT abdomen/pelvis reports from the outside imaging center (exam date 07/06/2022) received by fax, scanned, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2022-07-21a",
+          "kind": "hospital_admission",
+          "start": "2022-07-21T06:30",
+          "end": "2022-07-24T11:00",
+          "service": "Colorectal Surgery",
+          "reason": "Laparoscopic right hemicolectomy for ascending colon adenocarcinoma",
+          "procedures": [
+            {"procedure": "Laparoscopic right hemicolectomy with primary anastomosis", "snomed": "50774009", "performed": "2022-07-21T08:10"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-07-21T10:30", "issued": "2022-07-26T14:00",
+             "text": "SURGICAL PATHOLOGY. Specimen: right colon and terminal ileum, laparoscopic right hemicolectomy. Tumor: ascending colon, 4.2 cm, adenocarcinoma, moderately differentiated, invading through the muscularis propria into pericolonic tissue. Lymphovascular invasion not identified. Margins (proximal, distal, radial) negative. Lymph nodes: 2 of 18 positive for metastatic carcinoma.",
+             "conclusion": "Adenocarcinoma of the ascending colon, pT3 N1b, margins negative."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge Summary", "author": "colorectal surgery", "date": "2022-07-26T15:00",
+             "body": "Outside regional hospital, colorectal surgery service. Admitted 07/21/2022, discharged 07/24/2022.\n\nDiagnosis: adenocarcinoma of the ascending colon.\nProcedure: laparoscopic right hemicolectomy with primary stapled ileocolic anastomosis, 07/21/2022. Uncomplicated.\n\nCourse: enhanced recovery pathway. Clear liquids day 0, diet advanced day 1, flatus day 2, bowel movement day 3. Pain controlled with acetaminophen and minimal opioid. Incisions clean. Ambulating independently. Aspirin continued; imatinib held 7/20 to 7/23 and resumed at discharge per hematology.\n\nPathology (final 07/26): pT3 N1b (2/18 nodes), margins negative.\n\nDischarge medications: lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, aspirin 81 mg daily, isosorbide mononitrate ER 30 mg daily, imatinib 400 mg daily; acetaminophen as needed.\nAllergies: NKDA.\nFollow-up: colorectal surgery 2 weeks; medical oncology referral placed; MRI liver to characterize the CT liver lesions.\n\nOutside colorectal surgery"}
+          ]
+        },
+        {
+          "id": "2022-07-29a",
+          "kind": "office_visit",
+          "start": "2022-07-29T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-hospital follow-up after hemicolectomy",
+          "state": {"weight_kg": 82.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2022-07-29T14:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Discharge Visit", "author": "PCP", "date": "2022-07-29T14:55",
+             "body": "Seen 5 days after discharge from laparoscopic R hemicolectomy (7/21). Eating normal meals, BMs daily and soft, incision soreness only. No fever. Walking a mile a day. Back on imatinib.\nPath: pT3 N1b, margins clear. Liver MRI 8/10 for the two small spots on CT, then oncology.\nExam: afebrile. BP above goal as usual. Port sites clean, dry, no erythema. Abdomen soft, appropriately tender near the extraction incision. No edema.\nMeds reconciled against the discharge list - unchanged plus acetaminophen prn.\nA/P: recovering well after hemicolectomy for colon adenocarcinoma. Oncology and MRI scheduled. CML on imatinib. HTN - continue. Spent time on what node-positive means and why the MRI matters. Message us with results."}
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "outside_records",
+          "start": "2022-08-26T09:30",
+          "conditions": [
+            {"label": "Secondary malignant neoplasm of liver", "icd10": "C78.7", "action": "diagnosed", "onset": "2022-08-10", "note": "Three bilobar liver metastases, largest 1.4 cm; stage IV colon adenocarcinoma"}
+          ],
+          "reports": [
+            {"study": "MRI liver with and without contrast", "loinc": "105129-1", "performed": "2022-08-10T11:00",
+             "text": "MRI ABDOMEN (LIVER) WITHOUT AND WITH IV CONTRAST. Indication: colon cancer, indeterminate liver lesions on CT. Three T2-hyperintense lesions with peripheral enhancement and restricted diffusion: segment 7 (1.4 cm), segment 4a (0.9 cm), segment 3 (0.7 cm). No biliary dilatation. Portal and hepatic veins patent. Spleen, pancreas and kidneys unremarkable. Postsurgical change of right hemicolectomy.",
+             "conclusion": "Three hepatic metastases in both lobes, largest 1.4 cm in segment 7."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Medical oncology consultation", "author": "oncology", "date": "2022-08-26T09:30",
+             "body": "Outside medical oncology clinic (same group as his hematology). Date of service: 08/24/2022.\n\n59-year-old man with chronic-phase CML on imatinib (BCR-ABL1 0.86% IS on 06/2022) and a newly diagnosed ascending colon adenocarcinoma, s/p laparoscopic right hemicolectomy 07/21/2022, pT3 N1b. MRI liver 08/10/2022 shows three bilobar liver metastases (largest 1.4 cm).\n\nStage IV (liver-only metastatic) colon adenocarcinoma.\n\nDiscussed with the liver surgery team at tumor board: not resectable at this point; reassess after systemic therapy.\n\nPlan: capecitabine 1500 mg by mouth twice daily on days 1-14 of each 21-day cycle, cycle 1 starting 09/06/2022. Continue imatinib 400 mg daily; hematology following. CBC and CMP each cycle, CEA, CT chest/abdomen/pelvis every 3-4 months. Hand-foot care and diarrhea instructions given.\n\nMedications reviewed: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, aspirin 81 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg. NKDA.\n\nOutside oncology"}
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "telephone",
+          "start": "2022-09-06T16:05",
+          "medications": [
+            {"drug_text": "capecitabine 500 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (1500 mg) by mouth twice daily within 30 minutes after a meal on days 1-14 of each 21-day cycle", "dose": {"value": 1500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Stage IV colon adenocarcinoma (prescribed by oncology)"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Chemotherapy started", "author": "RN", "date": "2022-09-06T16:05",
+             "body": "Pt called to let us know he started capecitabine today, 3 tabs twice a day, two weeks on and one week off, from the oncology specialty pharmacy. Added to med list as prescribed by oncology. Reminded him to keep using the oncology triage line for side effects; call us for anything else."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "annual_physical",
+          "start": "2022-10-04T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"weight_kg": 84.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2022-10-04T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-10-04T08:40", "results": [{"test": "Hemoglobin A1c", "value": 5.5}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T08:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T08:47"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-10-04T08:00"},
+            {"procedure": "Immunization administration", "performed": "2022-10-04T08:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-10-04T09:10",
+             "body": "Yearly exam. A lot this year: CML dx Dec 2021 on imatinib, colon adenocarcinoma found June, R hemicolectomy July, liver mets on MRI -> stage IV, now cycle 3 of capecitabine. Tolerating it without problems so far. Oncology does his CBC/CMP each cycle. Mood \"up and down\" but sleeping, working part-time from home, wife a big support. PHQ-2 1.\nMeds: lisinopril 20, HCTZ 25, metoprolol succ 50, ISMN 30, ASA 81, imatinib 400 daily, capecitabine 1500 BID d1-14 q21d. NKDA.\nExam: BP above goal. Weight 84. Skin of palms normal. Lungs clear, heart regular, abdomen soft with healed port sites. No edema. Postural tremor unchanged.\nA/P\n- Stage IV colon ca on capecitabine, CML on imatinib: per oncology/hematology.\n- HTN: still above goal; he doesn't want to add anything during chemo. Recheck.\n- CAD, pAF: stable, cardiology later this month.\n- Lung screening: oncology chest CTs now cover this; stopping the separate LDCT.\n- Flu and bivalent COVID today. Lipids, A1c.\nRTC 3-4 mo."}
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "outside_records",
+          "start": "2022-10-25T13:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2022-10-25T13:00",
+             "body": "Outside cardiology group, office visit 10/18/2022.\n\nEventful year for Mr. Goodwin: CML on imatinib since December, and stage IV colon cancer, hemicolectomy in July, now on capecitabine. From a cardiac standpoint he is stable - angina uncommon and unchanged, rare brief palpitations. BP 140/86, HR 66. Exam normal. ECG: sinus rhythm, normal intervals, unchanged.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg, imatinib 400 mg, capecitabine 1500 mg twice daily (2 weeks on, 1 off). NKDA.\n\nImpression: stable angina; paroxysmal AF in sinus rhythm. Asked him to report any new chest pain on capecitabine promptly. Continue current regimen; one year.\n\nOutside cardiology"}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "office_visit",
+          "start": "2022-11-08T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Erectile difficulty",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2022-11-08T15:40"}],
+          "orders": [
+            {"id": "uro-ref-2022", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "Erectile dysfunction; on daily nitrate"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-11-08T16:05",
+             "body": "Came in alone to talk about trouble with erections since early summer, harder to get and keep. It's become a source of tension at home. No pain, no curvature. Libido ok.\nHe asked about the little blue pill - explained it's off the table with his daily isosorbide, the combination can drop blood pressure dangerously.\nExam: BP above goal. No other exam today.\nA/P: erectile dysfunction, probably multifactorial (vascular, meds, a hard year). Referral to urology to go over options that are safe with his nitrate. He appreciated being able to talk about it."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "outside_records",
+          "start": "2022-12-13T10:45",
+          "conditions": [
+            {"label": "Erectile dysfunction", "action": "diagnosed", "onset": "2022-06-01", "note": "Urology 12/06/2022"}
+          ],
+          "orders": [{"id": "uro-ref-2022", "action": "done", "date": "2022-12-13T10:45"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Urology consultation", "author": "urology", "date": "2022-12-13T10:45",
+             "body": "Outside urology practice. Date of service: 12/06/2022.\n\nReason for referral: erectile dysfunction.\n\nHPI: 59-year-old with essential tremor, chronic myeloid leukemia and stage IV colon adenocarcinoma on capecitabine, with six months of erectile dysfunction that is putting real stress on his relationship. Takes isosorbide mononitrate daily for angina.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, imatinib 400 mg, capecitabine 1500 mg twice daily (2 weeks on, 1 off).\nAllergies: none.\nFamily history: father hypertension, essential tremor, MI at 62; mother type 2 diabetes.\nSocial: office administrator; former smoker; 1-2 drinks weekly.\n\nExam: BP 135/85, pulse 78. Normal male genitalia, testes descended and normal in size, no plaques. Remainder of the exam unremarkable.\nLabs: recent renal and liver function normal (oncology labs).\n\nImpression: erectile dysfunction.\nPlan: PDE-5 inhibitors are contraindicated with his daily nitrate and were not offered. Non-medication options reviewed with him; he will think about them and discuss with his partner. Return as needed.\n\nOutside urology"}
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "outside_records",
+          "start": "2022-12-20T16:30",
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2022-12-12T12:30",
+             "text": "CT CHEST, ABDOMEN AND PELVIS WITH CONTRAST. Comparison MRI liver 08/10/2022 and CT 07/06/2022. Liver: the segment 7 metastasis measures 1.1 cm (previously 1.4 cm); the segment 4a and segment 3 lesions are smaller and faint. No new hepatic lesion. Postsurgical right hemicolectomy without local recurrence. No adenopathy or ascites. Chest: lungs clear, no nodules.",
+             "conclusion": "Partial response of hepatic metastases. No new disease."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology/Hematology follow-up", "author": "oncology", "date": "2022-12-20T16:30",
+             "body": "Outside oncology/hematology clinic. Date of service: 12/19/2022.\n\nColon adenocarcinoma, stage IV (liver), on capecitabine since 09/06/2022, cycle 6. Tolerating treatment. CT 12/12: liver lesions smaller, largest 1.1 cm, no new disease.\nCML on imatinib 400 mg: quantitative BCR-ABL1 (IS) 0.07% - major molecular response.\nCBC and CMP within normal limits.\n\nPlan: continue capecitabine 1500 mg twice daily days 1-14 q21d and imatinib 400 mg daily. CT in 3-4 months. BCR-ABL1 every 3 months.\n\nOutside oncology"}
+          ]
+        }
+      ]
+    }
+  ]
+}

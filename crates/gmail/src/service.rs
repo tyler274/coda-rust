@@ -15,9 +15,25 @@ use serde::Deserialize;
 
 use crate::{Error, SmtpRelay};
 
+#[derive(Default, Deserialize)]
+#[serde(rename_all = "lowercase")]
+enum Purpose {
+    // Older callers omit purpose during the relay-first rollout.
+    #[default]
+    Signin,
+    Notification,
+}
+
+struct Senders {
+    signin: SmtpRelay,
+    notification: SmtpRelay,
+}
+
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Message {
+    #[serde(default)]
+    purpose: Purpose,
     to: String,
     subject: String,
     text: String,
@@ -27,14 +43,21 @@ struct Message {
 /// The relay API. Deploy behind Cloud Run's IAM invoker check, never anonymously.
 /// `204` confirms SMTP acceptance, `422` a refusal, and `503` an unknown outcome.
 /// Acceptance is not proof of delivery to the recipient's inbox.
-pub fn router(relay: SmtpRelay) -> Router {
+pub fn router(signin: SmtpRelay, notification: SmtpRelay) -> Router {
     Router::new()
         .route("/readyz", get(|| async { StatusCode::NO_CONTENT }))
         .route("/send", post(send))
-        .with_state(Arc::new(relay))
+        .with_state(Arc::new(Senders {
+            signin,
+            notification,
+        }))
 }
 
-async fn send(State(relay): State<Arc<SmtpRelay>>, Json(message): Json<Message>) -> StatusCode {
+async fn send(State(senders): State<Arc<Senders>>, Json(message): Json<Message>) -> StatusCode {
+    let relay = match message.purpose {
+        Purpose::Signin => &senders.signin,
+        Purpose::Notification => &senders.notification,
+    };
     let result = match message.html {
         Some(html) => {
             relay

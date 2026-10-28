@@ -1,0 +1,162 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002699",
+      "events": [
+        {
+          "id": "2025-01-20a",
+          "kind": "specialist_visit",
+          "start": "2025-01-20T09:15",
+          "service": "Orthopedics",
+          "reason": "Right heel pain",
+          "conditions": [
+            {"label": "Plantar fasciitis, unspecified foot", "action": "diagnosed", "onset": "2024-07-10", "note": "right"}
+          ],
+          "measure": ["bp", "hr"],
+          "reports": [
+            {"study": "Foot X-ray", "performed": "2025-01-20T09:00", "text": "Right foot, three views (AP, oblique, lateral), weight-bearing. Bones normally mineralized. No fracture or dislocation. Joint spaces preserved. No calcaneal spur or erosion. Soft tissues unremarkable.", "conclusion": "Normal right foot radiographs."}
+          ],
+          "orders": [
+            {"id": "ortho-2025", "action": "done", "date": "2025-01-20T09:15"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Orthopedic consultation: right heel", "author": "orthopedics", "date": "2025-01-23T13:30", "body": "Outside orthopedic and sports medicine group. Seen 1/20/2025 at the request of her PCP.\n\nCC: right heel pain x 6 months.\n\nHPI: 49-year-old teacher with obesity, hypertension and venous insufficiency, previously seen elsewhere for leg swelling with standing. Sharp, stabbing pain under the right heel, worst with the first steps in the morning, a little better after a few minutes of walking, then worse again after standing for long stretches at school. No trauma.\n\nPMH (from the referral packet): obesity, hypertension, chronic venous insufficiency, varicose veins, chronic low back pain, abnormal uterine bleeding, pregnancy. Meds: hydrochlorothiazide 25 mg daily. NKDA.\n\nExam: right foot tender at the medial calcaneal tubercle and along the proximal plantar fascia. Passive dorsiflexion of the toes reproduces the pain. Ankle dorsiflexion normal. No swelling or erythema. Neurovascularly intact.\n\nImaging: right foot X-rays today, no fracture or bony abnormality.\n\nAssessment: right plantar fasciitis.\n\nPlan: plantar fascia and calf stretching three times daily, cushioned heel inserts in school shoes, night splint, ice massage after work. Expect gradual improvement over 2 to 4 months. Return if not better by spring to discuss further options."}
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T19:05",
+          "reason": "Night splint",
+          "documents": [
+            {"type": "Patient Message", "title": "Night splint", "author": "patient", "date": "2025-01-27T19:05", "body": "Ortho said plantar fasciitis and gave me stretches, heel cups and a night splint. The splint is not cheap at the store. Is it worth it? And does my insurance cover it if you write it?"},
+            {"type": "Patient Message", "title": "RE: Night splint", "author": "PCP", "date": "2025-01-28T07:45", "body": "The splint does help a lot of people with the morning pain, so I'd give it a try. Orthopedics wrote the plan, so ask their office to send the order to a medical supply store; that's usually how insurance will cover it. The stretches are the most important part."}
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "office_visit",
+          "start": "2025-03-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-18T16:10", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-03-18T15:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: HTN, heel", "author": "PCP", "date": "2025-03-18T15:40", "body": "BP visit. Taking HCTZ daily. Heel noticeably better with the splint and stretches, morning pain now mild. Legs ok in stockings. Toddler keeping her busy.\nExam: BP and weight per vitals. Heart RRR, lungs clear. Right heel mildly tender medially. Ankles with trace edema, skin intact.\nA/P: HTN at goal, BMP today, continue HCTZ. Plantar fasciitis improving, keep the program. CVI stable. Physical in July."}
+          ]
+        },
+        {
+          "id": "2025-03-20a",
+          "kind": "portal_message",
+          "start": "2025-03-20T12:10",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs 3/18", "author": "PCP", "date": "2025-03-20T12:10", "body": "Potassium and kidney function normal. No changes."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "pharmacy",
+          "start": "2025-06-10T09:30",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Note", "title": "HCTZ", "author": "RN", "date": "2025-06-10T09:30", "body": "Pharmacy fax for hydrochlorothiazide 25 mg, 90 days. Last BMP 3/2025 normal. Approved."}
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "annual_physical",
+          "start": "2025-07-22T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [
+            {"label": "Plantar fasciitis, unspecified foot", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 87.2},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "rr"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2025-07-22T10:25", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-07-22T10:25", "results": [{"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2025-07-22T10:25", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-07-22T09:40"}
+          ],
+          "orders": [
+            {"id": "mammo-2025", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-07-22T09:40", "body": "49F, turning 50 next month.\n\nInterval: Heel pain gone since about May; still stretches some mornings, stopped the night splint. Back fine. Legs swell a little in hot weather, wears the stockings for school. Summer off, walking with the stroller most mornings. Mood good, PHQ-9 1.\n\nMeds: HCTZ 25 daily. NKDA. Never smoker. Alcohol a couple of drinks a month.\n\nExam: vitals as charted. HEENT normal. Heart and lungs normal. Breasts without masses. Abdomen benign. Legs: varicosities both calves, ankle pigmentation, healed right medial ankle scar, trace edema, skin intact. Right heel nontender.\n\nA/P\n- HTN: well controlled. CMP.\n- Plantar fasciitis, right: resolved.\n- CVI/varicose veins: stable, stockings.\n- Obesity: BMI 32; we talked about realistic goals now that she has more time to walk.\n- Prevention: mammogram due in August, ordered. Lipids and A1c today. At 50 she is due for Shingrix, 2 doses, first with the flu shot this fall. Colonoscopy 2031. Pap/HPV 2027.\nRTC 6-8 months."}
+          ]
+        },
+        {
+          "id": "2025-07-24a",
+          "kind": "portal_message",
+          "start": "2025-07-24T08:15",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs 2025", "author": "PCP", "date": "2025-07-24T08:15", "body": "Hi Andrea, cholesterol, A1c, kidneys, liver and potassium are all normal again this year."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "imaging",
+          "start": "2025-08-19T10:40",
+          "reason": "Screening mammogram",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2025-08-19T10:40", "text": "Bilateral screening mammogram with tomosynthesis. Comparison September 2024 and prior. Heterogeneously dense breasts. No suspicious finding in either breast. Stable.", "conclusion": "BI-RADS 1, negative. Annual screening."}
+          ],
+          "orders": [
+            {"id": "mammo-2025", "action": "done", "date": "2025-08-19T10:40"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram 2025", "author": "PCP", "date": "2025-08-20T09:30", "body": "Negative. Letter sent."}
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "nurse_visit",
+          "start": "2025-09-30T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-09-30T15:37"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-09-30T15:40"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-09-30T15:43"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-09-30T15:37"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall 2025 vaccines", "author": "RN", "date": "2025-09-30T15:35", "body": "Flu, updated Moderna COVID, and Shingrix dose 1 today; flu and COVID left arm, Shingrix right. Warned that Shingrix can cause a sore arm and a day of feeling run down. Dose 2 due in 2 to 6 months, she'll book for early January during school break. Monitored 15 minutes without issue."}
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "telephone",
+          "start": "2025-11-12T12:20",
+          "reason": "Vaccine question",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Shingrix dose 2", "author": "RN", "date": "2025-11-12T12:20", "body": "Pt called at lunch. First Shingrix left her arm sore for about a day. Asking if dose 2 can wait until January. Yes, up to 6 months is fine. Nurse visit booked 1/6."}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T08:55",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Refill Note", "title": "HCTZ renewal", "author": "RN", "date": "2025-12-09T08:55", "body": "New prescription needed for hydrochlorothiazide 25 mg. CMP 7/2025 normal. Sent #90 x3 per protocol."}
+          ]
+        }
+      ]
+    }
+  ]
+}

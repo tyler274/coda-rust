@@ -59,6 +59,8 @@ jobs:
         run: node --test crates/workspace-tools/tests/doppler-watch.test.cjs
       - name: Test PR review launcher without model calls
         run: python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
+      - name: Test staging image handoff
+        run: python3 -m unittest discover -s scripts -p 'test_staging_images.py' -v
       # Preinstalled SDKs are unused here and leave no room to archive target
       # beside itself (run 39309157954, ENOSPC during cache save). The build,
       # proofs, and archive peaked at 16 GB plus a 9.6 GB archive reserve
@@ -348,6 +350,12 @@ jobs:
           nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
       - name: Prove mocked release adapters (no cloud credentials)
         run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+      - name: Validate production mail infrastructure without cloud access
+        run: |
+          nix develop .#release --command tofu fmt -check -recursive infra/gcp/shared-mail
+          nix develop .#release --command tofu -chdir=infra/gcp/shared-mail init -backend=false -input=false
+          nix develop .#release --command tofu -chdir=infra/gcp/shared-mail validate
+          nix develop .#release --command tofu -chdir=infra/gcp/shared-mail test
       # Adapter tests do not authorize deployment. The staging rollout is the
       # deploy-staging job below; hosted runtime qualification is separate.
 
@@ -360,6 +368,8 @@ jobs:
     timeout-minutes: 90
     permissions:
       contents: read
+    outputs:
+      tested-artifact-id: ${{ steps.tested-images.outputs.artifact-id }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -379,11 +389,23 @@ jobs:
               echo "| \`$archive\` | $(du -h --apparent-size "$archive" | cut -f1) |"
             done < image-paths
           } >> "$GITHUB_STEP_SUMMARY"
-      - name: Save immutable build output references
+      # Exercise the handoff with the real Nix archives on PRs too. Retain it
+      # only for enabled main deployments, passing its immutable artifact ID
+      # so a failed deployment rerun reuses the original successful proof.
+      - name: Package tested staging images
+        run: |
+          python3 scripts/staging_images.py package image-paths tested-images --revision "$GITHUB_SHA"
+          python3 scripts/staging_images.py verify tested-images --revision "$GITHUB_SHA"
+      - name: Save tested staging images
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'
+        id: tested-images
         uses: actions/upload-artifact@v7
         with:
-          name: image-paths-${{ github.sha }}
-          path: image-paths
+          name: tested-staging-images-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tested-images/
+          if-no-files-found: error
+          retention-days: 3
+          compression-level: 0
       # An operator can test the exact PR image on staging before merging.
       # This job retains the already-tested archive; it has no cloud credentials
       # and cannot publish or deploy it.
@@ -599,9 +621,9 @@ jobs:
           done
           echo "Revision $ready serves $IMAGE behind IAP" >> "$GITHUB_STEP_SUMMARY"
 
-  # Publishes the physician and Duet runtime and migration images, plus
-  # physician-worker, by digest and rolls them out to staging directly: each
-  # migration job is updated and executed to completion, then its service
+  # Publishes the exact archives tested by images (no rebuild), then rolls the
+  # physician and Duet runtime and migration images, plus physician-worker,
+  # out to staging by digest. Each migration job runs to completion before its service
   # moves to the new runtime digest and must report a Ready revision serving
   # it. physician-worker is updated once that Cloud Run service exists; the
   # first push only publishes the digest so the scaling plan can pin it.
@@ -640,6 +662,18 @@ jobs:
           persist-credentials: false
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Require the successful image proof artifact
+        env:
+          TESTED_ARTIFACT_ID: ${{ needs.images.outputs.tested-artifact-id }}
+        run: test -n "$TESTED_ARTIFACT_ID"
+      - name: Download the tested image archives from this run
+        uses: actions/download-artifact@v8
+        with:
+          artifact-ids: ${{ needs.images.outputs.tested-artifact-id }}
+          path: tested-images
+          merge-multiple: true
+      - name: Verify the tested image handoff before authenticating
+        run: python3 scripts/staging_images.py verify tested-images --revision "$GITHUB_SHA"
       - name: Authenticate as the staging deployer
         id: auth
         uses: google-github-actions/auth@v2
@@ -649,37 +683,14 @@ jobs:
           token_format: access_token
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
-      - name: Build the images and push them by digest
+      - name: Publish the tested images by digest
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
           set -euo pipefail
-          declare -A attr=(
-            [physician-runtime]=physician-sample-image
-            [physician-worker]=physician-worker-image
-            [physician-migration]=physician-migration-image
-            [duet-runtime]=duet-api-image
-            [duet-migration]=duet-migration-image
-          )
-          declare -A name=(
-            [physician-runtime]=coda-physician-sample
-            [physician-worker]=coda-physician-worker
-            [physician-migration]=coda-physician-migrate
-            [duet-runtime]=coda-duet-api
-            [duet-migration]=coda-duet-migrate
-          )
-          mkdir -p release
-          for key in "${!attr[@]}"; do
-            archive=$(nix build ".#${attr[$key]}" --print-out-paths --no-link)
-            target="docker://$REGISTRY/${name[$key]}:${GITHUB_SHA}"
-            nix develop .#release --command skopeo copy --insecure-policy --quiet \
-              --dest-creds "oauth2accesstoken:${ACCESS_TOKEN}" "docker-archive:$archive" "$target"
-            digest=$(nix develop .#release --command skopeo inspect \
-              --creds "oauth2accesstoken:${ACCESS_TOKEN}" --format '{{.Digest}}' "$target")
-            [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "::error::no digest for ${name[$key]}"; exit 1; }
-            echo "$REGISTRY/${name[$key]}@$digest" > "release/$key"
-            echo "Published ${name[$key]}@$digest" >> "$GITHUB_STEP_SUMMARY"
-          done
+          nix develop .#release --command python scripts/staging_images.py publish \
+            tested-images release --revision "$GITHUB_SHA" --registry "$REGISTRY"
+          cat release/tested-images.json >> "$GITHUB_STEP_SUMMARY"
       - name: Migrate and roll out physician, then duet
         run: |
           set -euo pipefail

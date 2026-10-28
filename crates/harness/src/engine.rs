@@ -13,6 +13,77 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tokio::{sync::watch, time::Instant};
 
+mod compatibility;
+mod exchange;
+
+// Facades describe representation, evidence and authority callbacks. Only this
+// driver decides when another model request or a tool batch may run.
+trait Batch {
+    type Call;
+    type Error;
+
+    async fn tool(&mut self, call: Self::Call) -> Result<(), Self::Error>;
+}
+
+trait Driver: Batch {
+    type Prepared;
+    type Turn;
+    type Output;
+
+    async fn prepare(&mut self) -> Result<Self::Prepared, Self::Error>;
+    async fn exchange(&mut self, prepared: &Self::Prepared) -> Result<Self::Turn, Self::Error>;
+    fn validate(
+        &mut self,
+        prepared: &Self::Prepared,
+        turn: &Self::Turn,
+    ) -> Result<Vec<Self::Call>, Self::Error>;
+    async fn settle(
+        &mut self,
+        prepared: Self::Prepared,
+        turn: Self::Turn,
+        empty: bool,
+    ) -> Result<Decision<Self::Output>, Self::Error>;
+}
+
+enum Decision<T> {
+    Complete(T),
+    Continue,
+    Tools,
+}
+
+async fn drive<D: Driver>(driver: &mut D) -> Result<D::Output, D::Error> {
+    loop {
+        let prepared = driver.prepare().await?;
+        let turn = driver.exchange(&prepared).await?;
+        // No completion callback or effect is reachable before whole-batch
+        // validation, even if a response mixes terminal and effect calls.
+        let calls = driver.validate(&prepared, &turn)?;
+        match driver.settle(prepared, turn, calls.is_empty()).await? {
+            Decision::Complete(output) => return Ok(output),
+            Decision::Continue => continue,
+            Decision::Tools => execute_batch(driver, calls).await?,
+        }
+    }
+}
+
+async fn execute_batch<D: Batch>(driver: &mut D, calls: Vec<D::Call>) -> Result<(), D::Error> {
+    for call in calls {
+        driver.tool(call).await?;
+    }
+    Ok(())
+}
+
+fn validate_identities<'a>(
+    seen: &mut HashSet<String>,
+    calls: impl IntoIterator<Item = (&'a str, &'a str)>,
+) -> bool {
+    calls.into_iter().all(|(id, name)| {
+        !id.trim().is_empty() && !name.trim().is_empty() && seen.insert(id.to_owned())
+    })
+}
+
+pub(crate) use compatibility::{continued, resume_tools, run as run_compatibility};
+
 /// A cooperative stop signal, independent of any product terminal state.
 #[derive(Clone, Debug)]
 pub struct Cancellation(watch::Sender<bool>);
@@ -439,7 +510,7 @@ async fn execute(
     provider: &mut dyn Provider,
     host: &mut dyn Host,
     attempt: &str,
-    mut transcript: Vec<Item>,
+    transcript: Vec<Item>,
     limits: &Limits,
     gate: &mut Gate<'_>,
 ) -> Result<Candidate, Failure> {
@@ -458,16 +529,59 @@ async fn execute(
         ));
     }
     validate_context(&transcript)?;
-    let mut seen: HashSet<String> = transcript
+    let seen: HashSet<String> = transcript
         .iter()
         .filter_map(|item| match item {
             Item::Call(call) => Some(call.id.clone()),
             _ => None,
         })
         .collect();
-    let mut sequence = 0;
-    let mut text = String::new();
-    loop {
+    drive(&mut AcknowledgedDriver {
+        provider,
+        host,
+        attempt,
+        transcript,
+        limits,
+        gate,
+        seen,
+        sequence: 0,
+        text: String::new(),
+        names: HashSet::new(),
+    })
+    .await
+}
+
+struct AcknowledgedDriver<'a, 'cancel> {
+    provider: &'a mut dyn Provider,
+    host: &'a mut dyn Host,
+    attempt: &'a str,
+    transcript: Vec<Item>,
+    limits: &'a Limits,
+    gate: &'a mut Gate<'cancel>,
+    seen: HashSet<String>,
+    sequence: u64,
+    text: String,
+    names: HashSet<String>,
+}
+
+impl Driver for AcknowledgedDriver<'_, '_> {
+    type Prepared = Context;
+    type Turn = Turn;
+    type Output = Candidate;
+
+    async fn prepare(&mut self) -> Result<Context, Failure> {
+        let Self {
+            provider,
+            host,
+            attempt,
+            transcript,
+            limits,
+            gate,
+            seen,
+            sequence,
+            ..
+        } = self;
+        let host = &mut **host;
         if gate.usage.model_calls >= limits.model_calls {
             return Err(Failure::Limit("model calls".into()));
         }
@@ -475,7 +589,7 @@ async fn execute(
         let usage = gate.usage.clone();
         let mut context = gate
             .wait("context preparation", async {
-                host.prepare(&transcript, &usage)
+                host.prepare(transcript, &usage)
                     .await
                     .map_err(Failure::Host)
             })
@@ -521,7 +635,7 @@ async fn execute(
             gate,
             host,
             attempt,
-            &mut sequence,
+            sequence,
             EventKind::ProviderStarted {
                 ordinal,
                 context: context.clone(),
@@ -529,30 +643,28 @@ async fn execute(
         )
         .await?;
         current(gate, host).await?;
-        gate.usage.model_calls += 1;
-        let stream_cancel = gate.cancel.clone();
-        let stream_deadline = gate.deadline;
-        let turn = gate
-            .wait("provider dispatch", async {
-                let mut sink = OwnerSink {
-                    host,
-                    attempt,
-                    sequence: &mut sequence,
-                    ordinal,
-                    cancel: stream_cancel,
-                    deadline: stream_deadline,
-                };
-                provider.complete_stream(request(), &mut sink).await
-            })
-            .await?;
-        record(
-            gate,
-            host,
-            attempt,
-            &mut sequence,
-            EventKind::ProviderReturned(turn.clone()),
-        )
-        .await?;
+        self.names = names;
+        Ok(context)
+    }
+
+    async fn exchange(&mut self, context: &Context) -> Result<Turn, Failure> {
+        self.gate.usage.model_calls += 1;
+        exchange::acknowledged(&mut exchange::Acknowledged {
+            provider: self.provider,
+            host: self.host,
+            request: Request {
+                attempt_id: self.attempt,
+                ordinal: self.gate.usage.model_calls,
+                context,
+                limits: self.limits,
+            },
+            sequence: &mut self.sequence,
+            gate: self.gate,
+        })
+        .await
+    }
+
+    fn validate(&mut self, _context: &Context, turn: &Turn) -> Result<Vec<Invocation>, Failure> {
         let calls: Vec<_> = turn
             .items
             .iter()
@@ -575,27 +687,46 @@ async fn execute(
                 _ => (),
             }
         }
-        for call in &calls {
-            if call.id.trim().is_empty()
-                || call.name.trim().is_empty()
-                || !seen.insert(call.id.clone())
-            {
-                return Err(Failure::Protocol(
-                    "empty or repeated tool call identity/name".into(),
-                ));
-            }
+        if !validate_identities(
+            &mut self.seen,
+            calls
+                .iter()
+                .map(|call| (call.id.as_str(), call.name.as_str())),
+        ) {
+            return Err(Failure::Protocol(
+                "empty or repeated tool call identity/name".into(),
+            ));
         }
-        if calls.len() > limits.calls_per_turn {
+        if calls.len() > self.limits.calls_per_turn {
             return Err(Failure::Limit("tool batch; no calls executed".into()));
         }
+        Ok(calls)
+    }
+
+    async fn settle(
+        &mut self,
+        context: Context,
+        turn: Turn,
+        empty: bool,
+    ) -> Result<Decision<Candidate>, Failure> {
+        let Self {
+            host,
+            attempt,
+            transcript,
+            gate,
+            sequence,
+            text,
+            ..
+        } = self;
+        let host = &mut **host;
         for item in &turn.items {
             if let Item::Message { text: part, .. } = item {
                 text.push_str(part);
             }
         }
-        transcript = context.items;
+        *transcript = context.items;
         transcript.extend(turn.items);
-        if calls.is_empty() {
+        if empty {
             if text.trim().is_empty() {
                 return Err(Failure::Protocol("no authored completion".into()));
             }
@@ -604,94 +735,112 @@ async fn execute(
                 gate,
                 host,
                 attempt,
-                &mut sequence,
+                sequence,
                 EventKind::Candidate { text: text.clone() },
             )
             .await?;
-            return Ok(Candidate {
-                text,
-                transcript,
+            return Ok(Decision::Complete(Candidate {
+                text: std::mem::take(text),
+                transcript: std::mem::take(transcript),
                 usage: gate.usage.clone(),
-            });
+            }));
         }
-        for call in calls {
-            let arguments = serde_json::from_str::<Value>(&call.arguments);
-            let denial = if !names.contains(&call.name) {
-                Some("unknown or unoffered tool".to_owned())
-            } else if arguments.as_ref().is_err() || !arguments.as_ref().is_ok_and(Value::is_object)
-            {
-                Some("arguments must be a JSON object".to_owned())
-            } else if gate.usage.tool_calls >= limits.tool_calls {
-                Some("tool execution allowance exhausted".to_owned())
-            } else if gate.usage.tool_result_bytes >= limits.total_tool_result_bytes {
-                return Err(Failure::Limit(
-                    "tool result allowance exhausted before dispatch".into(),
-                ));
-            } else {
-                current(gate, host).await?;
-                match gate
-                    .wait("tool admission", async {
-                        host.admit(&call, arguments.as_ref().expect("validated arguments"))
-                            .await
-                            .map_err(Failure::Host)
-                    })
-                    .await?
-                {
-                    Admission::Allow => None,
-                    Admission::Deny(reason) => Some(reason),
-                }
-            };
-            let executed = denial.is_none();
-            let output = if let Some(reason) = denial {
-                serde_json::json!({"executed": false, "error": reason}).to_string()
-            } else {
-                record(
-                    gate,
-                    host,
-                    attempt,
-                    &mut sequence,
-                    EventKind::ToolStarted(call.clone()),
-                )
-                .await?;
-                current(gate, host).await?;
-                gate.usage.tool_calls += 1;
-                gate.wait("tool dispatch; reconcile uncertain effects", async {
-                    host.execute(&call, arguments.expect("validated arguments"))
+        Ok(Decision::Tools)
+    }
+}
+
+impl Batch for AcknowledgedDriver<'_, '_> {
+    type Call = Invocation;
+    type Error = Failure;
+
+    async fn tool(&mut self, call: Invocation) -> Result<(), Failure> {
+        let Self {
+            host,
+            attempt,
+            transcript,
+            limits,
+            gate,
+            sequence,
+            names,
+            ..
+        } = self;
+        let host = &mut **host;
+        let arguments = serde_json::from_str::<Value>(&call.arguments);
+        let denial = if !names.contains(&call.name) {
+            Some("unknown or unoffered tool".to_owned())
+        } else if arguments.as_ref().is_err() || !arguments.as_ref().is_ok_and(Value::is_object) {
+            Some("arguments must be a JSON object".to_owned())
+        } else if gate.usage.tool_calls >= limits.tool_calls {
+            Some("tool execution allowance exhausted".to_owned())
+        } else if gate.usage.tool_result_bytes >= limits.total_tool_result_bytes {
+            return Err(Failure::Limit(
+                "tool result allowance exhausted before dispatch".into(),
+            ));
+        } else {
+            current(gate, host).await?;
+            match gate
+                .wait("tool admission", async {
+                    host.admit(&call, arguments.as_ref().expect("validated arguments"))
                         .await
                         .map_err(Failure::Host)
                 })
                 .await?
-            };
+            {
+                Admission::Allow => None,
+                Admission::Deny(reason) => Some(reason),
+            }
+        };
+        let executed = denial.is_none();
+        let output = if let Some(reason) = denial {
+            serde_json::json!({"executed": false, "error": reason}).to_string()
+        } else {
             record(
                 gate,
                 host,
                 attempt,
-                &mut sequence,
-                EventKind::ToolReturned {
-                    call_id: call.id.clone(),
-                    output: output.clone(),
-                    executed,
-                },
+                sequence,
+                EventKind::ToolStarted(call.clone()),
             )
             .await?;
-            // Never replay an effect to obtain a smaller result. Its exact output
-            // is already acknowledged by the owner before refusing delivery.
-            if output.len() > limits.tool_result_bytes
-                || output.len()
-                    > limits
-                        .total_tool_result_bytes
-                        .saturating_sub(gate.usage.tool_result_bytes)
-            {
-                return Err(Failure::Limit(
-                    "tool result bytes; result retained by owner".into(),
-                ));
-            }
-            gate.usage.tool_result_bytes += output.len();
-            transcript.push(Item::Result {
-                call_id: call.id,
-                output,
-            });
+            current(gate, host).await?;
+            gate.usage.tool_calls += 1;
+            gate.wait("tool dispatch; reconcile uncertain effects", async {
+                host.execute(&call, arguments.expect("validated arguments"))
+                    .await
+                    .map_err(Failure::Host)
+            })
+            .await?
+        };
+        record(
+            gate,
+            host,
+            attempt,
+            sequence,
+            EventKind::ToolReturned {
+                call_id: call.id.clone(),
+                output: output.clone(),
+                executed,
+            },
+        )
+        .await?;
+        // Never replay an effect to obtain a smaller result. Its exact output
+        // is already acknowledged by the owner before refusing delivery.
+        if output.len() > limits.tool_result_bytes
+            || output.len()
+                > limits
+                    .total_tool_result_bytes
+                    .saturating_sub(gate.usage.tool_result_bytes)
+        {
+            return Err(Failure::Limit(
+                "tool result bytes; result retained by owner".into(),
+            ));
         }
+        gate.usage.tool_result_bytes += output.len();
+        transcript.push(Item::Result {
+            call_id: call.id,
+            output,
+        });
+        Ok(())
     }
 }
 
