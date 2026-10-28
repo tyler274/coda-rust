@@ -683,5 +683,5 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | Phone not connected | built | YouTab (duet-app lib.rs) (duet-health) | yes | Allow HealthKit. |
 | Phone connected.Bringing in your history | partial | TodayTab (duet-app lib.rs), YouTab (duet-app lib.rs) (duet-health) | yes | Readings show as they arrive; nothing says history is still coming. |
-| Phone connected.Up to date from your phone | built | TodayTab (duet-app lib.rs), YouTab (duet-app lib.rs) (duet-health) | yes | Your phone's readings, by source. |
+| Phone connected.Up to date from your phone | partial | TodayTab (duet-app lib.rs), YouTab (duet-app lib.rs) (duet-health) | yes | Your phone's readings, by source. The app counts you connected once you've asked for access (HealthKitBridge.swift) and shows current readings; nothing marks the history import finished or names gaps in coverage. |
 | Access turned off in your phone's settings; your readings stay | partial | YouTab (duet-app lib.rs) | yes | The app can't tell access turned off from never granted, and doesn't say your readings stay. |

@@ -27,8 +27,8 @@ finishes, so nothing it publishes rests on an older reading (Dev 2026-10-26).
 **Graph.** "reply revision: news while working".
 
 **Rust owner.** `DurableChat::accept_revision` (crates/physician-sample/src/durable.rs)
-and the `read_patient_sources` tool in physician-worker
-(crates/physician-sample/src/live.rs). Coverage records that they don't keep it
+and `read_sources`, which answers the `read_patient_sources` tool in
+physician-worker (crates/physician-sample/src/bin/physician-worker/revision.rs). Coverage records that they don't keep it
 yet: acceptance pins the sources, and the revision reads only those.
 
 **Status.** Unproven; the owner doesn't meet it yet.
