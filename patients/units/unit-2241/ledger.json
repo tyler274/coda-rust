@@ -1,14 +1,7 @@
 {
   "unit": "unit-2241",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002241/2023-03-28a: procedure \"Colonoscopy with ablation of lesions\" not in catalog and has no snomed (text only)",
-    "MRN00002241/2025-11-15a: procedure \"Diagnostic angiogram, left lower extremity\" not in catalog and has no snomed (text only)",
-    "MRN00002241/2025-11-15a: procedure \"Below-knee amputation, left\" not in catalog and has no snomed (text only)",
-    "MRN00002241/2026-05-20a: procedure \"Ascending aorta replacement with aortic valve resuspension\" not in catalog and has no snomed (text only)",
-    "MRN00002241/2022-10-04a: imaging order \"Abdominal aortic aneurysm screening ultrasound\" names no one catalog lab, panel, study or procedure",
-    "MRN00002241/2026-01-13a: referral to \"Prosthetics and Orthotics\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002241",
@@ -419,8 +412,9 @@
             {
               "id": "aaa-us",
               "action": "placed",
-              "order": "Abdominal aortic aneurysm screening ultrasound",
+              "order": "US abdominal aorta",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "male former smoker 65-75"
             },
             {
@@ -958,6 +952,7 @@
           "procedures": [
             {
               "procedure": "Colonoscopy with ablation of lesions",
+              "snomed": "174173004",
               "performed": "2023-03-28T08:30"
             }
           ],
@@ -3776,10 +3771,12 @@
             },
             {
               "procedure": "Diagnostic angiogram, left lower extremity",
+              "snomed": "7995007",
               "performed": "2025-11-17T10:00"
             },
             {
               "procedure": "Below-knee amputation, left",
+              "snomed": "88312006",
               "performed": "2025-11-19T08:30"
             },
             {
@@ -4011,7 +4008,7 @@
               "action": "placed",
               "order": "Prosthetics referral, left below-knee",
               "category": "referral",
-              "to": "Prosthetics and Orthotics",
+              "to": "Prosthetics",
               "reason": "left BKA, limb healed"
             }
           ],
@@ -4502,6 +4499,7 @@
             },
             {
               "procedure": "Ascending aorta replacement with aortic valve resuspension",
+              "snomed": "312311004",
               "performed": "2026-05-20T22:30"
             },
             {
@@ -4924,19 +4922,19 @@
         "code": "309049",
         "display": "cefadroxil 500 MG Oral Capsule",
         "ingredient": "cefadroxil",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "enzalutamide 40 MG Oral Tablet": {
         "code": "2390644",
         "display": "enzalutamide 40 MG Oral Tablet",
         "ingredient": "enzalutamide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "leuprolide acetate 22.5 MG Injection": {
         "code": "2606516",
         "display": "leuprolide acetate 22.5 MG Injection",
         "ingredient": "leuprolide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4973,10 +4971,37 @@
         "display": "US Heart Transesophageal during surgery",
         "receipt": "NLM Clinical Tables LOINC"
       },
+      "US abdominal aorta": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "Whole body bone scan": {
         "code": "39818-0",
         "display": "NM Whole body Bone Views",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Ascending aorta replacement with aortic valve resuspension": {
+        "code": "312311004",
+        "display": "Replacement of ascending aorta",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Below-knee amputation, left": {
+        "code": "88312006",
+        "display": "Amputation of leg through tibia and fibula",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Colonoscopy with ablation of lesions": {
+        "code": "174173004",
+        "display": "Fiberoptic endoscopic laser destruction of lesion of colon",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Diagnostic angiogram, left lower extremity": {
+        "code": "7995007",
+        "display": "Angiography of lower extremity arteries with serialography",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

@@ -87,7 +87,8 @@
               },
               "frequency": "DAILY",
               "route": "Oral",
-              "course": "chronic"
+              "course": "chronic",
+              "uncoded": true
             }
           ],
           "allergies": [
@@ -235,14 +236,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "prior-records-2022",
-              "action": "placed",
-              "order": "Records request, prior primary care",
-              "category": "procedure",
-              "reason": "continuity of care"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -272,12 +266,7 @@
           "kind": "outside_records",
           "start": "2022-06-24T11:00",
           "orders": [
-            {
-              "id": "prior-records-2022",
-              "action": "done",
-              "date": "2022-06-24T11:00"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Outside Records",
@@ -320,7 +309,10 @@
                   "test": "Alpha-fetoprotein MoM, maternal serum",
                   "loinc": "20450-3",
                   "unit": "{MoM}",
-                  "value": 3.9
+                  "value": 3.9,
+                  "range": {
+                    "high": 2.5
+                  }
                 },
                 {
                   "test": "Choriogonadotropin, maternal serum",
@@ -434,7 +426,10 @@
                   "test": "Protein, 24 hour urine",
                   "loinc": "2889-4",
                   "unit": "mg/(24.h)",
-                  "value": 150
+                  "value": 150,
+                  "range": {
+                    "high": 100
+                  }
                 }
               ]
             }
@@ -489,9 +484,12 @@
               "results": [
                 {
                   "test": "Bile acids, total",
-                  "loinc": "14628-3",
+                  "loinc": "14628-2",
                   "unit": "umol/L",
-                  "value": 3.8
+                  "value": 3.8,
+                  "range": {
+                    "high": 10
+                  }
                 }
               ]
             }

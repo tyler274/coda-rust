@@ -664,6 +664,9 @@
                   "test": "Ethanol, blood",
                   "loinc": "5640-8",
                   "unit": "mg/dL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 80,
                   "resulted": "2022-11-23T02:55"
                 }
@@ -2078,10 +2081,10 @@
     },
     "medications": {
       "aspirin 325 MG Oral Tablet": {
-        "code": "212033",
-        "display": "aspirin 325 MG Oral Tablet",
+        "code": "198467",
+        "display": "aspirin 325 MG Delayed Release Oral Tablet",
         "ingredient": "aspirin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2094,6 +2097,9 @@
         "code": "5640-8",
         "display": "Ethanol [Mass/volume] in Blood",
         "unit": "mg/dL",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

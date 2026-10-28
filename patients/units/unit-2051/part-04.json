@@ -29,7 +29,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-17T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Blood Urea Nitrogen"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2024-04-17T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2024-04-17T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.8}]}
+            {"panel": null, "collected": "2024-04-17T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.8, "range": {"low": 5, "high": 15}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2024-04-18T13:00", "body": "Transplant Nephrology 4/17/2024. Stable allograft function at baseline creatinine. Tacrolimus 8.8. No rejection episodes since 2021. Continue immunosuppression unchanged and TMP-SMX prophylaxis. Return 6 months."}
@@ -77,7 +77,7 @@
           ],
           "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-10-08T15:40"}],
           "orders": [
-            {"id": "fit-2024", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+            {"id": "fit-2024", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "colorectal cancer screening"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-08T17:10", "body": "Annual physical, 49 yo.\nAnother stable year. Transplant creatinine at baseline. Derm in Aug clear. Eye exam last Dec normal. Next aneurysm MRA fall 2025.\nMeds: tacrolimus 5 BID, MMF 750 BID, pred 5, TMP-SMX SS daily, amlodipine 10, ASA 81, glargine 24 qhs, lispro ratio. NKDA.\nExam: well. Skin clear. No LAD. Lungs clear. Heart regular. Abd R flank fullness, graft nontender. No edema. Feet intact, monofilament normal.\nHM: flu, COVID, and PCV20 today (completes pneumococcal series for transplant). FIT. PHQ-2 0.\nRTC Feb."}
@@ -95,7 +95,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-13T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Blood Urea Nitrogen"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-13T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2024-11-13T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 9.2}, {"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+            {"panel": null, "collected": "2024-11-13T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 9.2, "range": {"low": 5, "high": 15}}, {"test": "Fecal Immunochemical Test", "text": "Negative"}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2024-11-14T15:20", "body": "Transplant Nephrology 11/13/2024. Four years post-transplant, doing well. Creatinine stable. Tacrolimus 9.2. Continue regimen. FIT collected here for PCP: negative. Return 6 months."}
@@ -135,7 +135,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-05-14T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Blood Urea Nitrogen"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-14T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2025-05-14T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.5}]}
+            {"panel": null, "collected": "2025-05-14T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.5, "range": {"low": 5, "high": 15}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2025-05-15T12:00", "body": "Transplant Nephrology 5/14/2025. Stable. Creatinine at baseline, tacrolimus 8.5, BP controlled. No changes. Return 6 months."}
@@ -198,7 +198,7 @@
           ],
           "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-10-14T15:40"}],
           "orders": [
-            {"id": "fit-2025", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+            {"id": "fit-2025", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "colorectal cancer screening"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-10-14T17:10", "body": "Annual. 50 yo now.\nQuiet year: graft stable, MRA last week unchanged, derm clear in August.\nMeds unchanged. NKDA. Smoke-free nearly 6 years.\nROS: negative - no fevers, sweats, weight change.\nExam: well. Skin: no concerning lesions. Neck: no LAD. Lungs clear. Heart regular. Abd: R flank fullness, no hepatosplenomegaly, graft nontender. No edema. Feet intact.\nHM: flu and COVID. FIT again (colonoscopy offered now that he's 50; prefers to stay with yearly FIT). PHQ-2 0.\nRTC Feb."}
@@ -216,7 +216,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-11-12T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Blood Urea Nitrogen"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-12T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2025-11-12T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.9}, {"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+            {"panel": null, "collected": "2025-11-12T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.9, "range": {"low": 5, "high": 15}}, {"test": "Fecal Immunochemical Test", "text": "Negative"}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2025-11-13T13:40", "body": "Transplant Nephrology 11/12/2025. Nearly five years post-transplant. Creatinine baseline, tacrolimus 8.9. Doing well. Continue tacrolimus 5 BID, MMF 750 BID, prednisone 5, TMP-SMX SS. FIT from PCP negative. Return 6 months."}
@@ -245,7 +245,7 @@
           ],
           "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2026-01-06T15:30"}],
           "orders": [
-            {"id": "heme-onc-referral", "action": "placed", "order": "Hematology/oncology referral, urgent", "category": "referral", "to": "Hematology & Oncology", "reason": "fevers, weight loss, cervical lymphadenopathy in a transplant recipient"}
+            {"id": "heme-onc-referral", "action": "placed", "order": "Hematology/oncology referral, urgent", "category": "referral", "to": "Oncology", "reason": "fevers, weight loss, cervical lymphadenopathy in a transplant recipient"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "Primary Care Office Visit - acute", "author": "PCP", "date": "2026-01-06T16:55", "body": "S: About 3 weeks of tiredness that is not getting better over break, fevers on and off, mostly evenings, and he's down 5 lb without trying. Noticed lumps on both sides of his neck a week ago. No cough, dyspnea, diarrhea, urinary symptoms. No sick contacts he knows of.\n\nO: Weight down as charted. Afebrile in clinic. Bilateral cervical lymph nodes, firm, mobile, nontender. Liver edge palpable below the costal margin; spleen tip felt on inspiration. Lungs clear. Heart regular. Graft nontender. Skin no rash.\n\nA/P: B symptoms with bilateral cervical adenopathy and organomegaly in a 5-year kidney transplant recipient on tacrolimus/MMF/prednisone - PTLD needs to be excluded first, infection second. CBC/CMP today. Called the transplant nephrologist on call - they agree, and hematology/oncology at the transplant center will see him next week; urgent referral placed. Fever precautions: if >101 persistently, rigors, or short of breath, go to the transplant ED.\n\nAddendum 1/7: WBC up and new anemia, as resulted. Forwarded to heme/onc with the referral."}
@@ -269,7 +269,7 @@
           "labs": [
             {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-14T10:30", "results": [{"test": "White Blood Cells", "value": 12.0}, {"test": "Hemoglobin", "value": 10.5}, {"test": "Platelets", "value": 150}]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-14T10:30", "results": [{"test": "Creatinine", "value": 1.2}, {"test": "Potassium"}, {"test": "Sodium"}]},
-            {"panel": null, "collected": "2026-01-14T10:30", "results": [{"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 450}, {"test": "Epstein-Barr virus DNA viral load", "loinc": "36923-1", "unit": "{copies}/mL", "value": 98000}]}
+            {"panel": null, "collected": "2026-01-14T10:30", "results": [{"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 450, "range": {"low": 80, "high": 225}}, {"test": "Epstein-Barr virus DNA viral load", "loinc": "36923-1", "unit": "{copies}/mL", "value": 98000, "range": {}}]}
           ],
           "reports": [
             {"study": "Surgical pathology report", "performed": "2026-01-16T08:30", "issued": "2026-01-20T16:30", "text": "Specimen: lymph node, right cervical, excisional biopsy. Lymph node with effaced architecture by a polymorphic proliferation of small and intermediate lymphocytes, immunoblasts and numerous plasma cells. Immunohistochemistry: CD20 positive B cells; EBV-encoded RNA (EBER) in situ hybridization positive in many cells. No sheets of monomorphic large cells to suggest a monomorphic lymphoma.", "conclusion": "Polymorphic post-transplant lymphoproliferative disorder, EBV-positive (EBER+), CD20 positive."}
@@ -327,7 +327,7 @@
           "labs": [
             {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-19T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-02-19T09:00", "results": [{"test": "Creatinine", "value": 1.3}, {"test": "Potassium"}]},
-            {"panel": null, "collected": "2026-02-19T09:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 5.2}]}
+            {"panel": null, "collected": "2026-02-19T09:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 5.2, "range": {"low": 5, "high": 15}}]}
           ],
           "state": {"labs": {"White Blood Cells": 8.2, "Hemoglobin": 11.8, "Platelets": 190, "Creatinine": 1.3}},
           "documents": [
@@ -374,7 +374,7 @@
           "service": "Hematology & Oncology",
           "reason": "PTLD response assessment",
           "labs": [
-            {"panel": null, "collected": "2026-05-05T10:00", "results": [{"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 196}]}
+            {"panel": null, "collected": "2026-05-05T10:00", "results": [{"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 196, "range": {"low": 80, "high": 225}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Hematology/oncology follow-up", "author": "hematology/oncology", "date": "2026-05-06T09:00", "body": "Hematology & Oncology 5/5/2026. Polymorphic EBV+ PTLD after reduction of immunosuppression and 4 weekly doses of rituximab. Asymptomatic, weight recovering. No palpable adenopathy or organomegaly.\nRestaging CT 4/27: resolution of adenopathy and hepatosplenomegaly. EBV PCR not detected. LDH 196, normal.\nAssessment: complete response.\nPlan: surveillance visits every 3 months for the first year with exam, CBC, LDH and EBV PCR. Immunosuppression stays at the reduced level (tacrolimus 3 mg BID, prednisone 5 mg, no mycophenolate) per transplant nephrology."}
@@ -406,7 +406,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-14T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Blood Urea Nitrogen"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-14T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2026-07-14T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 5.6}]}
+            {"panel": null, "collected": "2026-07-14T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 5.6, "range": {"low": 5, "high": 15}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2026-07-15T12:30", "body": "Transplant Nephrology 7/14/2026. Six months after reduction of immunosuppression for PTLD, now in complete response. Creatinine around 1.3, a little above his old 1.2 baseline but stable. Tacrolimus trough 5.6 on 3 mg BID, at goal. No mycophenolate. Prednisone 5 mg. Continue; labs monthly, visit in 3 months."}
@@ -421,7 +421,7 @@
           "labs": [
             {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-10T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-08-10T10:00", "results": [{"test": "Creatinine", "value": 1.3}, {"test": "Potassium"}]},
-            {"panel": null, "collected": "2026-08-10T10:00", "results": [{"test": "Epstein-Barr virus DNA viral load", "loinc": "36923-1", "unit": "{copies}/mL", "text": "Not detected"}, {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 182}]}
+            {"panel": null, "collected": "2026-08-10T10:00", "results": [{"test": "Epstein-Barr virus DNA viral load", "loinc": "36923-1", "unit": "{copies}/mL", "text": "Not detected"}, {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 182, "range": {"low": 80, "high": 225}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Hematology/oncology surveillance", "author": "hematology/oncology", "date": "2026-08-11T09:15", "body": "Hematology & Oncology 8/10/2026 - PTLD surveillance. Feels well, no fevers or sweats, weight back up. No adenopathy or organomegaly. CBC normal, LDH 182, EBV PCR not detected, creatinine 1.3. Remains in complete response. Next visit November."}

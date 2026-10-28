@@ -2,10 +2,7 @@
   "unit": "unit-2092",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002092/2024-12-02a: procedure \"Open reduction and internal fixation of right femoral shaft fracture\" not in catalog and has no snomed (text only)",
-    "MRN00002092/2024-12-19a: reaction \"Prolonged paralysis and apnea after anesthesia\" not in catalog (text only)",
-    "MRN00002092/2025-04-14a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002092/2026-04-20a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure"
+    "MRN00002092/2024-12-19a: reaction \"Prolonged paralysis and apnea after anesthesia\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -657,6 +654,7 @@
           "procedures": [
             {
               "procedure": "Open reduction and internal fixation of right femoral shaft fracture",
+              "snomed": "57470004",
               "performed": "2024-12-02T19:10"
             }
           ],
@@ -1222,7 +1220,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -2770,7 +2768,7 @@
             {
               "id": "fit-2026",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -3093,6 +3091,9 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 50
                 }
               ]
@@ -3105,18 +3106,30 @@
                   "test": "pH of arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.48
                 },
                 {
                   "test": "Carbon dioxide partial pressure in arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 32
                 },
                 {
                   "test": "Oxygen partial pressure in arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 70
                 }
               ]
@@ -3231,19 +3244,19 @@
         "code": "854235",
         "display": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule": {
         "code": "1373325",
         "display": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
         "ingredient": "amylase",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ceftriaxone 2000 MG Injection": {
         "code": "1665046",
         "display": "ceftriaxone 2000 MG Injection",
         "ingredient": "ceftriaxone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3251,18 +3264,29 @@
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Respiratory culture": {
@@ -3274,6 +3298,10 @@
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -3281,6 +3309,13 @@
       "Succinylcholine": {
         "code": "372724004",
         "display": "Succinylcholine",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    },
+    "procedures": {
+      "Open reduction and internal fixation of right femoral shaft fracture": {
+        "code": "57470004",
+        "display": "Open reduction of fracture of femur with internal fixation",
         "receipt": "tx.fhir.org SNOMED CT"
       }
     }

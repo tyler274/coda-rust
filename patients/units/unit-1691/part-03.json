@@ -393,7 +393,8 @@
           "procedures": [
             {
               "procedure": "Cesarean delivery",
-              "performed": "2025-09-27T09:15"
+              "performed": "2025-09-27T09:15",
+              "snomed": "11466000"
             }
           ],
           "reports": [
@@ -553,9 +554,10 @@
             {
               "id": "ogtt-pp",
               "action": "placed",
-              "order": "Glucose tolerance test, 2 hour, 75 g",
+              "order": "Glucose 2 hours post 75 g glucose",
               "category": "lab",
-              "reason": "History of gestational diabetes; postpartum screen at 6-12 weeks"
+              "reason": "History of gestational diabetes; postpartum screen at 6-12 weeks",
+              "loinc": "1518-0"
             }
           ],
           "procedures": [
@@ -665,7 +667,10 @@
                   "test": "Glucose [Mass/volume] in Serum or Plasma --2 hours post 75 g glucose PO",
                   "loinc": "1518-0",
                   "unit": "mg/dL",
-                  "value": 118
+                  "value": 118,
+                  "range": {
+                    "high": 140
+                  }
                 }
               ]
             }

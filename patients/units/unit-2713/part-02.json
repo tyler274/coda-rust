@@ -53,11 +53,12 @@
      ],
      "orders": [
       {
-       "id": "mri-cspine",
-       "action": "placed",
-       "order": "MRI cervical spine without contrast",
-       "category": "imaging",
-       "reason": "Neck pain with left arm weakness and numbness"
+        "id": "mri-cspine",
+        "action": "placed",
+        "order": "MRI cervical spine without contrast",
+        "category": "imaging",
+        "reason": "Neck pain with left arm weakness and numbness",
+        "loinc": "30667-0"
       },
       {
        "id": "neuro-referral",
@@ -102,9 +103,9 @@
      ],
      "orders": [
       {
-       "id": "mri-cspine",
-       "action": "done",
-       "date": "2021-04-08T18:30"
+        "id": "mri-cspine",
+        "action": "done",
+        "date": "2021-04-08T18:30"
       }
      ],
      "documents": [
@@ -419,11 +420,11 @@
      ],
      "orders": [
       {
-       "id": "fit-2021",
-       "action": "placed",
-       "order": "Fecal immunochemical test",
-       "category": "lab",
-       "reason": "Colorectal cancer screening"
+        "id": "fit-2021",
+        "action": "placed",
+        "order": "Fecal Immunochemical Test",
+        "category": "lab",
+        "reason": "Colorectal cancer screening"
       },
       {
        "id": "mammo-2021",
@@ -469,9 +470,9 @@
      ],
      "orders": [
       {
-       "id": "fit-2021",
-       "action": "done",
-       "date": "2021-09-27T10:00"
+        "id": "fit-2021",
+        "action": "done",
+        "date": "2021-09-27T10:00"
       }
      ],
      "documents": [
@@ -577,10 +578,14 @@
          "value": 32
         },
         {
-         "test": "Complement C4",
-         "loinc": "4498-2",
-         "unit": "mg/dL",
-         "value": 6
+          "test": "Complement C4",
+          "loinc": "4498-2",
+          "unit": "mg/dL",
+          "value": 6,
+          "range": {
+            "low": 14,
+            "high": 48
+          }
         }
        ]
       }
@@ -629,12 +634,12 @@
      ],
      "orders": [
       {
-       "id": "allergy-referral",
-       "action": "placed",
-       "order": "Allergy/Immunology referral",
-       "category": "referral",
-       "to": "Allergy/Immunology",
-       "reason": "Hereditary angioedema; on-demand treatment plan"
+        "id": "allergy-referral",
+        "action": "placed",
+        "order": "Allergy/Immunology referral",
+        "category": "referral",
+        "to": "Allergy and Immunology",
+        "reason": "Hereditary angioedema; on-demand treatment plan"
       }
      ],
      "documents": [
@@ -681,22 +686,33 @@
        "resulted": "2021-12-10T11:00",
        "results": [
         {
-         "test": "Complement C4",
-         "loinc": "4498-2",
-         "unit": "mg/dL",
-         "value": 7
+          "test": "Complement C4",
+          "loinc": "4498-2",
+          "unit": "mg/dL",
+          "value": 7,
+          "range": {
+            "low": 14,
+            "high": 48
+          }
         },
         {
-         "test": "C1 esterase inhibitor",
-         "loinc": "4477-6",
-         "unit": "mg/dL",
-         "value": 9
+          "test": "C1 esterase inhibitor",
+          "loinc": "4477-6",
+          "unit": "mg/dL",
+          "value": 9,
+          "range": {
+            "low": 21,
+            "high": 39
+          }
         },
         {
-         "test": "C1 esterase inhibitor functional",
-         "loinc": "4476-8",
-         "unit": "%",
-         "value": 24
+          "test": "C1 esterase inhibitor functional",
+          "loinc": "4476-8",
+          "unit": "%",
+          "value": 24,
+          "range": {
+            "low": 68
+          }
         }
        ]
       }
@@ -921,11 +937,11 @@
        "reason": "Unilateral right hearing loss with tinnitus"
       },
       {
-       "id": "fit-2022",
-       "action": "placed",
-       "order": "Fecal immunochemical test",
-       "category": "lab",
-       "reason": "Colorectal cancer screening"
+        "id": "fit-2022",
+        "action": "placed",
+        "order": "Fecal Immunochemical Test",
+        "category": "lab",
+        "reason": "Colorectal cancer screening"
       },
       {
        "id": "mammo-2022",
@@ -1063,9 +1079,9 @@
      ],
      "orders": [
       {
-       "id": "fit-2022",
-       "action": "done",
-       "date": "2022-11-02T10:30"
+        "id": "fit-2022",
+        "action": "done",
+        "date": "2022-11-02T10:30"
       }
      ]
     },

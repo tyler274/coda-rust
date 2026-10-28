@@ -1,10 +1,7 @@
 {
   "unit": "unit-1682",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001682/2025-09-17a: procedure order \"Records request, prior primary care\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001682",
@@ -27,6 +24,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -224,15 +222,6 @@
               "performed": "2025-09-17T09:15"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Records request, prior primary care",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -278,13 +267,6 @@
           "kind": "outside_records",
           "start": "2025-09-24T10:05",
           "reason": "Records from prior primary care practice",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2025-09-24T10:05"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -723,9 +705,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

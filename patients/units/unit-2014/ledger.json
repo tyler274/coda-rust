@@ -1,9 +1,7 @@
 {
   "unit": "unit-2014",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002014/2024-02-07a: imaging order \"CT chest with contrast\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002014",
@@ -2621,6 +2619,7 @@
               "action": "placed",
               "order": "CT chest with contrast",
               "category": "imaging",
+              "loinc": "24628-0",
               "reason": "right lower lobe opacity on chest x-ray, former smoker, weight loss"
             }
           ],
@@ -2683,6 +2682,7 @@
               "action": "placed",
               "order": "PET-CT skull base to mid-thigh",
               "category": "imaging",
+              "loinc": "81554-8",
               "reason": "staging, right lower lobe mass"
             },
             {
@@ -5464,13 +5464,13 @@
         "code": "1668238",
         "display": "azithromycin 500 MG Injection",
         "ingredient": "azithromycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "carboplatin 10 MG/ML Injectable Solution": {
         "code": "597195",
         "display": "carboplatin 10 MG/ML Injectable Solution",
         "ingredient": "carboplatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "durvalumab 50 MG/ML Injectable Solution": {
         "code": "1919515",
@@ -5482,7 +5482,7 @@
         "code": "312199",
         "display": "paclitaxel 6 MG/ML Injectable Solution",
         "ingredient": "paclitaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5493,6 +5493,11 @@
       }
     },
     "reports": {
+      "CT chest with contrast": {
+        "code": "24628-0",
+        "display": "CT Chest W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "MRI brain with and without contrast": {
         "code": "24590-2",
         "display": "MR Brain",

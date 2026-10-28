@@ -2599,18 +2599,30 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 55
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 70
                 }
               ]
@@ -2866,7 +2878,11 @@
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 247
                 },
                 {
@@ -2882,13 +2898,18 @@
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 486
                 },
                 {
                   "test": "Sodium [Moles/volume] in Urine",
                   "loinc": "2955-3",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 58
                 }
               ]
@@ -3210,7 +3231,7 @@
         "code": "597195",
         "display": "carboplatin 10 MG/ML Injectable Solution",
         "ingredient": "carboplatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "durvalumab 50 MG/ML Injection": {
         "code": "1919515",
@@ -3222,13 +3243,13 @@
         "code": "312199",
         "display": "paclitaxel 6 MG/ML Injectable Solution",
         "ingredient": "paclitaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tiotropium 0.018 MG Inhalation Powder": {
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3236,36 +3257,57 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Serum or Plasma": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sodium [Moles/volume] in Urine": {
         "code": "2955-3",
         "display": "Sodium [Moles/volume] in Urine",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

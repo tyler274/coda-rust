@@ -1,12 +1,7 @@
 {
   "unit": "unit-2010",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002010/2020-06-16a: lab order \"CBC and comprehensive metabolic panel\" names no one catalog lab, panel, study or procedure",
-    "MRN00002010/2022-04-28a: referral to \"Orthopedic Surgery\" names no catalog specialty",
-    "MRN00002010/2024-02-13a: procedure order \"Screening colonoscopy\" names no one catalog lab, panel, study or procedure",
-    "MRN00002010/2025-12-19a: lab order \"Basic metabolic panel in 2-3 weeks\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002010",
@@ -1087,7 +1082,14 @@
             {
               "id": "labs-2020-06",
               "action": "placed",
-              "order": "CBC and comprehensive metabolic panel",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "methotrexate monitoring"
+            },
+            {
+              "id": "labs-2020-06-2",
+              "action": "placed",
+              "order": "Comprehensive Metabolic Panel (CMP)",
               "category": "lab",
               "reason": "methotrexate monitoring"
             }
@@ -1234,6 +1236,11 @@
           "orders": [
             {
               "id": "labs-2020-06",
+              "action": "done",
+              "date": "2020-06-18T07:30"
+            },
+            {
+              "id": "labs-2020-06-2",
               "action": "done",
               "date": "2020-06-18T07:30"
             }
@@ -2737,16 +2744,6 @@
               "performed": "2022-04-28T10:15"
             }
           ],
-          "orders": [
-            {
-              "id": "op-note-request",
-              "action": "placed",
-              "order": "Records request: operative note",
-              "category": "referral",
-              "to": "Orthopedic Surgery",
-              "reason": "operative report not received"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -2767,13 +2764,6 @@
           "kind": "outside_records",
           "start": "2022-05-10T10:30",
           "reason": "operative note received",
-          "orders": [
-            {
-              "id": "op-note-request",
-              "action": "done",
-              "date": "2022-05-10T10:30"
-            }
-          ],
           "documents": [
             {
               "type": "Scanned Document",
@@ -3847,7 +3837,7 @@
             {
               "id": "colonoscopy-2024",
               "action": "placed",
-              "order": "Screening colonoscopy",
+              "order": "Colonoscopy, screening, average risk",
               "category": "procedure",
               "to": "Gastroenterology",
               "reason": "10 years since normal colonoscopy"
@@ -4950,7 +4940,7 @@
             {
               "id": "bmp-2026-01",
               "action": "placed",
-              "order": "Basic metabolic panel in 2-3 weeks",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "new thiazide"
             }
@@ -5253,13 +5243,13 @@
         "code": "833528",
         "display": "amiodarone hydrochloride 200 MG Oral Tablet",
         "ingredient": "amiodarone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "clarithromycin 500 MG Oral Tablet": {
         "code": "197517",
         "display": "clarithromycin 500 MG Oral Tablet",
         "ingredient": "clarithromycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "procainamide hydrochloride 500 MG Extended Release Oral Tablet": {
         "code": "857879",

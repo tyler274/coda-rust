@@ -2,7 +2,6 @@
   "unit": "unit-2590",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00002590/2024-11-19a: allergen \"Volatile anesthetics and succinylcholine\" not in catalog and has no snomed (text only)",
     "MRN00002590/2024-11-19a: reaction \"Malignant hyperthermia\" not in catalog (text only)"
   ],
   "patients": [
@@ -255,6 +254,10 @@
                   "test": "Reticulocytes",
                   "loinc": "17849-1",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 8.3
                 }
               ]
@@ -645,6 +648,10 @@
                   "test": "Reticulocytes",
                   "loinc": "17849-1",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 8.8
                 }
               ]
@@ -952,6 +959,7 @@
           "allergies": [
             {
               "substance": "Volatile anesthetics and succinylcholine",
+              "snomed": "1354647001",
               "category": "medication",
               "reaction": "Malignant hyperthermia",
               "severity": "severe",
@@ -1490,6 +1498,10 @@
                   "test": "Reticulocytes",
                   "loinc": "17849-1",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 9.1
                 }
               ]
@@ -2288,6 +2300,10 @@
                   "test": "Reticulocytes",
                   "loinc": "17849-1",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 9.7
                 }
               ]
@@ -2453,7 +2469,7 @@
         "code": "197797",
         "display": "hydroxyurea 500 MG Oral Capsule",
         "ingredient": "hydroxyurea",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2461,7 +2477,18 @@
         "code": "17849-1",
         "display": "Reticulocytes/Erythrocytes in Blood by Automated count",
         "unit": "%",
+        "range": {
+          "low": 0.5,
+          "high": 1.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "allergens": {
+      "Volatile anesthetics and succinylcholine": {
+        "code": "1354647001",
+        "display": "Volatile liquid anesthetic",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

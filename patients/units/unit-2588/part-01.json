@@ -294,7 +294,6 @@
         {
          "test": "Treponema pallidum antibody",
          "loinc": "24110-9",
-         "unit": "",
          "text": "Reactive"
         }
        ]
@@ -361,11 +360,12 @@
      ],
      "orders": [
       {
-       "id": "bicillin-2019",
-       "action": "placed",
-       "order": "Benzathine penicillin G 2.4 million units IM, nurse visit today",
-       "category": "procedure",
-       "reason": "primary syphilis"
+        "id": "bicillin-2019",
+        "action": "placed",
+        "order": "Intramuscular injection",
+        "category": "procedure",
+        "reason": "primary syphilis",
+        "snomed": "76601001"
       }
      ],
      "documents": [
@@ -453,9 +453,9 @@
      ],
      "orders": [
       {
-       "id": "bicillin-2019",
-       "action": "done",
-       "date": "2019-02-11T16:05"
+        "id": "bicillin-2019",
+        "action": "done",
+        "date": "2019-02-11T16:05"
       }
      ],
      "procedures": [
@@ -670,11 +670,18 @@
      ],
      "orders": [
       {
-       "id": "gc-retest-2019",
-       "action": "placed",
-       "order": "Urine GC/CT NAAT, 3-month retest",
-       "category": "lab",
-       "reason": "gonococcal urethritis"
+        "id": "gc-retest-2019",
+        "action": "placed",
+        "order": "Neisseria gonorrhoeae NAAT",
+        "category": "lab",
+        "reason": "gonococcal urethritis"
+      },
+      {
+        "id": "gc-retest-2019-2",
+        "action": "placed",
+        "order": "Chlamydia trachomatis NAAT",
+        "category": "lab",
+        "reason": "gonococcal urethritis"
       }
      ],
      "procedures": [
@@ -756,9 +763,14 @@
      ],
      "orders": [
       {
-       "id": "gc-retest-2019",
-       "action": "done",
-       "date": "2019-11-05T07:50"
+        "id": "gc-retest-2019",
+        "action": "done",
+        "date": "2019-11-05T07:50"
+      },
+      {
+        "id": "gc-retest-2019-2",
+        "action": "done",
+        "date": "2019-11-05T07:50"
       }
      ],
      "procedures": [
@@ -975,11 +987,18 @@
      ],
      "orders": [
       {
-       "id": "ct-retest-2020",
-       "action": "placed",
-       "order": "Urine GC/CT NAAT, 3-month retest",
-       "category": "lab",
-       "reason": "chlamydial epididymitis"
+        "id": "ct-retest-2020",
+        "action": "placed",
+        "order": "Neisseria gonorrhoeae NAAT",
+        "category": "lab",
+        "reason": "chlamydial epididymitis"
+      },
+      {
+        "id": "ct-retest-2020-2",
+        "action": "placed",
+        "order": "Chlamydia trachomatis NAAT",
+        "category": "lab",
+        "reason": "chlamydial epididymitis"
       }
      ],
      "procedures": [
@@ -1062,9 +1081,14 @@
      ],
      "orders": [
       {
-       "id": "ct-retest-2020",
-       "action": "done",
-       "date": "2020-05-12T07:40"
+        "id": "ct-retest-2020",
+        "action": "done",
+        "date": "2020-05-12T07:40"
+      },
+      {
+        "id": "ct-retest-2020-2",
+        "action": "done",
+        "date": "2020-05-12T07:40"
       }
      ],
      "procedures": [

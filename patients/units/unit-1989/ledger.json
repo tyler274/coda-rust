@@ -1,19 +1,7 @@
 {
   "unit": "unit-1989",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001989/2020-10-20a: lab order \"Lipid panel, fasting\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2020-10-20a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2021-06-28a: lab order \"BMP, CBC, lipid panel, A1c, urinalysis - fasting\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2021-07-07a: lab order \"Basic metabolic panel in 2 weeks\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2021-10-12a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2022-09-20a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2023-09-26a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2024-09-24a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2025-07-08b: lab order \"Basic metabolic panel in 1 week\" names no one catalog lab, panel, study or procedure",
-    "MRN00001989/2025-09-30a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): report \"CT angiography head and neck with contrast\" LOINC 69089-3 not found"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001989",
@@ -128,14 +116,14 @@
             {
               "id": "lipid-2020",
               "action": "placed",
-              "order": "Lipid panel, fasting",
+              "order": "Lipid Panel",
               "category": "lab",
               "reason": "Diabetes, baseline lipids"
             },
             {
               "id": "fit-2020",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -312,7 +300,35 @@
             {
               "id": "labs-2021-07",
               "action": "placed",
-              "order": "BMP, CBC, lipid panel, A1c, urinalysis - fasting",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "Elevated blood pressure readings, diabetes"
+            },
+            {
+              "id": "labs-2021-07-2",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Elevated blood pressure readings, diabetes"
+            },
+            {
+              "id": "labs-2021-07-3",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab",
+              "reason": "Elevated blood pressure readings, diabetes"
+            },
+            {
+              "id": "labs-2021-07-4",
+              "action": "placed",
+              "order": "Hemoglobin A1c",
+              "category": "lab",
+              "reason": "Elevated blood pressure readings, diabetes"
+            },
+            {
+              "id": "labs-2021-07-5",
+              "action": "placed",
+              "order": "Urinalysis",
               "category": "lab",
               "reason": "Elevated blood pressure readings, diabetes"
             }
@@ -527,6 +543,26 @@
               "id": "labs-2021-07",
               "action": "done",
               "date": "2021-07-01T14:00"
+            },
+            {
+              "id": "labs-2021-07-2",
+              "action": "done",
+              "date": "2021-07-01T14:00"
+            },
+            {
+              "id": "labs-2021-07-3",
+              "action": "done",
+              "date": "2021-07-01T14:00"
+            },
+            {
+              "id": "labs-2021-07-4",
+              "action": "done",
+              "date": "2021-07-01T14:00"
+            },
+            {
+              "id": "labs-2021-07-5",
+              "action": "done",
+              "date": "2021-07-01T14:00"
             }
           ]
         },
@@ -608,7 +644,7 @@
             {
               "id": "bmp-2021-07",
               "action": "placed",
-              "order": "Basic metabolic panel in 2 weeks",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "Started lisinopril"
             }
@@ -899,7 +935,7 @@
             {
               "id": "fit-2021",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -1610,7 +1646,7 @@
             {
               "id": "fit-2022",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -2322,7 +2358,7 @@
             {
               "id": "fit-2023",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -3069,7 +3105,7 @@
             {
               "id": "fit-2024",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -3992,7 +4028,7 @@
             {
               "id": "bmp-2025-07",
               "action": "placed",
-              "order": "Basic metabolic panel in 1 week",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "Lisinopril restart, type 4 RTA"
             }
@@ -4394,7 +4430,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -4976,7 +5012,7 @@
           "reports": [
             {
               "study": "CT angiography head and neck with contrast",
-              "loinc": "69089-3",
+              "loinc": "37498-3",
               "performed": "2026-07-06T10:30",
               "text": "Technique: CT angiography from aortic arch to vertex after IV contrast, with multiplanar and 3D reconstructions. Noncontrast head CT obtained first.\nNoncontrast head: no hemorrhage, mass, or acute infarct. Ventricles and sulci normal for age.\nIntracranial arteries: no aneurysm, including at the posterior communicating artery origins. Circle of Willis patent. No stenosis or occlusion. No vascular malformation.\nCervical arteries: carotid and vertebral arteries patent without significant stenosis or dissection.",
               "conclusion": "No intracranial aneurysm. No stenosis, occlusion or dissection of the head and neck arteries. No acute intracranial abnormality.",
@@ -5112,10 +5148,15 @@
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "reports": {
+      "CT angiography head and neck with contrast": {
+        "code": "37498-3",
+        "display": "CTA Head vessels and Neck vessels W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "Cardiac catheterization study": {
         "code": "18745-0",
         "display": "Cardiac catheterization study",
@@ -5126,9 +5167,6 @@
         "display": "MR Brain",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "report \"CT angiography head and neck with contrast\" LOINC 69089-3 not found"
-    ]
+    }
   }
 }

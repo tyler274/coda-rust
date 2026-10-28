@@ -117,11 +117,11 @@
             {"panel": "Lipid Panel", "collected": "2020-09-16T11:10", "results": [{"test": "Low Density Lipoprotein"}]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-09-16T11:10", "results": [{"test": "Creatinine"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-16T11:10", "results": [{"test": "Platelets"}]},
-            {"panel": null, "collected": "2020-09-16T11:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 70}]}
+            {"panel": null, "collected": "2020-09-16T11:10", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 70, "range": {"low": 50, "high": 100}}]}
           ],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-09-16T10:30"}, {"procedure": "Immunization administration", "performed": "2020-09-16T11:05"}],
           "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-09-16T11:05"}],
-          "orders": [{"id": "aaa-us-2020", "action": "placed", "order": "Abdominal aorta ultrasound, AAA screening", "category": "imaging", "reason": "male 65-75 who has smoked"}],
+          "orders": [{"id": "aaa-us-2020", "action": "placed", "order": "US abdominal aorta", "category": "imaging", "reason": "male 65-75 who has smoked", "loinc": "69276-4"}],
           "documents": [
             {"type": "Progress Notes", "title": "Primary Care Office Visit", "author": "PCP", "date": "2020-09-16T11:20", "body": "Turned 65 next week. Back on atorvastatin 40 since July, no aches at all. Off alcohol 15 months. Walks most evenings. No chest discomfort lately. Breathing at baseline.\nExam: heart regular, lungs a little diminished at the bases with good air movement, abdomen benign, no edema. Feet: decreased monofilament on both soles, skin intact.\nA/P: CAD/HLD on atorvastatin 40, lipids today, triglycerides likely back up off fenofibrate. T2DM A1c today. Seizures: none, VPA level and CBC. AAA screening ultrasound ordered. Flu shot given. RTC 3 months."}
           ]
@@ -228,7 +228,7 @@
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-06-09T09:50", "results": [{"test": "Creatinine"}]},
             {"panel": "Lipid Panel", "collected": "2021-06-09T09:50", "results": [{"test": "Low Density Lipoprotein"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-09T09:50", "results": [{"test": "Platelets"}]},
-            {"panel": null, "collected": "2021-06-09T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 63}]}
+            {"panel": null, "collected": "2021-06-09T09:50", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 63, "range": {"low": 50, "high": 100}}]}
           ],
           "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "AUDIT-C total score", "value": 0}],
           "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2021-06-09T09:00"}],
@@ -303,7 +303,7 @@
           ],
           "orders": [
             {"id": "podiatry-2021", "action": "done", "date": "2021-12-13T13:00"},
-            {"id": "foot-xr-2021", "action": "placed", "order": "Foot X-ray, right", "category": "imaging", "reason": "plantar ulcer"},
+            {"id": "foot-xr-2021", "action": "placed", "order": "Foot X-ray", "category": "imaging", "reason": "plantar ulcer"},
             {"id": "vascular-2021", "action": "placed", "order": "Vascular surgery referral", "category": "referral", "to": "Vascular Surgery", "reason": "ABI 0.62 right with plantar ulcer"}
           ],
           "documents": [

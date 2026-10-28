@@ -442,9 +442,18 @@
             {
               "id": "fungal-cx-2023",
               "action": "placed",
-              "order": "KOH preparation and fungal culture, skin scraping",
+              "order": "KOH preparation, skin",
               "category": "lab",
-              "reason": "Interdigital scaling"
+              "reason": "Interdigital scaling",
+              "loinc": "55303-2"
+            },
+            {
+              "id": "fungal-cx-2023-2",
+              "action": "placed",
+              "order": "Fungal culture, skin",
+              "category": "lab",
+              "reason": "Interdigital scaling",
+              "loinc": "575-1"
             }
           ],
           "documents": [
@@ -489,7 +498,7 @@
               "results": [
                 {
                   "test": "KOH preparation, skin",
-                  "loinc": "6587-9",
+                  "loinc": "55303-2",
                   "text": "Septate hyphae seen"
                 },
                 {
@@ -503,6 +512,11 @@
           "orders": [
             {
               "id": "fungal-cx-2023",
+              "action": "done",
+              "date": "2023-11-06T09:30"
+            },
+            {
+              "id": "fungal-cx-2023-2",
               "action": "done",
               "date": "2023-11-06T09:30"
             }

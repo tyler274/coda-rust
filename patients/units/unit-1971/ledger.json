@@ -939,6 +939,10 @@
                   "test": "Amylase, serum",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 90
                 }
               ]
@@ -951,24 +955,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.45
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 32
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 60
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -1079,12 +1099,14 @@
                   "test": "Amylase, pleural fluid",
                   "loinc": "1796-2",
                   "unit": "U/L",
+                  "range": {},
                   "value": 3000
                 },
                 {
                   "test": "pH of Pleural fluid",
                   "loinc": "2750-8",
                   "unit": "[pH]",
+                  "range": {},
                   "value": 6.0
                 }
               ]
@@ -1543,13 +1565,13 @@
         "code": "1721314",
         "display": "200 ML fluconazole 2 MG/ML Injection",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "piperacillin 4000 MG / tazobactam 500 MG Injection": {
         "code": "1659149",
         "display": "piperacillin 4000 MG / tazobactam 500 MG Injection",
         "ingredient": "piperacillin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1557,42 +1579,64 @@
         "code": "1796-2",
         "display": "Amylase [Enzymatic activity/volume] in Pleural fluid",
         "unit": "U/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Amylase, serum": {
         "code": "1798-8",
         "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 25,
+          "high": 125
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Bicarbonate in Arterial blood": {
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Pleural fluid": {
         "code": "2750-8",
         "display": "pH of Pleural fluid",
         "unit": "[pH]",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

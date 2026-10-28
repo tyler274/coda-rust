@@ -1,9 +1,7 @@
 {
   "unit": "unit-1925",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001925/2025-12-29a: procedure \"Bronchoscopy with bronchoalveolar lavage\" not in catalog and has no snomed (text only)"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001925",
@@ -1027,18 +1025,30 @@
                   "test": "Immunoglobulin G",
                   "loinc": "2465-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 800,
+                    "high": 1500
+                  },
                   "value": 1040
                 },
                 {
                   "test": "Immunoglobulin A",
                   "loinc": "2458-8",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 90,
+                    "high": 325
+                  },
                   "value": 210
                 },
                 {
                   "test": "Immunoglobulin M",
                   "loinc": "2472-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 45,
+                    "high": 150
+                  },
                   "value": 115
                 }
               ]
@@ -1055,6 +1065,7 @@
           "procedures": [
             {
               "procedure": "Bronchoscopy with bronchoalveolar lavage",
+              "snomed": "397397002",
               "performed": "2025-12-29T15:10"
             }
           ],
@@ -1150,7 +1161,7 @@
         "code": "197650",
         "display": "erythromycin 500 MG Oral Tablet",
         "ingredient": "erythromycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1158,19 +1169,38 @@
         "code": "2458-8",
         "display": "IgA [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 90,
+          "high": 325
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Immunoglobulin G": {
         "code": "2465-3",
         "display": "IgG [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 800,
+          "high": 1500
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Immunoglobulin M": {
         "code": "2472-9",
         "display": "IgM [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 45,
+          "high": 150
+        },
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Bronchoscopy with bronchoalveolar lavage": {
+        "code": "397397002",
+        "display": "Bronchoscopy and bronchoalveolar lavage",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

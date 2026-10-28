@@ -120,8 +120,12 @@
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
-                  "value": 250
+                  "unit": "mosm/kg",
+                  "value": 250,
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  }
                 }
               ]
             },
@@ -486,7 +490,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -672,19 +676,31 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.1
+                  "value": 7.1,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 60
+                  "value": 60,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 500
+                  "value": 500,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 }
               ]
             }

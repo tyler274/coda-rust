@@ -200,25 +200,41 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.3
+                  "value": 7.3,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 30
+                  "value": 30,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 95
+                  "value": 95,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
-                  "value": 18
+                  "value": 18,
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  }
                 }
               ]
             },
@@ -313,21 +329,14 @@
           "kind": "telephone",
           "start": "2025-08-20T14:00",
           "orders": [
-            {
-              "id": "hosp-records-2025",
-              "action": "placed",
-              "order": "Records request, regional hospital admission July 2025",
-              "category": "procedure",
-              "reason": "heat-related admission"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Administrative",
               "title": "Records Request",
               "author": "front desk",
               "date": "2025-08-20T14:00",
-              "body": "No discharge summary yet and facility never faxed a med list. Faxed request to regional hospital HIM for discharge summary and labs, admission 7/29/25. Left VM for facility to rebook the cancelled follow-up."
+              "body": "No discharge summary yet and facility never faxed a med list. Faxed request to regional hospital HIM for discharge summary and labs, admission 7/29/25. Left VM for facility to rebook the cancelled follow-up. Records request, regional hospital admission July 2025."
             }
           ]
         },
@@ -336,12 +345,7 @@
           "kind": "outside_records",
           "start": "2025-09-16T09:50",
           "orders": [
-            {
-              "id": "hosp-records-2025",
-              "action": "done",
-              "date": "2025-09-16T09:50"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Discharge Summary",

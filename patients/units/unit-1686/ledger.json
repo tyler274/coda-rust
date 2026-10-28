@@ -2,10 +2,7 @@
   "unit": "unit-1686",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00001686/2022-08-16a: reaction \"Contact dermatitis\" not in catalog (text only)",
-    "MRN00001686/2024-05-14a: lab order \"CBC and iron studies\" names no one catalog lab, panel, study or procedure",
-    "MRN00001686/2026-01-14a: lab order \"CBC and iron studies\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
+    "MRN00001686/2022-08-16a: reaction \"Contact dermatitis\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -107,6 +104,7 @@
             },
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -1476,7 +1474,14 @@
             {
               "id": "cbc-2024-05",
               "action": "placed",
-              "order": "CBC and iron studies",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Iron deficiency anemia, pregnancy"
+            },
+            {
+              "id": "cbc-2024-05-2",
+              "action": "placed",
+              "order": "Iron Studies",
               "category": "lab",
               "reason": "Iron deficiency anemia, pregnancy"
             }
@@ -1575,6 +1580,11 @@
           "orders": [
             {
               "id": "cbc-2024-05",
+              "action": "done",
+              "date": "2024-05-16T07:30"
+            },
+            {
+              "id": "cbc-2024-05-2",
               "action": "done",
               "date": "2024-05-16T07:30"
             }
@@ -1779,6 +1789,10 @@
                   "test": "Activated Partial Thromboplastin Time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -2629,7 +2643,14 @@
             {
               "id": "cbc-2026-01",
               "action": "placed",
-              "order": "CBC and iron studies",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Iron deficiency anemia, pregnancy"
+            },
+            {
+              "id": "cbc-2026-01-2",
+              "action": "placed",
+              "order": "Iron Studies",
               "category": "lab",
               "reason": "Iron deficiency anemia, pregnancy"
             }
@@ -2728,6 +2749,11 @@
           "orders": [
             {
               "id": "cbc-2026-01",
+              "action": "done",
+              "date": "2026-01-15T07:25"
+            },
+            {
+              "id": "cbc-2026-01-2",
               "action": "done",
               "date": "2026-01-15T07:25"
             }
@@ -3213,7 +3239,7 @@
         "code": "238013",
         "display": "oxytocin 10 UNT/ML Injectable Solution",
         "ingredient": "oxytocin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3221,11 +3247,12 @@
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

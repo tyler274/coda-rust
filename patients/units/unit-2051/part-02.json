@@ -42,7 +42,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-01-07T11:45", "results": [{"test": "Creatinine", "value": 3.2}, {"test": "Blood Urea Nitrogen", "value": 46}, {"test": "Potassium", "value": 5.8}, {"test": "Sodium"}, {"test": "Glucose"}]},
             {"panel": "Urinalysis", "collected": "2021-01-07T12:10", "results": [{"test": "Urine Protein", "text": "1+"}, {"test": "Urine Blood", "text": "Negative"}, {"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine White Blood Cells", "value": 6}]},
-            {"panel": null, "collected": "2021-01-07T11:45", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.9}]}
+            {"panel": null, "collected": "2021-01-07T11:45", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.9, "range": {"low": 5, "high": 15}}]}
           ],
           "reports": [
             {"study": "Surgical pathology report", "performed": "2021-01-08T10:00", "issued": "2021-01-09T15:00", "text": "Specimen: transplant kidney, percutaneous needle core biopsy. Two cores with adequate cortex. Interstitial mononuclear cell infiltrate with tubulitis and tubular epithelial injury. Glomeruli and arteries without significant abnormality. C4d immunostain negative.", "conclusion": "Acute T-cell-mediated rejection of the renal allograft."}
@@ -104,7 +104,7 @@
           ],
           "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2021-03-01T18:40"}],
           "orders": [
-            {"id": "adpkd-genetics", "action": "placed", "order": "Polycystic kidney disease genetic panel", "category": "lab", "to": "Genetics laboratory", "reason": "ADPKD, family history"}
+            {"id": "adpkd-genetics", "action": "placed", "order": "PKD1 and PKD2 gene analysis", "category": "lab", "reason": "ADPKD, family history", "loinc": "44421-6"}
           ],
           "documents": [
             {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2021-03-02T08:30", "body": "EMERGENCY DEPARTMENT - PHYSICIAN RECORD\n\nCC: R flank pain, blood in urine.\nHPI: 45M with ADPKD, deceased donor kidney 10 weeks ago (graft LLQ), on tacrolimus/MMF/prednisone. Two days of escalating right flank pain and urine that turned red today. Also a dull frontal headache since this morning. No fever, no dysuria. FH notable for kidney disease - father on dialysis in his 50s.\n\nMeds per pt list: tacrolimus 5 BID, MMF 750 BID, prednisone 5, TMP-SMX SS, amlodipine 10, ASA 81, glargine 24, lispro. NKDA.\n\nExam: BP 160/100. Uncomfortable but nontoxic. Large firm right flank mass, tender. Graft site nontender. Neuro nonfocal.\n\nUA: blood and protein; microscopy RBC present without casts.\nRenal US: large cysts throughout the right native kidney; transplant looks normal, no hydro.\nMRI brain (headache, family hx of ruptured aneurysm): 4 mm ACom saccular aneurysm, no bleed.\n\nMDM: hematuria and flank pain most consistent with a bleed into a native-kidney cyst in ADPKD; graft not involved, creatinine at his baseline. Unruptured intracranial aneurysm, incidental to a benign-feeling headache that improved here with acetaminophen.\n\nDispo: home. Acetaminophen for pain, no NSAIDs. Hydrate. Return for fever, clots, retention, worst headache or neuro change. Genetic testing for ADPKD sent after discussion with transplant nephrology on call. Referral placed to neurovascular surgery. PCP f/u this week."}
@@ -171,7 +171,7 @@
           "labs": [
             {"panel": "CBC with Differential", "collected": "2021-04-12T11:10", "results": [{"test": "Hemoglobin", "value": 12.1}, {"test": "White Blood Cells", "value": 9.0}, {"test": "Platelets", "value": 250}, {"test": "Neutrophils %"}, {"test": "Lymphocytes %"}]},
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-04-12T11:10", "results": [{"test": "Creatinine", "value": 1.2}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Potassium"}, {"test": "Sodium"}]},
-            {"panel": null, "collected": "2021-04-12T11:10", "results": [{"test": "Cytomegalovirus DNA viral load", "loinc": "100675-8", "unit": "[IU]/mL", "value": 185000}]}
+            {"panel": null, "collected": "2021-04-12T11:10", "results": [{"test": "Cytomegalovirus DNA viral load", "loinc": "100675-8", "unit": "[IU]/mL", "value": 185000, "range": {}}]}
           ],
           "reports": [
             {"study": "Surgical pathology report", "performed": "2021-04-13T09:30", "issued": "2021-04-15T16:00", "text": "Specimen: colon, multiple biopsies of ulcer edges. Colonic mucosa with ulceration and granulation tissue. Enlarged cells with intranuclear and cytoplasmic viral inclusions in the stroma and endothelium. CMV immunohistochemical stain positive. No dysplasia.", "conclusion": "Ulcerated colitis with cytomegalovirus inclusions, CMV immunostain positive."}
@@ -207,7 +207,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-04-28T08:40", "results": [{"test": "Creatinine", "value": 2.8}, {"test": "Blood Urea Nitrogen", "value": 44}, {"test": "Potassium"}, {"test": "Glucose"}]},
             {"panel": "Urinalysis", "collected": "2021-04-28T08:40", "results": [{"test": "Urine Protein", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]},
-            {"panel": null, "collected": "2021-04-28T08:40", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.4}]}
+            {"panel": null, "collected": "2021-04-28T08:40", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.4, "range": {"low": 5, "high": 15}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2021-04-30T14:00", "body": "TRANSPLANT NEPHROLOGY CLINIC\nVisit 4/28/2021\n\nDear colleague,\n\nI saw Joel today, four months after his deceased donor kidney transplant for ADPKD-related end-stage kidney disease, and two weeks after discharge for CMV colitis. He has no complaints and reports taking every dose of tacrolimus, mycophenolate and prednisone. Valganciclovir continuing.\n\nBP 132/86. Exam unremarkable; graft nontender.\n\nLabs: creatinine 2.8 mg/dL, up from his 1.2 baseline at the time of the CMV admission. BUN 44. Urinalysis without protein or blood. Tacrolimus trough 8.4, in range.\n\nGenetic testing (sent from the ED in March) returned: heterozygous pathogenic variant in PKD1, consistent with his clinical ADPKD. Genetic counseling information given for his family.\n\nWe will see him back with labs.\n\nMedication list: tacrolimus 5 mg BID, mycophenolate 750 mg BID, prednisone 5 mg daily, valganciclovir 900 mg BID, TMP-SMX SS daily, amlodipine 10 mg, aspirin 81 mg, insulin glargine 24 units, insulin lispro per ratio. NKDA.\n\nTransplant Nephrology"}
@@ -233,7 +233,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-05-12T14:40", "results": [{"test": "Creatinine", "value": 3.9}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Glucose"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-12T14:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2021-05-12T14:40", "results": [{"test": "Cytomegalovirus DNA viral load", "loinc": "100675-8", "unit": "[IU]/mL", "text": "Not detected"}, {"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.7}]}
+            {"panel": null, "collected": "2021-05-12T14:40", "results": [{"test": "Cytomegalovirus DNA viral load", "loinc": "100675-8", "unit": "[IU]/mL", "text": "Not detected"}, {"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.7, "range": {"low": 5, "high": 15}}]}
           ],
           "reports": [
             {"study": "Renal ultrasound", "performed": "2021-05-12T16:30", "text": "Transplant kidney, left iliac fossa, grayscale and color/spectral duplex. Kidney size within normal range for a graft. No hydronephrosis or perinephric collection. Main renal artery and vein patent with normal waveforms; resistive indices normal. Normal parenchymal perfusion on color imaging.", "conclusion": "Patent transplant vessels with normal perfusion. No obstruction."},
@@ -269,7 +269,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-06-24T08:20", "results": [{"test": "Creatinine", "value": 1.4}, {"test": "Blood Urea Nitrogen"}, {"test": "Potassium"}, {"test": "Glucose"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-24T08:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2021-06-24T08:20", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 9.1}]}
+            {"panel": null, "collected": "2021-06-24T08:20", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 9.1, "range": {"low": 5, "high": 15}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2021-06-25T13:30", "body": "TRANSPLANT NEPHROLOGY - 6 MONTH VISIT, 6/24/2021\n\nJoel is now six months from transplant. Recovered from the May episode of chronic active rejection; creatinine 1.4 today, tacrolimus trough 9.1. Feels well, urine output good, no edema.\n\nPlan: trimethoprim-sulfamethoxazole prophylaxis completed at six months and stopped today. Continue tacrolimus 5 mg BID, mycophenolate 750 mg BID, prednisone 5 mg daily. Labs monthly; visit every 3 months through the first year, then every 6 months.\n\nTransplant Nephrology"}
@@ -336,7 +336,7 @@
           "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
           "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-10-19T15:40"}],
           "orders": [
-            {"id": "fit-2021", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"}
+            {"id": "fit-2021", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "colorectal cancer screening"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-10-19T17:15", "body": "Annual physical. 46 yo, first physical since transplant.\nYear in brief: DDKT 12/2020; acute cellular rejection 1/2021; native cyst bleed 3/2021 with incidental 4 mm ACom aneurysm (surveillance, stable 9/2021); CMV colitis 4/2021; chronic active rejection 5/2021. Stable since June. Back teaching in person, says it's the most normal he's felt in years.\nMeds: tacrolimus 5 BID, MMF 750 BID, pred 5, amlodipine 10, ASA 81, glargine 24, lispro ratio. NKDA.\nSmoke-free. Alcohol 1-2/month.\nROS negative.\nExam: well. Skin: no lesions of concern. Lymph: no LAD. Lungs clear. Heart regular, no murmur. Abd: R flank fullness, graft LLQ nontender. Ext no edema. Feet normal.\nHM: flu and COVID #3 done 9/28. FIT kit given (the 2020 one never came back). Transplant team wants yearly derm - referral info given. PHQ-2 0.\nPlan: labs today. RTC 3 months."}
@@ -366,7 +366,7 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-12-14T08:00", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Blood Urea Nitrogen"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2021-12-14T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
-            {"panel": null, "collected": "2021-12-14T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.6}]}
+            {"panel": null, "collected": "2021-12-14T08:00", "results": [{"test": "Tacrolimus, trough", "loinc": "77348-1", "unit": "ng/mL", "value": 8.6, "range": {"low": 5, "high": 15}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant nephrology clinic letter", "author": "nephrology", "date": "2021-12-16T10:00", "body": "Transplant Nephrology - visit 12/14/2021\n\nNearly one year post deceased donor transplant, course complicated by acute then chronic active T-cell-mediated rejection and CMV colitis. Doing well. Creatinine steady at his new baseline around 1.3. Tacrolimus 8.6. BP controlled on amlodipine.\n\nMeds: tacrolimus 5 mg BID, mycophenolate mofetil 750 mg BID, prednisone 5 mg daily, trimethoprim-sulfamethoxazole SS daily, amlodipine 10, aspirin 81, insulin glargine and lispro. NKDA.\n\nDiagnoses: ADPKD; kidney transplant; CKD stage 5T; DM2; HTN.\n\nReturn 6 months with labs monthly."}

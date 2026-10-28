@@ -1,9 +1,7 @@
 {
   "unit": "unit-1716",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001716/2020-06-16a: lab order \"CBC, CMP\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001716",
@@ -727,7 +725,14 @@
             {
               "id": "labs-2020-06",
               "action": "placed",
-              "order": "CBC, CMP",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Medication monitoring"
+            },
+            {
+              "id": "labs-2020-06-2",
+              "action": "placed",
+              "order": "Comprehensive Metabolic Panel (CMP)",
               "category": "lab",
               "reason": "Medication monitoring"
             }
@@ -868,6 +873,11 @@
           "orders": [
             {
               "id": "labs-2020-06",
+              "action": "done",
+              "date": "2020-06-18T08:10"
+            },
+            {
+              "id": "labs-2020-06-2",
               "action": "done",
               "date": "2020-06-18T08:10"
             }
@@ -1694,6 +1704,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -3155,6 +3169,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 225000
                 }
               ]
@@ -3218,6 +3235,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 8420
                 }
               ]
@@ -3247,6 +3267,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 212
                 }
               ]
@@ -3259,6 +3282,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 4
                 }
               ]
@@ -3689,6 +3715,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 75300
                 }
               ]
@@ -3746,6 +3775,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 41200
                 }
               ]
@@ -3758,6 +3790,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 6880
                 }
               ]
@@ -3770,6 +3805,9 @@
                   "test": "Beta hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 1124
                 }
               ]
@@ -3794,12 +3832,19 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Beta hCG, quantitative": {
         "code": "21198-7",
         "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Stool culture": {

@@ -1,10 +1,7 @@
 {
   "unit": "unit-2221",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002221/2022-02-15a: lab order \"Basic metabolic panel and urine albumin/creatinine in 3 months\" names no one catalog lab, panel, study or procedure",
-    "MRN00002221/2024-06-27a: procedure order \"Colonoscopy\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002221",
@@ -1130,7 +1127,14 @@
             {
               "id": "bmp-recheck-2022",
               "action": "placed",
-              "order": "Basic metabolic panel and urine albumin/creatinine in 3 months",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab",
+              "reason": "new reduced kidney function"
+            },
+            {
+              "id": "bmp-recheck-2022-2",
+              "action": "placed",
+              "order": "Microalbumin/Creatinine Ratio",
               "category": "lab",
               "reason": "new reduced kidney function"
             }
@@ -1309,6 +1313,11 @@
           "orders": [
             {
               "id": "bmp-recheck-2022",
+              "action": "done",
+              "date": "2022-05-17T09:45"
+            },
+            {
+              "id": "bmp-recheck-2022-2",
               "action": "done",
               "date": "2022-05-17T09:45"
             }
@@ -1715,6 +1724,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 120
                 }
               ]
@@ -2055,6 +2068,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 28
                 }
               ]
@@ -2293,6 +2310,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 19
                 }
               ]
@@ -2664,6 +2685,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 17
                 }
               ]
@@ -3195,7 +3220,7 @@
             {
               "id": "colonoscopy-2024",
               "action": "placed",
-              "order": "Colonoscopy",
+              "order": "Colonoscopy, diagnostic",
               "category": "procedure",
               "to": "Gastroenterology",
               "reason": "after first documented episode of sigmoid diverticulitis; last colonoscopy 2016"
@@ -3268,6 +3293,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 21
                 }
               ]
@@ -3722,6 +3751,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 16
                 }
               ]
@@ -4342,6 +4375,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 20
                 }
               ]
@@ -4816,7 +4853,7 @@
         "code": "1719003",
         "display": "gemcitabine 1000 MG Injection",
         "ingredient": "gemcitabine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "lipase 24000 UNT / protease 76000 UNT / amylase 120000 UNT Delayed Release Oral Capsule": {
         "code": "855495",
@@ -4830,6 +4867,10 @@
         "code": "24108-3",
         "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "low": 0,
+          "high": 37
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

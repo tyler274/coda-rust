@@ -588,6 +588,10 @@
                   "test": "Total T3",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
                   "value": 60
                 },
                 {
@@ -1144,6 +1148,10 @@
                   "test": "Immunoglobulin A",
                   "loinc": "2458-8",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 90,
+                    "high": 325
+                  },
                   "value": 210
                 }
               ]
@@ -3497,12 +3505,20 @@
                   "test": "Total T3",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
                   "value": 260
                 },
                 {
                   "test": "Total T4",
                   "loinc": "3026-2",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 5,
+                    "high": 12
+                  },
                   "value": 18
                 },
                 {
@@ -5178,31 +5194,31 @@
         "code": "313979",
         "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
         "ingredient": "fludrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 10 MG Oral Tablet": {
         "code": "197782",
         "display": "hydrocortisone 10 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 100 MG Injection": {
         "code": "238755",
         "display": "hydrocortisone 100 MG Injection",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "methimazole 10 MG Oral Tablet": {
         "code": "197941",
         "display": "methimazole 10 MG Oral Tablet",
         "ingredient": "methimazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tacrolimus 0.001 MG/MG Topical Ointment": {
         "code": "314266",
         "display": "tacrolimus 0.001 MG/MG Topical Ointment",
         "ingredient": "tacrolimus",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5210,6 +5226,10 @@
         "code": "2458-8",
         "display": "IgA [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 90,
+          "high": 325
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Thyroglobulin antibody": {
@@ -5221,12 +5241,20 @@
         "code": "3053-6",
         "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
         "unit": "ng/dL",
+        "range": {
+          "low": 80,
+          "high": 180
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Total T4": {
         "code": "3026-2",
         "display": "Thyroxine (T4) [Mass/volume] in Serum or Plasma",
         "unit": "ug/dL",
+        "range": {
+          "low": 5,
+          "high": 12
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

@@ -1,13 +1,7 @@
 {
   "unit": "unit-2047",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002047/2023-01-25a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002047/2024-01-18a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002047/2025-01-13a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002047/2026-01-14a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"Multiple Vitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002047",
@@ -116,6 +110,7 @@
             },
             {
               "drug_text": "Multiple Vitamin Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -633,7 +628,7 @@
             {
               "id": "fit-2023",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -1766,7 +1761,7 @@
             {
               "id": "fit-2024",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -2998,7 +2993,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -4421,7 +4416,7 @@
             {
               "id": "fit-2026",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -5170,23 +5165,20 @@
         "code": "198142",
         "display": "prednisolone 5 MG Oral Tablet",
         "ingredient": "prednisolone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "spironolactone 100 MG Oral Tablet": {
         "code": "198222",
         "display": "spironolactone 100 MG Oral Tablet",
         "ingredient": "spironolactone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "thiamine 100 MG Oral Tablet": {
         "code": "313323",
         "display": "thiamine 100 MG Oral Tablet",
         "ingredient": "thiamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
-    },
-    "rejected": [
-      "drug \"Multiple Vitamin Oral Tablet\""
-    ]
+    }
   }
 }

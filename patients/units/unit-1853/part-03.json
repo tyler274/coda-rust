@@ -99,10 +99,10 @@
               {"test": "Pregnancy Test, Urine", "text": "Negative"}
             ]},
             {"panel": null, "collected": "2025-07-21T19:58", "results": [
-              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45},
-              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 30},
-              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 55},
-              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45, "range": {"low": 7.38, "high": 7.44}},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 30, "range": {"low": 38, "high": 42}},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 55, "range": {"low": 75, "high": 100}},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24, "range": {"low": 23, "high": 26}}
             ]}
           ],
           "reports": [
@@ -260,7 +260,7 @@
             {"panel": null, "collected": "2026-01-14T08:05", "results": [{"test": "Pregnancy Test, Urine", "text": "Positive"}]}
           ],
           "orders": [
-            {"id": "ob-mfm-referral-2026", "action": "placed", "order": "Obstetrics / maternal-fetal medicine referral", "category": "referral", "to": "Maternal-Fetal Medicine", "reason": "pregnancy with history of preterm labor at 32 weeks, prior cesarean"}
+            {"id": "ob-mfm-referral-2026", "action": "placed", "order": "Obstetrics / maternal-fetal medicine referral", "category": "referral", "to": "Obstetrics", "reason": "pregnancy with history of preterm labor at 32 weeks, prior cesarean"}
           ],
           "documents": [
             {

@@ -1,11 +1,7 @@
 {
   "unit": "unit-1723",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001723/2023-06-20a: procedure order \"Request records from prior primary care practice\" names no one catalog lab, panel, study or procedure",
-    "MRN00001723/2025-03-31a: lab order \"RPR with titer at 6 months\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): lab \"Treponema pallidum antibody, EIA\" LOINC 63464-3 not found"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001723",
@@ -225,22 +221,13 @@
               "performed": "2023-06-20T09:40"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2023",
-              "action": "placed",
-              "order": "Request records from prior primary care practice",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
               "title": "New Patient Visit",
               "date": "2023-06-20T10:30",
               "author": "PCP",
-              "body": "21 yo woman here to establish. Moved her care to us after her old pediatric/adolescent office stopped seeing adults. Works part time waiting tables in town. No insurance right now; Medicaid application started, she has the confirmation letter.\n\nAsthma: since she was little. Says it is 'bad asthma', has been told severe. Uses albuterol a few days most weeks, more with colds and in the spring. Fluticasone 220 one puff BID is prescribed but she admits she takes it 'when I remember, maybe half the time'. Night cough a couple of nights a month. Has a peak flow meter at home, does not use it much. Never been on a combination inhaler that she knows of.\nAllergies: seasonal sneezing, itchy eyes in spring and fall; levocetirizine as needed helps.\n\nPMH: asthma, allergic rhinitis. PSH: none. Meds as listed. NKDA.\nFH: mother has asthma. A maternal uncle has eczema.\nSH: never smoked, no vaping. Drinks a little on weekends, 1-2.\n\nExam: well, talking in full sentences. HEENT: nasal turbinates mildly pale and boggy, OP clear. Neck supple, no nodes. Lungs: clear, no wheeze, good air movement. Heart RRR, no murmur. Abd soft. Skin clear.\n\nA/P\n1. Severe persistent asthma, partly controlled. The main issue is adherence to the controller. Talked through why the fluticasone matters even on good days, linked it to brushing teeth. Spacer technique reviewed. Refill albuterol and fluticasone. Return 4 mo, sooner if using albuterol more than twice a week.\n2. Allergic rhinitis: levocetirizine prn, ok.\n3. Health maintenance: hep C screen today with baseline CBC/BMP. Will get vaccine and Pap history from prior office. Flu/COVID/pneumococcal in the fall.\nPHQ-2 negative."
+              "body": "21 yo woman here to establish. Moved her care to us after her old pediatric/adolescent office stopped seeing adults. Works part time waiting tables in town. No insurance right now; Medicaid application started, she has the confirmation letter.\n\nAsthma: since she was little. Says it is 'bad asthma', has been told severe. Uses albuterol a few days most weeks, more with colds and in the spring. Fluticasone 220 one puff BID is prescribed but she admits she takes it 'when I remember, maybe half the time'. Night cough a couple of nights a month. Has a peak flow meter at home, does not use it much. Never been on a combination inhaler that she knows of.\nAllergies: seasonal sneezing, itchy eyes in spring and fall; levocetirizine as needed helps.\n\nPMH: asthma, allergic rhinitis. PSH: none. Meds as listed. NKDA.\nFH: mother has asthma. A maternal uncle has eczema.\nSH: never smoked, no vaping. Drinks a little on weekends, 1-2.\n\nExam: well, talking in full sentences. HEENT: nasal turbinates mildly pale and boggy, OP clear. Neck supple, no nodes. Lungs: clear, no wheeze, good air movement. Heart RRR, no murmur. Abd soft. Skin clear.\n\nA/P\n1. Severe persistent asthma, partly controlled. The main issue is adherence to the controller. Talked through why the fluticasone matters even on good days, linked it to brushing teeth. Spacer technique reviewed. Refill albuterol and fluticasone. Return 4 mo, sooner if using albuterol more than twice a week.\n2. Allergic rhinitis: levocetirizine prn, ok.\n3. Health maintenance: hep C screen today with baseline CBC/BMP. Will get vaccine and Pap history from prior office. Flu/COVID/pneumococcal in the fall.\nPHQ-2 negative. Request records from prior primary care practice."
             }
           ],
           "state": {
@@ -289,13 +276,6 @@
             {
               "vaccine": "Tdap",
               "date": "2019-08-20T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records-2023",
-              "action": "done",
-              "date": "2023-07-11T14:20"
             }
           ],
           "documents": [
@@ -1054,7 +1034,7 @@
                 },
                 {
                   "test": "Treponema pallidum antibody, EIA",
-                  "loinc": "63464-3",
+                  "loinc": "47236-5",
                   "text": "Reactive"
                 },
                 {
@@ -1098,7 +1078,7 @@
             {
               "id": "rpr-6mo",
               "action": "placed",
-              "order": "RPR with titer at 6 months",
+              "order": "Rapid Plasma Reagin",
               "category": "lab",
               "reason": "secondary syphilis treated 3/24/2025"
             }
@@ -1400,24 +1380,40 @@
                   "test": "pH of arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "PaCO2",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 50
                 },
                 {
                   "test": "PaO2",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 60
                 },
                 {
                   "test": "Bicarbonate, arterial",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 26
                 }
               ]
@@ -1740,13 +1736,13 @@
         "code": "731570",
         "display": "4 ML penicillin G benzathine 600000 UNT/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ceftriaxone 500 MG Injection": {
         "code": "1665005",
         "display": "ceftriaxone 500 MG Injection",
         "ingredient": "ceftriaxone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "fluticasone propionate 0.22 MG/ACTUAT Metered Dose Inhaler": {
         "code": "896004",
@@ -1758,7 +1754,7 @@
         "code": "855172",
         "display": "levocetirizine dihydrochloride 5 MG Oral Tablet",
         "ingredient": "levocetirizine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1766,18 +1762,30 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "PaCO2": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "PaO2": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "RPR titer": {
@@ -1785,15 +1793,21 @@
         "display": "Reagin Ab [Titer] in Serum by RPR",
         "receipt": "NLM Clinical Tables LOINC"
       },
+      "Treponema pallidum antibody, EIA": {
+        "code": "47236-5",
+        "display": "Treponema pallidum IgG+IgM Ab [Presence] in Serum or Plasma by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "pH of arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Treponema pallidum antibody, EIA\" LOINC 63464-3 not found"
-    ]
+    }
   }
 }

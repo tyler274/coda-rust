@@ -1,9 +1,7 @@
 {
   "unit": "unit-2542",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002542/2026-03-03a: lab order \"Chlamydia trachomatis NAAT, urine (test of reinfection)\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002542",
@@ -1189,6 +1187,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 29.4
                 },
                 {
@@ -2332,7 +2334,7 @@
             {
               "id": "ct-retest-2026",
               "action": "placed",
-              "order": "Chlamydia trachomatis NAAT, urine (test of reinfection)",
+              "order": "Chlamydia trachomatis NAAT",
               "category": "lab",
               "reason": "retest 3 months after treatment"
             }
@@ -2704,19 +2706,19 @@
         "code": "731570",
         "display": "4 ML penicillin G benzathine 600000 UNT/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ceftriaxone 500 MG Injection": {
         "code": "1665005",
         "display": "ceftriaxone 500 MG Injection",
         "ingredient": "ceftriaxone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "valacyclovir 500 MG Oral Tablet": {
         "code": "313565",
         "display": "valacyclovir 500 MG Oral Tablet",
         "ingredient": "valacyclovir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2724,6 +2726,10 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis A virus total antibody": {

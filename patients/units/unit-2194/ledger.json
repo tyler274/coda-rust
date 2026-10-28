@@ -1,10 +1,7 @@
 {
   "unit": "unit-2194",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002194/2024-08-21a: lab order \"CMP, CBC, lipid panel, urine albumin/creatinine ratio, A1c, hepatitis C antibody\" names no one catalog lab, panel, study or procedure",
-    "MRN00002194/2024-10-09a: imaging order \"Ultrasound abdominal aorta, AAA screening\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002194",
@@ -180,7 +177,42 @@
             {
               "id": "labs-2024-08",
               "action": "placed",
-              "order": "CMP, CBC, lipid panel, urine albumin/creatinine ratio, A1c, hepatitis C antibody",
+              "order": "Comprehensive Metabolic Panel (CMP)",
+              "category": "lab",
+              "reason": "Baseline labs, CKD 3a monitoring"
+            },
+            {
+              "id": "labs-2024-08-2",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Baseline labs, CKD 3a monitoring"
+            },
+            {
+              "id": "labs-2024-08-3",
+              "action": "placed",
+              "order": "Lipid Panel",
+              "category": "lab",
+              "reason": "Baseline labs, CKD 3a monitoring"
+            },
+            {
+              "id": "labs-2024-08-4",
+              "action": "placed",
+              "order": "Microalbumin/Creatinine Ratio",
+              "category": "lab",
+              "reason": "Baseline labs, CKD 3a monitoring"
+            },
+            {
+              "id": "labs-2024-08-5",
+              "action": "placed",
+              "order": "Hemoglobin A1c",
+              "category": "lab",
+              "reason": "Baseline labs, CKD 3a monitoring"
+            },
+            {
+              "id": "labs-2024-08-6",
+              "action": "placed",
+              "order": "Hepatitis C Antibody",
               "category": "lab",
               "reason": "Baseline labs, CKD 3a monitoring"
             }
@@ -391,6 +423,31 @@
               "id": "labs-2024-08",
               "action": "done",
               "date": "2024-08-23T08:10"
+            },
+            {
+              "id": "labs-2024-08-2",
+              "action": "done",
+              "date": "2024-08-23T08:10"
+            },
+            {
+              "id": "labs-2024-08-3",
+              "action": "done",
+              "date": "2024-08-23T08:10"
+            },
+            {
+              "id": "labs-2024-08-4",
+              "action": "done",
+              "date": "2024-08-23T08:10"
+            },
+            {
+              "id": "labs-2024-08-5",
+              "action": "done",
+              "date": "2024-08-23T08:10"
+            },
+            {
+              "id": "labs-2024-08-6",
+              "action": "done",
+              "date": "2024-08-23T08:10"
             }
           ]
         },
@@ -510,8 +567,9 @@
             {
               "id": "aaa-us-2024",
               "action": "placed",
-              "order": "Ultrasound abdominal aorta, AAA screening",
+              "order": "US abdominal aorta",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "Male 65-75 who has smoked"
             }
           ],
@@ -2053,31 +2111,31 @@
         "code": "854241",
         "display": "0.8 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "cefepime 2000 MG Injection": {
         "code": "1665088",
         "display": "cefepime 2000 MG Injection",
         "ingredient": "cefepime",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "oseltamivir 30 MG Oral Capsule": {
         "code": "728109",
         "display": "oseltamivir 30 MG Oral Capsule",
         "ingredient": "oseltamivir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tiotropium 0.018 MG Inhalation Powder": {
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vancomycin 125 MG Oral Capsule": {
         "code": "313570",
         "display": "vancomycin 125 MG Oral Capsule",
         "ingredient": "vancomycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2091,6 +2149,11 @@
       "Abdominal X-ray, 2 views": {
         "code": "36641-9",
         "display": "XR Abdomen 2 Views",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "US abdominal aorta": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

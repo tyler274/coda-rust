@@ -125,7 +125,7 @@
             {"type": "Nursing Note", "title": "Immunization visit", "author": "RN", "date": "2022-10-04T11:20", "body": "High-dose flu given L arm, bivalent COVID booster given R arm. Screening questions negative. VIS sheets provided. Tolerated both; observed 15 minutes, left ambulatory. AAA screening ultrasound and lung screening CT orders reviewed with him; he will call central scheduling."}
           ],
           "orders": [
-            {"id": "aaa-us", "action": "placed", "order": "Abdominal aortic aneurysm screening ultrasound", "category": "imaging", "reason": "male former smoker 65-75"},
+            {"id": "aaa-us", "action": "placed", "order": "US abdominal aorta", "category": "imaging", "reason": "male former smoker 65-75", "loinc": "69276-4"},
             {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "30 pack-years, quit about 10 years"}
           ]
         },
@@ -242,7 +242,7 @@
           "medications": [
             {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Anemia after GI blood loss"}
           ],
-          "procedures": [{"procedure": "Colonoscopy with ablation of lesions", "performed": "2023-03-28T08:30"}],
+          "procedures": [{"procedure": "Colonoscopy with ablation of lesions", "performed": "2023-03-28T08:30", "snomed": "174173004"}],
           "documents": [
             {"type": "Procedure Note", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2023-03-28T09:10", "body": "Endoscopy Unit - Colonoscopy Report\nPatient: Lawrence Leary   DOB 05/18/1956\nIndication: intermittent maroon stools, anemia.\nSedation: monitored anesthesia care.\nPrep: good (split dose).\n\nFindings:\n- The scope was advanced to the cecum, identified by the appendiceal orifice and ileocecal valve. Terminal ileum briefly intubated, normal.\n- Cecum: several small, flat, red vascular lesions consistent with angiodysplasia. No active bleeding at the time of exam. Each was treated with argon plasma coagulation.\n- Remainder of the colon normal to the rectum. No polyps, no diverticula, no masses. No blood elsewhere in the colon.\n- Retroflexion in the rectum normal.\n\nImpression: cecal angiodysplasia, the likely source of his maroon stools, treated with APC.\n\nRecommendations: ferrous sulfate 325 mg daily for 3 months; CBC in 2 to 3 weeks with his primary care. Call for recurrent maroon or black stools. Allergies: NKDA.\n\nGastroenterology"}
           ]

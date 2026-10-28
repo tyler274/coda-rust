@@ -55,7 +55,8 @@
               "sig": "Take 1 tablet by mouth daily (prenatal with DHA)",
               "frequency": "DAILY",
               "route": "Oral",
-              "course": "chronic"
+              "course": "chronic",
+              "uncoded": true
             }
           ],
           "allergies": [
@@ -420,19 +421,31 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.35
+                  "value": 7.35,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 45
+                  "value": 45,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 95
+                  "value": 95,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 }
               ]
             },

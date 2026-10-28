@@ -1,10 +1,7 @@
 {
   "unit": "unit-2751",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002751",
@@ -114,6 +111,7 @@
             },
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -1284,13 +1282,15 @@
                 {
                   "test": "Luteinizing hormone",
                   "loinc": "10501-5",
-                  "unit": "mIU/mL",
+                  "unit": "m[IU]/mL",
+                  "range": {},
                   "value": 6.9
                 },
                 {
                   "test": "Estradiol",
                   "loinc": "2243-4",
                   "unit": "pg/mL",
+                  "range": {},
                   "value": 45
                 }
               ]
@@ -3070,6 +3070,10 @@
                   "test": "ACTH",
                   "loinc": "2141-0",
                   "unit": "pg/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 60
+                  },
                   "value": 486
                 }
               ]
@@ -3079,9 +3083,7 @@
               "collected": "2026-02-27T09:05",
               "results": [
                 {
-                  "test": "Cortisol 60 minutes after cosyntropin",
-                  "loinc": "2143-6",
-                  "unit": "ug/dL",
+                  "test": "Cortisol, AM",
                   "value": 5
                 }
               ]
@@ -3634,61 +3636,67 @@
         "code": "727762",
         "display": "5 ML fulvestrant 50 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet": {
+        "code": "428485",
+        "display": "calcium carbonate 1500 MG / cholecalciferol 0.01 MG Oral Tablet",
+        "ingredient": "calcium",
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "estradiol 1 MG Oral Tablet": {
         "code": "197658",
         "display": "estradiol 1 MG Oral Tablet",
         "ingredient": "estradiol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "fludrocortisone acetate 0.1 MG Oral Tablet": {
         "code": "313979",
         "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
         "ingredient": "fludrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 5 MG Oral Tablet": {
         "code": "197787",
         "display": "hydrocortisone 5 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone sodium succinate 100 MG Injection": {
         "code": "238755",
         "display": "hydrocortisone 100 MG Injection",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ibuprofen 400 MG Oral Tablet": {
         "code": "197805",
         "display": "ibuprofen 400 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "letrozole 2.5 MG Oral Tablet": {
         "code": "200064",
         "display": "letrozole 2.5 MG Oral Tablet",
         "ingredient": "letrozole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "palbociclib 125 MG Oral Capsule": {
         "code": "1601388",
         "display": "palbociclib 125 MG Oral Capsule",
         "ingredient": "palbociclib",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "progesterone 100 MG Oral Capsule": {
         "code": "260243",
         "display": "progesterone 100 MG Oral Capsule",
         "ingredient": "progesterone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tamoxifen 20 MG Oral Tablet": {
         "code": "313195",
         "display": "tamoxifen 20 MG Oral Tablet",
         "ingredient": "tamoxifen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3696,30 +3704,26 @@
         "code": "2141-0",
         "display": "Corticotropin [Mass/volume] in Plasma",
         "unit": "pg/mL",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Cortisol 60 minutes after cosyntropin": {
-        "code": "2143-6",
-        "display": "Cortisol [Mass/volume] in Serum or Plasma",
-        "unit": "ug/dL",
+        "range": {
+          "low": 10,
+          "high": 60
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Estradiol": {
         "code": "2243-4",
         "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Luteinizing hormone": {
         "code": "10501-5",
         "display": "Lutropin [Units/volume] in Serum or Plasma",
-        "unit": "mIU/mL",
+        "unit": "m[IU]/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"calcium carbonate 1500 MG / cholecalciferol 400 UNT Oral Tablet\"",
-      "drug \"multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

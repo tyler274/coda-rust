@@ -1,9 +1,7 @@
 {
   "unit": "unit-2273",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): procedure \"Cystoscopy\" SNOMED 142505009 is not an active procedure or regime/therapy concept"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002273",
@@ -2638,6 +2636,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 11.4
                 }
               ]
@@ -3393,6 +3394,10 @@
                   "test": "Lactate dehydrogenase, serum",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 200
                 }
               ]
@@ -3405,12 +3410,14 @@
                   "test": "Pleural fluid protein",
                   "loinc": "2882-9",
                   "unit": "g/dL",
+                  "range": {},
                   "value": 1.5
                 },
                 {
                   "test": "Pleural fluid LDH",
                   "loinc": "2530-4",
                   "unit": "U/L",
+                  "range": {},
                   "value": 110
                 }
               ]
@@ -4372,7 +4379,7 @@
         "code": "105583",
         "display": "fluorouracil 50 MG/ML Topical Cream",
         "ingredient": "fluorouracil",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4380,24 +4387,33 @@
         "code": "2039-6",
         "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 2.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lactate dehydrogenase, serum": {
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid LDH": {
         "code": "2530-4",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Pleural fluid",
         "unit": "U/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid protein": {
         "code": "2882-9",
         "display": "Protein [Mass/volume] in Pleural fluid",
         "unit": "g/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -4412,6 +4428,11 @@
       "Cryotherapy of skin lesion with liquid nitrogen": {
         "code": "7430007",
         "display": "Cryotherapy of skin lesion with liquid nitrogen",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Cystoscopy": {
+        "code": "142505009",
+        "display": "Cystoscopy",
         "receipt": "tx.fhir.org SNOMED CT"
       },
       "Cystoscopy and transurethral resection of neoplasm of urinary bladder": {
@@ -4439,9 +4460,6 @@
         "display": "Thoracentesis",
         "receipt": "tx.fhir.org SNOMED CT"
       }
-    },
-    "rejected": [
-      "procedure \"Cystoscopy\" SNOMED 142505009 is not an active procedure or regime/therapy concept"
-    ]
+    }
   }
 }

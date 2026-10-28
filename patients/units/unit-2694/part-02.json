@@ -341,10 +341,13 @@
        "resulted": "2018-10-31T10:20",
        "results": [
         {
-         "test": "CA-125",
-         "loinc": "10334-1",
-         "unit": "U/mL",
-         "value": 486
+          "test": "CA-125",
+          "loinc": "10334-1",
+          "unit": "U/mL",
+          "value": 486,
+          "range": {
+            "high": 35
+          }
         }
        ]
       },
@@ -489,12 +492,12 @@
      "reason": "CT result",
      "orders": [
       {
-       "id": "gyn-onc-2018",
-       "action": "placed",
-       "order": "Gynecologic oncology referral",
-       "category": "referral",
-       "to": "Gynecologic Oncology",
-       "reason": "adnexal mass, CA-125 486, omental nodularity"
+        "id": "gyn-onc-2018",
+        "action": "placed",
+        "order": "Gynecologic oncology referral",
+        "category": "referral",
+        "to": "Gynecology",
+        "reason": "adnexal mass, CA-125 486, omental nodularity"
       }
      ],
      "documents": [
@@ -611,8 +614,9 @@
      ],
      "procedures": [
       {
-       "procedure": "Total abdominal hysterectomy with bilateral salpingo-oophorectomy, omentectomy and cytoreduction",
-       "performed": "2018-12-18T07:30"
+        "procedure": "Total abdominal hysterectomy with bilateral salpingo-oophorectomy, omentectomy and cytoreduction",
+        "performed": "2018-12-18T07:30",
+        "snomed": "116144002"
       }
      ],
      "reports": [

@@ -57,8 +57,7 @@
             {"procedure": "Venipuncture", "performed": "2022-09-13T10:20"}
           ],
           "orders": [
-            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-year current smoker"},
-            {"id": "records-prior-pcp", "action": "placed", "order": "Request records from prior primary care practice", "category": "referral", "to": "Prior primary care practice", "reason": "continuity of care"}
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "40 pack-year current smoker"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-09-13T10:40", "body": "66 y/o man transferring care. Former PCP retired; he wants one doctor he can actually reach.\n\nHPI: Here mostly to get his prescriptions under one roof. Long history of high blood pressure, on three agents for years. Coronary disease known to an outside cardiology group, who he sees about once a year; gets chest tightness only with heavy exertion (carrying groceries up the stairs fast, shoveling) maybe once every month or two, settles with rest, has used a nitro tablet a handful of times this year. No rest pain, no pain lasting more than a few minutes. No dyspnea, no orthopnea, no ankle swelling. Admits he doesn't always remember the evening routine but takes everything once a day in the morning.\n\nPMH: hypertension; coronary artery disease with chronic stable angina (details with cardiology, records requested).\nPSH: appendectomy at about 25.\nMeds: lisinopril 10 daily, HCTZ 25 daily, metoprolol succinate 50 daily, ASA 81, atorvastatin 40, NTG 0.4 SL prn.\nAllergies: none known.\nFH: father had an MI at 64. Mother had high blood pressure and a stroke. One brother with type 2 diabetes.\nSH: drove long-haul for decades, now retired. Lives alone; one daughter. Still smoking close to a pack a day, roughly 40 pack-years total. 2-3 beers most nights. Cooks for himself, lots of deli meat, frozen dinners, canned soup.\n\nROS: negative except as above.\n\nExam: BP elevated today (see vitals), recheck similar. Obese. Well-appearing. No JVD. Heart RRR, no murmur. Lungs clear, no wheeze. Abdomen soft, healed RLQ scar. No edema, pedal pulses 2+.\n\nScreens: PHQ-2 0. AUDIT-C 5 -- discussed cutting back, he is not interested in a change right now.\n\nA/P:\n1. HTN -- above goal today. He reports missed evening habits but the meds are all daily; continue current regimen, home cuff readings please, nurse BP check with flu shot next month.\n2. CAD / stable angina -- stable pattern. Continue ASA, statin, beta blocker, NTG prn. Lipids today. Records from cardiology.\n3. Tobacco -- 40 pk-yr, smoking now. Strongly advised quitting; declines patches or medication for now, \"I'll do it my own way.\" Eligible for annual low-dose CT; ordered.\n4. Health maintenance -- CMP, CBC, lipids, A1c (brother diabetic), one-time hep C and HIV screens. PCV20 and Tdap given today. Colonoscopy per old records, requesting.\n\nRTC about 3 months."},
@@ -79,7 +78,7 @@
           "kind": "outside_records",
           "start": "2022-09-27T11:30",
           "reason": "Records from prior primary care practice",
-          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2022-09-27T11:30"}],
+          "orders": [],
           "documents": [
             {"type": "Outside Records", "title": "Prior Primary Care Records (scanned)", "author": "front desk", "date": "2022-09-27T11:30", "body": "84 pages received by fax from prior primary care office.\n\nSummary abstracted by RN: Problem list hypertension, coronary artery disease, stable angina. Medication list matches current (lisinopril 10, HCTZ 25, metoprolol succinate 50, aspirin 81, atorvastatin 40, SL nitroglycerin). No drug allergies listed. Screening colonoscopy 2018: normal, no polyps, repeat in 10 years. Appendectomy remote. Cardiology correspondence on file confirms medical management of stable angina. Indexed to chart."}
           ]
@@ -177,7 +176,7 @@
           "state": {"bp": [144, 88]},
           "measure": ["bp", "hr", "spo2", "weight_kg"],
           "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-06-13T09:00"}],
-          "orders": [{"id": "aaa-us-2023", "action": "placed", "order": "Abdominal aortic ultrasound, screening", "category": "imaging", "reason": "male 65-75 with smoking history"}],
+          "orders": [{"id": "aaa-us-2023", "action": "placed", "order": "US abdominal aorta", "category": "imaging", "reason": "male 65-75 with smoking history", "loinc": "69276-4"}],
           "documents": [
             {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-06-13T09:30", "body": "Here for 6 mo check. Saw cardiology in April -- letter reviewed, no changes. Chest tightness rare. Still smoking about a pack a day. Ankles fine. Sleeping flat.\n\nBP still above goal today. Weight about the same. Heart regular, no murmur; chest clear; legs without swelling.\n\nImpression/Plan\n- HTN, not at goal but closer. Continue regimen, home log.\n- CAD/angina stable per cardiology.\n- Smoking: advised again; not ready to set a quit date, still no meds.\n- AAA screen (ever-smoker, 67) -- US ordered.\n- AWV in Sept with fasting labs."}
           ]

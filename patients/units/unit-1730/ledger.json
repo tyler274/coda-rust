@@ -1,10 +1,7 @@
 {
   "unit": "unit-1730",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001730/2023-07-19a: lab order \"CBC\" names no one catalog lab, panel, study or procedure",
-    "MRN00001730/2023-08-16a: lab order \"Repeat morning cortisol and BMP\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001730",
@@ -986,6 +983,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 38
                 }
               ]
@@ -1069,6 +1070,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -1185,7 +1190,7 @@
             {
               "id": "cbc-2023-07",
               "action": "placed",
-              "order": "CBC",
+              "order": "Complete Blood Count (CBC)",
               "category": "lab",
               "reason": "Postpartum blood-loss anemia"
             }
@@ -1532,7 +1537,14 @@
             {
               "id": "repeat-am-labs-2023",
               "action": "placed",
-              "order": "Repeat morning cortisol and BMP",
+              "order": "Cortisol, AM",
+              "category": "lab",
+              "reason": "Low cortisol, hyponatremia"
+            },
+            {
+              "id": "repeat-am-labs-2023-2",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "Low cortisol, hyponatremia"
             }
@@ -1792,6 +1804,11 @@
             },
             {
               "id": "repeat-am-labs-2023",
+              "action": "cancelled",
+              "date": "2024-01-09T14:00"
+            },
+            {
+              "id": "repeat-am-labs-2023-2",
               "action": "cancelled",
               "date": "2024-01-09T14:00"
             }
@@ -2941,25 +2958,25 @@
         "code": "801663",
         "display": "cholecalciferol 0.05 MG Oral Tablet",
         "ingredient": "cholecalciferol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "desmopressin acetate 0.15 MG/ACTUAT Metered Dose Nasal Spray": {
         "code": "1797859",
         "display": "desmopressin acetate 0.15 MG/ACTUAT Metered Dose Nasal Spray",
         "ingredient": "desmopressin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet": {
         "code": "1090992",
         "display": "ethinyl estradiol 0.005 MG / norethindrone acetate 1 MG Oral Tablet",
         "ingredient": "ethinyl",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 10 MG Oral Tablet": {
         "code": "197782",
         "display": "hydrocortisone 10 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2972,6 +2989,10 @@
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {

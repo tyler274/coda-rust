@@ -1592,19 +1592,28 @@
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 252
                 },
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 470
                 },
                 {
                   "test": "Sodium [Moles/volume] in Urine",
                   "loinc": "2955-3",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 54
                 },
                 {
@@ -2139,26 +2148,35 @@
         "code": "313009",
         "display": "sodium chloride 1000 MG Oral Tablet",
         "ingredient": "sodium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
       "Osmolality of Serum or Plasma": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sodium [Moles/volume] in Urine": {
         "code": "2955-3",
         "display": "Sodium [Moles/volume] in Urine",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

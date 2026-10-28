@@ -114,9 +114,13 @@
                 },
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
-                  "value": 144
+                  "value": 144,
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  }
                 }
               ]
             }
@@ -128,14 +132,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "pulm-records-2025",
-              "action": "placed",
-              "order": "Request records from pulmonology (sleep study, January visit)",
-              "category": "procedure",
-              "reason": "records not received"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -199,25 +196,41 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.32
+                  "value": 7.32,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 58
+                  "value": 58,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 68
+                  "value": 68,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
-                  "value": 29
+                  "value": 29,
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  }
                 }
               ]
             }
@@ -243,12 +256,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "pulm-records-2025",
-              "action": "done",
-              "date": "2025-04-22T14:30"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Consult Note",
@@ -557,9 +565,13 @@
                 },
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
-                  "value": 132
+                  "value": 132,
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  }
                 }
               ]
             }
@@ -571,14 +583,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "ett-report-2026",
-              "action": "placed",
-              "order": "Request exercise stress test report from cardiology",
-              "category": "procedure",
-              "reason": "result not received"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -637,12 +642,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "ett-report-2026",
-              "action": "done",
-              "date": "2026-04-07T09:30"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Outside Records",

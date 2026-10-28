@@ -328,9 +328,17 @@
             {
               "id": "hcc-us-2026",
               "action": "placed",
-              "order": "Abdominal ultrasound and AFP",
+              "order": "Abdominal ultrasound",
               "category": "imaging",
               "reason": "Liver cancer surveillance, cirrhosis"
+            },
+            {
+              "id": "hcc-us-2026-2",
+              "action": "placed",
+              "order": "Alpha-1-Fetoprotein",
+              "category": "imaging",
+              "reason": "Liver cancer surveillance, cirrhosis",
+              "loinc": "1834-1"
             }
           ],
           "documents": [
@@ -457,6 +465,11 @@
               "id": "hcc-us-2026",
               "action": "done",
               "date": "2026-03-09T13:40"
+            },
+            {
+              "id": "hcc-us-2026-2",
+              "action": "done",
+              "date": "2026-03-09T13:40"
             }
           ],
           "labs": [
@@ -468,7 +481,10 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
-                  "value": 4.1
+                  "value": 4.1,
+                  "range": {
+                    "high": 10
+                  }
                 }
               ]
             }

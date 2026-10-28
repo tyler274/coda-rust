@@ -257,11 +257,25 @@
      ],
      "orders": [
       {
-       "id": "lab-2020-04",
-       "action": "placed",
-       "order": "CMP, CBC, TSH",
-       "category": "lab",
-       "reason": "fatigue"
+        "id": "lab-2020-04",
+        "action": "placed",
+        "order": "Comprehensive Metabolic Panel (CMP)",
+        "category": "lab",
+        "reason": "fatigue"
+      },
+      {
+        "id": "lab-2020-04-2",
+        "action": "placed",
+        "order": "Complete Blood Count (CBC)",
+        "category": "lab",
+        "reason": "fatigue"
+      },
+      {
+        "id": "lab-2020-04-3",
+        "action": "placed",
+        "order": "Thyroid Stimulating Hormone",
+        "category": "lab",
+        "reason": "fatigue"
       }
      ],
      "documents": [
@@ -331,9 +345,19 @@
      ],
      "orders": [
       {
-       "id": "lab-2020-04",
-       "action": "done",
-       "date": "2020-04-09T08:10"
+        "id": "lab-2020-04",
+        "action": "done",
+        "date": "2020-04-09T08:10"
+      },
+      {
+        "id": "lab-2020-04-2",
+        "action": "done",
+        "date": "2020-04-09T08:10"
+      },
+      {
+        "id": "lab-2020-04-3",
+        "action": "done",
+        "date": "2020-04-09T08:10"
       }
      ]
     },
@@ -344,11 +368,26 @@
      "reason": "Lab results",
      "orders": [
       {
-       "id": "hep-serol-2020",
-       "action": "placed",
-       "order": "Hepatitis B surface antigen, core antibody, surface antibody",
-       "category": "lab",
-       "reason": "elevated transaminases"
+        "id": "hep-serol-2020",
+        "action": "placed",
+        "order": "Hepatitis B Surface Antigen",
+        "category": "lab",
+        "reason": "elevated transaminases"
+      },
+      {
+        "id": "hep-serol-2020-2",
+        "action": "placed",
+        "order": "Hepatitis B core antibody",
+        "category": "lab",
+        "reason": "elevated transaminases",
+        "loinc": "109333-5"
+      },
+      {
+        "id": "hep-serol-2020-3",
+        "action": "placed",
+        "order": "Hepatitis B Surface Antibody",
+        "category": "lab",
+        "reason": "elevated transaminases"
       }
      ],
      "documents": [
@@ -402,9 +441,19 @@
      ],
      "orders": [
       {
-       "id": "hep-serol-2020",
-       "action": "done",
-       "date": "2020-04-16T08:25"
+        "id": "hep-serol-2020",
+        "action": "done",
+        "date": "2020-04-16T08:25"
+      },
+      {
+        "id": "hep-serol-2020-2",
+        "action": "done",
+        "date": "2020-04-16T08:25"
+      },
+      {
+        "id": "hep-serol-2020-3",
+        "action": "done",
+        "date": "2020-04-16T08:25"
       }
      ]
     },
@@ -577,10 +626,11 @@
        "collected": "2020-12-28T11:15",
        "results": [
         {
-         "test": "Hepatitis B virus DNA",
-         "loinc": "110965-1",
-         "unit": "[IU]/mL",
-         "value": 46000
+          "test": "Hepatitis B virus DNA",
+          "loinc": "110965-1",
+          "unit": "[IU]/mL",
+          "value": 46000,
+          "range": {}
         }
        ],
        "resulted": "2020-12-30T09:00"
@@ -758,10 +808,13 @@
        "collected": "2021-04-05T10:30",
        "results": [
         {
-         "test": "Calcitonin",
-         "value": 186,
-         "loinc": "1992-7",
-         "unit": "pg/mL"
+          "test": "Calcitonin",
+          "value": 186,
+          "loinc": "1992-7",
+          "unit": "pg/mL",
+          "range": {
+            "high": 10
+          }
         }
        ],
        "resulted": "2021-04-08T12:00"
@@ -771,16 +824,22 @@
        "collected": "2021-04-06T08:00",
        "results": [
         {
-         "test": "Normetanephrine, 24 hour urine",
-         "value": 1120,
-         "loinc": "2671-6",
-         "unit": "ug/(24.h)"
+          "test": "Normetanephrine, 24 hour urine",
+          "value": 1120,
+          "loinc": "2671-6",
+          "unit": "ug/(24.h)",
+          "range": {
+            "high": 900
+          }
         },
         {
-         "test": "Metanephrine, 24 hour urine",
-         "value": 430,
-         "loinc": "19049-6",
-         "unit": "ug/(24.h)"
+          "test": "Metanephrine, 24 hour urine",
+          "value": 430,
+          "loinc": "19049-6",
+          "unit": "ug/(24.h)",
+          "range": {
+            "high": 400
+          }
         }
        ],
        "resulted": "2021-04-09T15:00"
@@ -793,11 +852,12 @@
        "date": "2021-04-05T09:30"
       },
       {
-       "id": "ct-adrenal",
-       "action": "placed",
-       "order": "CT abdomen, adrenal protocol",
-       "category": "imaging",
-       "reason": "suspected pheochromocytoma"
+        "id": "ct-adrenal",
+        "action": "placed",
+        "order": "CT adrenal glands",
+        "category": "imaging",
+        "reason": "suspected pheochromocytoma",
+        "loinc": "36930-6"
       },
       {
        "id": "us-thyroid",
@@ -841,9 +901,9 @@
      ],
      "orders": [
       {
-       "id": "ct-adrenal",
-       "action": "done",
-       "date": "2021-04-08T13:00"
+        "id": "ct-adrenal",
+        "action": "done",
+        "date": "2021-04-08T13:00"
       },
       {
        "id": "us-thyroid",

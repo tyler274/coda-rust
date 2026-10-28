@@ -1,9 +1,7 @@
 {
   "unit": "unit-2244",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002244/2022-09-12a: imaging order \"Abdominal aortic ultrasound, screening\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002244",
@@ -307,8 +305,9 @@
             {
               "id": "aaa-us-2022",
               "action": "placed",
-              "order": "Abdominal aortic ultrasound, screening",
+              "order": "US abdominal aorta",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "Male former smoker age 65"
             }
           ],
@@ -1800,5 +1799,13 @@
       ]
     }
   ],
-  "terms": {}
+  "terms": {
+    "reports": {
+      "US abdominal aorta": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
 }

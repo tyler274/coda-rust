@@ -274,7 +274,8 @@
               "frequency": "DAILY",
               "route": "Oral",
               "course": "chronic",
-              "reason": "pregnancy"
+              "reason": "pregnancy",
+              "uncoded": true
             }
           ],
           "allergies": [
@@ -322,15 +323,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "ob-records",
-              "action": "placed",
-              "order": "Request outside obstetric records",
-              "category": "procedure",
-              "to": "Outside obstetrics",
-              "reason": "prenatal records for new patient"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -360,12 +353,7 @@
           "kind": "outside_records",
           "start": "2025-08-26T10:15",
           "orders": [
-            {
-              "id": "ob-records",
-              "action": "done",
-              "date": "2025-08-26T10:15"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -512,7 +500,11 @@
                   "test": "Partial thromboplastin time",
                   "loinc": "3173-2",
                   "value": 30,
-                  "unit": "s"
+                  "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  }
                 }
               ]
             }
@@ -1126,7 +1118,14 @@
             {
               "id": "iron-recheck-dec",
               "action": "placed",
-              "order": "CBC and iron studies",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "iron deficiency anemia, postpartum"
+            },
+            {
+              "id": "iron-recheck-dec-2",
+              "action": "placed",
+              "order": "Iron Studies",
               "category": "lab",
               "reason": "iron deficiency anemia, postpartum"
             }
@@ -1287,6 +1286,11 @@
           "orders": [
             {
               "id": "iron-recheck-dec",
+              "action": "done",
+              "date": "2025-12-10T07:50"
+            },
+            {
+              "id": "iron-recheck-dec-2",
               "action": "done",
               "date": "2025-12-10T07:50"
             }

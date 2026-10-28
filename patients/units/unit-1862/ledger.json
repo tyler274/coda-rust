@@ -1,10 +1,7 @@
 {
   "unit": "unit-1862",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001862/2025-05-08a: referral to \"Maternal-Fetal Medicine\" names no catalog specialty",
-    "left text-only (not verified): drug \"prenatal multivitamin with iron Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001862",
@@ -90,6 +87,7 @@
             },
             {
               "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -1537,7 +1535,11 @@
                 {
                   "test": "Osmolality of Serum",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 240
                 }
               ]
@@ -1549,13 +1551,18 @@
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 500
                 },
                 {
                   "test": "Sodium, Urine",
                   "loinc": "2955-3",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 40
                 },
                 {
@@ -1861,7 +1868,7 @@
               "action": "placed",
               "order": "High-risk obstetrics referral",
               "category": "referral",
-              "to": "Maternal-Fetal Medicine",
+              "to": "Obstetrics",
               "reason": "pregnancy with type 1 diabetes"
             }
           ],
@@ -2379,24 +2386,30 @@
       "Osmolality of Serum": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sodium, Urine": {
         "code": "2955-3",
         "display": "Sodium [Moles/volume] in Urine",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin with iron Oral Tablet\""
-    ]
+    }
   }
 }

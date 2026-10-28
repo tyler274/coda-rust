@@ -1,12 +1,7 @@
 {
   "unit": "unit-2839",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002839/2020-09-14a: procedure order \"Request records from prior primary care practice\" names no one catalog lab, panel, study or procedure",
-    "MRN00002839/2025-08-27a: procedure order \"Colonoscopy after diverticulitis\" names no one catalog lab, panel, study or procedure",
-    "MRN00002839/2026-01-12a: referral to \"Colorectal Surgery\" names no catalog specialty",
-    "MRN00002839/2026-01-12a: imaging order \"CT chest and CT abdomen/pelvis with contrast\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002839",
@@ -366,15 +361,6 @@
               "date": "2020-09-14T10:10"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Request records from prior primary care practice",
-              "category": "procedure",
-              "reason": "continuity of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -428,13 +414,6 @@
           "start": "2020-09-28T11:30",
           "service": "Internal Medicine — Primary Care",
           "reason": "Records received from prior practice",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2020-09-28T11:30"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -3300,6 +3279,9 @@
                   "test": "Cancer antigen 27-29",
                   "loinc": "17842-6",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 38
+                  },
                   "value": 64
                 }
               ]
@@ -3971,6 +3953,9 @@
                   "test": "Cancer antigen 27-29",
                   "loinc": "17842-6",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 38
+                  },
                   "value": 34
                 }
               ]
@@ -5554,7 +5539,7 @@
             {
               "id": "colonoscopy-2025",
               "action": "placed",
-              "order": "Colonoscopy after diverticulitis",
+              "order": "Colonoscopy, diagnostic",
               "category": "procedure",
               "to": "Gastroenterology",
               "reason": "first episode of sigmoid diverticulitis"
@@ -6074,14 +6059,15 @@
               "action": "placed",
               "order": "Colorectal surgery referral",
               "category": "referral",
-              "to": "Colorectal Surgery",
+              "to": "General Surgery",
               "reason": "ascending colon adenocarcinoma"
             },
             {
               "id": "staging-ct-2026",
               "action": "placed",
-              "order": "CT chest and CT abdomen/pelvis with contrast",
+              "order": "CT chest, abdomen and pelvis with contrast",
               "category": "imaging",
+              "loinc": "72254-6",
               "reason": "colon cancer staging"
             }
           ],
@@ -6246,6 +6232,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.6
                 }
               ]
@@ -6460,24 +6449,40 @@
                   "test": "pH of arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.49
                 },
                 {
                   "test": "PaCO2",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 32
                 },
                 {
                   "test": "PaO2",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 72
                 },
                 {
                   "test": "Bicarbonate, arterial",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -7009,6 +7014,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.1
                 }
               ]
@@ -7142,7 +7150,7 @@
         "code": "854235",
         "display": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "calcium carbonate 1500 MG / cholecalciferol 10 MCG Oral Tablet": {
         "code": "428485",
@@ -7154,19 +7162,19 @@
         "code": "834127",
         "display": "chlorhexidine gluconate 1.2 MG/ML Mouthwash",
         "ingredient": "chlorhexidine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "letrozole 2.5 MG Oral Tablet": {
         "code": "200064",
         "display": "letrozole 2.5 MG Oral Tablet",
         "ingredient": "letrozole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "mesalamine 800 MG Delayed Release Oral Tablet": {
         "code": "833234",
         "display": "mesalamine 800 MG Delayed Release Oral Tablet",
         "ingredient": "mesalamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "zoledronic acid 0.04 MG/ML Injectable Solution": {
         "code": "1114085",
@@ -7180,18 +7188,28 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Cancer antigen 27-29": {
         "code": "17842-6",
         "display": "Cancer Ag 27-29 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "high": 38
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carcinoembryonic antigen": {
         "code": "2039-6",
         "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 2.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Clostridioides difficile toxin": {
@@ -7203,12 +7221,20 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "PaO2": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Stool culture": {
@@ -7220,10 +7246,19 @@
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
     "reports": {
+      "CT chest, abdomen and pelvis with contrast": {
+        "code": "72254-6",
+        "display": "CT Chest and Abdomen and Pelvis W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "CT pulmonary angiogram": {
         "code": "24628-0",
         "display": "CT Chest W contrast IV",

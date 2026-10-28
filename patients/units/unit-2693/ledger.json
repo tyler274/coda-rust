@@ -1,9 +1,7 @@
 {
   "unit": "unit-2693",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002693/2022-04-11a: referral to \"Orthopedics & Sports Medicine\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002693",
@@ -627,6 +625,9 @@
                   "test": "Insulin, fasting",
                   "loinc": "20448-7",
                   "unit": "u[IU]/mL",
+                  "range": {
+                    "high": 20
+                  },
                   "value": 32
                 }
               ]
@@ -713,7 +714,7 @@
               "action": "placed",
               "order": "Orthopedics referral",
               "category": "referral",
-              "to": "Orthopedics & Sports Medicine",
+              "to": "Orthopedics",
               "reason": "right knee pain"
             }
           ],
@@ -4484,6 +4485,9 @@
         "code": "20448-7",
         "display": "Insulin [Units/volume] in Serum or Plasma",
         "unit": "u[IU]/mL",
+        "range": {
+          "high": 20
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

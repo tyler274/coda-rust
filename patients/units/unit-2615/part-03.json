@@ -18,12 +18,12 @@
           ],
           "labs": [
             {"panel": "CBC with Differential", "collected": "2026-01-02T09:50", "resulted": "2026-01-02T10:15", "results": [{"test": "White Blood Cells", "value": 15.0}, {"test": "Hemoglobin", "value": 10.2}, {"test": "Platelets", "value": 90}, {"test": "Neutrophils %", "value": 34}, {"test": "Lymphocytes %", "value": 56}, {"test": "Monocytes %", "value": 9}, {"test": "Eosinophils %", "value": 1}, {"test": "Basophils %", "value": 0}]},
-            {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T10:15", "results": [{"test": "Variant lymphocytes/Leukocytes in Blood by Manual count", "loinc": "735-1", "unit": "%", "value": 20}]},
+            {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T10:15", "results": [{"test": "Variant lymphocytes/Leukocytes in Blood by Manual count", "loinc": "735-1", "unit": "%", "value": 20, "range": {"high": 5}}]},
             {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T16:20", "results": [{"test": "Variant lymphocytes [Presence] in Blood", "loinc": "104802-4", "text": "Present; pathologist smear review confirms atypical lymphocytes"}]},
             {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T16:20", "results": [{"test": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells", "loinc": "1007-4", "text": "Positive"}]},
             {"panel": null, "collected": "2026-01-02T09:50", "resulted": "2026-01-02T16:20", "results": [
-              {"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 4.6},
-              {"test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma", "loinc": "2532-0", "unit": "U/L", "value": 388},
+              {"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 4.6, "range": {"low": 0.5, "high": 1.5}},
+              {"test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma", "loinc": "2532-0", "unit": "U/L", "value": 388, "range": {"low": 80, "high": 225}},
               {"test": "Haptoglobin [Mass/volume] in Serum or Plasma", "loinc": "4542-7", "unit": "mg/dL", "text": "<10"},
               {"test": "Bilirubin, Total", "value": 1.9},
               {"test": "Bilirubin, Direct", "value": 0.3}
@@ -92,7 +92,7 @@
           "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
           "labs": [
             {"panel": "CBC with Differential", "collected": "2026-01-08T13:05", "results": [{"test": "Hemoglobin", "value": 10.6}, {"test": "Platelets", "value": 104}]},
-            {"panel": null, "collected": "2026-01-08T13:05", "results": [{"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 4.1}]}
+            {"panel": null, "collected": "2026-01-08T13:05", "results": [{"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 4.1, "range": {"low": 0.5, "high": 1.5}}]}
           ],
           "orders": [{"id": "heme-referral", "action": "done", "date": "2026-01-08T13:15"}],
           "procedures": [{"procedure": "Office consultation, comprehensive", "performed": "2026-01-08T13:15"}],
@@ -169,7 +169,7 @@
           "measure": ["bp", "hr", "temp_c", "weight_kg"],
           "labs": [
             {"panel": "CBC with Differential", "collected": "2026-02-06T10:15", "results": [{"test": "Hemoglobin", "value": 12.6}, {"test": "Platelets", "value": 178}]},
-            {"panel": null, "collected": "2026-02-06T10:15", "results": [{"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 2.2}]}
+            {"panel": null, "collected": "2026-02-06T10:15", "results": [{"test": "Reticulocytes/Erythrocytes in Blood", "loinc": "4679-7", "unit": "%", "value": 2.2, "range": {"low": 0.5, "high": 1.5}}]}
           ],
           "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-02-06T10:30"}],
           "documents": [

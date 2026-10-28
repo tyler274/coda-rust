@@ -141,7 +141,14 @@
             {
               "id": "cbc-2024-05",
               "action": "placed",
-              "order": "CBC and iron studies",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Iron deficiency anemia, pregnancy"
+            },
+            {
+              "id": "cbc-2024-05-2",
+              "action": "placed",
+              "order": "Iron Studies",
               "category": "lab",
               "reason": "Iron deficiency anemia, pregnancy"
             }
@@ -222,6 +229,11 @@
           "orders": [
             {
               "id": "cbc-2024-05",
+              "action": "done",
+              "date": "2024-05-16T07:30"
+            },
+            {
+              "id": "cbc-2024-05-2",
               "action": "done",
               "date": "2024-05-16T07:30"
             }
@@ -369,7 +381,11 @@
                   "test": "Activated Partial Thromboplastin Time",
                   "loinc": "14979-9",
                   "unit": "s",
-                  "value": 30
+                  "value": 30,
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  }
                 }
               ]
             },

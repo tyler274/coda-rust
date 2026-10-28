@@ -591,7 +591,10 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
-                  "value": 900
+                  "value": 900,
+                  "range": {
+                    "high": 100
+                  }
                 },
                 {
                   "test": "Troponin I",
@@ -755,9 +758,24 @@
             {
               "id": "thyroid-labs-2024",
               "action": "placed",
-              "order": "TSH, free T4, total T3",
+              "order": "Thyroid Stimulating Hormone",
               "category": "lab",
               "reason": "Palpitations and weight loss postpartum"
+            },
+            {
+              "id": "thyroid-labs-2024-2",
+              "action": "placed",
+              "order": "Free Thyroxine",
+              "category": "lab",
+              "reason": "Palpitations and weight loss postpartum"
+            },
+            {
+              "id": "thyroid-labs-2024-3",
+              "action": "placed",
+              "order": "Triiodothyronine (T3), total",
+              "category": "lab",
+              "reason": "Palpitations and weight loss postpartum",
+              "loinc": "3053-6"
             }
           ],
           "documents": [
@@ -792,7 +810,11 @@
                   "test": "Triiodothyronine (T3), total",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
-                  "value": 200
+                  "value": 200,
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  }
                 }
               ]
             }
@@ -800,6 +822,16 @@
           "orders": [
             {
               "id": "thyroid-labs-2024",
+              "action": "done",
+              "date": "2024-03-13T07:35"
+            },
+            {
+              "id": "thyroid-labs-2024-2",
+              "action": "done",
+              "date": "2024-03-13T07:35"
+            },
+            {
+              "id": "thyroid-labs-2024-3",
               "action": "done",
               "date": "2024-03-13T07:35"
             }
@@ -879,7 +911,7 @@
           "reports": [
             {
               "study": "Thyroid radioactive iodine uptake",
-              "loinc": "39791-1",
+              "loinc": "17785-7",
               "performed": "2024-03-25T09:00",
               "text": "Radioiodine (I-123) uptake measured at 4 and 24 hours with imaging of the thyroid bed. Uptake is low at both time points, well below the normal range, with faint, homogeneous thyroid visualization. No focal hot or cold areas.",
               "conclusion": "Low radioiodine uptake, consistent with thyroiditis rather than Graves disease."

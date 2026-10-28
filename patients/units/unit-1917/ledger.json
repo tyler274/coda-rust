@@ -1,9 +1,7 @@
 {
   "unit": "unit-1917",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001917/2026-05-25a: imaging order \"MRI brain and internal auditory canals with and without contrast\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001917",
@@ -1350,6 +1348,7 @@
               "action": "placed",
               "order": "MRI brain and internal auditory canals with and without contrast",
               "category": "imaging",
+              "loinc": "43769-9",
               "reason": "Recurrent alternating facial palsy"
             }
           ],
@@ -1485,10 +1484,15 @@
         "code": "1188426",
         "display": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
         "ingredient": "carboxymethylcellulose",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "reports": {
+      "MRI brain and internal auditory canals with and without contrast": {
+        "code": "43769-9",
+        "display": "MR Brain and Internal auditory canal WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "MRI brain with and without contrast": {
         "code": "24590-2",
         "display": "MR Brain",

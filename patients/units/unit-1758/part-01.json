@@ -33,7 +33,7 @@
           "labs": [
             {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T09:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T09:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
-            {"panel": null, "collected": "2019-09-10T09:25", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 14.2}]},
+            {"panel": null, "collected": "2019-09-10T09:25", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 14.2, "range": {"low": 10, "high": 20}}]},
             {"panel": null, "collected": "2019-09-10T09:25", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
             {"panel": null, "collected": "2019-09-10T09:25", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
           ],
@@ -50,8 +50,7 @@
             {"procedure": "Venipuncture", "performed": "2019-09-10T09:25"}
           ],
           "orders": [
-            {"id": "prior-records-2019", "action": "placed", "order": "Records request, prior primary care", "category": "procedure", "reason": "establish care"}
-          ],
+            ],
           "documents": [
             {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-10T09:30", "body": "27 yo teacher (2nd grade, local elementary) here to set up care. Moving her records over from her old office in the spring, wanted a practice she could reach by text.\n\nPMH\n- Asthma since childhood. Uses albuterol a few times a month, mostly May-June and again late summer when pollen is bad. Never intubated, no steroid bursts she can remember in adulthood. No daily inhaler.\n- Epilepsy, onset in her teens. Followed by a neurologist through high school/college, on phenytoin 300 mg daily ever since. Last seizure many years ago, she can't put a year on it. Drives. Has not seen neurology in a few years - happy to stay on what works.\nPSH: none.\nMeds: phenytoin ER 100 mg x3 daily; albuterol HFA prn.\nAllergies: seasonal pollen (hay fever type). No drug allergies.\nFH: mom hypothyroid. Dad asthma. Older sister has lupus. Maternal aunt with some kind of thyroid problem.\nSH: married, lives in Goshen. Never smoker, does not drink, no drugs. Teaches second grade.\nGYN: periods monthly, no pregnancies.\n\nROS otherwise negative.\n\nExam: well, thin. HEENT normal, no thyroid enlargement. Heart RRR without murmur. Lungs clear, good air movement. Abd soft. Skin clear. Neuro grossly normal, gait normal.\n\nA/P\n1. Asthma, mild intermittent - fine on rescue inhaler alone. Refilled.\n2. Epilepsy, well controlled on phenytoin - level today. Discussed calcium/vit D intake and gum care on phenytoin. Will refill here.\n3. Health maintenance - flu shot today. One-time HIV and hep C screens with baseline labs. Pap last year at old office per her, will confirm from records.\n\nRecords release signed. Return for a physical next fall."}
           ]
@@ -69,8 +68,7 @@
           "kind": "outside_records",
           "start": "2019-09-26T11:10",
           "orders": [
-            {"id": "prior-records-2019", "action": "done", "date": "2019-09-26T11:10"}
-          ],
+            ],
           "documents": [
             {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2019-09-26T11:10", "body": "14 pages received from prior PCP office. Includes: visit notes 2015-2019 (asthma, epilepsy, refills), immunization record, cervical cytology 06/2018 negative for intraepithelial lesion, and a 2016 neurology follow-up letter: seizure-free, continue phenytoin 300 mg daily, routine levels. Filed under outside records for PCP review.\n\nPCP addendum: reviewed. Pap 2018 normal, next due 2021. Nothing new."}
           ]
@@ -131,7 +129,7 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-22T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-22T08:35", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}]},
             {"panel": "Lipid Panel", "collected": "2020-09-22T08:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
-            {"panel": null, "collected": "2020-09-22T08:35", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 12.8}]}
+            {"panel": null, "collected": "2020-09-22T08:35", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "value": 12.8, "range": {"low": 10, "high": 20}}]}
           ],
           "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
           "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-09-22T08:30"}],

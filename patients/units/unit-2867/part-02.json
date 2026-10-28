@@ -520,7 +520,7 @@
             {
               "id": "bmp-2025-09",
               "action": "placed",
-              "order": "Basic metabolic panel",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "Recheck after vomiting and IV fluids"
             }
@@ -678,25 +678,41 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.48
+                  "value": 7.48,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 28
+                  "value": 28,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 60
+                  "value": 60,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
-                  "value": 24
+                  "value": 24,
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  }
                 }
               ]
             }
@@ -938,8 +954,12 @@
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
-                  "value": 260
+                  "unit": "mosm/kg",
+                  "value": 260,
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  }
                 }
               ]
             },
@@ -950,14 +970,19 @@
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
-                  "value": 500
+                  "unit": "mosm/kg",
+                  "value": 500,
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  }
                 },
                 {
                   "test": "Sodium in Urine",
                   "loinc": "2955-3",
                   "unit": "mmol/L",
-                  "value": 80
+                  "value": 80,
+                  "range": {}
                 }
               ]
             },
@@ -1033,7 +1058,7 @@
               "reason": "Now on maintenance dosing"
             },
             {
-              "drug_text": "28 ML atezolizumab 60 MG/ML Injection",
+              "drug_text": "14 ML atezolizumab 60 MG/ML Injection",
               "action": "historical",
               "sig": "1680 mg IV every 4 weeks (oncology infusion center)",
               "dose": {

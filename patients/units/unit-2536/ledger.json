@@ -592,12 +592,19 @@
                   "test": "Glutamic acid decarboxylase 65 antibody",
                   "loinc": "56540-8",
                   "unit": "[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 34
                 },
                 {
                   "test": "C-peptide",
                   "loinc": "1986-9",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.8,
+                    "high": 3.1
+                  },
                   "value": 0.4
                 },
                 {
@@ -977,6 +984,10 @@
                   "test": "Bilirubin, Indirect",
                   "loinc": "1971-1",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 0.2,
+                    "high": 0.7
+                  },
                   "value": 0.7
                 }
               ]
@@ -1182,6 +1193,10 @@
                   "test": "Bilirubin, Indirect",
                   "loinc": "1971-1",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 0.2,
+                    "high": 0.7
+                  },
                   "value": 2.8
                 }
               ]
@@ -1621,6 +1636,10 @@
                   "test": "Bilirubin, Indirect",
                   "loinc": "1971-1",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 0.2,
+                    "high": 0.7
+                  },
                   "value": 2.7
                 }
               ]
@@ -2063,6 +2082,10 @@
                   "test": "Bilirubin, Indirect",
                   "loinc": "1971-1",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 0.2,
+                    "high": 0.7
+                  },
                   "value": 2.8
                 }
               ]
@@ -2740,6 +2763,10 @@
                   "test": "Bilirubin, Indirect",
                   "loinc": "1971-1",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 0.2,
+                    "high": 0.7
+                  },
                   "value": 2.5
                 }
               ]
@@ -3483,7 +3510,7 @@
         "code": "313565",
         "display": "valacyclovir 500 MG Oral Tablet",
         "ingredient": "valacyclovir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3491,18 +3518,29 @@
         "code": "1971-1",
         "display": "Bilirubin.indirect [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 0.2,
+          "high": 0.7
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "C-peptide": {
         "code": "1986-9",
         "display": "C peptide [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "low": 0.8,
+          "high": 3.1
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glutamic acid decarboxylase 65 antibody": {
         "code": "56540-8",
         "display": "Glutamate decarboxylase 65 Ab [Units/volume] in Serum by Immunoassay",
         "unit": "[IU]/mL",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

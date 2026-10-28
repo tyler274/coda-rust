@@ -1,10 +1,7 @@
 {
   "unit": "unit-2128",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002128/2025-10-20a: imaging order \"CT abdomen and pelvis with contrast, pancreas protocol\" names no one catalog lab, panel, study or procedure",
-    "MRN00002128/2025-10-30a: referral to \"Surgical Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002128",
@@ -2653,6 +2650,10 @@
                   "test": "Glucagon",
                   "loinc": "2338-2",
                   "unit": "pg/mL",
+                  "range": {
+                    "low": 50,
+                    "high": 150
+                  },
                   "value": 1180
                 }
               ]
@@ -2686,9 +2687,10 @@
             {
               "id": "ct-pancreas",
               "action": "placed",
-              "order": "CT abdomen and pelvis with contrast, pancreas protocol",
+              "order": "CT abdomen and pelvis with contrast",
               "category": "imaging",
               "to": "Radiology",
+              "loinc": "36813-4",
               "reason": "Necrolytic migratory erythema, evaluate for pancreatic neuroendocrine tumor"
             }
           ],
@@ -2779,7 +2781,7 @@
               "action": "placed",
               "order": "Surgical oncology referral",
               "category": "referral",
-              "to": "Surgical Oncology",
+              "to": "Oncology",
               "reason": "Pancreatic tail neuroendocrine tumor, glucagonoma"
             }
           ],
@@ -3211,6 +3213,10 @@
                   "test": "Glucagon",
                   "loinc": "2338-2",
                   "unit": "pg/mL",
+                  "range": {
+                    "low": 50,
+                    "high": 150
+                  },
                   "value": 74
                 }
               ]
@@ -3605,25 +3611,25 @@
         "code": "313979",
         "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
         "ingredient": "fludrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 10 MG Oral Tablet": {
         "code": "197782",
         "display": "hydrocortisone 10 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 5 MG Oral Tablet": {
         "code": "197787",
         "display": "hydrocortisone 5 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone sodium succinate 100 MG Injection": {
         "code": "238755",
         "display": "hydrocortisone 100 MG Injection",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3631,6 +3637,17 @@
         "code": "2338-2",
         "display": "Glucagon [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "low": 50,
+          "high": 150
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT abdomen and pelvis with contrast": {
+        "code": "36813-4",
+        "display": "CT Abdomen and Pelvis W contrast IV",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

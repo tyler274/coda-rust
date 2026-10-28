@@ -45,7 +45,7 @@
           "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
           "procedures": [{"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-06-18T08:00"}],
           "orders": [
-            {"id": "fit-2024", "action": "placed", "order": "Fecal immunochemical test", "category": "lab", "reason": "colorectal cancer screening"},
+            {"id": "fit-2024", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "colorectal cancer screening"},
             {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "breast cancer screening"}
           ],
           "documents": [{"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-06-18T08:55",
@@ -165,7 +165,7 @@
             {"study": "CT chest", "performed": "2025-08-19T07:20", "issued": "2025-08-19T14:00", "text": "Technique: helical CT of the chest with IV contrast, part of a chest/abdomen/pelvis staging exam. Patient premedicated with steroids and an antihistamine for prior contrast hives; no reaction. Findings: no pulmonary nodules or masses. No pleural effusion. No mediastinal, hilar or axillary adenopathy. Heart size normal. Visualized bones without lytic or blastic lesions.", "conclusion": "No evidence of thoracic metastatic disease."},
             {"study": "CT abdomen and pelvis with contrast", "performed": "2025-08-19T07:20", "issued": "2025-08-19T14:00", "text": "Technique: portal venous phase CT abdomen and pelvis after premedication. Findings: focal wall thickening/mass of the ascending colon at the site of the tattoo. No liver lesions. Surgically absent gallbladder and appendix. Spleen, pancreas, adrenals and kidneys unremarkable. No ascites. No retroperitoneal or pelvic adenopathy. No peritoneal nodularity. Bladder and uterus unremarkable.", "conclusion": "Known ascending colon primary. No evidence of distant metastatic disease."}
           ],
-          "labs": [{"panel": null, "collected": "2025-08-19T06:50", "results": [{"test": "Carcinoembryonic Antigen", "loinc": "2039-6", "unit": "ng/mL", "value": 2.4}]}]
+          "labs": [{"panel": null, "collected": "2025-08-19T06:50", "results": [{"test": "Carcinoembryonic Antigen", "loinc": "2039-6", "unit": "ng/mL", "value": 2.4, "range": {"high": 2.5}}]}]
         },
         {
           "id": "2025-08-25a",
@@ -190,7 +190,7 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Post-operative check",
           "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2025-09-11T12:20"}],
-          "orders": [{"id": "records-hosp", "action": "placed", "order": "Records request: hospital discharge summary and surgical pathology", "category": "procedure", "reason": "right hemicolectomy 8/28/25"}],
+          "orders": [],
           "documents": [{"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2025-09-11T12:45",
             "body": "Video, pt at her kitchen table. Two weeks after laparoscopic right hemicolectomy (8/28). Pain mild, acetaminophen once or twice a day. Eating small meals, bowels moving, no blood. No fever. Incisions look clean and closed on camera, no redness. Walking a bit more each day.\nShe was told the cancer had reached some lymph nodes and that she'll meet oncology later this month about chemo. We don't have the op note, discharge summary or final pathology yet.\nPlan: continue home meds unchanged. Requesting hospital records. She'll message after the oncology visit. Mammogram can wait until treatment plans settle."}]
         },
@@ -199,7 +199,7 @@
           "kind": "outside_records",
           "start": "2025-10-07T14:20",
           "reports": [{"study": "Surgical pathology report", "performed": "2025-08-28T11:00", "issued": "2025-09-03T15:00", "text": "Specimen: right colon and terminal ileum, laparoscopic right hemicolectomy. Tumor site: ascending colon. Histologic type: adenocarcinoma, moderately differentiated. Tumor penetrates to the surface of the visceral peritoneum (pT4a). Proximal, distal and radial margins negative. Lymph nodes: 2 of 23 positive (pN1b). Mismatch repair immunohistochemistry: MLH1, PMS2, MSH2 and MSH6 retained (intact).", "conclusion": "Adenocarcinoma of the ascending colon, pT4a pN1b, margins negative, MMR proficient. AJCC stage IIIB."}],
-          "orders": [{"id": "records-hosp", "action": "done", "date": "2025-10-07T14:20"}],
+          "orders": [],
           "documents": [{"type": "Discharge Summary", "title": "Hospital discharge summary (outside)", "author": "colorectal surgery", "date": "2025-10-07T14:20",
             "body": "REGIONAL HOSPITAL - DISCHARGE SUMMARY (received 10/7/2025 after second request)\nAdmitted 8/28/2025, discharged 8/31/2025. Service: colorectal surgery.\nDiagnosis: adenocarcinoma of the ascending colon.\nProcedure 8/28: laparoscopic right hemicolectomy with primary (stapled) ileocolic anastomosis.\nAllergies: penicillin (anaphylaxis); iodinated contrast (hives).\nCourse: uncomplicated. Enhanced recovery pathway; clear liquids POD0, regular diet POD2, return of bowel function POD2. Pain controlled with scheduled acetaminophen. Ambulating independently.\nDischarge meds: home amlodipine 5 mg daily, atorvastatin 20 mg daily, acetaminophen 500 mg as needed.\nFinal pathology: pT4a N1b (2/23), margins negative, MMR intact - stage III. Referred to medical oncology for adjuvant therapy.\nFollow-up: surgical clinic 2 weeks; medical oncology."}]
         },

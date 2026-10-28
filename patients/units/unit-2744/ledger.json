@@ -1,12 +1,7 @@
 {
   "unit": "unit-2744",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002744/2022-10-03a: referral to \"Urogynecology\" names no catalog specialty",
-    "MRN00002744/2025-08-06a: referral to \"Behavioral Health\" names no catalog specialty",
-    "MRN00002744/2026-06-10a: referral to \"Urogynecology\" names no catalog specialty",
-    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002744",
@@ -41,6 +36,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -968,7 +964,7 @@
               "action": "placed",
               "order": "Urogynecology referral",
               "category": "referral",
-              "to": "Urogynecology",
+              "to": "Gynecology",
               "reason": "Worsening stress urinary incontinence"
             }
           ],
@@ -2293,7 +2289,7 @@
               "action": "placed",
               "order": "Behavioral health referral",
               "category": "referral",
-              "to": "Behavioral Health",
+              "to": "Psychiatry",
               "reason": "Perinatal counseling, generalized anxiety disorder"
             }
           ],
@@ -2776,7 +2772,7 @@
               "action": "placed",
               "order": "Urogynecology referral",
               "category": "referral",
-              "to": "Urogynecology",
+              "to": "Gynecology",
               "reason": "Stress urinary incontinence, persistent"
             }
           ],
@@ -2831,9 +2827,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

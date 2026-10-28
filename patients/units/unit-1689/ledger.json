@@ -1,9 +1,7 @@
 {
   "unit": "unit-1689",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001689",
@@ -2253,6 +2251,10 @@
                   "test": "Partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 },
                 {
@@ -2988,6 +2990,9 @@
                   "test": "hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 1850
                 }
               ]
@@ -3046,6 +3051,9 @@
                   "test": "hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 3420
                 }
               ]
@@ -3135,6 +3143,7 @@
             },
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -4035,6 +4044,7 @@
             },
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "stop",
               "reason": "No longer needed"
             }
@@ -4249,7 +4259,7 @@
         "code": "238019",
         "display": "ethinyl estradiol 0.03 MG / levonorgestrel 0.15 MG Oral Tablet",
         "ingredient": "levonorgestrel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4277,12 +4287,19 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "hCG, quantitative": {
         "code": "21198-7",
         "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -4297,9 +4314,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

@@ -1033,6 +1033,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 250
                 }
               ]
@@ -1155,6 +1159,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 450
                 }
               ]
@@ -2718,6 +2726,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 900
                 }
               ]
@@ -3227,6 +3239,10 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.25
                 }
               ]
@@ -3783,7 +3799,11 @@
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 320
                 }
               ]
@@ -3795,7 +3815,11 @@
                 {
                   "test": "Osmolality of Serum or Plasma, calculated",
                   "loinc": "18182-6",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 290
                 }
               ]
@@ -3950,7 +3974,7 @@
         "code": "313323",
         "display": "thiamine 100 MG Oral Tablet",
         "ingredient": "thiamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3958,6 +3982,10 @@
         "code": "1798-8",
         "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 25,
+          "high": 125
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Calcium oxalate crystals in urine sediment": {
@@ -3968,19 +3996,31 @@
       "Osmolality of Serum or Plasma": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Serum or Plasma, calculated": {
         "code": "18182-6",
         "display": "Osmolality of Serum or Plasma by calculated by sum of electrolytes",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

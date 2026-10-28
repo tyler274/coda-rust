@@ -1,12 +1,7 @@
 {
   "unit": "unit-1674",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001674/2025-08-19a: procedure order \"Request outside obstetric records\" names no one catalog lab, panel, study or procedure",
-    "MRN00001674/2025-10-29a: lab order \"CBC and iron studies\" names no one catalog lab, panel, study or procedure",
-    "MRN00001674/2026-01-27a: lab order \"CBC and iron studies\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin oral tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001674",
@@ -325,6 +320,7 @@
             },
             {
               "drug_text": "prenatal multivitamin oral tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -376,16 +372,6 @@
               "performed": "2025-08-19T15:30"
             }
           ],
-          "orders": [
-            {
-              "id": "ob-records",
-              "action": "placed",
-              "order": "Request outside obstetric records",
-              "category": "procedure",
-              "to": "Outside obstetrics",
-              "reason": "prenatal records for new patient"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -427,13 +413,6 @@
           "id": "2025-08-26a",
           "kind": "outside_records",
           "start": "2025-08-26T10:15",
-          "orders": [
-            {
-              "id": "ob-records",
-              "action": "done",
-              "date": "2025-08-26T10:15"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -612,6 +591,10 @@
                   "test": "Partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -1486,7 +1469,14 @@
             {
               "id": "iron-recheck-dec",
               "action": "placed",
-              "order": "CBC and iron studies",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "iron deficiency anemia, postpartum"
+            },
+            {
+              "id": "iron-recheck-dec-2",
+              "action": "placed",
+              "order": "Iron Studies",
               "category": "lab",
               "reason": "iron deficiency anemia, postpartum"
             }
@@ -1693,6 +1683,11 @@
               "id": "iron-recheck-dec",
               "action": "done",
               "date": "2025-12-10T07:50"
+            },
+            {
+              "id": "iron-recheck-dec-2",
+              "action": "done",
+              "date": "2025-12-10T07:50"
             }
           ],
           "documents": [
@@ -1785,7 +1780,14 @@
             {
               "id": "iron-recheck-mar",
               "action": "placed",
-              "order": "CBC and iron studies",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "iron deficiency anemia"
+            },
+            {
+              "id": "iron-recheck-mar-2",
+              "action": "placed",
+              "order": "Iron Studies",
               "category": "lab",
               "reason": "iron deficiency anemia"
             }
@@ -1881,13 +1883,13 @@
         "code": "1721476",
         "display": "ampicillin 2000 MG Injection",
         "ingredient": "ampicillin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "gentamicin 40 MG/ML Injectable Solution": {
         "code": "313996",
         "display": "gentamicin 40 MG/ML Injectable Solution",
         "ingredient": "gentamicin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1915,6 +1917,10 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Rubella IgG antibody": {
@@ -1949,9 +1955,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin oral tablet\""
-    ]
+    }
   }
 }

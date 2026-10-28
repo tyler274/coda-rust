@@ -477,7 +477,11 @@
                   "test": "Glucagon",
                   "loinc": "2338-2",
                   "unit": "pg/mL",
-                  "value": 1180
+                  "value": 1180,
+                  "range": {
+                    "low": 50,
+                    "high": 150
+                  }
                 }
               ]
             }
@@ -486,10 +490,11 @@
             {
               "id": "ct-pancreas",
               "action": "placed",
-              "order": "CT abdomen and pelvis with contrast, pancreas protocol",
+              "order": "CT abdomen and pelvis with contrast",
               "category": "imaging",
               "to": "Radiology",
-              "reason": "Necrolytic migratory erythema, evaluate for pancreatic neuroendocrine tumor"
+              "reason": "Necrolytic migratory erythema, evaluate for pancreatic neuroendocrine tumor",
+              "loinc": "36813-4"
             }
           ],
           "immunizations": [
@@ -596,7 +601,7 @@
               "action": "placed",
               "order": "Surgical oncology referral",
               "category": "referral",
-              "to": "Surgical Oncology",
+              "to": "Oncology",
               "reason": "Pancreatic tail neuroendocrine tumor, glucagonoma"
             }
           ],

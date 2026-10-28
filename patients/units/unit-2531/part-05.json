@@ -455,7 +455,7 @@
             {
               "id": "ucx-2025",
               "action": "placed",
-              "order": "Urine culture",
+              "order": "Urine Culture",
               "category": "lab",
               "reason": "Dysuria in a man"
             }
@@ -538,19 +538,31 @@
                   "test": "Arterial pO2",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 98
+                  "value": 98,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 },
                 {
                   "test": "Arterial pCO2",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 38
+                  "value": 38,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Methemoglobin",
-                  "loinc": "2614-2",
+                  "loinc": "2614-6",
                   "unit": "%",
-                  "value": 15
+                  "value": 15,
+                  "range": {
+                    "low": 0.5,
+                    "high": 3.0
+                  }
                 }
               ]
             },
@@ -601,9 +613,13 @@
               "results": [
                 {
                   "test": "Methemoglobin",
-                  "loinc": "2614-2",
+                  "loinc": "2614-6",
                   "unit": "%",
-                  "value": 2.1
+                  "value": 2.1,
+                  "range": {
+                    "low": 0.5,
+                    "high": 3.0
+                  }
                 }
               ]
             }

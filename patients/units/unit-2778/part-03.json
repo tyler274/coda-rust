@@ -80,9 +80,13 @@
        "collected": "2023-06-12T09:10",
        "results": [
         {
-         "test": "Lithium",
-         "loinc": "14334-7",
-         "unit": "mmol/L"
+          "test": "Lithium",
+          "loinc": "14334-7",
+          "unit": "mmol/L",
+          "range": {
+            "low": 0.6,
+            "high": 1.2
+          }
         },
         {
          "test": "Thyroid Stimulating Hormone"
@@ -102,11 +106,11 @@
      ],
      "orders": [
       {
-       "id": "fit-2023",
-       "action": "placed",
-       "order": "Fecal immunochemical test",
-       "category": "lab",
-       "reason": "Colorectal cancer screening, age 45"
+        "id": "fit-2023",
+        "action": "placed",
+        "order": "Fecal Immunochemical Test",
+        "category": "lab",
+        "reason": "Colorectal cancer screening, age 45"
       }
      ],
      "documents": [
@@ -142,9 +146,9 @@
      "reason": "FIT drop-off",
      "orders": [
       {
-       "id": "fit-2023",
-       "action": "done",
-       "date": "2023-09-11T08:00"
+        "id": "fit-2023",
+        "action": "done",
+        "date": "2023-09-11T08:00"
       }
      ],
      "labs": [
@@ -423,9 +427,13 @@
        "collected": "2023-12-18T07:35",
        "results": [
         {
-         "test": "Lithium",
-         "loinc": "14334-7",
-         "unit": "mmol/L"
+          "test": "Lithium",
+          "loinc": "14334-7",
+          "unit": "mmol/L",
+          "range": {
+            "low": 0.6,
+            "high": 1.2
+          }
         },
         {
          "test": "Thyroid Stimulating Hormone"
@@ -533,9 +541,13 @@
        "collected": "2024-06-17T09:15",
        "results": [
         {
-         "test": "Lithium",
-         "loinc": "14334-7",
-         "unit": "mmol/L"
+          "test": "Lithium",
+          "loinc": "14334-7",
+          "unit": "mmol/L",
+          "range": {
+            "low": 0.6,
+            "high": 1.2
+          }
         },
         {
          "test": "Thyroid Stimulating Hormone"
@@ -562,11 +574,11 @@
        "reason": "Routine screening"
       },
       {
-       "id": "fit-2024",
-       "action": "placed",
-       "order": "Fecal immunochemical test",
-       "category": "lab",
-       "reason": "Colorectal cancer screening"
+        "id": "fit-2024",
+        "action": "placed",
+        "order": "Fecal Immunochemical Test",
+        "category": "lab",
+        "reason": "Colorectal cancer screening"
       }
      ],
      "documents": [
@@ -602,9 +614,9 @@
      "reason": "FIT drop-off",
      "orders": [
       {
-       "id": "fit-2024",
-       "action": "done",
-       "date": "2024-08-12T08:00"
+        "id": "fit-2024",
+        "action": "done",
+        "date": "2024-08-12T08:00"
       }
      ],
      "labs": [
@@ -715,16 +727,24 @@
          "value": 12
         },
         {
-         "test": "Osmolality, serum",
-         "loinc": "2692-2",
-         "unit": "mOsm/kg",
-         "value": 296
+          "test": "Osmolality, serum",
+          "loinc": "2692-2",
+          "unit": "mosm/kg",
+          "value": 296,
+          "range": {
+            "low": 275,
+            "high": 295
+          }
         },
         {
-         "test": "Osmolality, urine",
-         "loinc": "2695-5",
-         "unit": "mOsm/kg",
-         "value": 145
+          "test": "Osmolality, urine",
+          "loinc": "2695-5",
+          "unit": "mosm/kg",
+          "value": 145,
+          "range": {
+            "low": 38,
+            "high": 1400
+          }
         }
        ],
        "resulted": "2025-10-15T16:00"
@@ -836,10 +856,14 @@
          "value": 1.0
         },
         {
-         "test": "Osmolality, urine",
-         "loinc": "2695-5",
-         "unit": "mOsm/kg",
-         "value": 240
+          "test": "Osmolality, urine",
+          "loinc": "2695-5",
+          "unit": "mosm/kg",
+          "value": 240,
+          "range": {
+            "low": 38,
+            "high": 1400
+          }
         }
        ]
       }

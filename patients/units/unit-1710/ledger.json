@@ -1,9 +1,7 @@
 {
   "unit": "unit-1710",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001710/2024-10-25a: referral to \"Obstetrics and Gynecology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001710",
@@ -1998,7 +1996,7 @@
               "action": "placed",
               "order": "Obstetrics / maternal-fetal medicine referral",
               "category": "referral",
-              "to": "Obstetrics and Gynecology",
+              "to": "Obstetrics & Gynecology",
               "reason": "high-risk pregnancy: chronic hypertension, type 1 diabetes"
             }
           ],
@@ -2509,6 +2507,10 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 600
                 },
                 {
@@ -2667,6 +2669,10 @@
                   "test": "Glucose, fingerstick",
                   "loinc": "41653-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 70,
+                    "high": 99
+                  },
                   "value": 45
                 }
               ]
@@ -2829,7 +2835,7 @@
         "code": "896762",
         "display": "labetalol hydrochloride 200 MG Oral Tablet",
         "ingredient": "labetalol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2837,12 +2843,20 @@
         "code": "41653-7",
         "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
         "unit": "mg/dL",
+        "range": {
+          "low": 70,
+          "high": 99
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lactate dehydrogenase": {
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Schistocytes": {

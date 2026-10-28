@@ -1580,15 +1580,17 @@
               "collected": "2020-06-01T08:05",
               "results": [
                 {
-                  "test": "Cortisol, baseline",
-                  "loinc": "2143-6",
-                  "unit": "ug/dL",
+                  "test": "Cortisol, AM",
                   "value": 2.6
                 },
                 {
                   "test": "ACTH",
                   "loinc": "2141-0",
                   "unit": "pg/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 60
+                  },
                   "value": 486
                 }
               ]
@@ -1601,6 +1603,9 @@
                   "test": "Cortisol 60 minutes post cosyntropin",
                   "loinc": "26528-0",
                   "unit": "ug/dL",
+                  "range": {
+                    "low": 18
+                  },
                   "value": 4.1
                 }
               ]
@@ -2899,6 +2904,9 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 42
                 }
               ]
@@ -5322,6 +5330,7 @@
                   "test": "Fractional excretion of sodium",
                   "loinc": "49135-7",
                   "unit": "%",
+                  "range": {},
                   "value": 0.8
                 }
               ]
@@ -5454,19 +5463,19 @@
         "code": "313979",
         "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
         "ingredient": "fludrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "hydrocortisone 10 MG Oral Tablet": {
         "code": "197782",
         "display": "hydrocortisone 10 MG Oral Tablet",
         "ingredient": "hydrocortisone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "quetiapine 200 MG Oral Tablet": {
         "code": "317174",
         "display": "quetiapine 200 MG Oral Tablet",
         "ingredient": "quetiapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5474,30 +5483,35 @@
         "code": "2141-0",
         "display": "Corticotropin [Mass/volume] in Plasma",
         "unit": "pg/mL",
+        "range": {
+          "low": 10,
+          "high": 60
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "B-type natriuretic peptide": {
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Cortisol 60 minutes post cosyntropin": {
         "code": "26528-0",
         "display": "Cortisol [Mass/volume] in Serum or Plasma --1 hour post dose corticotropin",
         "unit": "ug/dL",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Cortisol, baseline": {
-        "code": "2143-6",
-        "display": "Cortisol [Mass/volume] in Serum or Plasma",
-        "unit": "ug/dL",
+        "range": {
+          "low": 18
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fractional excretion of sodium": {
         "code": "49135-7",
         "display": "Fractional excretion of sodium [Ratio] in Urine and Serum or Plasma",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

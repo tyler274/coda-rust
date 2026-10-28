@@ -29,7 +29,7 @@
             {"drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "HIV"},
             {"drug": "sertraline 100 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Major depressive disorder"},
             {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "History of folate deficiency"},
-            {"drug_text": "Prenatal Vitamins Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+            {"drug_text": "Prenatal Vitamins Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "uncoded": true}
           ],
           "allergies": [
             {"substance": "Sulfonamide antibiotics", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
@@ -171,7 +171,7 @@
           "state": {"labs": {"Phenytoin": 14.2}},
           "measure": ["bp", "hr", "temp_c", "weight_kg"],
           "labs": [
-            {"panel": null, "collected": "2018-11-13T14:40", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL"}]},
+            {"panel": null, "collected": "2018-11-13T14:40", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "range": {"low": 10, "high": 20}}]},
             {"panel": "Hepatic Panel (LFT)", "collected": "2018-11-13T14:40", "results": [{"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]}
           ],
           "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
@@ -250,8 +250,8 @@
           "state": {"labs": {"Sodium": 148, "Chloride": 108}},
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-05-15T14:10", "results": [{"test": "Sodium", "value": 148}, {"test": "Chloride"}]},
-            {"panel": null, "collected": "2019-05-15T14:10", "results": [{"test": "Osmolality, serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 300}]},
-            {"panel": null, "collected": "2019-05-15T14:10", "results": [{"test": "Osmolality, urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 150}]}
+            {"panel": null, "collected": "2019-05-15T14:10", "results": [{"test": "Osmolality, serum", "loinc": "2692-2", "unit": "mosm/kg", "value": 300, "range": {"low": 275, "high": 295}}]},
+            {"panel": null, "collected": "2019-05-15T14:10", "results": [{"test": "Osmolality, urine", "loinc": "2695-5", "unit": "mosm/kg", "value": 150, "range": {"low": 38, "high": 1400}}]}
           ],
           "orders": [
             {"id": "endo-referral", "action": "done", "date": "2019-05-15T13:30"}
@@ -324,7 +324,7 @@
           "start": "2019-08-28T21:14",
           "reason": "Fatigue and bleeding gums",
           "orders": [
-            {"id": "anemia-labs-2019", "action": "placed", "order": "CBC with differential, folate, B12, CMP, vitamin D", "category": "lab", "reason": "Fatigue, gum bleeding"}
+            {"id": "anemia-labs-2019", "action": "placed", "order": "CBC with Differential", "category": "lab", "reason": "Fatigue, gum bleeding"}, {"id": "anemia-labs-2019-2", "action": "placed", "order": "Folate", "category": "lab", "reason": "Fatigue, gum bleeding"}, {"id": "anemia-labs-2019-3", "action": "placed", "order": "Vitamin B12", "category": "lab", "reason": "Fatigue, gum bleeding"}, {"id": "anemia-labs-2019-4", "action": "placed", "order": "Comprehensive Metabolic Panel (CMP)", "category": "lab", "reason": "Fatigue, gum bleeding"}, {"id": "anemia-labs-2019-5", "action": "placed", "order": "25-hydroxy Vitamin D", "category": "lab", "reason": "Fatigue, gum bleeding"}
           ],
           "documents": [
             {"type": "Patient Message", "title": "tired + gums", "author": "patient", "date": "2019-08-28T21:14", "body": "Hi, I've been really tired for like 2 months, not sleepy just wiped out. Also my gums look puffy and they bleed every time I brush. I made an appt for the 10th but wanted to ask if I should do bloodwork before so we can talk about it."},
@@ -345,7 +345,7 @@
             {"panel": null, "collected": "2019-09-03T07:45", "results": [{"test": "25-hydroxy Vitamin D", "value": 30}]}
           ],
           "orders": [
-            {"id": "anemia-labs-2019", "action": "done", "date": "2019-09-03T07:45"}
+            {"id": "anemia-labs-2019", "action": "done", "date": "2019-09-03T07:45"}, {"id": "anemia-labs-2019-2", "action": "done", "date": "2019-09-03T07:45"}, {"id": "anemia-labs-2019-3", "action": "done", "date": "2019-09-03T07:45"}, {"id": "anemia-labs-2019-4", "action": "done", "date": "2019-09-03T07:45"}, {"id": "anemia-labs-2019-5", "action": "done", "date": "2019-09-03T07:45"}
           ],
           "procedures": [{"procedure": "Venipuncture", "performed": "2019-09-03T07:45"}]
         },

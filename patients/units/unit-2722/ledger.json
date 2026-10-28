@@ -1,15 +1,7 @@
 {
   "unit": "unit-2722",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002722/2021-06-14a: lab order \"Plasma renin activity and aldosterone\" names no one catalog lab, panel, study or procedure",
-    "MRN00002722/2021-06-17a: lab order \"Basic metabolic panel in 10 days\" names no one catalog lab, panel, study or procedure",
-    "MRN00002722/2021-09-02a: imaging order \"CT adrenal protocol\" names no one catalog lab, panel, study or procedure",
-    "MRN00002722/2022-06-13a: imaging order \"Diagnostic mammogram, bilateral, and right breast ultrasound\" names no one catalog lab, panel, study or procedure",
-    "MRN00002722/2022-06-21a: procedure order \"Ultrasound-guided core biopsy, right breast\" names no one catalog lab, panel, study or procedure",
-    "MRN00002722/2022-07-01a: imaging order \"Right breast ultrasound, 6-month follow-up\" names no one catalog lab, panel, study or procedure",
-    "MRN00002722/2024-01-22a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002722",
@@ -234,7 +226,14 @@
             {
               "id": "renin-aldo-2021",
               "action": "placed",
-              "order": "Plasma renin activity and aldosterone",
+              "order": "Plasma Renin Activity",
+              "category": "lab",
+              "reason": "hypokalemia with hypertension on three drugs"
+            },
+            {
+              "id": "renin-aldo-2021-2",
+              "action": "placed",
+              "order": "Aldosterone",
               "category": "lab",
               "reason": "hypokalemia with hypertension on three drugs"
             }
@@ -331,6 +330,11 @@
               "date": "2021-06-17T11:05"
             },
             {
+              "id": "renin-aldo-2021-2",
+              "action": "done",
+              "date": "2021-06-17T11:05"
+            },
+            {
               "id": "endo-referral-2021",
               "action": "placed",
               "order": "Endocrinology referral",
@@ -341,7 +345,7 @@
             {
               "id": "bmp-2021-06",
               "action": "placed",
-              "order": "Basic metabolic panel in 10 days",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "potassium on spironolactone"
             }
@@ -574,8 +578,9 @@
             {
               "id": "adrenal-ct-2021",
               "action": "placed",
-              "order": "CT adrenal protocol",
+              "order": "CT adrenal glands",
               "category": "imaging",
+              "loinc": "36930-6",
               "reason": "primary aldosteronism subtype"
             }
           ],
@@ -1148,7 +1153,14 @@
             {
               "id": "dx-mammo-2022",
               "action": "placed",
-              "order": "Diagnostic mammogram, bilateral, and right breast ultrasound",
+              "order": "Diagnostic mammogram",
+              "category": "imaging",
+              "reason": "palpable right breast mass"
+            },
+            {
+              "id": "dx-mammo-2022-2",
+              "action": "placed",
+              "order": "Breast ultrasound",
               "category": "imaging",
               "reason": "palpable right breast mass"
             }
@@ -1194,10 +1206,16 @@
               "date": "2022-06-21T10:30"
             },
             {
+              "id": "dx-mammo-2022-2",
+              "action": "done",
+              "date": "2022-06-21T10:30"
+            },
+            {
               "id": "breast-bx-2022",
               "action": "placed",
-              "order": "Ultrasound-guided core biopsy, right breast",
+              "order": "Ultrasound-guided core biopsy of breast",
               "category": "procedure",
+              "snomed": "432550005",
               "reason": "BI-RADS 4A mass"
             }
           ]
@@ -1256,7 +1274,7 @@
             {
               "id": "breast-us-6mo",
               "action": "placed",
-              "order": "Right breast ultrasound, 6-month follow-up",
+              "order": "Breast ultrasound",
               "category": "imaging",
               "reason": "fibroadenoma after biopsy"
             }
@@ -2247,7 +2265,7 @@
             {
               "id": "fit-2024",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening, age 45"
             }
@@ -2755,30 +2773,48 @@
                   "test": "CSF red blood cells, tube 1",
                   "loinc": "26454-9",
                   "unit": "/uL",
+                  "range": {
+                    "high": 0
+                  },
                   "value": 1500
                 },
                 {
                   "test": "CSF red blood cells, tube 4",
                   "loinc": "26454-9",
                   "unit": "/uL",
+                  "range": {
+                    "high": 0
+                  },
                   "value": 1480
                 },
                 {
                   "test": "CSF white blood cells",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 4
                 },
                 {
                   "test": "CSF protein",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 45
                 },
                 {
                   "test": "CSF glucose",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 60
                 }
               ]
@@ -3395,30 +3431,48 @@
                   "test": "CSF red blood cells, tube 1",
                   "loinc": "26454-9",
                   "unit": "/uL",
+                  "range": {
+                    "high": 0
+                  },
                   "value": 6
                 },
                 {
                   "test": "CSF red blood cells, tube 4",
                   "loinc": "26454-9",
                   "unit": "/uL",
+                  "range": {
+                    "high": 0
+                  },
                   "value": 2
                 },
                 {
                   "test": "CSF white blood cells",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 1
                 },
                 {
                   "test": "CSF protein",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 34
                 },
                 {
                   "test": "CSF glucose",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 63
                 }
               ]
@@ -3877,19 +3931,19 @@
         "code": "197581",
         "display": "dexamethasone 2 MG Oral Tablet",
         "ingredient": "dexamethasone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "dexamethasone 4 MG Oral Tablet": {
         "code": "197582",
         "display": "dexamethasone 4 MG Oral Tablet",
         "ingredient": "dexamethasone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "nimodipine 30 MG Oral Capsule": {
         "code": "198037",
         "display": "nimodipine 30 MG Oral Capsule",
         "ingredient": "nimodipine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3897,30 +3951,48 @@
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF protein": {
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF red blood cells, tube 1": {
         "code": "26454-9",
         "display": "Erythrocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "high": 0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF red blood cells, tube 4": {
         "code": "26454-9",
         "display": "Erythrocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "high": 0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF white blood cells": {
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Thyroglobulin": {
@@ -3931,10 +4003,22 @@
       }
     },
     "reports": {
+      "CT adrenal glands": {
+        "code": "36930-6",
+        "display": "CT Adrenal gland",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "MRI brain without and with contrast": {
         "code": "24590-2",
         "display": "MR Brain",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Ultrasound-guided core biopsy of breast": {
+        "code": "432550005",
+        "display": "Core needle biopsy of breast using ultrasound guidance",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

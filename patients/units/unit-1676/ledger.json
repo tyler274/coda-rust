@@ -1,9 +1,7 @@
 {
   "unit": "unit-1676",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"folic acid 0.8 MG / prenatal multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001676",
@@ -354,6 +352,7 @@
           "medications": [
             {
               "drug_text": "folic acid 0.8 MG / prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -1498,9 +1497,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"folic acid 0.8 MG / prenatal multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

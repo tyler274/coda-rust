@@ -3442,6 +3442,10 @@
                   "test": "Glucose [Mass/volume] in Capillary blood by Glucometer",
                   "loinc": "41653-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 70,
+                    "high": 99
+                  },
                   "value": 60
                 }
               ]
@@ -3454,6 +3458,10 @@
                   "test": "Glucose [Mass/volume] in Capillary blood by Glucometer",
                   "loinc": "41653-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 70,
+                    "high": 99
+                  },
                   "value": 118
                 }
               ]
@@ -5234,6 +5242,10 @@
                   "test": "Beta-2-Microglobulin [Measurement] in Serum or Plasma",
                   "loinc": "110111-2",
                   "unit": "mg/L",
+                  "range": {
+                    "low": 0.54,
+                    "high": 2.75
+                  },
                   "value": 34
                 }
               ]
@@ -5404,73 +5416,73 @@
         "code": "1719286",
         "display": "10 ML furosemide 10 MG/ML Injection",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "5 ML iron sucrose 20 MG/ML Injection": {
         "code": "1741267",
         "display": "5 ML iron sucrose 20 MG/ML Injection",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "cefazolin 2000 MG Injection": {
         "code": "1665060",
         "display": "cefazolin 2000 MG Injection",
         "ingredient": "cefazolin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "epoetin alfa 10000 UNT/ML Injectable Solution": {
         "code": "240000",
         "display": "epoetin alfa 10000 UNT/ML Injectable Solution",
         "ingredient": "epoetin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ethambutol hydrochloride 400 MG Oral Tablet": {
         "code": "995607",
         "display": "ethambutol hydrochloride 400 MG Oral Tablet",
         "ingredient": "ethambutol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "glucose 0.4 MG/MG Oral Gel": {
         "code": "198683",
         "display": "glucose 0.4 MG/MG Oral Gel",
         "ingredient": "glucose",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "isoniazid 300 MG Oral Tablet": {
         "code": "197832",
         "display": "isoniazid 300 MG Oral Tablet",
         "ingredient": "isoniazid",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "pyrazinamide 500 MG Oral Tablet": {
         "code": "198181",
         "display": "pyrazinamide 500 MG Oral Tablet",
         "ingredient": "pyrazinamide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "rifampin 300 MG Oral Capsule": {
         "code": "198202",
         "display": "rifampin 300 MG Oral Capsule",
         "ingredient": "rifampin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sevelamer carbonate 800 MG Oral Tablet": {
         "code": "749206",
         "display": "sevelamer carbonate 800 MG Oral Tablet",
         "ingredient": "sevelamer",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vancomycin 1000 MG Injection": {
         "code": "1807513",
         "display": "vancomycin 1000 MG Injection",
         "ingredient": "vancomycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vitamin B6 50 MG Oral Tablet": {
         "code": "639566",
         "display": "vitamin B6 50 MG Oral Tablet",
         "ingredient": "vitamin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5478,12 +5490,20 @@
         "code": "110111-2",
         "display": "Beta-2-Microglobulin [Measurement] in Serum or Plasma",
         "unit": "mg/L",
+        "range": {
+          "low": 0.54,
+          "high": 2.75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glucose [Mass/volume] in Capillary blood by Glucometer": {
         "code": "41653-7",
         "display": "Glucose [Mass/volume] in Capillary blood by Glucometer",
         "unit": "mg/dL",
+        "range": {
+          "low": 70,
+          "high": 99
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Microscopic observation [Identifier] in Sputum by Acid fast stain": {

@@ -1,11 +1,7 @@
 {
   "unit": "unit-1820",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001820/2019-09-10a: referral to \"Hepatology\" names no catalog specialty",
-    "MRN00001820/2026-08-11a: referral to \"Hepatology\" names no catalog specialty",
-    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001820",
@@ -217,7 +213,7 @@
               "action": "placed",
               "order": "Hepatology referral",
               "category": "referral",
-              "to": "Hepatology",
+              "to": "Gastroenterology",
               "reason": "chronic hepatitis C, untreated"
             }
           ],
@@ -400,6 +396,7 @@
           "medications": [
             {
               "drug_text": "Prenatal Vitamins Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -1194,6 +1191,9 @@
                   "test": "Bile acid",
                   "loinc": "14628-2",
                   "unit": "umol/L",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 45
                 }
               ]
@@ -2104,12 +2104,20 @@
                   "test": "aPTT",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 },
                 {
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 400
                 }
               ]
@@ -2979,7 +2987,7 @@
               "action": "placed",
               "order": "Hepatology referral",
               "category": "referral",
-              "to": "Hepatology",
+              "to": "Gastroenterology",
               "reason": "chronic hepatitis C, ready for treatment"
             }
           ],
@@ -3087,12 +3095,19 @@
         "code": "14628-2",
         "display": "Bile acid [Moles/volume] in Serum or Plasma",
         "unit": "umol/L",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis A virus IgG Ab": {
@@ -3109,11 +3124,12 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"Prenatal Vitamins Oral Tablet\""
-    ]
+    }
   }
 }

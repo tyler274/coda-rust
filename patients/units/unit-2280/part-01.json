@@ -413,14 +413,7 @@
       }
      ],
      "orders": [
-      {
-       "id": "records-prior-pcp",
-       "action": "placed",
-       "order": "Records request, prior primary care and specialists",
-       "category": "procedure",
-       "reason": "transfer of care"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Progress Notes",
@@ -450,12 +443,7 @@
      "kind": "outside_records",
      "start": "2020-08-27T11:30",
      "orders": [
-      {
-       "id": "records-prior-pcp",
-       "action": "done",
-       "date": "2020-08-27T11:30"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Outside Records",
@@ -894,10 +882,13 @@
        "collected": "2021-05-20T09:00",
        "results": [
         {
-         "test": "Alpha-1-Fetoprotein",
-         "loinc": "1834-1",
-         "unit": "ng/mL",
-         "value": 5.8
+          "test": "Alpha-1-Fetoprotein",
+          "loinc": "1834-1",
+          "unit": "ng/mL",
+          "value": 5.8,
+          "range": {
+            "high": 10
+          }
         }
        ]
       }
@@ -1162,10 +1153,13 @@
        "collected": "2021-11-09T10:30",
        "results": [
         {
-         "test": "Carcinoembryonic Antigen",
-         "loinc": "2039-6",
-         "unit": "ng/mL",
-         "value": 1.9
+          "test": "Carcinoembryonic Antigen",
+          "loinc": "2039-6",
+          "unit": "ng/mL",
+          "value": 1.9,
+          "range": {
+            "high": 2.5
+          }
         }
        ]
       }
@@ -1206,10 +1200,13 @@
        "collected": "2021-11-23T09:00",
        "results": [
         {
-         "test": "Alpha-1-Fetoprotein",
-         "loinc": "1834-1",
-         "unit": "ng/mL",
-         "value": 6.4
+          "test": "Alpha-1-Fetoprotein",
+          "loinc": "1834-1",
+          "unit": "ng/mL",
+          "value": 6.4,
+          "range": {
+            "high": 10
+          }
         }
        ]
       }

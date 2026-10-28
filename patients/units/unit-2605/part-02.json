@@ -26,11 +26,26 @@
      ],
      "orders": [
       {
-       "id": "anemia-labs",
-       "action": "placed",
-       "order": "CBC with differential, iron studies, hemoglobin electrophoresis",
-       "category": "lab",
-       "reason": "microcytic anemia without response to iron"
+        "id": "anemia-labs",
+        "action": "placed",
+        "order": "CBC with Differential",
+        "category": "lab",
+        "reason": "microcytic anemia without response to iron"
+      },
+      {
+        "id": "anemia-labs-2",
+        "action": "placed",
+        "order": "Iron Studies",
+        "category": "lab",
+        "reason": "microcytic anemia without response to iron"
+      },
+      {
+        "id": "anemia-labs-3",
+        "action": "placed",
+        "order": "Hemoglobin electrophoresis",
+        "category": "lab",
+        "reason": "microcytic anemia without response to iron",
+        "loinc": "43113-0"
       }
      ],
      "documents": [
@@ -105,25 +120,42 @@
        "resulted": "2023-01-19T14:30",
        "results": [
         {
-         "test": "Hemoglobin A2/Hemoglobin.total in Blood",
-         "loinc": "4551-8",
-         "value": 5.4,
-         "unit": "%"
+          "test": "Hemoglobin A2/Hemoglobin.total in Blood",
+          "loinc": "4551-8",
+          "value": 5.4,
+          "unit": "%",
+          "range": {
+            "low": 1.5,
+            "high": 3.5
+          }
         },
         {
-         "test": "Hemoglobin F/Hemoglobin.total in Blood",
-         "loinc": "4576-5",
-         "value": 1.8,
-         "unit": "%"
+          "test": "Hemoglobin F/Hemoglobin.total in Blood",
+          "loinc": "4576-5",
+          "value": 1.8,
+          "unit": "%",
+          "range": {
+            "high": 2
+          }
         }
        ]
       }
      ],
      "orders": [
       {
-       "id": "anemia-labs",
-       "action": "done",
-       "date": "2023-01-19T14:30"
+        "id": "anemia-labs",
+        "action": "done",
+        "date": "2023-01-19T14:30"
+      },
+      {
+        "id": "anemia-labs-2",
+        "action": "done",
+        "date": "2023-01-19T14:30"
+      },
+      {
+        "id": "anemia-labs-3",
+        "action": "done",
+        "date": "2023-01-19T14:30"
       }
      ],
      "procedures": [
@@ -339,18 +371,34 @@
      "reason": "Low back pain",
      "orders": [
       {
-       "id": "inflam-labs",
-       "action": "placed",
-       "order": "CRP, ESR, HLA-B27",
-       "category": "lab",
-       "reason": "inflammatory low back pain"
+        "id": "inflam-labs",
+        "action": "placed",
+        "order": "C Reactive Protein",
+        "category": "lab",
+        "reason": "inflammatory low back pain"
       },
       {
-       "id": "si-xray",
-       "action": "placed",
-       "order": "Sacroiliac joint radiographs",
-       "category": "imaging",
-       "reason": "inflammatory low back pain"
+        "id": "inflam-labs-2",
+        "action": "placed",
+        "order": "Erythrocyte Sedimentation Rate",
+        "category": "lab",
+        "reason": "inflammatory low back pain"
+      },
+      {
+        "id": "inflam-labs-3",
+        "action": "placed",
+        "order": "HLA-B27",
+        "category": "lab",
+        "reason": "inflammatory low back pain",
+        "loinc": "4821-5"
+      },
+      {
+        "id": "si-xray",
+        "action": "placed",
+        "order": "Sacroiliac joint X-ray",
+        "category": "imaging",
+        "reason": "inflammatory low back pain",
+        "loinc": "37650-9"
       }
      ],
      "documents": [
@@ -410,9 +458,19 @@
      ],
      "orders": [
       {
-       "id": "inflam-labs",
-       "action": "done",
-       "date": "2024-01-25T11:20"
+        "id": "inflam-labs",
+        "action": "done",
+        "date": "2024-01-25T11:20"
+      },
+      {
+        "id": "inflam-labs-2",
+        "action": "done",
+        "date": "2024-01-25T11:20"
+      },
+      {
+        "id": "inflam-labs-3",
+        "action": "done",
+        "date": "2024-01-25T11:20"
       }
      ],
      "procedures": [
@@ -438,9 +496,9 @@
      ],
      "orders": [
       {
-       "id": "si-xray",
-       "action": "done",
-       "date": "2024-01-23T15:40"
+        "id": "si-xray",
+        "action": "done",
+        "date": "2024-01-23T15:40"
       }
      ]
     },

@@ -230,6 +230,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 },
                 {
@@ -522,6 +526,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -729,6 +737,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 }
               ]
@@ -928,6 +940,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -1150,6 +1166,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -1286,13 +1306,21 @@
                 {
                   "test": "Osmolality of Serum",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 302
                 },
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 104
                 }
               ]
@@ -1304,7 +1332,11 @@
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 116
                 }
               ]
@@ -1593,18 +1625,30 @@
                   "test": "Ammonia",
                   "loinc": "16362-6",
                   "unit": "umol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 41
+                  },
                   "value": 98
                 },
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.9
                 },
                 {
                   "test": "Valproate",
                   "loinc": "4086-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 50,
+                    "high": 100
+                  },
                   "value": 88
                 },
                 {
@@ -1723,6 +1767,10 @@
                   "test": "Ammonia",
                   "loinc": "16362-6",
                   "unit": "umol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 41
+                  },
                   "value": 36
                 }
               ]
@@ -1844,7 +1892,7 @@
         "code": "197889",
         "display": "lithium carbonate 300 MG Oral Capsule",
         "ingredient": "lithium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1858,6 +1906,10 @@
         "code": "16362-6",
         "display": "Ammonia [Moles/volume] in Plasma",
         "unit": "umol/L",
+        "range": {
+          "low": 23,
+          "high": 41
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis A IgM Antibody": {
@@ -1874,24 +1926,40 @@
         "code": "14334-7",
         "display": "Lithium [Moles/volume] in Serum or Plasma",
         "unit": "mmol/L",
+        "range": {
+          "low": 0.6,
+          "high": 1.2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Serum": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Valproate": {
         "code": "4086-5",
         "display": "Valproate [Mass/volume] in Serum or Plasma",
         "unit": "ug/mL",
+        "range": {
+          "low": 50,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

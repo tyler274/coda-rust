@@ -69,7 +69,8 @@
           "procedures": [
             {
               "procedure": "Cesarean delivery, low transverse",
-              "performed": "2025-06-11T06:12"
+              "performed": "2025-06-11T06:12",
+              "snomed": "788180009"
             }
           ],
           "documents": [
@@ -130,7 +131,8 @@
             {
               "drug_text": "Prenatal Vitamins Oral Tablet",
               "action": "stop",
-              "reason": "patient stopped in September"
+              "reason": "patient stopped in September",
+              "uncoded": true
             }
           ],
           "state": {
@@ -243,31 +245,50 @@
                   "test": "Carboxyhemoglobin",
                   "loinc": "20563-3",
                   "unit": "%",
-                  "value": 26
+                  "value": 26,
+                  "range": {
+                    "high": 5
+                  }
                 },
                 {
                   "test": "pH, arterial",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.36
+                  "value": 7.36,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "pCO2, arterial",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 35
+                  "value": 35,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "pO2, arterial",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 412
+                  "value": 412,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 },
                 {
                   "test": "Bicarbonate, arterial",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
-                  "value": 20
+                  "value": 20,
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  }
                 }
               ]
             },
@@ -361,7 +382,10 @@
                   "test": "Carboxyhemoglobin",
                   "loinc": "20563-3",
                   "unit": "%",
-                  "value": 2
+                  "value": 2,
+                  "range": {
+                    "high": 5
+                  }
                 }
               ]
             }
@@ -369,15 +393,18 @@
           "procedures": [
             {
               "procedure": "Hyperbaric oxygen therapy",
-              "performed": "2026-06-08T21:40"
+              "performed": "2026-06-08T21:40",
+              "snomed": "18678000"
             },
             {
               "procedure": "Hyperbaric oxygen therapy",
-              "performed": "2026-06-09T02:30"
+              "performed": "2026-06-09T02:30",
+              "snomed": "18678000"
             },
             {
               "procedure": "Hyperbaric oxygen therapy",
-              "performed": "2026-06-09T09:00"
+              "performed": "2026-06-09T09:00",
+              "snomed": "18678000"
             }
           ],
           "documents": [

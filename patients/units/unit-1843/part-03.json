@@ -76,8 +76,8 @@
           "reason": "Preconception planning",
           "measure": ["bp", "hr", "spo2", "weight_kg"],
           "medications": [
-            {"drug_text": "multivitamin Oral Tablet", "action": "stop"},
-            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+            {"drug_text": "multivitamin Oral Tablet", "action": "stop", "uncoded": true},
+            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "uncoded": true}
           ],
           "orders": [
             {"id": "genetics-referral", "action": "placed", "order": "Medical genetics referral", "category": "referral", "to": "Medical Genetics", "reason": "preconception counseling, maternal beta-thalassemia trait"}
@@ -165,7 +165,7 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-03T09:55", "resulted": "2026-04-03T15:30", "results": [{"test": "Hemoglobin", "value": 10.0}, {"test": "Mean Corpuscular Volume", "value": 70}, {"test": "Red Blood Cells"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
             {"panel": "Iron Studies", "collected": "2026-04-03T09:55", "resulted": "2026-04-04T11:10", "results": [{"test": "Ferritin", "value": 168}]}
           ],
-          "orders": [{"id": "ob-records", "action": "placed", "order": "Records request, obstetrics", "category": "procedure", "to": "Obstetrics & Gynecology", "reason": "prenatal records"}],
+          "orders": [],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-03T09:50"}],
           "documents": [
             {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2026-04-03T10:15", "body": "S: 29F, G1 at about 30 weeks (LMP 9/1/25), prenatal care with an outside OB group, here with a question about iron. The OB started ferrous sulfate 325 mg daily at her first visit in November because her blood count was low; she has taken it every day since and feels no different, still a bit constipated from it. Wants to know if she really needs it given her thalassemia trait. Otherwise pregnancy going well per her, good fetal movement, no bleeding, headaches or swelling. We have not received any OB notes.\nMeds (reconciled): prenatal vitamin daily, ferrous sulfate 325 mg daily (OB). NKDA.\n\nO: Vitals normal. Gravid, comfortable. Conjunctivae slightly pale. Heart regular, no murmur. Lungs clear. No edema. Fundal height not measured (OB following).\n\nA/P:\n1. Pregnancy, about 30 weeks, followed by OB. Added to problem list.\n2. Beta-thalassemia trait with anemia in pregnancy. Her trait alone explains a low hemoglobin and small cells; her 2020 iron stores were full. Iron given without deficiency is of no benefit and can accumulate. CBC and ferritin today. If ferritin is normal I will send the result to her OB with a suggestion that the iron may not be needed; she should keep taking it until the OB decides.\n3. Records request sent to the OB office.\n\nPostpartum: plan a preventive visit in September; booked."}
@@ -187,7 +187,7 @@
           "kind": "outside_records",
           "start": "2026-04-16T10:10",
           "reason": "OB records received",
-          "orders": [{"id": "ob-records", "action": "done", "date": "2026-04-16T10:10"}],
+          "orders": [],
           "documents": [
             {"type": "Telephone Encounter", "title": "Records received", "author": "front desk", "date": "2026-04-16T10:10", "body": "Prenatal visit notes 11/6/25 and 11/25/25 received by fax from the OB group. Indexed to chart, routed to PCP."}
           ]

@@ -529,24 +529,37 @@
                   "test": "CSF leukocytes",
                   "loinc": "806-0",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 1200
                 },
                 {
                   "test": "CSF neutrophils",
                   "loinc": "13516-0",
                   "unit": "%",
+                  "range": {},
                   "value": 80
                 },
                 {
                   "test": "CSF glucose",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 20
                 },
                 {
                   "test": "CSF protein",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 180
                 },
                 {
@@ -857,24 +870,37 @@
                   "test": "CSF leukocytes",
                   "loinc": "806-0",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 2000
                 },
                 {
                   "test": "CSF neutrophils",
                   "loinc": "13516-0",
                   "unit": "%",
+                  "range": {},
                   "value": 90
                 },
                 {
                   "test": "CSF glucose",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 20
                 },
                 {
                   "test": "CSF protein",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 150
                 }
               ]
@@ -1300,12 +1326,20 @@
                   "test": "aPTT",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 45
                 },
                 {
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 150
                 }
               ]
@@ -1543,36 +1577,57 @@
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF leukocytes": {
         "code": "806-0",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid by Manual count",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF neutrophils": {
         "code": "13516-0",
         "display": "Neutrophils/Leukocytes in Cerebrospinal Fluid by Manual count",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF protein": {
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "aPTT": {
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

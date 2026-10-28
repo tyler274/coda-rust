@@ -1,9 +1,7 @@
 {
   "unit": "unit-1745",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"prenatal vitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001745",
@@ -115,6 +113,7 @@
             },
             {
               "drug_text": "prenatal vitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -615,6 +614,9 @@
                   "test": "Choriogonadotropin.beta subunit",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 1500
                 }
               ]
@@ -709,6 +711,9 @@
                   "test": "Choriogonadotropin.beta subunit",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 50
                 },
                 {
@@ -1917,6 +1922,9 @@
                   "test": "Choriogonadotropin.beta subunit",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 3500
                 }
               ]
@@ -2695,9 +2703,7 @@
               "collected": "2025-12-28T17:00",
               "results": [
                 {
-                  "test": "Prothrombin time",
-                  "loinc": "5902-2",
-                  "unit": "s",
+                  "test": "Prothrombin Time",
                   "value": 14
                 }
               ]
@@ -2710,24 +2716,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 48
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 58
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 },
                 {
@@ -2859,13 +2881,13 @@
         "code": "896762",
         "display": "labetalol hydrochloride 200 MG Oral Tablet",
         "ingredient": "labetalol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "progesterone 200 MG Oral Capsule": {
         "code": "312641",
         "display": "progesterone 200 MG Oral Capsule",
         "ingredient": "progesterone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2878,30 +2900,39 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Choriogonadotropin.beta subunit": {
         "code": "21198-7",
         "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Prothrombin time": {
-        "code": "5902-2",
-        "display": "Prothrombin time (PT)",
-        "unit": "s",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Urine Bacteria": {
@@ -2923,11 +2954,12 @@
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal vitamin Oral Tablet\""
-    ]
+    }
   }
 }

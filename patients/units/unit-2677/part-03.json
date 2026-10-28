@@ -38,7 +38,7 @@
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-30T09:40", "resulted": "2025-01-30T14:30", "results": [{"test": "Sodium", "value": 148}, {"test": "Chloride", "value": 110}, {"test": "Glucose", "value": 97}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Blood Urea Nitrogen"}]},
             {"panel": "Urinalysis", "collected": "2025-01-30T09:40", "resulted": "2025-01-30T14:30", "results": [{"test": "Urine Specific Gravity", "value": 1.001}, {"test": "Urine Glucose", "text": "Negative"}]},
             {"panel": null, "collected": "2025-01-30T09:40", "resulted": "2025-01-30T14:30", "results": [
-              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.8}
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.8, "range": {"low": 0.6, "high": 1.2}}
             ]}
           ],
           "procedures": [
@@ -102,11 +102,11 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-12T08:00", "results": [{"test": "Sodium", "value": 146}, {"test": "Chloride", "value": 108}, {"test": "Creatinine", "value": 0.86}, {"test": "Potassium"}, {"test": "Calcium"}]},
             {"panel": null, "collected": "2025-03-12T08:00", "results": [
-              {"test": "Osmolality of Serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 302},
-              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 104}
+              {"test": "Osmolality of Serum", "loinc": "2692-2", "unit": "mosm/kg", "value": 302, "range": {"low": 275, "high": 295}},
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mosm/kg", "value": 104, "range": {"low": 38, "high": 1400}}
             ]},
             {"panel": null, "collected": "2025-03-12T10:15", "results": [
-              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 116}
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mosm/kg", "value": 116, "range": {"low": 38, "high": 1400}}
             ]}
           ],
           "documents": [
@@ -233,9 +233,9 @@
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-29T12:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2026-07-29T12:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": null, "collected": "2026-07-29T12:10", "results": [
-              {"test": "Ammonia", "loinc": "16362-6", "unit": "umol/L", "value": 98},
-              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.9},
-              {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 88},
+              {"test": "Ammonia", "loinc": "16362-6", "unit": "umol/L", "value": 98, "range": {"low": 23, "high": 41}},
+              {"test": "Lithium", "loinc": "14334-7", "unit": "mmol/L", "value": 0.9, "range": {"low": 0.6, "high": 1.2}},
+              {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 88, "range": {"low": 50, "high": 100}},
               {"test": "Acetaminophen", "loinc": "3298-7", "unit": "ug/mL", "text": "Undetectable"}
             ]}
           ],
@@ -269,7 +269,7 @@
             {"panel": "Hepatic Panel (LFT)", "collected": "2026-08-03T05:45", "results": [{"test": "Aspartate Aminotransferase", "value": 104}, {"test": "Alanine Aminotransferase", "value": 168}, {"test": "Bilirubin, Total", "value": 1.5}, {"test": "Bilirubin, Direct", "value": 0.7}]},
             {"panel": "Prothrombin Time with INR", "collected": "2026-08-03T05:45", "results": [{"test": "Prothrombin Time", "value": 15.1}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 1.3}]},
             {"panel": null, "collected": "2026-08-03T05:45", "results": [
-              {"test": "Ammonia", "loinc": "16362-6", "unit": "umol/L", "value": 36}
+              {"test": "Ammonia", "loinc": "16362-6", "unit": "umol/L", "value": 36, "range": {"low": 23, "high": 41}}
             ]}
           ],
           "reports": [

@@ -1891,6 +1891,9 @@
                   "test": "Choriogonadotropin beta subunit, serum",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 48200
                 }
               ]
@@ -2077,6 +2080,9 @@
                   "test": "Glucose, 1 hour post 50 g glucose",
                   "loinc": "1504-0",
                   "unit": "mg/dL",
+                  "range": {
+                    "high": 140
+                  },
                   "value": 118
                 }
               ]
@@ -2378,7 +2384,7 @@
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
-                  "unit": "ug/mL FEU",
+                  "unit": "ug/mL{FEU}",
                   "text": "Negative"
                 }
               ]
@@ -4609,18 +4615,24 @@
         "code": "21198-7",
         "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
-        "unit": "ug/mL FEU",
+        "unit": "ug/mL{FEU}",
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glucose, 1 hour post 50 g glucose": {
         "code": "1504-0",
         "display": "Glucose [Mass/volume] in Serum or Plasma --1 hour post 50 g glucose PO",
         "unit": "mg/dL",
+        "range": {
+          "high": 140
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

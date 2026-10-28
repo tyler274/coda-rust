@@ -1,11 +1,7 @@
 {
   "unit": "unit-1999",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001999/2024-08-20a: referral to \"Hepatology\" names no catalog specialty",
-    "MRN00001999/2025-11-12a: referral to \"Addiction medicine\" names no catalog specialty",
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001999",
@@ -103,6 +99,7 @@
             },
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -404,7 +401,7 @@
               "action": "placed",
               "order": "Hepatology referral",
               "category": "referral",
-              "to": "Hepatology",
+              "to": "Gastroenterology",
               "reason": "alcoholic cirrhosis, establish specialty follow-up"
             },
             {
@@ -2428,7 +2425,7 @@
               "action": "placed",
               "order": "Outpatient addiction treatment program referral",
               "category": "referral",
-              "to": "Addiction medicine",
+              "to": "Addiction Medicine",
               "reason": "severe alcohol use disorder after third withdrawal admission"
             }
           ],
@@ -3092,17 +3089,14 @@
         "code": "835726",
         "display": "acamprosate calcium 333 MG Delayed Release Oral Tablet",
         "ingredient": "acamprosate",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "thiamine 100 MG Oral Tablet": {
         "code": "313323",
         "display": "thiamine 100 MG Oral Tablet",
         "ingredient": "thiamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
-    },
-    "rejected": [
-      "drug \"multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

@@ -914,6 +914,9 @@
                   "test": "Fibrin D-dimer FEU",
                   "loinc": "48065-7",
                   "unit": "mg/L",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 2.4
                 }
               ]
@@ -927,12 +930,20 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.48
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 31
                 }
               ]
@@ -1347,6 +1358,9 @@
                   "test": "Fibrin D-dimer FEU",
                   "loinc": "48065-7",
                   "unit": "mg/L",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 3.1
                 }
               ]
@@ -1360,6 +1374,10 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.47
                 }
               ]
@@ -1777,12 +1795,20 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.49
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 29
                 }
               ]
@@ -2208,7 +2234,7 @@
         "code": "240128",
         "display": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
         "ingredient": "ethinyl",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2216,18 +2242,29 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrin D-dimer FEU": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
         "unit": "mg/L",
+        "range": {
+          "high": 0.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

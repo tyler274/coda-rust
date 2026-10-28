@@ -2,9 +2,7 @@
   "unit": "unit-1758",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
-    "MRN00001758/2025-01-06a: reaction \"Stevens-Johnson syndrome\" not in catalog (text only)",
-    "MRN00001758/2019-09-10a: procedure order \"Records request, prior primary care\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
+    "MRN00001758/2025-01-06a: reaction \"Stevens-Johnson syndrome\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -211,6 +209,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 14.2
                 }
               ]
@@ -276,15 +278,6 @@
               "date": "2019-09-10T09:20"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2019",
-              "action": "placed",
-              "order": "Records request, prior primary care",
-              "category": "procedure",
-              "reason": "establish care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -326,13 +319,6 @@
           "id": "2019-09-26a",
           "kind": "outside_records",
           "start": "2019-09-26T11:10",
-          "orders": [
-            {
-              "id": "prior-records-2019",
-              "action": "done",
-              "date": "2019-09-26T11:10"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -624,6 +610,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 12.8
                 }
               ]
@@ -950,6 +940,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 15.6
                 }
               ]
@@ -1158,6 +1152,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 13.1
                 }
               ]
@@ -1526,6 +1524,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 14.9
                 }
               ]
@@ -1647,6 +1649,7 @@
           "medications": [
             {
               "drug_text": "Prenatal Vitamins Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -1741,6 +1744,10 @@
                   "test": "Triiodothyronine, Total",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
                   "value": 270
                 }
               ]
@@ -1902,18 +1909,30 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.48
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 30
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 70
                 }
               ]
@@ -2265,6 +2284,10 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 92
                 },
                 {
@@ -2680,6 +2703,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 13.6
                 }
               ]
@@ -3340,24 +3367,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.45
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 32
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 75
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -3786,7 +3829,7 @@
         "code": "854238",
         "display": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "arsenic trioxide 1 MG/ML Injectable Solution": {
         "code": "829926",
@@ -3798,25 +3841,25 @@
         "code": "199703",
         "display": "cabergoline 0.5 MG Oral Tablet",
         "ingredient": "cabergoline",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "methimazole 10 MG Oral Tablet": {
         "code": "197941",
         "display": "methimazole 10 MG Oral Tablet",
         "ingredient": "methimazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "phenytoin sodium 100 MG Extended Release Oral Capsule": {
         "code": "855671",
         "display": "phenytoin sodium 100 MG Extended Release Oral Capsule",
         "ingredient": "phenytoin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tretinoin 10 MG Oral Capsule": {
         "code": "199159",
         "display": "tretinoin 10 MG Oral Capsule",
         "ingredient": "tretinoin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3824,12 +3867,20 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
@@ -3842,30 +3893,50 @@
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Phenytoin": {
         "code": "3968-5",
         "display": "Phenytoin [Mass/volume] in Serum or Plasma",
         "unit": "ug/mL",
+        "range": {
+          "low": 10,
+          "high": 20
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Triiodothyronine, Total": {
         "code": "3053-6",
         "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
         "unit": "ng/dL",
+        "range": {
+          "low": 80,
+          "high": 180
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -3880,9 +3951,6 @@
         "display": "Pollen",
         "receipt": "tx.fhir.org SNOMED CT"
       }
-    },
-    "rejected": [
-      "drug \"Prenatal Vitamins Oral Tablet\""
-    ]
+    }
   }
 }

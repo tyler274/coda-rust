@@ -58,14 +58,14 @@
           ],
           "labs": [
             {"panel": null, "collected": "2022-06-20T11:05", "resulted": "2022-06-28T10:00", "results": [
-              {"test": "Alpha 1 antitrypsin", "loinc": "1825-9", "unit": "mg/dL", "value": 22},
+              {"test": "Alpha 1 antitrypsin", "loinc": "1825-9", "unit": "mg/dL", "value": 22, "range": {"low": 150, "high": 350}},
               {"test": "Alpha 1 antitrypsin phenotype", "loinc": "6770-2", "text": "PiZZ"}
             ]},
             {"panel": null, "collected": "2022-07-06T09:00", "results": [
-              {"test": "FEV1", "loinc": "20150-9", "unit": "L", "value": 1.92},
-              {"test": "Forced vital capacity", "loinc": "19870-5", "unit": "L", "value": 4.10},
-              {"test": "FEV1/FVC", "loinc": "19926-5", "unit": "%", "value": 47},
-              {"test": "DLCO percent predicted", "loinc": "98130-8", "unit": "%", "value": 48}
+              {"test": "FEV1", "loinc": "20150-9", "unit": "L", "value": 1.92, "range": {}},
+              {"test": "Forced vital capacity", "loinc": "19870-5", "unit": "L", "value": 4.1, "range": {}},
+              {"test": "FEV1/FVC", "loinc": "19926-5", "unit": "%", "value": 47, "range": {"low": 70}},
+              {"test": "DLCO percent predicted", "loinc": "98130-8", "unit": "%", "value": 48, "range": {}}
             ]}
           ],
           "reports": [
@@ -247,7 +247,7 @@
             {"panel": null, "collected": "2023-06-19T11:20", "resulted": "2023-06-21T09:30", "results": [
               {"test": "Calcium", "value": 12.3},
               {"test": "Parathyroid Hormone, Intact", "value": 8},
-              {"test": "Parathyroid hormone related protein", "loinc": "15087-0", "unit": "pmol/L", "value": 4.8},
+              {"test": "Parathyroid hormone related protein", "loinc": "15087-0", "unit": "pmol/L", "value": 4.8, "range": {"high": 4.2}},
               {"test": "25-hydroxy Vitamin D", "value": 32}
             ]}
           ],
@@ -306,9 +306,9 @@
           "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
           "labs": [
             {"panel": null, "collected": "2023-06-26T08:40", "resulted": "2023-06-27T11:00", "results": [
-              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 486},
-              {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 2140},
-              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 298}
+              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 486, "range": {"high": 10}},
+              {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 2140, "range": {"high": 1.4}},
+              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 298, "range": {"low": 80, "high": 225}}
             ]}
           ],
           "reports": [
@@ -357,8 +357,8 @@
           "medications": [{"drug_text": "ondansetron 8 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 8 hours as needed for nausea during chemotherapy", "dose": {"value": 8, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "short", "reason": "chemotherapy nausea"}],
           "labs": [
             {"panel": null, "collected": "2023-07-13T08:15", "results": [
-              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 210},
-              {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 380},
+              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 210, "range": {"high": 10}},
+              {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 380, "range": {"high": 1.4}},
               {"test": "Calcium", "value": 11.6}
             ]}
           ],
@@ -423,9 +423,9 @@
           "start": "2023-10-20T10:40",
           "labs": [
             {"panel": null, "collected": "2023-10-16T08:30", "results": [
-              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4},
+              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4, "range": {"high": 10}},
               {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "text": "<2"},
-              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 182}
+              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 182, "range": {"low": 80, "high": 225}}
             ]},
             {"panel": "CBC with Differential", "collected": "2023-10-16T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
           ],

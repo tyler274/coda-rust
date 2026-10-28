@@ -1,9 +1,7 @@
 {
   "unit": "unit-2306",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002306/2020-09-22a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002306",
@@ -332,22 +330,13 @@
               "date": "2020-09-22T09:55"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "new patient"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
               "title": "New Patient Visit",
               "date": "2020-09-22T10:20",
               "author": "PCP",
-              "body": "63 y/o man transferring care; his last doctor retired and a neighbor recommended the membership model.\n\nLungs: told he had emphysema in 2014 (age 56) after years of breathlessness on hills. Followed by a pulmonologist at his old office, who put him on tiotropium and, after an overnight oximetry study, oxygen at 2 L by cannula while he sleeps. Uses albuterol a couple of times a week, mostly carrying groceries up his porch steps. Says breathing is 'about where it's been.' No recent flares or prednisone bursts that he can recall.\n\nUrinary: slow stream and gets up 2x a night; on tamsulosin at bedtime for years, happy with it.\n\nOther: takes acetaminophen now and then for aches. Smoked about a pack a day for 40 years, quit spring 2019 cold turkey. Beer with friends maybe once or twice a week. Worked 30 yrs as a mechanic at the shipyard and then metal fabrication shops; retired 2018. Divorced, lives alone, drives.\n\nPSH: appendectomy at 34, right knee scope at 52.\nFamily: father lung cancer at 72 (deceased), mother type 2 diabetes and pancreatic cancer at 78, brother prostate cancer at 68, paternal grandfather bladder cancer.\nAllergies: sulfa (rash), shellfish.\n\nExam: Comfortable at rest, speaks full sentences. Lungs with mildly diminished air movement, no wheeze, no crackles. Heart regular, no murmur. Abdomen soft, healed RLQ scar. No clubbing, no edema. Gait normal.\n\nA/P\n1. COPD/emphysema: continue tiotropium daily, albuterol prn, overnight O2 2 L. Requesting old PFTs and pulmonary notes.\n2. BPH with LUTS: continue tamsulosin.\n3. Tobacco use disorder, sustained remission: congratulated.\n4. Health maintenance: CMP, CBC, lipids, A1c today; one-time hep C and HIV screen. Flu shot given. Will ask old office for colonoscopy report.\nRTC 6 months, sooner prn."
+              "body": "63 y/o man transferring care; his last doctor retired and a neighbor recommended the membership model.\n\nLungs: told he had emphysema in 2014 (age 56) after years of breathlessness on hills. Followed by a pulmonologist at his old office, who put him on tiotropium and, after an overnight oximetry study, oxygen at 2 L by cannula while he sleeps. Uses albuterol a couple of times a week, mostly carrying groceries up his porch steps. Says breathing is 'about where it's been.' No recent flares or prednisone bursts that he can recall.\n\nUrinary: slow stream and gets up 2x a night; on tamsulosin at bedtime for years, happy with it.\n\nOther: takes acetaminophen now and then for aches. Smoked about a pack a day for 40 years, quit spring 2019 cold turkey. Beer with friends maybe once or twice a week. Worked 30 yrs as a mechanic at the shipyard and then metal fabrication shops; retired 2018. Divorced, lives alone, drives.\n\nPSH: appendectomy at 34, right knee scope at 52.\nFamily: father lung cancer at 72 (deceased), mother type 2 diabetes and pancreatic cancer at 78, brother prostate cancer at 68, paternal grandfather bladder cancer.\nAllergies: sulfa (rash), shellfish.\n\nExam: Comfortable at rest, speaks full sentences. Lungs with mildly diminished air movement, no wheeze, no crackles. Heart regular, no murmur. Abdomen soft, healed RLQ scar. No clubbing, no edema. Gait normal.\n\nA/P\n1. COPD/emphysema: continue tiotropium daily, albuterol prn, overnight O2 2 L. Requesting old PFTs and pulmonary notes.\n2. BPH with LUTS: continue tamsulosin.\n3. Tobacco use disorder, sustained remission: congratulated.\n4. Health maintenance: CMP, CBC, lipids, A1c today; one-time hep C and HIV screen. Flu shot given. Will ask old office for colonoscopy report.\nRTC 6 months, sooner prn. Request records from prior primary care office."
             },
             {
               "type": "Nursing Note",
@@ -396,13 +385,6 @@
           "kind": "outside_records",
           "start": "2020-10-09T11:00",
           "reason": "Records from prior primary care office",
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2020-10-09T11:00"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1612,18 +1594,29 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 560
                 },
                 {
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 142
                 },
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
                   "unit": "ug/mL{FEU}",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 5.6
                 }
               ]
@@ -2165,18 +2158,29 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 31
                 },
                 {
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 288
                 },
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
                   "unit": "ug/mL{FEU}",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 0.7
                 }
               ]
@@ -2921,6 +2925,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 22
                 }
               ]
@@ -3321,6 +3329,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 19
                 }
               ]
@@ -4146,19 +4158,28 @@
                 {
                   "test": "Serum osmolality",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 260
                 },
                 {
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 500
                 },
                 {
                   "test": "Urine sodium",
                   "loinc": "2955-3",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 58
                 }
               ]
@@ -5057,25 +5078,25 @@
         "code": "313782",
         "display": "acetaminophen 325 MG Oral Tablet",
         "ingredient": "acetaminophen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "amylase 120000 UNT / lipase 24000 UNT / protease 76000 UNT Delayed Release Oral Capsule": {
         "code": "855495",
         "display": "amylase 120000 UNT / lipase 24000 UNT / protease 76000 UNT Delayed Release Oral Capsule",
         "ingredient": "amylase",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sodium chloride 1000 MG Oral Tablet": {
         "code": "313009",
         "display": "sodium chloride 1000 MG Oral Tablet",
         "ingredient": "sodium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tiotropium 0.018 MG Inhalation Powder": {
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5083,36 +5104,56 @@
         "code": "24108-3",
         "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "low": 0,
+          "high": 37
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
         "unit": "ug/mL{FEU}",
+        "range": {
+          "high": 0.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Serum osmolality": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Urine osmolality": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Urine sodium": {
         "code": "2955-3",
         "display": "Sodium [Moles/volume] in Urine",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

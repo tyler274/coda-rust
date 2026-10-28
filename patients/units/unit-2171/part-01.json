@@ -314,13 +314,6 @@
           ],
           "orders": [
             {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Outside records request, prior primary care",
-              "category": "procedure",
-              "reason": "transfer of care"
-            },
-            {
               "id": "ldct-2022",
               "action": "placed",
               "order": "Low-dose CT chest for lung cancer screening",
@@ -383,12 +376,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2022-06-28T11:20"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Outside Records",
@@ -964,7 +952,10 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
-                  "value": 150
+                  "value": 150,
+                  "range": {
+                    "high": 100
+                  }
                 }
               ]
             }

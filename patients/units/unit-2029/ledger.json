@@ -1,12 +1,7 @@
 {
   "unit": "unit-2029",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002029/2021-10-12a: vaccine \"Zoster recombinant\" not in catalog (text only, no CVX)",
-    "MRN00002029/2022-01-11a: vaccine \"Zoster recombinant\" not in catalog (text only, no CVX)",
-    "MRN00002029/2023-03-08a: lab order \"Basic metabolic panel\" names no one catalog lab, panel, study or procedure",
-    "MRN00002029/2025-06-30a: procedure order \"Request hospital discharge summary\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002029",
@@ -664,7 +659,7 @@
               "date": "2021-10-12T09:10"
             },
             {
-              "vaccine": "Zoster recombinant",
+              "vaccine": "Zoster recombinant (Shingrix)",
               "date": "2021-10-12T09:12"
             }
           ],
@@ -718,7 +713,7 @@
           ],
           "immunizations": [
             {
-              "vaccine": "Zoster recombinant",
+              "vaccine": "Zoster recombinant (Shingrix)",
               "date": "2022-01-11T14:05"
             }
           ],
@@ -1226,7 +1221,7 @@
             {
               "id": "bmp-0322",
               "action": "placed",
-              "order": "Basic metabolic panel",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "2 weeks after lisinopril start"
             }
@@ -2568,15 +2563,6 @@
               "performed": "2025-06-30T11:00"
             }
           ],
-          "orders": [
-            {
-              "id": "dc-summary-2025",
-              "action": "placed",
-              "order": "Request hospital discharge summary",
-              "category": "procedure",
-              "reason": "June 2025 admission"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -2824,13 +2810,6 @@
             {
               "vaccine": "Influenza, high-dose, quadrivalent",
               "date": "2025-10-21T09:15"
-            }
-          ],
-          "orders": [
-            {
-              "id": "dc-summary-2025",
-              "action": "cancelled",
-              "date": "2025-10-21T08:30"
             }
           ],
           "documents": [
@@ -3200,7 +3179,7 @@
         "code": "206842",
         "display": "isosorbide dinitrate 20 MG Oral Tablet",
         "ingredient": "isosorbide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     }
   }

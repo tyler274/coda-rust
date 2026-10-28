@@ -38,7 +38,7 @@
           "start": "2024-04-09T12:00",
           "reason": "Oncology surveillance note",
           "labs": [
-            {"panel": null, "collected": "2024-04-02T09:00", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 22}]}
+            {"panel": null, "collected": "2024-04-02T09:00", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 22, "range": {"low": 0, "high": 37}}]}
           ],
           "documents": [
             {"type": "Outside Records", "title": "Medical Oncology Surveillance", "author": "oncology", "date": "2024-04-09T12:00", "body": "MEDICAL ONCOLOGY — SURVEILLANCE VISIT 4/4/2024\nPancreatic adenocarcinoma pT2 N0 R0, adjuvant mFOLFIRINOX completed 10/2023.\nCT chest/abdomen/pelvis 4/2/2024: no local recurrence or metastatic disease; stable post-surgical changes; known lower-lobe fibrotic changes and upper-lobe emphysema unchanged.\nCA 19-9: 22.\nPlan: continue surveillance every 6 months. Port flushed; plan removal later this year.\nAllergies: sulfa, shellfish."}
@@ -122,7 +122,7 @@
           "start": "2024-10-29T14:00",
           "reason": "Oncology surveillance note",
           "labs": [
-            {"panel": null, "collected": "2024-10-21T09:00", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 19}]}
+            {"panel": null, "collected": "2024-10-21T09:00", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 19, "range": {"low": 0, "high": 37}}]}
           ],
           "documents": [
             {"type": "Outside Records", "title": "Medical Oncology Surveillance", "author": "oncology", "date": "2024-10-29T14:00", "body": "MEDICAL ONCOLOGY — 18 MONTHS FROM RESECTION\nCT chest/abdomen/pelvis 10/21/2024: no evidence of recurrent or metastatic pancreatic cancer. Lungs: chronic basal fibrosis and upper-lobe emphysema, unchanged; no new nodule or mass. CA 19-9: 19.\nPort removed in clinic procedure suite today without issue.\nNext surveillance in 6 months."}
@@ -296,9 +296,9 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-06-18T16:05", "results": [{"test": "Sodium", "value": 120}, {"test": "Glucose"}, {"test": "Creatinine"}]},
             {"panel": null, "collected": "2025-06-18T16:05", "results": [
-              {"test": "Serum osmolality", "loinc": "2692-2", "unit": "mOsm/kg", "value": 260},
-              {"test": "Urine osmolality", "loinc": "2695-5", "unit": "mOsm/kg", "value": 500},
-              {"test": "Urine sodium", "loinc": "2955-3", "unit": "mmol/L", "value": 58}
+              {"test": "Serum osmolality", "loinc": "2692-2", "unit": "mosm/kg", "value": 260, "range": {"low": 275, "high": 295}},
+              {"test": "Urine osmolality", "loinc": "2695-5", "unit": "mosm/kg", "value": 500, "range": {"low": 38, "high": 1400}},
+              {"test": "Urine sodium", "loinc": "2955-3", "unit": "mmol/L", "value": 58, "range": {}}
             ]}
           ],
           "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2025-06-18T15:40"}],

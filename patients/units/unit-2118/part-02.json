@@ -28,7 +28,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             }
@@ -152,7 +156,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 },
                 {
                   "test": "Thyroid Stimulating Hormone"
@@ -279,18 +287,30 @@
                   "test": "Serum osmolality",
                   "loinc": "2692-2",
                   "unit": "mosm/kg",
-                  "value": 302
+                  "value": 302,
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  }
                 },
                 {
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
                   "unit": "mosm/kg",
-                  "value": 148
+                  "value": 148,
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  }
                 },
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             }
@@ -309,9 +329,18 @@
             {
               "id": "osm-labs-2024",
               "action": "placed",
-              "order": "Serum and urine osmolality",
+              "order": "Serum osmolality",
               "category": "lab",
-              "reason": "polyuria and polydipsia"
+              "reason": "polyuria and polydipsia",
+              "loinc": "2692-2"
+            },
+            {
+              "id": "osm-labs-2024-2",
+              "action": "placed",
+              "order": "Urine osmolality",
+              "category": "lab",
+              "reason": "polyuria and polydipsia",
+              "loinc": "2695-5"
             }
           ],
           "documents": [
@@ -332,6 +361,11 @@
           "orders": [
             {
               "id": "osm-labs-2024",
+              "action": "done",
+              "date": "2024-03-05T08:30"
+            },
+            {
+              "id": "osm-labs-2024-2",
               "action": "done",
               "date": "2024-03-05T08:30"
             }
@@ -390,7 +424,11 @@
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
                   "unit": "mosm/kg",
-                  "value": 152
+                  "value": 152,
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  }
                 }
               ]
             },
@@ -403,7 +441,11 @@
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
                   "unit": "mosm/kg",
-                  "value": 163
+                  "value": 163,
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  }
                 }
               ]
             }
@@ -559,7 +601,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             }
@@ -680,7 +726,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 },
                 {
                   "test": "Thyroid Stimulating Hormone"

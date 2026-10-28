@@ -31,9 +31,9 @@
           "start": "2026-03-16T14:10",
           "labs": [
             {"panel": null, "collected": "2026-03-12T08:15", "results": [
-              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5},
+              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5, "range": {"high": 10}},
               {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "text": "<2"},
-              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 203}
+              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 203, "range": {"low": 80, "high": 225}}
             ]}
           ],
           "documents": [
@@ -65,10 +65,10 @@
           ],
           "labs": [
             {"panel": null, "collected": "2026-06-19T18:20", "results": [
-              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45},
-              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32},
-              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60},
-              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24}
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.45, "range": {"low": 7.38, "high": 7.44}},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 32, "range": {"low": 38, "high": 42}},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 60, "range": {"low": 75, "high": 100}},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 24, "range": {"low": 23, "high": 26}}
             ]},
             {"panel": "CBC with Differential", "collected": "2026-06-19T18:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-19T18:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},

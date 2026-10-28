@@ -723,12 +723,20 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 35
                 },
                 {
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 200
                 }
               ]
@@ -1422,12 +1430,20 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 40
                 },
                 {
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 100
                 },
                 {
@@ -1530,13 +1546,13 @@
         "code": "1043300",
         "display": "alpha tocopherol 30 UNT / ascorbic acid 28 MG / cholecalciferol 400 UNT / docosahexaenoic acid 300 MG / docusate sodium 55 MG / ferrous fumarate 27 MG / folic acid 1.25 MG / pyridoxine hydrochloride 25 MG / tricalcium phosphate 160 MG Oral Capsule",
         "ingredient": "alpha",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "labetalol hydrochloride 200 MG Oral Tablet": {
         "code": "896762",
         "display": "labetalol hydrochloride 200 MG Oral Tablet",
         "ingredient": "labetalol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1544,6 +1560,10 @@
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
@@ -1555,6 +1575,10 @@
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Peripheral blood smear": {

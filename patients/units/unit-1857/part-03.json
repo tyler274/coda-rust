@@ -115,16 +115,24 @@
        "collected": "2025-02-02T14:40",
        "results": [
         {
-         "test": "Reticulocytes/100 erythrocytes in Blood",
-         "loinc": "4679-7",
-         "unit": "%",
-         "value": 8
+          "test": "Reticulocytes/100 erythrocytes in Blood",
+          "loinc": "4679-7",
+          "unit": "%",
+          "value": 8,
+          "range": {
+            "low": 0.5,
+            "high": 1.5
+          }
         },
         {
-         "test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
-         "loinc": "2532-0",
-         "unit": "U/L",
-         "value": 486
+          "test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+          "loinc": "2532-0",
+          "unit": "U/L",
+          "value": 486,
+          "range": {
+            "low": 80,
+            "high": 225
+          }
         },
         {
          "test": "Haptoglobin [Mass/volume] in Serum or Plasma",
@@ -178,10 +186,13 @@
        "resulted": "2025-02-03T10:10",
        "results": [
         {
-         "test": "Porphobilinogen/Creatinine [Mass Ratio] in Urine",
-         "loinc": "13797-6",
-         "unit": "mg/g{creat}",
-         "value": 1.1
+          "test": "Porphobilinogen/Creatinine [Mass Ratio] in Urine",
+          "loinc": "13797-6",
+          "unit": "mg/g{creat}",
+          "value": 1.1,
+          "range": {
+            "high": 2
+          }
         }
        ]
       }
@@ -676,14 +687,7 @@
       "weight_kg"
      ],
      "orders": [
-      {
-       "id": "rec-2026-ed",
-       "action": "placed",
-       "order": "Records request - ED visit 2/12/2026",
-       "category": "procedure",
-       "reason": "ED note not received"
-      }
-     ],
+      ],
      "procedures": [
       {
        "procedure": "Office visit, established patient, moderate MDM",
@@ -706,12 +710,7 @@
      "start": "2026-02-20T14:10",
      "reason": "ED record received",
      "orders": [
-      {
-       "id": "rec-2026-ed",
-       "action": "done",
-       "date": "2026-02-20T14:10"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Outside Records",

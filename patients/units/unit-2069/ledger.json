@@ -1009,6 +1009,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 74
                 },
                 {
@@ -1430,6 +1434,9 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 550
                 }
               ]
@@ -1710,6 +1717,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 120
                 },
                 {
@@ -3005,6 +3016,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 58
                 }
               ]
@@ -3186,13 +3201,13 @@
         "code": "1373325",
         "display": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
         "ingredient": "amylase",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "thiamine 100 MG Oral Tablet": {
         "code": "313323",
         "display": "thiamine 100 MG Oral Tablet",
         "ingredient": "thiamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3200,12 +3215,19 @@
         "code": "1798-8",
         "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 25,
+          "high": 125
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "B-type natriuretic peptide": {
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "SS-A (Ro) antibody": {

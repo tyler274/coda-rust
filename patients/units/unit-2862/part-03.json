@@ -153,10 +153,14 @@
        "collected": "2023-03-17T11:00",
        "results": [
         {
-         "test": "Digoxin",
-         "loinc": "10535-3",
-         "unit": "ng/mL",
-         "value": 2.5
+          "test": "Digoxin",
+          "loinc": "10535-3",
+          "unit": "ng/mL",
+          "value": 2.5,
+          "range": {
+            "low": 0.5,
+            "high": 2.0
+          }
         }
        ]
       },
@@ -259,10 +263,14 @@
        "collected": "2023-03-21T08:15",
        "results": [
         {
-         "test": "Digoxin",
-         "loinc": "10535-3",
-         "unit": "ng/mL",
-         "value": 0.9
+          "test": "Digoxin",
+          "loinc": "10535-3",
+          "unit": "ng/mL",
+          "value": 0.9,
+          "range": {
+            "low": 0.5,
+            "high": 2.0
+          }
         }
        ]
       },
@@ -338,11 +346,12 @@
      ],
      "orders": [
       {
-       "id": "dig-level-apr23",
-       "action": "placed",
-       "order": "Digoxin level",
-       "category": "lab",
-       "reason": "Digoxin restarted after toxicity"
+        "id": "dig-level-apr23",
+        "action": "placed",
+        "order": "Digoxin",
+        "category": "lab",
+        "reason": "Digoxin restarted after toxicity",
+        "loinc": "10535-3"
       }
      ],
      "documents": [
@@ -365,10 +374,14 @@
        "collected": "2023-04-05T08:20",
        "results": [
         {
-         "test": "Digoxin",
-         "loinc": "10535-3",
-         "unit": "ng/mL",
-         "value": 1.1
+          "test": "Digoxin",
+          "loinc": "10535-3",
+          "unit": "ng/mL",
+          "value": 1.1,
+          "range": {
+            "low": 0.5,
+            "high": 2.0
+          }
         }
        ]
       },
@@ -387,9 +400,9 @@
      ],
      "orders": [
       {
-       "id": "dig-level-apr23",
-       "action": "done",
-       "date": "2023-04-05T08:20"
+        "id": "dig-level-apr23",
+        "action": "done",
+        "date": "2023-04-05T08:20"
       }
      ],
      "documents": [
@@ -697,9 +710,13 @@
        "collected": "2023-10-23T09:00",
        "results": [
         {
-         "test": "Digoxin",
-         "loinc": "10535-3",
-         "unit": "ng/mL"
+          "test": "Digoxin",
+          "loinc": "10535-3",
+          "unit": "ng/mL",
+          "range": {
+            "low": 0.5,
+            "high": 2.0
+          }
         }
        ]
       }

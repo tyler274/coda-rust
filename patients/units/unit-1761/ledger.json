@@ -1,9 +1,7 @@
 {
   "unit": "unit-1761",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"Prenatal Multivitamin with Iron Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001761",
@@ -305,6 +303,7 @@
           "medications": [
             {
               "drug_text": "Prenatal Multivitamin with Iron Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -774,12 +773,20 @@
                   "test": "pH of Venous blood",
                   "loinc": "2746-6",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.32,
+                    "high": 7.41
+                  },
                   "value": 7.48
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Venous blood",
                   "loinc": "2021-4",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 42,
+                    "high": 53
+                  },
                   "value": 46
                 }
               ]
@@ -1624,7 +1631,7 @@
         "code": "1375948",
         "display": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
         "ingredient": "doxylamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1632,12 +1639,20 @@
         "code": "2021-4",
         "display": "Carbon dioxide [Partial pressure] in Venous blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 42,
+          "high": 53
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Venous blood": {
         "code": "2746-6",
         "display": "pH of Venous blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.32,
+          "high": 7.41
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -1664,9 +1679,6 @@
         "display": "Normal delivery procedure",
         "receipt": "tx.fhir.org SNOMED CT"
       }
-    },
-    "rejected": [
-      "drug \"Prenatal Multivitamin with Iron Oral Tablet\""
-    ]
+    }
   }
 }

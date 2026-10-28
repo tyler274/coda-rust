@@ -1,9 +1,7 @@
 {
   "unit": "unit-2631",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002631",
@@ -64,6 +62,7 @@
           "medications": [
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -825,6 +824,7 @@
                   "test": "Glucose, nasal fluid",
                   "loinc": "2344-0",
                   "unit": "mg/dL",
+                  "range": {},
                   "value": 60
                 },
                 {
@@ -2196,13 +2196,13 @@
         "code": "1115005",
         "display": "docusate sodium 100 MG Oral Capsule",
         "ingredient": "docusate",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "oxycodone hydrochloride 5 MG Oral Tablet": {
         "code": "1049621",
         "display": "oxycodone hydrochloride 5 MG Oral Tablet",
         "ingredient": "oxycodone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2220,6 +2220,7 @@
         "code": "2344-0",
         "display": "Glucose [Mass/volume] in Body fluid",
         "unit": "mg/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Leukocytes, CSF": {
@@ -2251,9 +2252,6 @@
         "display": "Repair of diaphragmatic hernia",
         "receipt": "tx.fhir.org SNOMED CT"
       }
-    },
-    "rejected": [
-      "drug \"multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

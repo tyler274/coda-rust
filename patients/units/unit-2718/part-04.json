@@ -157,10 +157,14 @@
        "collected": "2026-01-19T10:40",
        "results": [
         {
-         "test": "Reticulocytes",
-         "loinc": "17849-1",
-         "unit": "%",
-         "value": 1.5
+          "test": "Reticulocytes",
+          "loinc": "17849-1",
+          "unit": "%",
+          "value": 1.5,
+          "range": {
+            "low": 0.5,
+            "high": 1.5
+          }
         }
        ]
       },
@@ -755,12 +759,13 @@
      "reason": "Endocrinology follow-up letter",
      "orders": [
       {
-       "id": "endo-localization",
-       "action": "placed",
-       "order": "Endocrinology: ACTH and source localization testing",
-       "category": "lab",
-       "to": "Endocrinology",
-       "reason": "Cushing syndrome"
+        "id": "endo-localization",
+        "action": "placed",
+        "order": "ACTH",
+        "category": "lab",
+        "to": "Endocrinology",
+        "reason": "Cushing syndrome",
+        "loinc": "2141-0"
       }
      ],
      "documents": [

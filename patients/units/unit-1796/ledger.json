@@ -1,11 +1,7 @@
 {
   "unit": "unit-1796",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001796/2025-07-28a: referral to \"Prior primary care office\" names no catalog specialty",
-    "MRN00001796/2025-07-30a: lab order \"Stool culture, routine enteric pathogens\" names no one catalog lab, panel, study or procedure",
-    "MRN00001796/2025-07-30a: lab order \"Stool modified acid-fast stain (Cryptosporidium/Cyclospora)\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001796",
@@ -24,16 +20,6 @@
           "start": "2025-07-28T10:20",
           "service": "Internal Medicine — Primary Care",
           "reason": "New membership enrollment; requesting visit",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "referral",
-              "to": "Prior primary care office",
-              "reason": "new patient"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -236,15 +222,17 @@
             {
               "id": "stool-cx-0730",
               "action": "placed",
-              "order": "Stool culture, routine enteric pathogens",
+              "order": "Stool culture",
               "category": "lab",
+              "loinc": "625-4",
               "reason": "watery diarrhea after travel"
             },
             {
               "id": "stool-afb-0730",
               "action": "placed",
-              "order": "Stool modified acid-fast stain (Cryptosporidium/Cyclospora)",
+              "order": "Coccidia, stool acid-fast stain",
               "category": "lab",
+              "loinc": "10656-7",
               "reason": "watery diarrhea after travel"
             }
           ],
@@ -375,13 +363,6 @@
             {
               "vaccine": "Tdap",
               "date": "2018-05-09T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2025-08-20T14:30"
             }
           ],
           "documents": [
@@ -840,6 +821,18 @@
       "Ova and parasites identified in Stool by Light microscopy": {
         "code": "10704-5",
         "display": "Ova and parasites identified in Stool by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Coccidia, stool acid-fast stain": {
+        "code": "10656-7",
+        "display": "Coccidia identified in Stool by Acid fast stain",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Stool culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

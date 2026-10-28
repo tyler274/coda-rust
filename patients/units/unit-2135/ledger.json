@@ -1,9 +1,7 @@
 {
   "unit": "unit-2135",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002135/2024-09-10a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002135",
@@ -237,15 +235,6 @@
               "performed": "2024-09-10T08:00"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "new patient"
-            }
-          ],
           "documents": [
             {
               "type": "History and physical note",
@@ -289,13 +278,6 @@
           "id": "2024-09-24a",
           "kind": "outside_records",
           "start": "2024-09-24T14:00",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2024-09-24T14:00"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",

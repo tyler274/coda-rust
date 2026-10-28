@@ -25,7 +25,7 @@
             {"panel": "CBC with Differential", "collected": "2022-06-14T09:00", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-06-14T09:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
             {"panel": "Lipid Panel", "collected": "2022-06-14T09:00", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
-            {"panel": null, "collected": "2022-06-14T09:00", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL"}]}
+            {"panel": null, "collected": "2022-06-14T09:00", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "range": {"low": 10, "high": 20}}]}
           ],
           "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-06-14T08:55"}],
           "surveys": [{"survey": "PHQ-9 total score", "value": 10}],
@@ -106,7 +106,7 @@
           "measure": ["bp", "hr", "temp_c", "weight_kg"],
           "surveys": [{"survey": "PHQ-9 total score", "value": 12}],
           "orders": [
-            {"id": "bh-referral-2022", "action": "placed", "order": "Behavioral health referral", "category": "referral", "to": "Behavioral Health", "reason": "Recurrent major depression, counseling"}
+            {"id": "bh-referral-2022", "action": "placed", "order": "Behavioral health referral", "category": "referral", "to": "Psychiatry", "reason": "Recurrent major depression, counseling"}
           ],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-11-15T11:20"}],
           "documents": [
@@ -150,8 +150,8 @@
           "state": {"labs": {"Sodium": 151, "Glucose": 110, "Chloride": 115}},
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-05-11T21:55", "results": [{"test": "Sodium", "value": 151}, {"test": "Glucose", "value": 110}, {"test": "Chloride"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
-            {"panel": null, "collected": "2023-05-11T21:55", "results": [{"test": "Osmolality, serum", "loinc": "2692-2", "unit": "mOsm/kg", "value": 302}]},
-            {"panel": null, "collected": "2023-05-11T22:20", "results": [{"test": "Osmolality, urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 68}]},
+            {"panel": null, "collected": "2023-05-11T21:55", "results": [{"test": "Osmolality, serum", "loinc": "2692-2", "unit": "mosm/kg", "value": 302, "range": {"low": 275, "high": 295}}]},
+            {"panel": null, "collected": "2023-05-11T22:20", "results": [{"test": "Osmolality, urine", "loinc": "2695-5", "unit": "mosm/kg", "value": 68, "range": {"low": 38, "high": 1400}}]},
             {"panel": "Urinalysis", "collected": "2023-05-11T22:20", "results": [{"test": "Urine Specific Gravity", "value": 1.002}]},
             {"panel": null, "collected": "2023-05-11T21:55", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "text": "Undetectable"}]}
           ],
@@ -183,7 +183,7 @@
           "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-05-30T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2023-05-30T10:20", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL"}]}
+            {"panel": null, "collected": "2023-05-30T10:20", "results": [{"test": "Phenytoin", "loinc": "3968-5", "unit": "ug/mL", "range": {"low": 10, "high": 20}}]}
           ],
           "surveys": [{"survey": "PHQ-9 total score", "value": 10}],
           "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2023-05-30T09:40"}],

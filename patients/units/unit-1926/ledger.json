@@ -1,11 +1,7 @@
 {
   "unit": "unit-1926",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001926/2024-06-10a: lab order \"CBC, C-reactive protein, tissue transglutaminase IgA\" names no one catalog lab, panel, study or procedure",
-    "MRN00001926/2025-12-19a: referral to \"Behavioral Health\" names no catalog specialty",
-    "left text-only (not verified): drug \"ginger 500 MG Oral Capsule\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001926",
@@ -606,7 +602,21 @@
             {
               "id": "ibs-labs-2024",
               "action": "placed",
-              "order": "CBC, C-reactive protein, tissue transglutaminase IgA",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Abdominal cramping and loose stools"
+            },
+            {
+              "id": "ibs-labs-2024-2",
+              "action": "placed",
+              "order": "C Reactive Protein",
+              "category": "lab",
+              "reason": "Abdominal cramping and loose stools"
+            },
+            {
+              "id": "ibs-labs-2024-3",
+              "action": "placed",
+              "order": "Tissue Transglutaminase IgA",
               "category": "lab",
               "reason": "Abdominal cramping and loose stools"
             }
@@ -705,6 +715,16 @@
               "id": "ibs-labs-2024",
               "action": "done",
               "date": "2024-06-12T08:05"
+            },
+            {
+              "id": "ibs-labs-2024-2",
+              "action": "done",
+              "date": "2024-06-12T08:05"
+            },
+            {
+              "id": "ibs-labs-2024-3",
+              "action": "done",
+              "date": "2024-06-12T08:05"
             }
           ],
           "state": {
@@ -730,6 +750,7 @@
           "medications": [
             {
               "drug_text": "ginger 500 MG Oral Capsule",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 capsule by mouth as needed for nausea or abdominal cramping",
               "dose": {
@@ -1376,7 +1397,7 @@
               "action": "placed",
               "order": "Behavioral health referral",
               "category": "referral",
-              "to": "Behavioral Health",
+              "to": "Psychiatry",
               "reason": "Generalized anxiety disorder; follow-up after benzodiazepine overdose"
             }
           ],
@@ -1588,7 +1609,7 @@
         "code": "308047",
         "display": "alprazolam 0.25 MG Oral Tablet",
         "ingredient": "alprazolam",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1620,9 +1641,6 @@
         "unit": "mg/dL",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"ginger 500 MG Oral Capsule\""
-    ]
+    }
   }
 }

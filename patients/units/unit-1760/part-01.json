@@ -53,8 +53,7 @@
             {"procedure": "Venipuncture", "performed": "2019-08-20T09:35"}
           ],
           "orders": [
-            {"id": "records-prior-pcp", "action": "placed", "order": "Request records from prior primary care office", "category": "procedure", "reason": "establishing care"}
-          ],
+            ],
           "documents": [
             {"type": "Progress Notes", "title": "New Patient Visit and Physical", "author": "PCP", "date": "2019-08-20T09:30", "body": "30 yo woman, elementary school teacher, new to the practice. Was seeing a primary care office closer to her old apartment; she and her husband bought a house in Belchertown this spring. Wants a doctor she can actually reach. Feels well, no complaints today.\n\nPMH: chlamydia twice in her twenties, both treated at the clinic she used then. One episode of PID around 24 or 25, treated with oral antibiotics, never admitted. Periods regular, about monthly, not painful, no bleeding between. Using condoms with husband for now; they talk about kids \"in a year or so.\"\nPSH: none.\nMeds: none. Allergies: NKDA.\nFH: mom had endometriosis and ended up with a hysterectomy at 42. Mom's sister never could get pregnant, no cause ever found. Dad has high blood pressure.\nSH: teaches 2nd grade. Never smoked. Wine once or twice a week, a glass. She told me without being asked that she used IV drugs for a stretch in her early twenties and has not since; no treatment program, no relapses. We talked about screening for HIV and hep C and she was glad to do it.\n\nROS: negative except as above.\nExam: vitals as charted, BP normal. Well appearing, relaxed. HEENT normal, no thyroid enlargement or nodules. Heart regular rate, no murmur. Lungs clear. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap/HPV collected, bimanual without tenderness or masses. Skin without lesions. Mood bright.\n\nA/P\n1. Preventive: Pap with HPV co-test today (age 30). Tdap today, last one she can remember was high school. CBC, CMP, lipids.\n2. STI history: GC/chlamydia NAAT today; HIV and hepatitis C screening given her history.\n3. Remote IV drug use: in remission for many years, nothing to do beyond screening.\n4. Records release signed for prior office.\nReturn in a year, sooner if needed."}
           ]
@@ -74,7 +73,7 @@
           "kind": "outside_records",
           "start": "2019-09-10T11:20",
           "reason": "Records from prior primary care office",
-          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2019-09-10T11:20"}],
+          "orders": [],
           "documents": [
             {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2019-09-10T11:20", "body": "Records received by fax, 23 pages: office notes 2012 to 2019, lab results, immunization record.\n\nSummary of relevant items:\n- 2012: chlamydia NAAT positive on routine screen; azithromycin given; partner notified.\n- 2014: lower abdominal pain, cervical motion tenderness, treated as PID with IM ceftriaxone and two weeks of oral doxycycline; improved at recheck. Not admitted.\n- 2016: chlamydia NAAT positive; treated with azithromycin; repeat test at 3 months negative.\n- 2016: Pap at age 27 negative for intraepithelial lesion.\n- Allergies: NKDA. No surgeries.\nImmunization record shows childhood series complete; no Tdap on file after adolescence.\n\nScanned to chart. Reviewed by PCP; history already reflected in the problem list."}
           ]
@@ -158,7 +157,7 @@
             {"label": "Chlamydial female pelvic inflammatory disease", "icd10": "A56.11", "action": "resolved"}
           ],
           "medications": [
-            {"drug_text": "prenatal multivitamin with folic acid Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Preconception"}
+            {"drug_text": "prenatal multivitamin with folic acid Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Preconception", "uncoded": true}
           ],
           "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
           "labs": [

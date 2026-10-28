@@ -22,8 +22,8 @@
           ],
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-03-08T21:35", "results": [{"test": "Sodium", "value": 130}, {"test": "Potassium", "value": 2.9}, {"test": "Chloride", "value": 90}, {"test": "Bicarbonate", "value": 32}, {"test": "Blood Urea Nitrogen", "value": 28}, {"test": "Creatinine", "value": 0.9}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2024-03-08T21:40", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.50}, {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 42}]},
-            {"panel": null, "collected": "2024-03-08T22:05", "results": [{"test": "Urine chloride", "loinc": "2078-4", "unit": "mmol/L", "value": 10}]},
+            {"panel": null, "collected": "2024-03-08T21:40", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.5, "range": {"low": 7.38, "high": 7.44}}, {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 42, "range": {"low": 38, "high": 42}}]},
+            {"panel": null, "collected": "2024-03-08T22:05", "results": [{"test": "Urine chloride", "loinc": "2078-4", "unit": "mmol/L", "value": 10, "range": {}}]},
             {"panel": null, "collected": "2024-03-08T22:05", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
           ],
           "procedures": [
@@ -168,8 +168,8 @@
           ],
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-03-15T14:50", "results": [{"test": "Sodium", "value": 135}, {"test": "Potassium", "value": 3.0}, {"test": "Chloride", "value": 90}, {"test": "Bicarbonate", "value": 32}, {"test": "Blood Urea Nitrogen"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
-            {"panel": null, "collected": "2025-03-15T14:55", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.50}, {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 45}]},
-            {"panel": null, "collected": "2025-03-15T15:10", "results": [{"test": "Urine chloride", "loinc": "2078-4", "unit": "mmol/L", "value": 15}]}
+            {"panel": null, "collected": "2025-03-15T14:55", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.5, "range": {"low": 7.38, "high": 7.44}}, {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 45, "range": {"low": 38, "high": 42}}]},
+            {"panel": null, "collected": "2025-03-15T15:10", "results": [{"test": "Urine chloride", "loinc": "2078-4", "unit": "mmol/L", "value": 15, "range": {}}]}
           ],
           "procedures": [
             {"procedure": "Initial hospital inpatient care", "performed": "2025-03-15T16:00"},
@@ -194,7 +194,7 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Hospital follow-up, hyperemesis",
           "medications": [
-            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "uncoded": true}
           ],
           "orders": [
             {"id": "ob-referral", "action": "done", "date": "2025-03-25T10:40"}

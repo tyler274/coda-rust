@@ -1,10 +1,7 @@
 {
   "unit": "unit-2648",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002648/2023-12-05a: procedure order \"Complete pulmonary function tests with DLCO\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"alpha 1-antitrypsin 1000 MG Injection\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002648",
@@ -757,6 +754,10 @@
                   "test": "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma",
                   "loinc": "1825-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 150,
+                    "high": 350
+                  },
                   "value": 24
                 }
               ]
@@ -786,9 +787,19 @@
             {
               "id": "pft-2023",
               "action": "placed",
-              "order": "Complete pulmonary function tests with DLCO",
+              "order": "Pulmonary function tests",
               "category": "procedure",
-              "to": "Hospital pulmonary function laboratory",
+              "to": "Pulmonology",
+              "snomed": "23426006",
+              "reason": "Progressive dyspnea, basal bullae"
+            },
+            {
+              "id": "pft-2023-2",
+              "action": "placed",
+              "order": "Diffusing capacity (DLCO)",
+              "category": "procedure",
+              "to": "Pulmonology",
+              "snomed": "36421003",
               "reason": "Progressive dyspnea, basal bullae"
             }
           ],
@@ -845,6 +856,11 @@
           "orders": [
             {
               "id": "pft-2023",
+              "action": "done",
+              "date": "2023-12-12T09:30"
+            },
+            {
+              "id": "pft-2023-2",
               "action": "done",
               "date": "2023-12-12T09:30"
             }
@@ -1450,6 +1466,10 @@
                   "test": "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma",
                   "loinc": "1825-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 150,
+                    "high": 350
+                  },
                   "value": 22
                 }
               ]
@@ -1578,7 +1598,7 @@
               "action": "placed",
               "order": "Abdominal ultrasound",
               "category": "imaging",
-              "to": "Outpatient imaging",
+              "to": "Radiology",
               "reason": "Alpha-1 antitrypsin deficiency with elevated transaminases"
             }
           ],
@@ -1690,7 +1710,7 @@
           "reason": "AATD follow-up, liver tests",
           "medications": [
             {
-              "drug_text": "alpha 1-antitrypsin 1000 MG Injection",
+              "drug_text": "alpha 1-proteinase inhibitor, human 1 MG Injection",
               "action": "historical",
               "sig": "60 mg/kg IV infusion once weekly (pulmonology)",
               "dose": {
@@ -1817,11 +1837,23 @@
     }
   ],
   "terms": {
+    "medications": {
+      "alpha 1-proteinase inhibitor, human 1 MG Injection": {
+        "code": "1661208",
+        "display": "alpha 1-proteinase inhibitor, human 1 MG Injection",
+        "ingredient": "alpha",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
     "labs": {
       "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma": {
         "code": "1825-9",
         "display": "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 150,
+          "high": 350
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "SERPINA1 gene mutations found": {
@@ -1837,8 +1869,17 @@
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
-    "rejected": [
-      "drug \"alpha 1-antitrypsin 1000 MG Injection\""
-    ]
+    "procedures": {
+      "Diffusing capacity (DLCO)": {
+        "code": "36421003",
+        "display": "Carbon monoxide diffusing capacity measurement",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Pulmonary function tests": {
+        "code": "23426006",
+        "display": "Measurement of respiratory function",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
   }
 }

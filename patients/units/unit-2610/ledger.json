@@ -1,12 +1,7 @@
 {
   "unit": "unit-2610",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): lab \"Myoglobin\" LOINC 2639-2 not found; closest real codes: 32331-1 Myoglobin [Presence] in Serum or Plasma; 110217-7 Myoglobin [Measurement] in Serum or Plasma; 56887-3 Myoglobin [Moles/volume] in Serum or Plasma; 2642-7 Myoglobin [Mass/time] in 24 hour Urine; 68960-4 Myoglobin [Presence] in 24 hour Urine",
-    "left text-only (not verified): report \"Lower extremity arterial duplex ultrasound\" LOINC 37461-0 not found",
-    "left text-only (not verified): lab \"Drug screen, urine\" LOINC 19659-1 not found; closest real codes: 54247-2 Drug screen comment [Interpretation] in Urine; 99107-5 Stimulants drug panel - Urine by Screen method; 76659-2 Antipsychotics drug panel - Urine by Screen method; 75815-1 Antipsychotics drug panel - Blood or Urine by Screen method; 106965-7 Human urine markers assessment [Presence] in Urine by Confirmatory method",
-    "left text-only (not verified): report \"MRI thoracic spine without contrast\" LOINC 24990-5 not found; closest real codes: 30854-4 MR Cervical and thoracic and lumbar spine WO contrast; 37512-1 MRA Thoracic spine vessels WO contrast; 36112-1 MR Thoracic spine limited WO contrast; 36532-0 MR Thoracic spine WO contrast"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002610",
@@ -622,8 +617,11 @@
               "results": [
                 {
                   "test": "Myoglobin",
-                  "loinc": "2639-2",
+                  "loinc": "2639-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 150
                 }
               ]
@@ -632,7 +630,7 @@
           "reports": [
             {
               "study": "Lower extremity arterial duplex ultrasound",
-              "loinc": "37461-0",
+              "loinc": "93604-7",
               "performed": "2024-12-11T12:40",
               "text": "ARTERIAL DUPLEX, LEFT LOWER EXTREMITY\nIndication: motorcycle crash, pale painful left leg with weak distal pulses.\nTechnique: grayscale, color and spectral Doppler of the left lower extremity arteries.\nFindings: Normal arterial flow in the left femoral arteries. In the left lower leg there is an abrupt loss of arterial flow consistent with acute occlusion, with diminished flow beyond it.",
               "conclusion": "Acute arterial occlusion of the left lower leg.",
@@ -1637,7 +1635,7 @@
               "results": [
                 {
                   "test": "Drug screen, urine",
-                  "loinc": "19659-1",
+                  "loinc": "69739-1",
                   "text": "Negative"
                 }
               ]
@@ -1646,7 +1644,7 @@
           "reports": [
             {
               "study": "MRI thoracic spine without contrast",
-              "loinc": "24990-5",
+              "loinc": "36532-0",
               "performed": "2026-06-22T20:10",
               "text": "MRI THORACIC SPINE WITHOUT CONTRAST\nIndication: motorcycle crash, right leg weakness, sensory level.\nTechnique: sagittal and axial T1, T2 and STIR sequences.\nFindings: T2 hyperintense signal within the right half of the spinal cord at T10, consistent with cord contusion. No intramedullary hemorrhage. Cord is not compressed. Vertebral body heights and alignment are maintained; no fracture. No epidural hematoma. Posterior ligaments intact. Remaining cord signal normal.",
               "conclusion": "Right hemicord contusion at T10. No fracture, compression or ligamentous injury."
@@ -1851,11 +1849,33 @@
         "receipt": "NLM Clinical Tables ICD-10-CM"
       }
     },
-    "rejected": [
-      "lab \"Myoglobin\" LOINC 2639-2 not found; closest real codes: 32331-1 Myoglobin [Presence] in Serum or Plasma; 110217-7 Myoglobin [Measurement] in Serum or Plasma; 56887-3 Myoglobin [Moles/volume] in Serum or Plasma; 2642-7 Myoglobin [Mass/time] in 24 hour Urine; 68960-4 Myoglobin [Presence] in 24 hour Urine",
-      "report \"Lower extremity arterial duplex ultrasound\" LOINC 37461-0 not found",
-      "lab \"Drug screen, urine\" LOINC 19659-1 not found; closest real codes: 54247-2 Drug screen comment [Interpretation] in Urine; 99107-5 Stimulants drug panel - Urine by Screen method; 76659-2 Antipsychotics drug panel - Urine by Screen method; 75815-1 Antipsychotics drug panel - Blood or Urine by Screen method; 106965-7 Human urine markers assessment [Presence] in Urine by Confirmatory method",
-      "report \"MRI thoracic spine without contrast\" LOINC 24990-5 not found; closest real codes: 30854-4 MR Cervical and thoracic and lumbar spine WO contrast; 37512-1 MRA Thoracic spine vessels WO contrast; 36112-1 MR Thoracic spine limited WO contrast; 36532-0 MR Thoracic spine WO contrast"
-    ]
+    "labs": {
+      "Drug screen, urine": {
+        "code": "69739-1",
+        "display": "Drugs of abuse panel - Urine by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Myoglobin": {
+        "code": "2639-3",
+        "display": "Myoglobin [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "range": {
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Lower extremity arterial duplex ultrasound": {
+        "code": "93604-7",
+        "display": "US.doppler Lower extremity arteries+veins - bilateral",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI thoracic spine without contrast": {
+        "code": "36532-0",
+        "display": "MR Thoracic spine WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
   }
 }

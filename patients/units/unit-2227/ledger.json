@@ -6052,6 +6052,10 @@
                   "test": "Cancer Ag 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 150
                 }
               ]
@@ -6319,6 +6323,10 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 148
                 }
               ]
@@ -6330,7 +6338,10 @@
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
-                  "unit": "ug/mL FEU",
+                  "unit": "ug/mL{FEU}",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 5.6
                 }
               ]
@@ -6630,6 +6641,10 @@
                   "test": "Cancer Ag 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 96
                 }
               ]
@@ -6708,6 +6723,10 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 190
                 }
               ]
@@ -6719,7 +6738,10 @@
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
-                  "unit": "ug/mL FEU",
+                  "unit": "ug/mL{FEU}",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 3.1
                 }
               ]
@@ -6943,6 +6965,10 @@
                   "test": "Cancer Ag 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 61
                 }
               ]
@@ -7021,6 +7047,10 @@
                   "test": "Cancer Ag 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 58
                 }
               ]
@@ -7135,43 +7165,43 @@
         "code": "854241",
         "display": "0.8 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "capsaicin 0.75 MG/ML Topical Cream": {
         "code": "141868",
         "display": "capsaicin 0.75 MG/ML Topical Cream",
         "ingredient": "capsaicin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "cefazolin 2000 MG Injection": {
         "code": "1665060",
         "display": "cefazolin 2000 MG Injection",
         "ingredient": "cefazolin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "gemcitabine 1000 MG Injection": {
         "code": "1719003",
         "display": "gemcitabine 1000 MG Injection",
         "ingredient": "gemcitabine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "moxifloxacin 5 MG/ML Ophthalmic Solution": {
         "code": "403818",
         "display": "moxifloxacin 5 MG/ML Ophthalmic Solution",
         "ingredient": "moxifloxacin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "paclitaxel 100 MG Injection": {
         "code": "583214",
         "display": "paclitaxel 100 MG Injection",
         "ingredient": "paclitaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "prednisolone acetate 10 MG/ML Ophthalmic Suspension": {
         "code": "1376336",
         "display": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
         "ingredient": "prednisolone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -7189,18 +7219,29 @@
         "code": "24108-3",
         "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "low": 0,
+          "high": 37
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
-        "unit": "ug/mL FEU",
+        "unit": "ug/mL{FEU}",
+        "range": {
+          "high": 0.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

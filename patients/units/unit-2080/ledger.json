@@ -1,10 +1,7 @@
 {
   "unit": "unit-2080",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002080/2022-02-16a: referral to \"Hematology & Oncology\" names no catalog specialty",
-    "MRN00002080/2024-02-21a: procedure order \"Upper endoscopy with biopsy\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002080",
@@ -310,7 +307,7 @@
             {
               "id": "colo-2019",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "Age 55, no prior colonoscopy on file"
@@ -2671,7 +2668,7 @@
               "action": "placed",
               "order": "Hematology-oncology referral, urgent",
               "category": "referral",
-              "to": "Hematology & Oncology",
+              "to": "Hematology",
               "reason": "Anemia, thrombocytopenia, lymphocytosis, palpable spleen"
             }
           ],
@@ -4881,9 +4878,10 @@
             {
               "id": "egd-2024",
               "action": "placed",
-              "order": "Upper endoscopy with biopsy",
+              "order": "Esophagogastroduodenoscopy with biopsy",
               "category": "procedure",
               "to": "Gastroenterology",
+              "snomed": "445982009",
               "reason": "Distal esophageal narrowing on barium study"
             }
           ],
@@ -8136,31 +8134,31 @@
         "code": "1721476",
         "display": "ampicillin 2000 MG Injection",
         "ingredient": "ampicillin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule": {
         "code": "1373325",
         "display": "amylase 180000 UNT / lipase 36000 UNT / protease 114000 UNT Delayed Release Oral Capsule",
         "ingredient": "amylase",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "bendamustine hydrochloride 25 MG/ML Injectable Solution": {
         "code": "1726097",
         "display": "bendamustine hydrochloride 25 MG/ML Injectable Solution",
         "ingredient": "bendamustine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "carboplatin 10 MG/ML Injectable Solution": {
         "code": "597195",
         "display": "carboplatin 10 MG/ML Injectable Solution",
         "ingredient": "carboplatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ceftriaxone 2000 MG Injection": {
         "code": "1665046",
         "display": "ceftriaxone 2000 MG Injection",
         "ingredient": "ceftriaxone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "cladribine 1 MG/ML Injectable Solution": {
         "code": "240754",
@@ -8172,13 +8170,20 @@
         "code": "312199",
         "display": "paclitaxel 6 MG/ML Injectable Solution",
         "ingredient": "paclitaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "rituximab 10 MG/ML Injectable Solution": {
         "code": "1657862",
         "display": "10 ML rituximab 10 MG/ML Injection",
         "ingredient": "rituximab",
         "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "procedures": {
+      "Esophagogastroduodenoscopy with biopsy": {
+        "code": "445982009",
+        "display": "Endoscopy and biopsy of upper gastrointestinal tract",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

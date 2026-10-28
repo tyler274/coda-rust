@@ -1,9 +1,7 @@
 {
   "unit": "unit-2255",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002255/2021-08-10a: imaging order \"Abdominal ultrasound, aorta (AAA screening)\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002255",
@@ -840,8 +838,9 @@
             {
               "id": "aaa-us",
               "action": "placed",
-              "order": "Abdominal ultrasound, aorta (AAA screening)",
+              "order": "US abdominal aorta",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "male former smoker age 65"
             }
           ],
@@ -2792,18 +2791,30 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.4
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 40
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 95
                 }
               ]
@@ -3131,7 +3142,7 @@
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3139,18 +3150,37 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "US abdominal aorta": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

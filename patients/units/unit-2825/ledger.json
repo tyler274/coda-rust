@@ -1,11 +1,7 @@
 {
   "unit": "unit-2825",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002825/2020-09-22a: referral to \"Prior primary care office\" names no catalog specialty",
-    "MRN00002825/2022-11-22a: imaging order \"Abdominal ultrasound, complete\" names no one catalog lab, panel, study or procedure",
-    "MRN00002825/2025-07-08a: referral to \"Hospital health information management\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002825",
@@ -382,16 +378,6 @@
               "date": "2020-09-22T10:00"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2020",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "referral",
-              "to": "Prior primary care office",
-              "reason": "Establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -435,7 +421,7 @@
               "action": "placed",
               "order": "Screening mammogram, bilateral",
               "category": "imaging",
-              "to": "Breast imaging",
+              "to": "Radiology",
               "reason": "Routine screening"
             }
           ],
@@ -453,13 +439,6 @@
           "id": "2020-10-06a",
           "kind": "outside_records",
           "start": "2020-10-06T11:00",
-          "orders": [
-            {
-              "id": "prior-records-2020",
-              "action": "done",
-              "date": "2020-10-06T11:00"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1917,7 +1896,7 @@
               "action": "placed",
               "order": "Screening mammogram, bilateral",
               "category": "imaging",
-              "to": "Breast imaging",
+              "to": "Radiology",
               "reason": "Routine screening"
             }
           ],
@@ -2069,6 +2048,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 58
                 }
               ]
@@ -2084,7 +2067,7 @@
             {
               "id": "abd-us-2022",
               "action": "placed",
-              "order": "Abdominal ultrasound, complete",
+              "order": "Abdominal ultrasound",
               "category": "imaging",
               "to": "Radiology",
               "reason": "Epigastric pain radiating to back"
@@ -2211,6 +2194,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 22
                 }
               ]
@@ -4224,16 +4211,6 @@
               "performed": "2025-07-08T10:40"
             }
           ],
-          "orders": [
-            {
-              "id": "records-2025-06",
-              "action": "placed",
-              "order": "Request hospital records, June 2025 admission",
-              "category": "referral",
-              "to": "Hospital health information management",
-              "reason": "No discharge summary received"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -4259,13 +4236,6 @@
           "id": "2025-07-22a",
           "kind": "outside_records",
           "start": "2025-07-22T10:00",
-          "orders": [
-            {
-              "id": "records-2025-06",
-              "action": "done",
-              "date": "2025-07-22T10:00"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -5061,31 +5031,31 @@
         "code": "854235",
         "display": "0.4 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "1 ML denosumab 60 MG/ML Prefilled Syringe": {
         "code": "993452",
         "display": "1 ML denosumab 60 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "cefpodoxime proxetil 200 MG Oral Tablet": {
         "code": "309078",
         "display": "cefpodoxime 200 MG Oral Tablet",
         "ingredient": "cefpodoxime",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "metoclopramide 10 MG Oral Tablet": {
         "code": "311666",
         "display": "metoclopramide 10 MG Oral Tablet",
         "ingredient": "metoclopramide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tiotropium 0.018 MG Inhalation Powder": {
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5093,12 +5063,20 @@
         "code": "1798-8",
         "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 25,
+          "high": 125
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CA 19-9": {
         "code": "24108-3",
         "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "low": 0,
+          "high": 37
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

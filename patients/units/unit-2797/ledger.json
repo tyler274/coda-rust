@@ -1,11 +1,7 @@
 {
   "unit": "unit-2797",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001103/2020-01-21a: imaging order \"Renal artery duplex ultrasound\" names no one catalog lab, panel, study or procedure",
-    "MRN00001103/2020-01-21a: lab order \"24-hour urine metanephrines\" names no one catalog lab, panel, study or procedure",
-    "MRN00001103/2021-03-16a: imaging order \"CT angiogram abdomen\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001103",
@@ -861,8 +857,9 @@
             {
               "id": "renal-doppler",
               "action": "placed",
-              "order": "Renal artery duplex ultrasound",
+              "order": "Renal artery Doppler ultrasound",
               "category": "imaging",
+              "loinc": "39435-3",
               "reason": "resistant hypertension with hypokalemia"
             },
             {
@@ -876,8 +873,9 @@
             {
               "id": "urine-metaneph",
               "action": "placed",
-              "order": "24-hour urine metanephrines",
+              "order": "Metanephrines, 24 hour urine",
               "category": "lab",
+              "loinc": "2609-6",
               "reason": "resistant hypertension"
             }
           ],
@@ -1753,8 +1751,9 @@
             {
               "id": "cta-abd",
               "action": "placed",
-              "order": "CT angiogram abdomen",
+              "order": "CTA abdominal aorta and runoff",
               "category": "imaging",
+              "loinc": "78037-9",
               "reason": "fibromuscular dysplasia, renal artery"
             }
           ],
@@ -3281,6 +3280,23 @@
         "code": "I15.0",
         "display": "Renovascular hypertension",
         "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "reports": {
+      "CTA abdominal aorta and runoff": {
+        "code": "78037-9",
+        "display": "CTA Abdominal Aorta and Bilateral Runoff Vessels W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Metanephrines, 24 hour urine": {
+        "code": "2609-6",
+        "display": "Metanephrines [Mass/time] in 24 hour Urine",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Renal artery Doppler ultrasound": {
+        "code": "39435-3",
+        "display": "US.doppler Renal artery",
+        "receipt": "NLM Clinical Tables LOINC"
       }
     }
   }

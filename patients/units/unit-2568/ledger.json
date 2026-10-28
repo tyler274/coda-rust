@@ -1,10 +1,7 @@
 {
   "unit": "unit-2568",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): lab \"Ethanol [Mass/volume] in Serum or Plasma\" LOINC 5643-8 not found; closest real codes: 5643-2 Ethanol [Mass/volume] in Serum or Plasma; 35240-1 Ethanol [Mass or Moles/volume] in Serum or Plasma; 114065-6 Ethanol [Mass/volume] in Serum or Plasma by Mass Spectrometry; 114066-4 Ethanol [Mass/volume] in Serum or Plasma by Immunoassay; 14336-2 Ethanol [Mass/volume] in Serum or Plasma by Gas chromatography",
-    "left text-only (not verified): lab \"pH of Venous blood\" LOINC 2746-2 not found; closest real codes: 2746-6 pH of Venous blood; 19213-8 pH of Mixed venous blood; 28647-6 pH of Venous cord blood; 97536-7 pH of Central venous blood; 39486-6 pH of Venous blood adjusted to patient's actual temperature"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002568",
@@ -466,7 +463,7 @@
               "results": [
                 {
                   "test": "Ethanol [Mass/volume] in Serum or Plasma",
-                  "loinc": "5643-8",
+                  "loinc": "5643-2",
                   "unit": "mg/dL",
                   "text": "Undetectable"
                 }
@@ -559,8 +556,12 @@
               "results": [
                 {
                   "test": "pH of Venous blood",
-                  "loinc": "2746-2",
+                  "loinc": "2746-6",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.32,
+                    "high": 7.41
+                  },
                   "value": 7.29
                 }
               ]
@@ -1802,6 +1803,12 @@
         "unit": "ug/mL",
         "receipt": "NLM Clinical Tables LOINC"
       },
+      "Ethanol [Mass/volume] in Serum or Plasma": {
+        "code": "5643-2",
+        "display": "Ethanol [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "Opiates [Presence] in Urine by Screen method": {
         "code": "19295-5",
         "display": "Opiates [Presence] in Urine by Screen method",
@@ -1812,11 +1819,17 @@
         "display": "Salicylates [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
         "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Venous blood": {
+        "code": "2746-6",
+        "display": "pH of Venous blood",
+        "unit": "[pH]",
+        "range": {
+          "low": 7.32,
+          "high": 7.41
+        },
+        "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Ethanol [Mass/volume] in Serum or Plasma\" LOINC 5643-8 not found; closest real codes: 5643-2 Ethanol [Mass/volume] in Serum or Plasma; 35240-1 Ethanol [Mass or Moles/volume] in Serum or Plasma; 114065-6 Ethanol [Mass/volume] in Serum or Plasma by Mass Spectrometry; 114066-4 Ethanol [Mass/volume] in Serum or Plasma by Immunoassay; 14336-2 Ethanol [Mass/volume] in Serum or Plasma by Gas chromatography",
-      "lab \"pH of Venous blood\" LOINC 2746-2 not found; closest real codes: 2746-6 pH of Venous blood; 19213-8 pH of Mixed venous blood; 28647-6 pH of Venous cord blood; 97536-7 pH of Central venous blood; 39486-6 pH of Venous blood adjusted to patient's actual temperature"
-    ]
+    }
   }
 }

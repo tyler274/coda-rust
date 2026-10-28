@@ -182,7 +182,11 @@
                   "test": "Alpha 1 antitrypsin [Mass/volume] in Serum or Plasma",
                   "loinc": "1825-9",
                   "unit": "mg/dL",
-                  "value": 24
+                  "value": 24,
+                  "range": {
+                    "low": 150,
+                    "high": 350
+                  }
                 }
               ]
             }
@@ -199,10 +203,20 @@
             {
               "id": "pft-2023",
               "action": "placed",
-              "order": "Complete pulmonary function tests with DLCO",
+              "order": "Pulmonary function tests",
               "category": "procedure",
-              "to": "Hospital pulmonary function laboratory",
-              "reason": "Progressive dyspnea, basal bullae"
+              "to": "Pulmonology",
+              "reason": "Progressive dyspnea, basal bullae",
+              "snomed": "23426006"
+            },
+            {
+              "id": "pft-2023-2",
+              "action": "placed",
+              "order": "Diffusing capacity (DLCO)",
+              "category": "procedure",
+              "to": "Pulmonology",
+              "reason": "Progressive dyspnea, basal bullae",
+              "snomed": "36421003"
             }
           ],
           "procedures": [
@@ -258,6 +272,11 @@
           "orders": [
             {
               "id": "pft-2023",
+              "action": "done",
+              "date": "2023-12-12T09:30"
+            },
+            {
+              "id": "pft-2023-2",
               "action": "done",
               "date": "2023-12-12T09:30"
             }

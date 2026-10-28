@@ -393,7 +393,7 @@
               "action": "placed",
               "order": "Screening mammogram, bilateral",
               "category": "imaging",
-              "to": "Breast imaging",
+              "to": "Radiology",
               "reason": "Routine screening"
             }
           ]
@@ -503,7 +503,11 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
-                  "value": 58
+                  "value": 58,
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  }
                 }
               ]
             }
@@ -518,7 +522,7 @@
             {
               "id": "abd-us-2022",
               "action": "placed",
-              "order": "Abdominal ultrasound, complete",
+              "order": "Abdominal ultrasound",
               "category": "imaging",
               "to": "Radiology",
               "reason": "Epigastric pain radiating to back"
@@ -639,7 +643,11 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
-                  "value": 22
+                  "value": 22,
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  }
                 }
               ]
             }

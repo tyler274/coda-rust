@@ -142,10 +142,10 @@
           "measure": ["bp", "hr"],
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-08-23T09:30", "results": [{"test": "Sodium", "value": 145}]},
-            {"panel": null, "collected": "2021-08-23T09:30", "results": [{"test": "Serum osmolality", "loinc": "2692-2", "unit": "mOsm/kg", "value": 300}]},
-            {"panel": null, "collected": "2021-08-23T09:30", "results": [{"test": "Urine osmolality", "loinc": "2695-5", "unit": "mOsm/kg", "value": 150}]},
+            {"panel": null, "collected": "2021-08-23T09:30", "results": [{"test": "Serum osmolality", "loinc": "2692-2", "unit": "mosm/kg", "value": 300, "range": {"low": 275, "high": 295}}]},
+            {"panel": null, "collected": "2021-08-23T09:30", "results": [{"test": "Urine osmolality", "loinc": "2695-5", "unit": "mosm/kg", "value": 150, "range": {"low": 38, "high": 1400}}]},
             {"panel": "Urinalysis", "collected": "2021-08-23T09:30", "results": [{"test": "Urine Specific Gravity", "value": 1.005}]},
-            {"panel": null, "collected": "2021-08-23T11:30", "results": [{"test": "Urine osmolality after desmopressin", "loinc": "2695-5", "unit": "mOsm/kg", "value": 160}]}
+            {"panel": null, "collected": "2021-08-23T11:30", "results": [{"test": "Urine osmolality after desmopressin", "loinc": "2695-5", "unit": "mosm/kg", "value": 160, "range": {"low": 38, "high": 1400}}]}
           ],
           "procedures": [{"procedure": "Desmopressin test", "snomed": "252273006", "performed": "2021-08-23T09:45"}],
           "documents": [
@@ -206,8 +206,8 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-12-08T08:40", "results": [{"test": "Creatinine", "value": 2.1}, {"test": "Blood Urea Nitrogen", "value": 35}, {"test": "Sodium"}, {"test": "Potassium"}]},
             {"panel": null, "collected": "2021-12-08T08:40", "results": [{"test": "Fasting Glucose", "value": 160}]},
-            {"panel": null, "collected": "2021-12-08T08:40", "results": [{"test": "Tacrolimus level", "loinc": "11253-2", "unit": "ng/mL", "value": 15}]},
-            {"panel": null, "collected": "2021-12-08T08:40", "results": [{"test": "Lithium level", "loinc": "14334-7", "unit": "mmol/L", "value": 0.8}]}
+            {"panel": null, "collected": "2021-12-08T08:40", "results": [{"test": "Tacrolimus level", "loinc": "11253-2", "unit": "ng/mL", "value": 15, "range": {"low": 5, "high": 15}}]},
+            {"panel": null, "collected": "2021-12-08T08:40", "results": [{"test": "Lithium level", "loinc": "14334-7", "unit": "mmol/L", "value": 0.8, "range": {"low": 0.6, "high": 1.2}}]}
           ],
           "documents": [
             {"type": "Consult Note", "title": "Transplant medicine clinic letter", "author": "transplant medicine", "date": "2021-12-13T15:45", "body": "Transplant medicine clinic. Date of visit: 12/08/2021.\n\n56-year-old recipient of a second deceased-donor kidney (12/2020). Two weeks of shaky hands, plus more thirst and urination again, much like the stretch that took him to nephrology in August.\n\nMeds: tacrolimus 5 mg BID, mycophenolate 750 mg BID, prednisone 5 mg daily, TMP-SMX SS daily, lithium 300 mg BID, amlodipine 10 mg, hydrochlorothiazide 25 mg.\nAllergies: NKDA.\n\nBP 150/95. Fine tremor of both outstretched hands. Otherwise unremarkable.\n\nLabs (fasting): creatinine 2.1 mg/dL (high; baseline 1.2), BUN 35, glucose 160, tacrolimus trough 15 ng/mL (inside the lab's reported range but well above where we keep him now), lithium 0.8 mmol/L.\n\nAssessment: calcineurin inhibitor nephrotoxicity, with tacrolimus tremor and hyperglycemia. Lithium level unremarkable.\n\nPlan: tacrolimus reduced to 3 mg twice daily starting tonight. Repeat trough and creatinine in 1 week and again in 4 weeks. Primary care please recheck glucose/A1c once the dose settles.\nTransplant medicine"}

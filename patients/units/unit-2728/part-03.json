@@ -79,7 +79,7 @@
             {
               "id": "colo-2023",
               "action": "placed",
-              "order": "Screening colonoscopy",
+              "order": "Colonoscopy, screening, average risk",
               "category": "procedure",
               "to": "Gastroenterology",
               "reason": "average-risk colorectal cancer screening, age 45"
@@ -431,9 +431,26 @@
             {
               "id": "stool-2024",
               "action": "placed",
-              "order": "Stool studies: C. difficile, culture, ova and parasites",
+              "order": "C. difficile toxin B, stool",
               "category": "lab",
-              "reason": "chronic watery diarrhea"
+              "reason": "chronic watery diarrhea",
+              "loinc": "10895-1"
+            },
+            {
+              "id": "stool-2024-2",
+              "action": "placed",
+              "order": "Stool culture",
+              "category": "lab",
+              "reason": "chronic watery diarrhea",
+              "loinc": "625-4"
+            },
+            {
+              "id": "stool-2024-3",
+              "action": "placed",
+              "order": "Ova and parasites, stool",
+              "category": "lab",
+              "reason": "chronic watery diarrhea",
+              "loinc": "10701-1"
             },
             {
               "id": "gi-referral",
@@ -495,6 +512,16 @@
           "orders": [
             {
               "id": "stool-2024",
+              "action": "done",
+              "date": "2024-02-15T12:00"
+            },
+            {
+              "id": "stool-2024-2",
+              "action": "done",
+              "date": "2024-02-15T12:00"
+            },
+            {
+              "id": "stool-2024-3",
               "action": "done",
               "date": "2024-02-15T12:00"
             }
@@ -582,7 +609,11 @@
                   "test": "pH of Venous blood",
                   "loinc": "2746-6",
                   "unit": "[pH]",
-                  "value": 7.3
+                  "value": 7.3,
+                  "range": {
+                    "low": 7.32,
+                    "high": 7.41
+                  }
                 }
               ]
             }
@@ -991,7 +1022,10 @@
                   "test": "Vasoactive intestinal peptide",
                   "loinc": "3125-2",
                   "unit": "pg/mL",
-                  "value": 200
+                  "value": 200,
+                  "range": {
+                    "high": 75
+                  }
                 },
                 {
                   "test": "Gastrin",

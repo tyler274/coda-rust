@@ -444,16 +444,18 @@
        "collected": "2020-06-01T08:05",
        "results": [
         {
-         "test": "Cortisol, baseline",
-         "loinc": "2143-6",
-         "unit": "ug/dL",
-         "value": 2.6
+          "test": "Cortisol, AM",
+          "value": 2.6
         },
         {
-         "test": "ACTH",
-         "loinc": "2141-0",
-         "unit": "pg/mL",
-         "value": 486
+          "test": "ACTH",
+          "loinc": "2141-0",
+          "unit": "pg/mL",
+          "value": 486,
+          "range": {
+            "low": 10,
+            "high": 60
+          }
         }
        ]
       },
@@ -462,10 +464,13 @@
        "collected": "2020-06-01T09:10",
        "results": [
         {
-         "test": "Cortisol 60 minutes post cosyntropin",
-         "loinc": "26528-0",
-         "unit": "ug/dL",
-         "value": 4.1
+          "test": "Cortisol 60 minutes post cosyntropin",
+          "loinc": "26528-0",
+          "unit": "ug/dL",
+          "value": 4.1,
+          "range": {
+            "low": 18
+          }
         }
        ]
       }

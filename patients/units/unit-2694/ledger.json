@@ -1,12 +1,7 @@
 {
   "unit": "unit-2694",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002694/2017-12-18a: procedure \"Facial nerve decompression, right, middle cranial fossa approach\" not in catalog and has no snomed (text only)",
-    "MRN00002694/2018-12-27a: procedure \"Total abdominal hysterectomy with bilateral salpingo-oophorectomy, omentectomy and cytoreduction\" not in catalog and has no snomed (text only)",
-    "MRN00002694/2021-12-12b: procedure \"Endovascular coil embolization of anterior communicating artery aneurysm\" not in catalog and has no snomed (text only)",
-    "MRN00002694/2018-11-09a: referral to \"Gynecologic Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002694",
@@ -2415,6 +2410,7 @@
           "procedures": [
             {
               "procedure": "Facial nerve decompression, right, middle cranial fossa approach",
+              "snomed": "265228007",
               "performed": "2017-12-13T07:45"
             }
           ],
@@ -2998,6 +2994,9 @@
                   "test": "CA-125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 35
+                  },
                   "value": 486
                 }
               ]
@@ -3254,7 +3253,7 @@
               "action": "placed",
               "order": "Gynecologic oncology referral",
               "category": "referral",
-              "to": "Gynecologic Oncology",
+              "to": "Gynecology",
               "reason": "adnexal mass, CA-125 486, omental nodularity"
             }
           ],
@@ -3382,6 +3381,7 @@
           "procedures": [
             {
               "procedure": "Total abdominal hysterectomy with bilateral salpingo-oophorectomy, omentectomy and cytoreduction",
+              "snomed": "116144002",
               "performed": "2018-12-18T07:30"
             }
           ],
@@ -5169,6 +5169,7 @@
             },
             {
               "procedure": "Endovascular coil embolization of anterior communicating artery aneurysm",
+              "snomed": "390935004",
               "performed": "2021-12-20T09:00"
             },
             {
@@ -7885,6 +7886,9 @@
                   "test": "24 hour urine protein",
                   "loinc": "2889-4",
                   "unit": "g/(24.h)",
+                  "range": {
+                    "high": 0.1
+                  },
                   "value": 4.5
                 }
               ]
@@ -8116,13 +8120,13 @@
         "code": "308979",
         "display": "carbamazepine 200 MG Oral Tablet",
         "ingredient": "carbamazepine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "nimodipine 30 MG Oral Capsule": {
         "code": "198037",
         "display": "nimodipine 30 MG Oral Capsule",
         "ingredient": "nimodipine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -8130,13 +8134,36 @@
         "code": "2889-4",
         "display": "Protein [Mass/time] in 24 hour Urine",
         "unit": "g/(24.h)",
+        "range": {
+          "high": 0.1
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CA-125": {
         "code": "10334-1",
         "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Endovascular coil embolization of anterior communicating artery aneurysm": {
+        "code": "390935004",
+        "display": "Percutaneous coil embolization of cerebral artery aneurysm",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Facial nerve decompression, right, middle cranial fossa approach": {
+        "code": "265228007",
+        "display": "Decompression of facial nerve (VII)",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Total abdominal hysterectomy with bilateral salpingo-oophorectomy, omentectomy and cytoreduction": {
+        "code": "116144002",
+        "display": "Total abdominal hysterectomy with bilateral salpingo-oophorectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

@@ -80,7 +80,7 @@
               "action": "placed",
               "order": "Maternal-fetal medicine referral",
               "category": "referral",
-              "to": "Maternal-Fetal Medicine",
+              "to": "Obstetrics",
               "reason": "prior pregnancy with fetal osteogenesis imperfecta (COL1A1), prior short cervix"
             }
           ],
@@ -424,9 +424,10 @@
             {
               "id": "ogtt-2026",
               "action": "placed",
-              "order": "Glucose tolerance test, 2 hour, 75 g",
+              "order": "Glucose 2 hours post 75 g glucose",
               "category": "lab",
-              "reason": "history of gestational diabetes, postpartum screening"
+              "reason": "history of gestational diabetes, postpartum screening",
+              "loinc": "1518-0"
             }
           ],
           "documents": [
@@ -457,7 +458,10 @@
                   "test": "Glucose 2 hours post 75 g glucose",
                   "loinc": "1518-0",
                   "unit": "mg/dL",
-                  "value": 126
+                  "value": 126,
+                  "range": {
+                    "high": 140
+                  }
                 }
               ]
             }

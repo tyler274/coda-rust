@@ -319,12 +319,12 @@
      ],
      "orders": [
       {
-       "id": "colonoscopy-2025",
-       "action": "placed",
-       "order": "Colonoscopy after diverticulitis",
-       "category": "procedure",
-       "to": "Gastroenterology",
-       "reason": "first episode of sigmoid diverticulitis"
+        "id": "colonoscopy-2025",
+        "action": "placed",
+        "order": "Colonoscopy, diagnostic",
+        "category": "procedure",
+        "to": "Gastroenterology",
+        "reason": "first episode of sigmoid diverticulitis"
       }
      ],
      "documents": [
@@ -538,9 +538,9 @@
      "reason": "Colonoscopy",
      "orders": [
       {
-       "id": "colonoscopy-2025",
-       "action": "done",
-       "date": "2026-01-08T07:45"
+        "id": "colonoscopy-2025",
+        "action": "done",
+        "date": "2026-01-08T07:45"
       }
      ],
      "procedures": [
@@ -584,19 +584,20 @@
      ],
      "orders": [
       {
-       "id": "crs-referral-2026",
-       "action": "placed",
-       "order": "Colorectal surgery referral",
-       "category": "referral",
-       "to": "Colorectal Surgery",
-       "reason": "ascending colon adenocarcinoma"
+        "id": "crs-referral-2026",
+        "action": "placed",
+        "order": "Colorectal surgery referral",
+        "category": "referral",
+        "to": "General Surgery",
+        "reason": "ascending colon adenocarcinoma"
       },
       {
-       "id": "staging-ct-2026",
-       "action": "placed",
-       "order": "CT chest and CT abdomen/pelvis with contrast",
-       "category": "imaging",
-       "reason": "colon cancer staging"
+        "id": "staging-ct-2026",
+        "action": "placed",
+        "order": "CT chest, abdomen and pelvis with contrast",
+        "category": "imaging",
+        "reason": "colon cancer staging",
+        "loinc": "72254-6"
       }
      ],
      "documents": [
@@ -639,10 +640,13 @@
        "collected": "2026-01-14T08:05",
        "results": [
         {
-         "test": "Carcinoembryonic antigen",
-         "loinc": "2039-6",
-         "unit": "ng/mL",
-         "value": 2.6
+          "test": "Carcinoembryonic antigen",
+          "loinc": "2039-6",
+          "unit": "ng/mL",
+          "value": 2.6,
+          "range": {
+            "high": 2.5
+          }
         }
        ]
       }
@@ -665,9 +669,9 @@
      "reason": "Colon cancer staging CT",
      "orders": [
       {
-       "id": "staging-ct-2026",
-       "action": "done",
-       "date": "2026-01-15T11:00"
+        "id": "staging-ct-2026",
+        "action": "done",
+        "date": "2026-01-15T11:00"
       }
      ],
      "reports": [
@@ -799,28 +803,44 @@
        "collected": "2026-02-19T15:35",
        "results": [
         {
-         "test": "pH of arterial blood",
-         "loinc": "2744-1",
-         "unit": "[pH]",
-         "value": 7.49
+          "test": "pH of arterial blood",
+          "loinc": "2744-1",
+          "unit": "[pH]",
+          "value": 7.49,
+          "range": {
+            "low": 7.38,
+            "high": 7.44
+          }
         },
         {
-         "test": "PaCO2",
-         "loinc": "2019-8",
-         "unit": "mm[Hg]",
-         "value": 32
+          "test": "PaCO2",
+          "loinc": "2019-8",
+          "unit": "mm[Hg]",
+          "value": 32,
+          "range": {
+            "low": 38,
+            "high": 42
+          }
         },
         {
-         "test": "PaO2",
-         "loinc": "2703-7",
-         "unit": "mm[Hg]",
-         "value": 72
+          "test": "PaO2",
+          "loinc": "2703-7",
+          "unit": "mm[Hg]",
+          "value": 72,
+          "range": {
+            "low": 75,
+            "high": 100
+          }
         },
         {
-         "test": "Bicarbonate, arterial",
-         "loinc": "1960-4",
-         "unit": "mmol/L",
-         "value": 24
+          "test": "Bicarbonate, arterial",
+          "loinc": "1960-4",
+          "unit": "mmol/L",
+          "value": 24,
+          "range": {
+            "low": 23,
+            "high": 26
+          }
         }
        ]
       },
@@ -1079,10 +1099,13 @@
        "collected": "2026-05-11T08:00",
        "results": [
         {
-         "test": "Carcinoembryonic antigen",
-         "loinc": "2039-6",
-         "unit": "ng/mL",
-         "value": 2.1
+          "test": "Carcinoembryonic antigen",
+          "loinc": "2039-6",
+          "unit": "ng/mL",
+          "value": 2.1,
+          "range": {
+            "high": 2.5
+          }
         }
        ]
       }

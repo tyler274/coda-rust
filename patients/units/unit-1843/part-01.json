@@ -28,7 +28,7 @@
           "reason": "New patient, establish care",
           "allergies": [{"substance": "No known drug allergies"}],
           "medications": [
-            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+            {"drug_text": "multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "uncoded": true}
           ],
           "social": [
             {"item": "Tobacco smoking status", "value": "Never smoker"},
@@ -107,8 +107,8 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2019-05-08T14:55", "resulted": "2019-05-08T18:10", "results": [{"test": "Hemoglobin", "value": 11.0}, {"test": "Mean Corpuscular Volume", "value": 68}, {"test": "Red Blood Cells"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
             {"panel": null, "collected": "2019-05-08T14:55", "resulted": "2019-05-09T07:30", "results": [{"test": "Thyroid Stimulating Hormone"}]},
             {"panel": null, "collected": "2019-05-08T14:55", "resulted": "2019-05-14T10:20", "results": [
-              {"test": "Hemoglobin A2/Hemoglobin.total in Blood", "loinc": "4551-8", "unit": "%", "value": 5.4},
-              {"test": "Hemoglobin F/Hemoglobin.total in Blood", "loinc": "4576-5", "unit": "%", "value": 2.3}
+              {"test": "Hemoglobin A2/Hemoglobin.total in Blood", "loinc": "4551-8", "unit": "%", "value": 5.4, "range": {"low": 1.5, "high": 3.5}},
+              {"test": "Hemoglobin F/Hemoglobin.total in Blood", "loinc": "4576-5", "unit": "%", "value": 2.3, "range": {"high": 2}}
             ]}
           ],
           "reports": [

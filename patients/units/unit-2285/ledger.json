@@ -1,13 +1,7 @@
 {
   "unit": "unit-2285",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002285/2018-10-02a: procedure order \"Records request, prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00002285/2018-10-02a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002285/2019-10-09a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002285/2021-01-12a: procedure order \"Nurse visit: B12 injection and home injection teaching\" names no one catalog lab, panel, study or procedure",
-    "MRN00002285/2026-03-10a: imaging order \"CT chest, abdomen and pelvis with contrast, surveillance at 6 months\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002285",
@@ -330,16 +324,9 @@
           ],
           "orders": [
             {
-              "id": "records-prior-2018",
-              "action": "placed",
-              "order": "Records request, prior primary care office",
-              "category": "procedure",
-              "reason": "Transfer of care"
-            },
-            {
               "id": "fit-2018",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             },
@@ -404,13 +391,6 @@
           "kind": "outside_records",
           "start": "2018-10-23T11:30",
           "reason": "Records from prior primary care office",
-          "orders": [
-            {
-              "id": "records-prior-2018",
-              "action": "done",
-              "date": "2018-10-23T11:30"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -857,7 +837,7 @@
             {
               "id": "fit-2019",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -1416,6 +1396,10 @@
                   "test": "Homocysteine",
                   "loinc": "13965-9",
                   "unit": "umol/L",
+                  "range": {
+                    "low": 5,
+                    "high": 15
+                  },
                   "value": 41
                 },
                 {
@@ -1489,8 +1473,9 @@
             {
               "id": "b12-teach-2021",
               "action": "placed",
-              "order": "Nurse visit: B12 injection and home injection teaching",
+              "order": "Intramuscular injection of vitamin B12",
               "category": "procedure",
+              "snomed": "308752009",
               "reason": "Vitamin B12 deficiency"
             }
           ],
@@ -4672,8 +4657,9 @@
             {
               "id": "ct-surv-2026",
               "action": "placed",
-              "order": "CT chest, abdomen and pelvis with contrast, surveillance at 6 months",
+              "order": "CT chest, abdomen and pelvis with contrast",
               "category": "imaging",
+              "loinc": "72254-6",
               "reason": "Gastric adenocarcinoma surveillance"
             }
           ],
@@ -4948,10 +4934,10 @@
     },
     "medications": {
       "cyanocobalamin 1 MG/ML Injectable Solution": {
-        "code": "1423423",
-        "display": "vitamin B12 1 MG/ML Oral Solution",
+        "code": "309594",
+        "display": "vitamin B12 1 MG/ML Injectable Solution",
         "ingredient": "cyanocobalamin",
-        "receipt": "NLM RxNav drugs"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4959,12 +4945,30 @@
         "code": "13965-9",
         "display": "Homocysteine [Moles/volume] in Serum or Plasma",
         "unit": "umol/L",
+        "range": {
+          "low": 5,
+          "high": 15
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Peripheral blood smear review": {
         "code": "5909-7",
         "display": "Blood smear finding [Identifier] in Blood by Light microscopy",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT chest, abdomen and pelvis with contrast": {
+        "code": "72254-6",
+        "display": "CT Chest and Abdomen and Pelvis W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Intramuscular injection of vitamin B12": {
+        "code": "308752009",
+        "display": "Intramuscular injection of vitamin B12",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

@@ -1,14 +1,7 @@
 {
   "unit": "unit-1842",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001842/2025-06-11a: procedure \"Cesarean delivery, low transverse\" not in catalog and has no snomed (text only)",
-    "MRN00001842/2026-06-08b: procedure \"Hyperbaric oxygen therapy\" not in catalog and has no snomed (text only)",
-    "MRN00001842/2026-06-08b: procedure \"Hyperbaric oxygen therapy\" not in catalog and has no snomed (text only)",
-    "MRN00001842/2026-06-08b: procedure \"Hyperbaric oxygen therapy\" not in catalog and has no snomed (text only)",
-    "MRN00001842/2021-08-24a: procedure order \"Request for prior primary care records\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001842",
@@ -266,15 +259,6 @@
               "performed": "2021-08-24T10:20"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2021",
-              "action": "placed",
-              "order": "Request for prior primary care records",
-              "category": "procedure",
-              "reason": "new patient"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -360,13 +344,6 @@
             {
               "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
               "date": "2021-04-27T13:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records-2021",
-              "action": "done",
-              "date": "2021-09-08T11:15"
             }
           ],
           "documents": [
@@ -2066,6 +2043,7 @@
           "medications": [
             {
               "drug_text": "Prenatal Vitamins Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -2252,6 +2230,7 @@
           "procedures": [
             {
               "procedure": "Cesarean delivery, low transverse",
+              "snomed": "788180009",
               "performed": "2025-06-11T06:12"
             }
           ],
@@ -2312,6 +2291,7 @@
           "medications": [
             {
               "drug_text": "Prenatal Vitamins Oral Tablet",
+              "uncoded": true,
               "action": "stop",
               "reason": "patient stopped in September"
             }
@@ -2494,30 +2474,49 @@
                   "test": "Carboxyhemoglobin",
                   "loinc": "20563-3",
                   "unit": "%",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 26
                 },
                 {
                   "test": "pH, arterial",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.36
                 },
                 {
                   "test": "pCO2, arterial",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 35
                 },
                 {
                   "test": "pO2, arterial",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 412
                 },
                 {
                   "test": "Bicarbonate, arterial",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 20
                 }
               ]
@@ -2685,6 +2684,9 @@
                   "test": "Carboxyhemoglobin",
                   "loinc": "20563-3",
                   "unit": "%",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 2
                 }
               ]
@@ -2693,14 +2695,17 @@
           "procedures": [
             {
               "procedure": "Hyperbaric oxygen therapy",
+              "snomed": "18678000",
               "performed": "2026-06-08T21:40"
             },
             {
               "procedure": "Hyperbaric oxygen therapy",
+              "snomed": "18678000",
               "performed": "2026-06-09T02:30"
             },
             {
               "procedure": "Hyperbaric oxygen therapy",
+              "snomed": "18678000",
               "performed": "2026-06-09T09:00"
             }
           ],
@@ -2742,13 +2747,13 @@
         "code": "199519",
         "display": "tinidazole 500 MG Oral Tablet",
         "ingredient": "tinidazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "valacyclovir 500 MG Oral Tablet": {
         "code": "313565",
         "display": "valacyclovir 500 MG Oral Tablet",
         "ingredient": "valacyclovir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2756,12 +2761,19 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carboxyhemoglobin": {
         "code": "20563-3",
         "display": "Carboxyhemoglobin/Hemoglobin.total in Blood",
         "unit": "%",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis A virus IgM antibody": {
@@ -2788,23 +2800,44 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH, arterial": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pO2, arterial": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
-    "rejected": [
-      "drug \"Prenatal Vitamins Oral Tablet\""
-    ]
+    "procedures": {
+      "Cesarean delivery, low transverse": {
+        "code": "788180009",
+        "display": "Lower uterine segment cesarean section",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Hyperbaric oxygen therapy": {
+        "code": "18678000",
+        "display": "Hyperbaric oxygen therapy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
   }
 }

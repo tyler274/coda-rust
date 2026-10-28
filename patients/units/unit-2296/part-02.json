@@ -190,10 +190,13 @@
        "collected": "2022-03-08T13:40",
        "results": [
         {
-         "test": "Natriuretic peptide B",
-         "loinc": "30934-4",
-         "unit": "pg/mL",
-         "value": 250
+          "test": "Natriuretic peptide B",
+          "loinc": "30934-4",
+          "unit": "pg/mL",
+          "value": 250,
+          "range": {
+            "high": 100
+          }
         }
        ]
       }
@@ -770,11 +773,12 @@
      ],
      "orders": [
       {
-       "id": "dme-o2",
-       "action": "placed",
-       "order": "Home oxygen concentrator and portable system, 2 L/min continuous",
-       "category": "procedure",
-       "reason": "resting hypoxemia with secondary polycythemia and cor pulmonale"
+        "id": "dme-o2",
+        "action": "placed",
+        "order": "Home oxygen therapy",
+        "category": "procedure",
+        "reason": "resting hypoxemia with secondary polycythemia and cor pulmonale",
+        "snomed": "426990007"
       }
      ],
      "documents": [
@@ -793,9 +797,9 @@
      "start": "2023-03-14T15:40",
      "orders": [
       {
-       "id": "dme-o2",
-       "action": "done",
-       "date": "2023-03-14T15:40"
+        "id": "dme-o2",
+        "action": "done",
+        "date": "2023-03-14T15:40"
       }
      ],
      "documents": [

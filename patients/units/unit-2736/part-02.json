@@ -27,7 +27,11 @@
                   "test": "Triiodothyronine, total",
                   "loinc": "3053-6",
                   "unit": "ng/dL",
-                  "value": 80
+                  "value": 80,
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  }
                 }
               ]
             }
@@ -70,7 +74,14 @@
             {
               "id": "tft-2022-03",
               "action": "placed",
-              "order": "TSH and free T4 in 8 weeks",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab",
+              "reason": "Recheck after estrogen route change"
+            },
+            {
+              "id": "tft-2022-03-2",
+              "action": "placed",
+              "order": "Free Thyroxine",
               "category": "lab",
               "reason": "Recheck after estrogen route change"
             }
@@ -210,6 +221,11 @@
           "orders": [
             {
               "id": "tft-2022-03",
+              "action": "done",
+              "date": "2022-03-29T07:35"
+            },
+            {
+              "id": "tft-2022-03-2",
               "action": "done",
               "date": "2022-03-29T07:35"
             }

@@ -688,21 +688,21 @@
               "collected": "2025-02-26T15:30",
               "results": [
                 {
-                  "test": "Prothrombin time",
-                  "loinc": "5902-2",
-                  "unit": "s",
+                  "test": "Prothrombin Time",
                   "value": 29
                 },
                 {
                   "test": "Activated partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 48
                 },
                 {
-                  "test": "Platelet count",
-                  "loinc": "777-3",
-                  "unit": "10*3/uL",
+                  "test": "Platelets",
                   "value": 210
                 }
               ]
@@ -1527,6 +1527,10 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 412
                 }
               ]
@@ -1683,6 +1687,10 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 318
                 }
               ]
@@ -1898,6 +1906,10 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 296
                 }
               ]
@@ -2032,6 +2044,10 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Direct antiglobulin test": {
@@ -2049,18 +2065,10 @@
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Platelet count": {
-        "code": "777-3",
-        "display": "Platelets [#/volume] in Blood by Automated count",
-        "unit": "10*3/uL",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Prothrombin time": {
-        "code": "5902-2",
-        "display": "Prothrombin time (PT)",
-        "unit": "s",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

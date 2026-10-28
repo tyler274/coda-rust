@@ -58,7 +58,8 @@
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
               "route": "Oral",
-              "course": "chronic"
+              "course": "chronic",
+              "uncoded": true
             }
           ],
           "state": {
@@ -297,7 +298,11 @@
                   "test": "Zinc",
                   "loinc": "5763-8",
                   "unit": "ug/dL",
-                  "value": 162
+                  "value": 162,
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  }
                 }
               ]
             }
@@ -368,9 +373,10 @@
             {
               "id": "zinc-recheck",
               "action": "placed",
-              "order": "Zinc, serum",
+              "order": "Zinc",
               "category": "lab",
-              "reason": "Recheck after stopping supplement"
+              "reason": "Recheck after stopping supplement",
+              "loinc": "5763-8"
             }
           ],
           "procedures": [

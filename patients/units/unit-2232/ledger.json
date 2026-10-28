@@ -1,11 +1,7 @@
 {
   "unit": "unit-2232",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002232/2016-09-19a: imaging order \"Abdominal aortic aneurysm screening ultrasound\" names no one catalog lab, panel, study or procedure",
-    "MRN00002232/2020-05-19a: lab order \"Serum protein electrophoresis with immunofixation\" names no one catalog lab, panel, study or procedure",
-    "MRN00002232/2020-05-21a: referral to \"Hematology-Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002232",
@@ -918,8 +914,9 @@
             {
               "id": "aaa-us-2016",
               "action": "placed",
-              "order": "Abdominal aortic aneurysm screening ultrasound",
+              "order": "US abdominal aorta",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "male former smoker 65-75"
             }
           ],
@@ -3207,8 +3204,17 @@
             {
               "id": "spep-2020",
               "action": "placed",
-              "order": "Serum protein electrophoresis with immunofixation",
+              "order": "Serum protein electrophoresis",
               "category": "lab",
+              "loinc": "24351-9",
+              "reason": "elevated total protein, anemia"
+            },
+            {
+              "id": "spep-2020-2",
+              "action": "placed",
+              "order": "Serum immunofixation",
+              "category": "lab",
+              "loinc": "99415-2",
               "reason": "elevated total protein, anemia"
             }
           ],
@@ -3258,11 +3264,16 @@
               "date": "2020-05-21T11:30"
             },
             {
+              "id": "spep-2020-2",
+              "action": "done",
+              "date": "2020-05-21T11:30"
+            },
+            {
               "id": "heme-ref-2020",
               "action": "placed",
               "order": "Hematology-oncology referral, urgent",
               "category": "referral",
-              "to": "Hematology-Oncology",
+              "to": "Hematology",
               "reason": "monoclonal protein 3.4 g/dL, anemia, possible hyperviscosity symptoms"
             }
           ],
@@ -6229,19 +6240,36 @@
         "code": "197311",
         "display": "acyclovir 400 MG Oral Tablet",
         "ingredient": "acyclovir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "morphine sulfate 15 MG Oral Tablet": {
         "code": "892582",
         "display": "morphine sulfate 15 MG Oral Tablet",
         "ingredient": "morphine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "morphine sulfate 60 MG Extended Release Oral Tablet": {
         "code": "891893",
         "display": "morphine sulfate 60 MG Extended Release Oral Tablet",
         "ingredient": "morphine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "reports": {
+      "Serum immunofixation": {
+        "code": "99415-2",
+        "display": "Protein.monoclonal band 1 [Mass/volume] in Serum or Plasma by Immunofixation",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Serum protein electrophoresis": {
+        "code": "24351-9",
+        "display": "Protein electrophoresis panel - Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "US abdominal aorta": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
       }
     }
   }

@@ -1,9 +1,7 @@
 {
   "unit": "unit-2061",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002061/2021-06-08a: referral to \"Infectious Diseases\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002061",
@@ -400,7 +398,7 @@
               "action": "placed",
               "order": "Infectious Diseases referral",
               "category": "referral",
-              "to": "Infectious Diseases",
+              "to": "Infectious Disease",
               "reason": "untreated chronic hepatitis C with cirrhosis"
             },
             {
@@ -507,6 +505,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.2
                 }
               ]
@@ -1745,6 +1746,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 3.6
                 }
               ]
@@ -2327,6 +2331,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.3
                 }
               ]
@@ -2456,6 +2463,7 @@
                   "test": "Albumin in Peritoneal fluid",
                   "loinc": "1749-1",
                   "unit": "g/dL",
+                  "range": {},
                   "value": 1.2
                 }
               ]
@@ -2908,6 +2916,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.7
                 }
               ]
@@ -3495,6 +3506,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 3.9
                 }
               ]
@@ -3919,6 +3933,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.4
                 }
               ]
@@ -4372,6 +4389,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.6
                 }
               ]
@@ -4912,12 +4932,16 @@
                   "test": "Sodium in Urine",
                   "loinc": "2955-3",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 5
                 },
                 {
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.9
                 }
               ]
@@ -5524,6 +5548,7 @@
                   "test": "Neutrophils in Peritoneal fluid",
                   "loinc": "26502-5",
                   "unit": "/uL",
+                  "range": {},
                   "value": 110,
                   "resulted": "2026-07-26T16:00"
                 },
@@ -5641,25 +5666,25 @@
         "code": "198102",
         "display": "vitamin K1 5 MG Oral Tablet",
         "ingredient": "phytonadione",
-        "receipt": "NLM RxNav drugs"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet": {
         "code": "1799212",
         "display": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet",
         "ingredient": "sofosbuvir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "spironolactone 100 MG Oral Tablet": {
         "code": "198222",
         "display": "spironolactone 100 MG Oral Tablet",
         "ingredient": "spironolactone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "testosterone cypionate 200 MG/ML Injectable Solution": {
         "code": "835840",
         "display": "testosterone cypionate 200 MG/ML Injectable Solution",
         "ingredient": "testosterone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5667,12 +5692,16 @@
         "code": "1749-1",
         "display": "Albumin [Mass/volume] in Peritoneal fluid",
         "unit": "g/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Alpha-1-Fetoprotein": {
         "code": "1834-1",
         "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Estradiol": {
@@ -5690,12 +5719,14 @@
         "code": "26502-5",
         "display": "Neutrophils [#/volume] in Peritoneal fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sodium in Urine": {
         "code": "2955-3",
         "display": "Sodium [Moles/volume] in Urine",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

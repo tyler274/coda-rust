@@ -692,6 +692,9 @@
                   "test": "Variant lymphocytes/Leukocytes in Blood by Manual count",
                   "loinc": "735-1",
                   "unit": "%",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 15
                 }
               ]
@@ -1162,6 +1165,9 @@
                   "test": "Variant lymphocytes/Leukocytes in Blood by Manual count",
                   "loinc": "735-1",
                   "unit": "%",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 20
                 }
               ]
@@ -1199,12 +1205,20 @@
                   "test": "Reticulocytes/Erythrocytes in Blood",
                   "loinc": "4679-7",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 4.6
                 },
                 {
                   "test": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 388
                 },
                 {
@@ -1399,6 +1413,10 @@
                   "test": "Reticulocytes/Erythrocytes in Blood",
                   "loinc": "4679-7",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 4.1
                 }
               ]
@@ -1648,6 +1666,10 @@
                   "test": "Reticulocytes/Erythrocytes in Blood",
                   "loinc": "4679-7",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 2.2
                 }
               ]
@@ -1976,12 +1998,20 @@
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Reticulocytes/Erythrocytes in Blood": {
         "code": "4679-7",
         "display": "Reticulocytes/Erythrocytes in Blood",
         "unit": "%",
+        "range": {
+          "low": 0.5,
+          "high": 1.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Variant lymphocytes [Presence] in Blood": {
@@ -1993,6 +2023,9 @@
         "code": "735-1",
         "display": "Variant lymphocytes/Leukocytes in Blood by Manual count",
         "unit": "%",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

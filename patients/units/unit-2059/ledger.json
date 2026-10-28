@@ -3,8 +3,7 @@
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
     "MRN00002059/2024-12-09a: reaction \"Immune hemolytic anemia\" not in catalog (text only)",
-    "MRN00002059/2024-12-09a: reaction \"Avoid: penicillin class after amoxicillin hemolytic anemia\" not in catalog (text only)",
-    "left text-only (not verified): lab \"HFE gene C282Y\" LOINC 21695-5 not found"
+    "MRN00002059/2024-12-09a: reaction \"Avoid: penicillin class after amoxicillin hemolytic anemia\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -1566,7 +1565,7 @@
               "results": [
                 {
                   "test": "HFE gene C282Y",
-                  "loinc": "21695-5",
+                  "loinc": "21695-2",
                   "text": "C282Y homozygous"
                 }
               ]
@@ -3539,6 +3538,10 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 450
                 }
               ]
@@ -5170,19 +5173,24 @@
         "code": "312055",
         "display": "nystatin 100000 UNT/ML Oral Suspension",
         "ingredient": "nystatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "trientine hydrochloride 250 MG Oral Capsule": {
         "code": "313472",
         "display": "trientine hydrochloride 250 MG Oral Capsule",
         "ingredient": "trientine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
       "Direct antiglobulin test, IgG": {
         "code": "1007-4",
         "display": "Direct antiglobulin test.polyspecific reagent [Presence] on Red Blood Cells",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "HFE gene C282Y": {
+        "code": "21695-2",
+        "display": "HFE gene.p.Cys282Tyr [Presence] in Blood or Tissue by Molecular genetics method",
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Haptoglobin": {
@@ -5195,11 +5203,12 @@
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"HFE gene C282Y\" LOINC 21695-5 not found"
-    ]
+    }
   }
 }

@@ -1,10 +1,7 @@
 {
   "unit": "unit-2740",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002740/2021-09-14a: procedure order \"Request records from prior primary care practice\" names no one catalog lab, panel, study or procedure",
-    "MRN00002740/2025-11-04a: referral to \"Hematology/Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002740",
@@ -255,13 +252,6 @@
           ],
           "orders": [
             {
-              "id": "records-prior",
-              "action": "placed",
-              "order": "Request records from prior primary care practice",
-              "category": "procedure",
-              "reason": "establishing care"
-            },
-            {
               "id": "mammo-2021",
               "action": "placed",
               "order": "Screening mammogram, bilateral",
@@ -326,13 +316,6 @@
             {
               "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
               "date": "2021-04-30T14:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "records-prior",
-              "action": "done",
-              "date": "2021-10-05T11:15"
             }
           ],
           "documents": [
@@ -2513,6 +2496,10 @@
                   "test": "Lactate Dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 245
                 },
                 {
@@ -2632,7 +2619,7 @@
               "action": "placed",
               "order": "Hematology/Oncology referral",
               "category": "referral",
-              "to": "Hematology/Oncology",
+              "to": "Hematology",
               "reason": "diffuse large B-cell lymphoma"
             }
           ],
@@ -3007,6 +2994,10 @@
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

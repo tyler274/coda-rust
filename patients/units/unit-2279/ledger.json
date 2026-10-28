@@ -1,9 +1,7 @@
 {
   "unit": "unit-2279",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): lab \"Legionella pneumophila serogroup 1 antigen, urine\" LOINC 32781-8 not found"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002279",
@@ -844,7 +842,7 @@
               "results": [
                 {
                   "test": "Legionella pneumophila serogroup 1 antigen, urine",
-                  "loinc": "32781-8",
+                  "loinc": "41499-5",
                   "text": "Positive"
                 }
               ]
@@ -1947,7 +1945,7 @@
               "results": [
                 {
                   "test": "Legionella pneumophila serogroup 1 antigen, urine",
-                  "loinc": "32781-8",
+                  "loinc": "41499-5",
                   "text": "Negative"
                 }
               ]
@@ -2098,10 +2096,15 @@
         "code": "197700",
         "display": "fluconazole 200 MG Oral Tablet",
         "ingredient": "fluconazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
+      "Legionella pneumophila serogroup 1 antigen, urine": {
+        "code": "41499-5",
+        "display": "Legionella pneumophila 1 Ag [Presence] in Urine by Immunoassay",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "Sputum Gram stain": {
         "code": "664-3",
         "display": "Microscopic observation [Identifier] in Specimen by Gram stain",
@@ -2112,9 +2115,6 @@
         "display": "Bacteria identified in Sputum by Respiratory culture",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Legionella pneumophila serogroup 1 antigen, urine\" LOINC 32781-8 not found"
-    ]
+    }
   }
 }

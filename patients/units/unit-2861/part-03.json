@@ -77,7 +77,7 @@
           "measure": ["bp", "hr", "spo2", "weight_kg"],
           "surveys": [{"survey": "Pain severity (0-10)", "value": 6}],
           "orders": [
-            {"id": "home-care-referral", "action": "placed", "order": "Home health referral: skilled nursing and home health aide evaluation", "category": "referral", "to": "Home health agency", "reason": "homebound with metastatic cancer, caregiver strain"}
+            {"id": "home-care-referral", "action": "placed", "order": "Home health referral: skilled nursing and home health aide evaluation", "category": "referral", "to": "Home Health", "reason": "homebound with metastatic cancer, caregiver strain"}
           ],
           "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2025-08-12T14:00"}],
           "documents": [
@@ -127,7 +127,7 @@
           "kind": "portal_message",
           "start": "2026-01-20T20:15",
           "orders": [
-            {"id": "pre-meeting-labs", "action": "placed", "order": "CBC, CMP", "category": "lab", "reason": "before family meeting"}
+            {"id": "pre-meeting-labs", "action": "placed", "order": "Complete Blood Count (CBC)", "category": "lab", "reason": "before family meeting"}, {"id": "pre-meeting-labs-2", "action": "placed", "order": "Comprehensive Metabolic Panel (CMP)", "category": "lab", "reason": "before family meeting"}
           ],
           "documents": [
             {"type": "Patient Message", "title": "Family meeting", "author": "patient", "date": "2026-01-20T20:15", "body": "(daughter) Hello doctor. Mom saw the cancer doctor last week. The new scans show the cancer has spread more and they said there is no treatment left that will help it. Mom says she is done with treatments anyway. She is more tired, sometimes short of breath, and the pain is harder to control. Can we have that family meeting with you? My father and I will both come. Thank you."},
@@ -145,7 +145,7 @@
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-01-27T09:00", "results": [{"test": "Calcium", "value": 11.4}, {"test": "Alkaline Phosphatase", "value": 240}, {"test": "Creatinine", "value": 1.8}, {"test": "Albumin"}]}
           ],
           "orders": [
-            {"id": "pre-meeting-labs", "action": "done", "date": "2026-01-27T09:00"}
+            {"id": "pre-meeting-labs", "action": "done", "date": "2026-01-27T09:00"}, {"id": "pre-meeting-labs-2", "action": "done", "date": "2026-01-27T09:00"}
           ],
           "procedures": [{"procedure": "Venipuncture", "performed": "2026-01-27T09:00"}],
           "documents": [
@@ -167,7 +167,7 @@
             {"drug_text": "calcium carbonate 600 MG Oral Tablet", "action": "stop", "reason": "calcium 11.4; comfort-focused care"}
           ],
           "orders": [
-            {"id": "hospice-referral", "action": "placed", "order": "Hospice referral, home hospice", "category": "referral", "to": "Hospice", "reason": "progressive stage IV breast cancer, no further disease-directed therapy, patient goals"}
+            {"id": "hospice-referral", "action": "placed", "order": "Hospice referral, home hospice", "category": "referral", "to": "Palliative Care", "reason": "progressive stage IV breast cancer, no further disease-directed therapy, patient goals"}
           ],
           "procedures": [
             {"procedure": "Office visit, established patient, high MDM", "performed": "2026-01-29T15:00"},
