@@ -28,8 +28,12 @@ pub struct CanonicalEvidenceMutation {
     pub expected_revision: Option<i64>,
     #[serde(rename = "source_generation", skip_serializing_if = "Option::is_none")]
     pub source_generation: Option<i32>,
-    #[serde(rename = "payload", deserialize_with = "Option::deserialize")]
-    pub payload: Option<std::collections::HashMap<String, serde_json::Value>>,
+    /// delete is an explicit source removal: payload is exactly {\"source\":{\"kind\":..}} and expected_revision is the exact current revision. Retained revisions stay citable as non-current; it is not privacy erasure.
+    #[serde(rename = "operation", skip_serializing_if = "Option::is_none")]
+    pub operation: Option<Operation>,
+    /// Literal source object. Health evidence measured_at or measured_interval.start is projected only when an RFC 3339 instant; otherwise the stored date is unknown (null), never receipt time.
+    #[serde(rename = "payload")]
+    pub payload: std::collections::HashMap<String, serde_json::Value>,
 }
 
 impl CanonicalEvidenceMutation {
@@ -38,7 +42,7 @@ impl CanonicalEvidenceMutation {
         canonical_record_id: Option<uuid::Uuid>,
         record_id: String,
         entity: Entity,
-        payload: Option<std::collections::HashMap<String, serde_json::Value>>,
+        payload: std::collections::HashMap<String, serde_json::Value>,
     ) -> CanonicalEvidenceMutation {
         CanonicalEvidenceMutation {
             operation_id,
@@ -47,6 +51,7 @@ impl CanonicalEvidenceMutation {
             entity,
             expected_revision: None,
             source_generation: None,
+            operation: None,
             payload,
         }
     }
@@ -63,5 +68,19 @@ pub enum Entity {
 impl Default for Entity {
     fn default() -> Entity {
         Self::ClinicalNote
+    }
+}
+/// delete is an explicit source removal: payload is exactly {\"source\":{\"kind\":..}} and expected_revision is the exact current revision. Retained revisions stay citable as non-current; it is not privacy erasure.
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+pub enum Operation {
+    #[serde(rename = "upsert")]
+    Upsert,
+    #[serde(rename = "delete")]
+    Delete,
+}
+
+impl Default for Operation {
+    fn default() -> Operation {
+        Self::Upsert
     }
 }

@@ -771,7 +771,7 @@ async fn apply(
                     .execute(&mut **tx)
                     .await?;
                 let revision:i64=sqlx::query_scalar("update users set evidence_revision=evidence_revision+1 where id=$1 returning evidence_revision").bind(r.account_id).fetch_one(&mut **tx).await?;
-                sqlx::query("update evidence_sync_changes set deleted=true,revision=$3 where user_id=$1 and record_id=$2").bind(r.account_id).bind(id).bind(revision).execute(&mut **tx).await?;
+                sqlx::query("update evidence_sync_changes set deleted=true,source_removed=false,revision=$3 where user_id=$1 and record_id=$2").bind(r.account_id).bind(id).bind(revision).execute(&mut **tx).await?;
             }
             sqlx::query("delete from duet_device_snapshots where user_id=$1")
                 .bind(r.account_id)
@@ -814,7 +814,7 @@ async fn apply(
             .execute(&mut **tx)
             .await?;
             let cursor:i64=sqlx::query_scalar("update users set evidence_revision=greatest(evidence_revision,$2)+1,health_records_generation=health_records_generation+1,health_records_disconnected_at=$3 where id=$1 returning evidence_revision").bind(r.account_id).bind(r.scope_version).bind(r.occurred_at).fetch_one(&mut **tx).await?;
-            sqlx::query("update evidence_sync_changes set deleted=true,revision=$2 where user_id=$1 and record_id=any($3)").bind(r.account_id).bind(cursor).bind(records).execute(&mut **tx).await?;
+            sqlx::query("update evidence_sync_changes set deleted=true,source_removed=false,revision=$2 where user_id=$1 and record_id=any($3)").bind(r.account_id).bind(cursor).bind(records).execute(&mut **tx).await?;
         }
         Restriction::FollowUpPause | Restriction::FollowUpCancel => {
             let revision: Option<i64> =
@@ -890,7 +890,7 @@ async fn apply(
                 .await?;
             }
             let revision:i64=sqlx::query_scalar("update public.users set evidence_revision=evidence_revision+1 where id=$1 returning evidence_revision").bind(r.account_id).fetch_one(&mut **tx).await?;
-            sqlx::query("update public.evidence_sync_changes set deleted=true,revision=$3 where user_id=$1 and record_id=$2").bind(r.account_id).bind(r.scope_id).bind(revision).execute(&mut **tx).await?;
+            sqlx::query("update public.evidence_sync_changes set deleted=true,source_removed=false,revision=$3 where user_id=$1 and record_id=$2").bind(r.account_id).bind(r.scope_id).bind(revision).execute(&mut **tx).await?;
         }
     }
     Ok(true)

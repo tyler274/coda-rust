@@ -23,6 +23,9 @@ pub struct CanonicalEvidenceChange {
     pub revision: i64,
     #[serde(rename = "deleted")]
     pub deleted: bool,
+    /// Removed by its source; retained revisions remain citable. False for privacy erasure.
+    #[serde(rename = "source_removed", skip_serializing_if = "Option::is_none")]
+    pub source_removed: Option<bool>,
 }
 
 impl CanonicalEvidenceChange {
@@ -39,6 +42,7 @@ impl CanonicalEvidenceChange {
             record_id,
             revision,
             deleted,
+            source_removed: None,
         }
     }
 }

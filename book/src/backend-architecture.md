@@ -11,7 +11,7 @@ real-service journey.
 | --- | --- |
 | Startup, configured stores and hosted profile | [`main.rs`](/crates/duet-api/src/main.rs), [`hosting.rs`](/crates/duet-api/src/hosting.rs) |
 | Duet accounts and authentication | [`identity.rs`](/crates/duet-api/src/identity.rs), [`session.rs`](/crates/duet-api/src/session.rs); [security boundaries](security-posture.md) |
-| Evidence identity, exact reads and paging | [`evidence.rs`](/crates/duet-api/src/evidence.rs), [`evidence_routes.rs`](/crates/duet-api/src/evidence_routes.rs), [`evidence_paging.rs`](/crates/duet-api/src/evidence_paging.rs) |
+| Evidence identity, ingestion authority, exact reads and paging | [`evidence.rs`](/crates/duet-api/src/evidence.rs), [`evidence_entity.rs`](/crates/duet-api/src/evidence_entity.rs), [`evidence_routes.rs`](/crates/duet-api/src/evidence_routes.rs), [`evidence_paging.rs`](/crates/duet-api/src/evidence_paging.rs) |
 | Mounted conversation acceptance and execution | [`conversation.rs`](/crates/duet-api/src/conversation.rs), [`conversation_routes.rs`](/crates/duet-api/src/conversation_routes.rs) |
 | Mounted conversation instructions, context and admitted skills | [`conversation.rs`](/crates/duet-api/src/conversation.rs), [`conversation_context.rs`](/crates/duet-api/src/conversation_context.rs), [`skills.rs`](/crates/duet-api/src/skills.rs) |
 | Saved care, follow-up and Today | [`care.rs`](/crates/duet-api/src/care.rs), [`follow_up.rs`](/crates/duet-api/src/follow_up.rs), [`today.rs`](/crates/duet-api/src/today.rs), [`producer_database.rs`](/crates/duet-api/src/producer_database.rs) |
@@ -19,6 +19,36 @@ real-service journey.
 | Privacy receipts, replay and deletion archive | [Privacy recovery](privacy-recovery.md) |
 | Schema and moments persistence | [`database.rs`](/crates/duet-api/src/database.rs), [`migrations/`](/crates/duet-api/migrations) |
 | Practice invitations and connection adapter | [Accounts and practice connection](front-door.md) |
+
+## Canonical evidence ingestion
+
+`EvidenceStore` is the single mutation owner for canonical health evidence and
+clinical notes. It applies single and batch mutations under an account-locked
+transaction. The HTTP routes `POST /api/canonical-evidence` and
+`POST /api/canonical-evidence/batch` always write with device authority. Device
+authority may not create, correct, revive or remove the originals of the
+server-owned portal sources (`epic`, `oracleHealth`, `healow`, `googleHealth`).
+Those originals can be written only in process, through
+`ingest_with_authority` and a matching connector source kind and connection.
+Such refusals return the stable conflict code `source_authority_refused`. A
+record's source kind, connection and note label are fixed when it is created.
+
+- A batch holds 1–100 items, each a bounded source object up to 2 MB. Each item
+  runs in its own savepoint and gets an `accepted` or typed `rejected` outcome,
+  so no item is skipped silently. An infrastructure failure aborts the whole
+  batch.
+- Retrying an operation returns its first acknowledged address. A new operation
+  identity must name the exact current revision.
+- `measured_at` or `recorded_at` is stored only from an RFC 3339 instant the
+  source declared. Otherwise the stored date is unknown (NULL); receipt time is
+  never used, and the literal stays in the payload. Patient-authored notes
+  (`Added in Duet`) must carry an explicit instant.
+- `operation: "delete"` is an explicit removal by the owning source, fenced by
+  exact revision and source generation. It keeps the base row and retained
+  revisions, marks membership `deleted` and `source_removed`, and leaves earlier
+  revisions readable as non-current citations. Privacy erasure
+  ([privacy recovery](privacy-recovery.md)) deletes base rows and their
+  retained revisions, and remains authoritative.
 
 Duet uses the product-neutral [`harness`](/crates/harness/src/lib.rs). It retains
 its own context policy, authority, durable state, effects and recovery. It must

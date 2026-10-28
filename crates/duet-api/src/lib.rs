@@ -16,6 +16,7 @@ pub mod database;
 pub mod doctor_routes;
 pub mod durable;
 pub mod evidence;
+mod evidence_entity;
 pub mod evidence_paging;
 pub mod evidence_routes;
 pub mod follow_up;
@@ -92,7 +93,7 @@ impl IntoResponse for ApiError {
             Self::Conflict(message) => (
                 StatusCode::CONFLICT,
                 serde_json::json!({"code":match message {
-                    "selected_context_unavailable" | "selected_follow_up_unavailable" | "selected_insight_unavailable" | "reply_target_unavailable" => message,
+                    "selected_context_unavailable" | "selected_follow_up_unavailable" | "selected_insight_unavailable" | "reply_target_unavailable" | "source_authority_refused" => message,
                     _ => "stale_state",
                 },"message":message}),
             ),

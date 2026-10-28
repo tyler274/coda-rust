@@ -43,7 +43,7 @@
         "operationId": "ingestCanonicalEvidence",
         "security": [{"HTTPBearer": []}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalEvidenceMutation"}}}},
-        "responses": {"200": {"description": "Immutable exact source address", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalSourceAddress"}}}}, "409": {"description": "Source changed or ingestion identity reused"}}
+        "responses": {"200": {"description": "Immutable exact source address", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalSourceAddress"}}}}, "409": {"description": "Source changed, ingestion identity reused, or source_authority_refused"}, "404": {"description": "Explicit source removal names no current record"}, "422": {"description": "Malformed or unbounded source object"}}
       },
       "get": {
         "operationId": "readCanonicalEvidenceSnapshot",
@@ -52,12 +52,20 @@
         "responses": {"200": {"description": "Complete account-consistent delta including tombstones", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalEvidenceSnapshot"}}}}}
       }
     },
+    "/api/canonical-evidence/batch": {
+      "post": {
+        "operationId": "ingestCanonicalEvidenceBatch",
+        "security": [{"HTTPBearer": []}],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalEvidenceBatch"}}}},
+        "responses": {"200": {"description": "One outcome per item in request order; each item committed or rolled back alone, none skipped", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalEvidenceBatchResult"}}}}, "422": {"description": "Batch empty or over 100 items"}}
+      }
+    },
     "/api/canonical-evidence/exact": {
       "post": {
         "operationId": "readCanonicalEvidenceExact",
         "security": [{"HTTPBearer": []}],
         "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object", "required": ["address"], "properties": {"address": {"$ref": "#/components/schemas/CanonicalSourceAddress"}, "require_current": {"type": "boolean", "default": false}}}}}},
-        "responses": {"200": {"description": "Exact immutable source payload", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalExactEvidence"}}}}, "404": {"description": "Not owned, withdrawn, or absent"}, "409": {"description": "Selected revision was corrected"}}
+        "responses": {"200": {"description": "Exact immutable source payload", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/CanonicalExactEvidence"}}}}, "404": {"description": "Not owned, privacy-erased, withdrawn, or absent"}, "409": {"description": "require_current and the revision was corrected or removed by its source"}}
       }
     }
   },
@@ -74,10 +82,14 @@
       "DurablePublicationView": {"type":"object","required":["id","generation","expires_at","revoked","web_url","shl_url","content_sha256"],"properties":{"id":{"type":"string","format":"uuid"},"generation":{"type":"integer","format":"int64"},"expires_at":{"type":"string","format":"date-time"},"revoked":{"type":"boolean"},"web_url":{"type":"string"},"shl_url":{"type":"string"},"content_sha256":{"type":"string"}}},
       "DurableRestrictionRequest": {"type": "object", "required": ["event_id", "operation", "scope_version"], "properties": {"event_id": {"type": "string", "format": "uuid"}, "operation": {"type": "string", "enum": ["luna_withdraw", "sessions_revoke", "evidence_delete", "doctor_page_delete", "doctor_note_delete", "doctor_item_delete", "publication_revoke", "device_withdraw", "records_withdraw", "follow_up_pause", "follow_up_cancel", "account_delete"]}, "scope_id": {"type": "string", "format": "uuid", "nullable": true}, "scope_version": {"type": "integer", "format": "int64"}}},
       "DurablePrivacyReceipt": {"type": "object", "additionalProperties": false, "required": ["schema_version", "event_id", "account_id", "account_incarnation", "operation", "scope_id", "scope_version", "occurred_at"], "properties": {"schema_version": {"type": "integer"}, "event_id": {"type": "string", "format": "uuid"}, "account_id": {"type": "string", "format": "uuid"}, "account_incarnation": {"type": "string", "format": "uuid"}, "operation": {"type": "string", "enum": ["luna_withdraw", "sessions_revoke", "evidence_delete", "doctor_page_delete", "doctor_note_delete", "doctor_item_delete", "publication_revoke", "device_withdraw", "records_withdraw", "follow_up_pause", "follow_up_cancel", "account_delete"]}, "scope_id": {"type": "string", "format": "uuid"}, "scope_version": {"type": "integer", "format": "int64"}, "occurred_at": {"type": "string", "format": "date-time"}}},
-      "CanonicalEvidenceMutation": {"type": "object", "additionalProperties": false, "required": ["operation_id", "canonical_record_id", "record_id", "entity", "payload"], "properties": {"operation_id": {"type": "string", "format": "uuid"}, "canonical_record_id": {"type": "string", "format": "uuid"}, "record_id": {"type": "string"}, "entity": {"type": "string", "enum": ["clinical_note", "health_evidence"]}, "expected_revision": {"type": "integer", "format": "int64", "nullable": true}, "source_generation":{"type":"integer","format":"int32","nullable":true}, "payload": {"type": "object", "additionalProperties": true}}},
+      "CanonicalEvidenceMutation": {"type": "object", "additionalProperties": false, "required": ["operation_id", "canonical_record_id", "record_id", "entity", "payload"], "properties": {"operation_id": {"type": "string", "format": "uuid"}, "canonical_record_id": {"type": "string", "format": "uuid"}, "record_id": {"type": "string"}, "entity": {"type": "string", "enum": ["clinical_note", "health_evidence"]}, "expected_revision": {"type": "integer", "format": "int64", "nullable": true}, "source_generation":{"type":"integer","format":"int32","nullable":true}, "operation": {"type": "string", "enum": ["upsert", "delete"], "default": "upsert", "description": "delete is an explicit source removal: payload is exactly {\"source\":{\"kind\":..}} and expected_revision is the exact current revision. Retained revisions stay citable as non-current; it is not privacy erasure."}, "payload": {"type": "object", "additionalProperties": true, "description": "Literal source object. Health evidence measured_at or measured_interval.start is projected only when an RFC 3339 instant; otherwise the stored date is unknown (null), never receipt time."}}},
       "CanonicalExactEvidence": {"type": "object", "required": ["address", "payload", "current"], "properties": {"address": {"$ref": "#/components/schemas/CanonicalSourceAddress"}, "payload": {"type": "object", "additionalProperties": true}, "current": {"type": "boolean"}}},
-      "CanonicalEvidenceChange": {"type": "object", "required": ["entity", "canonical_record_id", "record_id", "revision", "deleted"], "properties": {"entity": {"type": "string", "enum": ["clinical_note", "health_evidence"]}, "canonical_record_id": {"type": "string", "format": "uuid"}, "record_id": {"type": "string"}, "revision": {"type": "integer", "format": "int64"}, "deleted": {"type": "boolean"}}},
-      "CanonicalEvidenceSnapshot": {"type": "object", "required": ["cursor", "changes", "records"], "properties": {"cursor": {"type": "integer", "format": "int64"}, "changes": {"type": "array", "items": {"$ref": "#/components/schemas/CanonicalEvidenceChange"}}, "records": {"type": "array", "items": {"$ref": "#/components/schemas/CanonicalExactEvidence"}}}}
+      "CanonicalEvidenceChange": {"type": "object", "required": ["entity", "canonical_record_id", "record_id", "revision", "deleted"], "properties": {"entity": {"type": "string", "enum": ["clinical_note", "health_evidence"]}, "canonical_record_id": {"type": "string", "format": "uuid"}, "record_id": {"type": "string"}, "revision": {"type": "integer", "format": "int64"}, "deleted": {"type": "boolean"}, "source_removed": {"type": "boolean", "default": false, "description": "Removed by its source; retained revisions remain citable. False for privacy erasure."}}},
+      "CanonicalEvidenceSnapshot": {"type": "object", "required": ["cursor", "changes", "records"], "properties": {"cursor": {"type": "integer", "format": "int64"}, "changes": {"type": "array", "items": {"$ref": "#/components/schemas/CanonicalEvidenceChange"}}, "records": {"type": "array", "items": {"$ref": "#/components/schemas/CanonicalExactEvidence"}}}},
+      "CanonicalEvidenceBatch": {"type": "object", "additionalProperties": false, "required": ["items"], "properties": {"items": {"type": "array", "minItems": 1, "maxItems": 100, "items": {"$ref": "#/components/schemas/CanonicalEvidenceMutation"}}}},
+      "CanonicalEvidenceRejection": {"type": "object", "required": ["code", "message"], "properties": {"code": {"type": "string", "enum": ["conflict", "source_authority_refused", "invalid", "not_found"]}, "message": {"type": "string"}}},
+      "CanonicalEvidenceItemOutcome": {"type": "object", "required": ["status", "index", "operation_id"], "properties": {"status": {"type": "string", "enum": ["accepted", "rejected"]}, "index": {"type": "integer", "minimum": 0}, "operation_id": {"type": "string", "format": "uuid"}, "address": {"$ref": "#/components/schemas/CanonicalSourceAddress"}, "rejection": {"$ref": "#/components/schemas/CanonicalEvidenceRejection"}}},
+      "CanonicalEvidenceBatchResult": {"type": "object", "required": ["results"], "properties": {"results": {"type": "array", "items": {"$ref": "#/components/schemas/CanonicalEvidenceItemOutcome"}}}}
     }
   }
 }

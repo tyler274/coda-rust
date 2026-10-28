@@ -2,7 +2,8 @@
 use crate::{
     ApiError,
     evidence::{
-        AddressedRecordRevision, EvidenceMutation, EvidenceSnapshot, EvidenceStore, ExactEvidence,
+        AddressedRecordRevision, EvidenceBatch, EvidenceBatchResult, EvidenceMutation,
+        EvidenceSnapshot, EvidenceStore, ExactEvidence, MAX_EVIDENCE_BATCH_BYTES,
     },
     identity::{AccountContext, IdentityStore, check_current},
     privacy::{PrivacyStore, Receipt, Restriction},
@@ -53,6 +54,12 @@ pub fn router(state: DurableState) -> Router {
         .route("/api/auth/privacy-restrictions", post(restrict))
         .route("/api/canonical-evidence", post(ingest).get(snapshot))
         .route("/api/canonical-evidence/exact", post(exact))
+        .route(
+            "/api/canonical-evidence/batch",
+            post(ingest_batch).layer(axum::extract::DefaultBodyLimit::max(
+                MAX_EVIDENCE_BATCH_BYTES,
+            )),
+        )
         .with_state(state)
 }
 async fn state_in(
@@ -237,6 +244,16 @@ async fn ingest(
 ) -> Result<Json<AddressedRecordRevision>, ApiError> {
     let c = s.authenticate(&headers).await?;
     Ok(Json(s.evidence.ingest(&c, &body).await?))
+}
+/// Device batch: each item commits or is rejected on its own; the HTTP route never
+/// carries connector authority.
+async fn ingest_batch(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+    Json(body): Json<EvidenceBatch>,
+) -> Result<Json<EvidenceBatchResult>, ApiError> {
+    let c = s.authenticate(&headers).await?;
+    Ok(Json(s.evidence.ingest_batch(&c, &body).await?))
 }
 #[derive(Deserialize)]
 struct Cursor {

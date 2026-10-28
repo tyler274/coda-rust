@@ -4,7 +4,10 @@ use chrono::{Duration, Utc};
 use duet_api::{
     ApiError,
     database::{AccountDatabase, migrate},
-    evidence::{EvidenceMutation, EvidenceStore},
+    evidence::{
+        EvidenceBatch, EvidenceItemOutcome, EvidenceMutation, EvidenceOperation,
+        EvidenceRejectionCode, EvidenceStore, IngestAuthority, SOURCE_AUTHORITY_REFUSED,
+    },
     identity::{IdentityStore, IdentityVerifier, VerifiedIdentity},
     privacy::{FileJournal, PrivacyStore, ReceiptJournal, Restriction},
 };
@@ -145,6 +148,7 @@ async fn run_durable_owners() {
         entity: Entity::HealthEvidence,
         expected_revision: None,
         source_generation: None,
+        operation: Default::default(),
         payload: serde_json::json!({"concept_id":"test-measurement","measured_at":"2026-10-20T00:00:00Z","source":{"kind":"healthRecords","record_id":"original-id","declared_dates":{"issued":"2026"},"projected_date_role":"issued"},"value":{"literal":"< 0.03","unit":"mg/dL","unknown":[null,{"custom":"preserve"}]},"status":"preliminary"}),
     };
     let first = evidence.ingest(&a, &mutation).await.unwrap();
@@ -861,6 +865,640 @@ async fn run_durable_owners() {
     drop(second);
     drop(db);
     drop(db2);
+    owner.close().await.unwrap();
+    sqlx::raw_sql(AssertSqlSafe(format!("drop database {name} with (force)")))
+        .execute(&mut admin)
+        .await
+        .unwrap();
+    sqlx::raw_sql(AssertSqlSafe(format!("drop role {role}")))
+        .execute(&mut admin)
+        .await
+        .unwrap();
+    tokio::fs::remove_dir_all(root).await.unwrap();
+}
+
+fn upsert(entity: Entity, record_id: &str, payload: serde_json::Value) -> EvidenceMutation {
+    EvidenceMutation {
+        operation_id: Uuid::new_v4(),
+        canonical_record_id: Uuid::new_v4(),
+        record_id: record_id.to_owned(),
+        entity,
+        expected_revision: None,
+        source_generation: None,
+        operation: EvidenceOperation::Upsert,
+        payload,
+    }
+}
+fn removal(of: &EvidenceMutation, expected: i32, source: serde_json::Value) -> EvidenceMutation {
+    EvidenceMutation {
+        operation_id: Uuid::new_v4(),
+        canonical_record_id: of.canonical_record_id,
+        record_id: of.record_id.clone(),
+        entity: of.entity,
+        expected_revision: Some(i64::from(expected)),
+        source_generation: of.source_generation,
+        operation: EvidenceOperation::Delete,
+        payload: serde_json::json!({ "source": source }),
+    }
+}
+fn epic(connection: &str, record: &str) -> serde_json::Value {
+    serde_json::json!({"concept_id":"lab:potassium","measured_at":"2026-09-30T08:15:00-07:00","source":{"kind":"epic","connection_id":connection,"record_id":record},"source_record":{"resourceType":"Observation","id":record,"valueQuantity":{"value":4.1,"unit":"mmol/L"}},"value":{"literal":"4.1","unit":"mmol/L"}})
+}
+#[track_caller]
+fn assert_refused<T: std::fmt::Debug>(result: Result<T, ApiError>) {
+    assert!(
+        matches!(result, Err(ApiError::Conflict(SOURCE_AUTHORITY_REFUSED))),
+        "{result:?}"
+    );
+}
+#[track_caller]
+fn assert_conflict<T: std::fmt::Debug>(result: Result<T, ApiError>) {
+    assert!(
+        matches!(&result, Err(ApiError::Conflict(m)) if *m != SOURCE_AUTHORITY_REFUSED),
+        "{result:?}"
+    );
+}
+
+/// Canonical ingestion authority, honest dates, explicit source removal versus
+/// privacy erasure, per-item batch isolation and restart readback.
+#[tokio::test]
+async fn canonical_ingestion_authority_removal_and_batch() {
+    let url = std::env::var("DUET_TEST_DATABASE_URL")
+        .expect("DUET_TEST_DATABASE_URL must point at disposable loopback PostgreSQL");
+    let options: sqlx::postgres::PgConnectOptions = url.parse().unwrap();
+    assert!(["localhost", "127.0.0.1", "::1"].contains(&options.get_host()));
+    let mut admin = PgConnection::connect(&url).await.unwrap();
+    let suffix = Uuid::new_v4().simple().to_string();
+    let role = format!("duet_authority_{suffix}");
+    let name = format!("duet_authority_{suffix}");
+    sqlx::raw_sql(AssertSqlSafe(format!("create role {role} login")))
+        .execute(&mut admin)
+        .await
+        .unwrap();
+    sqlx::raw_sql(AssertSqlSafe(format!("create database {name}")))
+        .execute(&mut admin)
+        .await
+        .unwrap();
+    let owner_url = options.clone().database(&name).to_url_lossy().to_string();
+    let runtime_url = options
+        .database(&name)
+        .username(&role)
+        .to_url_lossy()
+        .to_string();
+    let mut owner = PgConnection::connect(&owner_url).await.unwrap();
+    sqlx::raw_sql("revoke create on schema public from public")
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    migrate(&owner_url, &role).await.unwrap();
+    let db = AccountDatabase::connect(&runtime_url).await.unwrap();
+    let identities = IdentityStore::new(db.clone(), Arc::new(Verifier));
+    let a = identities.authenticate("a", true).await.unwrap();
+    let b = identities.authenticate("b", true).await.unwrap();
+    let evidence = EvidenceStore::new(db.clone());
+    let connector = IngestAuthority::connector("epic", "epic-connection-1").unwrap();
+    assert!(IngestAuthority::connector("appleHealth", "x").is_err());
+
+    // Retained originals: literal values, units and time zones survive; an
+    // undated or partially dated source is stored with an unknown date, not receipt time.
+    let dated = upsert(
+        Entity::HealthEvidence,
+        "HKQuantitySample/abc",
+        serde_json::json!({"concept_id":"vital:heart_rate","measured_at":"2026-10-20T07:30:00+09:00","timezone":"Asia/Tokyo","source":{"kind":"appleHealth","record_id":"abc"},"value":{"literal":"072","unit":"count/min"}}),
+    );
+    let undated = upsert(
+        Entity::HealthEvidence,
+        "fhir/Observation/undated",
+        serde_json::json!({"concept_id":"lab:a1c","source":{"kind":"healthRecords","record_id":"undated","declared_dates":{"issued":"2026-09"}},"value":{"literal":"< 5.7","unit":"%"}}),
+    );
+    let partial = upsert(
+        Entity::HealthEvidence,
+        "fhir/Observation/partial",
+        serde_json::json!({"concept_id":"lab:ldl","measured_interval":{"start":"2026"},"source":{"kind":"healthRecords"},"value":{"literal":"99","unit":"mg/dL"}}),
+    );
+    let dated_at = evidence.ingest(&a, &dated).await.unwrap();
+    let undated_at = evidence.ingest(&a, &undated).await.unwrap();
+    let partial_at = evidence.ingest(&a, &partial).await.unwrap();
+    for (address, mutation) in [
+        (&dated_at, &dated),
+        (&undated_at, &undated),
+        (&partial_at, &partial),
+    ] {
+        assert_eq!(
+            evidence.exact(&a, address, true).await.unwrap().payload,
+            mutation.payload
+        );
+    }
+    let stored: Vec<(Uuid, Option<chrono::DateTime<Utc>>)> =
+        sqlx::query_as("select id,measured_at from health_evidence where user_id=$1")
+            .bind(a.account_id)
+            .fetch_all(&mut owner)
+            .await
+            .unwrap();
+    let date_of = |id: Uuid| stored.iter().find(|(x, _)| *x == id).unwrap().1;
+    assert_eq!(
+        date_of(dated.canonical_record_id),
+        Some("2026-10-19T22:30:00Z".parse().unwrap())
+    );
+    assert_eq!(date_of(undated.canonical_record_id), None);
+    assert_eq!(date_of(partial.canonical_record_id), None);
+    // Patient-authored wording is attributed separately and must be dated.
+    let mut patient = upsert(
+        Entity::ClinicalNote,
+        "duet/note/1",
+        serde_json::json!({"source_label":"Added in Duet","title":"My words","body":"Felt dizzy after the new dose."}),
+    );
+    assert!(matches!(
+        evidence.ingest(&a, &patient).await,
+        Err(ApiError::Unprocessable(_))
+    ));
+    patient.operation_id = Uuid::new_v4();
+    patient.payload["recorded_at"] = serde_json::json!("2026-10-21T21:05:00-04:00");
+    let patient_at = evidence.ingest(&a, &patient).await.unwrap();
+    let (label, recorded): (String, Option<chrono::DateTime<Utc>>) =
+        sqlx::query_as("select source_label,recorded_at from clinical_notes where id=$1")
+            .bind(patient.canonical_record_id)
+            .fetch_one(&mut owner)
+            .await
+            .unwrap();
+    assert_eq!(label, "Added in Duet");
+    assert_eq!(recorded, Some("2026-10-22T01:05:00Z".parse().unwrap()));
+
+    // Duplicate and uncertain acknowledgements.
+    assert_eq!(evidence.ingest(&a, &dated).await.unwrap(), dated_at);
+    let mut reused = dated.clone();
+    reused.payload["value"]["literal"] = serde_json::json!("073");
+    assert_conflict(evidence.ingest(&a, &reused).await);
+    // A lost acknowledgement is recovered by retrying the same operation identity;
+    // a new identity for the same create is a stale write, never a second record.
+    let mut lost_ack = dated.clone();
+    lost_ack.operation_id = Uuid::new_v4();
+    assert_conflict(evidence.ingest(&a, &lost_ack).await);
+    // Corrections are optimistic against the exact retained revision.
+    let mut correction = reused.clone();
+    correction.operation_id = Uuid::new_v4();
+    assert_conflict(evidence.ingest(&a, &correction).await);
+    correction.expected_revision = Some(i64::from(dated_at.revision));
+    let corrected_at = evidence.ingest(&a, &correction).await.unwrap();
+    assert!(corrected_at.revision > dated_at.revision);
+    assert!(!evidence.exact(&a, &dated_at, false).await.unwrap().current);
+
+    // Unauthorized-source mutation.
+    let device_epic = upsert(
+        Entity::HealthEvidence,
+        "epic/obs/1",
+        epic("epic-connection-1", "obs-1"),
+    );
+    assert_refused(evidence.ingest(&a, &device_epic).await);
+    for kind in ["oracleHealth", "healow", "googleHealth"] {
+        let mut other = device_epic.clone();
+        other.operation_id = Uuid::new_v4();
+        other.payload["source"]["kind"] = serde_json::json!(kind);
+        assert_refused(evidence.ingest(&a, &other).await);
+    }
+    let portal_at = evidence
+        .ingest_with_authority(&a, &connector, &device_epic)
+        .await
+        .unwrap();
+    assert_eq!(
+        evidence
+            .ingest_with_authority(&a, &connector, &device_epic)
+            .await
+            .unwrap(),
+        portal_at
+    );
+    // The same operation identity under device authority is not a replay of the connector write.
+    assert_conflict(evidence.ingest(&a, &device_epic).await);
+    let mut takeover = device_epic.clone();
+    takeover.operation_id = Uuid::new_v4();
+    takeover.expected_revision = Some(i64::from(portal_at.revision));
+    takeover.payload["source"] = serde_json::json!({"kind":"healthRecords","record_id":"obs-1"});
+    assert_refused(evidence.ingest(&a, &takeover).await);
+    let other_connection = IngestAuthority::connector("epic", "epic-connection-2").unwrap();
+    let mut moved = device_epic.clone();
+    moved.operation_id = Uuid::new_v4();
+    moved.expected_revision = Some(i64::from(portal_at.revision));
+    moved.payload = epic("epic-connection-2", "obs-1");
+    assert_refused(
+        evidence
+            .ingest_with_authority(&a, &other_connection, &moved)
+            .await,
+    );
+    let mut mismatched = moved.clone();
+    mismatched.operation_id = Uuid::new_v4();
+    assert_refused(
+        evidence
+            .ingest_with_authority(&a, &connector, &mismatched)
+            .await,
+    );
+    assert_refused(
+        evidence
+            .ingest(
+                &a,
+                &removal(
+                    &device_epic,
+                    portal_at.revision,
+                    serde_json::json!({"kind":"epic"}),
+                ),
+            )
+            .await,
+    );
+    assert_refused(
+        evidence
+            .ingest(
+                &a,
+                &removal(
+                    &device_epic,
+                    portal_at.revision,
+                    serde_json::json!({"kind":"healthRecords"}),
+                ),
+            )
+            .await,
+    );
+    // An older client cannot replace the richer retained source object.
+    let mut poorer = device_epic.clone();
+    poorer.operation_id = Uuid::new_v4();
+    poorer.expected_revision = Some(i64::from(portal_at.revision));
+    poorer
+        .payload
+        .as_object_mut()
+        .unwrap()
+        .remove("source_record");
+    assert_conflict(
+        evidence
+            .ingest_with_authority(&a, &connector, &poorer)
+            .await,
+    );
+    let mut portal_note = upsert(
+        Entity::ClinicalNote,
+        "epic/DocumentReference/9",
+        serde_json::json!({"source_label":"Epic MyChart","source":{"kind":"epic","connection_id":"epic-connection-1"},"title":"Visit summary","body":"Literal portal note","recorded_at":"2026-08-01"}),
+    );
+    assert_refused(evidence.ingest(&a, &portal_note).await);
+    portal_note.operation_id = Uuid::new_v4();
+    let portal_note_at = evidence
+        .ingest_with_authority(&a, &connector, &portal_note)
+        .await
+        .unwrap();
+    let mut relabel = portal_note.clone();
+    relabel.operation_id = Uuid::new_v4();
+    relabel.expected_revision = Some(i64::from(portal_note_at.revision));
+    relabel.payload = serde_json::json!({"source_label":"Health Records","title":"Visit summary"});
+    assert_refused(evidence.ingest(&a, &relabel).await);
+    // Stale source generation is refused for device sources.
+    sqlx::query("update users set apple_health_generation=apple_health_generation+1 where id=$1")
+        .bind(a.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    let mut stale = upsert(
+        Entity::HealthEvidence,
+        "HKQuantitySample/stale",
+        serde_json::json!({"concept_id":"vital:steps","source":{"kind":"appleHealth"},"value":{"literal":"10"}}),
+    );
+    assert_conflict(evidence.ingest(&a, &stale).await);
+    stale.operation_id = Uuid::new_v4();
+    stale.source_generation = Some(1);
+    let stale_at = evidence.ingest(&a, &stale).await.unwrap();
+
+    // Cross-account refusal: no read, no correction, no removal of another account's record.
+    assert!(matches!(
+        evidence.exact(&b, &undated_at, false).await,
+        Err(ApiError::NotFound)
+    ));
+    let mut foreign = undated.clone();
+    foreign.operation_id = Uuid::new_v4();
+    assert_conflict(evidence.ingest(&b, &foreign).await);
+    assert!(matches!(
+        evidence
+            .ingest(
+                &b,
+                &removal(
+                    &undated,
+                    undated_at.revision,
+                    serde_json::json!({"kind":"healthRecords"})
+                )
+            )
+            .await,
+        Err(ApiError::NotFound)
+    ));
+    assert!(evidence.snapshot(&b, 0).await.unwrap().records.is_empty());
+
+    // Explicit source removal keeps citations, withdraws current membership.
+    let before = evidence.snapshot(&a, 0).await.unwrap();
+    assert_conflict(
+        evidence
+            .ingest(
+                &a,
+                &removal(
+                    &undated,
+                    undated_at.revision + 1000,
+                    serde_json::json!({"kind":"healthRecords"}),
+                ),
+            )
+            .await,
+    );
+    let mut missing = removal(
+        &undated,
+        undated_at.revision,
+        serde_json::json!({"kind":"healthRecords"}),
+    );
+    missing.canonical_record_id = Uuid::new_v4();
+    assert!(matches!(
+        evidence.ingest(&a, &missing).await,
+        Err(ApiError::NotFound)
+    ));
+    let remove_undated = removal(
+        &undated,
+        undated_at.revision,
+        serde_json::json!({"kind":"healthRecords"}),
+    );
+    let removed_at = evidence.ingest(&a, &remove_undated).await.unwrap();
+    assert_eq!(removed_at, undated_at);
+    assert_eq!(
+        evidence.ingest(&a, &remove_undated).await.unwrap(),
+        removed_at
+    );
+    let mut again = remove_undated.clone();
+    again.operation_id = Uuid::new_v4();
+    assert!(matches!(
+        evidence.ingest(&a, &again).await,
+        Err(ApiError::NotFound)
+    ));
+    let cited = evidence.exact(&a, &undated_at, false).await.unwrap();
+    assert!(!cited.current);
+    assert_eq!(cited.payload, undated.payload);
+    assert_conflict(evidence.exact(&a, &undated_at, true).await);
+    let delta = evidence.snapshot(&a, before.cursor).await.unwrap();
+    assert_eq!(delta.changes.len(), 1);
+    assert!(delta.changes[0].deleted && delta.changes[0].source_removed);
+    assert!(delta.records.is_empty());
+    let full = evidence.snapshot(&a, 0).await.unwrap();
+    assert!(
+        full.records
+            .iter()
+            .all(|r| r.address.canonical_record_id != undated.canonical_record_id)
+    );
+    assert_eq!(full.records.len(), before.records.len() - 1);
+    // A removed identity is not revived by a later upsert.
+    let mut revive = undated.clone();
+    revive.operation_id = Uuid::new_v4();
+    revive.expected_revision = Some(i64::from(undated_at.revision));
+    assert_conflict(evidence.ingest(&a, &revive).await);
+    // Connector removal requires its own connection; a device cannot remove a patient note
+    // and an Apple source cannot remove a clinical note.
+    assert_refused(
+        evidence
+            .ingest_with_authority(
+                &a,
+                &other_connection,
+                &removal(
+                    &portal_note,
+                    portal_note_at.revision,
+                    serde_json::json!({"kind":"epic","connection_id":"epic-connection-2"}),
+                ),
+            )
+            .await,
+    );
+    assert_refused(
+        evidence
+            .ingest(
+                &a,
+                &removal(
+                    &patient,
+                    patient_at.revision,
+                    serde_json::json!({"kind":"healthRecords"}),
+                ),
+            )
+            .await,
+    );
+    assert!(matches!(
+        evidence
+            .ingest(
+                &a,
+                &EvidenceMutation {
+                    source_generation: Some(1),
+                    ..removal(
+                        &patient,
+                        patient_at.revision,
+                        serde_json::json!({"kind":"appleHealth"})
+                    )
+                },
+            )
+            .await,
+        Err(ApiError::Unprocessable(_))
+    ));
+    let portal_removed = evidence
+        .ingest_with_authority(
+            &a,
+            &connector,
+            &removal(
+                &portal_note,
+                portal_note_at.revision,
+                serde_json::json!({"kind":"epic","connection_id":"epic-connection-1"}),
+            ),
+        )
+        .await
+        .unwrap();
+    assert!(
+        !evidence
+            .exact(&a, &portal_removed, false)
+            .await
+            .unwrap()
+            .current
+    );
+
+    // Privacy erasure remains authoritative, including over a source-removed record.
+    let root = std::env::temp_dir().join(format!("duet-authority-{suffix}"));
+    let privacy = PrivacyStore::new(
+        db.clone(),
+        Arc::new(FileJournal::open(root.clone()).await.unwrap()),
+    );
+    privacy
+        .restrict(
+            &a,
+            Uuid::new_v4(),
+            Restriction::EvidenceDelete,
+            undated.canonical_record_id,
+            i64::from(undated_at.revision),
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        evidence.exact(&a, &undated_at, false).await,
+        Err(ApiError::NotFound)
+    ));
+    privacy
+        .restrict(
+            &a,
+            Uuid::new_v4(),
+            Restriction::EvidenceDelete,
+            partial.canonical_record_id,
+            i64::from(partial_at.revision),
+        )
+        .await
+        .unwrap();
+    assert!(matches!(
+        evidence.exact(&a, &partial_at, false).await,
+        Err(ApiError::NotFound)
+    ));
+    let erased: Vec<(bool, bool)> = sqlx::query_as(
+        "select deleted,source_removed from evidence_sync_changes where record_id=any($1) order by record_id",
+    )
+    .bind(vec![undated.canonical_record_id, partial.canonical_record_id])
+    .fetch_all(&mut owner)
+    .await
+    .unwrap();
+    assert_eq!(erased, vec![(true, false), (true, false)]);
+    let retained: i64 = sqlx::query_scalar(
+        "select count(*) from canonical_evidence_revisions where coalesce(evidence_id,note_id)=any($1)",
+    )
+    .bind(vec![undated.canonical_record_id, partial.canonical_record_id])
+    .fetch_one(&mut owner)
+    .await
+    .unwrap();
+    assert_eq!(retained, 0);
+
+    // Batch: each item commits or is reported; nothing is skipped silently.
+    let good = upsert(
+        Entity::HealthEvidence,
+        "HKQuantitySample/batch-good",
+        serde_json::json!({"concept_id":"vital:spo2","source":{"kind":"appleHealth"},"value":{"literal":"98","unit":"%"}}),
+    );
+    let mut good = good;
+    good.source_generation = Some(1);
+    let bad_source = upsert(
+        Entity::HealthEvidence,
+        "epic/obs/batch",
+        epic("epic-connection-1", "batch"),
+    );
+    let invalid = upsert(
+        Entity::HealthEvidence,
+        "manual/batch",
+        serde_json::json!({"source":{"kind":"manual"},"value":{"literal":"1"}}),
+    );
+    let mut stale_item = upsert(
+        Entity::HealthEvidence,
+        "HKQuantitySample/batch-stale",
+        serde_json::json!({"concept_id":"vital:steps","source":{"kind":"appleHealth"}}),
+    );
+    stale_item.source_generation = Some(0);
+    let missing_item = removal(&good, 1, serde_json::json!({"kind":"appleHealth"}));
+    let mut missing_item = missing_item;
+    missing_item.canonical_record_id = Uuid::new_v4();
+    let batch = EvidenceBatch {
+        items: vec![
+            good.clone(),
+            bad_source,
+            invalid,
+            stale_item,
+            missing_item,
+            good.clone(),
+        ],
+    };
+    let cursor_before: i64 = sqlx::query_scalar("select evidence_revision from users where id=$1")
+        .bind(a.account_id)
+        .fetch_one(&mut owner)
+        .await
+        .unwrap();
+    let result = evidence.ingest_batch(&a, &batch).await.unwrap();
+    assert_eq!(result.results.len(), 6);
+    let codes: Vec<_> = result
+        .results
+        .iter()
+        .map(|outcome| match outcome {
+            EvidenceItemOutcome::Accepted { .. } => None,
+            EvidenceItemOutcome::Rejected { rejection, .. } => Some(rejection.code),
+        })
+        .collect();
+    assert_eq!(
+        codes,
+        vec![
+            None,
+            Some(EvidenceRejectionCode::SourceAuthorityRefused),
+            Some(EvidenceRejectionCode::Invalid),
+            Some(EvidenceRejectionCode::Conflict),
+            Some(EvidenceRejectionCode::NotFound),
+            None,
+        ]
+    );
+    let (
+        EvidenceItemOutcome::Accepted { address: first, .. },
+        EvidenceItemOutcome::Accepted {
+            address: replay, ..
+        },
+    ) = (&result.results[0], &result.results[5])
+    else {
+        panic!("accepted outcomes expected")
+    };
+    assert_eq!(first, replay);
+    let cursor_after: i64 = sqlx::query_scalar("select evidence_revision from users where id=$1")
+        .bind(a.account_id)
+        .fetch_one(&mut owner)
+        .await
+        .unwrap();
+    assert_eq!(cursor_after, cursor_before + 1);
+    assert_eq!(evidence.ingest_batch(&a, &batch).await.unwrap(), result);
+    assert!(matches!(
+        evidence
+            .ingest_batch(&a, &EvidenceBatch { items: vec![] })
+            .await,
+        Err(ApiError::Unprocessable(_))
+    ));
+    assert!(matches!(
+        evidence
+            .ingest_batch(
+                &a,
+                &EvidenceBatch {
+                    items: vec![good.clone(); 101]
+                }
+            )
+            .await,
+        Err(ApiError::Unprocessable(_))
+    ));
+
+    // Restart readback: a new pool and owner observe the same committed state.
+    let snapshot = evidence.snapshot(&a, 0).await.unwrap();
+    let restarted = EvidenceStore::new(AccountDatabase::connect(&runtime_url).await.unwrap());
+    let again = restarted.snapshot(&a, 0).await.unwrap();
+    assert_eq!(again.cursor, snapshot.cursor);
+    assert_eq!(
+        serde_json::to_value(&again.records).unwrap(),
+        serde_json::to_value(&snapshot.records).unwrap()
+    );
+    assert_eq!(
+        serde_json::to_value(&again.changes).unwrap(),
+        serde_json::to_value(&snapshot.changes).unwrap()
+    );
+    assert!(!restarted.exact(&a, &dated_at, false).await.unwrap().current);
+    assert!(
+        restarted
+            .exact(&a, &corrected_at, true)
+            .await
+            .unwrap()
+            .current
+    );
+    assert!(restarted.exact(&a, &stale_at, true).await.unwrap().current);
+    assert!(
+        !restarted
+            .exact(&a, &portal_removed, false)
+            .await
+            .unwrap()
+            .current
+    );
+    assert_eq!(
+        restarted
+            .ingest_with_authority(&a, &connector, &device_epic)
+            .await
+            .unwrap(),
+        portal_at
+    );
+
+    drop(restarted);
+    drop(privacy);
+    drop(evidence);
+    drop(identities);
+    drop(db);
     owner.close().await.unwrap();
     sqlx::raw_sql(AssertSqlSafe(format!("drop database {name} with (force)")))
         .execute(&mut admin)

@@ -84,6 +84,7 @@ async fn paginated_exact_membership_account_revision_and_restore_fences() {
                         entity: Entity::HealthEvidence,
                         expected_revision: None,
                         source_generation: None,
+                        operation: Default::default(),
                         payload,
                     },
                 )
@@ -94,11 +95,13 @@ async fn paginated_exact_membership_account_revision_and_restore_fences() {
     let dir = std::env::temp_dir().join(format!("duet-cohort-{suffix}"));
     let journal = Arc::new(FileJournal::open(dir.clone()).await.unwrap());
     let privacy = PrivacyStore::new(db.clone(), journal.clone());
-    let app = duet_api::evidence_routes::router(DurableState {
+    let state = DurableState {
         identity: identity.clone(),
         privacy: privacy.clone(),
         evidence: evidence.clone(),
-    });
+    };
+    let app =
+        duet_api::evidence_routes::router(state.clone()).merge(duet_api::durable::router(state));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let base = format!("http://{}", listener.local_addr().unwrap());
     let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
@@ -228,6 +231,87 @@ async fn paginated_exact_membership_account_revision_and_restore_fences() {
                 .unwrap();
         }
     }
+    // HTTP ingestion is device authority only: portal originals are refused with a stable
+    // code, batches report each item, and explicit source removal keeps citations readable.
+    let portal = json!({"operation_id":Uuid::new_v4(),"canonical_record_id":Uuid::new_v4(),"record_id":"epic/obs/http","entity":"health_evidence","payload":{"concept_id":"lab:sodium","source":{"kind":"epic","connection_id":"forged"}}});
+    let refused = http
+        .post(format!("{base}/api/canonical-evidence"))
+        .bearer_auth("a")
+        .json(&portal)
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(refused.status(), 409);
+    assert_eq!(
+        refused.json::<Value>().await.unwrap()["detail"]["code"],
+        "source_authority_refused"
+    );
+    let manual = json!({"operation_id":Uuid::new_v4(),"canonical_record_id":Uuid::new_v4(),"record_id":"manual/http","entity":"health_evidence","payload":{"concept_id":"vital:weight","source":{"kind":"manual"},"value":{"literal":"70.2","unit":"kg"}}});
+    let batch: Value = http
+        .post(format!("{base}/api/canonical-evidence/batch"))
+        .bearer_auth("a")
+        .json(&json!({"items":[manual, portal]}))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(batch["results"][0]["status"], "accepted");
+    assert_eq!(batch["results"][1]["status"], "rejected");
+    assert_eq!(
+        batch["results"][1]["rejection"]["code"],
+        "source_authority_refused"
+    );
+    let manual_address = batch["results"][0]["address"].clone();
+    let removed = http
+        .post(format!("{base}/api/canonical-evidence"))
+        .bearer_auth("a")
+        .json(&json!({"operation_id":Uuid::new_v4(),"canonical_record_id":manual["canonical_record_id"],"record_id":"manual/http","entity":"health_evidence","expected_revision":manual_address["revision"],"operation":"delete","payload":{"source":{"kind":"manual"}}}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(
+        removed.status(),
+        422,
+        "manual entries are erased through privacy, not source removal"
+    );
+    let too_many: Vec<Value> = (0..101).map(|_| manual.clone()).collect();
+    assert_eq!(
+        http.post(format!("{base}/api/canonical-evidence/batch"))
+            .bearer_auth("a")
+            .json(&json!({"items":too_many}))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        422
+    );
+    let exact: Value = http
+        .post(format!("{base}/api/canonical-evidence/exact"))
+        .bearer_auth("a")
+        .json(&json!({"address":manual_address,"require_current":true}))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(exact["payload"], manual["payload"]);
+    assert_eq!(
+        http.post(format!("{base}/api/canonical-evidence/exact"))
+            .bearer_auth("b")
+            .json(&json!({"address":manual_address}))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        404
+    );
     // Imported follow-up incarnations are restricted by their original stable IDs.
     let follow = Uuid::new_v4();
     sqlx::query("insert into follow_ups(id,user_id,accepted_instruction,schedule,schedule_summary,state,source_message_ids) values($1,$2,'Synthetic retained work','{}','Retained','active','{}')").bind(follow).bind(a.account_id).execute(&mut owner).await.unwrap();
