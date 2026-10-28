@@ -3,8 +3,7 @@
 Promises about records that the graph's states can't hold: which words, which
 version, which saved content. The graph ([duet.mmd](duet.mmd)) holds the states
 around each one; the record itself is the Rust owner's, and that owner is where
-each must be proved. None is proved yet. What the app shows today is
-[coverage.md](coverage.md)'s to say.
+each must be proved. None is proved yet.
 
 ## Your message keeps its words
 

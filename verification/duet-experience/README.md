@@ -9,7 +9,6 @@ graph's method ([physician-experience](../physician-experience/README.md)).
 | [decisions.md](decisions.md) | Why: Dev's dated decisions and the sources the graph cites. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph assumes away and the runtime must still guarantee. |
 | [journeys.md](journeys.md) | Useful outcomes a person reaches, replayed from the graph's start by `statechart.mjs journey`; it fails when the graph stops allowing one. |
-| [coverage.md](coverage.md) | What the Rust Duet app shows today for each graph state: built, partial, missing or not shown, and whether the wire carries the data. `statechart.mjs coverage` checks it against the graph. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |
 | [data-promises.md](data-promises.md) | Promises about records the graph's states can't hold, each with the Rust owner that must prove it; none is proved yet. |
 | [../connected-care](../connected-care/README.md) | How this graph meets the physician graph: shared events and the rules across them. |

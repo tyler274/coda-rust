@@ -8,8 +8,8 @@ stops allowing it, so a change that strands a useful outcome is caught.
 
 Several journeys port examples written for the earlier Duet design (Dev's
 October 22 answers); they keep the same outcome in today's graph. They show the
-graph allows each outcome; how the app reaches it is coverage.md's, and what
-each record holds is data-promises.md's.
+graph allows each outcome, not that the app reaches it; what each record holds
+is data-promises.md's.
 
 Check it from the repository root:
 
