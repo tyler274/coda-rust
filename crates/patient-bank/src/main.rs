@@ -1,7 +1,7 @@
 //! The patient bank pipeline: one command per step.
 //!
 //! ```text
-//! cargo run -p patient-bank -- catalog [--roger-fixture DIR]
+//! cargo run -p patient-bank -- catalog [--cms-rvu FILE]
 //! cargo run -p patient-bank -- import --db PATH
 //! cargo run -p patient-bank -- brief|check|preview UNIT
 //! cargo run -p patient-bank -- find icd10|loinc|snomed|rxnorm WORDS...
@@ -38,11 +38,9 @@ fn dispatch(args: &[String]) -> Result<u8, Failure> {
     };
     let status = match command.as_str() {
         "catalog" => {
-            let o = Opts::parse(rest, &["--roger-fixture"])?;
-            let roger = o
-                .path("--roger-fixture")
-                .unwrap_or_else(paths::roger_fixture);
-            catalog::build(&roger)?
+            let o = Opts::parse(rest, &["--cms-rvu"])?;
+            let rvu = o.path("--cms-rvu").unwrap_or_else(paths::cms_rvu);
+            catalog::build(&rvu)?
         }
         "import" => {
             let o = Opts::parse(rest, &["--db"])?;
@@ -147,7 +145,7 @@ fn usage() -> Failure {
     "\
 patient-bank runs the synthetic patient bank pipeline.
 
-  patient-bank catalog [--roger-fixture DIR]
+  patient-bank catalog [--cms-rvu FILE]
   patient-bank import --db PATH
   patient-bank brief|check|preview UNIT
   patient-bank find icd10|loinc|snomed|rxnorm WORDS...

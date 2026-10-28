@@ -163,8 +163,10 @@ a prescription is a medication action, and a resulted lab is a lab result.
   never set is the patient's own normal. Give `measure` on each contact that takes
   vitals, and name the tests in each draw without values. Code reads each one the
   way a cuff, a scale or an analyzer would, with its usual scatter. Write a value
-  yourself for every number build-req gives (code would scatter it) and for what no
-  level can give: a qualitative result (`"text"`), a culture, a one-off number.
+  yourself for every number build-req gives and every result a note, letter or
+  message reports (code would scatter it, and the chart would contradict itself),
+  and for what no level can give: a qualitative result (`"text"`), a culture, a
+  one-off number.
 - **Labs.** A panel lists only the members you mean; code fills the rest and
   derives eGFR, CBC indices and the differential's remainder. In an ED visit or a
   hospital stay, state each value the illness moves (a white count of 16.2, a

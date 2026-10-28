@@ -15,18 +15,21 @@
 //!             a UCUM unit and a reference range unless its cited source gives none
 //! timeline    clinical times after birth and before the bank time; issued >= effective;
 //!             onset <= recorded; abatement after onset
+//! one fact    one name is one LOINC code across results, reports and orders; one
+//!             specimen has one glucose; a CPT code for an age band fits the age
 //! ```
 //!
 //! The calendar is checked as a whole: valid Appointments for known patients from
 //! the bank day on. The report also lists what the charts repeat from one another
 //! (see `repeats`).
 
-use std::collections::{BTreeMap, HashMap, HashSet};
+use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::fs;
 use std::path::Path;
 use std::sync::LazyLock;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
+use jiff::civil::Date;
 use regex::Regex;
 use serde::Serialize;
 use serde_json::Value;
@@ -266,8 +269,69 @@ fn check_patient(
         }
     }
 
+    one_fact(sh, &chart, &birth, &mut errors);
     rep.errors = errors;
     Ok(rep)
+}
+
+/// Facts the chart must state once: a name's code, a specimen's glucose, and the
+/// age a procedure code is for.
+fn one_fact(sh: &Shared, chart: &Chart, birth: &str, errors: &mut Vec<String>) {
+    let loinc = |r: &Value| {
+        (r["code"]["coding"].as_array().into_iter().flatten())
+            .find(|c| c["system"] == LOINC)
+            .map(|c| str_of(c, "code").to_string())
+    };
+    let mut codes: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
+    for fam in ["Observation", "DiagnosticReport", "ServiceRequest"] {
+        for r in &chart[fam] {
+            if let Some(code) = loinc(r) {
+                let name = r["code"]["text"].as_str().unwrap_or_default().to_string();
+                codes.entry(name).or_default().insert(code);
+            }
+        }
+    }
+    for (name, set) in codes.iter().filter(|(_, s)| s.len() > 1) {
+        errors.push(format!("{name:?} is coded {set:?}; one name is one test"));
+    }
+    // only results that are back carry a value; a registered one has none to compare
+    let mut glucose: BTreeMap<&str, BTreeSet<String>> = BTreeMap::new();
+    for r in &chart["Observation"] {
+        let value = &r["valueQuantity"]["value"];
+        if value.is_number() && matches!(loinc(r).as_deref(), Some("1558-6" | "2345-7")) {
+            glucose
+                .entry(str_of(r, "effectiveDateTime"))
+                .or_default()
+                .insert(value.to_string());
+        }
+    }
+    for (at, values) in glucose.iter().filter(|(_, v)| v.len() > 1) {
+        errors.push(format!("specimen {at} gives glucose as {values:?}"));
+    }
+    let Ok(born) = birth.parse::<Date>() else {
+        return;
+    };
+    for r in &chart["Procedure"] {
+        let code = (r["code"]["coding"].as_array().into_iter().flatten())
+            .find(|c| c["system"] == CPT)
+            .map(|c| str_of(c, "code"));
+        let ages = (sh.catalog.procedures.values())
+            .find(|e| Some(e.code.as_str()) == code)
+            .and_then(|e| e.ages);
+        let on = str_of(r, "performedDateTime")
+            .get(..10)
+            .and_then(|d| d.parse::<Date>().ok());
+        if let (Some([low, high]), Some(on)) = (ages, on) {
+            let age = time::age_on(born, on);
+            if !(low..=high).contains(&age) {
+                errors.push(format!(
+                    "Procedure/{}: CPT {} is for ages {low} to {high}; the patient was {age}",
+                    str_of(r, "id"),
+                    code.unwrap_or_default()
+                ));
+            }
+        }
+    }
 }
 
 /// Check the practice calendar and count its visits by status.

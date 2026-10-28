@@ -138,6 +138,21 @@ pub fn check(unit: &Unit, patients: &[Patient], catalog: &Catalog) -> (Vec<Strin
                 let age = time::age_on(birth, Timeline::collected(ev, lab).date());
                 arithmetic(lab, &eid, age, seed.female(), &mut errors);
             }
+            // a code for an age band (preventive visits, tonsillectomy) fits the patient
+            for x in &ev.procedures {
+                let Some([low, high]) = catalog.procedures.get(&x.procedure).and_then(|e| e.ages)
+                else {
+                    continue;
+                };
+                let age = time::age_on(birth, x.performed.unwrap_or(ev.start).date());
+                if !(low..=high).contains(&age) {
+                    errors.push(format!(
+                        "{eid}: procedure {:?} is coded for ages {low} to {high}; the patient \
+                         was {age}",
+                        x.procedure
+                    ));
+                }
+            }
             for d in &ev.documents {
                 if d.body.trim().is_empty() {
                     errors.push(format!("{eid}: document {:?} has no body", d.title()));

@@ -200,6 +200,29 @@ pub fn apply(seed: &Seed, p: &Patient, catalog: &Catalog) -> (Patient, Vec<Strin
             ev.vitals = Vitals::One(set);
         }
         let collected: Vec<_> = ev.labs.iter().map(|l| Timeline::collected(ev, l)).collect();
+        // Entries collected together are one specimen, so its fasting glucose and a
+        // panel's glucose are one reading: a value the author states wins, else the
+        // first one code reads.
+        let glucose = |t: &str| t == "Fasting Glucose" || t == "Glucose";
+        let stated: Vec<(usize, Number)> = (ev.labs.iter().enumerate())
+            .flat_map(|(k, l)| {
+                (l.results.iter())
+                    .filter(|r| glucose(&r.test))
+                    .filter_map(move |r| Some((k, r.value.clone()?)))
+            })
+            .collect();
+        // a glucose named without a value takes its specimen's stated one, once it is back
+        for (k, lab) in ev.labs.iter_mut().enumerate() {
+            if lab.pending {
+                continue;
+            }
+            let given = (stated.iter()).find(|(j, _)| collected[*j] == collected[k]);
+            for r in (lab.results.iter_mut()).filter(|r| glucose(&r.test)) {
+                if let (None, None, Some((_, v))) = (&r.value, &r.text, given) {
+                    r.value = Some(v.clone());
+                }
+            }
+        }
         for (k, lab) in ev.labs.iter_mut().enumerate() {
             if lab.pending {
                 continue;
@@ -216,6 +239,43 @@ pub fn apply(seed: &Seed, p: &Patient, catalog: &Catalog) -> (Patient, Vec<Strin
                 levels: &levels.labs,
             };
             draw::fill(lab, members, &d, &mut errors);
+        }
+        let mut specimens = collected.clone();
+        specimens.sort();
+        specimens.dedup();
+        for at in specimens {
+            let one: Vec<usize> = (0..ev.labs.len())
+                .filter(|&k| collected[k] == at && !ev.labs[k].pending)
+                .collect();
+            let given: Vec<&Number> = (stated.iter())
+                .filter(|(k, _)| one.contains(k))
+                .map(|(_, v)| v)
+                .collect();
+            if given.windows(2).any(|w| num(w[0]) != num(w[1])) {
+                errors.push(format!(
+                    "{eid}: one specimen gives glucose as {} and {}",
+                    given[0],
+                    given[1..]
+                        .iter()
+                        .find(|v| num(v) != num(given[0]))
+                        .expect("differs")
+                ));
+                continue;
+            }
+            let read = (one.iter())
+                .flat_map(|&k| &ev.labs[k].results)
+                .find(|r| glucose(&r.test))
+                .and_then(|r| r.value.clone());
+            let Some(v) = given.first().map(|v| (*v).clone()).or(read) else {
+                continue;
+            };
+            for &k in &one {
+                for r in (ev.labs[k].results.iter_mut()).filter(|r| glucose(&r.test)) {
+                    if r.value.is_some() {
+                        r.value = Some(v.clone());
+                    }
+                }
+            }
         }
     }
     (out, errors)

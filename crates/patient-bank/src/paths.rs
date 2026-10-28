@@ -97,7 +97,8 @@ pub fn schema() -> PathBuf {
     root().join("fhir.schema.json")
 }
 
-/// The Coda Agents Roger fixture's resources.
-pub fn roger_fixture() -> PathBuf {
-    workspace_root().join("submodules/coda-agents/docs/local-product-fixtures/internal_resources")
+/// CMS's physician fee schedule relative value file (`PPRRVU*.txt` from a release
+/// at cms.gov), downloaded once: the public list of CPT codes and descriptors.
+pub fn cms_rvu() -> PathBuf {
+    root().join("PPRRVU.txt")
 }
