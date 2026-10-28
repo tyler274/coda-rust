@@ -520,6 +520,16 @@ fn check_event<'a>(
                 ));
             } else if !lab.pending && r.value.is_none() && r.text.is_none() {
                 errors.push(format!("{eid}: lab {test:?} needs value or text"));
+            } else if let Some(u) = r
+                .unit
+                .as_deref()
+                .filter(|u| (catalog.labs.get(test)).is_some_and(|e| e.unit.as_deref() != Some(*u)))
+            {
+                errors.push(format!(
+                    "{eid}: lab {test:?} is in the catalog, which gives its unit ({:?}); write the \
+                     value in that unit and leave {u:?} out",
+                    catalog.labs[test].unit.as_deref().unwrap_or_default()
+                ));
             } else if catalog.labs.contains_key(test) && r.range.is_some() {
                 errors.push(format!(
                     "{eid}: lab {test:?} is in the catalog, which gives its range; leave \"range\" out"

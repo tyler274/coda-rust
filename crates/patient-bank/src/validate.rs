@@ -364,6 +364,7 @@ fn contract(
         if r["valueQuantity"]["code"].is_null() {
             errors.push(format!("{fam}/{id}: {test:?} has no UCUM unit"));
         }
+        // check holds a name to one answer on whether a range applies
         let none_given = sh.catalog.labs.get(&test).is_some_and(|e| {
             e.range.as_ref().is_some_and(|r| r.is_empty()) && e.range_source.is_some()
         }) || ledger.is_some_and(|l| {

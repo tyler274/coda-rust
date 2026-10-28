@@ -16,7 +16,7 @@ use regex::Regex;
 
 use crate::Result;
 use crate::catalog::{Catalog, Lookup};
-use crate::ledger::{LabResult, Patient, Terms, VerifiedCode};
+use crate::ledger::{LabResult, Patient, RefRange, Terms, VerifiedCode};
 
 /// One strength: an amount of a base unit per one base unit of something, or a bare
 /// quantity (a pen's volume, a patch's wear time) when `per` is empty.
@@ -328,6 +328,18 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
             terms.rejected.push(format!(
                 "lab {label:?} is given in {:?} and {u:?}; one name is one test",
                 v.unit.as_deref().unwrap_or_default()
+            ));
+        }
+        let none = |r: &RefRange| r.low.is_none() && r.high.is_none();
+        if let (true, Some(Some(known)), Some(r)) = (
+            lab,
+            terms.labs.get(label).map(|v| v.range.as_ref()),
+            result.and_then(|r| r.range.as_ref()),
+        ) && none(known) != none(r)
+        {
+            terms.rejected.push(format!(
+                "lab {label:?} has a reference range in one result and none in another; one \
+                 name is one test"
             ));
         }
         let known = if lab { &terms.labs } else { &terms.reports };

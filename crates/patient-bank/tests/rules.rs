@@ -1108,14 +1108,18 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
         "e1",
         "2024-01-01T09:00",
         json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
-            {"test": "Hemoglobin A1c", "value": 6.1, "range": {"high": 7}}
+            {"test": "Hemoglobin A1c", "value": 6.1, "range": {"high": 7}},
+            {"test": "C Reactive Protein", "value": 2.5, "unit": "mg/dL"}
         ]}]})
     )]));
+    let errors = errors_for(seed(), stated);
     assert!(
-        errors_for(seed(), stated)
+        errors
             .iter()
             .any(|e| e.contains("in the catalog, which gives its range"))
     );
+    // and their units: a value in another unit would render under the catalog's
+    assert!(errors.iter().any(|e| e.contains("which gives its unit")));
     let coded = |codes: Vec<&patient_bank::fhir::CodeableConcept>, code: &str| {
         codes
             .iter()
