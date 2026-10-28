@@ -80,6 +80,21 @@ impl CredentialVault for NativeProtectedStore {
 fn key(kind: &str, owner: &str) -> String {
     format!("{kind}:{}:{owner}", owner.len())
 }
+/// Owner-scoped health outbox key. The scope is length-prefixed so no
+/// (owner, scope) pair can collide with another.
+fn health_key(owner: &str, scope: &str) -> String {
+    format!("{}:{}:{scope}", key("health-outbox", owner), scope.len())
+}
+
+/// Why the health outbox could not be read or written.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum HealthStorageError {
+    /// Protected storage is locked or unavailable; keep work and retry later.
+    Unavailable(String),
+    /// The fence is no longer the current session (sign-out or account switch),
+    /// or secure sign-out cleanup is pending.
+    AccountChanged,
+}
 
 /// Provider refresh credential and its verified Duet owner. Never Debug/log this type.
 #[derive(Clone, Serialize, Deserialize)]
@@ -426,6 +441,43 @@ impl RetentionOwner {
         let _guard = self.gate.lock().unwrap();
         self.require(fence)?;
         self.store.remove(&key("doctor-draft", fence.owner()))
+    }
+    /// Read this owner's health outbox document. Refused unless `fence` is the
+    /// current session, so another account can never read or consume it.
+    pub fn read_health_outbox(
+        &self,
+        fence: &SessionFence,
+        scope: &str,
+    ) -> Result<Option<Vec<u8>>, HealthStorageError> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)
+            .map_err(|_| HealthStorageError::AccountChanged)?;
+        self.health_cleanup_clear()?;
+        self.store
+            .read(&health_key(fence.owner(), scope))
+            .map_err(HealthStorageError::Unavailable)
+    }
+    /// Atomically replace this owner's health outbox document under the same fence.
+    pub fn write_health_outbox(
+        &self,
+        fence: &SessionFence,
+        scope: &str,
+        bytes: &[u8],
+    ) -> Result<(), HealthStorageError> {
+        let _guard = self.gate.lock().unwrap();
+        self.require(fence)
+            .map_err(|_| HealthStorageError::AccountChanged)?;
+        self.health_cleanup_clear()?;
+        self.store
+            .write(&health_key(fence.owner(), scope), bytes)
+            .map_err(HealthStorageError::Unavailable)
+    }
+    fn health_cleanup_clear(&self) -> Result<(), HealthStorageError> {
+        match self.store.cleanup_pending() {
+            Ok(false) => Ok(()),
+            Ok(true) => Err(HealthStorageError::AccountChanged),
+            Err(error) => Err(HealthStorageError::Unavailable(error)),
+        }
     }
     fn require(&self, fence: &SessionFence) -> Result<(), String> {
         if self.session.is_current(fence) {

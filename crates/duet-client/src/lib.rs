@@ -4,6 +4,7 @@
 #![deny(missing_docs)]
 
 pub mod doctor;
+pub mod health_upload;
 pub mod identity;
 pub mod retention;
 pub mod session;
