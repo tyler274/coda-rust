@@ -12,7 +12,7 @@ use crate::fhir::{
     CodeableConcept, Coding, DiagnosticReport, Meta, Observation, Quantity, Reference,
     ReferenceRange,
 };
-use crate::ledger::{Event, Lab, Stamp, num};
+use crate::ledger::{Event, Lab, RefRange, Stamp, num};
 use crate::render::{Receipt, opaque};
 use crate::time;
 use crate::timeline::Timeline;
@@ -146,6 +146,8 @@ struct Value<'a> {
     number: Option<Number>,
     text: Option<&'a str>,
     released: Stamp,
+    /// The range the author stated for this result (a test the catalog lacks).
+    range: Option<&'a RefRange>,
 }
 
 pub struct LabContext<'a> {
@@ -198,6 +200,7 @@ pub fn render(cx: &LabContext, ev: &Event, i: usize, lab: &Lab, receipt: &mut Re
             number: r.value.clone(),
             text: r.text.as_deref(),
             released: r.resulted.filter(|_| !lab.pending).unwrap_or(released),
+            range: r.range.as_ref(),
         };
         values.insert(&r.test, v);
     }
@@ -242,7 +245,13 @@ pub fn render(cx: &LabContext, ev: &Event, i: usize, lab: &Lab, receipt: &mut Re
             obs.issued = Some(time::utc(v.released));
             if let Some(n) = &v.number {
                 obs.value_quantity = Some(Quantity::in_unit(n.clone(), entry.unit.as_deref()));
-                if let Some((lo, hi)) = entry.reference_range(cx.female) {
+                let stated = (v.range).map(|r| (r.low.as_ref().map(num), r.high.as_ref().map(num)));
+                let range = match stated {
+                    Some((None, None)) => None,
+                    Some(r) => Some(r),
+                    None => entry.reference_range(cx.female),
+                };
+                if let Some((lo, hi)) = range {
                     let bound = |x: f64| {
                         Quantity::in_unit(
                             Number::from_f64(x).expect("finite"),

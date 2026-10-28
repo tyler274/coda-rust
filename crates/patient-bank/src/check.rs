@@ -520,6 +520,10 @@ fn check_event<'a>(
                 ));
             } else if !lab.pending && r.value.is_none() && r.text.is_none() {
                 errors.push(format!("{eid}: lab {test:?} needs value or text"));
+            } else if catalog.labs.contains_key(test) && r.range.is_some() {
+                errors.push(format!(
+                    "{eid}: lab {test:?} is in the catalog, which gives its range; leave \"range\" out"
+                ));
             } else if !catalog.labs.contains_key(test) && r.value.is_some() && r.range.is_none() {
                 errors.push(format!(
                     "{eid}: lab {test:?} is not in the catalog; give its reference range as \

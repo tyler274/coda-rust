@@ -1086,6 +1086,36 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
     let range = &calcitonin.reference_range[0];
     assert!(range.low.is_none() && range.high.is_some());
     assert!((calcitonin.interpretation.iter()).any(|i| i.coding.iter().any(|c| c.code == "H")));
+    // each result keeps the range stated for it, not the first one its name was given
+    let other = draw_with(json!("1992-7"), Some(json!({"high": 600})));
+    let chart2 = Renderer {
+        catalog: &catalog.with_terms(&terms),
+        terms: &terms,
+    }
+    .render(&seed(), &other, at("2024-02-01T00:00"))
+    .0;
+    let calcitonin = (chart2.observations.iter())
+        .find(|o| o.code.coding.iter().any(|c| c.code == "1992-7"))
+        .expect("calcitonin");
+    let high = calcitonin.reference_range[0].high.as_ref().expect("high");
+    assert_eq!(
+        serde_json::to_value(high).expect("json")["value"].as_f64(),
+        Some(600.0)
+    );
+    assert!(calcitonin.interpretation.is_empty());
+    // the catalog gives its own labs' ranges
+    let stated = patient(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
+            {"test": "Hemoglobin A1c", "value": 6.1, "range": {"high": 7}}
+        ]}]})
+    )]));
+    assert!(
+        errors_for(seed(), stated)
+            .iter()
+            .any(|e| e.contains("in the catalog, which gives its range"))
+    );
     let coded = |codes: Vec<&patient_bank::fhir::CodeableConcept>, code: &str| {
         codes
             .iter()

@@ -318,12 +318,17 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
             }
         }
     }
+    // a name's unit comes from a result that states one, and one name is one test
+    extra.sort_by_key(|(_, _, _, r)| r.and_then(|r| r.unit.as_ref()).is_none());
     for (lab, label, code, result) in extra {
-        // a label's range is the first one its results state
-        if let (true, Some(v)) = (lab, terms.labs.get_mut(label))
-            && v.range.is_none()
+        let unit = result.and_then(|r| r.unit.as_deref());
+        if let (true, Some(v), Some(u)) = (lab, terms.labs.get(label), unit)
+            && v.unit.as_deref().is_some_and(|known| known != u)
         {
-            v.range = result.and_then(|r| r.range.clone());
+            terms.rejected.push(format!(
+                "lab {label:?} is given in {:?} and {u:?}; one name is one test",
+                v.unit.as_deref().unwrap_or_default()
+            ));
         }
         let known = if lab { &terms.labs } else { &terms.reports };
         if known.contains_key(label)

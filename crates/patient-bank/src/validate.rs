@@ -361,8 +361,8 @@ fn contract(
     });
     if fam == "Observation" && lab && r["valueQuantity"].is_object() {
         let test = text(&r["code"]);
-        if r["valueQuantity"]["unit"].is_string() && r["valueQuantity"]["code"].is_null() {
-            errors.push(format!("{fam}/{id}: {test:?} unit has no UCUM code"));
+        if r["valueQuantity"]["code"].is_null() {
+            errors.push(format!("{fam}/{id}: {test:?} has no UCUM unit"));
         }
         let none_given = sh.catalog.labs.get(&test).is_some_and(|e| {
             e.range.as_ref().is_some_and(|r| r.is_empty()) && e.range_source.is_some()

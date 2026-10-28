@@ -94,10 +94,11 @@ impl Catalog {
             (&mut c.allergens, &snomed, &terms.allergens),
             (&mut c.procedures, &snomed, &terms.procedures),
         ] {
+            // a verified term also codes a label the catalog holds only unverified
             for (label, v) in verified {
-                section
-                    .entry(label.clone())
-                    .or_insert_with(|| entry(system, v));
+                if section.get(label).is_none_or(|e| e.display.is_none()) {
+                    section.insert(label.clone(), entry(system, v));
+                }
             }
         }
         c
