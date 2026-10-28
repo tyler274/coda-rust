@@ -1,0 +1,188 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002569",
+      "events": [
+        {
+          "id": "2026-01-20a",
+          "kind": "office_visit",
+          "start": "2026-01-20T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up during chemotherapy",
+          "state": {"weight_kg": 74.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2026-01-20T13:50"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-20T13:20"},
+            {"procedure": "Immunization administration", "performed": "2026-01-20T13:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2026-01-20T14:00", "body": "Checking in mid-treatment. Doing the outpatient chemotherapy blocks at the cancer center, says the last one was rough for a week and then he bounced back. No fevers since fall. Weight up a little. Mood is fine, he's been reading and tying flies, misses being outside for work. PHQ-9 3.\n\nMeds unchanged: valacyclovir daily, cipro and filgrastim only when oncology tells him.\n\nExam: afebrile, vitals as charted. Port site clean. Mouth without sores. Lungs clear, RRR. No edema, no bruising today.\n\nA/P:\n1. ALL in remission, intensive phase ongoing per oncology.\n2. Influenza vaccine: his oncologist's nurse confirmed by phone this morning that inactivated flu vaccine is fine at this point in his cycle. Given today. Household contacts should be vaccinated too.\n3. Mood screen reassuring.\nSee in about 3 months or after his next oncology phase."}
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "outside_records",
+          "start": "2026-02-10T09:05",
+          "reason": "oncology progress letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Leukemia Clinic Progress Letter", "author": "hematology/oncology", "date": "2026-02-10T09:05", "body": "Leukemia clinic, regional cancer center. Visit 02/04/2026.\n\nDear colleague, an update on our shared patient. He remains in complete remission and is tolerating his intensive treatment blocks with expected count drops, managed with his nadir plan (ciprofloxacin and filgrastim). No admissions since induction. We anticipate finishing the intensive phase in March and moving to oral maintenance.\n\nCurrent medications: valacyclovir 500 mg daily; ciprofloxacin 500 mg BID and filgrastim 300 mcg daily during nadir periods.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis per patient; desensitized per oncology protocol); iodinated contrast (urticaria).\n\nLeukemia clinic attending"}
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "outside_records",
+          "start": "2026-04-02T15:30",
+          "reason": "oncology letter, start of maintenance",
+          "medications": [
+            {"drug_text": "mercaptopurine 50 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (100 mg) by mouth nightly", "dose": {"value": 100, "unit": "mg"}, "frequency": "QHS", "route": "Oral", "course": "chronic", "reason": "ALL maintenance chemotherapy"},
+            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "historical", "sig": "Take 6 tablets (15 mg) by mouth once weekly", "dose": {"value": 15, "unit": "mg"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "ALL maintenance chemotherapy"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Leukemia Clinic Letter: Maintenance", "author": "hematology/oncology", "date": "2026-04-02T15:30", "body": "Leukemia clinic, regional cancer center. Visit 03/30/2026.\n\nHe completed his final intensive cycle on 03/20/2026 and remains in remission. Maintenance therapy began today: mercaptopurine 100 mg by mouth nightly and methotrexate 15 mg by mouth once weekly, with counts every 2 to 4 weeks here and doses adjusted to his counts. Continue valacyclovir 500 mg daily. Ciprofloxacin 500 mg BID and filgrastim 300 mcg daily remain on his nadir instructions; we expect a low count stretch over the next few weeks as he recovers from the last block.\n\nPlease avoid live vaccines. Allergies: sulfamethoxazole-trimethoprim (anaphylaxis by report; desensitized per oncology protocol); iodinated contrast (urticaria).\n\nLeukemia clinic attending"},
+            {"type": "Result Note", "title": "Letter reviewed", "author": "PCP", "date": "2026-04-02T17:00", "body": "Maintenance started 3/30. Added 6-MP and weekly methotrexate to his list as oncology-prescribed."}
+          ]
+        },
+        {
+          "id": "2026-04-11a",
+          "kind": "ed_visit",
+          "start": "2026-04-11T19:40",
+          "end": "2026-04-11T23:55",
+          "service": "Emergency Medicine",
+          "reason": "fever and painful rash",
+          "vitals": [
+            {"time": "2026-04-11T19:48", "temp_c": 38.9, "bp": [90, 60], "hr": 120, "rr": 22}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-04-11T20:05", "results": [
+              {"test": "White Blood Cells", "value": 1.2},
+              {"test": "Hemoglobin", "value": 9.2},
+              {"test": "Platelets", "value": 50}
+            ]},
+            {"panel": null, "collected": "2026-04-11T20:10", "resulted": "2026-04-12T21:30", "results": [{"test": "Blood Culture", "text": "Pseudomonas aeruginosa, 2 of 2 sets; susceptible to cefepime"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-04-11T19:40"}]
+        },
+        {
+          "id": "2026-04-22a",
+          "kind": "outside_records",
+          "start": "2026-04-22T08:50",
+          "reason": "ED record and discharge summary",
+          "conditions": [
+            {"label": "Ecthyma gangrenosum due to Pseudomonas aeruginosa bacteremia", "icd10": "L08.89", "action": "diagnosed", "onset": "2026-04-09"}
+          ],
+          "medications": [
+            {"drug_text": "cefepime 2000 MG Injection", "action": "historical", "sig": "2 g IV every 8 hours through port by home infusion, last dose 4/25", "dose": {"value": 2000, "unit": "mg"}, "frequency": "Q8H", "route": "Intravenous", "course": "short", "reason": "Pseudomonas bacteremia"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-04-22T08:50", "body": "Cancer center emergency department. Seen 04/11/2026.\n\nCC: fever, painful spots on legs.\n\nHPI: 28-year-old man with ALL, now in maintenance, with a prior admission for chemotherapy-induced neutropenia. Two days of fever and a painful rash on both lower legs. His last chemotherapy cycle finished about three weeks ago.\n\nMeds: mercaptopurine 100 mg nightly, methotrexate 15 mg weekly, valacyclovir 500 mg daily, ciprofloxacin 500 mg BID (taking), filgrastim 300 mcg daily per nadir plan. Allergies: sulfamethoxazole-trimethoprim (anaphylaxis, by report; desensitized per oncology), iodinated contrast (urticaria).\n\nTriage: T 38.9 C, BP 90/60, HR 120, RR 22.\n\nExam: ill-appearing, flushed. Port site clean. Lungs clear. Tachycardic, regular. Abdomen soft. Skin: several round red macules over both lower legs, many now with a central blister and a rim of redness; one lesion on the left calf has a black necrotic center ringed by erythema.\n\nLabs: WBC 1.2, Hgb 9.2, platelets 50. Blood cultures x2 drawn.\n\nMDM: febrile neutropenia with hypotension and necrotic skin lesions, concerning for ecthyma gangrenosum from gram-negative bacteremia. IV fluids, cefepime given after cultures. Admitted to the leukemia service.\n\nEmergency medicine attending"},
+            {"type": "Discharge Summary", "title": "Discharge Summary, Leukemia Service", "author": "hematology/oncology", "date": "2026-04-22T08:52", "body": "Admitted 04/11/2026, discharged 04/21/2026.\nDiagnoses: Pseudomonas aeruginosa bacteremia with ecthyma gangrenosum; chemotherapy-induced neutropenia; thrombocytopenia.\n\nCourse: Both blood culture sets grew Pseudomonas aeruginosa, susceptible to cefepime. Continued cefepime 2 g IV every 8 hours. Blood pressure responded to fluids. Filgrastim given until neutrophils recovered. Fever resolved by day 4. Leg lesions treated with local wound care; the necrotic lesion is crusting with dry eschar. Plan is 14 days of cefepime total, last dose 04/25, finished at home through his port with a home infusion agency.\n\nDischarge medications: cefepime 2 g IV q8h through 04/25; resume valacyclovir; mercaptopurine 100 mg nightly and methotrexate 15 mg weekly; ciprofloxacin and filgrastim per nadir plan.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis per patient; desensitized per oncology protocol); iodinated contrast (urticaria).\nFollow-up: leukemia clinic in 1 week; PCP within a few days.\n\nLeukemia Service hospitalist"},
+            {"type": "Result Note", "title": "Records reviewed", "author": "PCP", "date": "2026-04-22T12:15", "body": "P. aeruginosa bacteremia with ecthyma gangrenosum, home cefepime through 4/25. Added to list. RN to call him today, visit Friday."}
+          ]
+        },
+        {
+          "id": "2026-04-22b",
+          "kind": "telephone",
+          "start": "2026-04-22T14:30",
+          "reason": "post-discharge call",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-discharge Call", "author": "RN", "date": "2026-04-22T14:30", "body": "Called pt the day after discharge. Home infusion nurse came last night, line working, doses on schedule. No fever at home, legs sore but less. Changing the leg dressings himself per the wound instructions. Reviewed med list with him against the discharge summary, matches. Visit Fri 4/24 at 10:30 confirmed."}
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "office_visit",
+          "start": "2026-04-24T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "state": {"weight_kg": 72.5},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2026-04-24T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2026-04-24T11:10", "body": "Seen 3 days after discharge from a 10-day admission for P. aeruginosa bacteremia with ecthyma gangrenosum during early maintenance chemotherapy. Feels much better. No fevers at home. Last cefepime dose is tomorrow, infusion nurse following. Leukemia clinic visit next week, they will check counts.\n\nMeds reconciled with the discharge list: cefepime through 4/25, mercaptopurine 100 mg nightly, methotrexate 15 mg weekly, valacyclovir 500 mg daily, cipro and filgrastim per nadir plan.\n\nExam: afebrile, vitals as charted, BP normal today. Port accessed, dressing clean and dry. Lungs clear, heart regular. Legs: healing lesions on both shins, the left calf one with a firm dry black eschar and a thin pink rim, no fluctuance, no drainage, no spreading redness. Others are flat, pink and crusted.\n\nA/P:\n1. Pseudomonas bacteremia with ecthyma gangrenosum: improving, finishing 14 days of cefepime tomorrow. Keep dressings dry; leave the eschar alone. Call for fever, new spots or redness tracking up the leg.\n2. Chemotherapy-induced neutropenia: counts per oncology. Fever plan unchanged, cancer center ED.\n3. ALL in remission on maintenance, oncology following.\n4. Weight a bit down again, eating well now.\nFollow-up later this year, sooner if needed. He will message once he's back at work."}
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T08:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Back to work", "author": "patient", "date": "2026-05-19T08:12", "body": "Oncology cleared me to go back to work part time on light field duty. Legs are healed except a scar on the left calf. My manager wants a note from you too, can you send one?"},
+            {"type": "Patient Message", "title": "RE: Back to work", "author": "PCP", "date": "2026-05-19T12:40", "body": "Great news. A return-to-work letter matching oncology's restrictions is in your documents tab. Keep up the tick protection out there, and remember a fever means a call to the cancer center first."}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "ed_visit",
+          "start": "2026-06-23T16:15",
+          "end": "2026-06-23T22:30",
+          "service": "Emergency Medicine",
+          "reason": "fever, headache and myalgia after tick exposure",
+          "vitals": [
+            {"time": "2026-06-23T16:22", "temp_c": 38.6}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-23T16:50", "results": [{"test": "White Blood Cells", "value": 3.1}, {"test": "Hemoglobin", "value": 12.6}, {"test": "Platelets", "value": 112}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-06-23T16:50", "results": [
+              {"test": "Aspartate Aminotransferase", "value": 92},
+              {"test": "Alanine Aminotransferase", "value": 104}
+            ]},
+            {"panel": null, "collected": "2026-06-23T16:50", "resulted": "2026-06-26T10:00", "results": [{"test": "Rickettsia rickettsii IgG Ab [Titer] in Serum by Immunofluorescence", "loinc": "5307-4", "text": "1:64"}]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, high MDM", "performed": "2026-06-23T16:15"}]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "portal_message",
+          "start": "2026-06-29T18:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Hospital again", "author": "patient", "date": "2026-06-29T18:30", "body": "Heads up, I was in the hospital last week for two nights. Went hiking in Arkansas and came back with a fever and bad headache, they said it was probably Rocky Mountain spotted fever from the ticks and put me on doxycycline. Feeling a lot better, finishing the pills Tuesday. Just wanted you to know."},
+            {"type": "Patient Message", "title": "RE: Hospital again", "author": "PCP", "date": "2026-06-29T20:05", "body": "Thanks for telling me, Calvin, and I'm glad you're on the mend. I'll ask the hospital for the records. Finish every dose of the doxycycline. Let's plan to see you in the fall."}
+          ]
+        },
+        {
+          "id": "2026-06-30a",
+          "kind": "outside_records",
+          "start": "2026-06-30T10:40",
+          "reason": "ED record and discharge summary",
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-06-30T10:40", "body": "Cancer center emergency department. Seen 06/23/2026.\n\nCC: fever, headache, body aches x 6 days.\n\nHPI: 29-year-old man with ALL in maintenance, prior admissions for febrile neutropenia during induction and for P. aeruginosa bacteremia with ecthyma gangrenosum. Six days of fever, headache and myalgias that began after he got home from a hiking trip in rural Arkansas, where he pulled several ticks off his legs. He never saw a rash. Light hurts his eyes and he is mildly nauseated. No vomiting, cough or sore throat.\n\nMeds: mercaptopurine 100 mg nightly, methotrexate 15 mg weekly, valacyclovir 500 mg daily. Allergies: sulfamethoxazole-trimethoprim (anaphylaxis per report; desensitized per oncology), iodinated contrast (urticaria).\n\nExam: T 38.6 C. Uncomfortable. Mild bilateral scleral injection. Tender cervical lymph nodes. Neck supple. Lungs clear, heart regular. Abdomen soft. Skin: scattered petechiae on both ankles and wrists. Port site clean.\n\nLabs: WBC 3.1, Hgb 12.6, platelets 112; AST 92, ALT 104. Rickettsial serology sent.\n\nMDM: febrile illness with tick exposure in an endemic area, petechiae at wrists and ankles, low platelets and transaminase rise: treating for Rocky Mountain spotted fever. Doxycycline 100 mg IV given. Admitted to medicine given immunosuppression.\n\nEmergency medicine attending"},
+            {"type": "Discharge Summary", "title": "Discharge Summary, Medicine", "author": "hospital medicine", "date": "2026-06-30T10:42", "body": "Admitted 06/23/2026, discharged 06/25/2026.\nDiagnosis: Rocky Mountain spotted fever, clinical, acute serology R. rickettsii IgG 1:64; convalescent titer to be drawn in about 3 weeks at the leukemia clinic.\n\nCourse: Doxycycline 100 mg twice daily, IV first dose then oral. Afebrile within 48 hours, headache gone, petechiae fading. Oncology aware.\n\nDischarge medications: doxycycline 100 mg by mouth twice daily to complete 7 days total (through 06/30); otherwise continue home medications.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis per patient; desensitized per oncology protocol); iodinated contrast (urticaria).\nFollow-up: leukemia clinic, PCP.\n\nHospital medicine attending"},
+            {"type": "Result Note", "title": "Records filed", "author": "PCP", "date": "2026-06-30T15:20", "body": "June admission for presumed RMSF reviewed, doxy course ends today. Filed. Will review at his fall visit."}
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "outside_records",
+          "start": "2026-07-21T09:15",
+          "reason": "oncology letter",
+          "labs": [
+            {"panel": null, "collected": "2026-07-14T09:30", "resulted": "2026-07-17T11:00", "results": [{"test": "Rickettsia rickettsii IgG Ab [Titer] in Serum by Immunofluorescence", "loinc": "5307-4", "text": "1:512"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Leukemia Clinic Letter", "author": "hematology/oncology", "date": "2026-07-21T09:15", "body": "Leukemia clinic, regional cancer center. Visit 07/14/2026.\n\nSeen in follow-up after his June admission. Fully recovered, back at work. Convalescent Rickettsia rickettsii IgG today is 1:512 against 1:64 at presentation, a fourfold rise that confirms Rocky Mountain spotted fever. He remains in remission and continues maintenance mercaptopurine 100 mg nightly and methotrexate 15 mg weekly with valacyclovir 500 mg daily; ciprofloxacin and filgrastim per nadir plan.\nAllergies: sulfamethoxazole-trimethoprim (anaphylaxis by report; desensitized per oncology protocol); iodinated contrast (urticaria).\n\nLeukemia clinic attending"},
+            {"type": "Result Note", "title": "Letter filed", "author": "PCP", "date": "2026-07-21T13:00", "body": "Convalescent serology confirms RMSF. Filed for the fall visit."}
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T07:55",
+          "documents": [
+            {"type": "Patient Message", "title": "Fall visit", "author": "patient", "date": "2026-08-11T07:55", "body": "Hi, you mentioned seeing me in the fall. Can I get an early morning slot in September? I'd also like my flu shot then if oncology is ok with it."},
+            {"type": "Patient Message", "title": "RE: Fall visit", "author": "front desk", "date": "2026-08-11T10:20", "body": "You're booked Thursday 9/10 at 8:00 am. We'll check with your oncology team about vaccines before then."}
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up and fall vaccines",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

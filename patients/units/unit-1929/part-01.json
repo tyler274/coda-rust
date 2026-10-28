@@ -1,0 +1,440 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001929",
+      "given": "Andrea",
+      "family": "Morrow",
+      "birth_date": "1992-07-19",
+      "address_line": "17 Larkspur Lane",
+      "phone": "+1-917-555-0153",
+      "email": "andrea.morrow@example.test",
+      "marital_status": "single",
+      "summary": "Executive assistant who joined in 2021 with no active problems and a family history of otosclerosis (father) and myotonic dystrophy (mother). Otosclerosis diagnosed by ENT in 2024 and myotonic dystrophy type 1 by neurology in 2025; outside records arrive with gaps and delays.",
+      "events": [
+        {
+          "id": "2021-08-23a",
+          "kind": "telephone",
+          "start": "2021-08-23T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "author": "front desk",
+              "date": "2021-08-23T10:12",
+              "body": "Caller Andrea Morrow, 29, would like to move her primary care to us. Previous office was a large group practice and she says she rarely saw the same clinician twice. No urgent concerns. Insurance is an employer PPO through her job, card info taken. Booked new patient physical 9/14 at 8:40, asked her to sign the release so we can get her old records. Membership agreement emailed."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:40",
+          "end": "2021-09-14T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Hemoglobin A1c": 5.2,
+              "Fasting Glucose": 86,
+              "Low Density Lipoprotein": 86,
+              "High Density Lipoprotein": 64,
+              "Triglycerides": 90
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "conditions": [
+            {
+              "label": "Family history of deafness and hearing loss",
+              "icd10": "Z82.2",
+              "action": "diagnosed",
+              "onset": "2021-09-14",
+              "note": "father with otosclerosis, hearing aids since his 40s"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Executive assistant"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-09-14T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2021-09-14T09:35",
+              "body": "29 year old woman establishing care. Feels well. No complaints today.\n\nPMH: none. PSH: wisdom teeth removed. Meds: none, no supplements. Allergies: NKDA.\n\nFamily: father has otosclerosis and has worn hearing aids on both sides since his 40s. Mother had myotonic dystrophy, also had cataracts and type 2 diabetes; she died at 50. Maternal grandmother had weakness that came on later in life, family assumed the same muscle disease.\n\nSocial: executive assistant at a firm in town, desk job. Single, lives in Amherst. Never smoked. Alcohol a drink or two a month. Exercises by walking.\n\nGyn: periods regular. Last Pap 2019 at prior office, she believes normal. Had HPV shots as a teenager.\n\nROS negative across systems, specifically no hearing complaints, no weakness, no trouble swallowing.\n\nExam: well appearing, pleasant. HEENT: TMs clear, canals normal, oropharynx normal. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin unremarkable. Neuro grossly nonfocal, strength full and symmetric.\n\nPHQ-2 0.\n\nA/P\n1. Health maintenance: CBC, CMP, lipids. One-time HIV and hepatitis C screens, she agrees. Pap due 2022. Release signed for old records, will confirm Tdap and COVID dates from those. Flu shot once this season's supply comes in, nurse visit.\n2. Family history of hearing loss in father, noted. No hearing concerns now.\n\nRTC one year for physical."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2021-09-17T16:05",
+              "body": "Hi Andrea, all of your blood work from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T11:20",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-05-03T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "front desk",
+              "date": "2021-09-28T11:20",
+              "body": "42 pages received by fax from the patient's previous primary care group, covering 2014 to 2021. Summary for chart:\n- Cervical cytology 6/2019: negative for intraepithelial lesion or malignancy.\n- Tdap 5/2016.\n- COVID-19 Pfizer doses 4/9/2021 and 4/30/2021, given at a pharmacy, entered from her card.\n- HPV vaccine series completed in adolescence (dates not listed).\n- No chronic problems or medications on their list. NKDA.\nImmunizations entered. Abstracted for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T12:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "author": "RN",
+              "date": "2021-10-19T12:25",
+              "body": "Here on lunch hour for flu vaccine. No fever, no prior reaction. Quadrivalent flu given IM left deltoid, lot recorded. Tolerated, left after a few minutes."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "portal_message",
+          "start": "2022-02-08T09:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wellness form for work",
+              "author": "patient",
+              "date": "2022-02-08T09:47",
+              "body": "Hello, my employer's insurance wants a form signed showing I had a physical in the last 12 months so I get the premium discount. I uploaded it. Is that something you can fill out? Thanks, Andrea"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wellness form for work",
+              "author": "MA",
+              "date": "2022-02-08T15:30",
+              "body": "Hi Andrea, the form is signed and uploaded back to your portal under Documents. You can download it from there."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "annual_physical",
+          "start": "2022-10-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T09:07"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-10-11T08:50",
+              "issued": "2022-10-17T10:00",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV testing. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative."
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-11T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-11T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2022-10-11T09:15",
+              "body": "Annual. Doing well, busy year at work. No new symptoms. No hearing trouble, no weakness. Periods regular.\n\nMeds none. NKDA. Never smoker, rare alcohol.\nFamily history unchanged (father otosclerosis; mother myotonic dystrophy, deceased).\n\nExam: NAD. Ears: canals and TMs normal. Thyroid normal. Heart RRR no murmur, lungs clear. Abdomen soft. Pelvic: external genitalia normal, cervix without lesions, Pap with HPV collected. Strength 5/5 throughout.\n\nPHQ-2 0.\n\nPlan:\n- Pap with HPV today; if both negative next one in 5 years.\n- CBC today. Lipids were fine last year, not repeating.\n- Flu and bivalent COVID booster given.\n- Physical next year."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-17a",
+          "kind": "portal_message",
+          "start": "2022-10-17T14:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2022-10-17T14:12",
+              "body": "Andrea, your Pap smear was normal and the HPV test was negative, so the next one isn't due until 2027. Blood count from last week was normal too."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "annual_physical",
+          "start": "2023-10-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2023-10-09T16:44",
+              "body": "Pt called, her boss scheduled an all-day offsite tomorrow and she can't get out of it. Cancelled 10/10 physical, rebooked 11/7 8:20."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "annual_physical",
+          "start": "2023-11-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-07T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-07T09:02"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-07T09:05",
+              "results": [
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-11-07T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-11-07T09:10",
+              "body": "Rescheduled from October. Feels well, sleeping fine. PHQ-2 1. Denies hearing or swallowing problems, no weakness.\n\nNo meds. NKDA. Nonsmoker. Alcohol unchanged, a drink or two a month.\n\nExam: well. TMs normal. Neck without adenopathy. Heart and lungs normal. Abdomen benign. Normal gait, normal strength.\n\nA/P: healthy 31 year old.\n- CMP today.\n- Pap up to date through 2027.\n- Flu and 2023-24 COVID vaccine today.\n- RTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "portal_message",
+          "start": "2023-11-09T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "author": "PCP",
+              "date": "2023-11-09T17:20",
+              "body": "Hi Andrea, the metabolic panel from Tuesday was normal, kidney and liver numbers included. Talk next fall."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,828 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002202",
+   "events": [
+    {
+     "id": "2019-02-14a",
+     "kind": "office_visit",
+     "start": "2019-02-14T11:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-02-14T11:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-02-14T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2019-02-14T11:55",
+       "body": "Quiet winter. Has not needed the inhaler since fall. No lows. Walking indoors at the mall when it is icy.\nExam unremarkable, feet intact.\nA1c drawn. Continue metformin, glyburide, atorvastatin, aspirin. Back in 3 months, sooner if needed."
+      }
+     ]
+    },
+    {
+     "id": "2019-05-14a",
+     "kind": "office_visit",
+     "start": "2019-05-14T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2019-05-14T10:30",
+       "body": "No-show for 9:40. Called home, wife answered: he had it written down for next week. Rebooked for June 4."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-04a",
+     "kind": "office_visit",
+     "start": "2019-06-04T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-06-04T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2019-06-04T10:05",
+       "body": "Here after last month's mix-up with the date. Feels well. Gardening.\nBP borderline again. Feet fine.\nPlan: fasting labs and a fuller look at BP and the rest in August, he prefers after their trip to see family. Refills sent."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-13a",
+     "kind": "office_visit",
+     "start": "2019-08-13T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Routine follow-up of chronic conditions",
+     "conditions": [
+      {
+       "label": "Mild cognitive impairment",
+       "action": "diagnosed",
+       "onset": "2019-02-01"
+      },
+      {
+       "label": "Benign prostatic hyperplasia with lower urinary tract symptoms",
+       "action": "diagnosed",
+       "onset": "2017-01-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension with diabetes"
+      },
+      {
+       "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+       "action": "start",
+       "sig": "Take 1 capsule by mouth nightly, 30 minutes after supper",
+       "dose": {
+        "value": 0.4,
+        "unit": "mg"
+       },
+       "frequency": "QHS",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "BPH with lower urinary tract symptoms"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2,
+       "Low Density Lipoprotein": 145,
+       "High Density Lipoprotein": 35,
+       "Triglycerides": 200,
+       "Vitamin B12": 486,
+       "Thyroid Stimulating Hormone": 1.62,
+       "Prostate Specific Antigen": 1.7
+      }
+     },
+     "vitals": {
+      "bp": [
+       132,
+       84
+      ]
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-08-13T08:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-08-13T08:35",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 154
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-08-13T08:35",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 220
+        },
+        {
+         "test": "High Density Lipoprotein",
+         "value": 35
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 145
+        },
+        {
+         "test": "Triglycerides",
+         "value": 200
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-08-13T08:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-08-13T08:35",
+       "results": [
+        {
+         "test": "Vitamin B12"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-08-13T08:35",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-08-13T08:35",
+       "results": [
+        {
+         "test": "Prostate Specific Antigen"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-08-13T08:50",
+       "results": [
+        {
+         "test": "MoCA total score",
+         "loinc": "72172-0",
+         "unit": "{score}",
+         "value": 23
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-08-13T08:20"
+      }
+     ],
+     "orders": [
+      {
+       "id": "neuro-cog",
+       "action": "placed",
+       "order": "Neurology referral",
+       "category": "referral",
+       "to": "Neurology",
+       "reason": "mild cognitive impairment, confirm and follow"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Chronic Care Follow-up",
+       "author": "PCP",
+       "date": "2019-08-13T09:25",
+       "body": "Son came along today.\n\nS: Leonard says he feels well and has nothing new. Taking everything as prescribed, pillbox kept by his wife. His son, out of his father's earshot at first and then with him, says Dad repeats stories and has lost track of a couple of appointments (May no-show) and once left the stove on. Leonard thinks it is just getting older.\nOn direct questions about the urinary side: up 2 to 3 times a night for a couple of years, slow stream, some waiting to start. No dysuria. He had not thought to mention it.\n\nO: BP 132/84, repeat similar. Exam unremarkable: heart regular, lungs clear, no edema, feet intact, gait normal, no focal neuro findings.\nMoCA 23/30 (lost points on delayed recall and clock). Fasting labs today.\n\nA/P\n1. Memory: MoCA 23 fits mild cognitive impairment. Checking B12 and TSH. Referral to neurology to confirm and follow. Talked with both about keeping the pillbox and calendar system.\n2. HTN with diabetes: still above 130/80 after two years of diet. Starting lisinopril 20 mg daily. BMP in 2 weeks with the other results.\n3. LUTS, likely BPH: PSA today. Start tamsulosin 0.4 at bedtime, warned about standing slowly at night.\n4. T2DM: A1c today; glyburide/metformin unchanged.\n5. Hyperlipidemia: lipids today on atorvastatin 40.\nFollow up 6 to 8 weeks for BP."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-15a",
+     "kind": "portal_message",
+     "start": "2019-08-15T17:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Results from Tuesday",
+       "author": "PCP",
+       "date": "2019-08-15T17:20",
+       "body": "Hello Leonard (and Marc, since you are on the proxy now), results are in. A1c 7.2, fasting sugar 154: a bit above goal but steady. LDL 145 with HDL 35 and triglycerides 200. B12, thyroid and PSA are normal, kidney function normal. Nothing here explains the memory changes, which is reassuring, and neurology should call you within a few weeks. Keep taking the new blood pressure pill and the tamsulosin; we will see you in late September."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-12a",
+     "kind": "outside_records",
+     "start": "2019-09-12T09:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2019-09-12T09:30",
+       "body": "Dilated diabetic exam 09/06/2019. No diabetic retinopathy OU. IOL OD clear. Early nuclear sclerosis OS. Recall 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-27a",
+     "kind": "outside_records",
+     "start": "2019-09-27T15:40",
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2019-09-25T10:15",
+       "text": "PA and lateral views. Lungs are clear. No pleural effusion or pneumothorax. Heart size normal. Mediastinal contours normal. Bones intact for age.",
+       "conclusion": "No acute cardiopulmonary process."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Chest x-ray report, insurance exam",
+       "author": "front desk",
+       "date": "2019-09-27T15:40",
+       "body": "Report faxed by an outpatient imaging center, ordered for a life insurance physical. Copy requested by patient for our chart. Scanned for PCP review."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-30a",
+     "kind": "office_visit",
+     "start": "2019-09-30T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Dry cough for 4 weeks",
+     "conditions": [
+      {
+       "label": "Adverse effect of angiotensin-converting-enzyme inhibitors, initial encounter",
+       "icd10": "T46.4X5A",
+       "action": "diagnosed",
+       "onset": "2019-09-02",
+       "note": "dry cough on lisinopril"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "ACE inhibitor cough"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "Lisinopril",
+       "reaction": "Cough",
+       "severity": "mild",
+       "criticality": "low",
+       "type": "intolerance"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-09-30T13:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Cough",
+       "author": "PCP",
+       "date": "2019-09-30T14:15",
+       "body": "Back for BP follow-up and a cough. Dry, tickly cough for about 4 weeks, no phlegm. Denies shortness of breath, fever, chills, weight loss. Not wheezy; tried albuterol twice, no difference. Lisinopril started here 6 to 7 weeks ago. Wife says the cough wakes them both.\nCXR from an insurance exam this past week is in the chart: clear.\n\nExam: afebrile. Breath sounds normal throughout, expiratory phase slightly long, no wheeze, no crackles or rales. Heart regular, no murmur. No JVD, no leg edema.\n\nA/P\n1. Cough from lisinopril, near certain by timing and a clear film. Stop lisinopril. Recorded as an ACE inhibitor intolerance. Can take a few weeks to settle.\n2. HTN: start amlodipine 5 mg daily. Ankle swelling possible, call if so.\n3. Asthma: not active, no change.\nNurse BP check with his flu shot in about a week."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "nurse_visit",
+     "start": "2019-10-08T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot and BP check",
+     "state": {
+      "bp": [
+       128,
+       80
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2019-10-08T10:15"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-08T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Flu vaccine and BP check",
+       "author": "RN",
+       "date": "2019-10-08T10:30",
+       "body": "High-dose flu R deltoid. BP on amlodipine as charted, at goal. Cough is \"half what it was.\" No ankle swelling. Reviewed with PCP, no changes."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-26a",
+     "kind": "outside_records",
+     "start": "2019-11-26T12:00",
+     "orders": [
+      {
+       "id": "neuro-cog",
+       "action": "done",
+       "date": "2019-11-26T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology consultation",
+       "author": "neurology",
+       "date": "2019-11-26T12:00",
+       "body": "Outpatient neurology group. Date of service 11/20/2019.\nReason for referral: memory concerns raised by family.\n\nHistory: 68 year old man, retired accountant, accompanied by his son. About 6 to 9 months of repeating questions and misplacing appointments. Still manages finances with his wife double checking. No hallucinations, no change in personality, no gait change, no tremor.\nPMH: type 2 diabetes, hypertension, hyperlipidemia, mild asthma.\nMeds: metformin, glyburide, amlodipine, atorvastatin, aspirin, tamsulosin, albuterol as needed.\nAllergies: ACE inhibitors (cough).\n\nExam: alert, attentive. Language fluent. Cranial nerves intact. Strength full, tone normal, reflexes symmetric, plantar responses flexor. Gait and tandem normal.\nCognitive screen in clinic: deficits mainly in delayed recall, executive items intact enough for daily function.\nPCP labs (B12, TSH) reviewed and normal.\n\nImpression: mild cognitive impairment, amnestic predominant. Instrumental activities preserved.\nPlan: no medication at this stage. Cardiovascular risk control, exercise, social engagement. Return yearly or sooner for change."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-23a",
+     "kind": "telephone",
+     "start": "2019-12-23T09:15",
+     "conditions": [
+      {
+       "label": "Retention of urine, unspecified",
+       "icd10": "R33.9",
+       "action": "diagnosed",
+       "onset": "2019-12-17"
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-ref",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "urinary retention on tamsulosin, BPH"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Son calling re hospital stay",
+       "author": "RN",
+       "date": "2019-12-23T09:15",
+       "body": "Son Marc called. Dad could not pass urine last week, went to the regional hospital ED, catheter put in and he was kept overnight. Catheter came out the next morning and he voided before discharge. Told to see urology. They did not get any paperwork to bring us.\nCurrently voiding, slow stream, no fever. Still on tamsulosin.\nPer PCP: urology referral placed today. Records request faxed to the hospital."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-03a",
+     "kind": "outside_records",
+     "start": "2020-02-03T14:30",
+     "conditions": [
+      {
+       "label": "Retention of urine, unspecified",
+       "icd10": "R33.9",
+       "action": "resolved",
+       "note": "single episode December 2019, catheter removed"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "finasteride 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "enlarged prostate, retention, hematuria"
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-ref",
+       "action": "done",
+       "date": "2020-02-03T14:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Bladder ultrasound",
+       "loinc": "25019-1",
+       "performed": "2020-01-21T10:00",
+       "text": "Transabdominal ultrasound of the urinary bladder before and after voiding. Bladder wall smooth. No intraluminal mass or stone. Prostate impresses on the bladder base and is enlarged by volume estimate. Post-void residual 220 mL.",
+       "conclusion": "Enlarged prostate. Post-void residual 220 mL."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology consultation",
+       "author": "urology",
+       "date": "2020-02-03T14:30",
+       "body": "Outside urology practice. Date of visit 01/27/2020.\n\nReason: lower urinary tract symptoms worse after a retention episode.\n\nHPI: 68 yo man with hypertension, diabetes and memory impairment, recent cough attributed to lisinopril, referred by his PCP. Nocturia 3 to 4 times nightly, weak stream, urgency, trouble getting started. Two episodes of painless visible blood in the urine over the past few months. Required catheterization last month during an overnight admission for acute retention. Tamsulosin begun about six months ago by his PCP helped initially, but the symptoms have crept back.\nPMH: hypertension, type 2 diabetes, hyperlipidemia, mild asthma.\nMeds (per patient list): metformin 1000 mg twice daily, glyburide 5 mg daily, lisinopril 20 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily, albuterol HFA as needed, tamsulosin 0.4 mg.\nAllergies: ACE inhibitors (cough).\n\nExam: vitals normal. Abdomen soft, bladder not palpable. DRE: prostate firm, symmetrically enlarged, no nodules, nontender.\nLabs: creatinine normal.\nImaging: bladder ultrasound last week, enlarged prostate by volume, PVR 220 mL.\n\nAssessment: BPH with LUTS, symptoms recurring on alpha blocker monotherapy, with a retention episode and visible hematuria.\nPlan:\n- Add finasteride 5 mg daily to tamsulosin; expect benefit over 3 to 6 months.\n- Hematuria evaluation: renal ultrasound and office cystoscopy.\n- Return after cystoscopy."
+      }
+     ]
+    },
+    {
+     "id": "2020-02-26a",
+     "kind": "outside_records",
+     "start": "2020-02-26T10:20",
+     "reports": [
+      {
+       "study": "Renal ultrasound",
+       "performed": "2020-02-14T09:30",
+       "text": "Right kidney 11.2 cm, left kidney 11.5 cm. Normal cortical thickness and echogenicity. No hydronephrosis, stone or mass either side. Bladder partially distended, unremarkable.",
+       "conclusion": "Normal kidneys. No hydronephrosis."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Flexible cystoscopy",
+       "snomed": "301301002",
+       "performed": "2020-02-19T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Urology procedure note and imaging",
+       "author": "urology",
+       "date": "2020-02-26T10:20",
+       "body": "Office flexible cystoscopy, 02/19/2020. Topical lidocaine. Urethra normal. Prostatic urethra narrowed by enlarged lateral lobes. Bladder wall normal, no tumor, stone or diverticulum, ureteral orifices normal. Tolerated well.\nRenal ultrasound 02/14/2020: normal kidneys, no hydronephrosis.\nImpression: hematuria likely prostatic in origin; no bladder lesion.\nPlan: continue tamsulosin plus finasteride. Recheck in 6 months. Allergies: ACE inhibitors (cough)."
+      }
+     ]
+    },
+    {
+     "id": "2020-03-24a",
+     "kind": "telephone",
+     "start": "2020-03-24T14:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Visit change",
+       "author": "front desk",
+       "date": "2020-03-24T14:10",
+       "body": "Called wife: April in-person visit changed to video given the pandemic. Son will help with the tablet. She asked about refills; all on file through June."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-16a",
+     "kind": "telehealth_visit",
+     "start": "2020-04-16T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and BP follow-up (video)",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-04-16T10:00"
+      }
+     ],
+     "orders": [
+      {
+       "id": "a1c-2020-04",
+       "action": "placed",
+       "order": "Hemoglobin A1c",
+       "category": "lab"
+      },
+      {
+       "id": "bmp-2020-04",
+       "action": "placed",
+       "order": "Basic Metabolic Panel (BMP)",
+       "category": "lab"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit",
+       "author": "PCP",
+       "date": "2020-04-16T10:30",
+       "body": "Video from his kitchen, his son set up the tablet. Staying home with the pandemic, wife does the shopping by pickup.\nHome BP cuff readings 120s to 130s over 70s to 80s. Cough from the spring is gone. Urinating better since finasteride was added, up twice a night. No visible blood since February.\nNo hypoglycemia. Not much walking lately; encouraged laps around the yard.\nA/P: HTN controlled on amlodipine. BPH per urology. T2DM - lab-only visit for A1c and BMP next week, masked, early morning slot. Med list updated with finasteride from urology. RTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-20a",
+     "kind": "lab_only",
+     "start": "2020-04-20T07:30",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-04-20T07:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-04-20T07:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "a1c-2020-04",
+       "action": "done",
+       "date": "2020-04-20T07:35"
+      },
+      {
+       "id": "bmp-2020-04",
+       "action": "done",
+       "date": "2020-04-20T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lab review",
+       "author": "PCP",
+       "date": "2020-04-21T12:40",
+       "body": "A1c and BMP stable. MA to call with results, no changes."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-22a",
+     "kind": "office_visit",
+     "start": "2020-07-22T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2020-07-22T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up",
+       "author": "PCP",
+       "date": "2020-07-22T15:25",
+       "body": "In person, masked. Wife with him. Turned 69 this month. Doing okay, a bit bored. Urology recheck was by phone, staying on both prostate pills. Memory about the same per wife; uses a whiteboard calendar now.\nExam: BP fine, no edema, lungs clear, feet intact.\nPlan: continue all. Eye exam due, reminded. Wellness visit in November with fasting labs."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-15a",
+     "kind": "outside_records",
+     "start": "2020-09-15T09:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Optometry diabetic eye exam",
+       "author": "optometry",
+       "date": "2020-09-15T09:00",
+       "body": "Diabetic eye exam 09/10/2020, dilated. No diabetic retinopathy OU. IOL OD stable. Early nuclear sclerosis OS, not visually significant. Recall 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "nurse_visit",
+     "start": "2020-10-06T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Flu shot",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-06T11:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-06T11:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunization",
+       "author": "MA",
+       "date": "2020-10-06T11:45",
+       "body": "Curbside flu clinic. High-dose quadrivalent given L deltoid, no issues."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-17a",
+     "kind": "annual_physical",
+     "start": "2020-11-17T08:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-11-17T08:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-11-17T08:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-11-17T08:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-11-17T08:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2020-11-17T08:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2020-11-17T09:10",
+       "body": "AWV with wife.\nFunction: ADLs independent. Wife now handles the checkbook since spring, his choice. No falls. Hearing okay.\nMood: a little low with the isolation, PHQ-2 1, not depressed.\nCognition: known MCI, followed by neurology; no big change by family report.\nPrevention: flu done, colonoscopy 2015 normal, vaccines otherwise current. COVID vaccine when it becomes available to his age group, he is keen.\nBP at goal on amlodipine. Labs today. Proxy on file. RTC 2 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

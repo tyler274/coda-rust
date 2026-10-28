@@ -1,0 +1,1672 @@
+{
+  "unit": "unit-1761",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"Prenatal Multivitamin with Iron Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00001761",
+      "given": "Leah",
+      "family": "Fleming",
+      "birth_date": "1998-08-10",
+      "address_line": "27 Larchmont Lane",
+      "phone": "+1-646-555-0107",
+      "email": "leah.fleming@example.test",
+      "marital_status": "married",
+      "summary": "Healthy elementary school teacher who joined in 2023. Hyperemesis gravidarum with two ED visits in her first pregnancy (2025), last seen at 30 weeks; a term delivery, then a second pregnancy with a right ureteral stone that passed (2026), known to the practice only through records and messages.",
+      "events": [
+        {
+          "id": "2023-08-14a",
+          "kind": "telephone",
+          "start": "2023-08-14T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2023-08-14T10:20",
+              "author": "front desk",
+              "body": "Caller would like to establish primary care with us. Teacher, says she has summers off so wants to get in before classes resume. Last physical was a little over a year ago at her old office. Insurance is a PPO through her school district employer. Booked new patient physical 8/22 8:00 AM. Records release form emailed, she'll sign and send back to us."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T08:00",
+          "end": "2023-08-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              111,
+              74
+            ],
+            "hr": 65,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 99,
+            "weight_kg": 61.0,
+            "height_cm": 165.9
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T08:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.85
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 179
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-08-22T08:00"
+            },
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "2006-07-01T09:00"
+            },
+            {
+              "procedure": "Extraction of wisdom tooth",
+              "snomed": "65546002",
+              "performed": "2018-12-20T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "New Patient Preventive Visit",
+              "date": "2023-08-22T09:00",
+              "author": "PCP",
+              "body": "25 y/o F, new to the practice, transferring care from her prior primary care office. Teaches elementary school. No complaints today, just wants a doctor she can reach.\n\nPMH: none. No chronic illness, no hospitalizations.\nPSH: tonsils out as a child (around age 8); wisdom teeth pulled at 20.\nMeds: none. No supplements.\nAllergies: no known drug allergies.\nFHx: mother was hospitalized for severe vomiting in pregnancy (hyperemesis). A maternal uncle keeps getting kidney stones, calcium oxalate per family. Paternal grandmother has type 2 diabetes.\nSHx: married. Never smoked. Does not drink at all. Elementary school teacher.\nGYN: regular cycles. Last Pap at prior office in 2022, normal per patient; requested records.\n\nROS negative across systems.\n\nExam: well appearing, pleasant. HEENT normal, tonsils surgically absent. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Neuro grossly intact. Mood bright.\nPHQ-2 0.\n\nA/P: healthy adult, establishing care.\n- Screening: CBC, lipids today (never had a lipid panel), one-time HIV and hep C screens; she agrees.\n- Pap: due 2025, will confirm from records.\n- Vaccines: will review prior records for Tdap and COVID; flu shot in October at a nurse visit.\n- Return next year for a physical, or message any time."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "height_cm",
+            "rr"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:45",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2023-08-24T16:45",
+              "author": "PCP",
+              "body": "Hi Leah, everything from Tuesday came back fine. Blood counts normal, cholesterol in a healthy range, and the HIV and hepatitis C screens were negative. Nothing to do. Nice to meet you."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your lab results",
+              "date": "2023-08-24T19:02",
+              "author": "patient",
+              "body": "Great, thank you! I sent the records form to my old office yesterday."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "outside_records",
+          "start": "2023-08-29T11:10",
+          "reason": "prior primary care records",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2022-06-14T09:30",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation, endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2022-06-20T12:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-05-06T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-02T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-23T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-08-29T11:10",
+              "author": "outside primary care",
+              "body": "Transfer packet, 14 pages, from the patient's prior primary care office (seen there 2017 to 2022).\n\nProblem list: none.\nMedications: none.\nAllergies: NKDA.\nSurgical history: tonsillectomy in childhood; third molar extraction 2018.\nImmunizations: childhood series complete including MMR x2 and varicella x2; Tdap 05/2019; COVID-19 mRNA primary series 04/2021.\nScreening: cervical cytology 06/2022, negative.\nLast physical 06/2022, unremarkable.\n\nFiled. Reviewed, nothing outstanding. Pap next due 2025."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T15:48"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2023-10-11T15:55",
+              "author": "RN",
+              "body": "Came in after school for flu and the 2023-24 COVID shot. Screening questions negative, no prior reactions, not pregnant. Flu L deltoid, COVID R deltoid. Waited 15 min, no issues. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "medications": [
+            {
+              "drug_text": "Prenatal Multivitamin with Iron Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "planning pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ],
+            "hr": 61,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 61.6
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-10T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T16:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T16:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-10T16:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-10T16:50",
+              "author": "PCP",
+              "body": "26F here for yearly physical, came straight from her classroom. Feels well. No new problems this year.\n\nThey are hoping to try for a pregnancy over the next few months and she wanted to talk about what to do beforehand. Cycles regular. No meds. Never smoked, no alcohol.\n\nWe talked through preconception basics: start a prenatal vitamin with iron now so the folate is on board ahead of conception; she is immune to measles and chickenpox by vaccine history (2 doses each documented); flu and COVID shots are reasonable and safe either way. I mentioned her mother's hyperemesis history: worth telling her OB early, since it can run in families. She laughed and said her mom brings it up every holiday.\n\nExam: normal. Wt 61.6. Heart and lungs normal, abdomen benign, thyroid not enlarged.\nPHQ-2 0.\n\nA/P\n1. Preventive care: up to date. Labs from last year were normal, nothing needed today. Pap due next year (2022 normal); OB can do it if she is pregnant by then.\n2. Preconception: prenatal vitamin with iron, 1 daily, sent to pharmacy. Message me with a positive test and we'll get her to OB.\n3. Flu and 2024-25 COVID given today.\nRTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "pharmacy",
+          "start": "2025-02-18T09:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Prenatal vitamin refill",
+              "date": "2025-02-18T09:05",
+              "author": "MA",
+              "body": "Electronic request from pharmacy: prenatal vitamin with iron, 1 tab daily, #90. Last physical 9/2024. Approved x3 refills per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "portal_message",
+          "start": "2025-03-10T06:52",
+          "reason": "positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "action": "diagnosed",
+              "onset": "2025-02-17",
+              "note": "LMP 2025-02-03, EDD 2025-11-10 by dates",
+              "icd10": "Z33.1"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy, 5 weeks; mother with hyperemesis gravidarum"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "date": "2025-03-10T06:52",
+              "author": "patient",
+              "body": "Good morning! I took a home test this morning and it was positive. First day of my last period was February 3. What do I do next? I've been taking the prenatal vitamin since September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "date": "2025-03-10T12:15",
+              "author": "PCP",
+              "body": "Leah, this is wonderful news. By your dates you're about 5 weeks, due around November 10. Keep the prenatal vitamin going. I've placed a referral to obstetrics; they usually like to see you around 7 to 8 weeks and will do the first ultrasound. Please tell them about your mom's hyperemesis. If you start vomiting to the point you can't keep fluids down, call us or them the same day, don't wait it out."
+            },
+            {
+              "type": "Referral",
+              "title": "Obstetrics referral",
+              "date": "2025-03-10T12:20",
+              "author": "PCP",
+              "body": "26 y/o G1, LMP 2/3/25, ~5 wks by dates, positive home UPT. Healthy, no meds other than prenatal vitamin, NKDA. Family history of hyperemesis gravidarum (mother, hospitalized). Please see for new OB intake."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-27a",
+          "kind": "outside_records",
+          "start": "2025-03-27T14:30",
+          "reason": "obstetrics intake letter",
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, first trimester",
+              "loinc": "11525-3",
+              "performed": "2025-03-24T10:30",
+              "text": "Transvaginal technique. Single intrauterine gestation. Yolk sac present. Embryo with cardiac activity seen. Crown-rump length consistent with 7 weeks 0 days, concordant with menstrual dating. Adnexa unremarkable. No free fluid.",
+              "conclusion": "Viable singleton intrauterine pregnancy at 7 weeks 0 days by crown-rump length, consistent with dates."
+            },
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-03-24T10:15",
+              "text": "Liquid-based preparation. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2025-03-27T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-03-24T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics new OB visit",
+              "date": "2025-03-27T14:30",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRIC GROUP\nNew OB Visit, 3/24/2025\nRe: Leah Fleming, G1P0\n\nThank you for referring this 26-year-old. LMP 2/3/2025, EDD 11/10/2025. Mild nausea most mornings, no vomiting yet. No bleeding or cramping.\nMeds: prenatal vitamin with iron daily. Allergies: NKDA.\nFamily history noted: mother with hyperemesis requiring admission. We discussed early warning signs and when to call.\n\nExam: weight 61.2 kg, BP normal. Pelvic exam normal. Pap collected.\nTransvaginal ultrasound: viable single intrauterine pregnancy measuring 7w0d, consistent with dates.\nRoutine prenatal labs sent.\n\nPlan: return in 4 weeks; call for vomiting that prevents her from keeping liquids down.\n\nAddendum 3/27: Pap negative.\n\n--- Scanned to chart, reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "ed_visit",
+          "start": "2025-04-09T13:40",
+          "end": "2025-04-09T20:10",
+          "service": "Emergency Medicine",
+          "reason": "vomiting in pregnancy, unable to keep fluids down",
+          "conditions": [
+            {
+              "label": "Hyperemesis gravidarum with metabolic disturbance",
+              "action": "diagnosed",
+              "onset": "2025-03-30",
+              "icd10": "O21.1"
+            },
+            {
+              "label": "Dehydration",
+              "action": "diagnosed",
+              "onset": "2025-04-07",
+              "icd10": "E86.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea or vomiting",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperemesis gravidarum"
+            },
+            {
+              "drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperemesis gravidarum"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              90,
+              60
+            ],
+            "hr": 110,
+            "rr": 18,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 57.7
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-04-09T14:05",
+              "results": [
+                {
+                  "test": "Urine Ketones",
+                  "text": "Moderate (40 mg/dL)"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-04-09T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2025-04-09T20:10",
+              "author": "emergency medicine",
+              "body": "COMMUNITY EMERGENCY DEPARTMENT\nArrival 13:40.\n\nCC: vomiting x 10 days, no fluids kept down x 2 days.\n\nHPI: 26 y/o G1 at 9w2d by LMP, viable single IUP on ultrasound at 7 weeks with her OB. Over the last ten days she has been throwing up after almost every meal, and since Monday cannot hold down even water. Tired, lightheaded when she stands up. Denies fever, belly pain, diarrhea. Urine pregnancy test was positive at 5 weeks.\n\nPMH: none. PSH: tonsillectomy (child), wisdom teeth (age 20).\nMeds: prenatal vitamin with iron daily.\nAllergies: NKDA.\nFamily: mother had hyperemesis, was admitted for it. Maternal uncle with recurrent calcium oxalate stones. Paternal grandmother DM2.\nSocial: never smoker, no alcohol (pregnant), teaches elementary school.\n\nVitals on arrival: HR 110, BP 90/60.\nExam: thin, tired-appearing young woman. Mucous membranes dry. Orthostatic: mild drop in pressure on standing. Weight 57.7 kg, down 3.5 kg from her first prenatal visit (61.2). Abdomen soft, nontender. Fetal heart tones present on handheld check.\n\nUA: ketones moderate.\n\nED course: 2 L IV lactated Ringer's, ondansetron 4 mg IV, thiamine 100 mg IV. Nausea eased; tolerated crackers and ginger ale x 2 without emesis. Repeat HR 88.\n\nImpression: hyperemesis gravidarum with dehydration and ketonuria.\nDisposition: home. Rx ondansetron 4 mg ODT q8h prn; doxylamine/pyridoxine 10/10 mg DR, 1 at bedtime. Small frequent sips. Call OB tomorrow. Return for inability to keep fluids, fainting, abdominal pain, bleeding."
+            }
+          ],
+          "state": {
+            "weight_kg": 57.7
+          },
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "outside_records",
+          "start": "2025-04-10T09:15",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED visit notification",
+              "date": "2025-04-10T09:15",
+              "author": "front desk",
+              "body": "ED record from 4/9/2025 received by fax (hyperemesis, discharged home). Filed and routed to PCP. Called pt: she is booked Friday 4/11 for a follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-11a",
+          "kind": "office_visit",
+          "start": "2025-04-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, hyperemesis",
+          "vitals": {
+            "bp": [
+              123,
+              74
+            ],
+            "hr": 59,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 58.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-11T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: ED follow-up",
+              "date": "2025-04-11T16:05",
+              "author": "PCP",
+              "body": "S: Seen in the ED Wednesday at 9 weeks for hyperemesis, got 2 L and went home on ondansetron as needed plus doxylamine-pyridoxine at night. Since then she has thrown up twice a day instead of after every meal and is keeping down water, broth, toast. Using ondansetron about twice a day. A little constipated. Took two sick days. OB office called her yesterday and moved up her next visit.\n\nO: Looks tired but better. Mucous membranes moist. Wt 58.0 (ED 57.7). Abdomen soft, nontender.\n\nA/P: Hyperemesis gravidarum, improving on the ED regimen. Dehydration improving.\n- Continue ondansetron prn and doxylamine-pyridoxine at bedtime. OB to adjust as needed; I'd defer dosing changes to them.\n- Fluids in small amounts all day; water bottle on her desk at school.\n- Lower threshold for return: if she can't keep liquids for 12 hours, message me or go back.\n- Recheck in a few weeks or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-04a",
+          "kind": "ed_visit",
+          "start": "2025-05-04T08:25",
+          "end": "2025-05-04T17:40",
+          "service": "Emergency Medicine",
+          "reason": "recurrent vomiting in pregnancy",
+          "conditions": [
+            {
+              "label": "Hyperemesis gravidarum with metabolic disturbance",
+              "action": "history",
+              "note": "recurrence with hypokalemic hypochloremic metabolic alkalosis",
+              "icd10": "O21.1"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 5 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "low potassium from vomiting"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              102,
+              64
+            ],
+            "hr": 104,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-04T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 92
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 76
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 127
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-04T08:50",
+              "results": [
+                {
+                  "test": "pH of Venous blood",
+                  "loinc": "2746-6",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Venous blood",
+                  "loinc": "2021-4",
+                  "unit": "mm[Hg]",
+                  "value": 46
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-04T09:10",
+              "results": [
+                {
+                  "test": "Urine Ketones",
+                  "text": "Large (>=80 mg/dL)"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.02
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-04T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2025-05-04T17:40",
+              "author": "emergency medicine",
+              "body": "COMMUNITY EMERGENCY DEPARTMENT\n\nChief complaint: nausea and vomiting, can't keep anything down x 2 days.\n\n26 y/o G1 at 12w6d, seen here 4/9 for hyperemesis. Had been doing much better for a couple of weeks on ondansetron and doxylamine/pyridoxine. Since Friday she is vomiting every two to three hours and has kept nothing down, not even water. No diarrhea, no abdominal pain, no fever, no travel. Under the care of an outside obstetric group.\n\nMeds: prenatal vitamin with iron; ondansetron 4 mg ODT prn; doxylamine/pyridoxine 10/10 qhs. NKDA.\nFamily: mother with hyperemesis needing admission; maternal uncle with calcium oxalate stones; paternal grandmother DM2.\nNever smoker, no alcohol, teacher.\n\nHR 104, BP 102/64.\nExam: fatigued, mildly dry. Mucous membranes dry. Orthostatic BP changes present. Abdomen soft, no tenderness, no rebound.\n\nWe sent electrolytes and a venous gas to sort out her volume and acid-base status.\nNa 134, K 3.1, Cl 92, HCO3 32, BUN 19, Cr 0.6, glucose 76. Venous pH 7.48, pCO2 46. Urine ketones large.\nPicture is a hypokalemic, hypochloremic metabolic alkalosis from ongoing vomiting with volume depletion.\n\nCourse: NS 1 L then D5 NS with 20 mEq KCl/L x 1 L. Metoclopramide 10 mg IV, thiamine 100 mg IV. By afternoon sipping juice and broth without vomiting. Discussed with on-call OB, who agreed with discharge and will see her this week.\n\nDx: hyperemesis gravidarum with metabolic disturbance (hypokalemia, metabolic alkalosis), dehydration.\nDispo: home. KCl 20 mEq ER daily x 5 days. Continue current antiemetics. Repeat BMP with PCP in 2 to 3 days. Return precautions reviewed."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-05a",
+          "kind": "outside_records",
+          "start": "2025-05-05T08:40",
+          "reason": "ED record received",
+          "orders": [
+            {
+              "id": "bmp-recheck-2025",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record 5/4",
+              "date": "2025-05-05T08:40",
+              "author": "RN",
+              "body": "Second ED visit for hyperemesis received (5/4). K 3.1, sent home on 5 days of potassium. ED asks for a BMP in 2-3 days. Called pt, sounds tired but kept breakfast down. Booked Wed 5/7 with PCP, BMP order in."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-07a",
+          "kind": "office_visit",
+          "start": "2025-05-07T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, potassium recheck",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "action": "resolved",
+              "icd10": "E86.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 57,
+            "temp_c": 36.7,
+            "spo2": 99,
+            "weight_kg": 56.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-07T16:10",
+              "resulted": "2025-05-08T07:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 127
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-07T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-07T16:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-recheck-2025",
+              "action": "done",
+              "date": "2025-05-07T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: second ED follow-up",
+              "date": "2025-05-07T16:30",
+              "author": "PCP",
+              "body": "Back after a second ED visit Sunday at 12w6d: vomiting q2-3h, K 3.1 with a contraction alkalosis, fluids with potassium, home on 5 days of KCl.\n\nSince then: no vomiting for two days. Eating small amounts, mostly bland, and drinking. Taking the KCl, on day 3 of 5. OB saw her Monday; they're keeping the same antiemetics for now.\n\nExam: Wt 56.8. Mucous membranes moist. No orthostatic symptoms on standing today. Abdomen soft.\n\nA/P\n1. Hyperemesis gravidarum, second ED visit, now tolerating intake. Dehydration has resolved clinically.\n2. Hypokalemia/alkalosis from vomiting: BMP today, finish the KCl.\n3. She asked if this will last the whole pregnancy. Told her many people turn a corner in the second trimester, but not all; OB is steering.\nWill message results."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "portal_message",
+          "start": "2025-05-08T08:10",
+          "reason": "lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Potassium back to normal",
+              "date": "2025-05-08T08:10",
+              "author": "PCP",
+              "body": "Leah, your potassium is back up to 3.8 and the other salts and your kidney number are normal. Finish the last two days of potassium and you're done with it. Hope today is a good food day."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "outside_records",
+          "start": "2025-06-27T13:20",
+          "reason": "obstetrics visit letter",
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "stop",
+              "reason": "vomiting resolved"
+            },
+            {
+              "drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "vomiting resolved"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, anatomy survey",
+              "loinc": "11525-3",
+              "performed": "2025-06-24T09:40",
+              "text": "Single live intrauterine gestation. Biometry consistent with 20 weeks 1 day, concordant with established dating. Fetal anatomy survey complete and normal: intracranial structures, face, spine, four-chamber heart and outflow tracts, stomach, kidneys, bladder, abdominal wall and extremities seen and normal. Posterior placenta, no previa. Amniotic fluid normal. Cervix long and closed.",
+              "conclusion": "Normal anatomy survey at 20 weeks 1 day."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics 20-week visit",
+              "date": "2025-06-27T13:20",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRIC GROUP\nProgress note, 6/24/2025, 20w1d\n\nHyperemesis much improved. Some nausea at the end of the day; no vomiting for about two weeks. Not using ondansetron. Eating three meals.\nPlan: stop ondansetron and doxylamine/pyridoxine; she can call if symptoms return. Continue prenatal vitamin.\nBP normal. Fundal height appropriate. Fetal heart tones normal.\nAnatomy ultrasound today normal.\nRTC 4 weeks. Glucose screen at 24-28 weeks.\n\n--- Received and filed, med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "office_visit",
+          "start": "2025-08-27T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in visit",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled appointment",
+              "date": "2025-08-27T07:45",
+              "author": "front desk",
+              "body": "Pt called, teacher in-service day ran long and she can't make 3:30 today. Rescheduled to Fri 9/5 at 3:45."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "office_visit",
+          "start": "2025-09-05T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pregnancy check-in, vaccines",
+          "conditions": [
+            {
+              "label": "Hyperemesis gravidarum with metabolic disturbance",
+              "action": "resolved",
+              "icd10": "O21.1"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              80
+            ],
+            "hr": 64,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 64.5
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-09-05T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-05T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-09-05T16:15"
+            },
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-05T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-09-05T16:25",
+              "author": "PCP",
+              "body": "27F G1 at 30w4d, here to check in and get her pregnancy vaccines; OB is fine with us giving them.\n\nFeeling well. No vomiting since June. Appetite good. Back in the classroom this week, tired by afternoon but managing. Seeing OB every 2 weeks soon. Still on the prenatal vitamin, off the nausea meds.\n\nExam: Wt 64.5 (61.6 pre-pregnancy). BP normal. Gravid abdomen. No edema.\n\nA/P\n1. Hyperemesis gravidarum: resolved since mid-second trimester. Off list as active.\n2. Pregnancy, 30 weeks, uncomplicated since. OB managing.\n3. Tdap and flu given today.\nI'll see her after the baby comes; postpartum care with OB first. Message me any time."
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-11-07a",
+          "kind": "hospital_admission",
+          "start": "2025-11-07T21:30",
+          "end": "2025-11-09T12:00",
+          "service": "Obstetrics",
+          "reason": "labor at term",
+          "vitals": {
+            "bp": [
+              123,
+              76
+            ],
+            "hr": 60,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 100
+          },
+          "procedures": [
+            {
+              "procedure": "Normal delivery procedure",
+              "snomed": "177184002",
+              "performed": "2025-11-08T04:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2025-11-09T12:00",
+              "author": "obstetrics",
+              "body": "REGIONAL MEDICAL CENTER, BIRTHING UNIT\nAdmit 11/7/2025 21:30. Discharge 11/9/2025.\n\n27 y/o G1P0 at 39w4d admitted in spontaneous active labor. Pregnancy notable for hyperemesis gravidarum in the first trimester with two ED visits, resolved by 20 weeks. Otherwise uncomplicated prenatal course. NKDA.\n\nDelivery 11/8/2025 04:52 at 39w5d: spontaneous vaginal delivery of a liveborn infant, vigorous at birth, routine newborn care. Placenta delivered intact. Estimated blood loss within normal range. No laceration requiring repair.\n\nPostpartum course uncomplicated. Ambulating, voiding, tolerating diet, pain controlled. Vital signs normal throughout.\n\nDischarge diagnosis: term spontaneous vaginal delivery.\nMeds at discharge: prenatal vitamin with iron daily.\nFollow-up: obstetrics postpartum visit in about 6 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "outside_records",
+          "start": "2025-11-12T10:05",
+          "reason": "delivery discharge summary received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Delivery discharge summary received",
+              "date": "2025-11-12T10:05",
+              "author": "MA",
+              "body": "Discharge summary from birthing unit, 11/7-11/9/2025, received via fax and scanned. Routed to PCP."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Congratulations",
+              "date": "2025-11-12T17:30",
+              "author": "PCP",
+              "body": "Leah, I just saw the hospital summary come through. Congratulations to you all. Rest up, and reach out if you need anything. Your OB will see you in about six weeks; after that, let's get you in here sometime this winter."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "outside_records",
+          "start": "2025-12-19T11:40",
+          "reason": "obstetrics postpartum letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics postpartum visit",
+              "date": "2025-12-19T11:40",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRIC GROUP\nPostpartum visit, 12/17/2025\n\nSix weeks after a spontaneous vaginal delivery at 39w5d. Recovering well. Bleeding stopped. Mood good, sleeping in stretches. Pelvic exam normal, uterus involuted. BP normal.\nContinue prenatal vitamin while recovering. Return to us as needed; routine primary care with her PCP.\n\n--- Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T09:30",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Prenatal vitamin refill",
+              "date": "2026-01-20T09:30",
+              "author": "MA",
+              "body": "Pharmacy refill request, prenatal vitamin with iron daily #90. Last seen 9/5/25. Approved x1 per protocol; note to pt that she is due for a visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T20:14",
+          "reason": "pregnant again",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "News",
+              "date": "2026-03-09T20:14",
+              "author": "patient",
+              "body": "Hi, wanted to let you know I'm pregnant again! Earlier than we planned, but we're happy. LMP was February 2. I already saw my OB group and the early ultrasound looked good. So far no vomiting at all, fingers crossed. Still taking the prenatal vitamin. I know I owe you a visit, the baby has made it hard to get anywhere. Anything I should be doing?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: News",
+              "date": "2026-03-10T07:40",
+              "author": "PCP",
+              "body": "Congratulations, Leah. That puts you around 5 weeks, due early November. Keep the prenatal vitamin. Since you had hyperemesis last time, don't be a hero if it starts again: tell your OB early, the medicines work better before you're dehydrated. Come see me when life allows; no rush on our end."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-12a",
+          "kind": "ed_visit",
+          "start": "2026-04-12T02:15",
+          "end": "2026-04-12T09:20",
+          "service": "Emergency Medicine",
+          "reason": "right flank pain",
+          "vitals": {
+            "bp": [
+              125,
+              78
+            ],
+            "hr": 88,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-04-12T02:40",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Moderate"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 26
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.6
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-12T02:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 296
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-12T02:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 126
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-12T02:40",
+              "resulted": "2026-04-14T08:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": "No growth at 48 hours"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2026-04-12T04:30",
+              "text": "Indication: right flank pain, pregnant, 9 weeks. Right kidney 11.2 cm, normal cortical thickness and echogenicity. Mild right hydronephrosis. A 5 mm echogenic shadowing stone at the right ureterovesical junction with twinkle artifact. Right ureteral jet not seen during the exam; left jet present. Left kidney 11.0 cm, normal, no hydronephrosis or stone. Bladder normal. Limited view of the uterus shows an intrauterine pregnancy with fetal cardiac activity.",
+              "conclusion": "5 mm right ureterovesical junction stone with mild right hydronephrosis. Normal left kidney. Intrauterine pregnancy with cardiac activity."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-04-12T02:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2026",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "right ureteral stone in pregnancy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "date": "2026-04-12T09:20",
+              "author": "emergency medicine",
+              "body": "COMMUNITY EMERGENCY DEPARTMENT\n\nCC: right flank pain.\n\n27 y/o G2P1 at 9w6d (LMP 2/2/26). Sudden severe right flank pain starting around 8 PM, now 6 hours, moving down into the right groin. Nauseated, has not vomited. No fever, no burning, no frequency. Prenatal course so far has been uncomplicated, no hyperemesis this time. Last here a year ago with hyperemesis in her first pregnancy.\n\nPMH: hyperemesis gravidarum (prior pregnancy). PSH: tonsillectomy, wisdom teeth. Meds: prenatal vitamin. NKDA.\nFamily: maternal uncle with recurrent calcium oxalate stones; mother hyperemesis; paternal grandmother DM2.\nNever smoker, no alcohol (pregnant), teacher.\n\nVitals: afebrile, BP 125/78, HR 88.\nExam: uncomfortable, shifting on the stretcher. Right CVA tenderness. Abdomen soft, no peritoneal signs. No vaginal bleeding.\n\nUA: microscopic hematuria, nitrite and LE negative, rare WBC; no sign of infection. Culture sent.\nCBC, BMP unremarkable, Cr 0.6.\nRenal US (no CT in pregnancy): 5 mm right UVJ stone, mild right hydronephrosis, left kidney normal. Bedside view: IUP with cardiac activity.\n\nTreatment: acetaminophen 1 g PO, 1 L LR. Pain from 9/10 to 3/10.\n\nImpression: right ureterolithiasis, 5 mm distal stone, uncomplicated, in a 10-week pregnancy.\nPlan: home. Acetaminophen 500 mg, 2 tabs every 6 hours as needed. Oxycodone-acetaminophen 5/325, 1 tab every 6 h if pain is not controlled, #8, no refills. Strain urine, save the stone. Push fluids. Outpatient urology referral placed. OB notified. Return for fever, uncontrolled pain or vomiting, or bleeding."
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "outside_records",
+          "start": "2026-04-13T08:55",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record 4/12/2026",
+              "date": "2026-04-13T08:55",
+              "author": "RN",
+              "body": "ED note from 4/12 received: right 5 mm UVJ stone at ~10 weeks pregnant, sent home with acetaminophen and a few oxycodone tabs, urology referral from the ED. Scanned, routed to PCP. Pt not seen here since 9/2025."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Checking in",
+              "date": "2026-04-13T09:05",
+              "author": "RN",
+              "body": "Hi Leah, we got your ER record from the weekend. How is the pain today? Let us know if you need help getting in with urology or if anything gets worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Checking in",
+              "date": "2026-04-13T12:22",
+              "author": "patient",
+              "body": "Thank you. Comes and goes, mostly a dull ache now. Urology called me already, I see them May 6."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "portal_message",
+          "start": "2026-04-21T06:40",
+          "reason": "passed kidney stone",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Stone",
+              "date": "2026-04-21T06:40",
+              "author": "patient",
+              "body": "Good news, I think I passed it last night! Caught it in the strainer. No pain at all this morning. Should I still go to urology?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Stone",
+              "date": "2026-04-21T11:50",
+              "author": "PCP",
+              "body": "Great news. Yes, keep the urology visit and bring the stone with you. They'll want a quick ultrasound to make sure the kidney has drained, and they can talk about prevention given your uncle's history."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-06a",
+          "kind": "specialist_visit",
+          "start": "2026-05-06T10:30",
+          "service": "Urology",
+          "reason": "right ureteral stone, passed",
+          "vitals": {
+            "bp": [
+              114,
+              71
+            ],
+            "hr": 63
+          },
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2026-05-06T10:00",
+              "text": "Comparison 4/12/2026. Right kidney 11.1 cm and left kidney 11.0 cm with normal cortical thickness and echogenicity. No hydronephrosis on either side. No renal or ureterovesical junction stones seen. Bilateral ureteral jets present. Bladder normal.",
+              "conclusion": "Normal kidneys. Interval resolution of right hydronephrosis; no stones."
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2026",
+              "action": "done",
+              "date": "2026-05-06T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Urology Consultation",
+              "date": "2026-05-06T11:15",
+              "author": "urology",
+              "body": "OUTSIDE UROLOGY GROUP\nConsultation, 5/6/2026\nReferred from: emergency department. Copy to PCP.\n\n27 y/o currently about 13 weeks pregnant, seen in the ED 4/12 with a 5 mm right UVJ stone and mild hydronephrosis. Passed the stone 4/20 into a strainer and has been pain-free since. No fever, no urinary symptoms. First stone. Maternal uncle with recurrent calcium oxalate stones.\nMeds: prenatal vitamin. Allergies: NKDA.\n\nExam: well, no CVA tenderness.\nRenal ultrasound today: no hydronephrosis, no residual stones.\n\nAssessment: right distal ureteral stone, passed spontaneously; obstruction resolved.\nPlan:\n- Fluids 2.5 to 3 liters a day, enough that urine stays pale.\n- No routine imaging in pregnancy unless symptoms return.\n- With a family history of recurrent stones, a metabolic evaluation (24-hour urine) is reasonable once she is done with pregnancy and nursing; she can call us then.\n- Follow up as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2026-05-08a",
+          "kind": "outside_records",
+          "start": "2026-05-08T14:00",
+          "reason": "urology consult letter received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Urology letter received",
+              "date": "2026-05-08T14:00",
+              "author": "MA",
+              "body": "Urology consult 5/6/2026 received and scanned: stone passed, ultrasound clear, 24-hr urine after pregnancy. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "outside_records",
+          "start": "2026-06-26T10:25",
+          "reason": "obstetrics visit letter",
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, anatomy survey",
+              "loinc": "11525-3",
+              "performed": "2026-06-23T08:50",
+              "text": "Single live intrauterine gestation, cephalic at time of scan. Biometry consistent with 20 weeks 1 day, concordant with dating. Complete anatomy survey normal including brain, face, spine, heart with four chambers and outflow tracts, abdomen, kidneys, bladder and limbs. Anterior placenta, clear of the os. Normal amniotic fluid. Cervical length normal.",
+              "conclusion": "Normal second-trimester anatomy survey."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics 20-week visit",
+              "date": "2026-06-26T10:25",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRIC GROUP\nProgress note 6/23/2026, G2P1 at 20w1d.\n\nDoing well. No nausea or vomiting this pregnancy. No flank pain since passing the stone in April. BP normal. Fetal heart tones normal. Anatomy scan normal today.\nContinue prenatal vitamin and good fluid intake. RTC 4 weeks.\n\n--- Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:10",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Prenatal vitamin refill",
+              "date": "2026-07-14T09:10",
+              "author": "MA",
+              "body": "eRx request prenatal vitamin with iron #90. Not seen since 9/2025; PCP okayed a 90-day fill given pregnancy. Portal note sent asking her to schedule when she can."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Dehydration|E86.0": {
+        "code": "E86.0",
+        "display": "Dehydration",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hyperemesis gravidarum with metabolic disturbance|O21.1": {
+        "code": "O21.1",
+        "display": "Hyperemesis gravidarum with metabolic disturbance",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Pregnant state, incidental|Z33.1": {
+        "code": "Z33.1",
+        "display": "Pregnant state, incidental",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet": {
+        "code": "1375948",
+        "display": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+        "ingredient": "doxylamine",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Carbon dioxide partial pressure in Venous blood": {
+        "code": "2021-4",
+        "display": "Carbon dioxide [Partial pressure] in Venous blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Venous blood": {
+        "code": "2746-6",
+        "display": "pH of Venous blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Obstetric ultrasound, anatomy survey": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, first trimester": {
+        "code": "11525-3",
+        "display": "US for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Extraction of wisdom tooth": {
+        "code": "65546002",
+        "display": "Extraction of wisdom tooth",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Normal delivery procedure": {
+        "code": "177184002",
+        "display": "Normal delivery procedure",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    },
+    "rejected": [
+      "drug \"Prenatal Multivitamin with Iron Oral Tablet\""
+    ]
+  }
+}

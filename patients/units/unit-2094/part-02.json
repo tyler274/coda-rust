@@ -1,0 +1,249 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002094",
+      "events": [
+        {
+          "id": "2021-03-10a",
+          "kind": "pharmacy",
+          "start": "2021-03-10T13:00",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-02-17T10:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-10T10:45"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside COVID-19 Vaccine Doses", "author": "MA", "date": "2021-03-10T13:00", "body": "Pt dropped off his vaccination card. Two Pfizer doses at a retail pharmacy clinic, 2/17/21 and 3/10/21. Entered into immunization history; state registry matches."}
+          ]
+        },
+        {
+          "id": "2021-05-24a",
+          "kind": "portal_message",
+          "start": "2021-05-24T07:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Feeling run down", "author": "patient", "date": "2021-05-24T07:12", "body": "Hi doc. I've been dragging since around March and figured it was the busy season. Not hungry, pants are loose, and a buddy at the marina said my eyes look yellow. Pee has been dark the last couple weeks too. No fever. Can I come in this week?"},
+            {"type": "Patient Message", "title": "RE: Feeling run down", "author": "PCP", "date": "2021-05-24T08:30", "body": "Robert, yes, I want to see you soon. Front desk will call you with a Wednesday morning spot. Please don't eat after midnight before so we can draw labs. If you get confused, vomit blood, have black stools or a fever, go to the ER."}
+          ]
+        },
+        {
+          "id": "2021-05-26a",
+          "kind": "office_visit",
+          "start": "2021-05-26T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, weight loss, yellow eyes",
+          "state": {"weight_kg": 81.0, "labs": {"Aspartate Aminotransferase": 72, "Alanine Aminotransferase": 64, "Alkaline Phosphatase": 168, "Bilirubin, Total": 3.6, "Albumin": 2.9, "Prothrombin Time-International Normalized Ratio": 1.5, "Platelets": 121}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-05-26T09:05", "results": [{"test": "Aspartate Aminotransferase", "value": 72}, {"test": "Alanine Aminotransferase", "value": 64}, {"test": "Alkaline Phosphatase", "value": 168}, {"test": "Bilirubin, Total", "value": 3.6}, {"test": "Albumin", "value": 2.9}, {"test": "Creatinine"}, {"test": "Sodium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-26T09:05", "results": [{"test": "Platelets", "value": 121}, {"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-05-26T09:05", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.5}]}
+          ],
+          "orders": [
+            {"id": "gi-referral-2021", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "jaundice, weight loss, chronic hepatitis C"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2021-05-26T08:20"},
+            {"procedure": "Venipuncture", "performed": "2021-05-26T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2021-05-26T08:20", "body": "CC: tired, poor appetite, weight loss, yellow eyes.\n\nHPI: 56M with untreated chronic hep C. About 3 months of steadily worse fatigue and less appetite; fills up after a few bites. Weight down from 88 to 81 kg without trying. Vague ache across the upper belly, queasy on and off. Eyes yellow and urine tea-colored for ~2 wks. Denies fever, vomiting blood, black stools, travel. No alcohol since 2016, confirms again today. No new meds or supplements.\n\nExam: tired-appearing. Scleral icterus. Abdomen distended, mildly tender in the upper abdomen, hard to assess the liver edge with the distension. No asterixis. No edema.\n\nA/P: jaundice and weight loss in a man with long-standing hep C. Concerned for advanced liver disease, need to exclude a liver mass.\n- CMP, CBC, INR today.\n- Urgent GI referral; called their office, they can see him 6/9.\n- No alcohol, no NSAIDs, acetaminophen no more than 2 g a day if needed.\n- ER precautions reviewed."}
+          ]
+        },
+        {
+          "id": "2021-05-27a",
+          "kind": "telephone",
+          "start": "2021-05-27T15:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Lab results and GI appointment", "author": "RN", "date": "2021-05-27T15:40", "body": "Called pt per PCP. Bilirubin 3.6, albumin 2.9, INR 1.5, platelets 121, liver enzymes up modestly. PCP wants him to keep the GI consult 6/9 at 10:30; he has the address. Reviewed reasons to go to the ED. Pt verbalized understanding, will bring a list of questions."}
+          ]
+        },
+        {
+          "id": "2021-06-09a",
+          "kind": "specialist_visit",
+          "start": "2021-06-09T10:30",
+          "service": "Gastroenterology",
+          "reason": "jaundice, weight loss, chronic hepatitis C",
+          "conditions": [
+            {"label": "Decompensated cirrhosis of liver", "icd10": "K74.69", "action": "diagnosed", "onset": "2021-06-09", "note": "Hepatitis C with prior alcohol use; jaundice and ascites"}
+          ],
+          "medications": [
+            {"drug_text": "spironolactone 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "ascites"},
+            {"drug": "furosemide 40 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "ascites"}
+          ],
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2021-06-09T11:20", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 212}]}
+          ],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2021-06-09T11:45", "text": "Complete abdominal ultrasound. Liver is coarse in echotexture with a nodular surface, consistent with cirrhosis. A large irregular heterogeneous solid mass is seen in the right hepatic lobe. Main portal vein patent with hepatopetal flow. Moderate ascites. Gallbladder without stones or wall thickening. Common bile duct not dilated. Kidneys normal in size without hydronephrosis. Abdominal aorta of normal caliber.", "conclusion": "Cirrhotic liver with a large irregular right hepatic lobe mass. Moderate ascites. Multiphase CT or MRI recommended."}
+          ],
+          "orders": [
+            {"id": "gi-referral-2021", "action": "done", "date": "2021-06-09T10:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Consultation", "author": "gastroenterology", "date": "2021-06-11T09:00", "body": "OUTSIDE GASTROENTEROLOGY AND HEPATOLOGY GROUP\nDate of service: 06/09/2021\nThank you for referring Mr. Nowak, a 56-year-old marine mechanic with chronic hepatitis C, genotype 1a, from transfusions in the 1980s, never treated.\n\nHe has three months of worsening tiredness, poor appetite, early fullness, intermittent nausea and an indistinct abdominal ache, with weight loss. Over the past couple of weeks his eyes have turned yellow and his urine dark. No fever, hematemesis or travel. He drank heavily for years and stopped in 2016. He has never received hepatitis A or B vaccine.\n\nMeds: calcium carbonate as needed. Allergies: NKDA.\nFamily: father with alcohol-related cirrhosis; a paternal uncle with liver cancer; mother with type 2 diabetes.\n\nExam: chronically ill-appearing man with scleral icterus and mild temporal and shoulder-girdle wasting. The abdomen is distended with a fluid wave; a firm nodular liver edge is felt below the right costal margin.\n\nData: your labs from 5/26 show mildly raised AST and ALT, a raised alkaline phosphatase and a prolonged INR. Alpha-fetoprotein drawn today is 212 ng/mL. Ultrasound here today shows a cirrhotic liver with a large, irregular mass in the right lobe and ascites.\n\nImpression:\n1. Decompensated cirrhosis from hepatitis C and prior alcohol, with jaundice and ascites.\n2. Right hepatic lobe mass with raised AFP, highly concerning for hepatocellular carcinoma.\n\nPlan:\n- Multiphase CT abdomen within two weeks.\n- Spironolactone 100 mg daily with furosemide 40 mg daily; 2 g sodium diet; BMP in 2 to 3 weeks through your office.\n- Referral to transplant hepatology.\n- Please vaccinate against hepatitis A and B.\n- Continued abstinence; no NSAIDs.\nWe will see him back after imaging."}
+          ]
+        },
+        {
+          "id": "2021-06-23a",
+          "kind": "imaging",
+          "start": "2021-06-23T13:30",
+          "service": "Radiology",
+          "reason": "liver mass characterization",
+          "conditions": [
+            {"label": "Hepatocellular carcinoma", "icd10": "C22.0", "action": "diagnosed", "onset": "2021-06-23", "note": "4.0 cm right lobe, LI-RADS 5; transplant candidate"}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2021-06-23T13:30", "text": "Multiphase liver protocol: noncontrast, late arterial, portal venous and delayed phases through the abdomen, portal venous phase through the pelvis. The liver is small and nodular in contour, consistent with cirrhosis. In the right hepatic lobe there is a 4.0 cm lesion with arterial phase hyperenhancement, nonperipheral washout on portal venous and delayed phases, and an enhancing capsule. No other liver lesion. Portal and hepatic veins are patent without tumor thrombus. Moderate ascites. No adenopathy. Kidneys, adrenals and pancreas unremarkable. No bony lesion. Bowel unremarkable. Lung bases clear.", "conclusion": "4.0 cm right hepatic lobe observation, LI-RADS 5, definite hepatocellular carcinoma. Cirrhosis with moderate ascites. No portal vein thrombosis. No extrahepatic disease."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "CT Abdomen and Pelvis, Liver Protocol", "author": "radiology", "date": "2021-06-24T08:10", "body": "Outside imaging center report received by fax. Ordered by gastroenterology, copy to PCP. Findings: 4.0 cm right lobe lesion meeting LI-RADS 5 criteria in a cirrhotic liver; moderate ascites; portal vein patent; no spread outside the liver."}
+          ]
+        },
+        {
+          "id": "2021-06-25a",
+          "kind": "portal_message",
+          "start": "2021-06-25T17:20",
+          "documents": [
+            {"type": "Patient Message", "title": "CT results", "author": "PCP", "date": "2021-06-25T17:20", "body": "Robert, I saw the CT report. GI called you yesterday, I know, but I wanted to check in myself. The spot in the liver is a liver cancer, and the scan shows it has not spread outside the liver. The transplant team referral is the right next step and GI has already sent it. Please come see me in a couple of weeks: we need a blood test on the water pills and we can start your hepatitis vaccines. Call me any time with questions."},
+            {"type": "Patient Message", "title": "RE: CT results", "author": "patient", "date": "2021-06-26T08:02", "body": "Thanks for reaching out. Kind of numb about it still. I'll set up the appointment. Peeing a lot on the new pills but the belly feels a little better."}
+          ]
+        },
+        {
+          "id": "2021-07-08a",
+          "kind": "office_visit",
+          "start": "2021-07-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after GI, labs on diuretics, vaccines",
+          "state": {"weight_kg": 79.6},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-07-08T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Hepatitis A, adult", "date": "2021-07-08T10:35"},
+            {"vaccine": "Hepatitis B, adult", "date": "2021-07-08T10:35"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-07-08T10:35"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-07-08T10:00"},
+            {"procedure": "Immunization administration", "performed": "2021-07-08T10:35"},
+            {"procedure": "Venipuncture", "performed": "2021-07-08T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-07-08T10:00", "body": "S: Here after GI and CT. Knows the diagnosis: HCC 4 cm in the R lobe, cirrhosis with ascites. Transplant hepatology intake call scheduled for August. Taking spironolactone 100 and furosemide 40 every morning. Abdomen less tight, weight down about 1.5 kg since GI. Eyes still a bit yellow. Some lightheadedness standing up quickly, no falls. Working half days.\nO: vitals as charted. Mild icterus. Abdomen distended, soft, shifting dullness. No edema. No asterixis.\nA/P:\n1. HCC, R lobe, LI-RADS 5: per GI and transplant hepatology.\n2. Decompensated cirrhosis with ascites on diuretics: BMP today.\n3. Never vaccinated for hep A/B: hep A #1 and hep B #1 today; hep B #2 in 1 month, both completed in January. PCV20 today.\n4. Low sodium diet reviewed; handout.\nFollow-up 3 months, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2021-07-09a",
+          "kind": "portal_message",
+          "start": "2021-07-09T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2021-07-09T12:10", "body": "Kidney function, sodium and potassium all fine on the water pills. No changes. Nurse visit in about 4 weeks for the second hepatitis B shot."}
+          ]
+        },
+        {
+          "id": "2021-08-04a",
+          "kind": "nurse_visit",
+          "start": "2021-08-04T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis B vaccine dose 2",
+          "immunizations": [{"vaccine": "Hepatitis B, adult", "date": "2021-08-04T08:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-08-04T08:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Hepatitis B Vaccine #2", "author": "RN", "date": "2021-08-04T08:45", "body": "Hep B dose 2 given L deltoid. No reaction to dose 1. Next doses (hep A #2, hep B #3) due early January; reminder set."}
+          ]
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "outside_records",
+          "start": "2021-08-13T11:00",
+          "reason": "transplant hepatology evaluation",
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant Hepatology Evaluation", "author": "transplant hepatology", "date": "2021-08-13T11:00", "body": "REGIONAL LIVER TRANSPLANT CENTER, HEPATOLOGY\nDate of visit: 08/11/2021\nMr. Nowak was seen for liver transplant evaluation on referral from his gastroenterologist.\nDiagnoses: decompensated cirrhosis from chronic hepatitis C genotype 1a and prior alcohol use (abstinent since 2016), with ascites on spironolactone and furosemide; a single 4.0 cm LI-RADS 5 hepatocellular carcinoma in the right lobe without vascular invasion or spread.\nAllergies: no known drug allergies.\nAssessment: he is a candidate for liver transplantation, and his tumor burden falls within standard transplant criteria. His sobriety history is documented and was reviewed with our social work team.\nPlan: complete the candidate evaluation (cardiac testing here, dental clearance). Please arrange a colonoscopy, which is required before listing. We note hepatitis A and B vaccination has begun in your office; please complete both series. Our surgical colleagues will review whether a bridging treatment of the tumor is appropriate while he awaits a graft.\nWe will keep you informed."}
+          ]
+        },
+        {
+          "id": "2021-09-22a",
+          "kind": "procedure_visit",
+          "start": "2021-09-22T07:30",
+          "service": "Gastroenterology",
+          "reason": "colonoscopy for transplant evaluation",
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2021-09-22T08:05"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy Report", "author": "gastroenterology", "date": "2021-09-23T10:00", "body": "OUTSIDE ENDOSCOPY CENTER\nProcedure date: 09/22/2021\nIndication: colon cancer screening, required for liver transplant listing; no prior colonoscopy.\nSedation: monitored anesthesia care. Prep: good, mucosa well seen throughout.\nFindings: scope passed to the cecum, appendiceal orifice photographed, terminal ileum briefly entered and normal. No polyps, masses or bleeding. Retroflexion in the rectum unremarkable.\nImpression: normal colonoscopy.\nRecommendation: repeat screening in 10 years. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "office_visit",
+          "start": "2021-10-05T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up cirrhosis, HCC; vaccines",
+          "state": {"weight_kg": 79.0, "labs": {"Bilirubin, Total": 2.4, "Albumin": 3.1, "Prothrombin Time-International Normalized Ratio": 1.3, "Platelets": 115, "Aspartate Aminotransferase": 76, "Alanine Aminotransferase": 70, "Alkaline Phosphatase": 130}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-10-05T10:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-10-05T10:00", "results": [{"test": "Platelets"}, {"test": "Hemoglobin"}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-10-05T10:00", "results": [{"test": "Prothrombin Time-International Normalized Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-05T09:55"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-10-05T09:55"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-10-05T09:20"},
+            {"procedure": "Immunization administration", "performed": "2021-10-05T09:55"},
+            {"procedure": "Venipuncture", "performed": "2021-10-05T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2021-10-05T09:20", "body": "S: Colonoscopy done 9/22, normal. Transplant center finishing his evaluation; cardiac testing there next month. Yellow tint fading. Belly has stayed about the same size on the diuretics. Appetite a bit better. Still sober. Back to most of his usual work, avoiding heavy lifting.\nO: vitals as charted. Faint icterus. Abdomen mildly distended, nontender, shifting dullness present. No edema. No asterixis.\nA/P:\n- HCC R lobe, awaiting transplant center plan.\n- Decompensated cirrhosis: labs today (CMP, CBC, INR). Diuretics unchanged.\n- Vaccines: flu and first recombinant zoster dose today, before any immunosuppression. Hep A #2 / hep B #3 / zoster #2 in January.\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "specialist_visit",
+          "start": "2021-12-13T13:00",
+          "service": "Gastroenterology",
+          "reason": "increasing abdominal distension",
+          "conditions": [
+            {"label": "Portal hypertension", "icd10": "K76.6", "action": "diagnosed", "onset": "2021-12-13"},
+            {"label": "Thrombocytopenia", "action": "diagnosed", "onset": "2021-12-13"}
+          ],
+          "state": {"labs": {"Hemoglobin": 12.5, "Platelets": 110, "Prothrombin Time-International Normalized Ratio": 1.2, "Bilirubin, Total": 1.8}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-12-13T13:40", "results": [{"test": "Hemoglobin", "value": 12.5}, {"test": "Platelets", "value": 110}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2021-12-13T13:40", "results": [{"test": "Prothrombin Time-International Normalized Ratio", "value": 1.2}]},
+            {"panel": null, "collected": "2021-12-13T13:40", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 400}]},
+            {"panel": null, "collected": "2021-12-13T14:30", "results": [
+              {"test": "Hematocrit of peritoneal fluid", "loinc": "107175-2", "unit": "%", "value": 10},
+              {"test": "Serum-ascites albumin gradient", "loinc": "63549-0", "unit": "g/dL", "value": 1.1},
+              {"test": "Total protein, peritoneal fluid", "loinc": "2883-7", "unit": "g/dL", "value": 3.2}
+            ]}
+          ],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2021-12-13T12:30", "text": "Liver contour is nodular with coarse echotexture. Right hepatic lobe solid mass measuring 4 cm. Main portal vein patent with hepatopetal flow; no portal vein thrombus. Large volume ascites. Gallbladder unremarkable. No biliary dilatation. Kidneys normal in size without hydronephrosis.", "conclusion": "Nodular cirrhotic liver with a 4 cm right lobe mass. No portal vein thrombosis. Large volume ascites; site marked for paracentesis."}
+          ],
+          "procedures": [
+            {"procedure": "Diagnostic aspiration of peritoneal cavity", "snomed": "178016006", "performed": "2021-12-13T14:20"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology Follow-up", "author": "gastroenterology", "date": "2021-12-15T16:00", "body": "OUTSIDE GASTROENTEROLOGY AND HEPATOLOGY GROUP\nDate of service: 12/13/2021\nMr. Nowak, 56, with hepatitis C cirrhosis and a 4 cm right lobe HCC under transplant evaluation, comes back with two months of the abdomen steadily enlarging and uncomfortable despite spironolactone 100 mg and furosemide 40 mg. He has had no alcohol, no fever and no change in bowel habit.\nAllergies: NKDA. Meds: spironolactone, furosemide, calcium carbonate as needed.\nExam: tense distended abdomen with a fluid wave and shifting dullness. No jaundice. No lower extremity edema.\nUltrasound today: nodular liver, 4 cm right lobe mass, portal vein patent.\nDiagnostic paracentesis performed under ultrasound guidance, left lower quadrant, without complication. Fluid grossly bloody. Ascitic hematocrit 10%. SAAG 1.1 g/dL. Ascitic total protein 3.2 g/dL. Cytology sent and pending.\nBlood: hemoglobin 12.5, platelets 110,000, INR 1.2, AFP 400 ng/mL.\nAssessment: refractory-trending ascites with portal hypertension; bloody fluid in the setting of HCC raises concern for tumor-related bleeding or seeding, and the cytology is important before listing. Thrombocytopenia from portal hypertension. AFP rising.\nPlan: await cytology; we have discussed the case with the transplant team, who will see him early January about bridging therapy. Continue diuretics."}
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "outside_records",
+          "start": "2021-12-20T14:00",
+          "reason": "ascitic fluid cytology",
+          "labs": [
+            {"panel": null, "collected": "2021-12-13T14:30", "resulted": "2021-12-20T09:00", "results": [{"test": "Peritoneal fluid cytology", "loinc": "55600-1", "text": "Negative for malignant cells. Blood and reactive mesothelial cells."}]}
+          ],
+          "documents": [
+            {"type": "Pathology Report", "title": "Peritoneal Fluid Cytology", "author": "pathology", "date": "2021-12-20T14:00", "body": "OUTSIDE PATHOLOGY\nSpecimen: peritoneal fluid, diagnostic paracentesis 12/13/2021.\nDiagnosis: negative for malignant cells. Background blood with reactive mesothelial cells and scattered lymphocytes.\nCopy to referring gastroenterologist and PCP."}
+          ]
+        }
+      ]
+    }
+  ]
+}

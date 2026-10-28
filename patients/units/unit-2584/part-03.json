@@ -1,0 +1,160 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002584",
+      "events": [
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T09:30",
+          "documents": [
+            {"type": "Refill Request", "title": "Tiotropium refill", "author": "RN", "date": "2024-01-09T09:30",
+             "body": "Pharmacy request for tiotropium 18 mcg capsules for inhalation, 90-day supply. Originally from pulmonology; pt asked pharmacy to send to us since pulm office slow to respond. On his list, approved x1 with 3 refills per PCP standing ok."}
+          ]
+        },
+        {
+          "id": "2024-04-03a",
+          "kind": "ed_visit",
+          "start": "2024-04-03T06:50",
+          "end": "2024-04-03T13:30",
+          "service": "Emergency Medicine",
+          "reason": "Found unresponsive, right wrist drop",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2024-04-03T07:10", "results": [{"test": "Ethanol, blood", "loinc": "5640-8", "unit": "mg/dL", "value": 241}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-04-03T07:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2024-04-25T10:05",
+             "body": "Emergency department record from an area hospital. Date of service 04/03/2024. Received by fax 04/25/2024.\n\nArrival by ambulance, early morning. Passerby found him asleep and hard to rouse on a park bench; he had been out drinking the night before and had slept with his right arm hooked over the back of the bench for several hours. Awake and conversant on arrival, smelling of alcohol, oriented.\n\nPMH: alpha-1 antitrypsin deficiency (ZZ) with emphysema, followed by pulmonology. Home meds: tiotropium inhaled daily, albuterol inhaler as needed, Prolastin-C IV weekly. NKDA.\n\nExam: right wrist and fingers cannot extend against gravity, hand hangs in flexion. Decreased light touch over the back of the forearm and back of the hand, worst in the first web space. Triceps reflex present and symmetric; elbow extension strong. Grip limited by wrist position. Elbow and wrist without swelling, deformity, bruising or tenderness. No signs of head injury. Lungs: prolonged expiration, no wheeze.\n\nResults: blood alcohol 241 mg/dL. Basic chemistry unremarkable.\n\nImpression: 1) Acute alcohol intoxication. 2) Compressive right radial nerve palsy (prolonged pressure on the upper arm).\n\nPlan: observed until clinically sober. Volar wrist cock-up splint applied. Expect gradual recovery; follow up with primary care this week. Counseled on alcohol. Discharged ambulatory."}
+          ]
+        },
+        {
+          "id": "2024-04-04a",
+          "kind": "telephone",
+          "start": "2024-04-04T08:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Right hand weakness after ED visit", "author": "RN", "date": "2024-04-04T08:05",
+             "body": "Pt calling from home. Was in an ER yesterday, woke up after a night out with his right hand \"dead\" and can't lift the wrist. They put him in a splint and told him to follow up with us. Numb on the back of the hand. No neck pain, no face or leg symptoms, no new weakness elsewhere, speaking normally. He is right handed and worried about teaching. Booked with PCP Monday 4/8. ED records not here; asked pt which hospital and will request."}
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "office_visit",
+          "start": "2024-04-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, right wrist drop",
+          "conditions": [
+            {"label": "Compressive radial nerve palsy, right", "icd10": "G56.31", "action": "diagnosed", "onset": "2024-04-03"},
+            {"label": "Acute alcohol intoxication", "icd10": "F10.120", "action": "diagnosed", "onset": "2024-04-03"},
+            {"label": "Acute alcohol intoxication", "icd10": "F10.120", "action": "resolved", "onset": "2024-04-03"}
+          ],
+          "medications": [
+            {"drug_text": "alpha 1-antitrypsin 1000 MG Injection", "action": "historical", "sig": "60 mg/kg IV infusion once weekly (home infusion, per pulmonology)", "dose": {"value": 60, "unit": "mg/kg"}, "frequency": "WEEKLY", "route": "Intravenous", "course": "chronic", "reason": "Alpha-1 antitrypsin deficiency"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "AUDIT-C total score", "value": 9}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-08T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: ED Follow-up", "author": "PCP", "date": "2024-04-08T16:30",
+             "body": "S: ER visit 4/3 (records requested, not yet received; history from pt). Out drinking Tuesday night after a colleague's farewell, doesn't remember much after midnight, woke on a park bench with his right arm over the back of it. Since then can't lift the right wrist or straighten the fingers; back of the hand numb, especially between thumb and index. Slightly better since Friday: he can now lift the fingers a little. No neck pain. Wearing the splint. Typing and writing on the whiteboard left-handed. Took two personal days.\n\nHe acknowledges this was a scary one. Drinks most weekends, last weekend 10+. AUDIT-C 9. Still says no drugs.\n\nMeds reviewed: tiotropium daily, albuterol PRN, and weekly Prolastin-C home infusions since September (adding to our list now). Breathing stable.\n\nO: Right wrist extension 2/5, finger extension at the MCPs 2/5, thumb extension weak. Elbow extension 5/5, triceps reflex 2+ and symmetric. Grip good with wrist passively supported. Sensation decreased over the dorsal radial hand and first web space. No elbow or wrist tenderness or swelling. Left arm normal.\n\nA/P\n1. Compressive radial nerve palsy, right: pattern fits compression at the upper arm with triceps spared. Already showing early return. Keep the cock-up splint for daytime use, gentle range of motion to keep the fingers from stiffening. Expect recovery over weeks to a few months; if no steady improvement by 6 weeks, would get nerve studies.\n2. Acute alcohol intoxication, resolved. Alcohol use disorder: this event plus the pattern. Long talk. Offered referral to a counselor or addiction program and medication for cravings. He declines both for now but agreed to no drinking during recovery. Will keep asking.\n3. AATD on augmentation: reconciled.\nRTC 3 months, sooner if not improving."}
+          ]
+        },
+        {
+          "id": "2024-04-10a",
+          "kind": "portal_message",
+          "start": "2024-04-10T07:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Note for school", "author": "patient", "date": "2024-04-10T07:15",
+             "body": "Can I get a note for the two days I missed last week? The district needs it for the sick days. Thanks."},
+            {"type": "Patient Message", "title": "RE: Note for school", "author": "MA", "date": "2024-04-10T10:40",
+             "body": "Hi Eli, a work note for 4/3-4/4 is under Documents now. Hope the hand keeps improving."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "office_visit",
+          "start": "2024-07-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up right arm",
+          "conditions": [
+            {"label": "Compressive radial nerve palsy, right", "icd10": "G56.31", "action": "resolved", "onset": "2024-04-03"},
+            {"label": "Radial tunnel syndrome, right upper extremity", "icd10": "G56.31", "action": "diagnosed", "onset": "2024-06-01"}
+          ],
+          "medications": [
+            {"drug_text": "ibuprofen 400 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet (400 mg) by mouth as needed for arm pain, with food", "dose": {"value": 400, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "Right forearm pain, radial tunnel syndrome"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "Pain severity (0-10)", "value": 4}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-07-16T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Right Arm Follow-up", "author": "PCP", "date": "2024-07-16T11:15",
+             "body": "S: Wrist and fingers came back over May; strength feels normal now and the numbness on the back of the hand is gone. Stopped the splint in early June. Since late in the school year, though, a deep ache in the top of the right forearm just below the elbow, worse after a day of writing on the board and carrying a bag of lab materials, better with rest. No numbness, no weakness. Pain 4/10 at worst.\n\nAlcohol: says he stayed dry for about six weeks after April, back to weekends now but \"less\".\n\nED record from April arrived 4/25 and matches his account; blood alcohol was 241.\n\nO: Full strength of wrist and finger extension, thumb extension and grip. Sensation intact throughout the hand. Tender over the extensor mass about 4 cm distal to the lateral epicondyle, not at the epicondyle itself. Pain reproduced with resisted forearm supination and with resisted middle finger extension. Elbow full range. Neck exam normal.\n\nA/P\n1. Radial nerve palsy, right: resolved.\n2. Radial tunnel syndrome, right upper extremity: point tenderness over the radial tunnel with positive resisted supination and middle finger tests, no motor or sensory deficit. Relative rest, avoid sustained forearm rotation, stretch. Ibuprofen 400 mg with food as needed; keep to a few days a week, never on drinking days. Return if weakness.\n3. Alcohol use disorder: affirmed the dry stretch. Still declines help.\nNext: physical in October."}
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "specialist_visit",
+          "start": "2024-08-12T09:00",
+          "service": "Pulmonology",
+          "reason": "AATD follow-up",
+          "reports": [
+            {"study": "Spirometry", "performed": "2024-08-12T09:15",
+             "text": "Acceptable and reproducible maneuvers. FEV1 56% predicted. FEV1/FVC 0.45.",
+             "conclusion": "Obstruction, similar to 07/2023."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2024-08-26T14:20",
+             "body": "Outside pulmonary practice. Visit 08/12/2024. Received 08/26/2024.\n\nFollow-up of alpha-1 antitrypsin deficiency, ZZ, with panacinar emphysema. Receiving Prolastin-C 60 mg/kg IV weekly at home since September 2023, missing few doses, no infusion reactions. Uses tiotropium daily, albuterol about twice a week with exertion. No exacerbations this year. Had a right radial nerve injury in the spring that has recovered.\n\nExam: thin, no distress, prolonged expiration, no wheeze. No edema.\n\nSpirometry: FEV1 56% predicted, FEV1/FVC 0.45, essentially stable from last year.\n\nAssessment and plan: stable. Continue weekly augmentation, tiotropium and albuterol. Continue to avoid smoke. Reiterated alcohol reduction given liver risk. Annual influenza vaccine. Will submit renewal of the augmentation authorization. Return in one year with spirometry."}
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "pharmacy",
+          "start": "2024-08-29T13:10",
+          "documents": [
+            {"type": "Prior Authorization", "title": "Prolastin-C reauthorization", "author": "front desk", "date": "2024-08-29T13:10",
+             "body": "Insurer fax requesting clinical notes for Prolastin-C annual reauthorization. Pulmonology is prescriber and states they submitted. Sent our last office note at their request and called the specialty pharmacy to confirm they have pulm's renewal. Filed."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "rr", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 7},
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-08T16:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-08T16:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2024-10-08T16:20", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-08T16:10"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-08T16:11"}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-10-08T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-08T17:00",
+             "body": "Annual. Doing ok. Breathing unchanged; pulm saw him in August, spirometry stable (letter reviewed). Infusions weekly at home. Forearm ache comes and goes, uses ibuprofen maybe once a week. Teaching 7th grade this year.\n\nAlcohol: weekends, says 4-6 most nights out, occasionally more. AUDIT-C 7. Denies drugs. PHQ-2 0.\n\nExam: thin. Lungs with prolonged expiration, no wheeze or crackles. Heart RRR. Abdomen soft, no organomegaly. Right forearm mildly tender over radial tunnel, full strength.\n\nA/P\n1. AATD, ZZ, with panacinar emphysema: stable on augmentation, tiotropium, PRN albuterol. Flu and updated COVID given.\n2. Liver monitoring: CMP and GGT today.\n3. Radial tunnel syndrome, right: mild, continue PRN ibuprofen sparingly.\n4. Alcohol use disorder: some reduction, still above safe limits. Counseled.\nRTC 6 months for follow-up."}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "portal_message",
+          "start": "2024-12-03T20:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Albuterol refill", "author": "patient", "date": "2024-12-03T20:30",
+             "body": "Hi, I'm on my last albuterol. Can you send a new one to my usual pharmacy? Pulm said you could do it."},
+            {"type": "Refill Request", "title": "Albuterol sent", "author": "RN", "date": "2024-12-04T08:50",
+             "body": "Albuterol HFA 90 mcg sent to pharmacy, 1 inhaler with 2 refills, per PCP. Pt notified in portal."}
+          ]
+        }
+      ]
+    }
+  ]
+}

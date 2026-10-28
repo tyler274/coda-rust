@@ -995,6 +995,8 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
             "allergies": [{"substance": "Dust mites", "snomed": "260147004", "category": "environment"}],
             "procedures": [{"procedure": "Cesarean section", "snomed": "11466000",
                 "performed": "2024-01-01T09:30"}],
+            "orders": [{"id": "mri", "action": "placed", "category": "imaging",
+                "order": "MRI brain with and without contrast"}],
             "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Calcitonin sent."}]})
         )]))
     };
@@ -1029,6 +1031,18 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
         "Cesarean section".into(),
         snomed("11466000", "Cesarean section"),
     );
+    // an order for a study the unit verified is coded, and check does not call it uncoded
+    let uncoded = |terms: &Terms| {
+        check::uncoded_orders(std::slice::from_ref(&p), &catalog, terms)
+            .iter()
+            .any(|w| w.contains("MRI brain with and without contrast"))
+    };
+    assert!(uncoded(&terms));
+    terms.reports.insert(
+        "MRI brain with and without contrast".into(),
+        snomed("24587-8", "MR Brain WO and W contrast IV"),
+    );
+    assert!(!uncoded(&terms));
     let chart = Renderer {
         catalog: &catalog.with_terms(&terms),
         terms: &terms,
@@ -1055,5 +1069,9 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
     assert!(coded(
         chart.procedures.iter().map(|x| &x.code).collect(),
         "11466000"
+    ));
+    assert!(coded(
+        chart.service_requests.iter().map(|x| &x.code).collect(),
+        "24587-8"
     ));
 }

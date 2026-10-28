@@ -1,0 +1,2575 @@
+{
+  "unit": "unit-2309",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002309",
+      "given": "Charles",
+      "family": "Fenton",
+      "birth_date": "1959-07-22",
+      "address_line": "41 Chapman Street",
+      "phone": "+1-802-555-0143",
+      "email": "charles.fenton@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired construction foreman and heavy current smoker who joined in 2021; screening colonoscopy in 2023 found an ascending colon adenocarcinoma treated with hemicolectomy and adjuvant FOLFOX. Last seen in September 2024; afterwards outside records bring paraneoplastic Lambert-Eaton syndrome with extensive-stage small cell lung cancer, then metastatic pancreatic adenocarcinoma and a DIC admission.",
+      "events": [
+        {
+          "id": "2021-08-31a",
+          "kind": "telephone",
+          "start": "2021-08-31T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2021-08-31T10:20",
+              "author": "front desk",
+              "body": "Mr. Fenton phoned wanting to move his primary care here. His old doctor's office in town is closing its Medicare panel. Retired, Medicare primary. Booked a new patient slot 9/14 at 9:00. Faxed him the records release form, he'll sign and send it to his old office himself."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T09:00",
+          "end": "2021-09-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "1977-06-01",
+              "note": "about 50 pack-years, still smoking"
+            },
+            {
+              "label": "Family history of colon cancer",
+              "action": "diagnosed",
+              "onset": "2021-09-14",
+              "note": "father, diagnosed at 68"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              80
+            ],
+            "hr": 83,
+            "rr": 14,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 81.6,
+            "height_cm": 177.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired construction foreman"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 2-3 drinks per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2021-09-14T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-14T09:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-14T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-09-14T09:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2021",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            },
+            {
+              "id": "ldct-2021",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "current smoker, 50 pack-years"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-09-14T10:00",
+              "author": "PCP",
+              "body": "62M establishing care. Previous PCP's office stopped taking his insurance panel; records requested, not here yet.\n\nHe feels fine. No complaints today. Says he hasn't seen a doctor much over the years, \"only when something broke on the job.\" Retired from running construction crews two years ago.\n\nPMH: nothing he knows of. No surgeries. No regular medications, no supplements.\nAllergies: none to medications.\nFamily: father had colon cancer, found at 68, died of it. Mother had breast cancer at 72. Older brother has lung cancer.\nSocial: lives alone, divorced. Smokes a pack a day since his late teens, so roughly 50 pack-years by his count. Beer with friends a couple of times a week, 2-3 drinks total. No other substances.\n\nROS: no weight change, no cough beyond a little morning throat clearing, no chest pain, no change in bowels, no blood in stool, no urinary trouble.\n\nExam: well-appearing, weathered. Vitals as charted. HEENT unremarkable. Neck supple, no nodes. Heart regular, no murmur. Lungs clear, no wheeze. Abdomen soft, nontender, no masses or organ enlargement. Extremities without edema, pulses intact. Skin: no worrisome lesions.\n\nA/P\n1. Tobacco use, ~50 pack-years. Talked about quitting; he isn't interested right now and was straightforward about it. Offered patch or varenicline whenever he's ready. Qualifies for lung screening; ordered low-dose CT.\n2. Colon cancer screening, never done, and his father had it at 68 so he should have started long ago. Recommended colonoscopy. He doesn't want one yet (\"I'll think about the scope\"). Agreed on FIT as a start, with the understanding that colonoscopy is the better test for him.\n3. Health maintenance: CBC, CMP, lipids. Hep C and HIV once. Tdap today.\n4. Mood screen negative, alcohol screen low risk.\n\nRTC about a year, or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "portal_message",
+          "start": "2021-09-21T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-21T08:40",
+              "author": "PCP",
+              "body": "Hi Mr. Fenton, your blood counts, kidney and liver tests and cholesterol all came back normal. The hepatitis C and HIV screens were negative. Don't forget the stool kit, the instructions are in the envelope. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "lab_only",
+          "start": "2021-09-28T11:00",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-09-26T07:00",
+              "resulted": "2021-09-28T11:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2021",
+              "action": "done",
+              "date": "2021-09-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2021-09-28T14:10",
+              "author": "RN",
+              "body": "FIT negative. Left message on his machine with the result. Reminded that PCP still recommends a colonoscopy given his father's history."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "imaging",
+          "start": "2021-10-05T13:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2021-10-05T13:30",
+              "text": "Indication: lung cancer screening, current smoker, 50 pack-years. Baseline study.\nTechnique: low-dose helical CT of the chest without contrast.\nFindings: No pulmonary nodules. Airways patent. No consolidation or effusion. Heart normal in size. No mediastinal or hilar adenopathy. Limited views of the upper abdomen are unremarkable.",
+              "conclusion": "Lung-RADS 1: negative. Repeat low-dose CT in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "done",
+              "date": "2021-10-05T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lung screening result",
+              "date": "2021-10-06T12:15",
+              "author": "PCP",
+              "body": "Baseline screening CT negative, Lung-RADS 1. Repeat in a year. Will keep raising quitting."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-12a",
+          "kind": "outside_records",
+          "start": "2021-10-12T15:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-10-12T15:00",
+              "author": "outside primary care",
+              "body": "Prior primary care records, about eight pages, covering visits from 2015 through 2020.\n\nMostly sporadic acute visits and a few physicals. Problem list: tobacco use. No medications. NKDA. Routine blood counts and chemistries in 2017 and 2019 within normal limits. Repeated notes that colonoscopy was recommended and the patient declined. No vaccines documented other than an influenza shot in 2018.\n\nReviewed by PCP. Nothing to add to our list."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T14:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-10-19T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2021-10-19T14:20",
+              "author": "RN",
+              "body": "Flu shot left deltoid, Pfizer booster right deltoid. Primary series was at the county clinic in the spring per his card. Waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T19:32",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Shingles shot",
+              "date": "2022-01-11T19:32",
+              "author": "patient",
+              "body": "Guy I used to work with just had shingles and it was bad. Should I get that vaccine? Is it covered?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Shingles shot",
+              "date": "2022-01-12T09:15",
+              "author": "RN",
+              "body": "Yes, it's recommended at your age. It's two doses a couple of months apart, and Medicare Part D usually covers it. We can give it here. Front desk will call to set up the first dose."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "nurse_visit",
+          "start": "2022-03-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine dose 1",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-03-08T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-03-08T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix #1",
+              "date": "2022-03-08T10:45",
+              "author": "RN",
+              "body": "Shingrix dose 1, left deltoid. Told to expect a sore arm and maybe a day of feeling run down. Dose 2 due in 2-6 months, scheduled for May."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "nurse_visit",
+          "start": "2022-05-24T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shingles vaccine dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-05-24T10:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-05-24T10:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Shingrix #2",
+              "date": "2022-05-24T10:45",
+              "author": "RN",
+              "body": "Second Shingrix, right deltoid. Said the first one knocked him out for an evening, nothing more. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              80
+            ],
+            "hr": 70,
+            "rr": 14,
+            "temp_c": 36.3,
+            "spo2": 96,
+            "weight_kg": 83.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T09:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 100
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 90
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-09-20T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-20T09:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            },
+            {
+              "id": "ldct-2022",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "annual lung screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-09-20T09:20",
+              "author": "PCP",
+              "body": "Annual exam. 63 y/o, feels well. Splitting wood and fixing his porch this summer, no trouble with exertion. No cough to speak of, no blood in stool, bowels regular.\n\nStill a pack a day. We went over it again; he says he cut back for a week in the spring and \"it didn't stick.\" Not ready. Offer stands.\n\nColonoscopy: still prefers the stool test. I told him plainly that with his dad's history a scope is what I'd want for myself. He'll consider it next year. FIT kit given.\n\nExam: vitals as recorded, weight steady. Lungs clear. Heart RRR. Abdomen soft, no mass, no tenderness. No lymphadenopathy. Skin fine.\n\nPlan: FIT, repeat lung screening CT, CMP and CBC. Flu shot and the new COVID booster at a nurse visit next month when the bivalent arrives. RTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines, FIT drop-off",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-10-02T07:00",
+              "resulted": "2022-10-04T16:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T14:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T14:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2022",
+              "action": "done",
+              "date": "2022-10-04T16:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines and FIT",
+              "date": "2022-10-04T14:20",
+              "author": "RN",
+              "body": "Flu left arm, bivalent COVID right arm. Dropped off his stool card at the same time. Tolerated injections fine."
+            },
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "date": "2022-10-05T08:05",
+              "author": "PCP",
+              "body": "FIT negative again. Reassuring for now but not a substitute in his case. Will push colonoscopy at next physical."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "imaging",
+          "start": "2022-10-18T13:00",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2022-10-18T13:00",
+              "text": "Indication: annual lung cancer screening. Comparison: 2021-10-05.\nTechnique: low-dose CT chest without contrast.\nFindings: No pulmonary nodules. Lungs clear. No airspace disease, no effusion. No enlarged mediastinal or hilar nodes. Heart size normal. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2022",
+              "action": "done",
+              "date": "2022-10-18T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung scan result",
+              "date": "2022-10-19T11:30",
+              "author": "PCP",
+              "body": "Your lung screening CT looks the same as last year, no nodules. Next one in a year. The best thing you could do for your lungs is still quitting, and I'm here when you want to try."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "annual_physical",
+          "start": "2023-06-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              76
+            ],
+            "hr": 76,
+            "rr": 12,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 82.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-13T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 100
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-13T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-13T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 103
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-06-13T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-13T09:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "screening colonoscopy, father with colon cancer at 68"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-13T09:15",
+              "author": "PCP",
+              "body": "Yearly exam. Turning 64 next month. Feels fine overall. Occasional vague belly discomfort after a heavy meal, comes and goes, nothing that wakes him. No weight loss, no blood, bowel habits unchanged.\n\nSmoking unchanged, 1 ppd. Not ready to set a date.\n\nThis year he says yes to the colonoscopy: \"I've put it off long enough.\" Referral to GI placed, marked as high-risk screening given his father.\n\nExam: weight down a pound from last year, essentially stable. BP fine. Heart regular. Lungs clear. Abdomen soft, nontender, no organomegaly, no mass felt. No nodes.\n\nPlan: GI referral for colonoscopy. Labs today. Lung screening due again in the fall; the colonoscopy comes first. Flu/COVID in October. RTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 81.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "telephone",
+          "start": "2023-07-18T11:45",
+          "reason": "colonoscopy prep question",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prep question",
+              "date": "2023-07-18T11:45",
+              "author": "RN",
+              "body": "Pt called, GI office booked his colonoscopy for 8/10 and mailed the prep. Wanted to know if he can have his beer the night before. Told him clear liquids only the day before, no alcohol, and to call the GI office with any other prep questions since it's their protocol. Reminded him he needs a driver."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "procedure_visit",
+          "start": "2023-08-10T08:00",
+          "end": "2023-08-10T09:30",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy, family history of colon cancer",
+          "conditions": [
+            {
+              "label": "Malignant neoplasm of ascending colon",
+              "action": "diagnosed",
+              "onset": "2023-08-10",
+              "note": "4 cm sessile lesion, invasive adenocarcinoma on biopsy",
+              "icd10": "C18.2"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2023-08-10T08:40",
+              "text": "Specimen: ascending colon lesion, cold forceps biopsies (multiple fragments).\nMicroscopic: Fragments of colonic mucosa containing a tubulovillous adenoma, with an associated invasive glandular neoplasm. The malignant glands show marked cytologic atypia, nuclear pleomorphism and brisk mitotic activity, and infiltrate into the submucosa.",
+              "conclusion": "Ascending colon, biopsy: invasive adenocarcinoma arising in a tubulovillous adenoma, with submucosal invasion.",
+              "issued": "2023-08-15T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy with biopsy",
+              "performed": "2023-08-10T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Colonoscopy report",
+              "date": "2023-08-11T10:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology practice. Procedure date 2023-08-10.\n\nIndication: screening, high risk (father with colon cancer at 68). First colonoscopy.\nSedation: monitored anesthesia care. Prep: good.\nThe scope was advanced to the cecum; the appendiceal orifice and ileocecal valve were seen and photographed. Withdrawal time 11 minutes.\n\nFindings: In the ascending colon there is a 4 cm sessile lesion. Multiple biopsies taken and the site tattooed distally. The remainder of the colon to the rectum appears normal. Retroflexion in the rectum unremarkable.\n\nImpression: 4 cm sessile ascending colon lesion, suspicious for malignancy. Biopsies pending. Staging CT to be arranged. Follow up in GI clinic with results.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "imaging",
+          "start": "2023-08-21T10:15",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT chest",
+              "loinc": "24628-0",
+              "performed": "2023-08-21T10:15",
+              "text": "Indication: staging, newly diagnosed ascending colon adenocarcinoma.\nTechnique: CT of the chest with IV contrast, obtained with the abdomen and pelvis.\nFindings: No pulmonary nodules or masses. No mediastinal, hilar or axillary adenopathy. No effusion. Heart and great vessels normal in caliber.",
+              "conclusion": "No evidence of thoracic metastatic disease."
+            },
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-08-21T10:15",
+              "text": "Indication: staging, ascending colon adenocarcinoma.\nFindings: The liver is normal in size without focal lesions. Gallbladder, pancreas, spleen and adrenal glands are unremarkable. Kidneys enhance symmetrically without hydronephrosis. Mild wall thickening of the ascending colon at the site of the known lesion. No ascites. No peritoneal nodularity. No osseous lesions.",
+              "conclusion": "Known ascending colon lesion. No distant metastases."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Staging CT received",
+              "date": "2023-08-22T09:00",
+              "author": "MA",
+              "body": "CT chest/abdomen/pelvis report from the outside imaging center faxed over by GI, scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "specialist_visit",
+          "start": "2023-08-24T13:00",
+          "service": "Gastroenterology",
+          "reason": "results after colonoscopy",
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "done",
+              "date": "2023-08-24T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2023-08-28T16:00",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group. Date of visit: 2023-08-24.\n\nDear colleague,\n\nI saw Mr. Fenton, 64, to go over the findings from his recent first colonoscopy. He tells me he gets some intermittent mild belly discomfort. He has not lost weight, has seen no blood, and his bowel pattern hasn't changed.\n\nColonoscopy on 8/10 showed a 4 cm sessile ascending colon lesion. Biopsies show invasive adenocarcinoma with submucosal invasion, arising from a tubulovillous adenoma. Staging CT of the chest, abdomen and pelvis on 8/21 shows no distant metastatic disease.\n\nMedications: none. Allergies: NKDA.\nFamily history: father with colon cancer diagnosed at 68; mother with breast cancer at 72; brother with lung cancer.\nSocial: current smoker, 50 pack-years; social alcohol, 2-3 drinks a week; retired construction foreman.\n\nImpression: adenocarcinoma of the ascending colon, no distant spread on imaging.\n\nPlan: referral to medical oncology and to colorectal surgery for resection planning. We discussed that his surveillance going forward will be per oncology. I've asked him to stop smoking.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T12:30",
+          "reason": "results discussion",
+          "orders": [
+            {
+              "id": "onc-referral-2023",
+              "action": "placed",
+              "order": "Oncology referral",
+              "category": "referral",
+              "to": "Oncology",
+              "reason": "ascending colon adenocarcinoma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: GI letter",
+              "date": "2023-08-29T12:30",
+              "author": "PCP",
+              "body": "Called Charles after the GI letter came in. He knows the diagnosis, heard it from the GI doc last week. Sounded matter-of-fact, said his dad went through the same thing. CT showed nothing spread elsewhere, which I underlined. GI already sent the surgery referral; I placed the oncology referral from our end too so it doesn't fall through. Told him to call me with any questions and to keep us posted on dates. Again brought up quitting smoking before surgery. He said he'd \"think about it, for real this time.\""
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-10T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Fall vaccines",
+              "date": "2023-10-10T15:20",
+              "author": "RN",
+              "body": "Flu and 2023-24 COVID given, one per arm. No reaction during observation. He said he's still waiting on the oncology appointment."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2023-11-13T16:40",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's 10:00. Said he'd call back to reschedule."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "specialist_visit",
+          "start": "2024-02-23T10:00",
+          "service": "Hematology and Oncology",
+          "reason": "weight loss and fatigue, colon cancer",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "diagnosed",
+              "onset": "2024-02-23"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              70
+            ],
+            "hr": 92,
+            "rr": 16,
+            "temp_c": 37.0,
+            "weight_kg": 75.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-23T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.9
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-02-23T09:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 8
+                },
+                {
+                  "test": "Iron",
+                  "value": 28
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 420
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2024-02-16T11:00",
+              "text": "Indication: colon adenocarcinoma, weight loss. Comparison: 2023-08-21.\nFindings: Irregular mass of the ascending colon. Several enlarged pericolic and ileocolic lymph nodes along the right colic drainage. Liver without focal lesion. Pancreas, spleen, adrenals and kidneys unremarkable. No ascites or peritoneal disease. No bone lesions.",
+              "conclusion": "Ascending colon mass with regional lymph node spread. No distant metastases."
+            }
+          ],
+          "orders": [
+            {
+              "id": "onc-referral-2023",
+              "action": "done",
+              "date": "2024-02-23T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Medical oncology consultation",
+              "date": "2024-03-04T09:00",
+              "author": "oncology",
+              "body": "Regional cancer center, medical oncology. Visit date 2024-02-23.\n\nRe: Charles Fenton, 64\n\nMr. Fenton comes back to discuss his ascending colon adenocarcinoma, biopsied in August 2023. Over the last three months he has felt steadily more tired and has lost about 7 kg (15 lb) without trying. His appetite is off. He describes a dull ache in the abdomen and some constipation now and then. No hematochezia, no black stools.\n\nMeds: none. Allergies: NKDA.\nFH: father colon cancer at 68 (deceased), mother breast cancer at 72, older brother lung cancer.\nSH: long-time smoker, still smoking; drinks socially.\n\nVitals: T 37.0 C, BP 118/70, HR 92, RR 16. Weight 75 kg.\nExam: lean, fatigued-appearing, comfortable at rest. Abdomen soft, mildly distended, tender diffusely without rebound or guarding. No palpable liver edge. No adenopathy.\n\nLabs: Hgb 10.6, MCV 74, ferritin 8, consistent with iron deficiency anemia.\nCT abdomen/pelvis 2/16: irregular ascending colon mass with regional nodal spread, no distant disease.\nPathology review of the August biopsies here confirms malignant epithelial cells that breach the basement membrane and invade the surrounding tissue.\n\nAssessment: adenocarcinoma of the ascending colon, clinically node-positive, no distant metastases. Iron deficiency anemia from the tumor.\n\nPlan: right hemicolectomy, which surgery has scheduled for 3/12. Port placement afterward and adjuvant chemotherapy once he recovers, likely FOLFOX for 6 months depending on final pathology. Please start oral iron. I urged him to quit smoking.\n\nWith thanks."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.0,
+            "labs": {
+              "Ferritin": 8,
+              "Hemoglobin": 10.6,
+              "Iron": 27,
+              "Mean Corpuscular Volume": 74,
+              "Red Cell Distribution Width": 16.9,
+              "Total Iron-Binding Capacity": 436
+            }
+          },
+          "measure": [
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-01a",
+          "kind": "office_visit",
+          "start": "2024-03-01T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-op visit, colon cancer",
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every other day",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "EVERY OTHER DAY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "iron deficiency anemia"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              79
+            ],
+            "hr": 79,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 75.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-03-01T10:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 251
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 74
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 24.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 16.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-01T10:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 92
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-01T09:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-01T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-03-01T10:15",
+              "author": "PCP",
+              "body": "Here before his colon surgery on 3/12. Oncology's note isn't in yet, but he brought his after-visit papers: Hgb 10.6, ferritin 8, CT shows nodes near the tumor but nothing distant. Surgery, then port and chemo.\n\nHe's tired, appetite poor, down about 7 kg from last summer. Dull belly ache, intermittent, some constipation. No bleeding he's noticed. No chest pain or dyspnea, climbs his stairs fine. No prior anesthesia.\n\nExam: thinner than I'm used to seeing him. Vitals as charted. Conjunctivae a little pale. Heart RRR, no murmur. Lungs clear. Abdomen soft, mildly full, diffusely tender to deep palpation, no rebound.\n\nA/P\n1. Ascending colon adenocarcinoma, regional nodes on CT. Surgery 3/12. From a primary care standpoint no barrier to surgery. Surgical team will handle pre-op labs as well; CBC/CMP today so we have a baseline.\n2. Iron deficiency anemia, from the tumor. Ferrous sulfate 325 mg every other day; discussed constipation and dark stools.\n3. Tobacco. Asked him again to stop before surgery. He's cut to about half a pack, he says.\n\nCall after discharge; I'd like to see him 1-2 weeks out."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "hospital_admission",
+          "start": "2024-03-12T06:00",
+          "end": "2024-03-16T11:00",
+          "service": "General Surgery",
+          "reason": "right hemicolectomy for ascending colon adenocarcinoma",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-03-12T10:30",
+              "text": "Specimen: right colon and terminal ileum, right hemicolectomy.\nGross: segment of terminal ileum and right colon with a firm ulcerated tumor in the ascending colon at the tattoo site.\nMicroscopic: Adenocarcinoma invading into the submucosa, not into the muscularis propria. Residual tubulovillous adenoma at the periphery. Margins (proximal, distal, radial) free of tumor. One of 16 regional lymph nodes contains metastatic carcinoma.",
+              "conclusion": "Adenocarcinoma of the ascending colon, pT1 N1a (1/16 lymph nodes). Margins negative.",
+              "issued": "2024-03-18T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Right hemicolectomy with ileocolic anastomosis",
+              "snomed": "315321001",
+              "performed": "2024-03-12T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary, surgery",
+              "date": "2024-04-16T14:00",
+              "author": "general surgery",
+              "body": "Regional hospital, colorectal surgery service. Admitted 3/12/2024, discharged 3/16/2024.\n\nDiagnosis: adenocarcinoma of the ascending colon.\nProcedure 3/12: laparoscopic-assisted right hemicolectomy with ileocolic anastomosis.\n\nCourse: uncomplicated. Diet advanced from day 1, bowel function returned on day 3. Pain well controlled; no pain medication needed at discharge. Ambulating independently.\n\nPathology: adenocarcinoma, pT1 N1a, 1 of 16 nodes positive, margins negative.\n\nAllergies: NKDA.\nDischarge medications: ferrous sulfate 325 mg every other day.\nFollow-up: surgical clinic 2 weeks; medical oncology to discuss adjuvant therapy; primary care.\n\nRecords faxed on request from primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "office_visit",
+          "start": "2024-03-26T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-op follow-up",
+          "vitals": {
+            "bp": [
+              126,
+              71
+            ],
+            "hr": 80,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 72.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-03-26T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-op Visit",
+              "date": "2024-03-26T14:30",
+              "author": "PCP",
+              "body": "Two weeks out from right hemicolectomy (3/12, home 3/16). We still don't have the hospital paperwork; requested. Per him, the surgeon told him one lymph node had cancer and the margins were clean, and he'll get chemo.\n\nFeeling better each day. Eating small meals, bowels moving every day or two. No fever. Incisions a little sore. Not needing anything for pain. Iron every other day, tolerating it.\n\nExam: vitals as charted. Lost another 1.5 kg since surgery. Abdomen: port sites and periumbilical incision healing, no redness, no drainage. Soft, appropriately tender near incision.\n\nA/P: recovering well from surgery. Port is being placed next week and then chemo. Continue iron. Records request sent to the hospital. Keep me posted; see me in a couple of months or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "procedure_visit",
+          "start": "2024-04-02T07:30",
+          "end": "2024-04-02T10:00",
+          "service": "Interventional Radiology",
+          "reason": "port placement for chemotherapy",
+          "procedures": [
+            {
+              "procedure": "Implantation of venous access port",
+              "snomed": "80402001",
+              "performed": "2024-04-02T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Port placement",
+              "date": "2024-04-03T09:00",
+              "author": "interventional radiology",
+              "body": "Outside interventional radiology. Date: 2024-04-02.\n\nProcedure: placement of a single-lumen chest port via the right internal jugular vein under ultrasound and fluoroscopic guidance, moderate sedation.\nIndication: adjuvant chemotherapy for colon cancer.\nFindings: catheter tip at the cavoatrial junction. Port accessed and flushed without difficulty. No complications. Estimated blood loss minimal.\n\nAllergies: NKDA.\nOK to use today."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "outside_records",
+          "start": "2024-04-16T14:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2024-04-16T14:05",
+              "author": "MA",
+              "body": "Discharge summary and surgical pathology from the March admission received by fax after our second request. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "outside_records",
+          "start": "2024-06-04T13:00",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology progress letter",
+              "date": "2024-06-04T13:00",
+              "author": "oncology",
+              "body": "Regional cancer center, medical oncology. Letter dated 2024-05-30.\n\nDear doctor,\n\nAn update on our mutual patient Mr. Fenton. Following right hemicolectomy (pT1 N1a, stage III colon adenocarcinoma) he began adjuvant mFOLFOX6 through his port on 4/9/2024, given every two weeks, planned for 12 cycles. He has now had 4 cycles. He is tolerating treatment reasonably, with fatigue for a few days after each cycle. Counts have allowed treatment on schedule.\n\nHe continues oral iron. We have again advised smoking cessation.\n\nWe will see him every two weeks through completion, anticipated mid-September."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "office_visit",
+          "start": "2024-06-18T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "constipation",
+          "conditions": [
+            {
+              "label": "Chronic constipation",
+              "action": "diagnosed",
+              "onset": "2024-04-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution",
+              "action": "start",
+              "sig": "Mix 17 g in 8 oz of liquid and drink once daily",
+              "dose": {
+                "value": 17,
+                "unit": "g"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic constipation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              83
+            ],
+            "hr": 70,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 73.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-06-18T11:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-18T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-06-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-18T11:10",
+              "author": "PCP",
+              "body": "Halfway through FOLFOX. Main issue today is constipation, going on since around the time chemo started in April: hard stools every 3-4 days, straining. Not taking anything for it. Iron probably isn't helping. No abdominal pain beyond mild bloating, no vomiting, no blood. Passing gas.\n\nOtherwise tired for 2-3 days after each infusion, then okay. Eating better. Oncology letter from late May reviewed.\n\nExam: vitals as charted, weight steady at 73. Port site right chest clean. Abdomen soft, nondistended, healed incisions, normal bowel sounds, no mass.\n\nA/P\n1. Chronic constipation, on chemo and iron. Start PEG 3350 17 g daily, titrate to a soft stool. Fluids.\n2. Colon cancer, adjuvant FOLFOX, per oncology. BMP today since he's been drinking less.\n3. Iron deficiency: continue iron for now, recheck in September.\n4. Smoking: down to half a pack. Encouraged.\n\nSee me after chemo finishes, September."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0,
+            "labs": {
+              "Hemoglobin": 12.1,
+              "Iron": 62,
+              "Mean Corpuscular Volume": 81,
+              "Total Iron-Binding Capacity": 380
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "portal_message",
+          "start": "2024-08-06T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2024-08-06T20:14",
+              "author": "patient",
+              "body": "Out of the powder for my bowels next week. It's working when I take it every day. Can you send more?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2024-08-07T09:02",
+              "author": "RN",
+              "body": "Sent a 3-month supply with refills to your pharmacy. Glad it's helping."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after chemotherapy",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "resolved",
+              "onset": "2024-02-23"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ferrous sulfate 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "iron deficiency corrected"
+            },
+            {
+              "drug_text": "sennosides, USP 8.6 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily as needed for constipation",
+              "dose": {
+                "value": 8.6,
+                "unit": "mg"
+              },
+              "frequency": "BID PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "chronic constipation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              123,
+              83
+            ],
+            "hr": 71,
+            "rr": 12,
+            "temp_c": 36.4,
+            "spo2": 96,
+            "weight_kg": 74.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.39
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 15.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-09-24T09:30",
+              "results": [
+                {
+                  "test": "Ferritin",
+                  "value": 38
+                },
+                {
+                  "test": "Iron",
+                  "value": 86
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 324
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 27
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-09-24T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-24T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-09-24T09:40"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2024-09-24T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-09-24T09:50",
+              "author": "PCP",
+              "body": "65 now. Finished his 12th and last FOLFOX on 9/17. Relieved. Oncology plans surveillance from here; he doesn't have the schedule yet.\n\nEnergy slowly coming back. Appetite better, weight up a little. Bowels: daily PEG helps, but some weeks he still goes 2-3 days and strains. No bleeding, no abdominal pain.\n\nStill smoking, about half a pack. Not willing to quit fully. We talked about it the way we always do.\n\nExam: vitals as charted. Port right chest, clean. Lungs clear. Heart RRR. Abdomen soft, nontender, healed scars.\n\nA/P\n1. Colon adenocarcinoma, stage III, s/p right hemicolectomy and adjuvant FOLFOX. Surveillance per oncology.\n2. Iron deficiency anemia: Hgb 12.9, ferritin 38 today. Corrected; stop iron.\n3. Chronic constipation: continue PEG daily, add senna 8.6 mg twice a day as needed.\n4. Tobacco: counseled.\n5. Vaccines: high-dose flu and PCV20 today.\n\nRTC 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.2,
+            "labs": {
+              "Ferritin": 38,
+              "Hemoglobin": 12.9,
+              "Iron": 84,
+              "Mean Corpuscular Volume": 86,
+              "Red Cell Distribution Width": 14.6,
+              "Total Iron-Binding Capacity": 340
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T12:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2024-09-26T12:20",
+              "author": "PCP",
+              "body": "Charles, your blood count is nearly back to normal and your iron stores are refilled, so you can stop the iron pills. Kidney and liver tests are normal too. Front desk will reach out to book March."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "pharmacy",
+          "start": "2024-12-10T10:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill request",
+              "date": "2024-12-10T10:05",
+              "author": "MA",
+              "body": "Electronic request from the pharmacy for polyethylene glycol 3350 powder. Last visit 9/24. Approved per PCP, 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "specialist_visit",
+          "start": "2025-02-24T13:30",
+          "end": "2025-02-24T16:00",
+          "service": "Neurology",
+          "reason": "progressive proximal weakness, dry mouth",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-24T16:00",
+              "resulted": "2025-03-04T10:00",
+              "results": [
+                {
+                  "test": "P/Q-type voltage-gated calcium channel antibody",
+                  "loinc": "94349-8",
+                  "unit": "nmol/L",
+                  "value": 0.42
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-02-24T13:00",
+              "text": "Indication: weakness, smoker, history of colon cancer.\nFindings: Right hilar mass. Lungs otherwise clear. No effusion. Heart size normal. Right chest port with catheter tip at the cavoatrial junction. No acute osseous abnormality.",
+              "conclusion": "Right hilar mass. CT chest recommended."
+            },
+            {
+              "study": "Nerve conduction study and EMG",
+              "performed": "2025-02-24T15:00",
+              "text": "Motor studies: compound muscle action potential amplitudes are low in the median, ulnar and peroneal nerves with normal distal latencies and conduction velocities. After 10 seconds of maximal voluntary exercise the abductor digiti minimi amplitude increases by more than 100%. Sensory responses are normal. Needle EMG of selected proximal and distal muscles: no fibrillations or positive sharp waves; motor units of normal morphology.",
+              "conclusion": "Presynaptic neuromuscular junction disorder with marked post-exercise facilitation, consistent with Lambert-Eaton myasthenic syndrome."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Nerve conduction study with needle EMG",
+              "performed": "2025-02-24T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2025-04-02T11:00",
+              "author": "neurology",
+              "body": "Outside neurology practice. Visit date: 2025-02-24.\n\nDear doctor,\n\nThank you for allowing us to see Mr. Fenton, 65. He was sent over by his oncology team. For about three months his legs and arms have been getting weaker, mostly near the trunk: he has trouble getting up the stairs. He is tired, his mouth feels dry all the time, and he has had some recent trouble with erections and with constipation. His colon adenocarcinoma was found in 2023 and treated with hemicolectomy and adjuvant chemotherapy last year.\n\nMeds: polyethylene glycol 17 g daily, senna as needed. NKDA.\nFH: father colon cancer at 68, deceased; mother breast cancer at 72; older brother lung cancer.\nSH: 50 pack-year smoker, still smoking.\n\nExam: alert, fluent, cranial nerves intact without ptosis or diplopia. Weakness of hip and shoulder girdle muscles. Deep tendon reflexes absent throughout. Sensation normal to all modalities. With repeated testing over several seconds, his hip flexor and shoulder abductor strength clearly improves.\n\nChest x-ray today: right hilar mass.\nNerve conduction/EMG today: low motor amplitudes with more than 100% increment after brief exercise.\n\nImpression: Lambert-Eaton myasthenic syndrome, very likely paraneoplastic given the hilar mass in a heavy smoker. Small cell lung cancer is the leading concern. The weakness, areflexia, dry mouth, constipation and erectile dysfunction all fit.\n\nPlan:\n- Amifampridine 15 mg by mouth three times daily.\n- Pyridostigmine 60 mg by mouth three times daily.\n- Sildenafil 25 mg as needed for erectile dysfunction.\n- CT chest with contrast ordered; his oncologist has been updated about the hilar mass.\n- P/Q-type VGCC antibody sent.\n- Return in 3 months.\n\nAddendum 2025-03-04: P/Q-type voltage-gated calcium channel antibody 0.42 nmol/L (positive), supporting the diagnosis."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "portal_message",
+          "start": "2025-03-12T18:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New diagnosis",
+              "date": "2025-03-12T18:47",
+              "author": "patient",
+              "body": "Wanted you to know. I got weak in the legs over the winter and the cancer doctor sent me to a neurologist. She says it's Lambert-Eaton, something with the nerves and muscles. I'm on two new pills three times a day, amifampridine and pyridostigmine, and a little one for the bedroom. Also they saw a spot on my lung on the x-ray and I had a CT last week and a scope this week. Waiting on that."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New diagnosis",
+              "date": "2025-03-13T07:55",
+              "author": "PCP",
+              "body": "Charles, thank you for letting me know, and I'm sorry you're dealing with this on top of everything. I'll ask the neurology office for their note so I have it here. Please tell me what the scope shows when you hear, and call anytime if you want to talk it through."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-13a",
+          "kind": "telephone",
+          "start": "2025-03-13T10:30",
+          "reason": "records request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2025-03-13T10:30",
+              "author": "MA",
+              "body": "Called the outside neurology office to request the consult note from 2/24 per PCP. They will fax it. Also faxed a request to the cancer center for any notes since last summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "telephone",
+          "start": "2025-04-08T15:10",
+          "reason": "update on lung biopsy",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient update",
+              "date": "2025-04-08T15:10",
+              "author": "PCP",
+              "body": "Charles called back. The lung biopsy showed small cell lung cancer, and the oncologist told him it has already spread to the right adrenal gland. Brain MRI was clear. He started chemo with immunotherapy in late March, four rounds planned and then the immunotherapy alone. He sounded tired but steady. Neurology note is in (scanned 4/2); cancer center notes still not here, re-requested. Offered help with anything at home; he says he's managing."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill requests",
+              "date": "2025-06-17T09:20",
+              "author": "MA",
+              "body": "Pharmacy sent requests for PEG 3350 and senna 8.6 mg. Both approved by PCP, 90-day supply each. Pharmacy fill history also lists amifampridine, pyridostigmine and sildenafil from the outside neurologist."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "specialist_visit",
+          "start": "2025-08-27T10:00",
+          "service": "Hematology and Oncology",
+          "reason": "metastatic lung cancer follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology follow-up letter",
+              "date": "2025-11-04T13:00",
+              "author": "oncology",
+              "body": "Regional cancer center, medical oncology. Visit date 2025-08-27.\n\nDear doctor,\n\nMr. Fenton, 66, was seen in follow-up for his metastatic small cell lung cancer.\n\nOncologic history:\n1. Adenocarcinoma of the ascending colon, pT1 N1a, right hemicolectomy March 2024, adjuvant mFOLFOX6 x12 completed September 2024.\n2. Small cell lung cancer, extensive stage: right hilar mass found February 2025 during workup for Lambert-Eaton myasthenic syndrome; EBUS aspiration of a subcarinal node in March 2025 showed small cell carcinoma; right adrenal metastasis; MRI brain negative. Carboplatin, etoposide and atezolizumab for 4 cycles, then atezolizumab maintenance, which he continues.\n3. Lambert-Eaton myasthenic syndrome, paraneoplastic, followed by neurology.\n\nToday he describes an aching pain in the right chest that comes and goes.\n\nMedications: atezolizumab every 3 weeks (infusion), amifampridine 15 mg three times daily, pyridostigmine 60 mg three times daily, polyethylene glycol 17 g daily, senna 8.6 mg twice daily as needed, sildenafil 25 mg as needed. NKDA.\nFH: father colon cancer at 68, mother breast cancer at 72, older brother lung cancer.\nSH: current smoker, 50 pack-years; social alcohol; retired construction foreman.\n\nAssessment: metastatic (extensive-stage) small cell lung cancer on maintenance immunotherapy; history of stage III colon cancer.\n\nPlan: continue atezolizumab. Start oxycodone 5 mg every 6 hours as needed for the chest pain. Restaging CT in about 4 months. Smoking cessation advised again."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "outside_records",
+          "start": "2025-11-04T13:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cancer center letter received",
+              "date": "2025-11-04T13:05",
+              "author": "MA",
+              "body": "Oncology letter from the 8/27 visit arrived by fax, more than two months after the visit. Scanned and sent to PCP's inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "imaging",
+          "start": "2026-01-08T11:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2026-01-08T11:30",
+              "text": "Indication: restaging, small cell lung cancer on maintenance therapy; history of colon cancer.\nFindings: New 3.4 cm mass in the body of the pancreas. Several new hypodense lesions in the liver. Known right adrenal metastasis. Postsurgical changes of right hemicolectomy with intact ileocolic anastomosis. Kidneys without hydronephrosis. No ascites.",
+              "conclusion": "New pancreatic body mass and new liver lesions, concerning for a new primary with hepatic metastases. Tissue sampling recommended."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "procedure_visit",
+          "start": "2026-01-20T08:00",
+          "end": "2026-01-20T11:00",
+          "service": "Gastroenterology",
+          "reason": "EUS biopsy of pancreatic mass",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-01-20T08:45",
+              "text": "Specimen: pancreas, body mass, EUS-guided fine needle aspiration.\nMicroscopic: Malignant glandular cells forming irregular glands in a desmoplastic background,.",
+              "conclusion": "Pancreas, body, FNA: adenocarcinoma, consistent with pancreatic primary.",
+              "issued": "2026-01-23T12:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Endoscopic ultrasound guided fine needle aspiration of pancreas",
+              "snomed": "788641000",
+              "performed": "2026-01-20T08:45"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "hospital_admission",
+          "start": "2026-02-12T17:40",
+          "end": "2026-02-19T13:00",
+          "service": "Hematology and Oncology",
+          "reason": "progressive weakness, bruising, intermittent confusion",
+          "vitals": [
+            {
+              "time": "2026-02-13T08:00",
+              "bp": [
+                118,
+                70
+              ],
+              "hr": 96,
+              "temp_c": 36.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 41
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 25.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 21.6
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "value": 47
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 88
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "D-dimer",
+                  "loinc": "48065-7",
+                  "unit": "ug/mL",
+                  "value": 18.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-13T06:00",
+              "results": [
+                {
+                  "test": "Schistocytes",
+                  "loinc": "800-3",
+                  "text": "Present"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-19T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 9.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 72
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 27.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 85
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 14.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-02-19T06:00",
+              "results": [
+                {
+                  "test": "Fibrinogen",
+                  "loinc": "3255-7",
+                  "unit": "mg/dL",
+                  "value": 162
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-02-13T09:30",
+              "text": "Indication: intermittent confusion, coagulopathy.\nFindings: No intracranial hemorrhage. No mass effect or midline shift. Gray-white differentiation preserved. Ventricles and sulci appropriate for age. No acute fracture.",
+              "conclusion": "No acute intracranial abnormality."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Platelet transfusion",
+              "snomed": "12719002",
+              "performed": "2026-02-13T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Discharge summary, oncology",
+              "date": "2026-03-09T10:00",
+              "author": "hospital medicine",
+              "body": "Regional hospital, inpatient oncology service. Admitted 2/12/2026, discharged 2/19/2026.\n\nReason for admission: several weeks of worsening weakness, spontaneous bruising and episodes of confusion.\n\nBackground: 66-year-old man with stage III ascending colon adenocarcinoma treated in 2024; extensive-stage small cell lung cancer since March 2025 on atezolizumab maintenance; paraneoplastic Lambert-Eaton myasthenic syndrome on amifampridine and pyridostigmine. He has lost a good deal of weight over recent months. Restaging CT on 1/8/2026 found a new 3.4 cm pancreatic body mass with new liver lesions; EUS-guided FNA on 1/20 showed adenocarcinoma of pancreatic origin. Treatment for the metastatic pancreatic adenocarcinoma had not yet begun. He denied chest pain, injury or recent infection, and has no personal history of a bleeding disorder.\n\nHospital course: On 2/13 nursing noted oozing from his IV sites and new dark patches on both lower legs since the prior day. Afebrile, BP 118/70, HR 96. He was alert but answered slowly. Skin showed petechiae and scattered ecchymoses, with active bleeding at a venipuncture site. Neurologic exam nonfocal. Labs: platelets 41, PT 21.6 s, INR 1.9, aPTT 47 s, fibrinogen 88 mg/dL, D-dimer 18.4 ug/mL FEU, hemoglobin 8.6. Peripheral smear: schistocytes and few platelets. Head CT showed no bleed. Diagnosis: disseminated intravascular coagulation driven by his malignancy, most likely the pancreatic cancer. He received platelets, cryoprecipitate and plasma. Atezolizumab was held. Bleeding stopped and his mental status cleared by day 4.\n\nDischarge labs 2/19: platelets 72, fibrinogen 162, hemoglobin 9.1.\n\nDischarge diagnoses: disseminated intravascular coagulation; metastatic pancreatic adenocarcinoma (liver); extensive-stage small cell lung cancer; Lambert-Eaton myasthenic syndrome; history of colon adenocarcinoma.\n\nAllergies: NKDA.\nDischarge medications: amifampridine 15 mg three times daily, pyridostigmine 60 mg three times daily, polyethylene glycol 17 g daily, senna 8.6 mg twice daily as needed, oxycodone 5 mg every 6 hours as needed, sildenafil 25 mg as needed. Atezolizumab on hold.\n\nFollow-up: medical oncology within one week to discuss treatment of the pancreatic cancer; labs at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "outside_records",
+          "start": "2026-03-09T10:05",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital records received",
+              "date": "2026-03-09T10:05",
+              "author": "MA",
+              "body": "Discharge summary from the February admission received, with the January CT and pancreas pathology. We were not notified of the admission at the time. Scanned and routed to PCP as high priority."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "telephone",
+          "start": "2026-03-11T12:40",
+          "reason": "call after hospital records",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call to patient",
+              "date": "2026-03-11T12:40",
+              "author": "PCP",
+              "body": "Read the discharge summary and called Charles. He is home. Bruising has faded. Saw oncology last week and they are talking with him about treatment for the pancreas cancer; he hasn't decided. He knows the situation is serious and said so plainly. I told him we're here for whatever he needs and that he or anyone helping him can call the office directly. He asked only that we keep his bowel medicines coming."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T16:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2026-05-19T16:02",
+              "author": "patient",
+              "body": "Need the bowel powder and the senna again please. Same pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2026-05-20T08:30",
+              "author": "RN",
+              "body": "Both sent this morning. Hope you're holding up okay, Charles. Call us if you need anything."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Malignant neoplasm of ascending colon|C18.2": {
+        "code": "C18.2",
+        "display": "Malignant neoplasm of ascending colon",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "sennosides, USP 8.6 MG Oral Tablet": {
+        "code": "312935",
+        "display": "sennosides, USP 8.6 MG Oral Tablet",
+        "ingredient": "sennosides",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "14979-9",
+        "display": "aPTT in Platelet poor plasma by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "D-dimer": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "ug/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrinogen": {
+        "code": "3255-7",
+        "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "P/Q-type voltage-gated calcium channel antibody": {
+        "code": "94349-8",
+        "display": "Voltage-gated calcium channel P/Q type binding IgG+IgM Ab [Moles/volume] in Serum by Immunoassay",
+        "unit": "nmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Schistocytes": {
+        "code": "800-3",
+        "display": "Schistocytes [Presence] in Blood by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Endoscopic ultrasound guided fine needle aspiration of pancreas": {
+        "code": "788641000",
+        "display": "Endoscopic ultrasonography guided fine needle aspiration of pancreatic lesion",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Implantation of venous access port": {
+        "code": "80402001",
+        "display": "Implantation of venous access port",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Platelet transfusion": {
+        "code": "12719002",
+        "display": "Platelet transfusion",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Right hemicolectomy with ileocolic anastomosis": {
+        "code": "315321001",
+        "display": "Right hemicolectomy and anastomosis of ileum to colon",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

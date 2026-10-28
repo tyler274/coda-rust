@@ -1,0 +1,256 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002036",
+      "given": "Brian",
+      "family": "Goodwin",
+      "birth_date": "1963-03-31",
+      "address_line": "41 Kings Corner Road, Westhampton, MA 01027",
+      "phone": "+1-802-555-0186",
+      "email": "brian.goodwin@example.test",
+      "marital_status": "married",
+      "summary": "Office administrator with poorly controlled hypertension, CAD with a 2016 LAD stent, and paroxysmal AF who joins in 2019. Essential tremor is diagnosed in 2021, CML in December 2021, and stage IV ascending colon adenocarcinoma in 2022, treated with hemicolectomy and capecitabine; flecainide toxicity in 2025 and a chemotherapy-induced pancytopenia later that year.",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:12",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2019-08-27T10:12",
+             "body": "Caller is moving his primary care here; previous doctor retired this summer. Has a cardiologist he will keep. Booked new patient visit 9/10 at 8:40. Asked him to bring all pill bottles and to sign the records release when he comes in. Membership packet emailed."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T08:40",
+          "end": "2019-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2011-06-01", "note": "Above goal on two agents"},
+            {"label": "Coronary artery disease", "action": "history", "onset": "2016-03-01", "note": "LAD drug-eluting stent 2016"},
+            {"label": "Angina pectoris", "action": "history", "onset": "2016-03-01", "note": "Stable exertional angina, infrequent"},
+            {"label": "Presence of coronary artery stent", "action": "history", "onset": "2016-03-01"},
+            {"label": "Paroxysmal atrial fibrillation", "action": "history", "onset": "2018-05-01", "note": "Followed by outside cardiology"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2013-01-01", "note": "20 pack-years, quit 2013"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "CAD, atrial fibrillation"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "CAD with stent"},
+            {"drug_text": "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 30, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Stable angina"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [148, 92], "weight_kg": 89.0, "height_cm": 178.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T09:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-10T09:30", "results": [{"test": "Hemoglobin A1c", "value": 5.6}]},
+            {"panel": null, "collected": "2019-09-10T09:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2019-09-10T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}, {"item": "Occupation", "value": "Office administrator"}],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-09-10T09:35"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-09-10T08:40"},
+            {"procedure": "Immunization administration", "performed": "2019-09-10T09:35"}
+          ],
+          "orders": [
+            {"id": "ldct-2019", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "20 pack-years, quit 2013"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-10T09:50",
+             "body": "56 yo man, office administrator, transferring care after his longtime PCP retired.\n\nHTN for years, on lisinopril 20 and HCTZ 25. Home cuff readings he brought average mid 140s over low 90s. Says it has \"never really been where they want it.\" Takes meds every morning, no missed doses he can think of.\n\nCAD: had chest tightness with exertion in 2016, cath at an outside hospital, one drug-eluting stent to the LAD. Since then rare tightness with heavy exertion, settles with rest, unchanged for a couple of years. On metoprolol succinate 50, ISMN 30, aspirin 81.\n\nParoxysmal AF picked up in 2018 when he had a spell of fluttering; sees outside cardiology yearly. Occasional brief palpitations, nothing lasting.\n\nSocial: married. Former smoker, about 20 pack-years, quit 2013. 1-2 drinks a week. Jogs a couple of times a week.\nFamily: father HTN and an MI at 62; father also had shaky hands. Mother type 2 diabetes. One older brother, healthy as far as he knows.\nAllergies: NKDA.\n\nExam: BP 148/92 (repeat similar), HR in the 60s regular, BMI ~28. Well appearing. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. No edema. Normal gait.\n\nA/P\n1. HTN, above goal on 2 drugs. Basic labs today. Will keep going with home log and revisit in 3 months.\n2. CAD s/p LAD stent, stable angina - stable. Continue current regimen, cardiology following.\n3. Paroxysmal AF - rate controlled on metoprolol, cardiology following.\n4. Health maintenance: Tdap today. Hep C and HIV screen once - ok'd. Colonoscopy has never been done; discussed screening at length. He'd rather wait until after the busy season at work, will revisit. Qualifies for lung screening by pack-years and quit date - low-dose CT ordered. Shingrix at flu shot visit next month.\n\nRecords release signed. RTC 3 mo."}
+          ]
+        },
+        {
+          "id": "2019-09-12a",
+          "kind": "portal_message",
+          "start": "2019-09-12T16:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-09-12T16:20",
+             "body": "Brian, your labs from Tuesday look fine: kidney function, potassium and blood count normal, A1c normal, hepatitis C and HIV screens negative. Cholesterol panel attached. See you in December."}
+          ]
+        },
+        {
+          "id": "2019-09-30a",
+          "kind": "outside_records",
+          "start": "2019-09-30T11:05",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2019-09-30T11:05",
+             "body": "Received 46 pages from the patient's former primary care office (faxed). Includes visit notes 2014-2019, medication lists matching current, and a 2016 hospital summary: diagnostic cardiac catheterization for exertional angina, single drug-eluting stent to the proximal LAD, no complications, discharged next day. Prior office notes document routine labs, all unremarkable, and repeated advice to schedule a colonoscopy, never completed. Indexed and sent to PCP for review."}
+          ]
+        },
+        {
+          "id": "2019-10-08a",
+          "kind": "imaging",
+          "start": "2019-10-08T13:30",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2019-10-08T13:30",
+             "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Baseline. Indication: former smoker, 20 pack-years, quit 2013. Technique: low-dose helical acquisition without contrast. Lungs: no pulmonary nodules. No consolidation or effusion. Airways patent. Mediastinum: no adenopathy. Heart size normal; coronary stent and mild coronary calcification. Upper abdomen unremarkable.",
+             "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2019", "action": "done", "date": "2019-10-08T13:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2019-10-09T08:15",
+             "body": "Negative screening CT, Lung-RADS 1. Repeat next fall. Released to patient with a note."}
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and shingles vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-22T07:55"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2019-10-22T07:57"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-22T07:55"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2019-10-22T08:05",
+             "body": "Flu vaccine L deltoid, Shingrix #1 R deltoid. VIS given. Tolerated. Told him the second Shingrix is due in 2-6 months and that the arm may ache a day or two. BP recorded for the PCP, cuff reading above goal as usual for him."}
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "outside_records",
+          "start": "2019-11-19T14:40",
+          "documents": [
+            {"type": "Outside Records", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2019-11-19T14:40",
+             "body": "Outside cardiology group, office visit 11/12/2019.\n\nDear colleague,\nI saw Mr. Goodwin for his yearly visit. He has coronary disease with a drug-eluting stent to the LAD in 2016 and paroxysmal atrial fibrillation diagnosed in 2018. He describes the occasional tightness only with hard exertion, no change in pattern, and a few short palpitation episodes this year that end on their own. BP 146/90, HR 62. Heart regular, lungs clear, no edema. ECG: sinus rhythm, normal intervals, no acute change.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, metoprolol succinate 50 mg, isosorbide mononitrate ER 30 mg, aspirin 81 mg. Allergies: none known.\n\nImpression: stable angina; paroxysmal AF, infrequent and rate controlled. Plan unchanged; see him in a year.\n\nOutside cardiology"}
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "office_visit",
+          "start": "2019-12-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2019-12-10T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2019-12-10T16:35",
+             "body": "BP f/u. Home log Oct-Dec: mostly 140-150/88-94. Feels fine. No chest pain beyond his usual rare exertional tightness, no palpitations lately. Still jogging.\nBP today above goal, similar to home. Heart regular. No edema.\nA/P: HTN not at goal. Talked about salt and keeping the jogging up; he is taking his pills. Recheck spring. Second Shingrix due Feb - MA will schedule. Colonoscopy: still not ready, says next year."}
+          ]
+        },
+        {
+          "id": "2020-02-25a",
+          "kind": "nurse_visit",
+          "start": "2020-02-25T08:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2020-02-25T08:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-02-25T08:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Shingrix #2", "author": "MA", "date": "2020-02-25T08:20",
+             "body": "Shingrix 2 of 2 given L deltoid. Series complete. No reaction to first dose other than a sore arm."}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "pharmacy",
+          "start": "2020-03-24T09:02",
+          "documents": [
+            {"type": "Refill Request", "title": "90-day refills", "author": "RN", "date": "2020-03-24T09:02",
+             "body": "Pharmacy asking for 90-day supplies on lisinopril, HCTZ, metoprolol succinate and isosorbide so he can stay home more. Approved per protocol, 90 days x 3 refills each. Last BMP 9/2019 normal."}
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "telehealth_visit",
+          "start": "2020-04-21T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure check by video",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-04-21T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-04-21T11:45",
+             "body": "Video visit, he is at home, working remotely now. Home readings last 3 wks avg about 144/91. No headaches, chest pain or dyspnea. Hasn't jogged as much with the stay-at-home order, walking instead.\nA/P: HTN still above goal. He'd like to hold off on changing anything while things are unsettled; agreed to revisit at the physical. Keep log. Labs then."}
+          ]
+        },
+        {
+          "id": "2020-07-14a",
+          "kind": "portal_message",
+          "start": "2020-07-14T19:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Aspirin question", "author": "patient", "date": "2020-07-14T19:40",
+             "body": "Is it ok to buy the 81 mg aspirin over the counter instead of the prescription? It's cheaper at the store."},
+            {"type": "Patient Message", "title": "RE: Aspirin question", "author": "RN", "date": "2020-07-15T08:50",
+             "body": "Yes, the over-the-counter 81 mg enteric coated tablet is the same thing. Keep taking it daily."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-09-22T08:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-22T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-09-22T08:45", "results": [{"test": "Hemoglobin A1c", "value": 5.7}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-09-22T08:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-09-22T08:50"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2020-09-22T08:00"},
+            {"procedure": "Immunization administration", "performed": "2020-09-22T08:50"}
+          ],
+          "orders": [
+            {"id": "fit-2020", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "Colorectal cancer screening, never screened"},
+            {"id": "ldct-2020", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Annual lung screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-09-22T09:05",
+             "body": "Annual exam. 57 yo. Feels well. Working from home, back to jogging 2-3x/wk. No chest tightness this summer. A couple of 10-minute palpitation spells, self-limited.\nROS otherwise neg.\nMeds unchanged (lisinopril 20, HCTZ 25, metoprolol succ 50, ISMN 30, ASA 81). NKDA.\nExam: BP above goal again. Well. HEENT normal. Neck no thyromegaly. Lungs clear. Heart regular, no murmur. Abdomen benign. No edema. Skin unremarkable. Neuro grossly normal.\nA/P\n- HTN: home average ~143/90. He'd still like to try harder on lifestyle before adding anything. BMP today.\n- CAD/stable angina, pAF: stable, cardiology in Nov.\n- CRC screening: still declines colonoscopy for now; agreed to a FIT kit, mailed from here.\n- Lung screening: annual LDCT ordered.\n- Lipids, A1c, CBC today. Flu shot given.\n- PHQ-2 negative.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "imaging",
+          "start": "2020-10-20T15:10",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2020-10-20T15:10",
+             "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING. Annual. Comparison 10/08/2019. Lungs: no nodules. No consolidation, effusion or pneumothorax. Central airways clear. No mediastinal or hilar adenopathy. Coronary stent and coronary calcification, unchanged. Visualized upper abdomen unremarkable.",
+             "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2020", "action": "done", "date": "2020-10-20T15:10"}],
+          "documents": [
+            {"type": "Result Note", "title": "LDCT result", "author": "PCP", "date": "2020-10-21T07:40",
+             "body": "Negative again. Next one fall 2021."}
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "outside_records",
+          "start": "2020-11-17T10:25",
+          "documents": [
+            {"type": "Outside Records", "title": "Cardiology follow-up letter", "author": "cardiology", "date": "2020-11-17T10:25",
+             "body": "Outside cardiology group, telehealth follow-up 11/10/2020.\n\nMr. Goodwin is doing well. Angina is rare, only with the hardest efforts, no rest symptoms. Palpitations a few times this year, brief. Home BP mid 140s. He had a resting ECG at our office last month: sinus rhythm, rate 61, normal QRS.\n\nCurrent medicines: lisinopril 20 mg daily, hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, isosorbide mononitrate ER 30 mg daily, aspirin 81 mg daily. No known drug allergies.\n\nAssessment: stable angina, paroxysmal atrial fibrillation in sinus rhythm. No changes. Return in one year.\n\nOutside cardiology"}
+          ]
+        },
+        {
+          "id": "2020-12-08a",
+          "kind": "portal_message",
+          "start": "2020-12-08T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Reminder: stool test kit", "author": "MA", "date": "2020-12-08T12:10",
+             "body": "Hi Brian, we haven't received your FIT stool kit back yet. It only takes a few minutes and you can drop it in the mail. Let us know if you need a new one."},
+            {"type": "Patient Message", "title": "RE: Reminder: stool test kit", "author": "patient", "date": "2020-12-09T20:31",
+             "body": "Sorry, it's sitting on the counter. I'll get to it after the holidays."}
+          ]
+        }
+      ]
+    }
+  ]
+}

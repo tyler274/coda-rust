@@ -1,0 +1,668 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002297",
+      "given": "Chad",
+      "family": "Wojcik",
+      "birth_date": "1957-04-27",
+      "address_line": "88 River Road",
+      "phone": "+1-978-555-0152",
+      "email": "chad.wojcik@example.test",
+      "marital_status": "married",
+      "summary": "Retired postal worker with COPD GOLD II, hypertension and hyperlipidemia who joined the practice a month after a September 2024 MI with an LAD stent. Over the next year he had pneumococcal meningitis, an ICU stay for hypoxemic respiratory failure and an ICU stay for pneumonia with septic shock complicated by arterial cannulation during central line placement; he has recovered and is followed for his chronic conditions.",
+      "events": [
+        {
+          "id": "2024-09-26a",
+          "kind": "telephone",
+          "start": "2024-09-26T10:42",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2024-09-26T10:42",
+              "body": "Mr. Wojcik phoned about moving his primary care here. Says his old doctor's office in town is closing its doors at the end of the year and the cardiology team at the hospital told him to get set up with someone before then. Had a heart attack earlier this month, stent placed, home now. Membership info emailed to him. Booked new patient appt 10/8 at 9:00 with PCP. Asked him to bring all his pill bottles and inhalers. Release form for old office and the hospital sent along with the welcome packet."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "establish_care",
+          "start": "2024-10-08T09:00",
+          "end": "2024-10-08T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care after recent MI",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "diagnosed",
+              "note": "GOLD stage II per prior records"
+            },
+            {
+              "label": "Coronary artery disease",
+              "action": "diagnosed",
+              "onset": "2024-09-09"
+            },
+            {
+              "label": "Old myocardial infarction",
+              "action": "diagnosed",
+              "onset": "2024-09-09"
+            },
+            {
+              "label": "Presence of coronary artery stent",
+              "action": "diagnosed",
+              "onset": "2024-09-10",
+              "note": "drug-eluting stent to LAD"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "note": "35 pack-years, quit September 2024"
+            },
+            {
+              "label": "Family history of ischemic heart disease",
+              "action": "diagnosed",
+              "note": "father MI at 62"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "coronary artery disease"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperlipidemia, CAD"
+            },
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "CAD, hypertension"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1 puff twice daily; rinse mouth after use",
+              "dose": {
+                "value": 1,
+                "unit": "puff"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1-2 puffs every 4-6 hours as needed for wheezing or shortness of breath",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 86.2,
+            "height_cm": 175.3,
+            "labs": {
+              "Low Density Lipoprotein": 64,
+              "Hemoglobin A1c": 5.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 beers on weekends"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired postal worker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-10-08T10:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-10-08T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-08T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-10-08T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T09:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T09:57"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-10-08T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T09:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-08T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-10-08T10:05",
+              "body": "NEW PATIENT\n\n67 yo retired letter carrier transferring care; his prior office is closing. Came with his wife and a bag of bottles and inhalers, which we went through together.\n\nThe big event: heart attack about a month ago (admitted ~9/9 at the county medical center). Cath, one drug-eluting stent to the LAD on 9/10. Home after a few days. No chest pain since. Walking the driveway and to the mailbox daily, a little more each week. Has his first cardiology follow-up in early November.\n\nLungs: told he has COPD, \"stage 2,\" for a number of years. On tiotropium HandiHaler daily plus fluticasone/salmeterol twice daily, albuterol maybe twice a week. Gets winded on a flight of stairs, baseline for him. No recent flares he can name.\n\nAlso long-standing high blood pressure and high cholesterol, both treated.\n\nSMOKING: 35 pack-years. Quit the day he went into the hospital in September and has not had one since. \"The scare did it.\" Not using patches or gum. Discussed relapse risk; he declines any aid for now, will call if cravings get hard.\nAlcohol: a beer or two on the weekend.\nRetired from the post office. Lives in Sunderland with his wife.\n\nFAMILY: father died of an MI, age 62. Mother living, has COPD. Older brother with type 2 diabetes.\n\nALLERGIES: none to medications.\n\nCURRENT MEDS (reconciled from bottles):\n- aspirin 81 mg daily\n- atorvastatin 40 mg daily\n- metoprolol succinate 50 mg daily\n- lisinopril 10 mg daily\n- tiotropium 18 mcg inhaled daily\n- fluticasone/salmeterol 250/50, 1 inhalation BID\n- albuterol HFA 90 mcg, 1-2 puffs q4-6h PRN wheeze/SOB\n\nROS: no chest pain, no orthopnea, no leg swelling, no syncope. Chronic mild exertional dyspnea as above. No cough change, no fever.\n\nEXAM: Vitals as charted. Pleasant, in no distress, speaking full sentences. HEENT unremarkable. Neck supple, no JVD. Heart regular, no murmur. Lungs: mildly diminished breath sounds throughout, no wheeze, no crackles. Right radial access site healed. Abdomen soft. Extremities warm, no edema.\n\nASSESSMENT / PLAN\n1. CAD s/p MI with LAD stent (9/2024): stable. Continue aspirin, atorvastatin, metoprolol, lisinopril. Keep the cardiology appointment.\n2. COPD, GOLD II: stable on current inhalers. Technique checked on the HandiHaler, good. \n3. HTN: at goal today.\n4. Hyperlipidemia: fasting lipids today.\n5. Tobacco dependence, in early remission: congratulated. Eligible for lung cancer screening; will set up after he's further from the MI, he'd rather not have one more appointment this fall.\n6. Health maintenance: flu (high dose) and COVID boosters given. Hep C screen today. Reports colonoscopy around 2019 was fine and a tetanus shot about then; will confirm in records.\n\nLabs: CMP, CBC, lipids, A1c, HCV Ab.\nRecords release signed for prior office and the hospital. Return in about 2-3 months, sooner after cardiology if they change anything."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "portal_message",
+          "start": "2024-10-10T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2024-10-10T16:20",
+              "body": "Hi Mr. Wojcik,\n\nYour blood work from Tuesday looks good. Kidney function, liver tests, blood counts and sugar (A1c) are all in the normal range. Your LDL (\"bad\") cholesterol is under 70, which is where we want it after a heart attack, so the atorvastatin is doing its job. Hepatitis C screen was negative.\n\nNo changes. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "outside_records",
+          "start": "2024-10-17T11:30",
+          "reason": "records from prior primary care office and September 2024 hospitalization",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-05-20T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2019-06-11T08:30"
+            },
+            {
+              "procedure": "Coronary stent placement, single vessel",
+              "performed": "2024-09-10T13:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "author": "outside primary care",
+              "date": "2024-10-17T11:30",
+              "body": "Records received from the patient's previous internal medicine office (closing 12/2024). 64 pages; summarized below.\n\nProblem list on file: COPD; hypertension; hyperlipidemia; tobacco use.\nMedications at last office visit (8/2024, before MI): tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 BID, albuterol PRN, lisinopril 10 mg daily, atorvastatin.\nAllergies: NKDA.\nImmunizations: Tdap 5/20/2019. Influenza yearly.\nScreening: colonoscopy 6/11/2019 — complete exam, no polyps, prep good, repeat interval 10 years.\nPulmonary function testing referenced in a 2019 note as \"consistent with moderate COPD\"; report itself not included.\n\nFiled by MA. Reviewed by PCP; screening history entered."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary — Cardiology",
+              "author": "cardiology",
+              "date": "2024-10-17T11:30",
+              "body": "COUNTY MEDICAL CENTER — CARDIOLOGY INPATIENT SERVICE\nDISCHARGE SUMMARY\nAdmit: 09/09/2024   Discharge: 09/12/2024\n\nDIAGNOSIS: Acute myocardial infarction. Coronary artery disease.\nPROCEDURES: 09/10/2024 diagnostic left heart catheterization via right radial artery; percutaneous coronary intervention with placement of one drug-eluting stent to the left anterior descending artery.\n\nHOSPITAL COURSE: 67-year-old man with COPD, hypertension and hyperlipidemia, active smoker, presented through the ED and was diagnosed with acute MI. Taken for catheterization the following morning; culprit LAD lesion treated with a single drug-eluting stent without complication. Course otherwise uneventful. Ambulating without symptoms prior to discharge. Strongly counseled on smoking cessation; patient states he has quit.\n\nALLERGIES: NKDA\n\nDISCHARGE MEDICATIONS:\naspirin 81 mg daily\natorvastatin 40 mg daily\nmetoprolol succinate 50 mg daily\nlisinopril 10 mg daily\ntiotropium 18 mcg inhaled daily\nfluticasone/salmeterol 250/50 one inhalation twice daily\nalbuterol 90 mcg inhaler every 4-6 hours as needed\n\nFOLLOW-UP: Outpatient cardiology in 6-8 weeks. Primary care within 1 month.\n\nScanned and reviewed, PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-06a",
+          "kind": "specialist_visit",
+          "start": "2024-11-06T14:00",
+          "service": "Cardiology",
+          "reason": "post-MI follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up Letter",
+              "author": "cardiology",
+              "date": "2024-11-08T09:15",
+              "body": "Outside cardiology group — office letter\nDate of visit: 11/06/2024\n\nDear colleague,\n\nI saw Mr. Wojcik today, about eight weeks out from his myocardial infarction and LAD drug-eluting stent (9/10/2024). He is doing well. No angina, no rest symptoms, no palpitations or presyncope. His breathing is at his COPD baseline. He has not smoked since admission and is walking daily.\n\nExam: BP and heart rate well controlled on his regimen. Regular rhythm, no murmur or gallop, lungs with mildly reduced air movement and no crackles, no edema. Right radial site healed.\n\nAllergies: NKDA.\nMedications: aspirin 81 mg, atorvastatin 40 mg, metoprolol succinate 50 mg, lisinopril 10 mg, tiotropium, fluticasone/salmeterol, albuterol PRN.\n\nImpression: CAD s/p recent MI and LAD stent, clinically stable.\nPlan: continue current medications without change. Continue walking program. Return in 9 months, or sooner with symptoms.\n\nThank you for allowing me to share in his care.\n\n— Cardiology"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "pharmacy",
+          "start": "2024-11-20T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill — metoprolol succinate",
+              "author": "MA",
+              "date": "2024-11-20T08:50",
+              "body": "eRx refill request: metoprolol succinate ER 50 mg, #90. Last filled by hospital discharge Rx 9/12. Seen here 10/8, current on med list. Routed to PCP.\n\nPCP: approved x 90 days with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11a",
+          "kind": "ed_visit",
+          "start": "2024-12-11T14:20",
+          "end": "2024-12-11T19:30",
+          "service": "Emergency Medicine",
+          "reason": "severe headache, fever and confusion",
+          "conditions": [
+            {
+              "label": "Bacterial meningitis due to Streptococcus pneumoniae",
+              "icd10": "G00.1",
+              "action": "diagnosed",
+              "onset": "2024-12-09"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-12-11T14:28",
+              "temp_c": 39.2,
+              "hr": 110,
+              "bp": [
+                130,
+                85
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-11T14:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-11T14:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 150
+                },
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-11T16:05",
+              "results": [
+                {
+                  "test": "Appearance of Cerebrospinal Fluid",
+                  "loinc": "10333-3",
+                  "text": "Cloudy"
+                },
+                {
+                  "test": "Leukocytes [#/volume] in Cerebrospinal Fluid",
+                  "loinc": "26465-5",
+                  "value": 2000,
+                  "unit": "/uL"
+                },
+                {
+                  "test": "Protein [Mass/volume] in Cerebrospinal Fluid",
+                  "loinc": "2880-3",
+                  "value": 180,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Glucose [Mass/volume] in Cerebrospinal Fluid",
+                  "loinc": "2342-4",
+                  "value": 30,
+                  "unit": "mg/dL"
+                },
+                {
+                  "test": "Microscopic observation [Identifier] in Cerebrospinal Fluid by Gram stain",
+                  "loinc": "14357-8",
+                  "text": "Gram-positive cocci in pairs"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2024-12-11T14:20"
+            },
+            {
+              "procedure": "Lumbar puncture",
+              "snomed": "277762005",
+              "performed": "2024-12-11T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2024-12-13T10:40",
+              "body": "COUNTY MEDICAL CENTER — EMERGENCY DEPARTMENT\nVisit: 12/11/2024 14:20\n\nCC: headache, fever, confusion\n\nHPI: 67M brought in by his wife. Two days of severe headache and high fevers, increasingly confused. Wife says he has been slower to answer her and keeps saying his neck hurts and is stiff. History obtained mostly from wife given his mental status.\n\nPMH: COPD (GOLD II), CAD with MI and LAD DES 9/2024, HTN, HLD.\nMeds: ASA 81, atorvastatin 40, metoprolol succinate 50, lisinopril 10, tiotropium, fluticasone/salmeterol, albuterol PRN.\nAllergies: NKDA.\nSocial: ex-smoker (35 pk-yr, quit 9/2024), occasional beer, retired postal worker.\n\nVS on arrival: T 39.2 C (102.5 F), HR 110, BP 130/85.\n\nEXAM: Ill-appearing. Oriented to person only — not to time or place. Neck: flexion meets resistance and is painful. Lungs: breath sounds decreased at the right base, otherwise clear. Heart tachycardic, regular. No rash. Moves all extremities.\n\nLABS: WBC 15.0 K/uL. Glucose 150 mg/dL.\nLP performed at 16:00. CSF cloudy. CSF WBC 2,000/uL, protein 180 mg/dL, glucose 30 mg/dL. Gram stain: gram-positive cocci in pairs.\n\nMDM: CSF picture and Gram stain are consistent with bacterial meningitis, pneumococcal. Empiric ceftriaxone, vancomycin and dexamethasone started in the ED, dexamethasone given with the first antibiotic dose.\n\nDISPOSITION: admitted to the medicine service.\nDx: bacterial meningitis due to Streptococcus pneumoniae.\n\nReceived by fax 12/13; reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-11b",
+          "kind": "hospital_admission",
+          "start": "2024-12-11T19:40",
+          "end": "2024-12-21T12:30",
+          "service": "Internal Medicine — Inpatient",
+          "reason": "pneumococcal meningitis",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-11T16:05",
+              "resulted": "2024-12-13T09:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Cerebrospinal Fluid by Culture",
+                  "loinc": "606-4",
+                  "text": "Streptococcus pneumoniae"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2024-12-11T19:40"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2024-12-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary — Medicine",
+              "author": "hospitalist",
+              "date": "2024-12-23T14:05",
+              "body": "COUNTY MEDICAL CENTER — DISCHARGE SUMMARY\nAdmitted 12/11/2024 from the ED. Discharged 12/21/2024.\n\nPRINCIPAL DIAGNOSIS: Bacterial meningitis due to Streptococcus pneumoniae.\nOther active problems: COPD GOLD II; CAD s/p MI and LAD DES 9/2024; hypertension; hyperlipidemia.\n\nCOURSE: Presented with two days of headache, fever and confusion; CSF consistent with bacterial meningitis with gram-positive diplococci on Gram stain. Treated with IV ceftriaxone and vancomycin plus dexamethasone. CSF culture grew Streptococcus pneumoniae on 12/13; vancomycin and dexamethasone were stopped at that point and ceftriaxone continued. Fevers settled by hospital day 3, and his mental status returned to baseline around the same time; wife agrees he is himself. He completed 10 days of IV ceftriaxone in hospital. Breathing remained at his baseline on home inhalers throughout. Cardiac medications continued. Ambulating independently at discharge, no focal neurologic findings.\n\nALLERGIES: NKDA\n\nDISCHARGE MEDICATIONS (unchanged from home):\naspirin 81 mg daily; atorvastatin 40 mg daily; metoprolol succinate 50 mg daily; lisinopril 10 mg daily; tiotropium 18 mcg daily; fluticasone/salmeterol 250/50 BID; albuterol PRN.\nNo antibiotics at discharge.\n\nFOLLOW-UP: PCP within 1-2 weeks.\n\nScanned to chart; PCP reviewed. TCM call made 12/23 by RN — home, eating, no headache, appointment 12/30 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "telephone",
+          "start": "2024-12-12T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call From Patient's Wife",
+              "author": "RN",
+              "date": "2024-12-12T09:05",
+              "body": "Wife called to let us know Chad was admitted overnight at the county medical center with meningitis. She was at his side the whole time and wanted to know whether she needs antibiotics herself. Explained that the hospital has identified the bacteria as the pneumococcal type, which is not one where household contacts are routinely given preventive antibiotics, but to check with the inpatient team since they have the final culture. She's feeling well. Asked her to call us when he has a discharge date so we can see him soon after. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-30a",
+          "kind": "office_visit",
+          "start": "2024-12-30T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, meningitis",
+          "conditions": [
+            {
+              "label": "Bacterial meningitis due to Streptococcus pneumoniae",
+              "icd10": "G00.1",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 82.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-30T10:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-12-30T10:55",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "35 pack-year former smoker, quit 2024"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-12-30T10:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-12-30T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "author": "PCP",
+              "date": "2024-12-30T11:10",
+              "body": "S: Here 9 days after discharge for pneumococcal meningitis (admitted 12/11, 10 days IV ceftriaxone). Wife with him. Tired, napping in the afternoons, appetite coming back. No headache since about day 4 in the hospital. Neck feels normal. No fevers at home. Hearing and vision feel the same as before to him. Breathing at his usual. Down a few pounds. Taking all meds as before, nothing new added at discharge.\n\nO: Vitals as charted, afebrile. Alert, oriented x3, conversational, tells the story of the admission accurately (with a few gaps from the first days). Neck supple, full flexion without pain. Lungs: diminished but symmetric, no focal findings at the right base today. Heart regular. Gait steady. Cranial nerves grossly intact.\n\nA/P:\n1. Pneumococcal meningitis — treated, clinically resolved. Labs to make sure counts and kidneys are back to normal after the IV course. Gave return precautions for any recurrent headache/fever/confusion.\n2. Pneumococcal vaccine: he is a good candidate now; will give the conjugate vaccine at the wellness visit in February when he's further out from the illness.\n3. Lung cancer screening: LDCT ordered for January now that the cardiac and infectious issues have quieted down.\n4. CAD, HTN, COPD: stable, no changes.\n\nRTC February for Medicare wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-31a",
+          "kind": "portal_message",
+          "start": "2024-12-31T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs After the Hospital",
+              "author": "PCP",
+              "date": "2024-12-31T09:15",
+              "body": "Chad, the blood work from yesterday is reassuring: white count is back to normal, and kidney function and electrolytes are fine after all the IV medicine. Rest up and happy new year."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

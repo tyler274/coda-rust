@@ -1,0 +1,214 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002710",
+      "events": [
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-17T08:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-17T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-05-17T08:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-05-17T09:00"}
+          ],
+          "orders": [
+            {"id": "gi-colonoscopy", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "Average-risk colorectal cancer screening, turned 50"},
+            {"id": "mammo-2022", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging", "reason": "Routine breast cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-05-17T08:20"},
+            {"procedure": "Immunization administration", "performed": "2022-05-17T09:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-05-17T09:15",
+             "body": "Physical. Turned 50 in March. Traveling about two weeks a month again, overseas and the West Coast. Feels well.\n\nCurrent: HCTZ 25 mg qAM. NKDA.\nROS negative: no chest pain, breathlessness, palpitations, calf pain, change in bowel habits or bleeding.\nNo change to family or social history.\n\nExam: vitals in flowsheet; pressure fine. Pleasant, well. Oropharynx clear. Neck without nodes or thyroid enlargement. Heart regular rate, no murmur or gallop. Lungs clear bilaterally. Breasts without mass, no axillary nodes. Abdomen benign. Legs without swelling, calves soft. Skin: no worrisome moles.\n\nA/P:\n- Colorectal screening: referred to GI for screening colonoscopy; she prefers that over stool testing.\n- Shingrix #1 today, #2 in two to six months at a nurse visit.\n- Screening mammogram this fall.\n- Pap/HPV not due until 2026.\n- HTN controlled. BMP, CBC, lipids today.\n- Continue the flight routine: stockings, moving every hour or two, fluids.\nFollow-up in about six months."}
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-05-19T12:30",
+             "body": "Hi Paula, blood work is all normal again this year, including potassium and kidney numbers on your water pill. GI will call you to set up the colonoscopy. If you don't hear from them in two weeks let us know."},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "patient", "date": "2022-05-19T21:48",
+             "body": "Thanks! Also I felt pretty run down the day after the shingles shot, chills and a sore arm, all gone by the next evening. Is that normal and should I still get the second one?"},
+            {"type": "Patient Message", "title": "RE: Lab results", "author": "PCP", "date": "2022-05-20T08:10",
+             "body": "Very common with Shingrix and not a reason to skip the second dose. Plan the second one for a day when you have a quiet day after."}
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "nurse_visit",
+          "start": "2022-07-19T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-07-19T16:20"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-07-19T16:20"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Shingrix #2", "author": "RN", "date": "2022-07-19T16:35",
+             "body": "Second Shingrix dose, 9 weeks after the first. Had a day of chills after dose 1, aware it may happen again; she scheduled it before a weekend on purpose. Given IM left deltoid. Series complete. Watched in the waiting area 15 min without problems."}
+          ]
+        },
+        {
+          "id": "2022-07-27a",
+          "kind": "outside_records",
+          "start": "2022-07-27T10:45",
+          "procedures": [
+            {"procedure": "Colonoscopy, screening, average risk", "performed": "2022-07-21T07:30"}
+          ],
+          "orders": [
+            {"id": "gi-colonoscopy", "action": "done", "date": "2022-07-27T10:45"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2022-07-27T10:45",
+             "body": "Outpatient endoscopy center, procedure date 07/21/2022.\nIndication: screening, average risk, age 50.\nMedications on file: hydrochlorothiazide. Allergies: NKDA.\nSedation: monitored anesthesia care with propofol.\nPrep: split-dose; preparation excellent throughout.\nFindings: cecum reached and identified by the appendiceal orifice and ileocecal valve; withdrawal time 9 minutes. Mucosa normal throughout the colon. No polyps, masses or diverticula. Retroflexion in the rectum unremarkable.\nImpression: normal screening colonoscopy.\nRecommendation: next screening colonoscopy in 10 years.\n\nForwarded to referring PCP."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "imaging",
+          "start": "2022-09-13T08:10",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-09-13T08:10",
+             "text": "Digital screening mammography of both breasts with tomosynthesis. Compared with 09/2020. Scattered fibroglandular densities. No new or suspicious mass, distortion or calcification. Stable appearance.",
+             "conclusion": "BI-RADS 1: Negative."}
+          ],
+          "orders": [
+            {"id": "mammo-2022", "action": "done", "date": "2022-09-13T08:10"}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T17:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T17:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T17:16"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-18T17:15"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2022-10-18T17:30",
+             "body": "Flu (left arm) and Pfizer bivalent booster (right arm) together. Well today, no recent illness. Tolerated both, no reaction during observation."}
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "office_visit",
+          "start": "2022-11-29T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-11-29T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-11-29T08:20",
+             "body": "Six-month HTN check. Busy travel year, all fine. Home readings when she remembers are mid 120s/80. Takes HCTZ daily, no side effects. No chest pain, no breathing trouble, no leg swelling.\n\nExam: BP as recorded, fine. Heart and lungs normal. No edema.\n\nAssessment and plan: hypertension at goal, continue hydrochlorothiazide 25 mg. Colonoscopy normal in July, mammogram normal in September, vaccines current. Physical in May."}
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "pharmacy",
+          "start": "2023-03-21T09:35",
+          "documents": [
+            {"type": "Refill Request", "title": "Hydrochlorothiazide refill", "author": "RN", "date": "2023-03-21T09:35",
+             "body": "eRx renewal request from her mail-order pharmacy, hydrochlorothiazide 25 mg #90. Seen 11/2022, BP at goal, BMP normal 5/2022. Approved 90 days with 1 refill per refill protocol."}
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "annual_physical",
+          "start": "2023-05-23T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-05-23T07:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-23T07:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-05-23T07:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-05-23T07:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-05-23T08:15",
+             "body": "Annual. 51. Doing well, work steady, still on planes a lot. No health concerns today.\n\nMedications: hydrochlorothiazide 25 mg daily. Allergies: none to drugs.\nROS: denies exertional symptoms, dyspnea, leg swelling or pain, bleeding, weight change.\nHistory otherwise unchanged.\n\nExam: vitals reviewed. NAD. HEENT clear. Neck supple. Cardiac exam regular, no murmur. Lungs clear. Breast exam normal bilaterally. Abdomen soft. Extremities: no edema, calves nontender and equal. Skin without suspicious lesions.\n\nA/P\n1. Hypertension: controlled, continue HCTZ. BMP.\n2. Prevention: CBC and lipids. Mammogram next fall (every two years). Colonoscopy 2032. Pap/HPV 2026. Shingrix and Tdap complete. Flu and COVID in the fall.\n3. Remote DVT: no events. Flight precautions reviewed again.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2023-05-26a",
+          "kind": "portal_message",
+          "start": "2023-05-26T11:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Your results", "author": "PCP", "date": "2023-05-26T11:20",
+             "body": "All of this week's labs are normal: electrolytes, kidney function, blood counts and cholesterol. Keep doing what you're doing."}
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "portal_message",
+          "start": "2023-06-20T07:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Long flights next month", "author": "patient", "date": "2023-06-20T07:05",
+             "body": "Hi, I have a trip coming up with two 13-hour legs each way. My sister keeps telling me I should be on a baby aspirin or a shot for the flights because of my old clot. Do I need anything besides the stockings?"},
+            {"type": "Patient Message", "title": "RE: Long flights next month", "author": "PCP", "date": "2023-06-20T13:30",
+             "body": "Good question. For your situation I'd stick with what we've been doing rather than a medication: knee-high compression stockings, an aisle seat, walk every hour or two, calf exercises while seated, plenty of water and go easy on alcohol on the plane. Aspirin isn't the right tool for this. If you ever get one-sided leg swelling or pain, or sudden chest pain or shortness of breath, during or after a trip, get seen urgently and tell them your history. Safe travels."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Influenza and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T12:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T12:16"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-10T12:15"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "MA", "date": "2023-10-10T12:28",
+             "body": "Lunch-hour visit for flu and the 2023-24 COVID shot. No fever or illness. Flu L deltoid, COVID R deltoid. No issues while observed."}
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "office_visit",
+          "start": "2023-11-28T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hypertension follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "telephone",
+          "start": "2023-11-29T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2023-11-29T09:15",
+             "body": "Reached pt about yesterday's missed BP visit. Her flight home got delayed and she forgot to call. Very apologetic. Next few months are full of travel; booked 4/19/24 at 4:00. Enough HCTZ on hand per pt."}
+          ]
+        }
+      ]
+    }
+  ]
+}

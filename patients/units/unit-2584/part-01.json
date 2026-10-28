@@ -1,0 +1,134 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002584",
+      "given": "Eli",
+      "family": "Goldberg",
+      "birth_date": "1992-12-31",
+      "address_line": "27 Pochassic Street",
+      "phone": "+1-617-555-0191",
+      "email": "eli.goldberg@example.test",
+      "marital_status": "single",
+      "summary": "Young schoolteacher who joins in 2021 healthy apart from weekend binge drinking; PiZZ alpha-1 antitrypsin deficiency with panacinar emphysema is found in 2023 and treated with weekly augmentation. A compressive radial palsy after a drinking night leaves radial tunnel pain, and two ED visits for cocaine intoxication follow while he denies use.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T15:40",
+          "reason": "New patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2021-09-02T15:40",
+             "body": "Caller is a teacher in town, moved his care over from a practice he hasn't used in a few years. Wants a physical before the school year gets busy. No current meds per caller. Scheduled new patient physical 9/14 at 3:30 (after school). Membership paperwork and portal invite emailed. Asked him to bring any old records or vaccine card he has."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "Occupation", "value": "Schoolteacher"},
+            {"item": "History of alcohol use", "value": "Heavy episodic drinking on weekends"}
+          ],
+          "state": {"weight_kg": 66.0, "height_cm": 180.0, "bp": [114, 72]},
+          "measure": ["bp", "hr", "spo2", "temp_c", "rr", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 6},
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T16:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T16:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-14T16:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-14T16:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2021-09-14T16:10"}],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-09-14T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2021-09-14T17:05",
+             "body": "28-year-old man, middle school science teacher, new to us. Last saw a doctor several years ago for a sports physical type visit; no records coming. Feels well. Rides his bike to school most days when the weather allows, about 4 miles each way, no trouble with it.\n\nPMH: none. PSH: none. Meds: none, no supplements. Allergies: no known drug allergies.\n\nFamily: father was diagnosed with emphysema at 42, he had smoked. Mother has cirrhosis that her doctors never found a cause for; she does not drink. One sister, healthy as far as he knows.\n\nSocial: single, lives alone in an apartment in Westfield. Has never smoked or vaped. Alcohol: little or nothing on school nights, but most weekends 6-8 drinks on a night out, sometimes both nights. AUDIT-C 6. Denies marijuana or other drugs.\n\nROS: negative for cough, wheeze, exertional symptoms, GI symptoms, mood symptoms. PHQ-2 0.\n\nExam: slim, well appearing. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear, good air movement. Abdomen soft, no liver edge or spleen felt. Skin clear. Neuro grossly normal.\n\nA/P\n1. Preventive: Tdap today (no record of one as an adult). Screening labs: CBC, CMP, lipids, one-time HIV and hep C. Flu shot when the clinic gets its supply.\n2. Alcohol: talked about binge pattern and what counts as a standard drink. Suggested setting a weekend limit. He was receptive but feels it's mostly social. Revisit next year.\nRTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2021-09-17T12:10",
+             "body": "Hi Eli, everything from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to change. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T15:45",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T15:50"}],
+          "procedures": [{"procedure": "Office visit, established patient, straightforward MDM", "performed": "2021-10-19T15:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "RN", "date": "2021-10-19T15:58",
+             "body": "Here after school for flu vaccine. No fever today, no prior reactions. Given L deltoid, VIS provided. Waited 15 min without issue."}
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "portal_message",
+          "start": "2022-02-08T19:22",
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine record for school", "author": "patient", "date": "2022-02-08T19:22",
+             "body": "Hi, HR at the district is updating staff files and wants a printout of my vaccines. Can you post it on here? Thanks"},
+            {"type": "Patient Message", "title": "RE: Vaccine record for school", "author": "MA", "date": "2022-02-09T09:14",
+             "body": "Hi Eli, your immunization record is now under Documents in the portal. It shows the Tdap and flu shot we gave in the fall. If HR needs older vaccines, those would come from your previous doctor or the state registry."}
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "annual_physical",
+          "start": "2022-09-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "conditions": [{"label": "Alcohol use disorder", "icd10": "F10.10", "action": "diagnosed", "onset": "2022-09-20"}],
+          "state": {"weight_kg": 64.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 8},
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-09-20T16:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-20T16:15", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2022-09-20T15:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-09-20T16:50",
+             "body": "Annual visit. Feels fine physically. Started his second year at the middle school.\n\nAlcohol: this is the main thing. Weekend nights are now usually 8-10 drinks, sometimes starting Friday after work. He has tried twice this year to keep it to a few and ended up well past that. Called out sick one Monday in the spring after a long weekend and felt bad about it. A friend has said something to him. No morning drinking, no withdrawal shakes. AUDIT-C 8. Still denies other drugs.\n\nNo cough or wheeze. Still biking when he can. Weight down 2 kg from last year, he thinks from skipping meals on busy days.\n\nExam: thin, NAD. Heart RRR no murmur. Lungs clear. Abdomen soft, nontender, no hepatomegaly. No tremor.\n\nA/P\n1. Alcohol use disorder: drinking more than intended, failed attempts to cut down, missed work. Reviewed this directly with him. Offered a counselor referral and discussed that medication exists to help with cravings. He wants to try on his own first and does not want either right now. Agreed goal: no more than 4 drinks on any night, alcohol-free school nights. Will check in at visits.\n2. Health maintenance: CBC, CMP today. Flu shot next month, nurse visit.\nRTC 1 yr, sooner if he wants help with drinking."}
+          ]
+        },
+        {
+          "id": "2022-09-22a",
+          "kind": "portal_message",
+          "start": "2022-09-22T08:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2022-09-22T08:40",
+             "body": "Eli, your labs from the physical are all normal, including your liver tests. Door is open if you want to talk again about the drinking plan."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:40",
+          "reason": "Influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T15:45"}],
+          "procedures": [{"procedure": "Office visit, established patient, straightforward MDM", "performed": "2022-10-18T15:40"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "RN", "date": "2022-10-18T15:52",
+             "body": "Flu vaccine R deltoid. Tolerated well. Feels well today, afebrile by report."}
+          ]
+        }
+      ]
+    }
+  ]
+}

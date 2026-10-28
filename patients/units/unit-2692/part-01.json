@@ -1,0 +1,360 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002692",
+      "given": "Tamika",
+      "family": "Thompson",
+      "birth_date": "1970-01-03",
+      "address_line": "48 Larkspur Lane",
+      "phone": "+1-413-555-0142",
+      "email": "tamika.thompson@example.test",
+      "marital_status": "single",
+      "summary": "Office administrator who also works retail, a heavy smoker with diabetes, hypertension and mixed hyperlipidemia, who joins the practice in 2021. Over five years she is worked up for atypical glandular cells and found to have complex atypical endometrial hyperplasia (managed with a progestin IUD), then iron deficiency anemia, seropositive rheumatoid arthritis, diabetic macular edema and a hepatic adenoma, and in June 2026 presents to the ED with new heart failure with reduced ejection fraction.",
+      "events": [
+        {
+          "id": "2021-09-02a",
+          "kind": "telephone",
+          "start": "2021-09-02T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2021-09-02T10:20", "body": "Caller is looking for a new primary care doctor; her previous office closed its internal medicine side over the summer. Has diabetes, blood pressure and cholesterol, on three meds, about two weeks of pills left on one of them. Explained the membership model and that labs, imaging and specialists still run through her PPO. She wants to go ahead. New patient visit set for 9/14 at 8:40. Asked her to bring pill bottles and to sign a records release for the old office. Release form emailed."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:40",
+          "end": "2021-09-14T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; diabetes, hypertension, cholesterol",
+          "conditions": [
+            {"label": "Type 2 diabetes mellitus without complications", "action": "history", "onset": "2015-03-01"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2013-06-01"},
+            {"label": "Mixed hyperlipidemia", "action": "history", "onset": "2016-01-01"},
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2010-01-01"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "1988-01-01"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "type 2 diabetes"},
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "atorvastatin 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hyperlipidemia"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {
+            "bp": [142, 88],
+            "weight_kg": 92.0,
+            "height_cm": 168.0,
+            "labs": {"Hemoglobin A1c": 7.2, "Glucose": 148, "Triglycerides": 240, "High Density Lipoprotein": 41, "Low Density Lipoprotein": 102, "Hemoglobin": 12.4, "Creatinine": 0.92}
+          },
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-09-14T09:30", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2021-09-14T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2021-09-14T09:30", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-09-14T09:30", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": null, "collected": "2021-09-14T09:30", "results": [{"test": "Microalbumin/Creatinine Ratio", "value": 18}]},
+            {"panel": null, "collected": "2021-09-14T09:30", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2021-09-14T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "Former drinker"},
+            {"item": "Occupation", "value": "Office administrator; part-time retail associate"}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2021-09-14T08:40"}],
+          "orders": [
+            {"id": "mammo-2021", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging"},
+            {"id": "ldct-2021", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-09-14T09:45", "body": "51 y/o woman transferring care. Her prior internal medicine office stopped seeing adults this summer; records release signed, request sent.\n\nPMH (per patient, bottles reviewed):\n- Type 2 diabetes, about 6 years. Metformin 500 mg BID since diagnosis. Checks sugars rarely. Last A1c she remembers was \"around 7.\"\n- Hypertension, longer than the diabetes. Lisinopril 20 mg daily.\n- Cholesterol, high triglycerides. Atorvastatin 20 mg daily.\nPSH: none. Never pregnant.\nAllergies: none to medications.\nFH: mother has Alzheimer disease, diagnosed around 70; father with type 2 diabetes; a paternal aunt with rheumatoid arthritis.\nSH: lives alone in Amherst. Office administrator full time and picks up retail shifts most weekends. Smokes a pack a day, started at about 18, so roughly 33 pack-years. Used to have a glass of wine most nights, stopped a few years ago, none now. No drugs.\n\nROS: no chest pain, no dyspnea, no polyuria, no vision change, no numbness in the feet. Periods have been regular.\n\nExam: BP above goal (see vitals); repeated after rest, still elevated. Obese. Heart regular, no murmur. Lungs clear. Abdomen soft, non-tender, no organomegaly. No edema. Feet: skin intact, pulses 2+, monofilament normal both feet.\n\nA/P\n1. T2DM: continue metformin 500 BID. A1c, CMP, urine microalbumin today. Needs an eye exam; she has an optometrist and will book.\n2. HTN: above goal today on lisinopril 20. New office, first reading; she wants to cut back on salty food first. Recheck at next visit.\n3. Mixed hyperlipidemia: lipids today, continue atorvastatin 20.\n4. Tobacco: 33 pack-years. Advised quitting; she is not ready, says the cigarettes get her through the double shifts. Offered help whenever she wants it. Qualifies for lung screening; low-dose CT ordered after shared decision discussion.\n5. Obesity: BMI 32.4. Talked about walking at lunch.\n6. Health maintenance: hep C and HIV once today. Mammogram ordered. Colonoscopy never done, she wants to wait until after the holidays. Flu, COVID booster, pneumococcal and shingles at a nurse visit next month.\n\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2021-09-20a",
+          "kind": "portal_message",
+          "start": "2021-09-20T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2021-09-20T16:05", "body": "Hi Ms. Thompson, your labs are back. A1c is 7.2, a little above the 7 we aim for but close. Kidney function, liver tests and blood counts are normal and there's no protein in the urine. Triglycerides are high and the good cholesterol is low, which fits with the diabetes; the LDL is about where it was. Hep C and HIV screens negative. No medication changes for now. See you at the nurse visit for shots."}
+          ]
+        },
+        {
+          "id": "2021-10-05a",
+          "kind": "nurse_visit",
+          "start": "2021-10-05T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-05T07:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-10-05T07:57"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-10-05T07:59"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2021-10-05T08:01"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-05T07:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunizations", "author": "RN", "date": "2021-10-05T08:15", "body": "In before work for four vaccines. Flu L deltoid, Pfizer booster R deltoid, PCV20 L deltoid (separate site), Shingrix #1 R deltoid lower. VIS given. Tolerated well, observed 15 min. Told her Shingrix can make her feel rundown for a day. Dose 2 due in 2-6 months, she'll schedule. BP rechecked per PCP request, logged."}
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "imaging",
+          "start": "2021-10-26T11:30",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2021-10-26T11:30", "text": "Bilateral screening mammogram with tomosynthesis. No prior studies available. Breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or calcifications in either breast. Skin and nipples normal.", "conclusion": "BI-RADS 1, negative. Annual screening recommended."}
+          ],
+          "orders": [{"id": "mammo-2021", "action": "done", "date": "2021-10-26T11:30"}]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "imaging",
+          "start": "2021-11-09T13:15",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2021-11-09T13:15", "text": "Indication: lung cancer screening, current smoker, approximately 33 pack-years. Technique: low-dose helical CT of the chest without contrast. No prior. Lungs: no pulmonary nodules. No consolidation or effusion. Airways patent. Heart size normal. No coronary calcification evident at this dose. Mediastinum and hila unremarkable. Visualized upper abdomen unremarkable.", "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2021", "action": "done", "date": "2021-11-09T13:15"}]
+        },
+        {
+          "id": "2021-12-07a",
+          "kind": "outside_records",
+          "start": "2021-12-07T09:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry diabetic eye exam", "author": "optometry", "date": "2021-12-07T09:00", "body": "Diabetic eye examination report. Date of exam: 11/30/2021. Patient: Tamika Thompson. Dilated fundus exam both eyes. Best corrected vision 20/20 right, 20/25 left. Pressures normal. Lens clear. Optic nerves healthy. Macula flat both eyes. No hemorrhages, microaneurysms or exudates. Impression: no diabetic retinopathy. Recommend repeat dilated exam in one year. New glasses prescription given."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "telehealth_visit",
+          "start": "2022-01-11T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and blood pressure follow-up",
+          "state": {"labs": {"Hemoglobin A1c": 7.3}},
+          "labs": [
+            {"panel": null, "collected": "2022-01-07T07:40", "results": [{"test": "Hemoglobin A1c", "value": 7.3}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-01-07T07:40", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2022-01-11T12:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Follow-up", "author": "PCP", "date": "2022-01-11T12:40", "body": "Video visit from her car on lunch break. Identity verified.\nDM: A1c 7.3 from last week, essentially unchanged. Taking metformin twice a day most days, sometimes forgets the evening dose after a retail shift. No lows.\nHTN: no home cuff. Says she has cut back on chips at her desk. Will bring readings once she buys a cuff; recheck in office.\nSmoking: still a pack a day. Not ready.\nBMP normal.\nPlan: no change. Office visit in spring with vitals. Shingrix #2 scheduled 1/25. Colonoscopy referral offered again, she'll call after tax season at work."}
+          ]
+        },
+        {
+          "id": "2022-01-25a",
+          "kind": "nurse_visit",
+          "start": "2022-01-25T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "measure": ["bp"],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2022-01-25T07:50"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-01-25T07:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Shingrix #2", "author": "RN", "date": "2022-01-25T08:00", "body": "Shingrix #2, L deltoid. First dose gave her a sore arm and chills the next day, she took the day after off this time just in case. Series complete. BP taken, logged."}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heavy irregular periods",
+          "state": {"weight_kg": 91.4},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-10T16:00"}],
+          "orders": [{"id": "pap-2022", "action": "placed", "order": "Cervical cytology (Pap) with HPV", "category": "lab"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-05-10T17:05", "body": "S: Since around December her periods have been unpredictable: sometimes two in a month, sometimes skipping, and when they come they're heavy, soaking through a pad every couple of hours on the worst days. Also a sense of pressure low in the pelvis. Over the past year before that her cycles were already irregular. No bleeding after sex. Never pregnant. Not on any hormones. Some tiredness but she blames the two jobs.\nMeds: metformin 500 BID, lisinopril 20, atorvastatin 20.\n\nO: Vitals as charted. Abdomen obese, soft, non-tender, no mass felt. Speculum: cervix appears normal, small amount of dark blood in the vault. Pap with HPV collected; she has never had an abnormal Pap that she knows of, last one was years ago.\n\nA/P: Abnormal uterine bleeding at 52, likely perimenopausal anovulation but needs the endometrium evaluated given her age, weight and diabetes. Pap and HPV today. Referring to gynecology for evaluation including endometrial sampling; will make it urgent if the Pap comes back abnormal. Pad count and bleeding calendar until she's seen. Call for very heavy bleeding or lightheadedness."}
+          ]
+        },
+        {
+          "id": "2022-05-16a",
+          "kind": "telephone",
+          "start": "2022-05-16T12:10",
+          "reason": "abnormal Pap result",
+          "conditions": [{"label": "Abnormal cervical Papanicolaou smear", "action": "diagnosed", "onset": "2022-05-10"}],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-05-10T16:30", "issued": "2022-05-15T14:00", "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: epithelial cell abnormality, glandular. Atypical glandular cells, not otherwise specified (AGC-NOS). High-risk HPV: not detected.", "conclusion": "Atypical glandular cells (AGC-NOS); high-risk HPV negative. Colposcopy with endocervical and endometrial sampling recommended per guidelines."}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-05-10T16:30", "results": [{"test": "High-risk HPV DNA", "text": "Not detected"}]}
+          ],
+          "orders": [
+            {"id": "pap-2022", "action": "done", "date": "2022-05-15T14:00"},
+            {"id": "gyn-referral", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "atypical glandular cells on Pap, abnormal uterine bleeding"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Result call - Pap", "author": "PCP", "date": "2022-05-16T12:25", "body": "Called pt with Pap result: atypical glandular cells, HPV negative. Explained this means some cells from the glandular lining look unusual and need a closer look, at her age including the lining of the uterus, which also fits with the bleeding. Not a cancer diagnosis. Urgent gynecology referral placed today; our referral coordinator will call the office directly. She was anxious but appreciated hearing it from me. Questions answered."},
+            {"type": "Referral", "title": "Gynecology referral", "author": "PCP", "date": "2022-05-16T12:40", "body": "Urgent referral. 52 y/o nulligravida with 5 months of irregular heavy bleeding and pelvic pressure, background of anovulatory cycles. Pap 5/10/22: AGC-NOS, hrHPV negative. T2DM on metformin, HTN, obesity, smoker. Requesting colposcopy and endometrial evaluation. NKDA."}
+          ]
+        },
+        {
+          "id": "2022-06-01a",
+          "kind": "specialist_visit",
+          "start": "2022-06-01T09:30",
+          "service": "Gynecology",
+          "reason": "AGC Pap, heavy irregular bleeding",
+          "state": {"labs": {"Hemoglobin": 11.2, "Platelets": 250}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-06-01T09:20", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Platelets", "value": 250}]},
+            {"panel": null, "collected": "2022-06-01T09:20", "results": [{"test": "Fasting Glucose", "value": 162}]}
+          ],
+          "procedures": [
+            {"procedure": "Colposcopy of cervix", "snomed": "392003006", "performed": "2022-06-01T10:00"},
+            {"procedure": "Endometrial biopsy", "snomed": "386802000", "performed": "2022-06-01T10:15"}
+          ],
+          "orders": [{"id": "gyn-referral", "action": "done", "date": "2022-06-01T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology Consultation", "author": "gynecology", "date": "2022-06-06T15:00", "body": "Outside gynecology group\nDate of service: 06/01/2022\nRe: Tamika Thompson, DOB 01/03/1970\n\nThank you for sending Ms. Thompson. She describes six months of irregular, heavy menstrual bleeding with a feeling of pressure in the pelvis. G0. She believes she has not ovulated regularly for the past year, with cycles that wander. No postcoital bleeding.\n\nHistory: type 2 diabetes, hypertension, dyslipidemia. No surgeries. Medications: metformin 500 mg twice daily, lisinopril 20 mg daily, atorvastatin 20 mg daily. No known drug allergies. Family: mother with Alzheimer disease, father with diabetes, paternal aunt with rheumatoid arthritis. Smokes 1 ppd; does not drink currently; works in an office and in retail.\n\nExam: obese abdomen, non-tender. External genitalia normal. Cervix without lesions. Bimanual: uterus enlarged and smooth, mobile, non-tender; no adnexal masses.\n\nLabs today: hemoglobin 11.2, platelets 250, fasting glucose 162.\n\nProcedures today: colposcopy, satisfactory, no acetowhite lesions; endocervical curettage obtained. Endometrial pipelle biopsy, adequate tissue, tolerated well.\n\nImpression: AGC Pap with abnormal uterine bleeding in a 52-year-old with obesity, diabetes and chronic anovulation. Pathology pending; I will call her with results and write again.\n\nPlan: mild anemia noted, primary care to follow. Bleeding precautions."}
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "outside_records",
+          "start": "2022-06-13T10:30",
+          "conditions": [{"label": "Complex atypical endometrial hyperplasia", "icd10": "N85.02", "action": "diagnosed", "onset": "2022-06-01"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2022-06-01T10:15", "issued": "2022-06-08T11:00", "text": "Specimens: A. Endocervical curettage. B. Endometrium, biopsy.\nGross: A. Scant tan mucoid fragments, 0.3 cm aggregate. B. Multiple red-tan soft tissue fragments, 1.6 cm aggregate.\nMicroscopic: A. Benign endocervical glandular epithelium and mucus; no dysplasia. B. Crowded, back-to-back endometrial glands with complex architecture and cytologic atypia (enlarged rounded nuclei, loss of polarity, prominent nucleoli). No stromal invasion identified in this sample.", "conclusion": "A. Endocervical curettage: benign, negative for dysplasia or malignancy. B. Endometrium: complex atypical hyperplasia (endometrial intraepithelial neoplasia). Carcinoma not identified; sampling limitations noted."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Gynecology - pathology and plan", "author": "gynecology", "date": "2022-06-13T10:30", "body": "Gynecology follow-up letter, re: Tamika Thompson. Biopsy from 06/01/2022 shows complex atypical hyperplasia of the endometrium; the endocervical sample was benign, so the atypical glandular cells on her Pap most likely came from the endometrium. I reviewed this with her by phone on 06/09. I recommended total hysterectomy as definitive treatment given the risk of a coexisting or future cancer. She does not want surgery and prefers hormonal treatment, understanding it requires repeat biopsies and that hysterectomy remains an option. Plan: levonorgestrel 52 mg IUD, repeat endometrial biopsy in about 6 months, weight loss encouraged. Pathology report enclosed."},
+            {"type": "Telephone Encounter", "title": "Pathology reviewed", "author": "PCP", "date": "2022-06-13T13:10", "body": "Reviewed gyn letter and path: complex atypical hyperplasia, ECC benign. She chose progestin IUD over hysterectomy. Added to problem list. Called pt to check in; she is OK, scheduled for IUD in early July. Reminded her to keep the biopsy follow-ups."}
+          ]
+        },
+        {
+          "id": "2022-07-06a",
+          "kind": "specialist_visit",
+          "start": "2022-07-06T14:00",
+          "service": "Gynecology",
+          "reason": "IUD placement",
+          "medications": [
+            {"drug": "levonorgestrel 0.000833 MG/HR Intrauterine System", "action": "start", "sig": "Levonorgestrel 52 mg intrauterine system, placed in office", "frequency": "CONTINUOUS", "route": "Intrauterine", "course": "chronic", "reason": "complex atypical endometrial hyperplasia"}
+          ],
+          "procedures": [{"procedure": "Intrauterine device insertion", "performed": "2022-07-06T14:20"}]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "pharmacy",
+          "start": "2022-08-16T09:10",
+          "documents": [
+            {"type": "Medication Refill", "title": "Refill request", "author": "MA", "date": "2022-08-16T09:10", "body": "Electronic refill request from pharmacy for atorvastatin 20 mg and lisinopril 20 mg, 90 days each. Last seen 5/22. Sent per protocol, 1 refill each. Pt due for diabetes follow-up, message left to schedule."}
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "portal_message",
+          "start": "2022-09-06T21:40",
+          "orders": [
+            {"id": "cbc-2022-09", "action": "placed", "order": "CBC with Differential", "category": "lab"},
+            {"id": "iron-2022-09", "action": "placed", "order": "Iron Studies", "category": "lab"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Tired all the time", "author": "patient", "date": "2022-09-06T21:40", "body": "Hi, I've been really wiped out for about 3 months now and I get winded going up the stairs at work, which never used to happen. I have the gyn thing going on, they put the IUD in July and the bleeding is finally slowing down. Can I get in?"},
+            {"type": "Patient Message", "title": "RE: Tired all the time", "author": "PCP", "date": "2022-09-07T08:15", "body": "Thanks for writing. With all that bleeding I want to check your blood count and iron. I've put in the orders; please stop by the lab before work Thursday and I'll see you Monday 9/12 at 4:20. If you get chest pain, or you're short of breath at rest, go to the ER instead of waiting."}
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "lab_only",
+          "start": "2022-09-08T07:30",
+          "state": {"labs": {"Hemoglobin": 9.8, "Mean Corpuscular Volume": 74, "Ferritin": 15, "Transferrin Saturation": 15}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-08T07:30", "results": [{"test": "Hemoglobin", "value": 9.8}, {"test": "Mean Corpuscular Volume", "value": 74}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Iron Studies", "collected": "2022-09-08T07:30", "results": [{"test": "Ferritin", "value": 15}, {"test": "Transferrin Saturation", "value": 15}]}
+          ],
+          "orders": [
+            {"id": "cbc-2022-09", "action": "done", "date": "2022-09-08T07:30"},
+            {"id": "iron-2022-09", "action": "done", "date": "2022-09-08T07:30"}
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "office_visit",
+          "start": "2022-09-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue and shortness of breath on exertion",
+          "conditions": [{"label": "Iron deficiency anemia", "icd10": "D50.0", "action": "diagnosed", "onset": "2022-06-01"}],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily with orange juice, apart from other medicines", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "iron deficiency anemia"}
+          ],
+          "state": {"bp": [142, 88], "weight_kg": 90.3, "labs": {"Hemoglobin A1c": 7.3}},
+          "vitals": {"bp": [142, 88], "hr": 88, "weight_kg": 90.3},
+          "measure": ["rr", "temp_c", "spo2"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-09-12T16:20"}],
+          "orders": [{"id": "colo-2022", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "screening colonoscopy, never screened; iron deficiency"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-09-12T17:20", "body": "S: About 3 months of fatigue and getting short of breath with exertion, mainly stairs at the office and carrying stock at the store. No chest pain, no palpitations, no leg swelling. No orthopnea. Since the June gyn workup (complex atypical hyperplasia on biopsy) she had a levonorgestrel IUD placed July 6 by gynecology; we didn't get a note on that, she tells me bleeding has tapered to light spotting.\n\nO: BP 142/88, HR 88. BMI 32. Pale conjunctivae. Heart regular, no murmur. Lungs clear, no crackles or wheezes. No edema.\nLabs 9/8: Hgb 9.8 (11.2 at gyn in June), MCV 74, ferritin 15, transferrin saturation 15%.\n\nA/P\n1. Iron deficiency anemia, microcytic, from months of heavy menstrual loss; Hgb has fallen since June. Explains the fatigue and exertional dyspnea. Ferrous sulfate 325 mg daily, take with vitamin C, separate from other pills, expect dark stools and some constipation. Recheck CBC in 3 months. Bleeding is now controlled by the IUD.\n2. She has never had colon cancer screening and is iron deficient; GI referral for colonoscopy.\n3. Endometrial hyperplasia: on LNG-IUD with gyn, repeat biopsy due around January. Requested the IUD procedure note from gyn.\n4. HTN: 142/88 again. Continue lisinopril 20.\n5. DM: continue metformin.\n6. Still smoking 1 ppd. Not interested in quitting yet.\n\nRTC after colonoscopy / CBC in December."}
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "nurse_visit",
+          "start": "2022-10-11T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-11T07:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-11T07:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-11T07:50"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Flu/COVID", "author": "RN", "date": "2022-10-11T08:00", "body": "Flu L arm, bivalent booster R arm. No reactions after last year's doses other than a sore arm. Tolerated. Taking iron daily, some constipation, advised fluids and fiber."}
+          ]
+        },
+        {
+          "id": "2022-10-28a",
+          "kind": "outside_records",
+          "start": "2022-10-28T11:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Optometry diabetic eye exam", "author": "optometry", "date": "2022-10-28T11:00", "body": "Annual diabetic eye examination. Exam date 10/24/2022. Dilated exam OU. Vision with correction 20/20 OD, 20/25 OS, stable. IOP within normal limits. Discs pink and sharp. Maculae flat, no exudates, no hemorrhages. Impression: no diabetic retinopathy. Return one year."}
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T15:10",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2022-11-08T15:10", "text": "Bilateral screening mammogram with tomosynthesis compared with 10/26/2021. Scattered fibroglandular density. No new mass, distortion or suspicious calcification. Stable appearance.", "conclusion": "BI-RADS 1, negative. Return in one year."}
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "procedure_visit",
+          "start": "2022-11-17T08:00",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy",
+          "procedures": [{"procedure": "Colonoscopy, screening, average risk", "performed": "2022-11-17T08:30"}],
+          "orders": [{"id": "colo-2022", "action": "done", "date": "2022-11-17T08:30"}],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy Report", "author": "gastroenterology", "date": "2022-11-17T09:15", "body": "Outside endoscopy center. Indication: first screening colonoscopy, age 52; iron deficiency anemia attributed to menorrhagia. Sedation: monitored anesthesia care. Prep: good. Cecal landmarks photographed; the terminal ileum was briefly entered and looked normal. Withdrawal time 9 minutes. Colonic mucosa normal throughout; no polyps, no masses, no blood. Small internal hemorrhoids on retroflexion. No biopsies. Impression: normal colonoscopy. No GI source for the anemia found. Recommendation: next screening colonoscopy in 10 years."}
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "imaging",
+          "start": "2022-12-06T12:40",
+          "service": "Radiology",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-12-06T12:40", "text": "Annual low-dose lung screening, compared with 11/09/2021. No pulmonary nodules. Lungs clear, no emphysema. Normal heart size. No adenopathy.", "conclusion": "Lung-RADS 1, negative. Continue annual screening."}
+          ]
+        },
+        {
+          "id": "2022-12-13a",
+          "kind": "lab_only",
+          "start": "2022-12-13T07:35",
+          "state": {"labs": {"Hemoglobin": 11.1, "Mean Corpuscular Volume": 79}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-13T07:35", "results": [{"test": "Hemoglobin", "value": 11.1}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "CBC result", "author": "PCP", "date": "2022-12-13T15:30", "body": "Hgb 11.1, up from 9.8 in September, MCV improving. Iron is working and the IUD has the bleeding controlled. Colonoscopy normal in November. Continue ferrous sulfate; recheck CBC and ferritin with physical labs in February. Portal message sent."}
+          ]
+        }
+      ]
+    }
+  ]
+}

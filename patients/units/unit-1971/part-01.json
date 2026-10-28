@@ -1,0 +1,228 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001971",
+      "given": "Steven",
+      "family": "Wilder",
+      "birth_date": "1973-11-05",
+      "address_line": "118 Leyden Road",
+      "phone": "+1-774-555-0105",
+      "email": "steven.wilder@example.test",
+      "marital_status": "divorced",
+      "summary": "Automotive parts manager in his early fifties with GERD, hypertension above goal on amlodipine 5 mg and obesity, who joined the practice in 2024. In May 2026 he ruptured his esophagus after vomiting following a large meal and alcohol and had a thoracotomy repair; the practice saw him once afterward and raised his amlodipine.",
+      "events": [
+        {
+          "id": "2024-08-28a",
+          "kind": "telephone",
+          "start": "2024-08-28T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2024-08-28T10:20", "body": "Mr. Wilder phoned about moving his primary care to us. Says his old office keeps rescheduling him and he wants someone he can actually reach. Reviewed the membership and how insurance still works for labs and specialists. Booked a new-patient visit 9/10 at 8:40. Release form emailed so we can pull his old chart. Asked him to bring his pill bottles."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:40",
+          "end": "2024-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; reflux and blood pressure",
+          "conditions": [
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "history", "onset": "2016-06-01", "note": "years of heartburn, controlled on omeprazole"},
+            {"label": "Essential hypertension", "action": "history", "onset": "2019-03-01"},
+            {"label": "Obesity, unspecified", "action": "history", "onset": "2015-01-01", "note": "BMI 31"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2022-01-01", "note": "quit 2022, 15 pack-years"}
+          ],
+          "medications": [
+            {"drug": "omeprazole 20 MG Delayed Release Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth daily before breakfast", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "GERD"},
+            {"drug": "amlodipine 5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "started by prior physician"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "moderate", "criticality": "low", "type": "allergy"},
+            {"substance": "Latex", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"bp": [142, 88], "weight_kg": 98.0, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 5.4}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T09:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T09:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-10T09:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-10T09:35", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2024-09-10T09:35", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-09-10T09:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Heavy episodic drinking, 5-6 drinks on weekends and holidays"},
+            {"item": "Occupation", "value": "Automotive parts manager"}
+          ],
+          "procedures": [
+            {"procedure": "Inguinal hernia repair", "performed": "2018-04-01T08:00"},
+            {"procedure": "Tonsillectomy", "performed": "1982-06-01T08:00"},
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-09-10T08:40"},
+            {"procedure": "Venipuncture", "performed": "2024-09-10T09:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2024-09-10T09:40", "body": "NEW PATIENT\n\n50 yo man transferring from another primary care office. Main issues are reflux and blood pressure.\n\nReflux: heartburn for years, worse with big dinners and beer. Omeprazole 20 every morning keeps it quiet; misses a dose and he knows it. No trouble swallowing, no food sticking, no vomiting, no black stools, no weight loss.\n\nBP: on amlodipine 5 for about five years. Doesn't check at home. No headaches, no ankle swelling on it.\n\nAlso takes a baby aspirin daily - a prior doctor started it, he isn't sure why. Nothing else, no supplements.\n\nAllergies: sulfa antibiotics gave him a rash. Latex gloves - itchy red rash where they touch, so he wears nitrile at work.\n\nSurgeries: inguinal hernia repair at 44; tonsils out as a kid.\n\nFamily: dad had high blood pressure and a heart attack at 65. Mom has reflux and type 2 diabetes, she is 78. Older brother has a drinking problem.\n\nSocial: manages the parts counter at a car dealership, on his feet most of the day. Divorced, lives alone. Smoked about a pack a day for 15 years, quit two years ago, no relapse. Alcohol: none most weeknights, but 5-6 drinks on weekend nights and holidays. Knows it doesn't help the reflux. No drugs.\n\nROS otherwise negative.\n\nExam: BP and weight as charted, BMI about 31. Comfortable. Oropharynx clear. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed hernia incision, no recurrent bulge. No leg swelling. Skin unremarkable.\n\nAssessment/Plan\n1. GERD - controlled on omeprazole 20 daily. Continue. Smaller evening meals, nothing within three hours of bed, cut back on the weekend drinking.\n2. Hypertension - above goal today on amlodipine 5. He has never checked at home. Asked him to buy an upper-arm cuff and send me two weeks of morning readings before we touch the dose.\n3. Obesity - BMI 31. Talked about portion size and walking after work.\n4. Former smoker - 15 pack-years, below the threshold for lung screening.\n5. Alcohol - weekend binge pattern. Recommended no more than 4 on any day; he'll think about it.\n6. Aspirin - continuing what he was on for now.\n7. Health maintenance - CMP, CBC, lipids, A1c, one-time hepatitis C and HIV today. Old records requested for colonoscopy and vaccine dates. PHQ-2 negative.\n\nFollow-up in 3-4 months or after he sends readings."}
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2024-09-12T16:05", "body": "Hi Steven - your bloodwork from Tuesday looks good. Kidney and liver tests are normal, blood counts normal, A1c is in the normal range, and cholesterol is fine. Hepatitis C and HIV screens were both negative. Still waiting on those home blood pressure numbers whenever you have two weeks' worth."}
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "outside_records",
+          "start": "2024-09-26T13:30",
+          "procedures": [
+            {"procedure": "Colonoscopy, screening, average risk", "performed": "2024-01-18T09:00"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-05-07T10:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2024-09-26T13:30", "body": "Records from the patient's previous family medicine office, 2019-2024, 46 pages.\n\nProblem list carried there: gastroesophageal reflux, essential hypertension, obesity, former tobacco use.\nMedications: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics (rash), latex (contact dermatitis).\n\nScreening colonoscopy 01/18/2024 at age 50: complete exam, no polyps, good prep. Ten-year interval advised.\nTetanus-diphtheria-pertussis booster 05/2019.\nOffice blood pressures in the file run in the high 130s to mid 140s systolic on amlodipine 5 mg.\n\nFiled to chart. PCP reviewed: nothing new; colonoscopy and Tdap entered."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T07:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T07:57"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-10-08T07:59"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T07:55"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2024-10-08T08:05", "body": "In before work for shots. Screening questions negative, no egg or vaccine reactions in the past. Latex-free gloves used. Flu L deltoid, COVID R deltoid, Shingrix #1 L deltoid lower. Tolerated well, waited 15 min. Told him the shingles shot can make him feel achy for a day. Second Shingrix due Feb. BP repeated on cuff as charted - he still hasn't bought a home monitor, reminded him."}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T11:12",
+          "documents": [
+            {"type": "Refill Request", "title": "Amlodipine Refill", "author": "MA", "date": "2024-12-03T11:12", "body": "Pharmacy request: amlodipine 5 mg #90 with 1 refill. Last seen 9/10, active med. Sent to PCP queue. Approved and transmitted 12/3."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "nurse_visit",
+          "start": "2025-02-11T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "second shingles vaccine",
+          "measure": ["bp", "hr", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-02-11T07:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-02-11T07:52"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Shingrix #2", "author": "RN", "date": "2025-02-11T08:00", "body": "Shingrix dose 2 given R deltoid, latex-free supplies. After dose 1 he had a sore arm and felt run down one evening. Series now complete. BP still above goal on recheck; he admits the home cuff is in the box. Physical booked for April, PCP will address."}
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "portal_message",
+          "start": "2025-03-04T21:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2025-03-04T21:40", "body": "Can I get the omeprazole sent to the drugstore by the shop instead of the old one? Down to like 4 pills."},
+            {"type": "Patient Message", "title": "RE: Refill", "author": "MA", "date": "2025-03-05T08:30", "body": "Done - omeprazole 20 mg, 90 days with a refill, went to the new pharmacy at 8:25. Old pharmacy removed from your profile."}
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "annual_physical",
+          "start": "2025-04-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"bp": [140, 88]},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-04-22T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-04-22T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2025-04-22T08:50", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 6}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2025-04-22T08:45"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-04-22T08:00"},
+            {"procedure": "Immunization administration", "performed": "2025-04-22T08:45"},
+            {"procedure": "Venipuncture", "performed": "2025-04-22T08:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-04-22T08:55", "body": "PHYSICAL\n\nFeels fine. Reflux quiet on daily omeprazole - only flares after a heavy weekend. No dysphagia, no vomiting.\n\nBP: never got the home cuff going. No symptoms.\n\nAlcohol: AUDIT-C 6. Still the same weekend pattern, 5-6 beers Friday and Saturday, more around holidays. Doesn't drink during the week. Doesn't feel it's a problem; aware of his brother's history. PHQ-2 0.\n\nStill not smoking.\n\nExam: vitals as charted. Well appearing, BMI about 31. HEENT normal. Neck no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Hernia site intact. Extremities no edema, pulses good. Skin: no suspicious moles on a full look.\n\nA/P\n- HTN: above goal again. With no home numbers I'm going to give him one more stretch with real changes - halve the weekend drinking, walk 30 minutes most days, less salt from takeout - and recheck at the fall visit. Amlodipine 5 for now.\n- GERD: continue omeprazole 20. Same advice on late meals and alcohol.\n- Alcohol: counseled on the binge pattern and what it does to reflux and BP. He'll try to cap at 3. Handout given.\n- Obesity: weight stable. Same plan.\n- Prevention: PCV20 today. Colonoscopy current (2024). Shingrix done. Flu and COVID again in the fall.\n- Labs: CMP, lipids, A1c drawn.\n\nFollow-up in about 4 months for BP."}
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "portal_message",
+          "start": "2025-04-24T12:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs", "author": "PCP", "date": "2025-04-24T12:15", "body": "Steven - everything from the physical is normal: liver and kidney tests, cholesterol and sugar. Your liver numbers are a good sign but don't count as permission for the weekends. See you in August for the blood pressure."}
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "telephone",
+          "start": "2025-08-13T09:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Reschedule", "author": "front desk", "date": "2025-08-13T09:05", "body": "Pt called about yesterday's cancellation - inventory audit at the dealership ran late, couldn't get away. August is bad for him all month. Rebooked BP follow-up for 11/20 at 7:40, first slot of the day per his request."}
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "measure": ["bp", "hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-21T07:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-21T07:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-21T07:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Fall Vaccines", "author": "RN", "date": "2025-10-21T07:55", "body": "Seasonal flu L arm and this year's COVID booster R arm. No problems with last year's doses besides a sore arm. Latex-free. Observed 15 minutes, fine. He has his BP visit with the doctor next month."}
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "office_visit",
+          "start": "2025-11-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up reflux and blood pressure",
+          "state": {"bp": [145, 90]},
+          "vitals": {"bp": [145, 90]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-11-20T07:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-11-20T08:05", "body": "Follow-up, GERD and HTN.\n\nReflux under control on omeprazole 20 daily. No swallowing trouble, no vomiting, no bleeding. Still drinking on weekends, \"a little less.\"\n\nNo home BP readings. No headache, chest pain or swelling of the legs.\n\nMeds: omeprazole 20, amlodipine 5, aspirin 81. Allergies: sulfa, latex.\n\nExam: BP 145/90. Weight unchanged, BMI 31. Comfortable, no distress. Heart regular. Lungs clear with good air movement both bases. Abdomen soft, nontender. No edema.\n\nA/P\n1. GERD - stable, continue omeprazole.\n2. HTN - 145/90 on amlodipine 5.\n3. Obesity - unchanged.\n\nRTC for physical in the spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

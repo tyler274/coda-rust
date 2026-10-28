@@ -1,0 +1,1619 @@
+{
+  "unit": "unit-1971",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001971",
+      "given": "Steven",
+      "family": "Wilder",
+      "birth_date": "1973-11-05",
+      "address_line": "118 Leyden Road",
+      "phone": "+1-774-555-0105",
+      "email": "steven.wilder@example.test",
+      "marital_status": "divorced",
+      "summary": "Automotive parts manager in his early fifties with GERD, hypertension above goal on amlodipine 5 mg and obesity, who joined the practice in 2024. In May 2026 he ruptured his esophagus after vomiting following a large meal and alcohol and had a thoracotomy repair; the practice saw him once afterward and raised his amlodipine.",
+      "events": [
+        {
+          "id": "2024-08-28a",
+          "kind": "telephone",
+          "start": "2024-08-28T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2024-08-28T10:20",
+              "author": "front desk",
+              "body": "Mr. Wilder phoned about moving his primary care to us. Says his old office keeps rescheduling him and he wants someone he can actually reach. Reviewed the membership and how insurance still works for labs and specialists. Booked a new-patient visit 9/10 at 8:40. Release form emailed so we can pull his old chart. Asked him to bring his pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:40",
+          "end": "2024-09-10T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; reflux and blood pressure",
+          "conditions": [
+            {
+              "label": "Gastroesophageal reflux disease without esophagitis",
+              "action": "history",
+              "onset": "2016-06-01",
+              "note": "years of heartburn, controlled on omeprazole"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2019-03-01"
+            },
+            {
+              "label": "Obesity, unspecified",
+              "action": "history",
+              "onset": "2015-01-01",
+              "note": "BMI 31"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2022-01-01",
+              "note": "quit 2022, 15 pack-years"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "omeprazole 20 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "GERD"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "started by prior physician"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "moderate",
+              "criticality": "low",
+              "type": "allergy"
+            },
+            {
+              "substance": "Latex",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              143,
+              84
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 97.8,
+            "height_cm": 177.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T09:35",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 107
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T09:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T09:35",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:35",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:35",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:35",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Heavy episodic drinking, 5-6 drinks on weekends and holidays"
+            },
+            {
+              "item": "Occupation",
+              "value": "Automotive parts manager"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Inguinal hernia repair",
+              "performed": "2018-04-01T08:00"
+            },
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "1982-06-01T08:00"
+            },
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-10T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-10T09:40",
+              "author": "PCP",
+              "body": "NEW PATIENT\n\n50 yo man transferring from another primary care office. Main issues are reflux and blood pressure.\n\nReflux: heartburn for years, worse with big dinners and beer. Omeprazole 20 every morning keeps it quiet; misses a dose and he knows it. No trouble swallowing, no food sticking, no vomiting, no black stools, no weight loss.\n\nBP: on amlodipine 5 for about five years. Doesn't check at home. No headaches, no ankle swelling on it.\n\nAlso takes a baby aspirin daily - a prior doctor started it, he isn't sure why. Nothing else, no supplements.\n\nAllergies: sulfa antibiotics gave him a rash. Latex gloves - itchy red rash where they touch, so he wears nitrile at work.\n\nSurgeries: inguinal hernia repair at 44; tonsils out as a kid.\n\nFamily: dad had high blood pressure and a heart attack at 65. Mom has reflux and type 2 diabetes, she is 78. Older brother has a drinking problem.\n\nSocial: manages the parts counter at a car dealership, on his feet most of the day. Divorced, lives alone. Smoked about a pack a day for 15 years, quit two years ago, no relapse. Alcohol: none most weeknights, but 5-6 drinks on weekend nights and holidays. Knows it doesn't help the reflux. No drugs.\n\nROS otherwise negative.\n\nExam: BP and weight as charted, BMI about 31. Comfortable. Oropharynx clear. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed hernia incision, no recurrent bulge. No leg swelling. Skin unremarkable.\n\nAssessment/Plan\n1. GERD - controlled on omeprazole 20 daily. Continue. Smaller evening meals, nothing within three hours of bed, cut back on the weekend drinking.\n2. Hypertension - above goal today on amlodipine 5. He has never checked at home. Asked him to buy an upper-arm cuff and send me two weeks of morning readings before we touch the dose.\n3. Obesity - BMI 31. Talked about portion size and walking after work.\n4. Former smoker - 15 pack-years, below the threshold for lung screening.\n5. Alcohol - weekend binge pattern. Recommended no more than 4 on any day; he'll think about it.\n6. Aspirin - continuing what he was on for now.\n7. Health maintenance - CMP, CBC, lipids, A1c, one-time hepatitis C and HIV today. Old records requested for colonoscopy and vaccine dates. PHQ-2 negative.\n\nFollow-up in 3-4 months or after he sends readings."
+            }
+          ],
+          "state": {
+            "bp": [
+              142,
+              88
+            ],
+            "weight_kg": 98.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2024-09-12T16:05",
+              "author": "PCP",
+              "body": "Hi Steven - your bloodwork from Tuesday looks good. Kidney and liver tests are normal, blood counts normal, A1c is in the normal range, and cholesterol is fine. Hepatitis C and HIV screens were both negative. Still waiting on those home blood pressure numbers whenever you have two weeks' worth."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "outside_records",
+          "start": "2024-09-26T13:30",
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, screening, average risk",
+              "performed": "2024-01-18T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-05-07T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2024-09-26T13:30",
+              "author": "outside primary care",
+              "body": "Records from the patient's previous family medicine office, 2019-2024, 46 pages.\n\nProblem list carried there: gastroesophageal reflux, essential hypertension, obesity, former tobacco use.\nMedications: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics (rash), latex (contact dermatitis).\n\nScreening colonoscopy 01/18/2024 at age 50: complete exam, no polyps, good prep. Ten-year interval advised.\nTetanus-diphtheria-pertussis booster 05/2019.\nOffice blood pressures in the file run in the high 130s to mid 140s systolic on amlodipine 5 mg.\n\nFiled to chart. PCP reviewed: nothing new; colonoscopy and Tdap entered."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "bp": [
+              137,
+              88
+            ],
+            "hr": 70
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T07:57"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-10-08T07:59"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2024-10-08T08:05",
+              "author": "RN",
+              "body": "In before work for shots. Screening questions negative, no egg or vaccine reactions in the past. Latex-free gloves used. Flu L deltoid, COVID R deltoid, Shingrix #1 L deltoid lower. Tolerated well, waited 15 min. Told him the shingles shot can make him feel achy for a day. Second Shingrix due Feb. BP repeated on cuff as charted - he still hasn't bought a home monitor, reminded him."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "pharmacy",
+          "start": "2024-12-03T11:12",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Amlodipine Refill",
+              "date": "2024-12-03T11:12",
+              "author": "MA",
+              "body": "Pharmacy request: amlodipine 5 mg #90 with 1 refill. Last seen 9/10, active med. Sent to PCP queue. Approved and transmitted 12/3."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "nurse_visit",
+          "start": "2025-02-11T07:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "second shingles vaccine",
+          "vitals": {
+            "bp": [
+              151,
+              86
+            ],
+            "hr": 66,
+            "weight_kg": 97.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-11T07:52"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-11T07:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Shingrix #2",
+              "date": "2025-02-11T08:00",
+              "author": "RN",
+              "body": "Shingrix dose 2 given R deltoid, latex-free supplies. After dose 1 he had a sore arm and felt run down one evening. Series now complete. BP still above goal on recheck; he admits the home cuff is in the box. Physical booked for April, PCP will address."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-04a",
+          "kind": "portal_message",
+          "start": "2025-03-04T21:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill",
+              "date": "2025-03-04T21:40",
+              "author": "patient",
+              "body": "Can I get the omeprazole sent to the drugstore by the shop instead of the old one? Down to like 4 pills."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill",
+              "date": "2025-03-05T08:30",
+              "author": "MA",
+              "body": "Done - omeprazole 20 mg, 90 days with a refill, went to the new pharmacy at 8:25. Old pharmacy removed from your profile."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "annual_physical",
+          "start": "2025-04-22T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              139,
+              91
+            ],
+            "hr": 68,
+            "temp_c": 36.5,
+            "spo2": 99,
+            "weight_kg": 98.1
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-22T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-22T08:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-22T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2025-04-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-04-22T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-22T08:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-04-22T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-04-22T08:55",
+              "author": "PCP",
+              "body": "PHYSICAL\n\nFeels fine. Reflux quiet on daily omeprazole - only flares after a heavy weekend. No dysphagia, no vomiting.\n\nBP: never got the home cuff going. No symptoms.\n\nAlcohol: AUDIT-C 6. Still the same weekend pattern, 5-6 beers Friday and Saturday, more around holidays. Doesn't drink during the week. Doesn't feel it's a problem; aware of his brother's history. PHQ-2 0.\n\nStill not smoking.\n\nExam: vitals as charted. Well appearing, BMI about 31. HEENT normal. Neck no nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Hernia site intact. Extremities no edema, pulses good. Skin: no suspicious moles on a full look.\n\nA/P\n- HTN: above goal again. With no home numbers I'm going to give him one more stretch with real changes - halve the weekend drinking, walk 30 minutes most days, less salt from takeout - and recheck at the fall visit. Amlodipine 5 for now.\n- GERD: continue omeprazole 20. Same advice on late meals and alcohol.\n- Alcohol: counseled on the binge pattern and what it does to reflux and BP. He'll try to cap at 3. Handout given.\n- Obesity: weight stable. Same plan.\n- Prevention: PCV20 today. Colonoscopy current (2024). Shingrix done. Flu and COVID again in the fall.\n- Labs: CMP, lipids, A1c drawn.\n\nFollow-up in about 4 months for BP."
+            }
+          ],
+          "state": {
+            "bp": [
+              140,
+              88
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "portal_message",
+          "start": "2025-04-24T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-04-24T12:15",
+              "author": "PCP",
+              "body": "Steven - everything from the physical is normal: liver and kidney tests, cholesterol and sugar. Your liver numbers are a good sign but don't count as permission for the weekends. See you in August for the blood pressure."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-12a",
+          "kind": "office_visit",
+          "start": "2025-08-12T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-08-13a",
+          "kind": "telephone",
+          "start": "2025-08-13T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Reschedule",
+              "date": "2025-08-13T09:05",
+              "author": "front desk",
+              "body": "Pt called about yesterday's cancellation - inventory audit at the dealership ran late, couldn't get away. August is bad for him all month. Rebooked BP follow-up for 11/20 at 7:40, first slot of the day per his request."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "vitals": {
+            "bp": [
+              145,
+              85
+            ],
+            "hr": 78
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T07:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T07:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T07:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Fall Vaccines",
+              "date": "2025-10-21T07:55",
+              "author": "RN",
+              "body": "Seasonal flu L arm and this year's COVID booster R arm. No problems with last year's doses besides a sore arm. Latex-free. Observed 15 minutes, fine. He has his BP visit with the doctor next month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "office_visit",
+          "start": "2025-11-20T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up reflux and blood pressure",
+          "vitals": {
+            "bp": [
+              145,
+              90
+            ],
+            "hr": 76,
+            "spo2": 98,
+            "weight_kg": 97.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-11-20T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-11-20T08:05",
+              "author": "PCP",
+              "body": "Follow-up, GERD and HTN.\n\nReflux under control on omeprazole 20 daily. No swallowing trouble, no vomiting, no bleeding. Still drinking on weekends, \"a little less.\"\n\nNo home BP readings. No headache, chest pain or swelling of the legs.\n\nMeds: omeprazole 20, amlodipine 5, aspirin 81. Allergies: sulfa, latex.\n\nExam: BP 145/90. Weight unchanged, BMI 31. Comfortable, no distress. Heart regular. Lungs clear with good air movement both bases. Abdomen soft, nontender. No edema.\n\nA/P\n1. GERD - stable, continue omeprazole.\n2. HTN - 145/90 on amlodipine 5.\n3. Obesity - unchanged.\n\nRTC for physical in the spring."
+            }
+          ],
+          "state": {
+            "bp": [
+              145,
+              90
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T14:02",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Omeprazole Refill",
+              "date": "2026-01-13T14:02",
+              "author": "MA",
+              "body": "Electronic request for omeprazole 20 mg capsules, 90-day supply. Seen 11/20, on list. Approved by PCP, sent with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T19:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-03-10T19:25",
+              "author": "patient",
+              "body": "Got the reminder for my physical. Spring is our busiest stretch at the parts counter, can I push it to the summer? I'll call when things calm down."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-03-11T09:10",
+              "author": "front desk",
+              "body": "No problem, we'll keep a note on your file. Call or message us when you're ready and we'll find an early morning."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "ed_visit",
+          "start": "2026-05-12T02:35",
+          "end": "2026-05-12T07:10",
+          "service": "Emergency Medicine",
+          "reason": "chest pain and shortness of breath after vomiting",
+          "vitals": [
+            {
+              "time": "2026-05-12T02:40",
+              "bp": [
+                150,
+                90
+              ],
+              "hr": 110,
+              "temp_c": 37.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T02:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T02:55",
+              "results": [
+                {
+                  "test": "Amylase, serum",
+                  "loinc": "1798-8",
+                  "unit": "U/L",
+                  "value": 90
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T03:05",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.45
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 32
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-05-12T03:00",
+              "text": "Portable AP upright chest. Large left pleural effusion. Lucency tracking along the mediastinal borders consistent with pneumomediastinum. Right lung clear. No pneumothorax on the right. Heart size difficult to assess with the effusion.",
+              "conclusion": "Large left pleural effusion and pneumomediastinum."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-05-12T04:10",
+              "text": "CT of the chest after oral water-soluble contrast and IV contrast. Oral contrast extravasates from the distal esophagus into the left pleural space. Pneumomediastinum. Large left pleural effusion with compressive atelectasis of the adjacent lung. Right lung clear. No pericardial effusion. Aorta normal in caliber.",
+              "conclusion": "Distal esophageal perforation with contrast leak into the left pleural space, pneumomediastinum and large left pleural effusion.",
+              "issued": "2026-05-12T04:45"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-05-12T02:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Record",
+              "title": "Emergency Department Record",
+              "date": "2026-05-14T10:40",
+              "author": "emergency medicine",
+              "body": "EMERGENCY DEPARTMENT PHYSICIAN RECORD\nArrival 05/12/2026 02:35 by ambulance.\n\nHPI: 52 M with reflux and hypertension. Ate a large late dinner with several drinks, then retched and vomited forcefully several times. Right after, abrupt sharp chest pain boring through to his back and trouble catching his breath.\n\nPMH: GERD, HTN, obesity. PSH: inguinal hernia repair, tonsillectomy.\nMeds: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics (rash); latex (contact dermatitis).\nSocial: former smoker, weekend heavy drinking.\n\nTriage: BP 150/90, HR 110, T 37.8 C.\nExam: diaphoretic and in obvious distress. Breath sounds reduced over the left chest. Crepitus palpable above the left clavicle. Heart tachycardic, regular. Abdomen soft.\n\nLabs: WBC 18.0, Hgb 13.5, Plt 250. Serum amylase 90 (ref 30-110). ABG: pH 7.45, pCO2 32, pO2 60, HCO3 24.\nPortable chest film: large left effusion, pneumomediastinum.\nCT chest with oral contrast: leak from the distal esophagus into the left pleural space.\n\nMDM: spontaneous esophageal perforation after emesis (Boerhaave picture). NPO, IV fluids, IV analgesia, supplemental oxygen, broad IV antibiotics and antifungal started (no sulfa agents). Thoracic surgery at bedside; left chest tube placed by surgery in the department.\n\nDisposition: admitted to thoracic surgery, critical.\n\nFaxed to primary care 05/14."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12b",
+          "kind": "hospital_admission",
+          "start": "2026-05-12T07:10",
+          "end": "2026-05-23T11:30",
+          "service": "Thoracic Surgery",
+          "reason": "esophageal perforation",
+          "conditions": [
+            {
+              "label": "Esophageal rupture with pleural effusion",
+              "action": "diagnosed",
+              "onset": "2026-05-12",
+              "icd10": "K22.3"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "piperacillin 4000 MG / tazobactam 500 MG Injection",
+              "action": "start",
+              "sig": "4.5 g IV every 8 hours",
+              "dose": {
+                "value": 4.5,
+                "unit": "g"
+              },
+              "frequency": "Q8H",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "esophageal perforation"
+            },
+            {
+              "drug_text": "200 ML fluconazole 2 MG/ML Injection",
+              "action": "start",
+              "sig": "400 mg IV daily",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "esophageal perforation"
+            },
+            {
+              "drug": "acetaminophen 325 MG / oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain. Dispense 20.",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-05-12T07:30",
+              "bp": [
+                145,
+                90
+              ]
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-12T06:20",
+              "results": [
+                {
+                  "test": "Amylase, pleural fluid",
+                  "loinc": "1796-2",
+                  "unit": "U/L",
+                  "value": 3000
+                },
+                {
+                  "test": "pH of Pleural fluid",
+                  "loinc": "2750-8",
+                  "unit": "[pH]",
+                  "value": 6.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-05-12T07:45",
+              "results": [
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 21
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T07:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-05-12T07:20",
+              "text": "Portable AP chest after left chest tube placement. Widened mediastinal silhouette. Left pleural effusion. Left chest tube in place. No pneumothorax.",
+              "conclusion": "Mediastinal widening and left pleural effusion; chest tube in position."
+            },
+            {
+              "study": "Esophagram",
+              "loinc": "24678-5",
+              "performed": "2026-05-19T10:00",
+              "text": "Water-soluble oral contrast followed by thin barium. Contrast passes freely through the esophagus into the stomach. No extraluminal contrast at the repair or elsewhere. Normal esophageal caliber.",
+              "conclusion": "No leak after repair of distal esophageal perforation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Insertion of pleural tube drain",
+              "snomed": "264957007",
+              "performed": "2026-05-12T05:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-05-12T07:30"
+            },
+            {
+              "procedure": "Repair of rupture of esophagus",
+              "snomed": "173605003",
+              "performed": "2026-05-12T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-05-23T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Thoracic Surgery Discharge Summary",
+              "date": "2026-06-26T15:20",
+              "author": "thoracic surgery",
+              "body": "THORACIC SURGERY - DISCHARGE SUMMARY\nAdmitted 05/12/2026, discharged 05/23/2026.\n\nDiagnosis: spontaneous rupture of the distal esophagus with left pleural effusion.\n\nPresentation: came through our ED after forceful vomiting that followed a heavy meal with alcohol; sharp chest pain into the back and dyspnea. On our evaluation he was distressed, breathing fast with a fast pulse, with poor air entry in the left lower chest and subcutaneous air in the neck. BP 145/90. WBC 18.0, Hgb 13.5, BUN 21, creatinine 1.0. Chest tube drainage: pleural fluid amylase 3000 IU/L, pleural fluid pH 6.0. Post-tube film: wide mediastinum, left effusion. CT with oral contrast had shown the leak into the left chest.\n\nHospital course: left chest tube placed in the ED. Taken to the OR the evening of 05/12 for left thoracotomy, primary repair of the distal esophageal tear, pleural washout and drainage - latex-free room. NPO with NG decompression. Piperacillin-tazobactam 4.5 g IV q8h and fluconazole 400 mg IV daily; sulfa allergy noted. Aspirin held. Esophagram 05/19: no leak. NG out, clear liquids, then soft diet tolerated. Chest tubes removed. Walking the halls, pain controlled on oral medication.\n\nDischarge medications: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily (resume), oxycodone-acetaminophen 5/325 one tab q6h prn pain, #20.\nAllergies: sulfonamide antibiotics, latex.\n\nInstructions: soft diet until clinic review, no alcohol, no lifting over 10 lb for six weeks, keep incision dry. Thoracic surgery clinic in about two weeks. See primary care.\n\nReceived by fax 06/26/2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "portal_message",
+          "start": "2026-05-26T13:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital",
+              "date": "2026-05-26T13:50",
+              "author": "patient",
+              "body": "Wanted you to know I was in the hospital almost two weeks. Threw up hard after a big dinner and drinks and it tore my esophagus. They opened my chest on the left side and sewed it up. Home since Saturday. They said see my regular doctor. Can I get an appointment? I'm out of work for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital",
+              "date": "2026-05-26T15:30",
+              "author": "PCP",
+              "body": "Steven, I'm glad you messaged and that you're home. We have the ER record from the 12th but nothing from the surgical team yet - I've asked for the discharge summary. Our nurse will call you tomorrow to go over your medicines, and the front desk will set up a visit after your surgery check."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "telephone",
+          "start": "2026-05-27T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2026-05-27T10:15",
+              "author": "RN",
+              "body": "Called pt 4 days after discharge. Reports incision is clean, no drainage, no fever. Eating soft foods, swallowing OK. Pain manageable, using the oxycodone tablets about twice a day. Taking omeprazole, amlodipine and aspirin as before - read the labels to me. No alcohol since. Has surgical clinic 6/9. Discharge summary still not received; second request faxed to the hospital. Visit with PCP booked 6/18 at 8:00. Told to call for fever, worsening chest pain, trouble swallowing or shortness of breath."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "specialist_visit",
+          "start": "2026-06-09T13:30",
+          "service": "Thoracic Surgery",
+          "reason": "postoperative visit",
+          "vitals": {
+            "bp": [
+              155,
+              95
+            ],
+            "hr": 66,
+            "spo2": 98
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2026-06-09T13:10",
+              "text": "PA and lateral chest. Postoperative changes of left thoracotomy. Left lung expanded. No pleural effusion. No pneumothorax. Mediastinum normal width. Heart size normal.",
+              "conclusion": "Expected postoperative changes; left lung expanded."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Thoracic Surgery Postoperative Visit",
+              "date": "2026-07-21T09:05",
+              "author": "thoracic surgery",
+              "body": "THORACIC SURGERY CLINIC\nDate of visit: 06/09/2026\n\nMr. Wilder returns 2.5 weeks after left thoracotomy and primary repair of a distal esophageal rupture. Eating soft foods without difficulty swallowing. Stopped the oxycodone last week. No fever. No alcohol.\n\nMedications: omeprazole 20 mg daily, amlodipine 5 mg daily, aspirin 81 mg daily.\nAllergies: sulfonamide antibiotics, latex.\n\nExam: well, comfortable. Thoracotomy incision healing well, no erythema, no drainage. Former tube sites closed. Breath sounds equal.\n\nChest film today: left lung expanded, postoperative changes only.\n\nPlan: advance to a regular diet as tolerated. Continue to avoid alcohol. Lifting restriction through six weeks. Return to clinic in three months.\n\ncc: primary care\n(Letter received 07/21/2026.)"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "office_visit",
+          "start": "2026-06-18T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization",
+          "medications": [
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "dose increased"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              146,
+              90
+            ],
+            "hr": 73,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 94.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-18T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 220
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.89
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-18T08:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-18T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-18T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Follow-up",
+              "date": "2026-06-18T08:50",
+              "author": "PCP",
+              "body": "Follow-up after hospitalization.\n\nAdmitted 5/12-5/23 to thoracic surgery for a ruptured esophagus after forceful vomiting (big dinner, alcohol). We have the ED record; the discharge summary still hasn't come despite two requests, so the hospital course below is from Steven and his discharge paperwork: left chest tube, left thoracotomy and repair the same night, IV antibiotics and antifungal, a swallow study that showed no leak, then soft diet and home. Saw the surgeon 6/9 - told him it's healing well and he can move toward a regular diet.\n\nToday: feels tired but better each week. Eating soft and some regular food, no trouble swallowing, no heartburn on omeprazole. Mild incisional soreness, off the pain pills. No fever, no cough, breathing comfortable on stairs. Has not had a drink since 5/11.\n\nAlcohol: AUDIT-C 6 for the past year (his usual weekends before this). Told him plainly the drinking was part of what put him on the operating table. He says he plans to stay off it at least until the surgeon's 3-month check; open to talking about it again. PHQ-2 0, mood OK, frustrated about being out of work.\n\nMeds: omeprazole 20 daily, amlodipine 5 daily, aspirin 81 daily.\nAllergies: sulfonamide antibiotics, latex.\n\nExam: BP 146/90. Weight 94 kg, about 4 kg under his usual before the admission. Tired-appearing but comfortable. Left thoracotomy incision well healed, no redness or drainage; tube sites closed. No crepitus in the neck. Lungs clear, equal breath sounds both sides. Heart regular. Abdomen soft. No leg swelling.\n\nA/P\n1. Esophageal rupture with left pleural effusion, s/p thoracotomy repair 5/12 - recovering as expected. Problem list updated. Diet per surgery. CBC and BMP today after the admission.\n2. HTN - above goal at every visit here. Increasing amlodipine to 10 mg daily; stop the 5s. Watch for ankle swelling.\n3. GERD - continue omeprazole 20.\n4. Alcohol - counseled as above; revisit at next visit.\n5. Will look for the discharge summary when it arrives.\n\nRTC in 3 months for BP."
+            }
+          ],
+          "state": {
+            "bp": [
+              146,
+              90
+            ],
+            "weight_kg": 94.0
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "portal_message",
+          "start": "2026-06-19T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-06-19T11:40",
+              "author": "PCP",
+              "body": "Your blood count and kidney/electrolyte tests from yesterday are back to normal. Good news after everything. Start the 10 mg amlodipine when you pick it up, one a day, and let me know about any ankle swelling."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "pharmacy",
+          "start": "2026-07-16T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Amlodipine 10 mg Refill",
+              "date": "2026-07-16T09:20",
+              "author": "MA",
+              "body": "Pharmacy asking for a 90-day supply of amlodipine 10 mg (started 6/18 as a 30-day fill). On the current list. PCP approved 90 days with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September appointment",
+              "date": "2026-08-11T20:05",
+              "author": "patient",
+              "body": "Back at work part time. Just checking I'm still on for September 17. No swelling on the new pill."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September appointment",
+              "date": "2026-08-12T08:15",
+              "author": "front desk",
+              "body": "Yes, you're set for 9/17 at 7:40. We can do your flu shot that morning too."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "office_visit",
+          "start": "2026-09-17T07:40",
+          "reason": "blood pressure follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Esophageal rupture with pleural effusion|K22.3": {
+        "code": "K22.3",
+        "display": "Perforation of esophagus",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "200 ML fluconazole 2 MG/ML Injection": {
+        "code": "1721314",
+        "display": "200 ML fluconazole 2 MG/ML Injection",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "piperacillin 4000 MG / tazobactam 500 MG Injection": {
+        "code": "1659149",
+        "display": "piperacillin 4000 MG / tazobactam 500 MG Injection",
+        "ingredient": "piperacillin",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Amylase, pleural fluid": {
+        "code": "1796-2",
+        "display": "Amylase [Enzymatic activity/volume] in Pleural fluid",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Amylase, serum": {
+        "code": "1798-8",
+        "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Pleural fluid": {
+        "code": "2750-8",
+        "display": "pH of Pleural fluid",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Esophagram": {
+        "code": "24678-5",
+        "display": "RF Esophagus Views W contrast PO",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Insertion of pleural tube drain": {
+        "code": "264957007",
+        "display": "Insertion of pleural tube drain",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Repair of rupture of esophagus": {
+        "code": "173605003",
+        "display": "Repair of rupture of esophagus",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

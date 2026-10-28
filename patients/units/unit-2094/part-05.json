@@ -1,0 +1,313 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002094",
+      "events": [
+        {
+          "id": "2024-02-15a",
+          "kind": "hospital_admission",
+          "start": "2024-02-15T18:20",
+          "end": "2024-02-17T14:00",
+          "service": "Nephrology",
+          "reason": "malaise, headache, decreased urine output",
+          "conditions": [
+            {"label": "Calcineurin inhibitor nephrotoxicity", "icd10": "N14.19", "action": "diagnosed", "onset": "2024-02-15", "note": "Tacrolimus level 25 ng/mL"}
+          ],
+          "vitals": [
+            {"time": "2024-02-15T18:30", "bp": [162, 98]}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-15T19:00", "results": [{"test": "Creatinine", "value": 2.8}, {"test": "Blood Urea Nitrogen", "value": 44}, {"test": "Potassium", "value": 5.2}, {"test": "Sodium"}]},
+            {"panel": null, "collected": "2024-02-15T19:00", "results": [{"test": "Tacrolimus trough", "loinc": "11253-2", "unit": "ng/mL", "value": 25}]},
+            {"panel": "Urinalysis", "collected": "2024-02-15T19:20", "results": [{"test": "Urine Specific Gravity", "value": 1.03}, {"test": "Urine Protein", "text": "Negative"}, {"test": "Urine White Blood Cells", "value": 0}, {"test": "Urine Red Blood Cells", "value": 0}]},
+            {"panel": null, "collected": "2024-02-17T06:00", "results": [{"test": "Creatinine", "value": 2.0}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-02-15T18:20"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Consultation", "author": "nephrology", "date": "2024-02-20T08:30", "body": "COMMUNITY HOSPITAL, NEPHROLOGY CONSULT SERVICE (ED)\nDate: 02/15/2024\nAsked by the ED to see this 58-year-old man, liver transplant 09/2022 on tacrolimus, mycophenolate and prednisone, with a remote perforated duodenal ulcer repair. Two days of feeling unwell with headache and passing less urine. He says he takes his tacrolimus exactly as prescribed, 2 mg twice daily.\nAllergies: NKDA.\nBP 162/98. Mild edema of both lower legs. Otherwise unremarkable.\nCreatinine 2.8 mg/dL (his baseline 1.0). BUN 44. Potassium 5.2. Tacrolimus level 25 ng/mL against a target of 5 to 15. Urinalysis: specific gravity 1.030, protein negative, no cells.\nImpression: acute kidney injury from calcineurin inhibitor nephrotoxicity, with a supratherapeutic tacrolimus level. Bland, concentrated urine fits a hemodynamic, vasoconstrictive effect.\nRecommendations: hold tacrolimus and recheck the level daily; gentle IV fluids; avoid nephrotoxins and contrast; resume per transplant hepatology once the level is back in range. Discussed with the transplant center."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "hospital medicine", "date": "2024-02-20T08:40", "body": "COMMUNITY HOSPITAL\nAdmitted 02/15/2024, discharged 02/17/2024.\nDiagnosis: calcineurin inhibitor nephrotoxicity with tacrolimus level 25 ng/mL.\nCourse: tacrolimus held on arrival. Urine output picked up overnight with IV fluids. Headache settled. In consultation with the transplant center, tacrolimus was restarted at 2 mg twice daily on 02/17 after the level returned to range. Creatinine 2.0 on the day of discharge.\nAllergies: NKDA.\nDischarge medications: tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed.\nFollow-up: BMP and tacrolimus level in 10 days through PCP or transplant clinic; PCP visit within 2 weeks."}
+          ]
+        },
+        {
+          "id": "2024-02-28a",
+          "kind": "office_visit",
+          "start": "2024-02-28T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after kidney injury",
+          "state": {"weight_kg": 83.0, "labs": {"Creatinine": 1.25}},
+          "vitals": {"bp": [128, 80]},
+          "measure": ["hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-28T07:10", "results": [{"test": "Creatinine", "value": 1.3}, {"test": "Potassium", "value": 4.6}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": null, "collected": "2024-02-28T07:10", "results": [{"test": "Tacrolimus trough", "loinc": "11253-2", "unit": "ng/mL", "value": 8.6}]}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2024-02-28T09:30"},
+            {"procedure": "Venipuncture", "performed": "2024-02-28T07:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2024-02-28T09:30", "body": "Seen after 2/15-2/17 admission for tacrolimus nephrotoxicity (level 25, Cr 2.8 from 1.0). Nephrology note and discharge summary reviewed.\nS: Feels back to normal. Peeing normally, headaches gone, ankles no longer puffy. Took a 12-hour trough this morning before coming in. Still on 2 mg BID per transplant. No new meds, no OTC pain relievers, no grapefruit.\nO: BP 128/80. No edema. Heart and lungs normal.\nResults this morning: creatinine 1.3, potassium 4.6, tacrolimus 8.6.\nA/P:\n- Calcineurin inhibitor nephrotoxicity: much improved, creatinine not quite back to old baseline. Faxed results to transplant clinic, who will manage dosing. Recheck creatinine at next visit.\n- BP normal today off any agent.\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "office_visit",
+          "start": "2024-05-22T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-05-22b",
+          "kind": "telephone",
+          "start": "2024-05-22T16:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-05-22T16:30", "body": "Called re: missed 2 pm appt. Pt apologized, was out on a sea trial with a customer and lost track of time. Rebooked for 6/11 at 3:20."}
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "state": {"weight_kg": 83.6},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-06-11T15:55", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-11T15:20"},
+            {"procedure": "Venipuncture", "performed": "2024-06-11T15:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-06-11T15:20", "body": "S: Busy season, feels well. Transplant clinic saw him in April, no changes. No urinary issues, no swelling. Wears a long-sleeve sun shirt and a hat on the water now.\nO: vitals as charted, BP fine. No edema.\nA/P:\n- CNI nephrotoxicity: creatinine recheck today.\n- Liver transplant, hep C, history of HCC: per transplant center.\n- GERD: rare PRN calcium carbonate.\nPhysical in the fall."}
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Kidney test", "author": "PCP", "date": "2024-06-12T12:40", "body": "Robert, creatinine is about 1.2, which looks like your new steady level since the February episode. Potassium fine. Nothing to change. I've sent a copy to the transplant team."}
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "outside_records",
+          "start": "2024-08-23T09:30",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant Clinic Letter", "author": "transplant hepatology", "date": "2024-08-23T09:30", "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 08/21/2024\nNearly two years after liver transplantation. Since the February admission for tacrolimus nephrotoxicity his troughs have stayed in range on 2 mg twice daily and his creatinine has settled around 1.2. Graft function is stable. No change to mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily or trimethoprim-sulfamethoxazole prophylaxis.\nAllergies: NKDA.\nNext visit 6 months. Please continue yearly inactivated influenza and COVID vaccines."}
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "annual_physical",
+          "start": "2024-10-03T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-03T09:10", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-03T09:10", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-03T09:10", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-03T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-03T09:02"}
+          ],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-10-03T08:30"},
+            {"procedure": "Immunization administration", "performed": "2024-10-03T09:00"},
+            {"procedure": "Venipuncture", "performed": "2024-10-03T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-10-03T08:30", "body": "59M, two years post liver transplant.\nUpdates: no hospital stays since February. Working full days through the boat season, hauling boats out this month. Sober since 2016. Sleep and mood good.\nMeds/allergies reviewed and reconciled with the transplant clinic letter of 8/21. NKDA.\nScreening: colonoscopy 2021 normal. Vaccines: flu and 2024-25 COVID today. Others complete.\nExam: well. Anicteric. Heart RRR, lungs clear. Abdomen soft, scars healed. Skin check: no concerning lesions. No edema.\nA/P: stable. CMP, CBC, lipids today. Next visit spring."}
+          ]
+        },
+        {
+          "id": "2025-03-07a",
+          "kind": "hospital_admission",
+          "start": "2025-03-07T21:15",
+          "end": "2025-03-19T12:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "septic shock from pneumonia",
+          "conditions": [
+            {"label": "Pneumonia, unspecified organism", "icd10": "J18.9", "action": "diagnosed", "onset": "2025-03-07"},
+            {"label": "Severe sepsis with septic shock", "icd10": "R65.21", "action": "diagnosed", "onset": "2025-03-07"},
+            {"label": "Central diabetes insipidus", "action": "diagnosed", "onset": "2025-03-07", "note": "Inadequately controlled during septic shock; responded to vasopressin"}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-03-07T23:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "ICU and Hospital Discharge Summary", "author": "pulmonary and critical care", "date": "2025-03-21T10:00", "body": "REGIONAL MEDICAL CENTER, MEDICAL ICU\nAdmitted: 03/07/2025  Discharged: 03/19/2025\nPrincipal diagnosis: septic shock secondary to pneumonia.\nSecondary: central diabetes insipidus, inadequately controlled during the acute illness.\nBackground: 59-year-old man with chronic hepatitis C, prior hepatocellular carcinoma, liver transplant 09/2022 on tacrolimus, mycophenolate and prednisone; earlier tacrolimus nephrotoxicity (02/2024) and perforated duodenal ulcer repair (12/2022).\nCourse: admitted to the ICU from the ED with pneumonia and shock. He received high-volume IV fluids and broad-spectrum IV antibiotics. Over the first two days his pressure stayed low despite resuscitation and he became increasingly drowsy and confused, so norepinephrine was begun. Urine output remained over 4 liters a day even while he was hypotensive. Vasopressin was added; within about 12 hours nursing recorded a clear fall in urine output and he was noticeably less thirsty, consistent with central diabetes insipidus. He was fed enterally for several days with electrolytes replaced as needed. Exam during the stay showed no edema or JVD, unremarkable heart and lung sounds and no focal neurological deficit.\nPressors were weaned off by day 6, mental status cleared, and he finished his antibiotic course on the ward. At discharge urine output and serum sodium were normal without desmopressin.\nImmunosuppression: managed with the transplant center throughout; discharged on his usual doses.\nAllergies: NKDA.\nDischarge medications: tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed.\nFollow-up: PCP within 1 to 2 weeks; transplant clinic 2 weeks. Return for fever, cough, breathlessness, confusion, or heavy urination with thirst."}
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-26T11:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge follow-up",
+          "conditions": [
+            {"label": "Pneumonia, unspecified organism", "icd10": "J18.9", "action": "resolved"},
+            {"label": "Severe sepsis with septic shock", "icd10": "R65.21", "action": "resolved"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2025-03-26T11:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit, Post-Discharge", "author": "PCP", "date": "2025-03-26T11:30", "body": "Video, pt at home, consents. One week home after 3/7-3/19 ICU stay for septic shock from pneumonia; new label of central DI during the stay. Discharge summary reviewed.\nS: Weak, sleeping a lot, but eating. Cough mostly gone. No fever. Peeing a normal amount, not unusually thirsty. A neighbor is driving him to appointments. Transplant clinic visit set for next week.\nObs: looks tired, speaking full sentences, no distress on video.\nA/P:\n- Pneumonia with septic shock, treated: resolved, recovering.\n- Central diabetes insipidus: no polyuria or thirst off any treatment; recheck sodium at in-person visit; call for heavy urination.\n- Immunosuppression per transplant.\nIn-person visit in about 4 weeks. Call or ER for fever, shortness of breath or confusion."}
+          ]
+        },
+        {
+          "id": "2025-04-04a",
+          "kind": "hospital_admission",
+          "start": "2025-04-04T15:40",
+          "end": "2025-04-29T13:00",
+          "service": "Pulmonary and Critical Care",
+          "reason": "recurrent septic shock from pneumonia, respiratory failure",
+          "conditions": [
+            {"label": "Pneumonia, unspecified organism", "icd10": "J18.9", "action": "diagnosed", "onset": "2025-04-04"},
+            {"label": "Severe sepsis with septic shock", "icd10": "R65.21", "action": "diagnosed", "onset": "2025-04-04"},
+            {"label": "Acute respiratory distress syndrome", "icd10": "J80", "action": "diagnosed", "onset": "2025-04-04", "note": "Refractory hypoxemia on mechanical ventilation"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-04-07T10:30", "resulted": "2025-04-10T09:00", "results": [
+              {"test": "Bacteria identified in Bronchoalveolar lavage by Culture", "loinc": "105917-9", "text": "No growth"},
+              {"test": "Pneumocystis jirovecii DNA in Bronchoalveolar lavage", "loinc": "105613-4", "text": "Not detected"},
+              {"test": "Galactomannan Ag in Bronchoalveolar lavage", "loinc": "115626-4", "text": "Negative"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Chest X-ray, 1 view", "performed": "2025-04-06T05:30", "text": "Portable AP chest, supine. Endotracheal tube and enteric tube in standard position. Right internal jugular central line, tip at the cavoatrial junction. Bilateral patchy airspace opacities. Heart size normal. No pneumothorax.", "conclusion": "Bilateral patchy opacities without cardiomegaly. Lines and tubes in position."},
+            {"study": "Transthoracic echocardiogram", "performed": "2025-04-06T11:00", "text": "Limited bedside study, mechanically ventilated. Left ventricle normal in size with preserved systolic function. Right ventricle normal in size and function. No significant valvular abnormality. No pericardial effusion.", "conclusion": "Preserved left ventricular systolic function. No significant valvular disease."}
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-04-04T17:00"},
+            {"procedure": "Bronchoscopy and bronchoalveolar lavage", "snomed": "397397002", "performed": "2025-04-07T10:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "ICU and Hospital Discharge Summary", "author": "pulmonary and critical care", "date": "2025-05-02T14:00", "body": "REGIONAL MEDICAL CENTER, MEDICAL ICU\nAdmitted: 04/04/2025  Discharged home: 04/29/2025\nDiagnoses: septic shock secondary to pneumonia (readmission four weeks after the March ICU stay); acute respiratory distress syndrome with refractory hypoxemia.\nBackground: 59-year-old liver transplant recipient (09/2022) on tacrolimus, mycophenolate mofetil and prednisone, with central diabetes insipidus identified during the March admission.\nCourse: returned with pneumonia and shock and needed fluid resuscitation, broad-spectrum IV antibiotics, vasopressors and intubation with mechanical ventilation on arrival to the ICU.\nICU day 3 (04/06): oxygenation had deteriorated over 24 hours with steadily rising inspired oxygen requirements. He was febrile and tachypneic, with diffuse crackles through both lungs. Arterial gases showed hypoxemia that did not correct with supplemental oxygen. Chest film: bilateral patchy opacities, no cardiomegaly. Echocardiogram: preserved LV systolic function and no significant valve disease, arguing against a cardiac cause. Diagnosis: ARDS with refractory hypoxemia.\nLung-protective ventilation was used. Because he is immunosuppressed, bronchoscopy with BAL was done on 04/07 to look for an opportunistic infection: bacterial culture no growth, Pneumocystis PCR not detected, galactomannan negative. Antibiotics were completed for bacterial pneumonia.\nOxygenation improved over the following week. Extubated 04/15. Stepped down to the ward 04/18 and worked with physical therapy until discharge. Room air at discharge.\nImmunosuppression adjusted day to day with the transplant team and resumed at usual doses before discharge.\nAllergies: NKDA.\nDischarge medications: tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed.\nFollow-up: PCP 2 to 3 weeks; transplant clinic 1 to 2 weeks."}
+          ]
+        },
+        {
+          "id": "2025-05-16a",
+          "kind": "office_visit",
+          "start": "2025-05-16T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ICU admission for ARDS",
+          "conditions": [
+            {"label": "Acute respiratory distress syndrome", "icd10": "J80", "action": "resolved"},
+            {"label": "Pneumonia, unspecified organism", "icd10": "J18.9", "action": "resolved"},
+            {"label": "Severe sepsis with septic shock", "icd10": "R65.21", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 75.0, "labs": {"Creatinine": 1.3}},
+          "vitals": {"spo2": 94},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-16T10:45", "results": [{"test": "Sodium", "value": 139}, {"test": "Creatinine", "value": 1.3}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-05-16T10:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2025-05-16T10:00"},
+            {"procedure": "Venipuncture", "performed": "2025-05-16T10:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2025-05-16T10:00", "body": "Second ICU admission in two months: 4/4-4/29, recurrent septic shock from pneumonia, intubated, ARDS with refractory hypoxemia on 4/6. BAL negative for opportunistic organisms. Extubated 4/15. Discharge summary reviewed in full.\nS: Home 2.5 weeks. Weak legs, walks the driveway and back twice a day, using a cane outside. Breathing better each week, winded on stairs. No fever, minimal cough. Eating three meals, weight down to 75 kg from 83 last fall. Urinating normally, no excess thirst at night. Saw transplant clinic last week; no med changes. Not back at work and not sure when.\nO: SpO2 94% on room air at rest. Vitals otherwise as charted. Thin, tired but in no distress. Lungs: clear to auscultation. Heart regular. Abdomen soft. No edema. Gait slow but steady.\nA/P:\n1. ARDS after septic shock from pneumonia: recovering, on room air. Resolved off the active list; recovery will take months.\n2. Central diabetes insipidus: no polyuria; sodium today.\n3. Calcineurin inhibitor nephrotoxicity: creatinine today.\n4. Liver transplant on tacrolimus/mycophenolate/prednisone: per transplant center.\n5. Deconditioning: home walking plan reviewed, increase gradually.\nCMP and CBC today. Return in about 2 months, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2025-05-19a",
+          "kind": "portal_message",
+          "start": "2025-05-19T13:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from Friday", "author": "PCP", "date": "2025-05-19T13:15", "body": "Robert, your sodium is 139, right where it should be, so no sign the diabetes insipidus is acting up. Creatinine 1.3, close to your usual. Blood counts fine. Copy sent to transplant clinic. Let's plan to see you in July; the front desk will reach out to book."}
+          ]
+        },
+        {
+          "id": "2025-07-01a",
+          "kind": "telephone",
+          "start": "2025-07-01T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Scheduling", "author": "front desk", "date": "2025-07-01T10:05", "body": "Called to book his July follow-up. Pt says transplant clinic is seeing him every month for now and he'd rather not add another trip while he's still building up strength. Will call us when ready. Left the recall open."}
+          ]
+        },
+        {
+          "id": "2025-07-23a",
+          "kind": "outside_records",
+          "start": "2025-07-25T09:00",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant Clinic Letter", "author": "transplant hepatology", "date": "2025-07-25T09:00", "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 07/23/2025\nRecovering steadily after the spring ICU admissions for septic shock and ARDS. Off oxygen, walking longer distances, back in his shop for a few hours a day. Graft function stable; tacrolimus troughs in range on 2 mg twice daily. Continuing mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily and trimethoprim-sulfamethoxazole.\nAllergies: NKDA.\nReturn in 3 months."}
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "pharmacy",
+          "start": "2025-10-08T15:00",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-06T11:20"}
+          ],
+          "documents": [
+            {"type": "Immunization Record", "title": "Outside Influenza Vaccine", "author": "MA", "date": "2025-10-08T15:00", "body": "Notification from retail pharmacy: inactivated trivalent influenza vaccine given 10/6/2025. Added to immunization history."}
+          ]
+        },
+        {
+          "id": "2026-01-21a",
+          "kind": "outside_records",
+          "start": "2026-01-23T09:00",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant Clinic Letter", "author": "transplant hepatology", "date": "2026-01-23T09:00", "body": "REGIONAL LIVER TRANSPLANT CENTER, POST-TRANSPLANT CLINIC\nVisit 01/21/2026\nThree years and four months after liver transplantation. Doing well and back to work. Graft function stable. Tacrolimus 2 mg twice daily with troughs in range; mycophenolate mofetil 750 mg twice daily; prednisone 5 mg daily; trimethoprim-sulfamethoxazole daily.\nAllergies: NKDA.\nNext visit in 6 months."}
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "pharmacy",
+          "start": "2026-03-11T08:40",
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Refill Request", "author": "RN", "date": "2026-03-11T08:40", "body": "Local pharmacy faxed a bridge refill request for trimethoprim-sulfamethoxazole DS daily, mail-order shipment delayed again. Last office visit 5/2025. Approved 30 days per PCP; pt reminded to schedule a visit."}
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "hospital_admission",
+          "start": "2026-06-04T19:50",
+          "end": "2026-06-18T12:00",
+          "service": "General Surgery",
+          "reason": "left lower leg pain and swelling after a laceration",
+          "vitals": [
+            {"time": "2026-06-04T19:55", "temp_c": 38.9, "hr": 112, "bp": [90, 60]}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-04T20:10", "results": [{"test": "White Blood Cells", "value": 18.0}, {"test": "Hemoglobin", "value": 13.2}, {"test": "Platelets", "value": 230}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-06-04T20:10", "results": [{"test": "Sodium", "value": 135}, {"test": "Potassium", "value": 4.5}, {"test": "Creatinine", "value": 1.2}, {"test": "Aspartate Aminotransferase", "value": 80}, {"test": "Alanine Aminotransferase", "value": 72}, {"test": "Bilirubin, Total", "value": 2.1}]},
+            {"panel": "Prothrombin Time with INR", "collected": "2026-06-04T20:10", "results": [{"test": "Prothrombin Time", "value": 16}, {"test": "Prothrombin Time-International Normalized Ratio", "value": 1.4}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-06-04T19:50"},
+            {"procedure": "Debridement", "snomed": "36777000", "performed": "2026-06-04T23:30"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2026-06-22T10:00", "body": "REGIONAL MEDICAL CENTER EMERGENCY DEPT\nSeen 06/04/2026 at 19:50.\nCC: left lower leg pain and swelling for 24 hours.\nHPI: 61-year-old liver transplant recipient. Yesterday he nicked the front of his left shin while cleaning his boat; within a few hours it began to hurt badly and swell, and it has worsened since. History of chronic hepatitis C and past alcohol misuse.\nMeds: tacrolimus, mycophenolate mofetil, prednisone, trimethoprim-sulfamethoxazole, calcium carbonate as needed. Allergies: NKDA.\nVitals: T 38.9 C, HR 112, BP 90/60.\nExam: left lower leg red, swollen and very tender, with several blood-filled bullae. Small laceration on the anterior shin.\nLabs: WBC 18,000, hemoglobin 13.2, platelets 230,000, sodium 135, potassium 4.5, creatinine 1.2, AST 80, ALT 72, total bilirubin 2.1, PT 16 seconds, INR 1.4.\nImpression: necrotizing soft tissue infection of the left leg with sepsis in an immunosuppressed patient.\nPlan: IV fluids, broad-spectrum IV antibiotics, blood cultures; emergency general surgery consult; transplant team notified. To the OR tonight."},
+            {"type": "Operative Note", "title": "Operative Report", "author": "general surgery", "date": "2026-06-22T10:05", "body": "Date of operation: 06/04/2026\nPreoperative and postoperative diagnosis: necrotizing fasciitis, left lower extremity.\nProcedure: extensive surgical debridement of skin, subcutaneous tissue and fascia of the left lower leg.\nFindings: grayish, nonviable fascia with thin dishwater fluid, separating easily from the underlying muscle along the anterior and lateral leg. Muscle viable. All nonviable tissue excised back to bleeding, healthy tissue. Tissue sent for culture and pathology.\nWound packed and dressed."},
+            {"type": "Discharge Summary", "title": "Hospital Discharge Summary", "author": "general surgery", "date": "2026-06-22T10:10", "body": "REGIONAL MEDICAL CENTER\nAdmitted: 06/04/2026  Discharged: 06/18/2026\nDiagnosis: necrotizing fasciitis, left lower extremity, after a minor laceration.\nProcedures: emergency extensive surgical debridement of the left lower leg on 06/04; wound managed with packing and dressing changes.\nCourse: monitored in the surgical ICU for the first 48 hours; blood pressure recovered with fluids. Broad-spectrum IV antibiotics, narrowed and completed in hospital in consultation with infectious disease. Immunosuppression continued in coordination with the transplant center. Fever resolved, white count normalized, and the wound bed is healthy and granulating.\nAllergies: NKDA.\nDischarge medications: unchanged from admission (tacrolimus 2 mg twice daily, mycophenolate mofetil 750 mg twice daily, prednisone 5 mg daily, trimethoprim-sulfamethoxazole DS daily, calcium carbonate as needed).\nDischarged home with visiting nurse wound care and dressing changes three times weekly.\nFollow-up: surgical clinic in 1 week; transplant clinic in 2 weeks; PCP at his convenience."}
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "portal_message",
+          "start": "2026-06-24T18:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Out of the hospital", "author": "patient", "date": "2026-06-24T18:40", "body": "Wanted you to know I was in the hospital two weeks for a bad leg infection after I cut my shin on the boat. They operated on it. Home now, nurse comes three times a week for the dressing. Surgeon sees me Friday. Do you need me to come in?"},
+            {"type": "Patient Message", "title": "RE: Out of the hospital", "author": "PCP", "date": "2026-06-25T08:15", "body": "Robert, thank you for telling me, and I'm sorry you went through that. I have the hospital records. For now the surgeons and the wound nurse are the right people for the leg. Once you're getting around, call the front desk and we'll find a time to catch up; it has been a while. Any fever, spreading redness or feeling faint, go straight to the ER."}
+          ]
+        }
+      ]
+    }
+  ]
+}

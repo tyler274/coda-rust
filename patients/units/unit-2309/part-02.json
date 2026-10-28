@@ -1,0 +1,365 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002309",
+      "events": [
+        {
+          "id": "2023-06-13a",
+          "kind": "annual_physical",
+          "start": "2023-06-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 81.6},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-06-13T09:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-06-13T09:05", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-06-13T09:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "orders": [
+            {"id": "gi-referral-2023", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "screening colonoscopy, father with colon cancer at 68"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-06-13T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-06-13T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-06-13T09:15",
+             "body": "Yearly exam. Turning 64 next month. Feels fine overall. Occasional vague belly discomfort after a heavy meal, comes and goes, nothing that wakes him. No weight loss, no blood, bowel habits unchanged.\n\nSmoking unchanged, 1 ppd. Not ready to set a date.\n\nThis year he says yes to the colonoscopy: \"I've put it off long enough.\" Referral to GI placed, marked as high-risk screening given his father.\n\nExam: weight down a pound from last year, essentially stable. BP fine. Heart regular. Lungs clear. Abdomen soft, nontender, no organomegaly, no mass felt. No nodes.\n\nPlan: GI referral for colonoscopy. Labs today. Lung screening due again in the fall; the colonoscopy comes first. Flu/COVID in October. RTC 1 yr."}
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "telephone",
+          "start": "2023-07-18T11:45",
+          "reason": "colonoscopy prep question",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prep question", "author": "RN", "date": "2023-07-18T11:45",
+             "body": "Pt called, GI office booked his colonoscopy for 8/10 and mailed the prep. Wanted to know if he can have his beer the night before. Told him clear liquids only the day before, no alcohol, and to call the GI office with any other prep questions since it's their protocol. Reminded him he needs a driver."}
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "procedure_visit",
+          "start": "2023-08-10T08:00",
+          "end": "2023-08-10T09:30",
+          "service": "Gastroenterology",
+          "reason": "screening colonoscopy, family history of colon cancer",
+          "conditions": [
+            {"label": "Malignant neoplasm of ascending colon", "icd10": "C18.2", "action": "diagnosed", "onset": "2023-08-10", "note": "4 cm sessile lesion, invasive adenocarcinoma on biopsy"}
+          ],
+          "procedures": [
+            {"procedure": "Colonoscopy with biopsy", "performed": "2023-08-10T08:30"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-08-10T08:40", "issued": "2023-08-15T14:00",
+             "text": "Specimen: ascending colon lesion, cold forceps biopsies (multiple fragments).\nMicroscopic: Fragments of colonic mucosa containing a tubulovillous adenoma, with an associated invasive glandular neoplasm. The malignant glands show marked cytologic atypia, nuclear pleomorphism and brisk mitotic activity, and infiltrate into the submucosa.",
+             "conclusion": "Ascending colon, biopsy: invasive adenocarcinoma arising in a tubulovillous adenoma, with submucosal invasion."}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Colonoscopy report", "author": "gastroenterology", "date": "2023-08-11T10:00",
+             "body": "Outside gastroenterology practice. Procedure date 2023-08-10.\n\nIndication: screening, high risk (father with colon cancer at 68). First colonoscopy.\nSedation: monitored anesthesia care. Prep: good.\nThe scope was advanced to the cecum; the appendiceal orifice and ileocecal valve were seen and photographed. Withdrawal time 11 minutes.\n\nFindings: In the ascending colon there is a 4 cm sessile lesion. Multiple biopsies taken and the site tattooed distally. The remainder of the colon to the rectum appears normal. Retroflexion in the rectum unremarkable.\n\nImpression: 4 cm sessile ascending colon lesion, suspicious for malignancy. Biopsies pending. Staging CT to be arranged. Follow up in GI clinic with results.\n\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "imaging",
+          "start": "2023-08-21T10:15",
+          "service": "Radiology",
+          "reports": [
+            {"study": "CT chest", "loinc": "24628-0", "performed": "2023-08-21T10:15",
+             "text": "Indication: staging, newly diagnosed ascending colon adenocarcinoma.\nTechnique: CT of the chest with IV contrast, obtained with the abdomen and pelvis.\nFindings: No pulmonary nodules or masses. No mediastinal, hilar or axillary adenopathy. No effusion. Heart and great vessels normal in caliber.",
+             "conclusion": "No evidence of thoracic metastatic disease."},
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-08-21T10:15",
+             "text": "Indication: staging, ascending colon adenocarcinoma.\nFindings: The liver is normal in size without focal lesions. Gallbladder, pancreas, spleen and adrenal glands are unremarkable. Kidneys enhance symmetrically without hydronephrosis. Mild wall thickening of the ascending colon at the site of the known lesion. No ascites. No peritoneal nodularity. No osseous lesions.",
+             "conclusion": "Known ascending colon lesion. No distant metastases."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "Staging CT received", "author": "MA", "date": "2023-08-22T09:00",
+             "body": "CT chest/abdomen/pelvis report from the outside imaging center faxed over by GI, scanned and routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "specialist_visit",
+          "start": "2023-08-24T13:00",
+          "service": "Gastroenterology",
+          "reason": "results after colonoscopy",
+          "orders": [
+            {"id": "gi-referral-2023", "action": "done", "date": "2023-08-24T13:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gastroenterology consultation", "author": "gastroenterology", "date": "2023-08-28T16:00",
+             "body": "Outside gastroenterology group. Date of visit: 2023-08-24.\n\nDear colleague,\n\nI saw Mr. Fenton, 64, to go over the findings from his recent first colonoscopy. He tells me he gets some intermittent mild belly discomfort. He has not lost weight, has seen no blood, and his bowel pattern hasn't changed.\n\nColonoscopy on 8/10 showed a 4 cm sessile ascending colon lesion. Biopsies show invasive adenocarcinoma with submucosal invasion, arising from a tubulovillous adenoma. Staging CT of the chest, abdomen and pelvis on 8/21 shows no distant metastatic disease.\n\nMedications: none. Allergies: NKDA.\nFamily history: father with colon cancer diagnosed at 68; mother with breast cancer at 72; brother with lung cancer.\nSocial: current smoker, 50 pack-years; social alcohol, 2-3 drinks a week; retired construction foreman.\n\nImpression: adenocarcinoma of the ascending colon, no distant spread on imaging.\n\nPlan: referral to medical oncology and to colorectal surgery for resection planning. We discussed that his surveillance going forward will be per oncology. I've asked him to stop smoking.\n\nThank you for the referral."}
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T12:30",
+          "reason": "results discussion",
+          "orders": [
+            {"id": "onc-referral-2023", "action": "placed", "order": "Oncology referral", "category": "referral", "to": "Oncology", "reason": "ascending colon adenocarcinoma"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call re: GI letter", "author": "PCP", "date": "2023-08-29T12:30",
+             "body": "Called Charles after the GI letter came in. He knows the diagnosis, heard it from the GI doc last week. Sounded matter-of-fact, said his dad went through the same thing. CT showed nothing spread elsewhere, which I underlined. GI already sent the surgery referral; I placed the oncology referral from our end too so it doesn't fall through. Told him to call me with any questions and to keep us posted on dates. Again brought up quitting smoking before surgery. He said he'd \"think about it, for real this time.\""}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T15:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-10T15:10"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-10T15:05"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Fall vaccines", "author": "RN", "date": "2023-10-10T15:20",
+             "body": "Flu and 2023-24 COVID given, one per arm. No reaction during observation. He said he's still waiting on the oncology appointment."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Cancellation", "author": "front desk", "date": "2023-11-13T16:40",
+             "body": "Pt called to cancel tomorrow's 10:00. Said he'd call back to reschedule."}
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "specialist_visit",
+          "start": "2024-02-23T10:00",
+          "service": "Hematology and Oncology",
+          "reason": "weight loss and fatigue, colon cancer",
+          "conditions": [
+            {"label": "Iron deficiency anemia", "action": "diagnosed", "onset": "2024-02-23"}
+          ],
+          "state": {"weight_kg": 75.0, "labs": {"Hemoglobin": 10.6, "Mean Corpuscular Volume": 74, "Ferritin": 8, "Iron": 27, "Total Iron-Binding Capacity": 436, "Red Cell Distribution Width": 16.9}},
+          "vitals": {"temp_c": 37.0, "bp": [118, 70], "hr": 92, "rr": 16},
+          "measure": ["weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-23T09:30", "results": [{"test": "Hemoglobin", "value": 10.6}, {"test": "Mean Corpuscular Volume", "value": 74}, {"test": "Platelets"}, {"test": "White Blood Cells"}]},
+            {"panel": "Iron Studies", "collected": "2024-02-23T09:30", "results": [{"test": "Ferritin", "value": 8}, {"test": "Iron"}, {"test": "Total Iron-Binding Capacity"}]}
+          ],
+          "orders": [
+            {"id": "onc-referral-2023", "action": "done", "date": "2024-02-23T10:00"}
+          ],
+          "reports": [
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2024-02-16T11:00",
+             "text": "Indication: colon adenocarcinoma, weight loss. Comparison: 2023-08-21.\nFindings: Irregular mass of the ascending colon. Several enlarged pericolic and ileocolic lymph nodes along the right colic drainage. Liver without focal lesion. Pancreas, spleen, adrenals and kidneys unremarkable. No ascites or peritoneal disease. No bone lesions.",
+             "conclusion": "Ascending colon mass with regional lymph node spread. No distant metastases."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical oncology consultation", "author": "oncology", "date": "2024-03-04T09:00",
+             "body": "Regional cancer center, medical oncology. Visit date 2024-02-23.\n\nRe: Charles Fenton, 64\n\nMr. Fenton comes back to discuss his ascending colon adenocarcinoma, biopsied in August 2023. Over the last three months he has felt steadily more tired and has lost about 7 kg (15 lb) without trying. His appetite is off. He describes a dull ache in the abdomen and some constipation now and then. No hematochezia, no black stools.\n\nMeds: none. Allergies: NKDA.\nFH: father colon cancer at 68 (deceased), mother breast cancer at 72, older brother lung cancer.\nSH: long-time smoker, still smoking; drinks socially.\n\nVitals: T 37.0 C, BP 118/70, HR 92, RR 16. Weight 75 kg.\nExam: lean, fatigued-appearing, comfortable at rest. Abdomen soft, mildly distended, tender diffusely without rebound or guarding. No palpable liver edge. No adenopathy.\n\nLabs: Hgb 10.6, MCV 74, ferritin 8, consistent with iron deficiency anemia.\nCT abdomen/pelvis 2/16: irregular ascending colon mass with regional nodal spread, no distant disease.\nPathology review of the August biopsies here confirms malignant epithelial cells that breach the basement membrane and invade the surrounding tissue.\n\nAssessment: adenocarcinoma of the ascending colon, clinically node-positive, no distant metastases. Iron deficiency anemia from the tumor.\n\nPlan: right hemicolectomy, which surgery has scheduled for 3/12. Port placement afterward and adjuvant chemotherapy once he recovers, likely FOLFOX for 6 months depending on final pathology. Please start oral iron. I urged him to quit smoking.\n\nWith thanks."}
+          ]
+        },
+        {
+          "id": "2024-03-01a",
+          "kind": "office_visit",
+          "start": "2024-03-01T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pre-op visit, colon cancer",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-01T10:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-01T10:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin"}]}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth every other day", "dose": {"value": 325, "unit": "mg"}, "frequency": "EVERY OTHER DAY", "route": "Oral", "course": "chronic", "reason": "iron deficiency anemia"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-01T09:30"},
+            {"procedure": "Venipuncture", "performed": "2024-03-01T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-03-01T10:15",
+             "body": "Here before his colon surgery on 3/12. Oncology's note isn't in yet, but he brought his after-visit papers: Hgb 10.6, ferritin 8, CT shows nodes near the tumor but nothing distant. Surgery, then port and chemo.\n\nHe's tired, appetite poor, down about 7 kg from last summer. Dull belly ache, intermittent, some constipation. No bleeding he's noticed. No chest pain or dyspnea, climbs his stairs fine. No prior anesthesia.\n\nExam: thinner than I'm used to seeing him. Vitals as charted. Conjunctivae a little pale. Heart RRR, no murmur. Lungs clear. Abdomen soft, mildly full, diffusely tender to deep palpation, no rebound.\n\nA/P\n1. Ascending colon adenocarcinoma, regional nodes on CT. Surgery 3/12. From a primary care standpoint no barrier to surgery. Surgical team will handle pre-op labs as well; CBC/CMP today so we have a baseline.\n2. Iron deficiency anemia, from the tumor. Ferrous sulfate 325 mg every other day; discussed constipation and dark stools.\n3. Tobacco. Asked him again to stop before surgery. He's cut to about half a pack, he says.\n\nCall after discharge; I'd like to see him 1-2 weeks out."}
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "hospital_admission",
+          "start": "2024-03-12T06:00",
+          "end": "2024-03-16T11:00",
+          "service": "General Surgery",
+          "reason": "right hemicolectomy for ascending colon adenocarcinoma",
+          "procedures": [
+            {"procedure": "Right hemicolectomy with ileocolic anastomosis", "snomed": "315321001", "performed": "2024-03-12T08:00"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-03-12T10:30", "issued": "2024-03-18T15:00",
+             "text": "Specimen: right colon and terminal ileum, right hemicolectomy.\nGross: segment of terminal ileum and right colon with a firm ulcerated tumor in the ascending colon at the tattoo site.\nMicroscopic: Adenocarcinoma invading into the submucosa, not into the muscularis propria. Residual tubulovillous adenoma at the periphery. Margins (proximal, distal, radial) free of tumor. One of 16 regional lymph nodes contains metastatic carcinoma.",
+             "conclusion": "Adenocarcinoma of the ascending colon, pT1 N1a (1/16 lymph nodes). Margins negative."}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Discharge summary, surgery", "author": "general surgery", "date": "2024-04-16T14:00",
+             "body": "Regional hospital, colorectal surgery service. Admitted 3/12/2024, discharged 3/16/2024.\n\nDiagnosis: adenocarcinoma of the ascending colon.\nProcedure 3/12: laparoscopic-assisted right hemicolectomy with ileocolic anastomosis.\n\nCourse: uncomplicated. Diet advanced from day 1, bowel function returned on day 3. Pain well controlled; no pain medication needed at discharge. Ambulating independently.\n\nPathology: adenocarcinoma, pT1 N1a, 1 of 16 nodes positive, margins negative.\n\nAllergies: NKDA.\nDischarge medications: ferrous sulfate 325 mg every other day.\nFollow-up: surgical clinic 2 weeks; medical oncology to discuss adjuvant therapy; primary care.\n\nRecords faxed on request from primary care office."}
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "office_visit",
+          "start": "2024-03-26T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-op follow-up",
+          "state": {"weight_kg": 73.5},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-26T14:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-op Visit", "author": "PCP", "date": "2024-03-26T14:30",
+             "body": "Two weeks out from right hemicolectomy (3/12, home 3/16). We still don't have the hospital paperwork; requested. Per him, the surgeon told him one lymph node had cancer and the margins were clean, and he'll get chemo.\n\nFeeling better each day. Eating small meals, bowels moving every day or two. No fever. Incisions a little sore. Not needing anything for pain. Iron every other day, tolerating it.\n\nExam: vitals as charted. Lost another 1.5 kg since surgery. Abdomen: port sites and periumbilical incision healing, no redness, no drainage. Soft, appropriately tender near incision.\n\nA/P: recovering well from surgery. Port is being placed next week and then chemo. Continue iron. Records request sent to the hospital. Keep me posted; see me in a couple of months or sooner."}
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "procedure_visit",
+          "start": "2024-04-02T07:30",
+          "end": "2024-04-02T10:00",
+          "service": "Interventional Radiology",
+          "reason": "port placement for chemotherapy",
+          "procedures": [
+            {"procedure": "Implantation of venous access port", "snomed": "80402001", "performed": "2024-04-02T08:15"}
+          ],
+          "documents": [
+            {"type": "Procedure Note", "title": "Port placement", "author": "interventional radiology", "date": "2024-04-03T09:00",
+             "body": "Outside interventional radiology. Date: 2024-04-02.\n\nProcedure: placement of a single-lumen chest port via the right internal jugular vein under ultrasound and fluoroscopic guidance, moderate sedation.\nIndication: adjuvant chemotherapy for colon cancer.\nFindings: catheter tip at the cavoatrial junction. Port accessed and flushed without difficulty. No complications. Estimated blood loss minimal.\n\nAllergies: NKDA.\nOK to use today."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "outside_records",
+          "start": "2024-04-16T14:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Hospital records received", "author": "MA", "date": "2024-04-16T14:05",
+             "body": "Discharge summary and surgical pathology from the March admission received by fax after our second request. Scanned and routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "outside_records",
+          "start": "2024-06-04T13:00",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology progress letter", "author": "oncology", "date": "2024-06-04T13:00",
+             "body": "Regional cancer center, medical oncology. Letter dated 2024-05-30.\n\nDear doctor,\n\nAn update on our mutual patient Mr. Fenton. Following right hemicolectomy (pT1 N1a, stage III colon adenocarcinoma) he began adjuvant mFOLFOX6 through his port on 4/9/2024, given every two weeks, planned for 12 cycles. He has now had 4 cycles. He is tolerating treatment reasonably, with fatigue for a few days after each cycle. Counts have allowed treatment on schedule.\n\nHe continues oral iron. We have again advised smoking cessation.\n\nWe will see him every two weeks through completion, anticipated mid-September."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "office_visit",
+          "start": "2024-06-18T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "constipation",
+          "conditions": [
+            {"label": "Chronic constipation", "action": "diagnosed", "onset": "2024-04-15"}
+          ],
+          "state": {"weight_kg": 73.0, "labs": {"Hemoglobin": 12.1, "Mean Corpuscular Volume": 81, "Iron": 62, "Total Iron-Binding Capacity": 380}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-06-18T11:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Creatinine"}]}
+          ],
+          "medications": [
+            {"drug": "polyethylene glycol 3350 17000 MG Powder for Oral Solution", "action": "start", "sig": "Mix 17 g in 8 oz of liquid and drink once daily", "dose": {"value": 17, "unit": "g"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "chronic constipation"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-06-18T10:30"},
+            {"procedure": "Venipuncture", "performed": "2024-06-18T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-06-18T11:10",
+             "body": "Halfway through FOLFOX. Main issue today is constipation, going on since around the time chemo started in April: hard stools every 3-4 days, straining. Not taking anything for it. Iron probably isn't helping. No abdominal pain beyond mild bloating, no vomiting, no blood. Passing gas.\n\nOtherwise tired for 2-3 days after each infusion, then okay. Eating better. Oncology letter from late May reviewed.\n\nExam: vitals as charted, weight steady at 73. Port site right chest clean. Abdomen soft, nondistended, healed incisions, normal bowel sounds, no mass.\n\nA/P\n1. Chronic constipation, on chemo and iron. Start PEG 3350 17 g daily, titrate to a soft stool. Fluids.\n2. Colon cancer, adjuvant FOLFOX, per oncology. BMP today since he's been drinking less.\n3. Iron deficiency: continue iron for now, recheck in September.\n4. Smoking: down to half a pack. Encouraged.\n\nSee me after chemo finishes, September."}
+          ]
+        },
+        {
+          "id": "2024-08-06a",
+          "kind": "portal_message",
+          "start": "2024-08-06T20:14",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill", "author": "patient", "date": "2024-08-06T20:14",
+             "body": "Out of the powder for my bowels next week. It's working when I take it every day. Can you send more?"},
+            {"type": "Patient Message", "title": "RE: Refill", "author": "RN", "date": "2024-08-07T09:02",
+             "body": "Sent a 3-month supply with refills to your pharmacy. Glad it's helping."}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "office_visit",
+          "start": "2024-09-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after chemotherapy",
+          "conditions": [
+            {"label": "Iron deficiency anemia", "action": "resolved", "onset": "2024-02-23"}
+          ],
+          "state": {"weight_kg": 74.2, "labs": {"Hemoglobin": 12.9, "Ferritin": 38, "Mean Corpuscular Volume": 86, "Iron": 84, "Total Iron-Binding Capacity": 340, "Red Cell Distribution Width": 14.6}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-24T09:30", "results": [{"test": "Hemoglobin", "value": 12.9}, {"test": "Mean Corpuscular Volume"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Iron Studies", "collected": "2024-09-24T09:30", "results": [{"test": "Ferritin", "value": 38}, {"test": "Iron"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T09:30", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]}
+          ],
+          "medications": [
+            {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "stop", "reason": "iron deficiency corrected"},
+            {"drug_text": "sennosides, USP 8.6 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily as needed for constipation", "dose": {"value": 8.6, "unit": "mg"}, "frequency": "BID PRN", "route": "Oral", "course": "chronic", "reason": "chronic constipation"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-09-24T09:40"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2024-09-24T09:42"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-24T09:00"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T09:40"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T09:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2024-09-24T09:50",
+             "body": "65 now. Finished his 12th and last FOLFOX on 9/17. Relieved. Oncology plans surveillance from here; he doesn't have the schedule yet.\n\nEnergy slowly coming back. Appetite better, weight up a little. Bowels: daily PEG helps, but some weeks he still goes 2-3 days and strains. No bleeding, no abdominal pain.\n\nStill smoking, about half a pack. Not willing to quit fully. We talked about it the way we always do.\n\nExam: vitals as charted. Port right chest, clean. Lungs clear. Heart RRR. Abdomen soft, nontender, healed scars.\n\nA/P\n1. Colon adenocarcinoma, stage III, s/p right hemicolectomy and adjuvant FOLFOX. Surveillance per oncology.\n2. Iron deficiency anemia: Hgb 12.9, ferritin 38 today. Corrected; stop iron.\n3. Chronic constipation: continue PEG daily, add senna 8.6 mg twice a day as needed.\n4. Tobacco: counseled.\n5. Vaccines: high-dose flu and PCV20 today.\n\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T12:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2024-09-26T12:20",
+             "body": "Charles, your blood count is nearly back to normal and your iron stores are refilled, so you can stop the iron pills. Kidney and liver tests are normal too. Front desk will reach out to book March."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "pharmacy",
+          "start": "2024-12-10T10:05",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill request", "author": "MA", "date": "2024-12-10T10:05",
+             "body": "Electronic request from the pharmacy for polyethylene glycol 3350 powder. Last visit 9/24. Approved per PCP, 90 days with 1 refill."}
+          ]
+        }
+      ]
+    }
+  ]
+}

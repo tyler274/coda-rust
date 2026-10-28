@@ -1,0 +1,1522 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002733",
+   "events": [
+    {
+     "id": "2024-02-27a",
+     "kind": "lab_only",
+     "start": "2024-02-27T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Methotrexate monitoring",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-02-27T07:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-02-27T07:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-02-27T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Monitoring Labs",
+       "author": "RN",
+       "date": "2024-02-27T14:05",
+       "body": "Within normal limits. Faxed to rheumatology."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-08a",
+     "kind": "office_visit",
+     "start": "2024-04-08T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Painful mouth sores",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "derm-2024",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "Oral erosions, urgent"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-04-08T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Mouth Sores",
+       "author": "PCP",
+       "date": "2024-04-08T16:35",
+       "body": "S: Six weeks of sore mouth. Started as little blisters inside the cheeks that opened into raw patches and haven't healed; it hurts to eat anything crunchy or spicy, living on soup and yogurt. No skin blisters, no eye or genital sores. No fever. Methotrexate 20 weekly and folic acid daily, unchanged for over a year.\nO: Several shallow erosions on both buccal mucosae, larger on the left, tender. Gums and tongue otherwise ok. No cervical nodes. Skin of face, trunk and arms clear.\nA: Persistent painful oral erosions, not healing.\nP: Urgent dermatology referral; office called and got her in on 4/23. Message to rheumatology. Soft bland diet, saltwater rinses. Call if blisters appear on the skin or she can't keep fluids down."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-30a",
+     "kind": "outside_records",
+     "start": "2024-04-30T09:30",
+     "reason": "Dermatology letter and pathology",
+     "conditions": [
+      {
+       "label": "Pemphigus vulgaris",
+       "action": "diagnosed",
+       "onset": "2024-04-23"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets (40 mg) by mouth every morning with food; taper as directed by dermatology",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pemphigus vulgaris"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Punch skin biopsy, single lesion",
+       "performed": "2024-04-23T11:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2024-04-23T11:00",
+       "issued": "2024-04-26T15:00",
+       "text": "Specimen: skin, trunk, punch biopsy, with separate specimen for direct immunofluorescence. Microscopic: intraepidermal blister with suprabasal cleavage and acantholytic keratinocytes; basal layer remains attached to the dermis. Direct immunofluorescence: intercellular IgG and C3 deposition throughout the epidermis.",
+       "conclusion": "Intraepidermal acantholytic blister with intercellular IgG and C3 on DIF, diagnostic of pemphigus vulgaris."
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-2024",
+       "action": "done",
+       "date": "2024-04-23T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology Consultation",
+       "author": "dermatology",
+       "date": "2024-04-30T09:30",
+       "body": "Outside dermatology practice. Seen 4/23/2024, urgent referral.\n\n48-year-old woman with RA, hypothyroidism and a pituitary adenoma. Two months of painful oral ulcers that began as small vesicles and enlarged into broad erosions, making eating difficult. In the past week, fragile blisters have appeared on her chest and back and break with minimal rubbing.\n\nExam: flaccid bullae on the trunk. Pressure at the edge of an intact bulla spreads it into neighboring normal-looking skin (positive Nikolsky). Crusted erosions on the buccal mucosa. No lymphadenopathy.\n\nLabs: CBC, TSH and glucose normal. Desmoglein antibodies sent, pending.\nBiopsy (see pathology): intraepidermal cleavage with acantholysis; DIF with intercellular IgG and C3.\n\nDiagnosis: pemphigus vulgaris, mucocutaneous.\n\nPlan: prednisone 40 mg daily, then a slow taper as lesions heal. TPMT activity drawn today; if normal, start azathioprine as a steroid-sparing agent and coordinate with rheumatology given methotrexate. Gentle skin care and bland mouth rinses. Follow-up in 2 weeks.\nAllergies: penicillin, sulfa."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-08a",
+     "kind": "portal_message",
+     "start": "2024-05-08T19:20",
+     "reason": "Dermatology update",
+     "medications": [
+      {
+       "drug_text": "azathioprine 50 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets (100 mg) by mouth daily with food",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pemphigus vulgaris"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Derm follow up",
+       "author": "patient",
+       "date": "2024-05-08T19:20",
+       "body": "Saw derm yesterday. The desmoglein blood test came back positive like they thought, and my TPMT enzyme is normal, so they started azathioprine 100 mg a day. Rheum is ok with it and says stay on the methotrexate. Prednisone stays 40 for now then they'll lower it. Blisters on my back are drying up. They want blood counts every 2 weeks at first, can those be done at your lab?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Derm follow up",
+       "author": "PCP",
+       "date": "2024-05-09T08:20",
+       "body": "Glad it's settling. Yes, have them fax the lab order and walk in. I added azathioprine to your list. On two immune-suppressing medicines plus prednisone, call us early for any fever."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-28a",
+     "kind": "portal_message",
+     "start": "2024-05-28T13:10",
+     "reason": "Ear MRI update",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Repeat MRI",
+       "author": "patient",
+       "date": "2024-05-28T13:10",
+       "body": "FYI the 6 month MRI for the acoustic neuroma was the same size, no change. ENT says repeat in a year."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Repeat MRI",
+       "author": "RN",
+       "date": "2024-05-29T09:00",
+       "body": "Thanks for the update, noted in your chart for the doctor."
+      }
+     ]
+    },
+    {
+     "id": "2024-06-04a",
+     "kind": "lab_only",
+     "start": "2024-06-04T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Azathioprine and methotrexate monitoring",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-06-04T07:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-06-04T07:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-06-04T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Monitoring Labs",
+       "author": "PCP",
+       "date": "2024-06-04T15:20",
+       "body": "WBC, platelets and LFTs fine 4 wks into azathioprine. Copies to derm and rheum."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-16a",
+     "kind": "annual_physical",
+     "start": "2024-07-16T08:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "state": {
+      "weight_kg": 77.0,
+      "labs": {
+       "Hemoglobin A1c": 5.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Tapered by dermatology"
+      },
+      {
+       "drug": "prednisone 10 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet (10 mg) by mouth every morning",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pemphigus vulgaris"
+      },
+      {
+       "drug": "cholecalciferol 0.025 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet (1000 units) by mouth daily",
+       "dose": {
+        "value": 25,
+        "unit": "mcg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Bone protection on long-term prednisone"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-07-16T08:55",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-07-16T08:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-16T08:55",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-07-16T08:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 5.3
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2024",
+       "action": "placed",
+       "order": "DXA bone density, hip and spine",
+       "category": "imaging"
+      },
+      {
+       "id": "mammo-2024",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2024-07-16T08:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-07-16T09:05",
+       "body": "48F, annual.\n\nBig year: pemphigus vulgaris diagnosed in April (biopsy proven). Derm started prednisone 40 and then azathioprine 100 daily in May; she's now down to prednisone 10 mg daily per their taper. Mouth almost healed, skin clear except a few faded spots on the back. Still on methotrexate 20 weekly and folic acid for RA, joints quiet. Repeat ear MRI in May unchanged, ENT watching. Cabergoline and levothyroxine as before. Asthma controlled.\n\nWeight up to 77 on the steroids, frustrated by it. Sleeping ok.\n\nExam: BP normal. Mild facial fullness. Oral mucosa with one small healing erosion, no new lesions. Skin of trunk with a few flat pink macules where blisters were, no bullae. Lungs clear. Heart RRR. Joints without synovitis.\n\nAssessment/plan:\n- Pemphigus vulgaris, improving on prednisone 10 and azathioprine; derm leads.\n- Long-term glucocorticoid: start vitamin D3 1000 units daily, calcium from diet (she eats dairy daily), DXA baseline ordered. A1c today for steroid effect.\n- RA on MTX, labs today with CBC/CMP. TSH.\n- Prolactinoma stable. Acoustic neuroma under surveillance.\n- HM: mammogram ordered. Flu and COVID in fall. Shingrix done. PCV20 done.\nRTC 6 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-07-18a",
+     "kind": "portal_message",
+     "start": "2024-07-18T10:30",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2024-07-18T10:30",
+       "body": "A1c is normal, so the prednisone hasn't pushed your sugar up. Blood counts, liver and kidney tests and thyroid are all fine. DXA is scheduled for 8/6."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-06a",
+     "kind": "imaging",
+     "start": "2024-08-06T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "DXA and screening mammogram",
+     "reports": [
+      {
+       "study": "DXA bone density, hip and spine",
+       "performed": "2024-08-06T09:30",
+       "text": "Dual-energy x-ray absorptiometry of the lumbar spine (L1-L4) and both proximal femurs. All measured sites have T-scores within the normal range. No vertebral levels excluded.",
+       "conclusion": "Normal bone density."
+      },
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2024-08-06T10:00",
+       "text": "Bilateral screening mammogram with tomosynthesis. Compared with 2023 and 2022. Heterogeneously dense tissue, unchanged. No suspicious mass, calcification or distortion.",
+       "conclusion": "BI-RADS 1, negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "dxa-2024",
+       "action": "done",
+       "date": "2024-08-06T09:30"
+      },
+      {
+       "id": "mammo-2024",
+       "action": "done",
+       "date": "2024-08-06T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "DXA and Mammogram",
+       "author": "PCP",
+       "date": "2024-08-07T08:30",
+       "body": "Bone density normal, mammogram negative. Continue vitamin D; repeat DXA in about 2 years if still on prednisone."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-10a",
+     "kind": "lab_only",
+     "start": "2024-09-10T07:25",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Immunosuppressant monitoring",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-09-10T07:25",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-10T07:25",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-09-10T07:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Monitoring Labs",
+       "author": "RN",
+       "date": "2024-09-10T13:40",
+       "body": "Stable. Faxed to rheum and derm."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "nurse_visit",
+     "start": "2024-10-08T17:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2024-10-08T17:15"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-10-08T17:17"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-10-08T17:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2024-10-08T17:25",
+       "body": "Influenza (L arm) and 2024-25 COVID (R arm). Immunosuppressed, no live vaccines. No adverse reaction during observation."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-12a",
+     "kind": "pharmacy",
+     "start": "2024-11-12T11:45",
+     "reason": "Prior authorization",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior Authorization",
+       "author": "MA",
+       "date": "2024-11-12T11:45",
+       "body": "Plan flagged fluticasone-salmeterol 250/50 for PA renewal again; resubmitted with moderate persistent asthma and the 2020 approval history. Approved for 12 months. Azathioprine PA is handled by derm."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-10a",
+     "kind": "lab_only",
+     "start": "2024-12-10T07:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Immunosuppressant monitoring",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-12-10T07:35",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-12-10T07:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2024-12-10T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Monitoring Labs",
+       "author": "PCP",
+       "date": "2024-12-10T16:00",
+       "body": "Normal CBC/CMP. Forwarded."
+      }
+     ]
+    },
+    {
+     "id": "2025-01-14a",
+     "kind": "office_visit",
+     "start": "2025-01-14T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "weight_kg": 76.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-01-14T14:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-01-14T15:15",
+       "body": "Six-month follow-up.\nPemphigus: no new blisters since summer, mouth healed. Prednisone 10 mg daily, derm planning to taper further this year. Azathioprine 100 daily.\nRA: no flares, MTX 20 weekly with folic acid.\nThyroid, prolactinoma: on levothyroxine and cabergoline, endo yearly.\nAsthma: fine, controller daily.\nExam: weight 76. BP normal. Mouth clear. Skin without bullae. Lungs clear. Joints quiet.\nPlan: continue all. Labs every 3 months as scheduled. Annual in July."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-24a",
+     "kind": "office_visit",
+     "start": "2025-03-24T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shortness of breath and dry cough",
+     "state": {
+      "weight_kg": 75.0,
+      "spo2": 93
+     },
+     "vitals": {
+      "spo2": 93
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "cxr-2025",
+       "action": "placed",
+       "order": "Chest X-ray, 2 views",
+       "category": "imaging"
+      },
+      {
+       "id": "pulm-2025",
+       "action": "placed",
+       "order": "Pulmonology referral",
+       "category": "referral",
+       "to": "Pulmonology",
+       "reason": "Exertional dyspnea, basilar crackles"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-03-24T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - Dyspnea",
+       "author": "PCP",
+       "date": "2025-03-24T11:00",
+       "body": "S: Since around the holidays she gets winded climbing the hill from the parking lot and on the stairs at home, slowly worse. Dry cough most days, nothing coming up. More tired than usual. No chest pain, no blood in sputum, no wheeze, albuterol doesn't change it. No fevers. Joints quiet; she hasn't missed methotrexate.\nO: SpO2 93% on room air at rest. Afebrile. Fine crackles at both lung bases, no wheeze. Heart regular. No edema. No clubbing.\nA: Progressive exertional dyspnea and dry cough with basilar crackles and lower saturation, in a patient with RA on methotrexate.\nP: CXR tomorrow. Pulmonology referral, expedited. Return/ED for breathlessness at rest or chest pain."
+      }
+     ]
+    },
+    {
+     "id": "2025-03-25a",
+     "kind": "imaging",
+     "start": "2025-03-25T08:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chest X-ray",
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2025-03-25T08:15",
+       "text": "PA and lateral chest. Reticular opacities at both lung bases. Lung volumes preserved. No focal consolidation, effusion or pneumothorax. Heart size normal. Mediastinum unremarkable.",
+       "conclusion": "Bibasilar reticular opacities. Recommend clinical correlation and further evaluation with CT as indicated."
+      }
+     ],
+     "orders": [
+      {
+       "id": "cxr-2025",
+       "action": "done",
+       "date": "2025-03-25T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Chest X-ray Result",
+       "author": "PCP",
+       "date": "2025-03-25T15:30",
+       "body": "CXR with reticular opacities at the bases. Called pt and explained; pulm appointment 4/21. Report sent with the referral."
+      }
+     ]
+    },
+    {
+     "id": "2025-04-29a",
+     "kind": "outside_records",
+     "start": "2025-04-29T10:50",
+     "reason": "Pulmonology consultation",
+     "conditions": [
+      {
+       "label": "Rheumatoid arthritis-associated interstitial lung disease",
+       "icd10": "J84.178",
+       "action": "diagnosed",
+       "onset": "2025-04-21"
+      }
+     ],
+     "orders": [
+      {
+       "id": "pulm-2025",
+       "action": "done",
+       "date": "2025-04-21T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Pulmonology Consultation",
+       "author": "pulmonology",
+       "date": "2025-04-29T10:50",
+       "body": "Outside pulmonary clinic. Visit date 4/21/2025.\n\nPatient with rheumatoid arthritis, hypothyroidism and pemphigus vulgaris, referred for several months of gradually increasing breathlessness, dry cough and fatigue. She takes methotrexate faithfully and has had no recent joint flares. No chest pain, hemoptysis or wheezing.\n\nFormer smoker, 10 pack-years, quit 2016. Asthma on ICS/LABA. Allergies: penicillin, sulfa.\n\nSpO2 93% on room air. Fine crackles at both bases.\nChest radiograph (3/25, reviewed): reticular opacities in the lower zones.\nPulmonary function testing today: restrictive physiology with a reduced diffusing capacity (DLCO).\n\nAssessment: interstitial lung disease associated with rheumatoid arthritis.\nPlan: high-resolution CT chest. Continue her current immunosuppressive regimen for now. Repeat PFTs with DLCO in 6 months. Return after the CT."
+      }
+     ]
+    },
+    {
+     "id": "2025-05-20a",
+     "kind": "outside_records",
+     "start": "2025-05-20T09:40",
+     "reason": "HRCT chest report",
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2025-05-13T15:00",
+       "text": "High-resolution CT of the chest without contrast, inspiratory and expiratory prone and supine images. Subpleural reticulation at both lung bases. No honeycombing. No air trapping beyond normal. No nodules, consolidation or effusion. Normal heart size; no lymphadenopathy.",
+       "conclusion": "Basal subpleural reticulation without honeycombing, pattern consistent with nonspecific interstitial pneumonia."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "CT Report Received",
+       "author": "MA",
+       "date": "2025-05-20T09:40",
+       "body": "HRCT chest report from outside imaging (ordered by pulmonology) received, routed to PCP."
+      }
+     ]
+    },
+    {
+     "id": "2025-06-17a",
+     "kind": "lab_only",
+     "start": "2025-06-17T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Immunosuppressant monitoring",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-06-17T07:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-06-17T07:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-06-17T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Monitoring Labs",
+       "author": "RN",
+       "date": "2025-06-17T12:50",
+       "body": "Normal. To rheum, derm."
+      }
+     ]
+    },
+    {
+     "id": "2025-07-15a",
+     "kind": "annual_physical",
+     "start": "2025-07-15T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-07-15T09:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-07-15T09:15",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2025-07-15T09:15",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2025",
+       "action": "placed",
+       "order": "Screening mammogram, bilateral",
+       "category": "imaging"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2025-07-15T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2025-07-15T09:20",
+       "body": "49F, annual exam.\n\nLungs: pulmonology diagnosed RA-related interstitial lung disease in April; HRCT in May showed basal reticulation without honeycombing (NSIP pattern). Plan from them is to keep current meds and repeat PFTs in the fall. Breathing about the same as spring, still winded on hills.\nEar: yearly MRI in June unchanged per her.\nPemphigus: prednisone 10 mg, azathioprine 100; no lesions.\nRA: methotrexate 20 weekly, folic acid; joints fine.\nEndocrine: levothyroxine and cabergoline unchanged.\n\nExam: Weight steady. Fine bibasilar crackles. No wheeze. Heart RRR. Skin and mouth clear. Joints quiet.\n\nPlan: CBC/CMP/TSH. Mammogram ordered. Flu and COVID this autumn. PHQ-2 1. Follow up in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2025-08-12a",
+     "kind": "imaging",
+     "start": "2025-08-12T08:50",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Screening mammogram",
+     "reports": [
+      {
+       "study": "Screening mammogram, bilateral",
+       "performed": "2025-08-12T08:50",
+       "text": "Bilateral screening mammogram with tomosynthesis compared with 2024. Heterogeneously dense breasts. No suspicious finding.",
+       "conclusion": "BI-RADS 1. Negative."
+      }
+     ],
+     "orders": [
+      {
+       "id": "mammo-2025",
+       "action": "done",
+       "date": "2025-08-12T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Mammogram",
+       "author": "PCP",
+       "date": "2025-08-13T09:10",
+       "body": "Negative mammogram."
+      }
+     ]
+    },
+    {
+     "id": "2025-09-22a",
+     "kind": "telephone",
+     "start": "2025-09-22T12:15",
+     "reason": "Medication change from dermatology",
+     "medications": [
+      {
+       "drug": "prednisone 10 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Pemphigus in remission per dermatology"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Medication Update",
+       "author": "RN",
+       "date": "2025-09-22T12:15",
+       "body": "Pt called on her lunch hour: derm says pemphigus is in remission and the prednisone taper is finished, last dose was yesterday. Stays on azathioprine 100 daily. Med list updated. She asked whether to keep the vitamin D; per PCP yes, continue."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-14a",
+     "kind": "nurse_visit",
+     "start": "2025-10-14T16:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Fall vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, trivalent, injectable",
+       "date": "2025-10-14T16:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2025-10-14T16:52"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2025-10-14T16:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2025-10-14T17:00",
+       "body": "Seasonal flu and 2025-26 COVID vaccines, one in each arm. Screening negative. Tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2025-10-28a",
+     "kind": "portal_message",
+     "start": "2025-10-28T07:55",
+     "reason": "Eye flare",
+     "medications": [
+      {
+       "drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+       "action": "start",
+       "sig": "Instill 1 drop in each eye twice daily",
+       "dose": {
+        "value": 1,
+        "unit": "drop"
+       },
+       "frequency": "BID",
+       "route": "Ophthalmic",
+       "course": "chronic",
+       "reason": "Chronic anterior uveitis"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Eyes",
+       "author": "patient",
+       "date": "2025-10-28T07:55",
+       "body": "The uveitis flared up again in both eyes last week. Eye doctor saw me yesterday and restarted the prednisolone drops twice a day. Just letting you know for my list."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Eyes",
+       "author": "PCP",
+       "date": "2025-10-28T12:30",
+       "body": "Sorry to hear the uveitis flared. Thanks, I've added the drops. Follow their schedule for eye checks while you're on steroid drops."
+      }
+     ]
+    },
+    {
+     "id": "2025-11-18a",
+     "kind": "office_visit",
+     "start": "2025-11-18T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "weight_kg": 74.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2025-11-18T15:55",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2025-11-18T15:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2025-11-18T15:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2025-11-18T15:55"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2025-11-18T15:50",
+       "body": "Follow-up.\nILD: repeat PFTs earlier this month, pulmonology told her they are stable. Same exertional breathlessness, not worse. Dry cough a little better.\nEyes: uveitis flare in October, on prednisolone acetate drops BID per ophthalmology.\nPemphigus: off prednisone since September, no lesions, azathioprine 100.\nRA: MTX 20 weekly; joints fine.\nExam: Lungs with fine basal crackles, unchanged. Conjunctivae white. Mouth clear. Skin clear.\nPlan: CBC/CMP today. Continue regimen. See in spring or sooner."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-13a",
+     "kind": "telehealth_visit",
+     "start": "2026-01-13T12:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Asthma flare",
+     "medications": [
+      {
+       "drug": "prednisone 20 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 2 tablets (40 mg) by mouth each morning for 5 days",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Asthma exacerbation"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2026-01-13T12:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video Visit - Asthma",
+       "author": "PCP",
+       "date": "2026-01-13T12:55",
+       "body": "Video visit, she is at her desk at work on lunch, ID verified.\n4-5 days of wheeze and chest tightness, different from her usual ILD breathlessness, rescue inhaler helps but she's using it every 3-4 hours. No fever. Speaking full sentences, audible wheeze when she exhales hard on camera.\nAsthma flare. Prednisone 40 mg daily x 5 days. Continue fluticasone-salmeterol BID. If not clearly better in 48 h, come in or go to the ED."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-20a",
+     "kind": "portal_message",
+     "start": "2026-01-20T18:40",
+     "reason": "Asthma follow-up",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Breathing",
+       "author": "patient",
+       "date": "2026-01-20T18:40",
+       "body": "Done with the prednisone, wheeze is gone and I'm back to the inhaler twice a day only. Thanks."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Breathing",
+       "author": "PCP",
+       "date": "2026-01-21T08:15",
+       "body": "Good. Let's touch base at your next visit."
+      }
+     ]
+    },
+    {
+     "id": "2026-02-17a",
+     "kind": "lab_only",
+     "start": "2026-02-17T07:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Immunosuppressant monitoring",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-02-17T07:40",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-02-17T07:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-02-17T07:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Monitoring Labs",
+       "author": "RN",
+       "date": "2026-02-17T14:15",
+       "body": "CBC/CMP normal. Faxed to rheum."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "pharmacy",
+     "start": "2026-03-10T10:05",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill Request",
+       "author": "MA",
+       "date": "2026-03-10T10:05",
+       "body": "Pharmacy requested cabergoline 0.5 mg. Prescribed by endocrinology; redirected the request to them and let pt know through the portal."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-05a",
+     "kind": "outside_records",
+     "start": "2026-05-05T11:25",
+     "reason": "Ophthalmology letter",
+     "conditions": [
+      {
+       "label": "Steroid-induced open-angle glaucoma",
+       "icd10": "H40.63X0",
+       "action": "diagnosed",
+       "onset": "2026-04-27",
+       "note": "Both eyes"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+       "action": "stop",
+       "reason": "Dose reduced by ophthalmology"
+      },
+      {
+       "drug_text": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
+       "action": "start",
+       "sig": "Instill 1 drop in each eye once daily",
+       "dose": {
+        "value": 1,
+        "unit": "drop"
+       },
+       "frequency": "DAILY",
+       "route": "Ophthalmic",
+       "course": "chronic",
+       "reason": "Chronic anterior uveitis"
+      },
+      {
+       "drug": "latanoprost 0.05 MG/ML Ophthalmic Solution",
+       "action": "start",
+       "sig": "Instill 1 drop in each eye at bedtime",
+       "dose": {
+        "value": 1,
+        "unit": "drop"
+       },
+       "frequency": "QHS",
+       "route": "Ophthalmic",
+       "course": "chronic",
+       "reason": "Steroid-induced open-angle glaucoma"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Ophthalmology Visit",
+       "author": "ophthalmology",
+       "date": "2026-05-05T11:25",
+       "body": "Outside ophthalmology practice. Date of visit 4/27/2026.\n\n50-year-old woman with chronic anterior uveitis, on prednisolone acetate 1% drops for about six months since an autumn flare. Three months of slowly worsening side vision in both eyes. No pain, no redness.\n\nExam:\nVA 20/25 OD, 20/25 OS.\nNo cataract. Anterior chambers quiet, no active uveitis.\nIOP (applanation) 28 mmHg OD, 27 mmHg OS.\nDilated fundus exam: enlarged cup-to-disc ratio in both eyes.\nVisual fields: peripheral field loss both eyes.\n\nAssessment: open-angle glaucoma, steroid response, both eyes. Uveitis quiet.\n\nPlan: start latanoprost 0.005% one drop both eyes at bedtime. Reduce prednisolone acetate to one drop both eyes once daily. IOP check in 6 weeks.\nAllergies noted: penicillin, sulfonamides. Asthma noted."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-26a",
+     "kind": "lab_only",
+     "start": "2026-05-26T07:35",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Immunosuppressant monitoring",
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-05-26T07:35",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-26T07:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-05-26T07:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Monitoring Labs",
+       "author": "RN",
+       "date": "2026-05-26T13:30",
+       "body": "Normal. Sent to rheumatology."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-01a",
+     "kind": "office_visit",
+     "start": "2026-07-01T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "state": {
+      "weight_kg": 73.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-07-01T10:20",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-07-01T10:20",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2026-07-01T10:20",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-07-01T09:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2026-07-01T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2026-07-01T10:25",
+       "body": "Follow-up, first visit since the glaucoma diagnosis.\n\nEyes: ophthalmology in late April found pressures of 28/27 with cupping and field loss, called it steroid-response glaucoma. Started latanoprost at bedtime and cut the prednisolone drops to once daily. At the 6-week check in June the pressures were in the high teens per her, uveitis quiet. Vision about the same.\nAsthma: one flare in January, prednisone 5 days, fine since.\nILD: stable per pulmonology, same exertional limit.\nRA: MTX 20 weekly, folic acid, quiet.\nPemphigus: in remission on azathioprine 100.\nThyroid/pituitary: levothyroxine 125, cabergoline 0.5 twice weekly.\nMed reconciliation done with her bottles: list updated.\n\nExam: Weight 73. BP normal. Conjunctivae white. Mouth and skin clear. Fine bibasilar crackles, no wheeze. Heart RRR. Joints quiet.\n\nA/P\n- Steroid-induced open-angle glaucoma: on latanoprost; per ophthalmology.\n- Chronic anterior uveitis: prednisolone drops daily.\n- RA-ILD, RA, pemphigus: continue current immunosuppression, specialists following.\n- Hypothyroidism, prolactinoma, vestibular schwannoma surveillance, asthma: stable.\n- CBC, CMP, TSH today.\nNext visit end of September."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-03a",
+     "kind": "portal_message",
+     "start": "2026-07-03T09:50",
+     "reason": "Results",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your labs",
+       "author": "PCP",
+       "date": "2026-07-03T09:50",
+       "body": "Blood counts, liver and kidney tests and thyroid level all normal. No changes. Have a good holiday weekend."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-04a",
+     "kind": "pharmacy",
+     "start": "2026-08-04T09:30",
+     "reason": "Refill request",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill Request",
+       "author": "MA",
+       "date": "2026-08-04T09:30",
+       "body": "E-refill for levothyroxine 125 mcg and fluticasone-salmeterol. Both sent, 90-day supply."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-18a",
+     "kind": "portal_message",
+     "start": "2026-08-18T14:05",
+     "reason": "Appointment confirmation",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "September appointment",
+       "author": "patient",
+       "date": "2026-08-18T14:05",
+       "body": "Is my September appointment still on the 29th? I need to tell work."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: September appointment",
+       "author": "front desk",
+       "date": "2026-08-18T15:30",
+       "body": "Yes, Tuesday 9/29 at 9:20 with your doctor. See you then."
+      }
+     ]
+    },
+    {
+     "id": "2026-09-29a",
+     "kind": "office_visit",
+     "start": "2026-09-29T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Chronic care follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

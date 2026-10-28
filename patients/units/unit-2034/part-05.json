@@ -1,0 +1,289 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002034",
+      "events": [
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "state": {"weight_kg": 84.0, "labs": {"Creatinine": 1.3}},
+          "vitals": {"weight_kg": 84.0},
+          "measure": ["bp", "hr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-13T13:50", "results": [{"test": "Creatinine", "value": 1.3}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-13T13:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-13T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-02-13T14:00", "body": "S: Quiet winter, no infections. Weight back to 84 kg. Energy good. On fluconazole 200 daily (maintenance), TMP-SMX DS 2 BID until end of April, tacrolimus 2 BID, mycophenolate 750 BID, prednisone 5, lithium 300 BID, amlodipine 10, HCTZ 25.\nO: Vitals as charted. Lungs clear. Neuro normal. Graft nontender. No edema.\nLabs today: creatinine 1.3, a touch above his 1.2 baseline; sent to transplant.\nA/P: post-infection recovery complete clinically. Creatinine 1.3, transplant following. HTN at goal. Bipolar stable. RTC 4 months for wellness visit."}
+          ]
+        },
+        {
+          "id": "2024-03-20a",
+          "kind": "outside_records",
+          "start": "2024-03-20T10:00",
+          "service": "Outside records",
+          "reason": "psychiatry letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient psychiatry letter", "author": "psychiatry", "date": "2024-03-20T10:00", "body": "Outside psychiatry practice.\nRemained euthymic through two hospitalizations last year, which he and his wife credit to routine and the fishing. Lithium carbonate 300 mg BID continued; levels in range. No change.\nDx: bipolar I disorder, in remission. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "outside_records",
+          "start": "2024-05-07T15:20",
+          "service": "Outside records",
+          "reason": "infectious disease letter",
+          "conditions": [
+            {"label": "Other forms of nocardiosis", "icd10": "A43.8", "action": "resolved", "onset": "2023-04-07"}
+          ],
+          "medications": [
+            {"drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet", "action": "stop", "reason": "12-month nocardia course complete 04/30/2024"},
+            {"drug_text": "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Pneumocystis prophylaxis"}
+          ],
+          "reports": [
+            {"study": "MRI brain with and without contrast", "loinc": "24587-8", "performed": "2024-04-26T09:15", "text": "Comparison 07/11/2023 and 04/17/2023. The previously treated frontal lobe lesion has resolved; no residual enhancement. No new lesion. No hydrocephalus.", "conclusion": "Resolution of the frontal lobe lesion."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Infectious disease clinic letter", "author": "infectious disease", "date": "2024-05-07T15:20", "body": "Outpatient infectious disease. Visit 05/03/2024.\nNocardiosis (lung and brain, 04/2023): 12 months of oral TMP-SMX finished 04/30/2024. Brain MRI 04/26: lesion resolved. No symptoms.\nCryptococcal meningitis (10/2023): on fluconazole 200 mg daily maintenance until late December 2024.\nPlan: return to single-strength TMP-SMX daily for Pneumocystis prophylaxis, indefinitely per transplant. Continue fluconazole through 12/2024. Return in 6 months.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "annual_physical",
+          "start": "2024-06-18T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "state": {"bp": [132, 80], "labs": {"Thyroid Stimulating Hormone": 2.6, "Hemoglobin A1c": 5.6}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-06-18T08:45", "results": [{"test": "Creatinine"}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-18T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-06-18T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-06-18T08:45", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2024-06-18T08:45", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2024-06-18T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-06-18T09:00", "body": "Subsequent Medicare wellness visit.\nInterval: finished the year of nocardia treatment 4/30, MRI clear, back on single-strength TMP-SMX. Fluconazole 200 maintenance through December. Feels well.\nMeds: tacrolimus 2 BID, mycophenolate 750 BID, prednisone 5, TMP-SMX SS daily, fluconazole 200 daily, lithium 300 BID, amlodipine 10, HCTZ 25. NKDA.\nFunctional status: independent, no falls, drives. Health care proxy (wife) form on file. PHQ-9 1.\nExam: vitals as charted. Heart, lungs normal. Abdomen soft, graft nontender. Skin: no suspicious lesions. No edema. Neuro normal.\nPrevention: colonoscopy due 2027. Vaccines: PCV20 and Shingrix complete; flu and COVID in the fall. Dermatology skin check yearly, next one scheduled next month.\nA/P: stable; labs today; RTC 6 months."}
+          ]
+        },
+        {
+          "id": "2024-07-25a",
+          "kind": "outside_records",
+          "start": "2024-07-25T12:00",
+          "service": "Outside records",
+          "reason": "dermatology letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Dermatology skin check letter", "author": "dermatology", "date": "2024-07-25T12:00", "body": "Outside dermatology, transplant skin surveillance.\nFull skin examination: no suspicious pigmented lesions, no actinic or nonmelanoma lesions. Counseled on sun protection on the water (hat, long sleeves, sunscreen).\nReturn in 12 months. Allergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "outside_records",
+          "start": "2024-09-17T14:10",
+          "service": "Outside records",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant medicine clinic letter", "author": "transplant medicine", "date": "2024-09-17T14:10", "body": "Transplant medicine, routine visit.\nNearly four years since his second graft. Creatinine in the low 1.3 range for the year, stable. Tacrolimus trough in target on 2 mg BID with fluconazole. No infections since last fall.\nPlan: when fluconazole stops in late December, increase tacrolimus back toward 3 mg BID with a level a week later. Regimen otherwise unchanged.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID-19 vaccines",
+          "measure": ["bp", "hr", "temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-09T15:05"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-09T15:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-09T15:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Nurse Visit: Vaccines", "author": "RN", "date": "2024-10-09T15:00", "body": "Flu vaccine R deltoid and updated COVID L deltoid. Afebrile, no concerns. Tolerated both."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2024-11-19T14:15", "body": "No-show for 1:30 follow-up. Called, no answer; voicemail left to reschedule."},
+            {"type": "Telephone Encounter", "title": "Call back", "author": "front desk", "date": "2024-11-20T09:20", "body": "Pt returned call, apologized, was out on the water and lost track of the day. Rebooked for late January."}
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "outside_records",
+          "start": "2025-01-07T11:30",
+          "service": "Outside records",
+          "reason": "transplant clinic letter",
+          "conditions": [
+            {"label": "Cerebral cryptococcosis", "icd10": "B45.1", "action": "resolved", "onset": "2023-10-14"}
+          ],
+          "medications": [
+            {"drug_text": "fluconazole 200 MG Oral Tablet", "action": "stop", "reason": "12-month maintenance complete 12/27/2024"},
+            {"drug_text": "tacrolimus 1 MG Oral Capsule", "action": "stop", "reason": "dose increased after fluconazole stopped"},
+            {"drug_text": "tacrolimus 1 MG Oral Capsule", "action": "historical", "sig": "Take 3 capsules (3 mg) by mouth twice daily", "dose": {"value": 3, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "kidney transplant"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant medicine clinic letter", "author": "transplant medicine", "date": "2025-01-07T11:30", "body": "Transplant medicine.\nFluconazole maintenance for cryptococcal meningitis completed 12/27/2024 per ID; no symptoms, treatment finished. With the interaction gone we moved tacrolimus back to 3 mg BID on 12/28; trough on 01/03 in target.\nCurrent regimen: tacrolimus 3 mg BID, mycophenolate 750 mg BID, prednisone 5 mg daily, TMP-SMX SS daily. Lithium, amlodipine and hydrochlorothiazide unchanged.\nAllergies: NKDA. Next visit 3 months."}
+          ]
+        },
+        {
+          "id": "2025-01-30a",
+          "kind": "office_visit",
+          "start": "2025-01-30T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-30T14:30", "results": [{"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Sodium"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-30T14:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-01-30T14:40", "body": "Rescheduled from November.\nS: Off fluconazole since late December, tacrolimus back to 3 BID per transplant. Feels fine. Thirst as always.\nMeds reconciled with transplant's January letter: tacrolimus 3 BID, mycophenolate 750 BID, prednisone 5, TMP-SMX SS, lithium 300 BID, amlodipine 10, HCTZ 25. Fluconazole removed. Problem list: cryptococcal meningitis marked treated.\nO: Vitals as charted. Exam unremarkable, no edema.\nA/P: stable. BMP today. Wellness visit in June."}
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "outside_records",
+          "start": "2025-03-18T09:50",
+          "service": "Outside records",
+          "reason": "psychiatry letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient psychiatry letter", "author": "psychiatry", "date": "2025-03-18T09:50", "body": "Outside psychiatry practice.\nBipolar I disorder, in remission on lithium carbonate 300 mg BID. Levels in range. Mood, sleep and energy stable. No change; return in 6 months.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2025-06-11a",
+          "kind": "annual_physical",
+          "start": "2025-06-11T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "state": {"bp": [136, 86], "labs": {"Creatinine": 1.4, "Thyroid Stimulating Hormone": 2.3, "Hemoglobin A1c": 5.6}},
+          "vitals": {"bp": [136, 86]},
+          "measure": ["hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-11T09:00", "results": [{"test": "Creatinine", "value": 1.4}, {"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-11T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-06-11T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-06-11T09:00", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2025-06-11T09:00", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "immunizations": [{"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2025-06-11T10:00"}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2025-06-11T09:15"},
+            {"procedure": "Immunization administration", "performed": "2025-06-11T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-06-11T09:15", "body": "Subsequent Medicare wellness visit, also chronic care review. Turns 60 on Sunday.\n\nInterval: no hospital stays in 18 months. Fluconazole finished in December, tacrolimus back to 3 BID. Transplant visit in April unremarkable per pt. No new complaints. Fishing 2-3 mornings a week.\n\nMeds: tacrolimus 3 BID, mycophenolate 750 BID, prednisone 5, TMP-SMX SS daily, lithium 300 BID, amlodipine 10, HCTZ 25. NKDA.\nFunctional: independent, no falls, no memory concerns from him or his wife. PHQ-9 2. Former smoker, no alcohol.\n\nExam: BP 136/86. Vitals as charted. Heart regular. Lungs clear. Abdomen soft, graft nontender. Skin without concerning lesions. No edema. Neuro normal. Mood euthymic.\n\nLabs today; creatinine 1.4, edging up from 1.3 last year; copy to transplant.\n\nPrevention: RSV vaccine today (60 and immunosuppressed). Colonoscopy due 2027. Flu and COVID in the fall. Dermatology yearly.\n\nA/P\n1. s/p kidney re-transplant 12/2020, creatinine drifting up slowly: transplant to review with their next labs.\n2. HTN: 136/86, slightly above goal; transplant manages his BP meds, will flag.\n3. Bipolar I in remission on lithium; nephrogenic DI, drinking freely.\n4. History: PJP 2022, nocardiosis 2023, cryptococcal meningitis 2023, all treated.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2025-06-13a",
+          "kind": "portal_message",
+          "start": "2025-06-13T13:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your results", "author": "PCP", "date": "2025-06-13T13:10", "body": "Hi Mr. Diallo. Cholesterol, sugar, thyroid and blood counts look fine. Your kidney number is 1.4, a little higher than last year's 1.3. I sent it to the transplant team so they can compare with their own labs. Happy early birthday."},
+            {"type": "Patient Message", "title": "RE: Your results", "author": "patient", "date": "2025-06-13T18:45", "body": "Thanks doc. Transplant has me in August, I'll ask them."}
+          ]
+        },
+        {
+          "id": "2025-08-20a",
+          "kind": "outside_records",
+          "start": "2025-08-20T15:00",
+          "service": "Outside records",
+          "reason": "transplant clinic letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant medicine clinic letter", "author": "transplant medicine", "date": "2025-08-20T15:00", "body": "Transplant medicine, routine visit.\nCreatinine has crept slowly over the past year (1.3 to 1.4 range). Tacrolimus trough in target on 3 mg BID. Feels well, no edema. Reviewed adherence; he says he occasionally forgets an evening dose after a long day out.\nPlan: pill organizer with alarms, labs every 2 months, recheck in 3 months.\nRegimen: tacrolimus 3 mg BID, mycophenolate 750 mg BID, prednisone 5 mg, TMP-SMX SS daily.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "portal_message",
+          "start": "2025-09-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "Amlodipine refill", "author": "patient", "date": "2025-09-09T08:30", "body": "Pharmacy says I'm out of refills on amlodipine."},
+            {"type": "Patient Message", "title": "RE: Amlodipine refill", "author": "RN", "date": "2025-09-09T11:20", "body": "Renewed per protocol, 90 days with 3 refills. Please book your fall follow-up when you get a chance; you are due."}
+          ]
+        },
+        {
+          "id": "2025-10-15a",
+          "kind": "pharmacy",
+          "start": "2025-10-15T12:10",
+          "service": "Community pharmacy",
+          "reason": "influenza vaccine",
+          "immunizations": [{"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-15T12:10"}],
+          "documents": [
+            {"type": "Immunization Record", "title": "Pharmacy immunization report", "author": "pharmacist", "date": "2025-10-15T12:10", "body": "Inactivated influenza vaccine, 0.5 mL IM left deltoid, given at the pharmacy. Reported to primary care."}
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T17:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Patient Message", "title": "Hydrochlorothiazide", "author": "patient", "date": "2026-01-13T17:40", "body": "Is the water pill from you or from transplant? Pharmacy needs a new script."},
+            {"type": "Patient Message", "title": "RE: Hydrochlorothiazide", "author": "RN", "date": "2026-01-14T09:05", "body": "Transplant prescribes the hydrochlorothiazide. We let their pharmacy line know and they sent it this morning. You are overdue for a visit with us, please call to schedule."}
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "outside_records",
+          "start": "2026-03-19T10:20",
+          "service": "Outside records",
+          "reason": "psychiatry letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient psychiatry letter", "author": "psychiatry", "date": "2026-03-19T10:20", "body": "Outside psychiatry practice.\nBipolar I in remission; lithium carbonate 300 mg BID unchanged. He mentions feeling more tired this winter; mood itself steady, no depressive or manic symptoms. Encouraged him to raise the fatigue with transplant and primary care.\nAllergies: NKDA."}
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "outside_records",
+          "start": "2026-06-22T14:45",
+          "service": "Outside records",
+          "reason": "transplant clinic letter, chronic rejection",
+          "vitals": {"bp": [158, 96]},
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-06-15T08:30", "results": [{"test": "Creatinine", "value": 2.6}, {"test": "Potassium"}, {"test": "Sodium"}, {"test": "Blood Urea Nitrogen"}]},
+            {"panel": null, "collected": "2026-06-15T08:30", "results": [{"test": "Urine protein/creatinine ratio", "loinc": "2890-2", "unit": "mg/mg", "value": 0.6}]}
+          ],
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2026-05-28T10:30", "text": "Transplant kidney ultrasound, right iliac fossa. The allograft is asymmetrically small compared with prior studies, with loss of corticomedullary differentiation. No hydronephrosis. No perinephric collection.", "conclusion": "Small transplant kidney with loss of corticomedullary differentiation."},
+            {"study": "Surgical pathology report", "performed": "2026-06-04T09:00", "issued": "2026-06-08T14:00", "text": "Specimen: transplant kidney, needle core biopsy x2.\nLight microscopy: fibrous thickening of the arterial intima with mononuclear cell infiltrates; interstitial fibrosis with tubular atrophy; patchy interstitial mononuclear inflammation.", "conclusion": "Chronic rejection of the kidney allograft (chronic allograft arteriopathy with interstitial fibrosis)."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Transplant medicine clinic letter", "author": "transplant medicine", "date": "2026-06-22T14:45", "body": "Transplant medicine clinic. Date of visit: 06/15/2026.\n\n61-year-old with ESRD from hypertensive nephrosclerosis, second deceased-donor kidney 12/2020, and prior calcineurin inhibitor nephrotoxicity, here for follow-up. Over about eight months he has become steadily more tired, can do less before he has to stop, and his ankles swell by evening. His pressures have been harder to hold despite his current antihypertensives. He acknowledges missing doses now and then. Denies fever, dysuria, hematuria and abdominal pain.\n\nMeds: tacrolimus 3 mg BID, mycophenolate 750 mg BID, prednisone 5 mg daily, TMP-SMX SS daily, lithium 300 mg BID, amlodipine 10 mg, hydrochlorothiazide 25 mg.\nAllergies: NKDA.\nFamily: father hypertension and CKD; sister bipolar disorder; maternal uncle ESRD.\n\nBP 158/96. Ankle edema on both sides.\n\nLabs: creatinine 2.6, rising gradually over the past year; urine protein/creatinine 0.6 (mild proteinuria).\nAllograft ultrasound 05/28: asymmetrically small kidney, corticomedullary differentiation lost.\nAllograft biopsy 06/04: fibrous intimal thickening of vessels with mononuclear infiltrates and interstitial fibrosis.\n\nAssessment: chronic rejection of the kidney allograft. Function keeps falling even with optimized immunosuppression.\n\nPlan:\n- Adherence plan with the transplant pharmacist; same tacrolimus, mycophenolate and prednisone.\n- Furosemide 40 mg daily for the swelling.\n- Vascular surgery referral to plan dialysis access.\n- Re-transplant evaluation started.\nWe will keep primary care updated."}
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "request to talk with PCP",
+          "documents": [
+            {"type": "Patient Message", "title": "Transplant news", "author": "patient", "date": "2026-08-24T07:50", "body": "Doc, transplant told me in June this kidney is wearing out and I may need dialysis again. They sent you a letter I think. I would like to talk with you about it, my wife too. Sorry I have not been in for a while."},
+            {"type": "Patient Message", "title": "RE: Transplant news", "author": "RN", "date": "2026-08-24T10:30", "body": "Thank you for reaching out, Mr. Diallo. We have the letter from transplant. I've passed your message to your doctor, who will call you this week to talk and set up a time for you and your wife."}
+          ]
+        }
+      ]
+    }
+  ]
+}

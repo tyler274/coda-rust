@@ -1,0 +1,1240 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002076",
+   "events": [
+    {
+     "id": "2023-01-10a",
+     "kind": "pharmacy",
+     "start": "2023-01-10T14:20",
+     "documents": [
+      {
+       "type": "Prior Authorization",
+       "title": "Apixaban prior authorization",
+       "author": "MA",
+       "date": "2023-01-10T14:20",
+       "body": "Pharmacy says his plan wants a PA for apixaban past the first fill. Nephrology prescribed it; called their office, they had already submitted. Approved through 1/2024 per insurer portal. Pt notified by text, picking up tomorrow."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-20a",
+     "kind": "specialist_visit",
+     "start": "2023-02-20T09:30",
+     "service": "Nephrology",
+     "reason": "Nephrotic syndrome follow-up",
+     "state": {
+      "weight_kg": 95.0,
+      "labs": {
+       "Albumin": 2.9,
+       "Total Protein": 5.4,
+       "Calcium": 8.7
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-02-20T09:00",
+       "results": [
+        {
+         "test": "Protein/Creatinine [Mass Ratio] in Urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 3.9
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-02-20T09:00",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 2.9
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2023-02-20T11:00",
+       "body": "Outside nephrology practice, 02/20/2023. Nephrotic syndrome with left renal vein thrombosis, on lisinopril 10 mg, furosemide 40 mg and apixaban 5 mg BID. Edema much improved, trace at the ankles. Weight 95 kg. Left flank discomfort gone. No bleeding.\nLabs: urine protein/creatinine 3.9 g/g (from 6.8), albumin 2.9, creatinine and potassium normal.\nPlan: no changes. Continue apixaban; repeat renal vein imaging in the fall. Return in 6 to 9 months with labs."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-18a",
+     "kind": "portal_message",
+     "start": "2023-04-18T21:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Rash",
+       "author": "patient",
+       "date": "2023-04-18T21:40",
+       "body": "I've got a rash on my stomach and side that keeps getting bigger, red ring and kind of clear in the middle. Itches like crazy. Also in my groin and between my toes again. Tried the athlete's foot cream on the big one, didn't do much. Can someone look at it?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Rash",
+       "author": "front desk",
+       "date": "2023-04-18T22:05",
+       "body": "Hi Jason, booked you Thursday 4/20 at 7:20 am. Come fasting if you can, the doctor may add your diabetes labs."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-20a",
+     "kind": "office_visit",
+     "start": "2023-04-20T07:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Spreading itchy rash",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 9.2,
+       "Glucose": 205
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-04-20T07:50",
+       "results": [
+        {
+         "test": "Fasting Glucose",
+         "value": 210
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-20T07:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 9.2
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-20T07:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-20T07:50",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "extensive annular rash trunk, groin, feet"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-20T07:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit: rash",
+       "author": "PCP",
+       "date": "2023-04-20T08:05",
+       "body": "S: About 6 weeks of an itchy rash that started as a small red spot on the left flank and has spread out in rings, now palm-sized patches across the trunk. Similar smaller patches in both groin folds and between toes. OTC terbinafine cream hasn't touched it. No new soaps, no travel, nobody at home with a rash. Diabetes: admits he's been sloppy with metformin and eating on the run since the fall.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, apixaban 5 BID, IVIG q3wk.\nO: Multiple annular red scaly plaques with raised edges and clearer centers over trunk, largest ~8 cm. Similar in inguinal folds. Toe webs scaly. Toenails thick and yellowed.\nA/P:\n1. Widespread annular rash, looks dermatophyte. Given the extent, his immune therapy and the recurrences, sending to dermatology rather than guessing. Fasting labs today: glucose, A1c, CBC; also one-time HIV screen, he agrees.\n2. DM2 - will review A1c when back.\nRTC after derm."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-24a",
+     "kind": "portal_message",
+     "start": "2023-04-24T17:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2023-04-24T17:10",
+       "body": "Jason - blood counts normal, HIV screen negative. Your fasting sugar was 210 and A1c 9.2, up a lot from 7.2 in September. That fits with what you told me about missed doses and meals on the go. Let's give the pill box and the evening dose another real try before we talk about adding anything - I'd like to see you in about 3 months. Dermatology has you on 5/11."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-11a",
+     "kind": "specialist_visit",
+     "start": "2023-05-11T14:15",
+     "service": "Dermatology",
+     "reason": "Annular rash trunk, groin, feet",
+     "conditions": [
+      {
+       "label": "Tinea corporis",
+       "icd10": "B35.4",
+       "action": "diagnosed",
+       "onset": "2023-03-01"
+      },
+      {
+       "label": "Tinea cruris",
+       "icd10": "B35.6",
+       "action": "diagnosed",
+       "onset": "2023-03-01"
+      },
+      {
+       "label": "Tinea pedis",
+       "icd10": "B35.3",
+       "action": "diagnosed",
+       "onset": "2023-03-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "terbinafine 250 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily for 14 days",
+       "dose": {
+        "value": 250,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Tinea corporis, cruris, pedis"
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-referral",
+       "action": "done",
+       "date": "2023-05-11T14:15"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-05-11T14:30",
+       "results": [
+        {
+         "test": "Fungus [Presence] in Skin by KOH preparation",
+         "loinc": "55303-2",
+         "text": "Positive: septate fungal hyphae seen"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology consultation",
+       "author": "dermatology",
+       "date": "2023-05-11T15:00",
+       "body": "Outside dermatology office. Date of visit 05/11/2023. Referred by primary care.\n\nHistory: 43-year-old man with diabetes, nephrotic syndrome under nephrology care, CIDP on IVIG, and recurrent dermatophyte infections. Itchy scaling rash on the trunk for several weeks; it began as one small red patch and has grown outward with clearing in the center. Smaller similar lesions in the groin and between the toes. No travel, no sick contacts.\n\nMedications: metformin, atorvastatin, gabapentin, lisinopril, furosemide, apixaban, IVIG. Allergies: none known.\n\nExam: sharply bordered erythematous annular plaques with elevated scaly edges and central clearing over the trunk. Similar lesions in both inguinal folds and in the interdigital spaces of the feet. Toenails are thickened and discolored.\n\nKOH preparation from a trunk border today: fungal hyphae present.\n\nRecent labs from primary care: fasting glucose 210, A1c 9.2, CBC normal, HIV negative.\n\nAssessment: tinea corporis, with tinea cruris and tinea pedis.\n\nPlan: oral terbinafine 250 mg daily for 2 weeks given the extent. Keep feet and groin dry, change socks midday, wash gym and work clothes hot. Better glucose control will help prevent recurrences. Return as needed."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-12a",
+     "kind": "specialist_visit",
+     "start": "2023-06-12T10:40",
+     "service": "Neurology",
+     "reason": "CIDP follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology follow-up",
+       "author": "neurology",
+       "date": "2023-06-12T11:30",
+       "body": "Outside neurology group, 06/12/2023. CIDP, one year on IVIG. Working full duty, managing stairs and overhead lifting. Paresthesias mild. Exam: strength 5-/5 proximally, 5/5 distally; reflexes diminished but present; sensation stable. Given sustained response we will lengthen IVIG to 1 g/kg every 4 weeks and reassess. Continue gabapentin 300 mg TID. Follow-up in about a year, sooner for any decline between infusions."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "office_visit",
+     "start": "2023-08-22T16:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "conditions": [
+      {
+       "label": "Tinea corporis",
+       "icd10": "B35.4",
+       "action": "resolved"
+      },
+      {
+       "label": "Tinea cruris",
+       "icd10": "B35.6",
+       "action": "resolved"
+      },
+      {
+       "label": "Tinea pedis",
+       "icd10": "B35.3",
+       "action": "resolved"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-08-22T16:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-08-22T16:45",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-08-22T16:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2023-08-22T17:00",
+       "body": "S: Rash gone after the 2 weeks of terbinafine from derm; groin and toes clear too. Says diabetes 'about the same' - honest that the evening dose is still hit or miss with overtime this summer. No polyuria. IVIG now every 4 weeks.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, apixaban 5 BID, IVIG q4wk.\nO: Vitals as charted. Skin: trunk clear, faint post-inflammatory color only. Toe webs dry. Trace ankle edema.\nA/P:\n1. Tinea corporis/cruris/pedis - resolved.\n2. DM2 - A1c and BMP today. Again reviewed timing of doses; he'll set a phone alarm.\n3. Nephrotic syndrome, RVT - per nephrology.\nPhysical in October."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-03a",
+     "kind": "annual_physical",
+     "start": "2023-10-03T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-10-03T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-10-03T08:30",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-10-03T08:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-10-03T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 2
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-03T08:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-03T08:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2023-10-03T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-03T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2023-10-03T09:15",
+       "body": "44 y/o M, annual.\nInterval: tinea cleared in the summer. Nephrology plans a repeat scan of the kidney vein next month. Strength holding on IVIG q4wk.\nROS: no chest pain, no dyspnea, no bleeding on apixaban, ankles a little puffy by evening. No bowel complaints.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, apixaban 5 BID, IVIG q4wk. NKDA.\nSocial: same job, no tobacco since 2019, rare beer.\nPHQ-9: 2.\nExam: vitals as charted. Eyes, ears, throat normal. Neck: no thyroid enlargement. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. Perianal not examined. Trace ankle edema. Reflexes diminished (known). Feet: skin intact, toe webs clear, nails thick, pulses intact.\nA/P: labs today (A1c, CMP, lipids, CBC). Flu and updated COVID given. Eye exam this month. Colon screening at 45 next year - FIT vs colonoscopy discussed, he prefers FIT."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-05a",
+     "kind": "portal_message",
+     "start": "2023-10-05T12:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Physical results",
+       "author": "PCP",
+       "date": "2023-10-05T12:30",
+       "body": "Labs back. A1c is still running around 9. Kidney filtration normal, albumin still on the low side (nephrology is following that), cholesterol and blood counts fine. Keep at the evening dose - we'll check again in a few months."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "outside_records",
+     "start": "2023-10-17T10:15",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye exam report",
+       "author": "optometry",
+       "date": "2023-10-17T10:15",
+       "body": "Optometry, exam 10/12/2023. Dilated fundus exam: no diabetic retinopathy either eye. No macular edema. Continue yearly."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-13a",
+     "kind": "specialist_visit",
+     "start": "2023-11-13T09:00",
+     "service": "Nephrology",
+     "reason": "Nephrotic syndrome and renal vein thrombosis follow-up",
+     "conditions": [
+      {
+       "label": "Embolism and thrombosis of renal vein",
+       "icd10": "I82.3",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "apixaban 5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Renal vein patent on repeat duplex; course complete"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Albumin": 3.3,
+       "Total Protein": 5.9,
+       "Calcium": 8.9
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-11-13T08:30",
+       "results": [
+        {
+         "test": "Protein/Creatinine [Mass Ratio] in Urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 2.2
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-11-13T08:30",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 3.3
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "US doppler renal vessels, left",
+       "loinc": "103905-6",
+       "performed": "2023-11-13T07:45",
+       "text": "Duplex ultrasound of the left renal vein and artery. The left renal vein is patent from hilum to IVC with normal phasic flow and no intraluminal thrombus. Left renal artery flow normal. Left kidney normal in size and echotexture, no hydronephrosis.",
+       "conclusion": "Patent left renal vein; no residual thrombus."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2023-11-13T10:30",
+       "body": "Outside nephrology practice, 11/13/2023. One year after left renal vein thrombosis. Duplex this morning shows the left renal vein patent with normal flow and no remaining thrombus. Urine protein/creatinine down to 2.2 g/g; albumin 3.3; creatinine normal. Edema minimal. Plan: stop apixaban today - treatment course complete and proteinuria much lower. Continue lisinopril 10 mg and furosemide 40 mg. Labs and visit in about a year, sooner for new flank pain or swelling."
+      }
+     ]
+    },
+    {
+     "id": "2024-01-23a",
+     "kind": "office_visit",
+     "start": "2024-01-23T16:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2024-01-23b",
+     "kind": "telephone",
+     "start": "2024-01-23T17:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2024-01-23T17:20",
+       "body": "Pt missed 4:40 diabetes visit. Reached him on cell - got held over at work for inventory, forgot to call. Rebooked Tue 2/6 at 7:30."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-06a",
+     "kind": "office_visit",
+     "start": "2024-02-06T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "weight_kg": 93.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-02-06T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-02-06T07:55",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-02-06T07:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Diabetes Follow-up",
+       "author": "PCP",
+       "date": "2024-02-06T08:05",
+       "body": "S: Sorry about the missed visit. Off apixaban since November per nephrology. Says the phone alarm works 'most nights'. No symptoms of high sugars. Strength fine.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, IVIG q4wk.\nO: vitals as charted, weight 93.5. Trace edema. Feet intact.\nA/P: DM2 - A1c and BMP today. Continue metformin. Nephrotic syndrome - stable per nephrology. RTC 3-4 mo."
+      }
+     ]
+    },
+    {
+     "id": "2024-02-08a",
+     "kind": "portal_message",
+     "start": "2024-02-08T11:45",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2024-02-08T11:45",
+       "body": "A1c still around 9. Kidney labs and potassium normal. Same plan for now; see you in the spring."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-25a",
+     "kind": "office_visit",
+     "start": "2024-04-25T12:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Low back pain into right leg",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "Pain severity (0-10)",
+       "value": 7
+      }
+     ],
+     "orders": [
+      {
+       "id": "lumbar-mri",
+       "action": "placed",
+       "order": "MRI lumbar spine without contrast",
+       "category": "imaging"
+      },
+      {
+       "id": "ortho-referral",
+       "action": "placed",
+       "order": "Orthopedics referral",
+       "category": "referral",
+       "to": "Orthopedics",
+       "reason": "right L-spine radiculopathy with foot weakness"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-04-25T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit: back and right leg pain",
+       "author": "PCP",
+       "date": "2024-04-25T12:40",
+       "body": "S: Three weeks ago lifting a pallet jack handle, felt his low back grab. Now pain shoots down the back and outside of the right leg, with tingling on the outer thigh and calf. Last week noticed his right foot slapping and catching on the dock plate. Different from the CIDP - one leg, and it hurts. No bowel or bladder change, no saddle numbness, no fever. Like 2017 but worse.\nO: Lumbar paraspinals tender on the right. SLR positive on the right. Right ankle dorsiflexion and big toe extension weak, about 4-/5; left normal. Reduced pinprick over right lateral calf and top of foot. Reflexes diminished throughout (baseline), right ankle less than left.\nA/P: Right-sided lumbar radiculopathy with motor weakness, likely recurrent disc herniation. MRI L-spine ordered given the weakness. Ortho referral. Continue gabapentin; acetaminophen for pain, avoid NSAIDs with his kidneys. Off ladders and heavy lifting at work. ED for any bowel/bladder change or numbness in the saddle area."
+      }
+     ]
+    },
+    {
+     "id": "2024-04-29a",
+     "kind": "telephone",
+     "start": "2024-04-29T10:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "MRI authorization",
+       "author": "front desk",
+       "date": "2024-04-29T10:10",
+       "body": "Insurance approved lumbar MRI. Scheduled at the imaging center Mon 5/6 at 6:30 pm. Pt aware, no metal implants, no claustrophobia."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-06a",
+     "kind": "imaging",
+     "start": "2024-05-06T18:30",
+     "orders": [
+      {
+       "id": "lumbar-mri",
+       "action": "done",
+       "date": "2024-05-06T18:30"
+      }
+     ],
+     "reports": [
+      {
+       "study": "MRI lumbar spine without contrast",
+       "performed": "2024-05-06T18:30",
+       "text": "Indication: right leg radiculopathy with foot weakness. Technique: multiplanar multisequence MRI of the lumbar spine without contrast. Findings: Normal lumbar alignment. Vertebral body heights preserved; marrow signal normal. Conus terminates normally. L1-L2 through L3-L4: no significant disc bulge, canal or foraminal narrowing. L4-L5: disc herniation extending to the right, compressing the right nerve root in the lateral recess. L5-S1: no significant narrowing. Paraspinal soft tissues unremarkable.",
+       "conclusion": "L4-L5 disc herniation with right nerve root compression."
+      }
+     ]
+    },
+    {
+     "id": "2024-05-20a",
+     "kind": "specialist_visit",
+     "start": "2024-05-20T13:30",
+     "service": "Orthopedic Surgery",
+     "reason": "Right leg radiculopathy",
+     "conditions": [
+      {
+       "label": "Intervertebral disc disorders with radiculopathy, lumbar region",
+       "icd10": "M51.16",
+       "action": "diagnosed",
+       "onset": "2024-04-04"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ortho-referral",
+       "action": "done",
+       "date": "2024-05-20T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic spine consultation",
+       "author": "orthopedics",
+       "date": "2024-05-20T14:30",
+       "body": "Outside orthopedic group, spine clinic. Date of visit 05/20/2024. Referred by primary care.\n\nHistory: 44-year-old man with a known lumbar disc herniation (2017) and CIDP, evaluated for low back pain radiating down the right leg with tingling along the lateral thigh and calf and trouble clearing the right foot when walking. Diabetes on metformin.\n\nMedications: metformin, atorvastatin, gabapentin 300 mg TID, lisinopril, furosemide, IVIG every 4 weeks. Allergies: none known.\n\nExam: decreased sensation over the lateral thigh, calf and dorsum of the foot on the right. Weakness of great toe extension and of ankle dorsiflexion, inversion and eversion on the right. Positive straight leg raise on the right at 30 degrees. Right ankle reflex diminished.\n\nImaging: MRI lumbar spine 05/06/2024 - L4-L5 herniated disc compressing the nerve root.\n\nAssessment: right lumbar radiculopathy from the L4-L5 disc herniation.\n\nPlan: formal physical therapy, 2 to 3 sessions a week for 8 weeks. Continue gabapentin. Activity modification at work. We discussed that surgery may be considered if strength does not recover; he prefers to try therapy first. Follow-up in 3 months, sooner for worsening weakness."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-19a",
+     "kind": "specialist_visit",
+     "start": "2024-08-19T10:00",
+     "service": "Orthopedic Surgery",
+     "reason": "Radiculopathy follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Orthopedic spine follow-up",
+       "author": "orthopedics",
+       "date": "2024-08-19T10:40",
+       "body": "Outside orthopedic spine clinic, 08/19/2024. Completed 8 weeks of physical therapy. Right leg pain much better, occasional ache after a long shift. Foot no longer catching. Exam: right ankle dorsiflexion and great toe extension 4+/5. Sensation still reduced on the dorsum of the right foot. Straight leg raise negative today. Plan: continue home exercise program; no surgery indicated now. Follow up as needed."
+      }
+     ]
+    },
+    {
+     "id": "2024-08-26a",
+     "kind": "specialist_visit",
+     "start": "2024-08-26T11:15",
+     "service": "Neurology",
+     "reason": "CIDP follow-up",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Neurology follow-up",
+       "author": "neurology",
+       "date": "2024-08-26T12:00",
+       "body": "Outside neurology group, 08/26/2024. CIDP, stable on IVIG every 4 weeks. Recent right L5-pattern radiculopathy from a disc herniation, improving with therapy per orthopedics; distinct from his CIDP. Proximal strength full; distal strength symmetric except the right foot findings noted by orthopedics. Reflexes diminished. Plan: lengthen IVIG interval to every 6 weeks as the next step toward a taper. Continue gabapentin. Return in a year or with any decline."
+      }
+     ]
+    },
+    {
+     "id": "2024-09-24a",
+     "kind": "annual_physical",
+     "start": "2024-09-24T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual physical",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "temp_c"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-09-24T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-09-24T08:30",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2024-09-24T08:30",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2024-09-24T08:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 1
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2024-09-24T08:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2024-09-24T08:50"
+      }
+     ],
+     "orders": [
+      {
+       "id": "fit-2024",
+       "action": "placed",
+       "order": "Fecal Immunochemical Test",
+       "category": "lab"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 40-64",
+       "performed": "2024-09-24T08:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2024-09-24T08:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2024-09-24T09:15",
+       "body": "45 y/o M, annual.\nInterval: right leg radiculopathy this spring, PT, foot strength nearly back per ortho. IVIG stretched to every 6 weeks by neurology. Off apixaban.\nROS: occasional right calf ache, no weakness now. No chest pain, dyspnea. Mild ankle swelling evenings. Bowels normal, no blood.\nMeds: metformin 1000 BID, atorvastatin 20, gabapentin 300 TID, lisinopril 10, furosemide 40, IVIG q6wk. NKDA.\nPHQ-9: 1.\nExam: vitals as charted. Lungs clear, heart regular. Abdomen soft. Trace ankle edema. Right dorsiflexion near full. Feet: mild scaling between left toes, otherwise intact; pulses intact.\nA/P:\n- DM2: labs today.\n- Colorectal screening: FIT kit given.\n- Flu and updated COVID today.\n- Feet: told him to use the antifungal cream on the left toe webs and keep them dry.\nRTC 4 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-08a",
+     "kind": "lab_only",
+     "start": "2024-10-08T09:00",
+     "orders": [
+      {
+       "id": "fit-2024",
+       "action": "done",
+       "date": "2024-10-08T09:00"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-10-05T07:00",
+       "resulted": "2024-10-08T09:00",
+       "results": [
+        {
+         "test": "Fecal Immunochemical Test",
+         "text": "Negative"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "FIT result",
+       "author": "PCP",
+       "date": "2024-10-08T13:00",
+       "body": "FIT negative. Repeat in one year. Message sent to patient."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-21a",
+     "kind": "specialist_visit",
+     "start": "2024-10-21T09:00",
+     "service": "Nephrology",
+     "reason": "Nephrotic syndrome follow-up",
+     "state": {
+      "labs": {
+       "Albumin": 3.4,
+       "Total Protein": 6.1,
+       "Calcium": 9.0
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2024-10-21T08:30",
+       "results": [
+        {
+         "test": "Protein/Creatinine [Mass Ratio] in Urine",
+         "loinc": "2890-2",
+         "unit": "g/g",
+         "value": 1.8
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2024-10-21T08:30",
+       "results": [
+        {
+         "test": "Albumin",
+         "value": 3.4
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up",
+       "author": "nephrology",
+       "date": "2024-10-21T10:15",
+       "body": "Outside nephrology practice, 10/21/2024. Nephrotic syndrome, partial remission. No flank pain. Mild evening ankle edema. Labs: urine protein/creatinine 1.8 g/g, albumin 3.4, creatinine and potassium normal. Plan: continue lisinopril 10 mg and furosemide 40 mg, low-sodium diet. Return in one year."
+      }
+     ]
+    },
+    {
+     "id": "2024-10-29a",
+     "kind": "outside_records",
+     "start": "2024-10-29T09:40",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye exam report",
+       "author": "optometry",
+       "date": "2024-10-29T09:40",
+       "body": "Optometry, exam 10/24/2024. Dilated retinal exam: no diabetic retinopathy OU. Return in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-15a",
+     "kind": "ed_visit",
+     "start": "2024-11-15T19:10",
+     "end": "2024-11-16T00:40",
+     "service": "Emergency Medicine",
+     "reason": "Painful red swollen left lower leg",
+     "conditions": [
+      {
+       "label": "Cellulitis of lower limb",
+       "action": "diagnosed",
+       "onset": "2024-11-12"
+      },
+      {
+       "label": "Tinea pedis",
+       "icd10": "B35.3",
+       "action": "diagnosed",
+       "onset": "2024-08-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "cefazolin 2000 MG Injection",
+       "action": "historical",
+       "sig": "2 g IV once in the emergency department",
+       "dose": {
+        "value": 2000,
+        "unit": "mg"
+       },
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "Cellulitis"
+      },
+      {
+       "drug": "cephalexin 500 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 1 capsule by mouth four times daily for 7 days",
+       "dose": {
+        "value": 500,
+        "unit": "mg"
+       },
+       "frequency": "QID",
+       "route": "Oral",
+       "course": "short",
+       "reason": "Cellulitis, left lower leg"
+      },
+      {
+       "drug_text": "terbinafine hydrochloride 10 MG/ML Topical Cream",
+       "action": "historical",
+       "sig": "Apply to the toe webs of both feet twice daily for 4 weeks",
+       "frequency": "BID",
+       "route": "Topical",
+       "course": "short",
+       "reason": "Tinea pedis"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2024-11-15T19:15",
+       "bp": [
+        134,
+        82
+       ],
+       "hr": 96,
+       "rr": 18,
+       "temp_c": 38.1,
+       "spo2": 98
+      }
+     ],
+     "labs": [
+      {
+       "panel": "CBC with Differential",
+       "collected": "2024-11-15T19:40",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 14.0
+        },
+        {
+         "test": "Neutrophils %",
+         "value": 80
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-15T19:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 9.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2024-11-15T19:40",
+       "results": [
+        {
+         "test": "C Reactive Protein",
+         "value": 18,
+         "unit": "mg/L"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2024-11-15T19:40",
+       "results": [
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2024-11-15T19:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2024-11-16T00:40",
+       "body": "Regional hospital ED, visit date 11/15/2024.\n\nCC: left leg pain, redness and swelling.\n\nHPI: 45-year-old man with type 2 diabetes, nephrotic syndrome and recurrent dermatophyte infections seen previously by dermatology. Three days of a painful, red, swollen left lower leg that feels warm, with low-grade fevers at home. No injury. He has had a rash on his foot for several months that he has not been treating.\n\nPMH: type 2 diabetes, poorly controlled; CIDP; nephrotic syndrome; lumbar disc herniation with radiculopathy; anorectal fistula; recurrent tinea. PSH: perianal abscess drainage, fistulotomy.\nMeds: metformin 1000 mg BID, gabapentin 300 mg TID, lisinopril 10 mg daily, furosemide 40 mg daily, atorvastatin 20 mg daily. Allergies: NKDA.\nSocial: warehouse supervisor; former smoker, quit 2019; occasional alcohol.\n\nTriage vitals: T 38.1, HR 96, BP 134/82, RR 18, SpO2 98% RA.\n\nExam: left lower leg red, swollen and tender from ankle to below the knee, warm; no crepitus, no fluctuance; dorsalis pedis and posterior tibial pulses intact. Left foot interdigital spaces scaly and macerated. Right leg normal.\n\nLabs: WBC 14.0 with 80% neutrophils; A1c 9.2; CRP 18 mg/L; BMP unremarkable.\n\nMDM: nonpurulent cellulitis of the left lower leg, entry likely through tinea pedis. No signs of necrotizing infection; hemodynamically stable. Cefazolin 2 g IV given. Tolerated oral intake.\n\nDiagnoses: cellulitis of left lower leg; tinea pedis.\n\nDisposition: discharged home on cephalexin 500 mg four times daily for 7 days and terbinafine 1% cream twice daily to the toe webs for 4 weeks. Elevate the leg. Leg margin marked. Follow up with primary care in 2 to 3 days; return for spreading redness, high fever or vomiting."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-18a",
+     "kind": "telephone",
+     "start": "2024-11-18T08:35",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "ED follow-up call",
+       "author": "RN",
+       "date": "2024-11-18T08:35",
+       "body": "ED notification received over the weekend. Called pt: on day 3 of cephalexin, redness staying inside the pen line, fever gone since Saturday. Using the cream. Booked with PCP tomorrow 4:00."
+      }
+     ]
+    },
+    {
+     "id": "2024-11-19a",
+     "kind": "office_visit",
+     "start": "2024-11-19T16:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after ED, left leg cellulitis",
+     "measure": [
+      "bp",
+      "hr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2024-11-19T16:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED Visit: left leg cellulitis",
+       "author": "PCP",
+       "date": "2024-11-19T16:35",
+       "body": "S: ED Friday for left leg cellulitis; cefazolin there, now day 4 of cephalexin QID, terbinafine cream BID. Pain much less, no fever since Saturday. Admits he ignored the foot rash I mentioned in September.\nO: afebrile, vitals as charted. Left shin: redness has pulled back about 3 cm inside the ED marking, mild warmth, minimal tenderness. Left toe webs still macerated, less so. Pulses intact.\nA/P:\n1. Cellulitis L leg - improving. Finish cephalexin course. Elevate.\n2. Tinea pedis - cream for the full 4 weeks, dry between toes, change socks midday.\n3. DM2 - ED A1c 9.2. We're coming up on 18 months at this level. Talked frankly about infection risk with high sugars. He wants another try at taking every dose and cutting the drive-through; I'd like an A1c in 3 months.\nRTC Feb, sooner if leg worsens."
+      }
+     ]
+    },
+    {
+     "id": "2024-12-02a",
+     "kind": "portal_message",
+     "start": "2024-12-02T19:25",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Leg update",
+       "author": "patient",
+       "date": "2024-12-02T19:25",
+       "body": "Finished the antibiotic last week. Leg looks normal again, just a little dry skin. Still using the foot cream. Do I need to come in before February?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Leg update",
+       "author": "PCP",
+       "date": "2024-12-02T21:00",
+       "body": "Glad to hear it. No need to come in sooner - finish the 4 weeks of cream and keep the feet dry. See you in February."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

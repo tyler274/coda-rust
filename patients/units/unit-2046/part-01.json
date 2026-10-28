@@ -1,0 +1,946 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002046",
+      "given": "Adam",
+      "family": "Walsh",
+      "birth_date": "1978-04-16",
+      "address_line": "41 Larkspur Lane",
+      "phone": "+1-603-555-0163",
+      "email": "adam.walsh@example.test",
+      "marital_status": "single",
+      "summary": "Logistics coordinator who joined in 2023 with hypertension on hydrochlorothiazide and recurrent calcium oxalate stones. Two ureteral stones in 2024 (right, CT-proven; left, clinical) passed after ED visits, then an adhesive small bowel obstruction in late 2025 from a 2013 open appendectomy, managed without surgery.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:14",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-08T10:14",
+              "body": "Caller Adam Walsh, 45, moving his primary care to us. His previous doctor's office in town cut back hours and he wants somewhere he can actually reach. Has commercial PPO through work, card info taken. Takes one blood pressure pill. Booked new patient visit Tue 8/22 at 8:00 am, first slot since he starts work at 9:30. Records release form emailed to him to sign and send to the old office."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T08:00",
+          "end": "2023-08-22T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "state": {
+            "bp": [
+              130,
+              82
+            ],
+            "weight_kg": 86.2,
+            "height_cm": 179.0,
+            "labs": {
+              "Hemoglobin A1c": 5.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "conditions": [
+            {
+              "label": "Essential hypertension",
+              "action": "diagnosed",
+              "onset": "2019-01-01",
+              "note": "on hydrochlorothiazide from prior primary care"
+            },
+            {
+              "label": "Kidney stone",
+              "action": "diagnosed",
+              "onset": "2018-01-01",
+              "note": "recurrent calcium oxalate nephrolithiasis by patient report; prior stones passed spontaneously"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Essential hypertension"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social use, 1-2 drinks per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Logistics coordinator"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency appendectomy",
+              "snomed": "174036004",
+              "performed": "2013-06-01T00:00"
+            },
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-22T08:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T08:48"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-22T08:45"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T08:48",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-22T08:50",
+              "body": "45M new to the practice. Previous PCP was across town; records release signed, list requested.\n\nConcerns today: none really. Wants his BP pill continued and a doctor he can text.\n\nHTN: told he had high pressures at a work screening and then at his old office about four years ago. On HCTZ 25 mg every morning since, no side effects, no dizziness. Doesn't check at home.\n\nKidney stones: says he has had stones 'more than once' before coming here, all passed on their own, one of them was sent off and came back calcium oxalate. Can't give years without looking. His dad has had a string of stones too. Nothing recent.\n\nPMH: hypertension, recurrent calcium oxalate stones.\nPSH: open appendectomy around 2013, appendix had ruptured, a few days in the hospital. Nothing since.\nMeds: hydrochlorothiazide 25 mg daily.\nAllergies: none to medications.\nFH: father with recurrent kidney stones. Mother has hypertension.\nSH: logistics coordinator for a distributor, a lot of time on the warehouse floor and on the phone. Never smoked. A drink or two a month at most. Lives alone in Amherst.\n\nROS: no chest pain, no shortness of breath, no headaches, no urinary symptoms, bowels regular.\n\nExam: vitals as recorded, BP fine. Well appearing. HEENT unremarkable. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed RLQ transverse scar, no hernia. No CVA tenderness. Extremities without edema. Skin warm.\n\nA/P\n1. Essential hypertension, controlled on HCTZ 25. Continue. CMP for K, Na, Ca and creatinine.\n2. Recurrent calcium oxalate nephrolithiasis, quiet. Encouraged steady water through the day. We can talk more about prevention if he gets another one.\n3. Health maintenance: lipids, A1c, CBC. One-time hep C and HIV screen, he agrees. FIT kit given for colon cancer screening at 45. Tdap given today, last tetanus shot he thinks was in his twenties. PHQ-2 negative.\n\nFollow up 6 months for BP, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-08-24T16:40",
+              "body": "Hi Adam, your bloodwork from Tuesday is all in the normal range: kidney function, potassium and sodium (which we watch on hydrochlorothiazide), calcium, blood counts, cholesterol and sugar. Hep C and HIV screens were negative. Nothing to change. Don't forget to drop off that stool kit when you get a chance."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T11:05",
+          "reason": "records from prior primary care",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "outside primary care",
+              "date": "2023-09-12T11:05",
+              "body": "Records received by fax from the patient's previous primary care office (2 pages).\n\nActive problems: essential hypertension; nephrolithiasis, recurrent, calcium oxalate.\nPast surgery: appendectomy.\nCurrent medications: hydrochlorothiazide 25 mg tablet, one daily.\nAllergies: NKDA.\n\nNo visit notes, imaging or lab values included. Filed to chart, PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "lab_only",
+          "start": "2023-10-04T09:30",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-10-02T07:00",
+              "resulted": "2023-10-04T09:30",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2023",
+              "action": "done",
+              "date": "2023-10-04T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "RN",
+              "date": "2023-10-04T13:12",
+              "body": "FIT negative. Result released to portal with a note that we will send a new kit next year. Due again 10/2024."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T17:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T17:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T17:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T17:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2023-10-17T17:30",
+              "body": "Came after work for his flu shot and the 2023-24 COVID booster. Screening questions negative, no prior reactions. Flu in L deltoid, COVID in R deltoid. Observed 15 min, left feeling fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "office_visit",
+          "start": "2024-02-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-13T08:25"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-13T08:25",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-02-13T08:30",
+              "body": "S: Six-month BP check. Taking HCTZ every morning, misses maybe one dose a month. Busy season at work is over. No headaches, no lightheadedness on standing, no cramps. No stone pain since he joined.\n\nO: BP and vitals as charted, at goal. Heart RRR, lungs clear, no edema.\n\nA/P: HTN controlled on hydrochlorothiazide 25. BMP today for electrolytes. Refills good through summer. See in the fall for a physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-30a",
+          "kind": "pharmacy",
+          "start": "2024-04-30T09:02",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Hydrochlorothiazide refill",
+              "author": "MA",
+              "date": "2024-04-30T09:02",
+              "body": "Pharmacy requested a 90-day supply of hydrochlorothiazide 25 mg, 1 tab daily. Last BMP 2/13 normal, seen 2/13. Approved 90 days with 1 refill per standing order."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "ed_visit",
+          "start": "2024-06-04T13:40",
+          "end": "2024-06-04T19:10",
+          "service": "Emergency Medicine",
+          "reason": "right flank pain",
+          "vitals": [
+            {
+              "time": "2024-06-04T13:48",
+              "bp": [
+                135,
+                85
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "icd10": "N20.1",
+              "action": "diagnosed",
+              "onset": "2024-06-02",
+              "note": "5 mm right ureteral calculus on non-contrast CT"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily until the stone passes, up to 4 weeks",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "right ureteral stone"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, with food",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "renal colic"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-06-04T14:05",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "Present"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "0-2"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis without contrast",
+              "loinc": "36952-0",
+              "performed": "2024-06-04T15:10",
+              "text": "Indication: right flank pain radiating to the groin, history of stones. Technique: axial non-contrast images of the abdomen and pelvis with coronal reformats. Findings: 5 mm calculus within the right ureter. No hydronephrosis. Both kidneys normal in size. Bladder unremarkable. Appendix surgically absent. No free fluid. Visualized bowel unremarkable.",
+              "conclusion": "5 mm right ureteral calculus."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-06-04T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department note",
+              "author": "emergency medicine",
+              "date": "2024-06-05T08:20",
+              "body": "Regional emergency department, visit 06/04/2024. Brief note sent to primary care.\n\n46 y/o M, known calcium oxalate stone former, on HCTZ for HTN. Two days of right flank pain, comes and goes in spasms, goes down into the groin. Nauseated, threw up twice. Denies fever, burning with urination or dark urine. NKDA. Prior appendectomy.\n\nExam: afebrile, BP 135/85. Right CVA tenderness. Abdomen otherwise soft.\nUA: blood present, no pyuria, no bacteria.\nCT A/P without contrast: 5 mm stone in the right ureter.\n\nTreated with IV ketorolac and IV ondansetron with relief. Asked about what to eat to avoid more stones, told to take it up with his PCP.\n\nDx: right ureterolithiasis.\nDispo: home. Tamsulosin 0.4 mg daily until passed, ibuprofen 600 mg q6h prn, ondansetron 4 mg ODT prn. Strain urine. Return for fever, uncontrolled pain or vomiting. PCP follow-up within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "portal_message",
+          "start": "2024-06-05T07:12",
+          "reason": "ED follow-up",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Kidney stone ER visit",
+              "author": "patient",
+              "date": "2024-06-05T07:12",
+              "body": "Hi, I ended up in the ER yesterday with another stone, right side this time, they said 5 mm. Got sent home with tamsulosin and pain pills. They told me to see you within a week. Also I'd like to finally talk about what I should be eating to stop getting these. Next Tuesday early morning works if you have it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Kidney stone ER visit",
+              "author": "front desk",
+              "date": "2024-06-05T08:41",
+              "body": "Sorry to hear it, Adam. You're booked Tue 6/11 at 7:40 am. Doctor says keep straining your urine and call or text if you get a fever or the pain gets out of hand."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for kidney stone",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "icd10": "N20.1",
+              "action": "resolved",
+              "onset": "2024-06-02"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-06-11T07:55",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Red Blood Cells"
+                },
+                {
+                  "test": "Urine White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-11T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-06-11T08:15",
+              "body": "S: ED 6/4 for R flank pain, CT showed a 5 mm R ureteral stone. Passed it Friday 6/7 in the shower, felt a sharp twinge then relief; didn't catch it in the strainer. No pain since, off the ibuprofen and ondansetron, finishing tamsulosin today. No fever, no urinary symptoms.\n\nWants to talk prevention. Typical day: coffee in the morning, a water bottle he forgets in the truck, eats out at lunch a lot.\n\nO: vitals as charted, afebrile. No CVA tenderness. Abdomen soft, nontender.\nUA today: no blood.\n\nA/P\n1. R ureteral stone, passed. Resolved. Stop tamsulosin.\n2. Recurrent calcium oxalate nephrolithiasis. Went through prevention: aim for enough fluid to make about 2.5 L of urine a day (he'll keep a 32 oz bottle at his desk and refill it three times), cut back on salty restaurant food, keep meat portions moderate, don't cut out dairy since normal calcium in food helps. HCTZ is also doing double duty here, so stays as is. Handout on low-oxalate foods given.\n3. HTN: BP fine.\n\nSee in September for physical."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "annual_physical",
+          "start": "2024-09-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T08:40"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "colorectal cancer screening"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-10T08:45",
+              "body": "46M annual exam.\n\nInterval: R ureteral stone in June, passed after an ED visit. Says he's better about water on weekdays, worse on weekends. No flank pain since. BP meds no issues.\n\nMeds: HCTZ 25 mg daily. NKDA.\nHabits: never smoker, rare drink. Walks the warehouse all day, no other exercise. Sleep ok.\nPHQ-2: 0.\n\nROS negative across systems.\n\nExam: vitals as charted. Well appearing. Eyes, ears, throat normal. No lymphadenopathy. Thyroid not enlarged. Heart regular without murmur. Lungs clear bilaterally. Abdomen soft, nontender, old appendectomy scar. No CVA tenderness. Normal gait. No edema. Skin without suspicious lesions.\n\nA/P\n- Health maintenance: CMP, lipids, CBC. FIT kit #2 given. Flu and COVID shots when the fall vaccines are in, nurse visit.\n- HTN controlled, continue HCTZ.\n- Nephrolithiasis: keep up the fluids.\n\nNext physical in a year, BP check in between."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "lab_only",
+          "start": "2024-09-26T10:10",
+          "reason": "colorectal cancer screening",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-09-24T06:30",
+              "resulted": "2024-09-26T10:10",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2024",
+              "action": "done",
+              "date": "2024-09-26T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT and physical labs",
+              "author": "PCP",
+              "date": "2024-09-26T12:30",
+              "body": "FIT negative. Labs from the physical normal, K and creatinine fine on HCTZ. Sent to portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2024-10-22T17:20",
+              "body": "Seasonal flu and 2024-25 COVID vaccines given, left and right deltoid. No reactions last year. Tolerated, waited 15 minutes, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-14a",
+          "kind": "ed_visit",
+          "start": "2024-12-14T14:25",
+          "end": "2024-12-14T18:40",
+          "service": "Emergency Medicine",
+          "reason": "left flank pain",
+          "vitals": [
+            {
+              "time": "2024-12-14T14:31",
+              "bp": [
+                152,
+                92
+              ],
+              "hr": 104,
+              "temp_c": 37.1
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "icd10": "N20.1",
+              "action": "diagnosed",
+              "onset": "2024-12-14",
+              "note": "left-sided, clinical diagnosis without imaging"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "tamsulosin hydrochloride 0.4 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth daily until the stone passes, up to 4 weeks",
+              "dose": {
+                "value": 0.4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "left ureteral stone"
+            },
+            {
+              "drug": "ibuprofen 600 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain, with food",
+              "dose": {
+                "value": 600,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "renal colic"
+            },
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "nausea"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-12-14T14:50",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "text": "Present"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "0-2"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-12-14T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department note",
+              "author": "emergency medicine",
+              "date": "2024-12-17T09:05",
+              "body": "Regional emergency department, date of service 12/14/2024 (Saturday). Copy faxed to PCP.\n\nCC: L flank pain x3 hrs.\nHPI: 46M with HTN and recurrent calcium oxalate stones, R ureteral stone in June. Today at work had abrupt onset of severe L flank pain, steady with surges that double him over, no better lying still or moving around. Nausea, emesis x2. No diarrhea, no dysuria, no fever. Admits he drinks very little water at work and a lot of tea, eats red meat most days.\nMeds: HCTZ 25 mg daily. NKDA.\n\nExam: BP 152/92, HR 104, T 37.1. Restless, pacing the room, can't get comfortable. L CVA tenderness. Abdomen without rebound or guarding.\nUA: microscopic hematuria, no pyuria or bacteriuria.\n\nMDM: presentation typical for recurrent stone, prior CT-confirmed stone 6 months ago, no signs of infection. Imaging deferred. IV ketorolac, IV ondansetron, pain improved to tolerable.\n\nImpression: L ureterolithiasis.\nPlan: discharge. Tamsulosin 0.4 mg daily, ibuprofen 600 mg q6h prn, ondansetron 4 mg ODT q8h prn, strain urine. Return for fever or worsening pain. Increase fluids. PCP f/u."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-15a",
+          "kind": "portal_message",
+          "start": "2024-12-15T10:47",
+          "reason": "ED visit update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Another stone",
+              "author": "patient",
+              "date": "2024-12-15T10:47",
+              "body": "Back in the ER yesterday afternoon, left side this time. They didn't do a scan, said it was obviously another stone. Same meds as June. Pain is a dull ache today, the pills are handling it. Do I need to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Another stone",
+              "author": "PCP",
+              "date": "2024-12-15T13:20",
+              "body": "Sorry you're dealing with this again. Keep straining and drink plenty. If you get a fever, chills, or pain the pills can't touch, go back in. Let's do a quick video visit Thursday so I can check how it's going. The front desk will reach out with a time."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "telehealth_visit",
+          "start": "2024-12-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for kidney stone",
+          "conditions": [
+            {
+              "label": "Calculus of ureter",
+              "icd10": "N20.1",
+              "action": "resolved",
+              "onset": "2024-12-14"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2024-12-19T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-12-19T12:40",
+              "body": "Video from his car on lunch break, identity verified.\n\nS: ED 12/14 for L flank pain, treated as a stone, no imaging there. Pain stopped abruptly Tuesday 12/17 evening, thinks it passed, strainer came up empty. No pain since, eating fine, no fever, urine looks normal. Stopped the ibuprofen Monday.\n\nCandid that he slid on the water plan since summer. During the workday drinks maybe two cups of water, but 4 to 5 mugs of black tea, and red meat most nights.\n\nO: comfortable on camera, speaking full sentences, no distress.\n\nA/P\n1. L ureteral stone, passed per symptoms. Resolved. Can stop tamsulosin.\n2. Recurrent calcium oxalate nephrolithiasis, second stone this year. Went back over it: water first, tea is fine in moderation but black tea is high in oxalate so swap at least half for water, red meat a few nights a week rather than most, keep salt down. Continue HCTZ. He'll set phone reminders for water.\n3. HTN: ED pressure was up with pain; recheck at next office visit.\n\nOffice visit in March for BP."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

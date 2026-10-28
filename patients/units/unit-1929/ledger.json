@@ -1,0 +1,1574 @@
+{
+  "unit": "unit-1929",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001929",
+      "given": "Andrea",
+      "family": "Morrow",
+      "birth_date": "1992-07-19",
+      "address_line": "17 Larkspur Lane",
+      "phone": "+1-917-555-0153",
+      "email": "andrea.morrow@example.test",
+      "marital_status": "single",
+      "summary": "Executive assistant who joined in 2021 with no active problems and a family history of otosclerosis (father) and myotonic dystrophy (mother). Otosclerosis diagnosed by ENT in 2024 and myotonic dystrophy type 1 by neurology in 2025; outside records arrive with gaps and delays.",
+      "events": [
+        {
+          "id": "2021-08-23a",
+          "kind": "telephone",
+          "start": "2021-08-23T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2021-08-23T10:12",
+              "author": "front desk",
+              "body": "Caller Andrea Morrow, 29, would like to move her primary care to us. Previous office was a large group practice and she says she rarely saw the same clinician twice. No urgent concerns. Insurance is an employer PPO through her job, card info taken. Booked new patient physical 9/14 at 8:40, asked her to sign the release so we can get her old records. Membership agreement emailed."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "establish_care",
+          "start": "2021-09-14T08:40",
+          "end": "2021-09-14T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {
+              "label": "Family history of deafness and hearing loss",
+              "action": "diagnosed",
+              "onset": "2021-09-14",
+              "note": "father with otosclerosis, hearing aids since his 40s",
+              "icd10": "Z82.2"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              73
+            ],
+            "hr": 73,
+            "spo2": 99,
+            "weight_kg": 61.3,
+            "height_cm": 165.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 94
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-14T09:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Executive assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-09-14T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2021-09-14T09:35",
+              "author": "PCP",
+              "body": "29 year old woman establishing care. Feels well. No complaints today.\n\nPMH: none. PSH: wisdom teeth removed. Meds: none, no supplements. Allergies: NKDA.\n\nFamily: father has otosclerosis and has worn hearing aids on both sides since his 40s. Mother had myotonic dystrophy, also had cataracts and type 2 diabetes; she died at 50. Maternal grandmother had weakness that came on later in life, family assumed the same muscle disease.\n\nSocial: executive assistant at a firm in town, desk job. Single, lives in Amherst. Never smoked. Alcohol a drink or two a month. Exercises by walking.\n\nGyn: periods regular. Last Pap 2019 at prior office, she believes normal. Had HPV shots as a teenager.\n\nROS negative across systems, specifically no hearing complaints, no weakness, no trouble swallowing.\n\nExam: well appearing, pleasant. HEENT: TMs clear, canals normal, oropharynx normal. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin unremarkable. Neuro grossly nonfocal, strength full and symmetric.\n\nPHQ-2 0.\n\nA/P\n1. Health maintenance: CBC, CMP, lipids. One-time HIV and hepatitis C screens, she agrees. Pap due 2022. Release signed for old records, will confirm Tdap and COVID dates from those. Flu shot once this season's supply comes in, nurse visit.\n2. Family history of hearing loss in father, noted. No hearing concerns now.\n\nRTC one year for physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Fasting Glucose": 86,
+              "Hemoglobin A1c": 5.2,
+              "High Density Lipoprotein": 64,
+              "Low Density Lipoprotein": 86,
+              "Triglycerides": 90
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-09-17a",
+          "kind": "portal_message",
+          "start": "2021-09-17T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-09-17T16:05",
+              "author": "PCP",
+              "body": "Hi Andrea, all of your blood work from Tuesday came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T11:20",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-05-03T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T14:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-09-28T11:20",
+              "author": "front desk",
+              "body": "42 pages received by fax from the patient's previous primary care group, covering 2014 to 2021. Summary for chart:\n- Cervical cytology 6/2019: negative for intraepithelial lesion or malignancy.\n- Tdap 5/2016.\n- COVID-19 Pfizer doses 4/9/2021 and 4/30/2021, given at a pharmacy, entered from her card.\n- HPV vaccine series completed in adolescence (dates not listed).\n- No chronic problems or medications on their list. NKDA.\nImmunizations entered. Abstracted for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T12:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T12:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization",
+              "date": "2021-10-19T12:25",
+              "author": "RN",
+              "body": "Here on lunch hour for flu vaccine. No fever, no prior reaction. Quadrivalent flu given IM left deltoid, lot recorded. Tolerated, left after a few minutes."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "portal_message",
+          "start": "2022-02-08T09:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Wellness form for work",
+              "date": "2022-02-08T09:47",
+              "author": "patient",
+              "body": "Hello, my employer's insurance wants a form signed showing I had a physical in the last 12 months so I get the premium discount. I uploaded it. Is that something you can fill out? Thanks, Andrea"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Wellness form for work",
+              "date": "2022-02-08T15:30",
+              "author": "MA",
+              "body": "Hi Andrea, the form is signed and uploaded back to your portal under Documents. You can download it from there."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "annual_physical",
+          "start": "2022-10-11T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              81
+            ],
+            "hr": 79,
+            "spo2": 97,
+            "weight_kg": 61.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-10-11T09:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 246
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-10-11T08:50",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV testing. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative.",
+              "issued": "2022-10-17T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-10-11T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-11T09:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-11T09:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-10-11T09:15",
+              "author": "PCP",
+              "body": "Annual. Doing well, busy year at work. No new symptoms. No hearing trouble, no weakness. Periods regular.\n\nMeds none. NKDA. Never smoker, rare alcohol.\nFamily history unchanged (father otosclerosis; mother myotonic dystrophy, deceased).\n\nExam: NAD. Ears: canals and TMs normal. Thyroid normal. Heart RRR no murmur, lungs clear. Abdomen soft. Pelvic: external genitalia normal, cervix without lesions, Pap with HPV collected. Strength 5/5 throughout.\n\nPHQ-2 0.\n\nPlan:\n- Pap with HPV today; if both negative next one in 5 years.\n- CBC today. Lipids were fine last year, not repeating.\n- Flu and bivalent COVID booster given.\n- Physical next year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-17a",
+          "kind": "portal_message",
+          "start": "2022-10-17T14:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2022-10-17T14:12",
+              "author": "PCP",
+              "body": "Andrea, your Pap smear was normal and the HPV test was negative, so the next one isn't due until 2027. Blood count from last week was normal too."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "annual_physical",
+          "start": "2023-10-10T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2023-10-09T16:44",
+              "author": "front desk",
+              "body": "Pt called, her boss scheduled an all-day offsite tomorrow and she can't get out of it. Cancelled 10/10 physical, rebooked 11/7 8:20."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "annual_physical",
+          "start": "2023-11-07T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              82
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 60.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-07T09:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-11-07T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-07T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-07T09:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-11-07T09:10",
+              "author": "PCP",
+              "body": "Rescheduled from October. Feels well, sleeping fine. PHQ-2 1. Denies hearing or swallowing problems, no weakness.\n\nNo meds. NKDA. Nonsmoker. Alcohol unchanged, a drink or two a month.\n\nExam: well. TMs normal. Neck without adenopathy. Heart and lungs normal. Abdomen benign. Normal gait, normal strength.\n\nA/P: healthy 31 year old.\n- CMP today.\n- Pap up to date through 2027.\n- Flu and 2023-24 COVID vaccine today.\n- RTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "portal_message",
+          "start": "2023-11-09T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from your physical",
+              "date": "2023-11-09T17:20",
+              "author": "PCP",
+              "body": "Hi Andrea, the metabolic panel from Tuesday was normal, kidney and liver numbers included. Talk next fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, hearing",
+          "vitals": {
+            "bp": [
+              103,
+              82
+            ],
+            "hr": 75,
+            "spo2": 98,
+            "weight_kg": 61.3
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-24T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T08:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral-2024",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "gradually worsening hearing, family history of otosclerosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T08:50",
+              "author": "PCP",
+              "body": "Annual exam. Main thing she wants to bring up is her hearing. Thinks it has been slipping for a few years, slowly. Hard to keep up with conversation at work lunches and in a busy restaurant, and her roommate teases her about how loud she keeps the TV. Denies ear pain, ringing, ear infections. Never any spinning, balance trouble or head injury. Thinks of her dad, who has otosclerosis.\n\nOtherwise well. No meds, NKDA. Never smoker. Rare alcohol.\n\nExam: NAD. Ears: external canals clear, both TMs intact and mobile, no fluid or redness. Whispered voice at arm's length missed on both sides. Neck, heart, lungs normal. Abdomen benign. Neuro nonfocal, strength full.\n\nPHQ-2 0.\n\nA/P\n1. Gradual bilateral hearing decline in a 32 year old with a father with otosclerosis. Referred to ENT for exam and formal audiogram.\n2. Health maintenance: Pap current to 2027. Flu vaccine today. Labs last year normal, skipping this year.\n\nRTC 1 year, or after ENT if anything comes of it."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "outside_records",
+          "start": "2024-11-19T13:40",
+          "conditions": [
+            {
+              "label": "Otosclerosis",
+              "action": "diagnosed",
+              "onset": "2024-11-11",
+              "note": "bilateral, right worse; per outside ENT"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Audiogram",
+              "performed": "2024-11-11T10:30",
+              "text": "Outside otolaryngology audiology, date of test 11/11/2024. Pure-tone air and bone conduction thresholds, speech audiometry, tympanometry and acoustic reflexes. Right ear: conductive hearing loss, pure-tone average 38 dB HL, air-bone gap 25 dB. Left ear: conductive hearing loss, pure-tone average 30 dB HL, air-bone gap 20 dB. Word recognition 96% right, 100% left at comfortable level. Tympanometry type A bilaterally. Ipsilateral and contralateral acoustic reflexes absent bilaterally.",
+              "conclusion": "Bilateral conductive hearing loss, right greater than left, with normal tympanograms and absent reflexes, consistent with otosclerosis."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral-2024",
+              "action": "done",
+              "date": "2024-11-19T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology consultation",
+              "date": "2024-11-19T13:40",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology group. Date of visit: 11/11/2024. Received by fax 11/19/2024.\n\nThank you for referring Ms. Morrow, 32, for hearing loss.\n\nHistory: several years of slowly declining hearing. She has the most trouble following group conversation in crowded places and raises the television volume. No otalgia, no tinnitus, no history of ear infections. Has had no vertigo, disequilibrium or head trauma. Her father began wearing hearing aids in his 40s.\n\nMedications: none. Allergies: NKDA. Surgical history: third molar extraction. Never smoker, occasional alcohol, works as an executive assistant.\n\nExam: Auricles and external auditory canals normal. Tympanic membranes intact bilaterally, no erythema, no middle ear effusion. 512 Hz tuning fork: Rinne negative both ears (bone louder than air). Weber lateralizes to the right. Cranial nerves and remainder of neurologic exam normal.\n\nAudiogram today: bilateral conductive loss, right PTA 38 dB with 25 dB air-bone gap, left PTA 30 dB with 20 dB gap; excellent word recognition; type A tympanograms; reflexes absent bilaterally.\n\nImpression: bilateral otosclerosis, right ear worse.\n\nPlan: We went over watchful waiting, hearing aids and stapes surgery. She would like to observe for now since she is managing day to day. Repeat audiogram in about a year, sooner if she notices a change. Happy to see her back anytime."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-21a",
+          "kind": "portal_message",
+          "start": "2024-11-21T12:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ENT report",
+              "date": "2024-11-21T12:02",
+              "author": "PCP",
+              "body": "Hi Andrea, I got the ENT letter and your hearing test. It does look like otosclerosis, the same condition your dad has, affecting both ears and the right a little more. I agree with waiting and rechecking in a year since you're getting by fine. If it bothers you more at work, hearing aids are a reasonable next step, just let me or ENT know. I've added it to your problem list."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ENT report",
+              "date": "2024-11-21T19:30",
+              "author": "patient",
+              "body": "Thank you. Not surprised honestly. I'll keep an eye on it."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "office_visit",
+          "start": "2025-04-22T15:20",
+          "end": "2025-04-22T16:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "weakness",
+          "vitals": {
+            "bp": [
+              104,
+              77
+            ],
+            "hr": 69,
+            "spo2": 98,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-04-22T16:10",
+              "resulted": "2025-04-23T11:15",
+              "results": [
+                {
+                  "test": "Creatine Kinase",
+                  "value": 412
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-22T16:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.69
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-22T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 278
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.58
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-22T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "neuro-referral-2025",
+              "action": "placed",
+              "order": "Neurology referral",
+              "category": "referral",
+              "to": "Neurology",
+              "reason": "proximal weakness and dysphagia, mother with myotonic dystrophy"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-04-22T16:05",
+              "author": "PCP",
+              "body": "S: Asked for a visit this week. Since around the end of January her legs and arms have felt weak. Getting up out of her desk chair or off the couch takes effort and she has started pushing up with her hands. Stairs to her apartment are harder; she uses the rail. Lifting files onto an upper shelf at work is tiring at the shoulders. Steadily worse, not fluctuating through the day. Also food, especially meat and bread, seems to stick going down several times a week; liquids are fine. No choking. No double vision she has noticed. No rash, no muscle pain, no fever, no weight loss. No new medicines or supplements. She is aware her mother had myotonic dystrophy and is worried.\n\nHearing about the same as in the fall.\n\nO: Vitals as charted. Alert, appears well. Mild drooping of both upper lids. No rash. Neck flexion full. Shoulder abduction 4/5 bilaterally, hip flexion 4/5 bilaterally, distal strength 5/5. Needs arms to rise from the chair. Reflexes 2+ and symmetric. Sensation intact. Gait normal on level ground.\n\nA/P: Symmetric proximal weakness with mild ptosis and solid-food dysphagia, 3 months, in a woman whose mother had myotonic dystrophy. Concerned for the same.\n- CK, TSH, CMP, CBC today.\n- Neurology referral, asked for the next available new patient slot.\n- Cut food small, eat slowly; return or call for choking, trouble with liquids or breathing.\n- Avoid starting any new medicines without checking with us."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "portal_message",
+          "start": "2025-04-24T08:35",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood work from Tuesday",
+              "date": "2025-04-24T08:35",
+              "author": "PCP",
+              "body": "Andrea, your muscle enzyme (CK) is elevated at 412, which tells us the muscles themselves are involved. Thyroid was normal at 1.9, and the rest of the panel was normal. This fits with what we talked about, and neurology is the right next stop. Their office should be calling you to schedule; let us know if you haven't heard by next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Blood work from Tuesday",
+              "date": "2025-04-24T12:10",
+              "author": "patient",
+              "body": "They called this morning, I'm in on May 27. Thanks for getting it moving."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-20a",
+          "kind": "portal_message",
+          "start": "2025-06-20T10:18",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Neurology results",
+              "date": "2025-06-20T10:18",
+              "author": "patient",
+              "body": "Hi, wanted to update you. I saw neurology on 5/27 and they think it's myotonic dystrophy type 1 like my mom. They did a genetic test and the result came back this week, it's positive. They also sent me for a swallowing evaluation on the 10th, which went ok, I was given some tips. Neurology wants me to get an EKG and see an eye doctor. Can I come in to go over everything?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Neurology results",
+              "date": "2025-06-20T14:02",
+              "author": "RN",
+              "body": "Hi Andrea, I'm sorry to hear it, and thanks for letting us know. We have not received anything from neurology yet, so I've faxed a request for the consult note and the genetic report. Front desk will reach out to set up a visit with the doctor in the next couple of weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-23a",
+          "kind": "telephone",
+          "start": "2025-06-23T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request to neurology",
+              "date": "2025-06-23T10:40",
+              "author": "RN",
+              "body": "Called outside neurology office to follow up on Friday's fax. Medical records says the consult note is still unsigned and the genetic report will go out with it. Asked them to send both as soon as signed."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "office_visit",
+          "start": "2025-07-08T09:00",
+          "end": "2025-07-08T09:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after neurology",
+          "conditions": [
+            {
+              "label": "Myotonic dystrophy type 1",
+              "action": "diagnosed",
+              "onset": "2025-05-27",
+              "note": "per patient report of outside neurology and positive DMPK testing; letter pending",
+              "icd10": "G71.11"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              74
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 61.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-08T09:50",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 81
+                },
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-07-08T09:30",
+              "text": "Sinus rhythm, rate 68. PR 188 ms, QRS 98 ms, QTc 418 ms. Normal axis. No conduction block, no ST or T wave abnormality.",
+              "conclusion": "Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-08T09:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-07-08T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ophtho-referral-2025",
+              "action": "placed",
+              "order": "Ophthalmology referral",
+              "category": "referral",
+              "to": "Ophthalmology",
+              "reason": "myotonic dystrophy type 1, slit-lamp exam for cataract"
+            },
+            {
+              "id": "neuro-referral-2025",
+              "action": "done",
+              "date": "2025-07-08T09:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-07-08T09:45",
+              "author": "PCP",
+              "body": "Follow-up after neurology. Consult letter still not here; history from patient and her phone photo of the after-visit summary.\n\nShe saw neurology 5/27. They found weakness and wasting, droopy lids, and slow relaxation of her face muscles after squeezing, and sent a DMPK gene test, which came back positive on 6/16 for the repeat expansion. Diagnosis myotonic dystrophy type 1. Her understanding of their recommendations: yearly EKG, an eye exam for cataracts, sugar screening, a swallow evaluation, and to tell any surgeon or anesthesiologist about the diagnosis. They offered genetic counseling, she is thinking about it.\n\nSwallow eval 6/10: told she was not aspirating; taught small bites, alternating bites with sips, and tucking her chin. Doing these and food sticks less often. Weakness about the same as April. Hearing unchanged.\n\nO: Vitals as charted. Mild bilateral ptosis. Shoulder abduction and hip flexion 4/5. Uses hands to stand.\n\nECG today: sinus rhythm 68, PR 188, QRS 98, QTc 418, normal.\n\nA/P\n1. Myotonic dystrophy type 1, newly diagnosed by neurology. Added to problem list. Baseline ECG normal; repeat yearly. Fasting glucose and A1c today. Ophthalmology referral for slit-lamp exam. Chart alert added: myotonic dystrophy, anesthesia and sedation risk, involve anesthesia early for any procedure. Re-requested neurology records.\n2. Otosclerosis, stable, ENT recheck due this fall.\n\nRTC for physical in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "portal_message",
+          "start": "2025-07-10T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sugar screening",
+              "date": "2025-07-10T12:30",
+              "author": "PCP",
+              "body": "Andrea, your fasting sugar and A1c were both normal, so no sign of diabetes. We'll repeat these once a year along with the EKG."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "telephone",
+          "start": "2025-07-29T14:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Second records request",
+              "date": "2025-07-29T14:15",
+              "author": "MA",
+              "body": "Neurology consult from 5/27 still not received. Re-faxed request with signed release, spoke to their front desk, promised by end of next week."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-05a",
+          "kind": "outside_records",
+          "start": "2025-08-05T10:55",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology consultation",
+              "date": "2025-08-05T10:55",
+              "author": "neurology",
+              "body": "Outside neurology practice. Date of visit: 5/27/2025. Received 8/5/2025 after second request.\n\nReason for consultation: progressive weakness.\n\nHPI: Ms. Morrow is a 32 year old woman, seen by ENT last November for slowly worsening hearing, who comes for evaluation of 4 months of progressive weakness, worst at the shoulders and hips. She has difficulty getting up from a seated position and with stairs. She also describes frequent dysphagia, mostly with solids. Her mother had similar symptoms and died at age 50.\n\nPMH: otosclerosis. PSH: wisdom teeth extraction. Medications: none. Allergies: NKDA. Social: never smoker, social alcohol 1-2 drinks per month, executive assistant.\n\nExam: Alert, fluent. Mild bilateral ptosis. Muscle wasting is evident. After forceful eye closure and grimace, the facial muscles are slow to relax, consistent with myotonia. Proximal limb weakness. Sensory exam normal.\n\nData: CK elevated (412 U/L) and TSH normal (1.9) from referring office 4/22/2025.\n\nImpression: clinical picture strongly suggests myotonic dystrophy type 1.\n\nPlan: DMPK repeat analysis sent today. If confirmed: yearly ECG with low threshold for cardiology if any conduction change or palpitations; slit-lamp eye exam; yearly fasting glucose/A1c; speech-language swallow evaluation, ordered; genetic counseling offered; anesthesia precautions with any sedation or general anesthesia. Follow up in about 9 months.\n\nAddendum 6/16/2025: DMPK testing shows a CTG trinucleotide repeat expansion, confirming myotonic dystrophy type 1. Patient informed by phone."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "outside_records",
+          "start": "2025-09-23T15:10",
+          "orders": [
+            {
+              "id": "ophtho-referral-2025",
+              "action": "done",
+              "date": "2025-09-23T15:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Ophthalmology letter",
+              "date": "2025-09-23T15:10",
+              "author": "ophthalmology",
+              "body": "Outside ophthalmology office. Date of exam: 9/16/2025.\n\nDear colleague, I saw Andrea for a dilated exam given her myotonic dystrophy type 1. Visual acuity 20/20 in each eye uncorrected. Pupils equal and reactive. Mild bilateral lid ptosis, not covering the visual axis. Slit lamp: lenses clear in both eyes, no cataract. Dilated fundus exam normal in both eyes. Pressures normal.\n\nNo cataract at this time. Would recheck in a year. Thank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "annual_physical",
+          "start": "2025-10-14T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              107,
+              70
+            ],
+            "hr": 68,
+            "spo2": 98,
+            "weight_kg": 61.3
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-10-14T09:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 108
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-14T09:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.79
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-10-14T08:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-14T09:02"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-10-14T09:10",
+              "author": "PCP",
+              "body": "Annual. Neurology letter now in chart, confirms myotonic dystrophy type 1 with the DMPK result. Eye doctor saw her in September, lenses clear. July glucose and A1c were normal.\n\nShe says strength is about where it was in the summer, still uses the rail and pushes up from chairs. Swallowing tips are working. Has not set up genetic counseling yet. Mood ok, PHQ-2 1. Hearing roughly the same, hasn't gone back to ENT yet.\n\nNo meds. NKDA. Never smoker.\n\nExam: Mild ptosis bilaterally. Ears: TMs normal. Heart regular, lungs clear. Proximal strength 4/5 at shoulders and hips, unchanged. Pelvic deferred, Pap current.\n\nA/P\n1. Myotonic dystrophy type 1: stable. ECG due July. Neurology follow-up expected early next year. Reminded about genetic counseling.\n2. Otosclerosis: ENT recheck due next month, she will call them.\n3. Health maintenance: lipids, CBC. Flu and COVID vaccines today.\n\nRTC in the spring/summer for ECG and follow-up."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "portal_message",
+          "start": "2025-10-16T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2025-10-16T08:05",
+              "author": "PCP",
+              "body": "Cholesterol and blood count from Tuesday were normal. Nothing new to do. Don't forget to call ENT for your hearing recheck."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "date": "2025-10-16T12:47",
+              "author": "patient",
+              "body": "Will do, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "portal_message",
+          "start": "2026-04-28T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hearing worse",
+              "date": "2026-04-28T21:14",
+              "author": "patient",
+              "body": "Hi, my hearing has gotten noticeably worse since around the fall, mostly the right side. Weirdly I follow people a little better when there's background noise, it's quiet rooms that are hard. I want to go back to ENT. Do you need to send a new referral for my insurance?"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-29a",
+          "kind": "portal_message",
+          "start": "2026-04-29T11:03",
+          "orders": [
+            {
+              "id": "ent-referral-2026",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "otosclerosis, hearing worse over 6 months, right more than left"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: Hearing worse",
+              "date": "2026-04-29T11:03",
+              "author": "RN",
+              "body": "Hi Andrea, your plan doesn't strictly require one, but the ENT office asked for an updated referral, so the doctor signed it this morning and it was faxed with your last notes. Better hearing with background noise is something they'll want to hear about. Please book your summer follow-up with us too, your yearly EKG is due."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-19a",
+          "kind": "office_visit",
+          "start": "2026-06-19T14:00",
+          "end": "2026-06-19T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "myotonic dystrophy follow-up, yearly ECG",
+          "vitals": {
+            "bp": [
+              116,
+              70
+            ],
+            "hr": 66,
+            "spo2": 99,
+            "weight_kg": 61.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-19T14:40",
+              "resulted": "2026-06-20T09:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 67
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-19T14:40",
+              "resulted": "2026-06-20T09:30",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 4.9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-06-19T14:20",
+              "text": "Sinus rhythm, rate 72. PR 192 ms, QRS 100 ms, QTc 422 ms. Normal axis. No AV block or bundle branch block. No ST or T wave changes.",
+              "conclusion": "Normal ECG. Intervals within normal limits."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-19T14:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-06-19T14:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2026-06-19T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-06-19T14:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-06-19T14:40",
+              "author": "PCP",
+              "body": "Yearly ECG and check-in.\n\nENT 5/15 (letter not received yet): per her, hearing tested worse on the right; the left was about the same. They talked about trying a hearing aid on the right first versus surgery on the small ear bone, and the surgeon wanted to think through anesthesia with her myotonic dystrophy before going that way. She is leaning toward the hearing aid. She also learned at that visit that an aunt and her grandmother on her mother's side had hearing trouble starting in their thirties.\n\nNeurology 2/10 (no note to us): told things were stable, see them again in a year.\n\nStrength unchanged since last summer. Swallowing about the same, using the techniques. No palpitations, fainting or shortness of breath. No vision change. Has not done genetic counseling.\n\nNo meds. NKDA.\n\nO: Vitals as charted. Mild bilateral ptosis. TMs normal. Heart regular, no murmur. Lungs clear. Shoulder abduction and hip flexion 4/5, unchanged.\nECG: sinus 72, PR 192, QRS 100, QTc 422. Normal, similar to last July.\n\nA/P\n1. Myotonic dystrophy type 1: stable. ECG normal, repeat in a year. CMP and A1c today. Eye recheck due in September.\n2. Otosclerosis, right progressing: agree with hearing aid trial first. Will watch for the ENT letter.\n3. Tdap due (last 2016), given.\n\nPhysical in October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "portal_message",
+          "start": "2026-06-22T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2026-06-22T08:50",
+              "author": "PCP",
+              "body": "Andrea, Friday's EKG was normal and the blood work (kidneys, liver, electrolytes and A1c) came back normal as well. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "outside_records",
+          "start": "2026-07-14T09:25",
+          "reports": [
+            {
+              "study": "Audiogram",
+              "performed": "2026-05-15T09:40",
+              "text": "Outside otolaryngology audiology, date of test 5/15/2026. Right ear: conductive hearing loss, pure-tone average 52 dB HL, air-bone gap 35 dB, word recognition 92%. Left ear: conductive hearing loss, pure-tone average 30 dB HL, air-bone gap 20 dB, word recognition 100%. Tympanometry type A bilaterally. Acoustic reflexes absent bilaterally.",
+              "conclusion": "Progression of right conductive hearing loss since 11/2024; left ear stable."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral-2026",
+              "action": "done",
+              "date": "2026-07-14T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology follow-up",
+              "date": "2026-07-14T09:25",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology group. Date of visit: 5/15/2026. Received 7/14/2026.\n\nMs. Morrow returns with bilateral otosclerosis, now also carrying a diagnosis of myotonic dystrophy type 1. Over the last 6 months her hearing has declined further. She notices speech is somewhat easier to follow against background noise. No otalgia, otorrhea or tinnitus. Family history: father with otosclerosis; a maternal aunt and her maternal grandmother had hearing loss beginning in their thirties.\n\nExam: external ears and canals normal. Tympanic membranes normal bilaterally. Weber lateralizes right. Rinne negative on the right.\n\nAudiogram: right conductive loss has progressed, PTA 52 dB with 35 dB air-bone gap; left unchanged from 2024.\n\nImpression: otosclerosis, progressive on the right.\n\nPlan: Recommend amplification first, referral to audiology for hearing aid evaluation on the right. Stapedotomy remains an option; given myotonic dystrophy, we would coordinate with anesthesia and neurology before any surgery. Recheck audiogram in a year.\n\nMedications: none. Allergies: NKDA."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside record filed",
+              "date": "2026-07-14T09:40",
+              "author": "MA",
+              "body": "ENT note and audiogram from 5/15 scanned and routed to PCP inbox."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T13:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hearing aid appointment",
+              "date": "2026-08-11T13:22",
+              "author": "patient",
+              "body": "Just an FYI, ENT's audiology department has me down for a hearing aid evaluation in September. I'll let you know how it goes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hearing aid appointment",
+              "date": "2026-08-11T17:05",
+              "author": "PCP",
+              "body": "Thanks Andrea, I saw the ENT letter come through. Hope the fitting goes smoothly."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-20a",
+          "kind": "annual_physical",
+          "start": "2026-10-20T08:20",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Family history of deafness and hearing loss|Z82.2": {
+        "code": "Z82.2",
+        "display": "Family history of deafness and hearing loss",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Myotonic dystrophy type 1|G71.11": {
+        "code": "G71.11",
+        "display": "Myotonic muscular dystrophy",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

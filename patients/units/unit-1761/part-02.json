@@ -1,0 +1,597 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001761",
+      "events": [
+        {
+          "id": "2025-02-18a",
+          "kind": "pharmacy",
+          "start": "2025-02-18T09:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Prenatal vitamin refill",
+              "author": "MA",
+              "date": "2025-02-18T09:05",
+              "body": "Electronic request from pharmacy: prenatal vitamin with iron, 1 tab daily, #90. Last physical 9/2024. Approved x3 refills per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-10a",
+          "kind": "portal_message",
+          "start": "2025-03-10T06:52",
+          "reason": "positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Pregnant state, incidental",
+              "icd10": "Z33.1",
+              "action": "diagnosed",
+              "onset": "2025-02-17",
+              "note": "LMP 2025-02-03, EDD 2025-11-10 by dates"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "new pregnancy, 5 weeks; mother with hyperemesis gravidarum"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test!",
+              "author": "patient",
+              "date": "2025-03-10T06:52",
+              "body": "Good morning! I took a home test this morning and it was positive. First day of my last period was February 3. What do I do next? I've been taking the prenatal vitamin since September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Positive test!",
+              "author": "PCP",
+              "date": "2025-03-10T12:15",
+              "body": "Leah, this is wonderful news. By your dates you're about 5 weeks, due around November 10. Keep the prenatal vitamin going. I've placed a referral to obstetrics; they usually like to see you around 7 to 8 weeks and will do the first ultrasound. Please tell them about your mom's hyperemesis. If you start vomiting to the point you can't keep fluids down, call us or them the same day, don't wait it out."
+            },
+            {
+              "type": "Referral",
+              "title": "Obstetrics referral",
+              "author": "PCP",
+              "date": "2025-03-10T12:20",
+              "body": "26 y/o G1, LMP 2/3/25, ~5 wks by dates, positive home UPT. Healthy, no meds other than prenatal vitamin, NKDA. Family history of hyperemesis gravidarum (mother, hospitalized). Please see for new OB intake."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-27a",
+          "kind": "outside_records",
+          "start": "2025-03-27T14:30",
+          "reason": "obstetrics intake letter",
+          "orders": [
+            {
+              "id": "ob-referral-2025",
+              "action": "done",
+              "date": "2025-03-24T10:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, first trimester",
+              "loinc": "11525-3",
+              "performed": "2025-03-24T10:30",
+              "text": "Transvaginal technique. Single intrauterine gestation. Yolk sac present. Embryo with cardiac activity seen. Crown-rump length consistent with 7 weeks 0 days, concordant with menstrual dating. Adnexa unremarkable. No free fluid.",
+              "conclusion": "Viable singleton intrauterine pregnancy at 7 weeks 0 days by crown-rump length, consistent with dates."
+            },
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-03-24T10:15",
+              "issued": "2025-03-27T09:00",
+              "text": "Liquid-based preparation. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics new OB visit",
+              "author": "obstetrics",
+              "date": "2025-03-27T14:30",
+              "body": "OUTSIDE OBSTETRIC GROUP\nNew OB Visit, 3/24/2025\nRe: Leah Fleming, G1P0\n\nThank you for referring this 26-year-old. LMP 2/3/2025, EDD 11/10/2025. Mild nausea most mornings, no vomiting yet. No bleeding or cramping.\nMeds: prenatal vitamin with iron daily. Allergies: NKDA.\nFamily history noted: mother with hyperemesis requiring admission. We discussed early warning signs and when to call.\n\nExam: weight 61.2 kg, BP normal. Pelvic exam normal. Pap collected.\nTransvaginal ultrasound: viable single intrauterine pregnancy measuring 7w0d, consistent with dates.\nRoutine prenatal labs sent.\n\nPlan: return in 4 weeks; call for vomiting that prevents her from keeping liquids down.\n\nAddendum 3/27: Pap negative.\n\n--- Scanned to chart, reviewed by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-09a",
+          "kind": "ed_visit",
+          "start": "2025-04-09T13:40",
+          "end": "2025-04-09T20:10",
+          "service": "Emergency Medicine",
+          "reason": "vomiting in pregnancy, unable to keep fluids down",
+          "conditions": [
+            {
+              "label": "Hyperemesis gravidarum with metabolic disturbance",
+              "icd10": "O21.1",
+              "action": "diagnosed",
+              "onset": "2025-03-30"
+            },
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "diagnosed",
+              "onset": "2025-04-07"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "start",
+              "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea or vomiting",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperemesis gravidarum"
+            },
+            {
+              "drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "QHS",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperemesis gravidarum"
+            }
+          ],
+          "vitals": {
+            "hr": 110,
+            "bp": [
+              90,
+              60
+            ],
+            "weight_kg": 57.7
+          },
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ],
+          "state": {
+            "weight_kg": 57.7
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-04-09T14:05",
+              "results": [
+                {
+                  "test": "Urine Ketones",
+                  "text": "Moderate (40 mg/dL)"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-04-09T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2025-04-09T20:10",
+              "body": "COMMUNITY EMERGENCY DEPARTMENT\nArrival 13:40.\n\nCC: vomiting x 10 days, no fluids kept down x 2 days.\n\nHPI: 26 y/o G1 at 9w2d by LMP, viable single IUP on ultrasound at 7 weeks with her OB. Over the last ten days she has been throwing up after almost every meal, and since Monday cannot hold down even water. Tired, lightheaded when she stands up. Denies fever, belly pain, diarrhea. Urine pregnancy test was positive at 5 weeks.\n\nPMH: none. PSH: tonsillectomy (child), wisdom teeth (age 20).\nMeds: prenatal vitamin with iron daily.\nAllergies: NKDA.\nFamily: mother had hyperemesis, was admitted for it. Maternal uncle with recurrent calcium oxalate stones. Paternal grandmother DM2.\nSocial: never smoker, no alcohol (pregnant), teaches elementary school.\n\nVitals on arrival: HR 110, BP 90/60.\nExam: thin, tired-appearing young woman. Mucous membranes dry. Orthostatic: mild drop in pressure on standing. Weight 57.7 kg, down 3.5 kg from her first prenatal visit (61.2). Abdomen soft, nontender. Fetal heart tones present on handheld check.\n\nUA: ketones moderate.\n\nED course: 2 L IV lactated Ringer's, ondansetron 4 mg IV, thiamine 100 mg IV. Nausea eased; tolerated crackers and ginger ale x 2 without emesis. Repeat HR 88.\n\nImpression: hyperemesis gravidarum with dehydration and ketonuria.\nDisposition: home. Rx ondansetron 4 mg ODT q8h prn; doxylamine/pyridoxine 10/10 mg DR, 1 at bedtime. Small frequent sips. Call OB tomorrow. Return for inability to keep fluids, fainting, abdominal pain, bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "outside_records",
+          "start": "2025-04-10T09:15",
+          "reason": "ED record received",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED visit notification",
+              "author": "front desk",
+              "date": "2025-04-10T09:15",
+              "body": "ED record from 4/9/2025 received by fax (hyperemesis, discharged home). Filed and routed to PCP. Called pt: she is booked Friday 4/11 for a follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-11a",
+          "kind": "office_visit",
+          "start": "2025-04-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, hyperemesis",
+          "state": {
+            "weight_kg": 58.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-11T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: ED follow-up",
+              "author": "PCP",
+              "date": "2025-04-11T16:05",
+              "body": "S: Seen in the ED Wednesday at 9 weeks for hyperemesis, got 2 L and went home on ondansetron as needed plus doxylamine-pyridoxine at night. Since then she has thrown up twice a day instead of after every meal and is keeping down water, broth, toast. Using ondansetron about twice a day. A little constipated. Took two sick days. OB office called her yesterday and moved up her next visit.\n\nO: Looks tired but better. Mucous membranes moist. Wt 58.0 (ED 57.7). Abdomen soft, nontender.\n\nA/P: Hyperemesis gravidarum, improving on the ED regimen. Dehydration improving.\n- Continue ondansetron prn and doxylamine-pyridoxine at bedtime. OB to adjust as needed; I'd defer dosing changes to them.\n- Fluids in small amounts all day; water bottle on her desk at school.\n- Lower threshold for return: if she can't keep liquids for 12 hours, message me or go back.\n- Recheck in a few weeks or sooner."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 58.0
+          }
+        },
+        {
+          "id": "2025-05-04a",
+          "kind": "ed_visit",
+          "start": "2025-05-04T08:25",
+          "end": "2025-05-04T17:40",
+          "service": "Emergency Medicine",
+          "reason": "recurrent vomiting in pregnancy",
+          "conditions": [
+            {
+              "label": "Hyperemesis gravidarum with metabolic disturbance",
+              "icd10": "O21.1",
+              "action": "history",
+              "note": "recurrence with hypokalemic hypochloremic metabolic alkalosis"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily for 5 days",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "low potassium from vomiting"
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-04T08:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 92
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 32
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 19
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 76
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-04T08:50",
+              "results": [
+                {
+                  "test": "pH of Venous blood",
+                  "loinc": "2746-6",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Venous blood",
+                  "loinc": "2021-4",
+                  "unit": "mm[Hg]",
+                  "value": 46
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-04T09:10",
+              "results": [
+                {
+                  "test": "Urine Ketones",
+                  "text": "Large (>=80 mg/dL)"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-04T08:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Provider Note",
+              "author": "emergency medicine",
+              "date": "2025-05-04T17:40",
+              "body": "COMMUNITY EMERGENCY DEPARTMENT\n\nChief complaint: nausea and vomiting, can't keep anything down x 2 days.\n\n26 y/o G1 at 12w6d, seen here 4/9 for hyperemesis. Had been doing much better for a couple of weeks on ondansetron and doxylamine/pyridoxine. Since Friday she is vomiting every two to three hours and has kept nothing down, not even water. No diarrhea, no abdominal pain, no fever, no travel. Under the care of an outside obstetric group.\n\nMeds: prenatal vitamin with iron; ondansetron 4 mg ODT prn; doxylamine/pyridoxine 10/10 qhs. NKDA.\nFamily: mother with hyperemesis needing admission; maternal uncle with calcium oxalate stones; paternal grandmother DM2.\nNever smoker, no alcohol, teacher.\n\nHR 104, BP 102/64.\nExam: fatigued, mildly dry. Mucous membranes dry. Orthostatic BP changes present. Abdomen soft, no tenderness, no rebound.\n\nWe sent electrolytes and a venous gas to sort out her volume and acid-base status.\nNa 134, K 3.1, Cl 92, HCO3 32, BUN 19, Cr 0.6, glucose 76. Venous pH 7.48, pCO2 46. Urine ketones large.\nPicture is a hypokalemic, hypochloremic metabolic alkalosis from ongoing vomiting with volume depletion.\n\nCourse: NS 1 L then D5 NS with 20 mEq KCl/L x 1 L. Metoclopramide 10 mg IV, thiamine 100 mg IV. By afternoon sipping juice and broth without vomiting. Discussed with on-call OB, who agreed with discharge and will see her this week.\n\nDx: hyperemesis gravidarum with metabolic disturbance (hypokalemia, metabolic alkalosis), dehydration.\nDispo: home. KCl 20 mEq ER daily x 5 days. Continue current antiemetics. Repeat BMP with PCP in 2 to 3 days. Return precautions reviewed."
+            }
+          ],
+          "vitals": {
+            "hr": 104,
+            "bp": [
+              102,
+              64
+            ]
+          }
+        },
+        {
+          "id": "2025-05-05a",
+          "kind": "outside_records",
+          "start": "2025-05-05T08:40",
+          "reason": "ED record received",
+          "orders": [
+            {
+              "id": "bmp-recheck-2025",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "ED record 5/4",
+              "author": "RN",
+              "date": "2025-05-05T08:40",
+              "body": "Second ED visit for hyperemesis received (5/4). K 3.1, sent home on 5 days of potassium. ED asks for a BMP in 2-3 days. Called pt, sounds tired but kept breakfast down. Booked Wed 5/7 with PCP, BMP order in."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-07a",
+          "kind": "office_visit",
+          "start": "2025-05-07T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, potassium recheck",
+          "conditions": [
+            {
+              "label": "Dehydration",
+              "icd10": "E86.0",
+              "action": "resolved"
+            }
+          ],
+          "orders": [
+            {
+              "id": "bmp-recheck-2025",
+              "action": "done",
+              "date": "2025-05-07T16:10"
+            }
+          ],
+          "state": {
+            "weight_kg": 56.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-07T16:10",
+              "resulted": "2025-05-08T07:30",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 3.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-07T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-07T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: second ED follow-up",
+              "author": "PCP",
+              "date": "2025-05-07T16:30",
+              "body": "Back after a second ED visit Sunday at 12w6d: vomiting q2-3h, K 3.1 with a contraction alkalosis, fluids with potassium, home on 5 days of KCl.\n\nSince then: no vomiting for two days. Eating small amounts, mostly bland, and drinking. Taking the KCl, on day 3 of 5. OB saw her Monday; they're keeping the same antiemetics for now.\n\nExam: Wt 56.8. Mucous membranes moist. No orthostatic symptoms on standing today. Abdomen soft.\n\nA/P\n1. Hyperemesis gravidarum, second ED visit, now tolerating intake. Dehydration has resolved clinically.\n2. Hypokalemia/alkalosis from vomiting: BMP today, finish the KCl.\n3. She asked if this will last the whole pregnancy. Told her many people turn a corner in the second trimester, but not all; OB is steering.\nWill message results."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 56.8
+          }
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "portal_message",
+          "start": "2025-05-08T08:10",
+          "reason": "lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Potassium back to normal",
+              "author": "PCP",
+              "date": "2025-05-08T08:10",
+              "body": "Leah, your potassium is back up to 3.8 and the other salts and your kidney number are normal. Finish the last two days of potassium and you're done with it. Hope today is a good food day."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "outside_records",
+          "start": "2025-06-27T13:20",
+          "reason": "obstetrics visit letter",
+          "medications": [
+            {
+              "drug": "ondansetron 4 MG Disintegrating Oral Tablet",
+              "action": "stop",
+              "reason": "vomiting resolved"
+            },
+            {
+              "drug_text": "doxylamine succinate 10 MG / pyridoxine hydrochloride 10 MG Delayed Release Oral Tablet",
+              "action": "stop",
+              "reason": "vomiting resolved"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, anatomy survey",
+              "loinc": "11525-3",
+              "performed": "2025-06-24T09:40",
+              "text": "Single live intrauterine gestation. Biometry consistent with 20 weeks 1 day, concordant with established dating. Fetal anatomy survey complete and normal: intracranial structures, face, spine, four-chamber heart and outflow tracts, stomach, kidneys, bladder, abdominal wall and extremities seen and normal. Posterior placenta, no previa. Amniotic fluid normal. Cervix long and closed.",
+              "conclusion": "Normal anatomy survey at 20 weeks 1 day."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Obstetrics 20-week visit",
+              "author": "obstetrics",
+              "date": "2025-06-27T13:20",
+              "body": "OUTSIDE OBSTETRIC GROUP\nProgress note, 6/24/2025, 20w1d\n\nHyperemesis much improved. Some nausea at the end of the day; no vomiting for about two weeks. Not using ondansetron. Eating three meals.\nPlan: stop ondansetron and doxylamine/pyridoxine; she can call if symptoms return. Continue prenatal vitamin.\nBP normal. Fundal height appropriate. Fetal heart tones normal.\nAnatomy ultrasound today normal.\nRTC 4 weeks. Glucose screen at 24-28 weeks.\n\n--- Received and filed, med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-27a",
+          "kind": "office_visit",
+          "start": "2025-08-27T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in visit",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled appointment",
+              "author": "front desk",
+              "date": "2025-08-27T07:45",
+              "body": "Pt called, teacher in-service day ran long and she can't make 3:30 today. Rescheduled to Fri 9/5 at 3:45."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-05a",
+          "kind": "office_visit",
+          "start": "2025-09-05T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "pregnancy check-in, vaccines",
+          "conditions": [
+            {
+              "label": "Hyperemesis gravidarum with metabolic disturbance",
+              "icd10": "O21.1",
+              "action": "resolved"
+            }
+          ],
+          "state": {
+            "weight_kg": 64.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-09-05T16:15"
+            },
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-09-05T16:17"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-09-05T15:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-09-05T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-09-05T16:25",
+              "body": "27F G1 at 30w4d, here to check in and get her pregnancy vaccines; OB is fine with us giving them.\n\nFeeling well. No vomiting since June. Appetite good. Back in the classroom this week, tired by afternoon but managing. Seeing OB every 2 weeks soon. Still on the prenatal vitamin, off the nausea meds.\n\nExam: Wt 64.5 (61.6 pre-pregnancy). BP normal. Gravid abdomen. No edema.\n\nA/P\n1. Hyperemesis gravidarum: resolved since mid-second trimester. Off list as active.\n2. Pregnancy, 30 weeks, uncomplicated since. OB managing.\n3. Tdap and flu given today.\nI'll see her after the baby comes; postpartum care with OB first. Message me any time."
+            }
+          ],
+          "vitals": {
+            "weight_kg": 64.5
+          }
+        }
+      ]
+    }
+  ]
+}
