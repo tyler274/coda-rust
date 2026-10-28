@@ -235,6 +235,7 @@ pub fn fill(lab: &mut Lab, members: &[String], d: &Draw, errors: &mut Vec<String
             test: m.clone(),
             loinc: None,
             unit: None,
+            range: None,
             value: None,
             text: None,
             resulted: None,

@@ -390,6 +390,10 @@ pub struct MedicationItem {
     /// Generic name, strength and form for a drug outside the catalog, looked up at check.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub drug_text: Option<String>,
+    /// The author found no RxNorm concept for this product (a generic multivitamin),
+    /// so it stays text; any other drug text must verify.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub uncoded: bool,
     pub action: MedicationAction,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sig: Option<String>,
@@ -559,6 +563,10 @@ pub struct LabResult {
     /// The UCUM unit of a test the catalog lacks.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub unit: Option<String>,
+    /// The reference range of a test the catalog lacks: either end alone for a
+    /// one-sided range.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub range: Option<RefRange>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub value: Option<Number>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -651,6 +659,12 @@ pub struct OrderItem {
     /// Who it goes to: a specialty or service.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub to: Option<String>,
+    /// The LOINC code of a lab or study the catalog lacks, verified at check.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub loinc: Option<String>,
+    /// The SNOMED CT code of a procedure the catalog lacks, verified at check.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub snomed: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub reason: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -718,7 +732,7 @@ pub struct Terms {
     pub rejected: Vec<String>,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct VerifiedCode {
     pub code: String,
@@ -727,7 +741,21 @@ pub struct VerifiedCode {
     pub ingredient: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub unit: Option<String>,
+    /// A lab test's reference range, as its author gave it.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub range: Option<RefRange>,
     pub receipt: String,
+}
+
+/// A reference range: either end alone is a one-sided range, and neither end says no
+/// reference range applies (a body-fluid count, an inspired oxygen fraction).
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RefRange {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub low: Option<Number>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub high: Option<Number>,
 }
 
 /// A number as `f64`, for arithmetic on ledger values.

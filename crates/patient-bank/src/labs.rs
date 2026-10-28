@@ -250,13 +250,13 @@ pub fn render(cx: &LabContext, ev: &Event, i: usize, lab: &Lab, receipt: &mut Re
                         )
                     };
                     obs.reference_range = vec![ReferenceRange {
-                        low: bound(lo),
-                        high: bound(hi),
+                        low: lo.map(bound),
+                        high: hi.map(bound),
                     }];
                     let x = num(n);
-                    let flag = if x > hi {
+                    let flag = if hi.is_some_and(|hi| x > hi) {
                         Some(("H", "High"))
-                    } else if x < lo {
+                    } else if lo.is_some_and(|lo| x < lo) {
                         Some(("L", "Low"))
                     } else {
                         None

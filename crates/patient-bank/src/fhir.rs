@@ -383,8 +383,10 @@ impl Observation {
 
 #[derive(Clone, Debug, Serialize, PartialEq)]
 pub struct ReferenceRange {
-    pub low: Quantity,
-    pub high: Quantity,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub low: Option<Quantity>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub high: Option<Quantity>,
 }
 
 #[derive(Clone, Debug, Serialize, PartialEq)]

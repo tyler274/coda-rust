@@ -79,6 +79,13 @@ impl Catalog {
             display: Some(v.display.clone()),
             receipt: Some(v.receipt.clone()),
             unit: v.unit.clone(),
+            range: v.range.as_ref().map(|r| {
+                [("low", &r.low), ("high", &r.high)]
+                    .into_iter()
+                    .filter_map(|(k, n)| Some((k.to_string(), Value::Number(n.clone()?))))
+                    .collect()
+            }),
+            range_source: v.range.as_ref().map(|_| "the author".into()),
             ..Entry::default()
         };
         for (section, system, verified) in [
@@ -107,10 +114,11 @@ impl Catalog {
             OrderCategory::Imaging => [&self.reports, &self.labs, &self.panels, &self.procedures],
             OrderCategory::Procedure => [&self.procedures, &self.reports, &self.labs, &self.panels],
         };
+        // an unverified entry (no official display) cannot code an order; a verified
+        // one of the same label in a later section can
         sections
             .into_iter()
-            .find_map(|s| s.get(what))
-            .filter(|e| e.display.is_some())
+            .find_map(|s| s.get(what).filter(|e| e.display.is_some()))
     }
 
     /// An allergy entry's FHIR category (the catalog's, else the entry's own), and
@@ -178,7 +186,8 @@ pub struct Entry {
     pub ingredient: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub unit: Option<String>,
-    /// Lab reference range from coda-gym: `low`, `high`, `low_f`, `high_f`.
+    /// Lab reference range (`low`, `high`, `low_f`, `high_f`; either end alone is
+    /// one-sided, and an empty range says the source gives none), from `range_source`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub range: Option<BTreeMap<String, Value>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -202,8 +211,8 @@ pub enum Category {
 }
 
 impl Entry {
-    /// A lab's reference range for this sex, when both ends are numbers.
-    pub fn reference_range(&self, female: bool) -> Option<(f64, f64)> {
+    /// A lab's reference range for this sex: either end alone is a one-sided range.
+    pub fn reference_range(&self, female: bool) -> Option<(Option<f64>, Option<f64>)> {
         let range = self.range.as_ref()?;
         let end = |plain: &str, f: &str| {
             let v = if female {
@@ -213,7 +222,8 @@ impl Entry {
             };
             number(v.or_else(|| range.get(plain))?)
         };
-        Some((end("low", "low_f")?, end("high", "high_f")?))
+        let (low, high) = (end("low", "low_f"), end("high", "high_f"));
+        (low.is_some() || high.is_some()).then_some((low, high))
     }
 }
 
@@ -468,9 +478,11 @@ impl Lookup {
                 && part(p, "code").is_some_and(|c| c["valueCode"] == "inactive")
                 && part(p, "value").is_some_and(|v| v["valueBoolean"] == true)
         });
+        // the current fully specified name; a retired one can lack the semantic tag
         let fsn = params.iter().find_map(|p| {
             let fully = part(p, "use")?["valueCoding"]["code"] == "900000000000003001";
-            (p["name"] == "designation" && fully)
+            let retired = part(p, "status").is_some_and(|s| s["valueCode"] == "inactive");
+            (p["name"] == "designation" && fully && !retired)
                 .then(|| part(p, "value")?["valueString"].as_str().map(String::from))?
         })?;
         let tag = fsn.rsplit_once('(')?.1.trim_end_matches(')');
@@ -518,6 +530,30 @@ impl Lookup {
                     .unwrap_or_default()
             })
             .collect())
+    }
+
+    /// Whether `code` is a valid UCUM unit, by tx.fhir.org.
+    pub fn ucum(&mut self, code: &str) -> Result<bool> {
+        let url = format!(
+            "https://tx.fhir.org/r4/CodeSystem/$validate-code?{}",
+            urlencode(&[("url", "http://unitsofmeasure.org"), ("code", code)])
+        );
+        let params = self.get(&url, "application/fhir+json")?;
+        Ok(params["parameter"].as_array().is_some_and(|ps| {
+            ps.iter()
+                .any(|p| p["name"] == "result" && p["valueBoolean"] == true)
+        }))
+    }
+
+    /// The active RxNorm concept whose name, or a source's name for it, is exactly
+    /// `text`.
+    pub fn rxnorm_exact(&mut self, text: &str) -> Result<Option<String>> {
+        let url = format!(
+            "https://rxnav.nlm.nih.gov/REST/rxcui.json?{}",
+            urlencode(&[("name", text), ("search", "0")])
+        );
+        let found = self.get(&url, "application/json")?;
+        Ok(found["idGroup"]["rxnormId"][0].as_str().map(String::from))
     }
 
     /// RxNav's approximate matches for a free-text drug, best first (rxcuis).
@@ -712,6 +748,16 @@ pub fn build(roger: &Path) -> Result<i32> {
                 .collect();
             e.range = Some(range);
             e.range_source = Some("coda-gym lab_reference_ranges.xlsx".into());
+        }
+        // a measured test is shown in a UCUM unit beside its range; an empty range
+        // says the cited source gives none
+        if let Some(unit) = &e.unit {
+            if !look.ucum(unit)? {
+                problems.push(format!("lab {label:?}: unit {unit:?} is not UCUM"));
+            }
+            if e.range.is_none() || e.range_source.is_none() {
+                problems.push(format!("lab {label:?}: no reference range and no source"));
+            }
         }
     }
     for (label, e) in &mut c.panels {

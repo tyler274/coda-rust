@@ -283,31 +283,33 @@ fn arithmetic(lab: &Lab, eid: &str, age: i64, female: bool, errors: &mut Vec<Str
 }
 
 /// A "no known" entry is never recorded while an allergy it rules out is listed.
-/// Warnings for placed orders a chart renders without a code. An order is looked
-/// up as the renderer looks it up, in the catalog plus the unit's verified terms,
-/// so a study coded only by its verified LOINC is not reported as uncoded.
+/// Placed orders a chart would render without a code. An order is looked up as
+/// the renderer looks it up, in the catalog plus the unit's verified terms, so a
+/// study coded only by its verified LOINC is coded.
 pub fn uncoded_orders(patients: &[Patient], catalog: &Catalog, terms: &Terms) -> Vec<String> {
     let catalog = catalog.with_terms(terms);
-    let mut warnings = Vec::new();
+    let mut errors = Vec::new();
     for p in patients {
         for ev in Timeline::new(p).events {
             let eid = format!("{}/{}", p.mrn, ev.id);
             for o in ev.orders.iter().filter(|o| o.action == OrderAction::Placed) {
                 let what = o.order.as_deref().unwrap_or("");
+                // `to` is coded as the order's performer, so it names a specialty
+                if let Some(to) =
+                    (o.to.as_deref()).filter(|t| !catalog.specialties.contains_key(*t))
+                {
+                    errors.push(format!(
+                        "{eid}: order {what:?} goes to {to:?}, which names no catalog specialty; \
+                         use one from the vocabulary, or leave `to` out when no specialty \
+                         performs it (a records request is a document, not an order)"
+                    ));
+                }
                 match o.category.unwrap_or(OrderCategory::Referral) {
-                    OrderCategory::Referral => {
-                        if let Some(to) =
-                            o.to.as_deref()
-                                .filter(|t| !catalog.specialties.contains_key(*t))
-                        {
-                            warnings.push(format!(
-                                "{eid}: referral to {to:?} names no catalog specialty"
-                            ));
-                        }
-                    }
-                    category if catalog.orderable(o).is_none() => warnings.push(format!(
+                    OrderCategory::Referral => {}
+                    category if catalog.orderable(o).is_none() => errors.push(format!(
                         "{eid}: {} order {what:?} names no one catalog lab, panel, study or \
-                         procedure",
+                         procedure; order one thing by its catalog label, or give its \
+                         \"loinc\" (lab or study) or \"snomed\" (procedure)",
                         format!("{category:?}").to_lowercase(),
                     )),
                     _ => {}
@@ -315,7 +317,7 @@ pub fn uncoded_orders(patients: &[Patient], catalog: &Catalog, terms: &Terms) ->
             }
         }
     }
-    warnings
+    errors
 }
 
 fn check_allergies(mrn: &str, tl: &Timeline, catalog: &Catalog, errors: &mut Vec<String>) {
@@ -518,6 +520,12 @@ fn check_event<'a>(
                 ));
             } else if !lab.pending && r.value.is_none() && r.text.is_none() {
                 errors.push(format!("{eid}: lab {test:?} needs value or text"));
+            } else if !catalog.labs.contains_key(test) && r.value.is_some() && r.range.is_none() {
+                errors.push(format!(
+                    "{eid}: lab {test:?} is not in the catalog; give its reference range as \
+                     \"range\": {{\"low\": ..., \"high\": ...}} (either end alone for a \
+                     one-sided range, {{}} when none applies)"
+                ));
             }
             if let (Some(members), Some(p)) = (members, panel)
                 && !members.iter().any(|m| m == test)
@@ -616,16 +624,17 @@ fn check_event<'a>(
     }
     for x in &ev.procedures {
         if !catalog.procedures.contains_key(&x.procedure) && x.snomed.is_none() {
-            warnings.push(format!(
-                "{eid}: procedure {:?} not in catalog and has no snomed (text only)",
+            errors.push(format!(
+                "{eid}: procedure {:?} is not a catalog label and has no snomed; \
+                 `patient-bank find snomed` finds its code",
                 x.procedure
             ));
         }
     }
     for i in &ev.immunizations {
         if !catalog.vaccines.contains_key(&i.vaccine) {
-            warnings.push(format!(
-                "{eid}: vaccine {:?} not in catalog (text only, no CVX)",
+            errors.push(format!(
+                "{eid}: vaccine {:?} is not a catalog vaccine; use one from the vocabulary",
                 i.vaccine
             ));
         }
@@ -640,8 +649,9 @@ fn check_event<'a>(
                 ));
             }
             if a.snomed.is_none() {
-                warnings.push(format!(
-                    "{eid}: allergen {:?} not in catalog and has no snomed (text only)",
+                errors.push(format!(
+                    "{eid}: allergen {:?} is not in the catalog and has no snomed; \
+                     `patient-bank find snomed` finds its code",
                     a.substance
                 ));
             }
