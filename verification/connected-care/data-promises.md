@@ -15,7 +15,6 @@ don't change what was sent (Duet decisions.md, "Your practice"; Dev 2026-10-26).
 **Graph.** Duet's "your Send to my practice on For my doctor goes through" =
 the physician graph's "the patient sends For my doctor".
 
-**Rust owner.** None yet. Duet coverage records that the app makes a share link
-and a PDF, and nothing sends For my doctor to the practice.
+**Rust owner.** None yet.
 
-**Status.** Unproven; no owner yet.
+**Status.** Unproven.

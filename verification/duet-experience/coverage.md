@@ -5,10 +5,14 @@ The graph says what the product should do; this file says how much of it
 `crates/duet-app` shows, so built, partial and missing UI stay explicit. SwiftUI
 remains the shipping iPhone app; this table measures the Rust app only.
 
-- **built:** the app shows this state as the graph means it.
-- **partial:** something shows, but not everything the graph promises; the note
-  says what's missing.
-- **missing:** the app shows nothing for it yet.
+- **built:** you reach this state in the app the way the graph does, it shows
+  what the graph means by it, and every control the graph gives you from it
+  works. A state that only says nothing is there yet (no quote, nothing
+  attached) is built when the app has the thing it is empty of.
+- **partial:** the app shows this state, but not all of that; the note says
+  what's missing or different.
+- **missing:** the app doesn't show this state. A screen with the same words
+  for a different cause doesn't count.
 - **not shown:** the graph state has nothing the person sees, and the app
   correctly shows nothing.
 
@@ -31,7 +35,12 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs coverage verification
 ```
 
 When the app or the graph changes a state, update its row in the same PR. The
-check prints the current counts.
+check prints the current counts. To grade a row, list every way into the state
+and every control from it, and check each in the app:
+
+```bash
+node .agents/skills/coda-statechart/scripts/statechart.mjs query verification/duet-experience/duet.mmd --state "Note saved"
+```
 
 # States by region
 
@@ -39,7 +48,7 @@ check prints the current counts.
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No account | built | DuetRoot (duet-app account.rs) | yes | Sign in with Apple creates the account on first sign-in (ensure_account). Email, and Google on Android, are missing. |
+| No account | partial | DuetRoot (duet-app account.rs) | yes | Sign in with Apple creates the account on first sign-in (ensure_account); email sign-in, and Google on Android, are missing. |
 | Agreeing to the Terms | missing | none | yes | Sign-in goes straight to the tabs; no Terms screen. The wire carries terms_accepted and accept_terms. |
 | Choosing a display name | missing | none | yes | No name step; the wire carries display_name. |
 | Choosing about AI | missing | none | yes | No AI choice step; the wire carries the Luna consent decision. |
@@ -109,7 +118,7 @@ check prints the current counts.
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No safety line owed | built | ConversationTab (duet-app lib.rs) | n/a |  |
+| No safety line owed | missing | none | n/a | The app has no safety line, so nothing tells this state from the next one. |
 | Safety line owed in this reply | missing | none | no | duet-api asks the model to include the 911 and 988 lines in its instructions; nothing adds a fixed line. |
 | Safety line shown | missing | none | no | As above. |
 
@@ -117,7 +126,7 @@ check prints the current counts.
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Nothing new from Duet | built | ConversationTab (duet-app lib.rs) | n/a |  |
+| Nothing new from Duet | missing | none | n/a | The app has no unseen marker, so nothing tells this state from the next one. |
 | A new message from Duet, unseen | missing | none | no | No unseen marker on the tab or the thread. |
 
 ## Your account/Set up/Duet's own message
@@ -140,8 +149,8 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No Reminder | built | ConversationTab (duet-app lib.rs) | yes |  |
-| Reminder scheduled.Reminder active | built | ConversationTab (duet-app lib.rs) | yes | A card in the thread opens the Reminder page with its schedule. |
-| Reminder paused.Reminder paused by you | built | ConversationTab (duet-app lib.rs) | yes | The page says Paused and offers Resume reminder. |
+| Reminder scheduled.Reminder active | partial | ConversationTab (duet-app lib.rs) | yes | A card in the thread opens the Reminder page with its schedule and Pause; Change and Cancel are missing. |
+| Reminder paused.Reminder paused by you | partial | ConversationTab (duet-app lib.rs) | yes | The page says Paused and offers Resume reminder; Change and Cancel are missing. |
 | Reminder completed | partial | ConversationTab (duet-app lib.rs) | yes | The wire's completed state shows like an active one; the page offers Pause. |
 | Reminder cancelled | partial | ConversationTab (duet-app lib.rs) | yes | A cancelled Reminder's card in the thread says cancelled since then; the app reads no cancelled state on its page. |
 
@@ -150,11 +159,11 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No Check-in | built | ConversationTab (duet-app lib.rs) | yes |  |
-| Check-in scheduled.Check-in active | built | ConversationTab (duet-app lib.rs) | yes | Opens like a Reminder, headed Check-in. |
+| Check-in scheduled.Check-in active | partial | ConversationTab (duet-app lib.rs) | yes | Opens like a Reminder, headed Check-in, with Pause reminder; Change and Cancel are missing. |
 | Check-in scheduled.Check-in couldn't finish, with Try again | missing | none | yes | The wire carries the last outcome; the page doesn't show it. |
 | Check-in due | missing | none | yes |  |
 | Check-in running | missing | none | yes |  |
-| Check-in paused.Check-in paused by you | built | ConversationTab (duet-app lib.rs) | yes | Paused, with Resume. |
+| Check-in paused.Check-in paused by you | partial | ConversationTab (duet-app lib.rs) | yes | Paused, with Resume reminder; Change and Cancel are missing. |
 | Check-in paused.Check-in paused after failing repeatedly | partial | ConversationTab (duet-app lib.rs) | yes | Shows Paused like a pause by you; the wire's pause_reason isn't read. |
 | Check-in completed | partial | ConversationTab (duet-app lib.rs) | yes | Shows like an active one. |
 | Check-in cancelled | partial | ConversationTab (duet-app lib.rs) | yes | As for a cancelled Reminder. |
@@ -202,7 +211,7 @@ check prints the current counts.
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Nothing Duet is working on | built | TodayTab (duet-app lib.rs) | yes |  |
+| Nothing Duet is working on | missing | none | yes | Today never shows running work, so nothing tells this state from the next ones. |
 | Duet's own work running.Duet's own work running on your latest edits | missing | none | yes | The wire carries insight-cycle generation state; Today doesn't show running work. |
 | Duet's own work running.Duet's own work running, you edited since it started | missing | none | no |  |
 
@@ -218,16 +227,16 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Still building context | missing | none | yes |  |
-| No status line | built | TodayTab (duet-app lib.rs) | yes |  |
-| Quiet | partial | TodayTab (duet-app lib.rs) | yes | The app knows a cycle was quiet but shows no line for it. |
-| Couldn't check, with Retry | built | TodayTab (duet-app lib.rs) | yes | "Duet couldn't check right now" with Try again. |
+| No status line | missing | none | yes | Today shows none of Duet's status lines (Still building context, Quiet, Couldn't check), so nothing tells this state from them. |
+| Quiet | missing | none | yes | The app knows a cycle was quiet but shows no line for it. |
+| Couldn't check, with Retry | missing | none | yes | Nothing reads failed work or offers its Retry. Today's "Duet couldn't check right now" with Try again is the Today load failure (Couldn't load Today, with Retry); its Try again only reloads Today. |
 
 ## Your account/Set up/For my doctor
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Nothing for your doctor yet | built | ConversationTab (duet-app lib.rs) | yes |  |
-| For my doctor saved | built | ConversationTab (duet-app lib.rs) | yes | The saved page, Edit page, Start fresh, the PDF and a share link. |
+| For my doctor saved | partial | ConversationTab (duet-app lib.rs) | yes | The saved page, Edit page, Start fresh, the PDF and a share link; Send to my practice is missing. |
 
 ## Your account/Set up/Duet's proposed update for your doctor
 
@@ -242,13 +251,13 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No note | built | YouTab (duet-app lib.rs) | yes |  |
-| Note saved | built | YouTab (duet-app lib.rs) | yes | Notes show in the library, from Add health information. |
+| Note saved | partial | YouTab (duet-app lib.rs) | yes | Notes show in the library, from Add health information, with Delete; Correct changes only the title, so the note's text can't be edited. |
 
 ## Your account/Set up/Duet's proposed note
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No note proposed | built | none | yes |  |
+| No note proposed | missing | none | yes | The app shows no proposed notes, so nothing tells this state from the next one. |
 | A note to review | missing | none | yes | duet-client can approve a proposed note; the app doesn't show proposals. |
 
 ## Your account/Set up/Your medication
@@ -256,7 +265,7 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No medication of yours | built | YouTab (duet-app lib.rs) | yes |  |
-| Taking it | built | YouTab (duet-app lib.rs) | yes | Added from New medication; shown in the library. |
+| Taking it | partial | YouTab (duet-app lib.rs) | yes | Added from New medication and shown in the library with Delete; Correct changes only the name, and nothing marks a medication stopped. |
 | Stopped, with the date | missing | none | no | Nothing marks a medication stopped. |
 
 ## Your account/Set up/Your appointment
@@ -286,7 +295,7 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Signed out on this device | built | DuetRoot (duet-app account.rs) | yes |  |
-| Signed in on this device | built | DuetRoot (duet-app account.rs) | yes | With Sign out. |
+| Signed in on this device | partial | DuetRoot (duet-app account.rs) | yes | With Sign out; Sign out everywhere is missing. |
 
 ## This device/Signed in on this device/Your draft
 
@@ -299,14 +308,14 @@ check prints the current counts.
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| Nothing attached | built | ConversationTab (duet-app lib.rs) | n/a | The composer carries text only. |
+| Nothing attached | missing | none | n/a | The composer carries text only and has no Ask about this, so nothing tells this state from the next one. |
 | An item attached | missing | none | no |  |
 
 ## This device/Signed in on this device/Quote in your draft
 
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
-| No quote | built | ConversationTab (duet-app lib.rs) | n/a |  |
+| No quote | missing | none | n/a | The thread has no way to quote a message, so nothing tells this state from the next one. |
 | Quoting a message | missing | none | no |  |
 
 ## This device/Signed in on this device/Your command on your setup
@@ -426,7 +435,7 @@ check prints the current counts.
 | No command on the note in flight | built | YouTab (duet-app lib.rs) | yes |  |
 | Add on the note: sending; other commands on it wait | built | YouTab (duet-app lib.rs) | yes |  |
 | Couldn't confirm Add on the note, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
-| Save on the note: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes |  |
+| Save on the note: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes | Correct sends a new title while Delete waits; the note's text can't be changed. |
 | Couldn't confirm Save on the note, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
 | Delete on the note: sending; other commands on it wait | built | YouTab (duet-app lib.rs) | yes |  |
 | Couldn't confirm Delete on the note, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
@@ -438,9 +447,9 @@ check prints the current counts.
 | No command on the medication in flight | built | YouTab (duet-app lib.rs) | yes |  |
 | Add on the medication: sending; other commands on it wait | built | YouTab (duet-app lib.rs) | yes |  |
 | Couldn't confirm Add on the medication, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
-| Confirm on the medication: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes |  |
+| Confirm on the medication: sending; other commands on it wait | partial | ConversationTab (duet-app lib.rs) | yes | Confirming happens only as a checkbox inside a For my doctor save, not on the medication itself. |
 | Couldn't confirm Confirm on the medication, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
-| Save on the medication: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes |  |
+| Save on the medication: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes | Correct sends a new name while Delete waits; dose, schedule and notes can't be changed. |
 | Couldn't confirm Save on the medication, with Check again | partial | YouTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
 | Stop on the medication: sending; other commands on it wait | missing | none | no | Nothing marks a medication stopped. |
 | Couldn't confirm Stop on the medication, with Check again | missing | none | no | Nothing marks a medication stopped. |
@@ -486,9 +495,9 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No command on your practice in flight | built | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes |  |
-| Share on your practice: sending; other commands on it wait | built | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes |  |
+| Share on your practice: sending; other commands on it wait | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | Share with my physician turns sharing back on for a practice already linked, and waits only on You; joining from an invitation (JoinScreen) is never shown. |
 | Couldn't confirm Share on your practice, with Check again | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
-| Leave on your practice: sending; other commands on it wait | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes |  |
+| Leave on your practice: sending; other commands on it wait | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | Stop sharing waits only on You, and it keeps the practice linked instead of ending the connection. |
 | Couldn't confirm Leave on your practice, with Check again | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | A failure line treats a lost answer like a refusal and offers no Check again. |
 
 ## This device/Signed in on this device/Your command on the organization
@@ -514,9 +523,9 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No command on your alerts in flight | built | YouTab (duet-app lib.rs) | yes |  |
-| Turn on on your alerts: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes | The New insight notifications switch changes on this device at once; nothing goes to your account, so nothing waits. |
+| Turn on on your alerts: sending; other commands on it wait | missing | none | yes | The New insight notifications switch changes on this device at once; nothing goes to your account, so nothing waits. |
 | Couldn't confirm Turn on on your alerts, with Check again | missing | none | yes | The switch sends nothing to your account, so no lost answer shows and there is no Check again. |
-| Turn off on your alerts: sending; other commands on it wait | partial | YouTab (duet-app lib.rs) | yes | As for Turn on. |
+| Turn off on your alerts: sending; other commands on it wait | missing | none | yes | As for Turn on. |
 | Couldn't confirm Turn off on your alerts, with Check again | missing | none | yes | As for Turn on. |
 
 ## This device/Signed in on this device/Your command on the proposed note
@@ -653,7 +662,7 @@ check prints the current counts.
 | --- | --- | --- | --- | --- |
 | No practice connection | built | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes |  |
 | A practice's invitation waits for you | missing | JoinScreen (duet-app lib.rs) | yes | JoinScreen exists but PrivateRoot never shows it (needs_join is false). |
-| Connected to your practice, sharing | built | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | Sharing with my physician, with Stop sharing (duet-api care.rs). |
+| Connected to your practice, sharing | partial | YouTab (duet-app lib.rs), SharedTab (duet-app lib.rs) | yes | Sharing with my physician, with Stop sharing (duet-api care.rs). Stop sharing keeps the practice linked and offers Share again, where the graph's Leave ends the connection. |
 | Connection ended.You left your practice | partial | SharedTab (duet-app lib.rs) | yes | Stop sharing withdraws consent and offers Share with my physician again; nothing says the connection ended. |
 | Connection ended.Your practice ended the connection, with a dated notice | missing | none | no | No discharge or dated notice. |
 
@@ -662,7 +671,7 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | No records from your sources yet | built | YouTab (duet-app lib.rs) | yes | "No records or measurements yet." |
-| Records from your sources kept | built | YouTab (duet-app lib.rs) | yes | The library, with Correct and Delete per record. |
+| Records from your sources kept | partial | YouTab (duet-app lib.rs) | yes | The library shows them, but Correct and Delete let you rewrite or remove what your sources sent, which the graph keeps exactly as sent. |
 
 ## Doctors & hospitals: an organization
 
@@ -682,6 +691,6 @@ check prints the current counts.
 | State | Status | Where in the app | Server data | Note |
 | --- | --- | --- | --- | --- |
 | Phone not connected | built | YouTab (duet-app lib.rs) (duet-health) | yes | Allow HealthKit. |
-| Phone connected.Bringing in your history | partial | TodayTab (duet-app lib.rs), YouTab (duet-app lib.rs) (duet-health) | yes | Readings show as they arrive; nothing says history is still coming. |
+| Phone connected.Bringing in your history | missing | none | yes | Readings show as they arrive; nothing says history is still coming. |
 | Phone connected.Up to date from your phone | partial | TodayTab (duet-app lib.rs), YouTab (duet-app lib.rs) (duet-health) | yes | Your phone's readings, by source. The app counts you connected once you've asked for access (HealthKitBridge.swift) and shows current readings; nothing marks the history import finished or names gaps in coverage. |
-| Access turned off in your phone's settings; your readings stay | partial | YouTab (duet-app lib.rs) | yes | The app can't tell access turned off from never granted, and doesn't say your readings stay. |
+| Access turned off in your phone's settings; your readings stay | missing | none | yes | The app can't tell access turned off from never granted, and doesn't say your readings stay. |

@@ -3,7 +3,8 @@
 Promises about records that the graph's states can't hold: which words, which
 version, which saved content. The graph ([duet.mmd](duet.mmd)) holds the states
 around each one; the record itself is the Rust owner's, and that owner is where
-each must be proved. None is proved yet.
+each must be proved. None is proved yet. What the app shows today is
+[coverage.md](coverage.md)'s to say.
 
 ## Your message keeps its words
 
@@ -16,8 +17,7 @@ refusal returns them, Edit gives them back, and signing out doesn't drop them
 
 **Rust owner.** `ConversationTab` (crates/duet-app/src/lib.rs) for the composer;
 `ConversationStore::accept_submission` (crates/duet-api/src/conversation.rs) for
-what the account accepts. Coverage marks Sending partial: the words stay in the
-composer until the server accepts them.
+what the account accepts.
 
 **Status.** Unproven.
 
@@ -46,6 +46,5 @@ it against; a proposal overtaken by a newer save waits for review again
 **Rust owner.** `WorkspaceStore::save`, `stage_proposal`, `reject_proposal` and
 `approved_read` (crates/duet-api/src/workspace.rs); the `check` route
 (crates/duet-api/src/doctor_routes.rs) refuses a page or evidence that changed.
-Coverage marks "An update to review again" missing.
 
 **Status.** Unproven.

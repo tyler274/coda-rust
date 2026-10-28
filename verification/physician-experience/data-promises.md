@@ -3,7 +3,8 @@
 Promises about records that the graph's states can't hold: which update, which
 sources, which patient, which words. The graph ([physician.mmd](physician.mmd))
 holds the states around each one; the record itself is the Rust owner's, and
-that owner is where each must be proved. None is proved yet.
+that owner is where each must be proved. None is proved yet. What the app shows
+today is [coverage.md](coverage.md)'s to say.
 
 ## A concern always comes with its explanation
 
@@ -14,10 +15,10 @@ comes with its explanation").
 
 **Graph.** "Concern" and each work's two finishes.
 
-**Rust owner.** None in this repository writes concerns; the physician app only
-reads them (`TodayRows`, crates/physician-app/src/lib.rs).
+**Rust owner.** None yet; the physician app only reads concerns (`TodayRows`,
+crates/physician-app/src/lib.rs).
 
-**Status.** Unproven; no owner yet.
+**Status.** Unproven.
 
 ## A reply revision reads what arrived before it finishes
 
@@ -26,12 +27,11 @@ finishes, so nothing it publishes rests on an older reading (Dev 2026-10-26).
 
 **Graph.** "reply revision: news while working".
 
-**Rust owner.** `DurableChat::accept_revision` (crates/physician-sample/src/durable.rs)
-and `read_sources`, which answers the `read_patient_sources` tool in
-physician-worker (crates/physician-sample/src/bin/physician-worker/revision.rs). Coverage records that they don't keep it
-yet: acceptance pins the sources, and the revision reads only those.
+**Rust owner.** `Store::commit_revision` (crates/local-product/src/runtime/reply.rs),
+which publishes only once the attempt has read every source added or corrected
+since it began.
 
-**Status.** Unproven; the owner doesn't meet it yet.
+**Status.** Unproven.
 
 ## A message's work belongs to its patient
 
@@ -42,10 +42,9 @@ PM:640-711).
 
 **Graph.** "Patient message: match" and "What relied on a moved message".
 
-**Rust owner.** None yet. Coverage marks the move and mark-not-a-patient controls
-missing and the withholding partial.
+**Rust owner.** None yet.
 
-**Status.** Unproven; no owner yet.
+**Status.** Unproven.
 
 ## A reply goes out in the words you approved
 
@@ -55,7 +54,6 @@ send keeps your text (decisions.md, communication standard; PM:160).
 
 **Graph.** "Patient message: reply".
 
-**Rust owner.** None yet. Coverage marks Send to the patient missing; the app has
-Copy reply (`ReplyReviewCard`, crates/physician-app/src/lib.rs).
+**Rust owner.** None yet.
 
-**Status.** Unproven; no owner yet.
+**Status.** Unproven.
