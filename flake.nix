@@ -57,6 +57,11 @@
       release = pkgs.mkShell {
         packages = with pkgs; [ nix git gh jq python3 docker-client skopeo actionlint cargo-deny postgres opentofu ];
       };
+      # Engineering-workstation bridge tests. Prebuilt from this nixpkgs pin,
+      # so CI substitutes it from the binary cache instead of running pip.
+      workstation = pkgs.mkShell {
+        packages = [ (pkgs.python3.withPackages (ps: with ps; [ slack-sdk websockets pygithub ])) ];
+      };
       default = import ./nix/dev-shell.nix {
         inherit pkgs postgres wheelLibs chromiumBin;
       };
