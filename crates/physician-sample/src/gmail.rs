@@ -149,6 +149,8 @@ impl Delivery {
                 .unwrap_or_else(|| Endpoints::google().send),
             token: nonempty(get("PHYSICIAN_GMAIL_TOKEN_URL"))
                 .unwrap_or_else(|| Endpoints::google().token),
+            // Sign-in mail only sends; it never reads the mailbox.
+            ..Endpoints::google()
         };
         let sender = if let (Some(client_id), Some(client_secret), Some(refresh_token)) = (
             nonempty(get("PHYSICIAN_GMAIL_CLIENT_ID")),

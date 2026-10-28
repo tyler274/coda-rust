@@ -1,0 +1,48 @@
+[package]
+name = "pubsub"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[dependencies]
+# Pub/Sub push `message.data` is standard base64.
+base64 = "0.23"
+serde_json = "1"
+thiserror = "2"
+
+[dependencies.google-cloud-pubsub]
+version = "1"
+optional = true
+
+[dependencies.google-cloud-auth]
+version = "1"
+optional = true
+
+[dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = ["json"]
+optional = true
+
+[dependencies.tokio]
+version = "1"
+features = ["time"]
+optional = true
+
+[dependencies.uuid]
+version = "1"
+features = ["v4"]
+optional = true
+
+[features]
+# The official publisher, pointed at Google or at a checked loopback emulator.
+publisher = ["dep:google-cloud-pubsub", "dep:google-cloud-auth"]
+# A disposable Pub/Sub emulator for another crate's tests. Dev-dependencies only;
+# `crates/boundaries` refuses it in `[dependencies]`.
+test-util = ["publisher", "dep:reqwest", "dep:tokio", "dep:uuid"]
+
+[dev-dependencies]
+# The crate's own emulator tests use its harness.
+pubsub = { path = ".", features = ["test-util"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }

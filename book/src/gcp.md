@@ -388,7 +388,13 @@ and budget steps, are in [Apply commands for Dev](#apply-commands-for-dev).
      `gcloud pubsub subscriptions pull physician-chat-turns-dead-letter --project coda-rust-staging --limit 10`.
 
 Workstations use `valkey` and the Pub/Sub emulator from `nix develop`. Unset
-`PHYSICIAN_REDIS_URL` keeps the in-process bus.
+`PHYSICIAN_REDIS_URL` keeps the in-process bus. Tests start the emulator through
+the shared harness in [`crates/pubsub`](/crates/pubsub/src/testing.rs)
+(`test-util` feature), which reuses a loopback `PUBSUB_EMULATOR_HOST` when one is
+set. [`crates/gmail/tests/push_wake.rs`](/crates/gmail/tests/push_wake.rs) uses it to
+prove the Gmail push-wake contract: a push only wakes `history.list` from the
+stored cursor, under duplicates, reordering, redelivery, dead letters and
+ordering keys. Push OIDC and real Gmail stay unproven there.
 
 To turn scaling off, set `enable_physician_scale = false` and apply a reviewed
 saved plan. The plan removes the cache, topics, subscriptions, and worker.

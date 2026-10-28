@@ -14,6 +14,12 @@
 //! Products own the message text and the links. This crate owns mail transport
 //! and the Gmail API token exchange. A service-account assertion has no `sub` claim,
 //! so this process does not use domain-wide delegation.
+//!
+//! It also owns the product-neutral intake primitives: [`push`] decodes a Gmail
+//! push wake and routes it to a connected mailbox, and [`history`] reads
+//! `users.history.list` from an opaque cursor that moves only on the last page.
+//! A push is a wake only; it never carries a position. The durable cursor,
+//! seen-message ledger and effects belong to the product's intake.
 //! Book: `book/src/gcp.md`.
 #![deny(missing_docs)]
 
@@ -22,12 +28,18 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use base64::Engine;
 use serde::{Deserialize, Serialize};
 
+pub mod history;
+pub mod push;
 mod relay;
 pub use relay::SmtpRelay;
 pub mod service;
 
 /// Gmail `users.messages.send`.
 const GMAIL_SEND: &str = "https://gmail.googleapis.com/gmail/v1/users/me/messages/send";
+/// Gmail `users.getProfile`.
+const GMAIL_PROFILE: &str = "https://gmail.googleapis.com/gmail/v1/users/me/profile";
+/// Gmail `users.history.list`.
+const GMAIL_HISTORY: &str = "https://gmail.googleapis.com/gmail/v1/users/me/history";
 /// Google's OAuth token endpoint. Also the `aud` claim of a service-account assertion.
 const TOKEN_URL: &str = "https://oauth2.googleapis.com/token";
 /// Least privilege for sending one message. Not `gmail.modify` and not domain-wide.
@@ -59,7 +71,7 @@ pub enum Error {
     /// Google answered with this HTTP status.
     #[error("gmail {what} failed: {status}")]
     Status {
-        /// Which call failed: `send` or `token exchange`.
+        /// Which call failed: `send`, `token exchange`, `profile` or `history`.
         what: &'static str,
         /// HTTP status code.
         status: u16,
@@ -75,13 +87,17 @@ pub enum Error {
     Key,
 }
 
-/// Where the token exchange and `messages.send` are posted.
+/// Where the token exchange, `messages.send` and the intake reads go.
 #[derive(Debug, Clone)]
 pub struct Endpoints {
     /// `users.messages.send` URL.
     pub send: String,
     /// OAuth token URL.
     pub token: String,
+    /// `users.getProfile` URL, read for a first history cursor.
+    pub profile: String,
+    /// `users.history.list` URL.
+    pub history: String,
 }
 
 impl Endpoints {
@@ -90,6 +106,8 @@ impl Endpoints {
         Self {
             send: GMAIL_SEND.to_owned(),
             token: TOKEN_URL.to_owned(),
+            profile: GMAIL_PROFILE.to_owned(),
+            history: GMAIL_HISTORY.to_owned(),
         }
     }
 }
@@ -98,24 +116,48 @@ impl Endpoints {
 pub struct Sender {
     from: String,
     endpoints: Endpoints,
+    tokens: Tokens,
+    http: reqwest::Client,
+}
+
+/// The OAuth token exchange and its cached access token, shared by sending
+/// and by the intake reader.
+pub(crate) struct Tokens {
+    url: String,
+    scope: &'static str,
     credentials: Credentials,
     http: reqwest::Client,
     access: std::sync::Mutex<Option<CachedAccess>>,
 }
 
-enum Credentials {
+pub(crate) enum Credentials {
     Refresh(RefreshToken),
     ServiceAccount(ServiceAccountKey),
     Missing,
 }
 
-struct RefreshToken {
+impl Credentials {
+    /// Refresh-token credentials; any empty field leaves them unconfigured.
+    pub(crate) fn refresh(client_id: String, client_secret: String, refresh_token: String) -> Self {
+        if client_id.is_empty() || client_secret.is_empty() || refresh_token.is_empty() {
+            Self::Missing
+        } else {
+            Self::Refresh(RefreshToken {
+                client_id,
+                client_secret,
+                refresh_token,
+            })
+        }
+    }
+}
+
+pub(crate) struct RefreshToken {
     client_id: String,
     client_secret: String,
     refresh_token: String,
 }
 
-struct ServiceAccountKey {
+pub(crate) struct ServiceAccountKey {
     client_email: String,
     private_key: String,
 }
@@ -154,12 +196,17 @@ struct Assertion<'a> {
 
 impl Sender {
     fn new(from: String, endpoints: Endpoints, credentials: Credentials) -> Self {
+        let http = http_client();
         Self {
             from,
+            tokens: Tokens::new(
+                endpoints.token.clone(),
+                GMAIL_SEND_SCOPE,
+                credentials,
+                http.clone(),
+            ),
             endpoints,
-            credentials,
-            http: http_client(),
-            access: std::sync::Mutex::new(None),
+            http,
         }
     }
 
@@ -172,19 +219,8 @@ impl Sender {
         client_secret: impl Into<String>,
         refresh_token: impl Into<String>,
     ) -> Self {
-        let client_id = client_id.into();
-        let client_secret = client_secret.into();
-        let refresh_token = refresh_token.into();
         let credentials =
-            if client_id.is_empty() || client_secret.is_empty() || refresh_token.is_empty() {
-                Credentials::Missing
-            } else {
-                Credentials::Refresh(RefreshToken {
-                    client_id,
-                    client_secret,
-                    refresh_token,
-                })
-            };
+            Credentials::refresh(client_id.into(), client_secret.into(), refresh_token.into());
         Self::new(from.into(), endpoints, credentials)
     }
 
@@ -237,7 +273,7 @@ impl Sender {
     }
 
     async fn send_raw(&self, message: &[u8]) -> Result<(), Error> {
-        let access = self.access_token().await?;
+        let access = self.tokens.access_token().await?;
         let raw = base64::engine::general_purpose::URL_SAFE_NO_PAD.encode(message);
         let response = self
             .http
@@ -256,8 +292,25 @@ impl Sender {
             status: status.as_u16(),
         })
     }
+}
 
-    async fn access_token(&self) -> Result<String, Error> {
+impl Tokens {
+    pub(crate) fn new(
+        url: String,
+        scope: &'static str,
+        credentials: Credentials,
+        http: reqwest::Client,
+    ) -> Self {
+        Self {
+            url,
+            scope,
+            credentials,
+            http,
+            access: std::sync::Mutex::new(None),
+        }
+    }
+
+    pub(crate) async fn access_token(&self) -> Result<String, Error> {
         if let Some(token) = self.cached_access() {
             return Ok(token);
         }
@@ -287,7 +340,7 @@ impl Sender {
     async fn exchange_refresh(&self, refresh: &RefreshToken) -> Result<(String, u64), Error> {
         let response = self
             .http
-            .post(&self.endpoints.token)
+            .post(&self.url)
             .form(&[
                 ("grant_type", "refresh_token"),
                 ("client_id", refresh.client_id.as_str()),
@@ -304,10 +357,10 @@ impl Sender {
         &self,
         key: &ServiceAccountKey,
     ) -> Result<(String, u64), Error> {
-        let assertion = sign_assertion(key)?;
+        let assertion = sign_assertion(key, self.scope)?;
         let response = self
             .http
-            .post(&self.endpoints.token)
+            .post(&self.url)
             .form(&[
                 ("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer"),
                 ("assertion", assertion.as_str()),
@@ -319,14 +372,14 @@ impl Sender {
     }
 }
 
-fn sign_assertion(key: &ServiceAccountKey) -> Result<String, Error> {
+fn sign_assertion(key: &ServiceAccountKey, scope: &'static str) -> Result<String, Error> {
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map(|since| since.as_secs())
         .unwrap_or(0);
     let claims = Assertion {
         iss: &key.client_email,
-        scope: GMAIL_SEND_SCOPE,
+        scope,
         aud: TOKEN_URL,
         iat: now,
         exp: now.saturating_add(3_600),
@@ -413,14 +466,66 @@ pub mod testing {
         pub sent: std::sync::Arc<std::sync::Mutex<Vec<serde_json::Value>>>,
         /// Form bodies posted to the token endpoint.
         pub token_bodies: std::sync::Arc<std::sync::Mutex<Vec<String>>>,
+        /// The one mailbox `users.getProfile` and `users.history.list` serve.
+        pub mailbox: std::sync::Arc<std::sync::Mutex<FakeMailbox>>,
     }
 
     impl FakeGmail {
-        /// The send and token URLs a [`Sender`](super::Sender) should use.
+        /// The URLs a [`Sender`](super::Sender) or
+        /// [`History`](super::history::History) should use.
         pub fn endpoints(&self) -> Endpoints {
             Endpoints {
                 send: format!("{}/gmail/v1/users/me/messages/send", self.base),
                 token: format!("{}/token", self.base),
+                profile: format!("{}/gmail/v1/users/me/profile", self.base),
+                history: format!("{}/gmail/v1/users/me/history", self.base),
+            }
+        }
+    }
+
+    /// A mailbox's history: one `messagesAdded` record per delivered message.
+    #[derive(Debug)]
+    pub struct FakeMailbox {
+        /// Gmail's current history id; each delivery advances it by one.
+        pub history_id: u64,
+        /// `(history id, added message id)` in history order.
+        pub records: Vec<(u64, String)>,
+        /// A `startHistoryId` below this answers 404 (history no longer kept).
+        pub oldest_start: u64,
+        /// Records per `history.list` page.
+        pub page_size: usize,
+        /// `getProfile` and `history.list` calls answered.
+        pub reads: usize,
+        /// Every `startHistoryId` `history.list` was asked for, in order.
+        pub starts: Vec<u64>,
+        /// How long `history.list` waits before answering, so concurrent
+        /// readers of one cursor overlap.
+        pub read_delay: std::time::Duration,
+    }
+
+    impl FakeMailbox {
+        /// A message arrives: history moves on by one record.
+        pub fn deliver(&mut self, message_id: &str) {
+            self.history_id += 1;
+            self.records.push((self.history_id, message_id.to_owned()));
+        }
+
+        /// Gmail drops all history up to now: every stored start expires.
+        pub fn expire_through_current(&mut self) {
+            self.oldest_start = self.history_id + 1;
+        }
+    }
+
+    impl Default for FakeMailbox {
+        fn default() -> Self {
+            Self {
+                history_id: 1000,
+                records: Vec::new(),
+                oldest_start: 0,
+                page_size: 100,
+                reads: 0,
+                starts: Vec::new(),
+                read_delay: std::time::Duration::ZERO,
             }
         }
     }
@@ -429,22 +534,33 @@ pub mod testing {
         fail_send: bool,
         sent: std::sync::Arc<std::sync::Mutex<Vec<serde_json::Value>>>,
         token_bodies: std::sync::Arc<std::sync::Mutex<Vec<String>>>,
+        mailbox: std::sync::Arc<std::sync::Mutex<FakeMailbox>>,
     }
 
     /// Binds a fake Gmail API. `fail_send` makes `messages.send` answer 500.
     pub async fn spawn(fail_send: bool) -> FakeGmail {
         let sent = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
         let token_bodies = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
+        let mailbox = std::sync::Arc::new(std::sync::Mutex::new(FakeMailbox::default()));
         let state = std::sync::Arc::new(FakeState {
             fail_send,
             sent: std::sync::Arc::clone(&sent),
             token_bodies: std::sync::Arc::clone(&token_bodies),
+            mailbox: std::sync::Arc::clone(&mailbox),
         });
         let app = axum::Router::new()
             .route("/token", axum::routing::post(fake_token))
             .route(
                 "/gmail/v1/users/me/messages/send",
                 axum::routing::post(fake_send),
+            )
+            .route(
+                "/gmail/v1/users/me/profile",
+                axum::routing::get(fake_profile),
+            )
+            .route(
+                "/gmail/v1/users/me/history",
+                axum::routing::get(fake_history),
             )
             .with_state(state);
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
@@ -456,7 +572,94 @@ pub mod testing {
             base: format!("http://{address}"),
             sent,
             token_bodies,
+            mailbox,
         }
+    }
+
+    fn authorized(headers: &axum::http::HeaderMap) -> bool {
+        headers
+            .get(axum::http::header::AUTHORIZATION)
+            .and_then(|value| value.to_str().ok())
+            == Some("Bearer gmail-access-test")
+    }
+
+    async fn fake_profile(
+        axum::extract::State(state): axum::extract::State<std::sync::Arc<FakeState>>,
+        headers: axum::http::HeaderMap,
+    ) -> axum::response::Response {
+        use axum::response::IntoResponse;
+        if !authorized(&headers) {
+            return axum::http::StatusCode::UNAUTHORIZED.into_response();
+        }
+        let mut mailbox = state.mailbox.lock().expect("mailbox");
+        mailbox.reads += 1;
+        axum::Json(serde_json::json!({
+            "emailAddress": "mailbox@codahealth.test",
+            "historyId": mailbox.history_id.to_string(),
+        }))
+        .into_response()
+    }
+
+    /// `startHistoryId` is exclusive; `pageToken` is an offset this fake wrote.
+    async fn fake_history(
+        axum::extract::State(state): axum::extract::State<std::sync::Arc<FakeState>>,
+        headers: axum::http::HeaderMap,
+        axum::extract::Query(query): axum::extract::Query<
+            std::collections::HashMap<String, String>,
+        >,
+    ) -> axum::response::Response {
+        use axum::response::IntoResponse;
+        if !authorized(&headers) {
+            return axum::http::StatusCode::UNAUTHORIZED.into_response();
+        }
+        let delay = state.mailbox.lock().expect("mailbox").read_delay;
+        if !delay.is_zero() {
+            tokio::time::sleep(delay).await;
+        }
+        let mut mailbox = state.mailbox.lock().expect("mailbox");
+        mailbox.reads += 1;
+        let Some(start) = query
+            .get("startHistoryId")
+            .and_then(|start| start.parse::<u64>().ok())
+        else {
+            return axum::http::StatusCode::BAD_REQUEST.into_response();
+        };
+        mailbox.starts.push(start);
+        if start < mailbox.oldest_start {
+            return axum::http::StatusCode::NOT_FOUND.into_response();
+        }
+        let offset = match query.get("pageToken") {
+            Some(token) => match token.strip_prefix("offset-").and_then(|n| n.parse().ok()) {
+                Some(offset) => offset,
+                None => return axum::http::StatusCode::BAD_REQUEST.into_response(),
+            },
+            None => 0usize,
+        };
+        let after: Vec<&(u64, String)> = mailbox
+            .records
+            .iter()
+            .filter(|(id, _)| *id > start)
+            .collect();
+        let end = (offset + mailbox.page_size).min(after.len());
+        let page: Vec<serde_json::Value> = after
+            .get(offset..end)
+            .unwrap_or_default()
+            .iter()
+            .map(|(id, message)| {
+                serde_json::json!({
+                    "id": id.to_string(),
+                    "messagesAdded": [{"message": {"id": message, "threadId": message}}],
+                })
+            })
+            .collect();
+        let mut body = serde_json::json!({
+            "history": page,
+            "historyId": mailbox.history_id.to_string(),
+        });
+        if end < after.len() {
+            body["nextPageToken"] = serde_json::json!(format!("offset-{end}"));
+        }
+        axum::Json(body).into_response()
     }
 
     async fn fake_token(
