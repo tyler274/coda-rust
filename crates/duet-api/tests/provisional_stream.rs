@@ -39,6 +39,7 @@ struct Paused {
     sent: Arc<tokio::sync::Notify>,
     release: Arc<tokio::sync::Notify>,
     fail: bool,
+    final_text: &'static str,
 }
 impl Provider for Paused {
     async fn exchange(
@@ -63,7 +64,7 @@ impl Provider for Paused {
         }
         emit(StreamEvent::Text(" late".into()))?;
         Ok(Response {
-            text: "Approved final".into(),
+            text: self.final_text.into(),
             calls: vec![],
             usage: Default::default(),
             provenance: json!({"mode":"local"}),
@@ -164,7 +165,7 @@ async fn provisional_replay_interruption_recovery_and_withdrawal() {
     let served = app.clone();
     let server = tokio::spawn(async move { axum::serve(listener, served).await.unwrap() });
     let c = durable.identity.authenticate("a", true).await.unwrap();
-    for mode in ["interrupt", "complete", "withdraw"] {
+    for mode in ["interrupt", "complete", "retain_stream", "withdraw"] {
         let id = Uuid::new_v4();
         store
             .phone_accept(&c, id, "Please answer", "local")
@@ -173,10 +174,16 @@ async fn provisional_replay_interruption_recovery_and_withdrawal() {
         let sent = Arc::new(tokio::sync::Notify::new());
         let release = Arc::new(tokio::sync::Notify::new());
         let mut owner = store.claim(&c, id).await.unwrap();
+        let final_text = if mode == "retain_stream" {
+            "Provisional only late"
+        } else {
+            "Approved final"
+        };
         let mut provider = Paused {
             sent: sent.clone(),
             release: release.clone(),
             fail: mode == "interrupt",
+            final_text,
         };
         let task = tokio::spawn(async move {
             owner
@@ -205,13 +212,12 @@ async fn provisional_replay_interruption_recovery_and_withdrawal() {
             !task.is_finished(),
             "must deliver while provider is still open"
         );
+        let page = store.phone_page(&c, true).await.unwrap();
         assert!(
-            !store
-                .phone_page(&c, true)
-                .await
-                .unwrap()
-                .to_string()
-                .contains("Provisional only")
+            !page["messages"].as_array().unwrap().iter().any(|message| {
+                message["run_id"] == json!(id) && message["role"] == "assistant"
+            }),
+            "provisional text must not become a completed reply: {page}"
         );
         assert_eq!(request(&app, "GET", &path, "b", Value::Null).await.0, 404);
         assert_eq!(
@@ -259,8 +265,21 @@ async fn provisional_replay_interruption_recovery_and_withdrawal() {
         assert_eq!(usage["output_tokens"], 3);
         assert_eq!(usage["unknown_usage_model_calls"], 0);
         assert_eq!(usage["cost_status"], "unknown", "local model has no price");
-        if mode == "complete" {
-            assert_eq!(result.unwrap().text, "Approved final");
+        if matches!(mode, "complete" | "retain_stream") {
+            assert_eq!(result.unwrap().text, final_text);
+            // Read through a recreated owner: the shared loop's candidate must
+            // reach durable finalization, not just the in-memory return value.
+            let restored =
+                ConversationStore::new(AccountDatabase::connect(&runtime).await.unwrap());
+            let page = restored.phone_page(&c, true).await.unwrap();
+            let replies: Vec<_> = page["messages"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .filter(|message| message["run_id"] == json!(id) && message["role"] == "assistant")
+                .collect();
+            assert_eq!(replies.len(), 1, "{page}");
+            assert_eq!(replies[0]["text"], final_text, "{page}");
         } else {
             assert!(result.is_err());
         }
@@ -282,6 +301,7 @@ async fn provisional_replay_interruption_recovery_and_withdrawal() {
                         sent: Arc::new(tokio::sync::Notify::new()),
                         release,
                         fail: false,
+                        final_text: "Approved final",
                     },
                     Limits::default(),
                     &Cancellation::default(),

@@ -25,6 +25,26 @@ its own context policy, authority, durable state, effects and recovery. It must
 not import the physician `local-product`; [operating invariants](agent-contracts.md)
 define this boundary.
 
+The shared model → tool → model orchestration lives in `harness::engine`.
+The mounted conversation owner uses `harness::execution` as a compatibility
+facade, preserving saved `Request`, `Response`, `Record` and replay identities.
+Restored call/token counters belong to the accepted command, not a fresh budget
+on recovery. Recovery reconciles retained tool calls without another provider
+exchange; it does not start a second loop. Provisional text and late provider
+usage remain separate from permission to commit. Duet still owns routine
+idempotency, visible-prose finalization and its completion transaction; physician
+terminal-tool continuation does not impose physician saving policy on Duet.
+Cancellation allows a bounded one-second transport settlement window, followed
+by at most one additional second for final evidence acknowledgments. The latter
+window is shared by the final records, not restarted for each write; it permits
+asynchronous database retention after a noncooperative transport times out.
+Neither window permits continued presentation or effects. A callback that does
+not acknowledge within its window leaves its write uncertain; the product
+must reconcile it rather than treating cancellation as rollback. Recovery
+validates retained call IDs against the original dispatched context before
+executing any sibling, and partial usage snapshots preserve earlier known
+fields so live and restored token accounting agree.
+
 The binary mounts `conversation_routes` over `ConversationStore` and starts its
 pending-work recovery. The separate
 [`conversation_execution.rs`](/crates/duet-api/src/conversation_execution.rs)
@@ -73,9 +93,15 @@ CRUD belongs to the owning product's typed entities; products do not share store
 [Release](release.md) and [GCP](gcp.md) explain the build and hosted proof
 boundaries. Default tests may skip database-gated checks. The
 [`check-postgres.sh`](/scripts/check-postgres.sh) suites require a disposable
-PostgreSQL 16 instance with pgvector and all three test URLs
-(`MIGRATION_DATABASE_URL`, `PHYSICIAN_DATABASE_URL`, `FRONT_DOOR_DATABASE_URL`).
-They create/drop databases. These suites and image smoke tests establish their
+PostgreSQL instance with pgvector and all five script URLs
+(`MIGRATION_DATABASE_URL`, `PHYSICIAN_DATABASE_URL`, `FRONT_DOOR_DATABASE_URL`,
+`DUET_IDENTITY_TEST_DATABASE_URL`, `PHYSICIAN_RUNTIME_TEST_DATABASE_URL`).
+They create/drop databases. The shared-loop regression gate also runs the real
+Duet owner suites `conversation_proof`, `provisional_stream`, `skills_accounting`,
+`fresh_producers`, `today_producer` and `follow_up_producer` against
+`DUET_TEST_DATABASE_URL`; the unmounted adapter proof is not a substitute.
+Loop consolidation preserves the current admitted capabilities, not completion
+of the saved-routine journey or full D1 acceptance. These suites and image smoke tests establish their
 exercised persistence/startup paths, not sign-in, installed-client or clinical
 qualification. Historical dependency-upgrade proof remains in
 [PR #36](https://github.com/Coda-Health/coda-rust/pull/36).
