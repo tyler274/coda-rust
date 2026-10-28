@@ -1,0 +1,406 @@
+//! Durable-service D2 proof: isolated PostgreSQL, the real durable evidence,
+//! conversation and privacy owners mounted in-process, and the real `duet-client`
+//! calls the patient app makes. Only the model is a controlled local responder.
+//! No installed phone, no portal provider and no live model participate.
+use duet_api::{
+    database::{AccountDatabase, migrate},
+    durable::DurableState,
+    evidence::EvidenceStore,
+    identity::{IdentityStore, IdentityVerifier, VerifiedIdentity},
+    privacy::{FileJournal, PrivacyStore, Restriction},
+};
+use duet_client::DuetClient;
+use duet_wire::models::{
+    CanonicalSourceAddress, evidence_browse_record::Status as Browse,
+    evidence_revision_view::Status as Revision,
+};
+use serde_json::{Value, json};
+use sqlx::{ConnectOptions, Connection};
+use std::sync::Arc;
+use std::time::Duration;
+use uuid::Uuid;
+
+const PATIENT: &str = "synthetic-d2-patient";
+const FOREIGN: &str = "synthetic-d2-foreign";
+/// Large enough to need several bounded pages (fifty records per page).
+const IMPORTED: usize = 260;
+const UNDATED: usize = 7;
+
+struct Verifier;
+#[async_trait::async_trait]
+impl IdentityVerifier for Verifier {
+    async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, duet_api::ApiError> {
+        if ![PATIENT, FOREIGN].contains(&bearer) {
+            return Err(duet_api::ApiError::Unauthorized);
+        }
+        Ok(VerifiedIdentity {
+            subject: bearer.into(),
+            authenticated_at: chrono::Utc::now() - chrono::Duration::seconds(5),
+        })
+    }
+}
+
+/// The controlled model: read the admitted record source, cite it, reply.
+fn controlled(input: &[Value]) -> Value {
+    if !input.iter().any(|v| v["call_id"] == "d2-read") {
+        let context = input
+            .iter()
+            .filter_map(|v| v["content"].as_str())
+            .find(|s| s.starts_with("Selected context and reply reference"))
+            .expect("the selected record reaches the model");
+        let admission: Value = serde_json::from_str(context.split_once("): ").unwrap().1).unwrap();
+        return json!([{"type":"function_call","call_id":"d2-read","name":"read_health_source","arguments":json!({"address":admission["source"]["source"]["address"]}).to_string()}]);
+    }
+    if !input.iter().any(|v| v["call_id"] == "d2-cite") {
+        return json!([{"type":"function_call","call_id":"d2-cite","name":"cite_health_sources","arguments":"{\"read_ids\":[\"d2-read\"]}"}]);
+    }
+    json!([{"type":"message","content":[{"type":"output_text","text":"Here is the exact record you selected."}]}])
+}
+
+fn health(record: &str, payload: Value) -> Value {
+    json!({"operation_id":Uuid::new_v4(),"canonical_record_id":Uuid::new_v4(),"record_id":record,"entity":"health_evidence","payload":payload})
+}
+
+async fn post(base: &str, bearer: &str, path: &str, body: &Value) -> Value {
+    let response = reqwest::Client::new()
+        .post(format!("{base}{path}"))
+        .bearer_auth(bearer)
+        .json(body)
+        .send()
+        .await
+        .unwrap();
+    let status = response.status();
+    let text = response.text().await.unwrap();
+    assert!(status.is_success(), "{path} answered {status}: {text}");
+    serde_json::from_str(&text).unwrap()
+}
+
+fn address(value: &Value) -> CanonicalSourceAddress {
+    serde_json::from_value(value.clone()).unwrap()
+}
+
+/// Send about one exact selected revision and wait for the cited reply.
+async fn ask(base: &str, client: &DuetClient, record: Uuid, revision: i32) -> (Uuid, Uuid) {
+    let id = Uuid::new_v4();
+    let accepted = client
+        .send_about_record(id, "What does this record say?", "UTC", record, revision)
+        .await
+        .expect("selected record admitted");
+    let selected = serde_json::to_value(&accepted.message.selected_context).unwrap();
+    assert_eq!(selected["record_id"], json!(record));
+    assert_eq!(selected["revision"], json!(revision));
+    let deadline = tokio::time::Instant::now() + Duration::from_secs(20);
+    loop {
+        let page: Value = reqwest::Client::new()
+            .get(format!("{base}/api/conversation/messages"))
+            .bearer_auth(PATIENT)
+            .send()
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+        let messages = page["messages"].as_array().unwrap();
+        let user = messages.iter().position(|m| m["id"] == json!(id));
+        if let Some(reply) = user
+            .and_then(|i| messages[i..].iter().find(|m| m["role"] == "assistant"))
+            .filter(|m| m["state"] == "complete")
+        {
+            return (id, reply["id"].as_str().unwrap().parse().unwrap());
+        }
+        assert!(
+            tokio::time::Instant::now() < deadline,
+            "reply never completed: {page}"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+async fn d2_records_browse_select_cite_correct_remove_and_erase_on_durable_services() {
+    let url = std::env::var("DUET_TEST_DATABASE_URL")
+        .expect("DUET_TEST_DATABASE_URL must point at disposable loopback PostgreSQL");
+    let options: sqlx::postgres::PgConnectOptions = url.parse().unwrap();
+    assert!(["localhost", "127.0.0.1", "::1"].contains(&options.get_host()));
+    let mut admin = sqlx::PgConnection::connect(&url).await.unwrap();
+    let suffix = Uuid::new_v4().simple().to_string();
+    // Generated from a UUID simple string ([0-9a-f]); never user input.
+    let name = format!("eng162_d2_{suffix}");
+    let role = format!("eng162_d2_role_{suffix}");
+    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("create role {role} login")))
+        .execute(&mut admin)
+        .await
+        .unwrap();
+    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("create database {name}")))
+        .execute(&mut admin)
+        .await
+        .unwrap();
+    let owner_url = options.clone().database(&name).to_url_lossy().to_string();
+    let runtime_url = options
+        .database(&name)
+        .username(&role)
+        .to_url_lossy()
+        .to_string();
+    migrate(&owner_url, &role).await.unwrap();
+    let journal = std::env::temp_dir().join(format!("eng162-d2-journal-{suffix}"));
+    run(&owner_url, &runtime_url, &journal).await;
+    sqlx::raw_sql(sqlx::AssertSqlSafe(format!(
+        "drop database {name} with (force)"
+    )))
+    .execute(&mut admin)
+    .await
+    .unwrap();
+    sqlx::raw_sql(sqlx::AssertSqlSafe(format!("drop role {role}")))
+        .execute(&mut admin)
+        .await
+        .unwrap();
+    let _ = std::fs::remove_dir_all(journal);
+}
+
+async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
+    let database = AccountDatabase::connect(runtime_url).await.unwrap();
+    let identity = IdentityStore::new(database.clone(), Arc::new(Verifier));
+    let patient = identity.authenticate(PATIENT, true).await.unwrap();
+    let foreign = identity.authenticate(FOREIGN, true).await.unwrap();
+    let mut owner = sqlx::PgConnection::connect(owner_url).await.unwrap();
+    sqlx::query("update users set intelligence_enabled=true,luna_consent_decision='accepted',luna_consent_version='2026-09-24',terms_version='2026-09-23' where id=$1")
+        .bind(patient.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    let privacy = PrivacyStore::new(
+        database.clone(),
+        Arc::new(FileJournal::open(journal.to_path_buf()).await.unwrap()),
+    );
+    let state = DurableState {
+        identity,
+        evidence: EvidenceStore::new(database.clone()),
+        privacy: privacy.clone(),
+    };
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let base = format!("http://{}", listener.local_addr().unwrap());
+    let routes = duet_api::durable::router(state.clone())
+        .merge(duet_api::evidence_routes::router(state.clone()))
+        .merge(duet_api::conversation_routes::router(
+            duet_api::conversation_routes::ConversationState {
+                durable: state,
+                store: duet_api::conversation::ConversationStore::new(database.clone()),
+                model: "no-live-provider".into(),
+                provider: Some((format!("{base}/controlled-response"), "local".into())),
+            },
+        ))
+        .route(
+            "/controlled-response",
+            axum::routing::post(|axum::Json(body): axum::Json<Value>| async move {
+                let output = controlled(body["input"].as_array().unwrap());
+                let event = json!({"type":"response.completed","response":{"status":"completed","output":output,"usage":{"input_tokens":3,"output_tokens":2}}});
+                axum::http::Response::builder()
+                    .header("content-type", "text/event-stream")
+                    .body(axum::body::Body::from(format!("data: {event}\n\n")))
+                    .unwrap()
+            }),
+        );
+    tokio::spawn(async move { axum::serve(listener, routes).await.unwrap() });
+    let client = DuetClient::new(&base, PATIENT, "1", "0.1.0").unwrap();
+    let outsider = DuetClient::new(&base, FOREIGN, "1", "0.1.0").unwrap();
+
+    // Import at a realistic size: dated, undated and portal-shaped device records.
+    let mut items = Vec::new();
+    for i in 0..IMPORTED {
+        let payload = if i < UNDATED {
+            json!({"concept_id":"lab:undated","title":format!("Undated result {i}"),"source":{"kind":"healthRecords","record_id":format!("undated-{i}")},"value":{"literal":"< 0.03","unit":"mg/dL"}})
+        } else {
+            json!({"concept_id":"lab:glucose","title":format!("Glucose {i}"),"measured_at":format!("2026-{:02}-{:02}T08:{:02}:00-07:00", 1 + i % 9, 1 + i % 27, i % 60),"source":{"kind":"healthRecords","record_id":format!("glucose-{i}")},"value":{"literal":format!("{}", 80 + i % 40),"unit":"mg/dL"},"status":"final"})
+        };
+        items.push(health(&format!("import/{i}"), payload));
+    }
+    let mut accepted = Vec::new();
+    for batch in items.chunks(100) {
+        let result = post(
+            &base,
+            PATIENT,
+            "/api/canonical-evidence/batch",
+            &json!({"items":batch}),
+        )
+        .await;
+        for outcome in result["results"].as_array().unwrap() {
+            assert_eq!(outcome["status"], "accepted", "{outcome}");
+            accepted.push(outcome["address"].clone());
+        }
+    }
+    assert_eq!(accepted.len(), IMPORTED);
+
+    // Discovery is complete and bounded: every page is at most fifty, the cursor
+    // chain reaches every record exactly once, and nothing is truncated.
+    let mut cursor = None;
+    let mut pages = 0;
+    let mut walked = Vec::new();
+    loop {
+        let page = client.browse_records(cursor.take()).await.unwrap();
+        assert!(page.records.len() <= 50);
+        assert_eq!(page.total_count as usize, IMPORTED);
+        walked.extend(page.records);
+        pages += 1;
+        match page.next_cursor {
+            Some(next) => cursor = Some(next),
+            None => break,
+        }
+    }
+    assert!(pages >= 6, "{pages} pages");
+    let ids: std::collections::HashSet<_> = walked
+        .iter()
+        .map(|r| r.address.canonical_record_id)
+        .collect();
+    assert_eq!(ids.len(), IMPORTED, "every record exactly once");
+    assert_eq!(client.all_records().await.unwrap().len(), IMPORTED);
+    // Undated records have no invented date and sort after every dated record.
+    let undated: Vec<_> = walked.iter().filter(|r| r.date.is_none()).collect();
+    assert_eq!(undated.len(), UNDATED);
+    assert!(
+        walked[IMPORTED - UNDATED..]
+            .iter()
+            .all(|r| r.date.is_none())
+    );
+    assert_eq!(undated[0].value.as_deref(), Some("< 0.03"));
+    assert_eq!(undated[0].unit.as_deref(), Some("mg/dL"));
+    let dated = walked.iter().find(|r| r.date.is_some()).unwrap();
+    assert_eq!(dated.time_zone.as_deref(), Some("-07:00"));
+    assert_eq!(dated.provenance.source_kind, "healthRecords");
+    assert!(dated.payload.as_ref().unwrap().contains_key("source"));
+    // A stale or foreign cursor never silently splices pages.
+    let first = client.browse_records(None).await.unwrap();
+    let stale = first.next_cursor.clone().unwrap();
+    assert!(outsider.browse_records(Some(stale.clone())).await.is_err());
+
+    // Select one exact record and hand it to chat; the reply cites that revision.
+    let note = health(
+        "portal/a1c",
+        json!({"concept_id":"lab:a1c","title":"Hemoglobin A1c","measured_at":"2026-10-01T09:00:00-04:00","source":{"kind":"healthRecords","record_id":"a1c-original"},"value":{"literal":"5.4","unit":"%"},"status":"final"}),
+    );
+    let original = post(&base, PATIENT, "/api/canonical-evidence", &note).await;
+    let record: Uuid = original["canonical_record_id"]
+        .as_str()
+        .unwrap()
+        .parse()
+        .unwrap();
+    let first_revision = original["revision"].as_i64().unwrap() as i32;
+    let (user, reply) = ask(&base, &client, record, first_revision).await;
+    let cited = client.cited_revision(reply, "d2-read").await.unwrap();
+    assert_eq!(cited.status, Revision::Current);
+    assert_eq!(cited.address.revision, first_revision);
+    let selected_id = format!("selected-record-{record}-{first_revision}");
+    let selected = client.cited_revision(user, &selected_id).await.unwrap();
+    assert_eq!(selected.address.revision, first_revision);
+    // A browse page read now carries the record's exact revision.
+    let listed = client.all_records().await.unwrap();
+    assert!(
+        listed
+            .iter()
+            .any(|r| r.address.canonical_record_id == record
+                && r.address.revision == first_revision
+                && r.status == Browse::Current)
+    );
+
+    // Correction: the citation reopens the original revision with a newer-version notice;
+    // new work must read current evidence and refuses the stale selection.
+    let mut correction = note.clone();
+    correction["operation_id"] = json!(Uuid::new_v4());
+    correction["expected_revision"] = json!(first_revision);
+    correction["payload"]["value"]["literal"] = json!("5.6");
+    let corrected = post(&base, PATIENT, "/api/canonical-evidence", &correction).await;
+    let second_revision = corrected["revision"].as_i64().unwrap() as i32;
+    assert!(second_revision > first_revision);
+    let reopened = client.cited_revision(reply, "d2-read").await.unwrap();
+    assert_eq!(reopened.status, Revision::Superseded);
+    assert_eq!(reopened.newer_revision_exists, Some(true));
+    assert_eq!(reopened.address.revision, first_revision);
+    let body = reopened.payload.clone().flatten().unwrap();
+    assert_eq!(
+        body["value"]["literal"], "5.4",
+        "the cited original, not the correction"
+    );
+    assert!(
+        client
+            .send_about_record(Uuid::new_v4(), "Again?", "UTC", record, first_revision)
+            .await
+            .is_err(),
+        "a stale selected revision is not new work's evidence"
+    );
+    let (_, current_reply) = ask(&base, &client, record, second_revision).await;
+    let current = client
+        .cited_revision(current_reply, "d2-read")
+        .await
+        .unwrap();
+    assert_eq!(current.status, Revision::Current);
+    assert_eq!(
+        current.payload.flatten().unwrap()["value"]["literal"],
+        "5.6"
+    );
+
+    // Source removal: still listed and labelled, and both citations stay readable.
+    let removal = json!({"operation_id":Uuid::new_v4(),"canonical_record_id":record,"record_id":"portal/a1c","entity":"health_evidence","expected_revision":second_revision,"operation":"delete","payload":{"source":{"kind":"healthRecords"}}});
+    post(&base, PATIENT, "/api/canonical-evidence", &removal).await;
+    let browse = client.browse_records(None).await.unwrap();
+    assert_eq!(browse.removed_count, Some(1));
+    let listed = client.all_records().await.unwrap();
+    let removed = listed
+        .iter()
+        .find(|r| r.address.canonical_record_id == record)
+        .expect("source-removed records stay discoverable");
+    assert_eq!(removed.status, Browse::RemovedBySource);
+    let old = client.cited_revision(reply, "d2-read").await.unwrap();
+    assert_eq!(old.status, Revision::RemovedBySource);
+    assert_eq!(old.payload.flatten().unwrap()["value"]["literal"], "5.4");
+    let latest = client
+        .cited_revision(current_reply, "d2-read")
+        .await
+        .unwrap();
+    assert_eq!(latest.status, Revision::RemovedBySource);
+    assert!(
+        client
+            .send_about_record(Uuid::new_v4(), "Again?", "UTC", record, second_revision)
+            .await
+            .is_err(),
+        "removed evidence cannot ground new work"
+    );
+
+    // Cross-account refusal: no browse membership, exact read or citation reopening.
+    assert_eq!(outsider.all_records().await.unwrap().len(), 0);
+    assert!(outsider.record_revision(address(&original)).await.is_err());
+    assert!(outsider.cited_revision(reply, "d2-read").await.is_err());
+    let _ = foreign;
+
+    // Privacy erasure: an honest "no longer available", no payload, no listing.
+    let erasable = &accepted[UNDATED];
+    let erased: Uuid = erasable["canonical_record_id"]
+        .as_str()
+        .unwrap()
+        .parse()
+        .unwrap();
+    let erased_revision = erasable["revision"].as_i64().unwrap() as i32;
+    let (_, erased_reply) = ask(&base, &client, erased, erased_revision).await;
+    privacy
+        .restrict(
+            &patient,
+            Uuid::new_v4(),
+            Restriction::EvidenceDelete,
+            erased,
+            i64::from(erased_revision),
+        )
+        .await
+        .unwrap();
+    let gone = client
+        .cited_revision(erased_reply, "d2-read")
+        .await
+        .unwrap();
+    assert_eq!(gone.status, Revision::Unavailable);
+    assert!(gone.payload.flatten().is_none());
+    assert!(client.record_revision(address(erasable)).await.is_err());
+    let listed = client.all_records().await.unwrap();
+    assert!(
+        listed
+            .iter()
+            .all(|r| r.address.canonical_record_id != erased)
+    );
+    assert_eq!(listed.len(), IMPORTED); // 260 imports + A1c (removed) − 1 erased
+}

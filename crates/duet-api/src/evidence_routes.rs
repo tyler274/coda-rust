@@ -14,6 +14,8 @@ pub fn router(state: DurableState) -> Router {
         .route("/api/evidence/library", get(library).post(library_post))
         .route("/api/evidence/records", get(records))
         .route("/api/evidence/state", get(state_read))
+        .route("/api/evidence/browse", axum::routing::post(browse))
+        .route("/api/evidence/revision", axum::routing::post(revision))
         .with_state(state)
 }
 fn decorate_group(
@@ -365,4 +367,228 @@ async fn library(
     Ok(Json(
         json!({"catalog_revision":null,"counts":counts,"entries":entries,"group":group,"health_records_generation":snap.health_records_generation,"is_refreshing":false,"next_cursor":next,"revision":snap.cursor,"total_count":total}),
     ))
+}
+
+/// Literal declared date and its role: the projected source date role first, then the
+/// common date fields. A missing date stays missing ("date unknown"), never invented.
+fn declared_date(payload: &Value) -> (Option<String>, Option<String>) {
+    if let Some(role) = payload
+        .pointer("/source/projected_date_role")
+        .and_then(Value::as_str)
+        && let Some(date) = payload
+            .pointer("/source/declared_dates")
+            .and_then(|d| d.get(role))
+            .and_then(Value::as_str)
+    {
+        return (Some(date.to_owned()), Some(role.to_owned()));
+    }
+    for field in [
+        "measured_at",
+        "recorded_at",
+        "occurred_at",
+        "effective_at",
+        "date",
+    ] {
+        if let Some(date) = payload[field].as_str().filter(|s| !s.trim().is_empty()) {
+            return (Some(date.to_owned()), Some(field.to_owned()));
+        }
+    }
+    (None, None)
+}
+
+/// Declared IANA zone, else the literal UTC offset carried by the date string.
+fn time_zone(payload: &Value, date: Option<&str>) -> Option<String> {
+    for pointer in ["/time_zone", "/source/time_zone", "/timezone"] {
+        if let Some(zone) = payload.pointer(pointer).and_then(Value::as_str) {
+            return Some(zone.to_owned());
+        }
+    }
+    let date = date?;
+    let parsed = chrono::DateTime::parse_from_rfc3339(date).ok()?;
+    if date.ends_with('Z') || date.ends_with('z') {
+        return Some("UTC".into());
+    }
+    Some(parsed.offset().to_string())
+}
+
+fn literal(value: &Value) -> Option<String> {
+    match value {
+        Value::Null => None,
+        Value::String(s) => Some(s.clone()),
+        Value::Number(n) => Some(n.to_string()),
+        Value::Bool(b) => Some(b.to_string()),
+        other => Some(other.to_string()),
+    }
+}
+
+/// Exact value and unit as declared; no conversion or rounding.
+fn value_and_unit(payload: &Value) -> (Option<String>, Option<String>) {
+    let value = &payload["value"];
+    if value.is_object() {
+        let shown = value
+            .get("literal")
+            .or_else(|| value.get("value"))
+            .and_then(literal);
+        let unit = value.get("unit").and_then(Value::as_str).map(str::to_owned);
+        return (shown, unit);
+    }
+    (literal(value), payload["unit"].as_str().map(str::to_owned))
+}
+
+fn browse_record(record: &crate::evidence::ExactEvidence) -> Value {
+    let p = &record.payload;
+    let kind = p.pointer("/source/kind").and_then(Value::as_str).unwrap_or(
+        if p["source_label"].is_string() {
+            "note"
+        } else {
+            "unknown"
+        },
+    );
+    let writer = if crate::evidence::SERVER_SOURCE_KINDS.contains(&kind) {
+        "connector"
+    } else {
+        "device"
+    };
+    let (date, role) = declared_date(p);
+    let zone = time_zone(p, date.as_deref());
+    let (value, unit) = value_and_unit(p);
+    let title = p["display_name"]
+        .as_str()
+        .or(p["title"].as_str())
+        .or(p["concept_id"].as_str())
+        .unwrap_or("Health record");
+    let mut provenance = json!({"source_kind": kind, "writer": writer});
+    for (key, pointer) in [
+        ("connection_id", "/source/connection_id"),
+        ("source_record_id", "/source/record_id"),
+        ("source_label", "/source_label"),
+    ] {
+        if let Some(text) = p.pointer(pointer).and_then(Value::as_str) {
+            provenance[key] = json!(text);
+        }
+    }
+    let mut out = json!({
+        "address": record.address,
+        "status": if record.current { "current" } else { "removed_by_source" },
+        "title": title,
+        "provenance": provenance,
+        "payload": p,
+    });
+    for (key, value) in [
+        ("date", date),
+        ("date_role", role),
+        ("time_zone", zone),
+        ("value", value),
+        ("unit", unit),
+        (
+            "source_status",
+            p["status"]
+                .as_str()
+                .or(p
+                    .pointer("/clinical_record/record_status")
+                    .and_then(Value::as_str))
+                .map(str::to_owned),
+        ),
+    ] {
+        if let Some(value) = value {
+            out[key] = json!(value);
+        }
+    }
+    out
+}
+
+/// Newest first by parsed instant; literal-but-partial dates next; undated last.
+fn browse_order(
+    record: &crate::evidence::ExactEvidence,
+) -> (u8, std::cmp::Reverse<i64>, uuid::Uuid) {
+    let (date, _) = declared_date(&record.payload);
+    let parsed = date
+        .as_deref()
+        .and_then(|d| chrono::DateTime::parse_from_rfc3339(d).ok());
+    match (date, parsed) {
+        (_, Some(at)) => (
+            0,
+            std::cmp::Reverse(at.timestamp_millis()),
+            record.address.canonical_record_id,
+        ),
+        (Some(_), None) => (1, std::cmp::Reverse(0), record.address.canonical_record_id),
+        (None, None) => (2, std::cmp::Reverse(0), record.address.canonical_record_id),
+    }
+}
+
+async fn browse(
+    State(s): State<DurableState>,
+    h: HeaderMap,
+    Json(body): Json<duet_wire::models::EvidenceBrowseQuery>,
+) -> Result<Json<Value>, ApiError> {
+    let c = s.authenticate(&h).await?;
+    let include_removed = body.include_removed.unwrap_or(true);
+    let (snap, removed) = s.evidence.inventory(&c).await?;
+    let removed_count = removed.len();
+    let mut all: Vec<_> = snap.records.to_vec();
+    if include_removed {
+        all.extend(removed);
+    }
+    all.sort_by_key(browse_order);
+    let entries: Vec<Value> = all.iter().map(browse_record).collect();
+    let key = paging::query_key(
+        "browse",
+        Some(&format!("include_removed={include_removed}")),
+    )?;
+    let offset = paging::offset(body.cursor.as_deref(), &c, &snap, &key)?;
+    let total = entries.len();
+    let end = paging::end(&entries, offset)?;
+    let next = paging::next(&c, &snap, &key, end, total);
+    Ok(Json(json!({
+        "revision": snap.cursor,
+        "health_records_generation": snap.health_records_generation,
+        "total_count": total,
+        "removed_count": removed_count,
+        "next_cursor": next,
+        "records": &entries[offset..end],
+    })))
+}
+
+async fn revision(
+    State(s): State<DurableState>,
+    h: HeaderMap,
+    Json(body): Json<duet_wire::models::EvidenceRevisionRequest>,
+) -> Result<Json<Value>, ApiError> {
+    let c = s.authenticate(&h).await?;
+    let address: crate::evidence::AddressedRecordRevision =
+        serde_json::from_value(json!(body.address))
+            .map_err(|_| ApiError::Unprocessable("invalid canonical address"))?;
+    Ok(Json(s.evidence.revision_view(&c, &address).await?))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn undated_records_have_no_date_and_keep_literal_values() {
+        let payload = json!({"title":"Pulse","value":{"literal":"< 60","unit":"/min"},"source":{"kind":"healthRecords"}});
+        assert_eq!(declared_date(&payload), (None, None));
+        assert_eq!(
+            value_and_unit(&payload),
+            (Some("< 60".into()), Some("/min".into()))
+        );
+        assert_eq!(time_zone(&payload, None), None);
+    }
+
+    #[test]
+    fn projected_role_and_offset_are_literal() {
+        let payload = json!({"measured_at":"2026-09-30T08:15:00-07:00","source":{"kind":"epic","declared_dates":{"issued":"2026"},"projected_date_role":"issued"}});
+        assert_eq!(
+            declared_date(&payload),
+            (Some("2026".into()), Some("issued".into()))
+        );
+        let measured = json!({"measured_at":"2026-09-30T08:15:00-07:00"});
+        let (date, role) = declared_date(&measured);
+        assert_eq!(role.as_deref(), Some("measured_at"));
+        assert_eq!(
+            time_zone(&measured, date.as_deref()).as_deref(),
+            Some("-07:00")
+        );
+    }
 }

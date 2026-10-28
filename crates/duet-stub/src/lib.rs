@@ -171,6 +171,7 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
         .route("/api/insight-cycles", get(insights))
         .route("/api/intelligence/settings", get(settings))
         .route("/api/evidence/library", post(library))
+        .route("/api/evidence/browse", post(browse))
         .route("/api/evidence", post(ingest))
         .route("/api/saved-routines", get(routines))
         .route(
@@ -812,6 +813,54 @@ fn apply_doctor_save(base: DoctorCollection, save: DoctorPageSave) -> DoctorColl
     }
 }
 
+/// Stand-in for the durable record browser: the stub library as exact records, paged
+/// fifty at a time by an offset cursor. Stub records carry no provenance connection.
+async fn browse(
+    State(store): State<Arc<Mutex<Store>>>,
+    Json(query): Json<duet_wire::models::EvidenceBrowseQuery>,
+) -> Result<Json<duet_wire::models::EvidenceBrowsePage>, StatusCode> {
+    use duet_wire::models::{
+        CanonicalSourceAddress, EvidenceBrowsePage, EvidenceBrowseRecord, EvidenceRecordProvenance,
+        canonical_source_address::Entity as AddressEntity, evidence_browse_record::Status,
+        evidence_record_provenance::Writer,
+    };
+    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let page = library_page(&store);
+    let records: Vec<EvidenceBrowseRecord> = page
+        .entries
+        .iter()
+        .map(|entry| {
+            let entity = match entry.entity {
+                LibraryEntity::ClinicalNote => AddressEntity::ClinicalNote,
+                LibraryEntity::HealthEvidence => AddressEntity::HealthEvidence,
+            };
+            let mut record = EvidenceBrowseRecord::new(
+                CanonicalSourceAddress::new(entry.record_id, entry.id.clone(), entity, 1),
+                Status::Current,
+                entry.title.clone(),
+                EvidenceRecordProvenance::new("manual".into(), Writer::Device),
+                Some(entry.preview.clone().unwrap_or_default()),
+            );
+            record.provenance.source_label = entry.source_label.clone().flatten();
+            record.date = entry.date.map(|date| date.to_rfc3339());
+            record.date_role = record.date.as_ref().map(|_| "recorded_at".to_owned());
+            record
+        })
+        .collect();
+    let offset = match query.cursor.as_deref() {
+        None => 0,
+        Some(cursor) => cursor.parse().map_err(|_| StatusCode::CONFLICT)?,
+    };
+    if offset > records.len() {
+        return Err(StatusCode::CONFLICT);
+    }
+    let end = (offset + 50).min(records.len());
+    let mut out =
+        EvidenceBrowsePage::new(0, 0, records.len() as i32, records[offset..end].to_vec());
+    out.removed_count = Some(0);
+    out.next_cursor = (end < records.len()).then(|| end.to_string());
+    Ok(Json(out))
+}
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**accept_durable_conversation_command**](DefaultApi.md#accept_durable_conversation_command) | **POST** /api/conversation/{id}/commands |
 [**apple_health_source_api_evidence_apple_health_get**](DefaultApi.md#apple_health_source_api_evidence_apple_health_get) | **GET** /api/evidence/apple-health | Apple Health Source
+[**browse_evidence_records**](DefaultApi.md#browse_evidence_records) | **POST** /api/evidence/browse |
 [**commit_durable_privacy_restriction**](DefaultApi.md#commit_durable_privacy_restriction) | **POST** /api/auth/privacy-restrictions |
 [**complete_epic_api_connectors_epic_complete_post**](DefaultApi.md#complete_epic_api_connectors_epic_complete_post) | **POST** /api/connectors/epic/complete | Complete Epic
 [**complete_healow_api_connectors_healow_complete_post**](DefaultApi.md#complete_healow_api_connectors_healow_complete_post) | **POST** /api/connectors/healow/complete | Complete Healow
@@ -36,12 +37,14 @@ Method | HTTP request | Description
 [**read_canonical_evidence_exact**](DefaultApi.md#read_canonical_evidence_exact) | **POST** /api/canonical-evidence/exact |
 [**read_canonical_evidence_snapshot**](DefaultApi.md#read_canonical_evidence_snapshot) | **GET** /api/canonical-evidence |
 [**read_canonical_health_context**](DefaultApi.md#read_canonical_health_context) | **GET** /api/health-context |
+[**read_conversation_source_revision**](DefaultApi.md#read_conversation_source_revision) | **GET** /api/conversation/messages/{message_id}/sources/{source_id}/revision |
 [**read_doctor_publication**](DefaultApi.md#read_doctor_publication) | **GET** /api/doctor-collection/share-link |
 [**read_doctor_save_receipt**](DefaultApi.md#read_doctor_save_receipt) | **GET** /api/doctor-collection/save-receipts/{generation} |
 [**read_durable_account_context**](DefaultApi.md#read_durable_account_context) | **GET** /api/auth/account/context |
 [**read_durable_conversation**](DefaultApi.md#read_durable_conversation) | **GET** /api/conversation/{id} |
 [**read_durable_conversation_events**](DefaultApi.md#read_durable_conversation_events) | **GET** /api/conversation/commands/{id}/events |
 [**read_durable_conversation_usage**](DefaultApi.md#read_durable_conversation_usage) | **GET** /api/conversation/commands/{id}/usage |
+[**read_evidence_revision**](DefaultApi.md#read_evidence_revision) | **POST** /api/evidence/revision |
 [**read_today_assessment_status**](DefaultApi.md#read_today_assessment_status) | **POST** /api/insight-cycles/status |
 [**reject_durable_doctor_proposal**](DefaultApi.md#reject_durable_doctor_proposal) | **POST** /api/doctor-collection/proposals/{id}/reject |
 [**resume_durable_conversation_command**](DefaultApi.md#resume_durable_conversation_command) | **POST** /api/conversation/commands/{id}/resume |
@@ -110,6 +113,34 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## browse_evidence_records
+
+> models::EvidenceBrowsePage browse_evidence_records(evidence_browse_query)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**evidence_browse_query** | [**EvidenceBrowseQuery**](EvidenceBrowseQuery.md) |  | [required] |
+
+### Return type
+
+[**models::EvidenceBrowsePage**](EvidenceBrowsePage.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -949,6 +980,35 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## read_conversation_source_revision
+
+> models::EvidenceRevisionView read_conversation_source_revision(message_id, source_id)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**message_id** | Option<**uuid::Uuid**> |  | [required] |
+**source_id** | **String** |  | [required] |
+
+### Return type
+
+[**models::EvidenceRevisionView**](EvidenceRevisionView.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## read_doctor_publication
 
 > models::DurablePublicationView read_doctor_publication()
@@ -1108,6 +1168,34 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## read_evidence_revision
+
+> models::EvidenceRevisionView read_evidence_revision(evidence_revision_request)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**evidence_revision_request** | [**EvidenceRevisionRequest**](EvidenceRevisionRequest.md) |  | [required] |
+
+### Return type
+
+[**models::EvidenceRevisionView**](EvidenceRevisionView.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

@@ -759,31 +759,7 @@ impl ConversationStore {
     ) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
         check_current(&mut tx, c, false).await?;
-        let rows = sqlx::query(
-            "select id,admission,reply from duet_commands where user_id=$1 and work_kind in ('message','follow_up') and (id=$2 or id=$3)",
-        )
-        .bind(c.account_id)
-        .bind(message)
-        .bind(assistant_id(message))
-        .fetch_all(&mut *tx)
-        .await?;
-        // ENG-200: a steer's own selected source reopens like a command's.
-        let mut retained: Option<Value> = sqlx::query_scalar("select admission->'source' from duet_command_steers where user_id=$1 and id=$2 and admission->'source'->>'read_id'=$3")
-            .bind(c.account_id).bind(message).bind(source_id).fetch_optional(&mut *tx).await?;
-        for row in rows {
-            let id: Uuid = row.get("id");
-            if id == message {
-                let admission: Value = row.get("admission");
-                if admission["source"]["read_id"].as_str() == Some(source_id) {
-                    retained = Some(admission["source"].clone());
-                }
-            } else if row.get::<Option<Value>, _>("reply").is_some() {
-                // Citation membership and exact delivered read must both belong to this command.
-                retained = sqlx::query_scalar("select r.result from duet_tool_effects r where r.user_id=$1 and r.command_id=$2 and r.invocation_id=$3 and r.call->>'name' in ('read_health_source','read_selected_source') and exists(select 1 from duet_tool_effects c, jsonb_array_elements(c.result->'sources') s where c.user_id=r.user_id and c.command_id=r.command_id and c.call->>'name'='cite_health_sources' and s=r.result)")
-                    .bind(c.account_id).bind(id).bind(source_id).fetch_optional(&mut *tx).await?;
-            }
-        }
-        let retained = retained.ok_or(ApiError::NotFound)?;
+        let retained = retained_source(&mut tx, c, message, source_id).await?;
         if retained.get("kind").is_some() {
             return crate::conversation_context::detail(&mut tx, c.account_id, &retained).await;
         }
@@ -796,6 +772,34 @@ impl ConversationStore {
             json!({"reference":source_card(&retained),"text":exact.payload.to_string(),"superseded":!exact.current,"current_revision":current}),
         )
     }
+    /// Reopen the exact record revision a message cited or selected, with its truthful
+    /// status (`current`, `superseded`, `removed_by_source`) and an explicit
+    /// `unavailable` (no payload) once privacy erasure removed it. Never reads current
+    /// evidence in place of the cited revision.
+    pub async fn message_source_revision(
+        &self,
+        c: &AccountContext,
+        message: Uuid,
+        source_id: &str,
+    ) -> Result<Value, ApiError> {
+        let mut tx = self.database.begin(c.account_id).await?;
+        check_current(&mut tx, c, false).await?;
+        let retained = retained_source(&mut tx, c, message, source_id).await?;
+        if retained.get("kind").is_some() {
+            // Published insights, follow-ups and measurements reopen through `message_source`.
+            return Err(ApiError::NotFound);
+        }
+        let address: AddressedRecordRevision = decode(retained["source"]["address"].clone())?;
+        let mut view =
+            match crate::evidence::revision_view_in_transaction(&mut tx, c.account_id, &address)
+                .await
+            {
+                Err(ApiError::NotFound) => crate::evidence::unavailable_view(&address),
+                other => other?,
+            };
+        view["reference"] = source_card(&retained);
+        Ok(view)
+    }
     /// Read current conversation with only successfully committed replies.
     pub async fn read(&self, c: &AccountContext, conversation: Uuid) -> Result<Value, ApiError> {
         let mut tx = self.database.begin(c.account_id).await?;
@@ -804,6 +808,42 @@ impl ConversationStore {
         Ok(
             json!({"id":conversation,"commands":rows.into_iter().map(|r|json!({"id":r.get::<Uuid,_>("id"),"input":r.get::<String,_>("input"),"steers":r.get::<Value,_>("steers"),"reply":r.get::<Option<Value>,_>("reply"),"state":r.get::<String,_>("state"),"base_revision":r.get::<i64,_>("base_revision")})).collect::<Vec<_>>()}),
         )
+    }
+}
+/// The retained source attached to this account's message: a selected source on the
+/// command or steer, or a delivered read that the reply actually cited.
+async fn retained_source(
+    tx: &mut Transaction<'_, Postgres>,
+    c: &AccountContext,
+    message: Uuid,
+    source_id: &str,
+) -> Result<Value, ApiError> {
+    {
+        let rows = sqlx::query(
+            "select id,admission,reply from duet_commands where user_id=$1 and work_kind in ('message','follow_up') and (id=$2 or id=$3)",
+        )
+        .bind(c.account_id)
+        .bind(message)
+        .bind(assistant_id(message))
+        .fetch_all(&mut **tx)
+        .await?;
+        // ENG-200: a steer's own selected source reopens like a command's.
+        let mut retained: Option<Value> = sqlx::query_scalar("select admission->'source' from duet_command_steers where user_id=$1 and id=$2 and admission->'source'->>'read_id'=$3")
+            .bind(c.account_id).bind(message).bind(source_id).fetch_optional(&mut **tx).await?;
+        for row in rows {
+            let id: Uuid = row.get("id");
+            if id == message {
+                let admission: Value = row.get("admission");
+                if admission["source"]["read_id"].as_str() == Some(source_id) {
+                    retained = Some(admission["source"].clone());
+                }
+            } else if row.get::<Option<Value>, _>("reply").is_some() {
+                // Citation membership and exact delivered read must both belong to this command.
+                retained = sqlx::query_scalar("select r.result from duet_tool_effects r where r.user_id=$1 and r.command_id=$2 and r.invocation_id=$3 and r.call->>'name' in ('read_health_source','read_selected_source') and exists(select 1 from duet_tool_effects c, jsonb_array_elements(c.result->'sources') s where c.user_id=r.user_id and c.command_id=r.command_id and c.call->>'name'='cite_health_sources' and s=r.result)")
+                    .bind(c.account_id).bind(id).bind(source_id).fetch_optional(&mut **tx).await?;
+            }
+        }
+        retained.ok_or(ApiError::NotFound)
     }
 }
 async fn admit_submission(
