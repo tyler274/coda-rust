@@ -1,0 +1,748 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002082",
+      "events": [
+        {
+          "id": "2025-01-08a",
+          "kind": "imaging",
+          "start": "2025-01-08T10:30",
+          "reason": "CT chest after chemoradiation",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-01-08T10:30",
+              "text": "TECHNIQUE: CT chest with intravenous contrast.\nCOMPARISON: 10/01/2024.\nFINDINGS: The right upper lobe mass has decreased, now 2.3 cm. Mediastinal lymph nodes have decreased in size. The 6 mm right lower lobe nodule is unchanged. No new pulmonary nodules. No pleural effusion. No new lymphadenopathy.",
+              "conclusion": "Treatment response: right upper lobe mass decreased to 2.3 cm and mediastinal nodes decreased. No new disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "CT chest post-treatment",
+              "author": "radiology",
+              "date": "2025-01-08T15:45",
+              "body": "Outside report received: RUL mass down to 2.3 cm from 4 cm, nodes smaller, nothing new. Routed to PCP and oncology."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-13a",
+          "kind": "outside_records",
+          "start": "2025-01-13T15:00",
+          "reason": "Oncology letter: durvalumab started",
+          "medications": [
+            {
+              "drug_text": "durvalumab 50 MG/ML Injection",
+              "action": "historical",
+              "sig": "1500 mg IV every 4 weeks, planned for 12 months; given at the infusion center",
+              "dose": {
+                "value": 1500,
+                "unit": "mg"
+              },
+              "route": "Intravenous",
+              "course": "chronic",
+              "reason": "Non-small cell lung cancer, consolidation after chemoradiation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2025-01-13T15:00",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 01/13/2025\nStage IIIA NSCLC, RUL, s/p concurrent chemoradiation (carboplatin/paclitaxel weekly + 60 Gy) completed 12/13/2024.\nPost-treatment CT 01/08: RUL mass 2.3 cm, nodes decreased, no new disease.\nFatigue improving. Cough unchanged. Eating better.\nPlan: start durvalumab 1500 mg IV every 4 weeks today, for 12 months. Discussed immune side effects - cough or breathlessness (pneumonitis), diarrhea, rash, thyroid changes - and to call for any of them. Surveillance CT every 3 months.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "office_visit",
+          "start": "2025-01-22T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after chemoradiation",
+          "state": {
+            "weight_kg": 74.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current some day smoker"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-22T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - after chemoradiation",
+              "author": "PCP",
+              "date": "2025-01-22T16:10",
+              "body": "S: Finished chemo/radiation 12/13. Tired, naps most afternoons, improving week by week. First durvalumab dose 1/13, no issues so far. Cough about the same, no blood. Eating more. Breathing at baseline, albuterol a few times a week. Still sneaking 3-4 cigarettes a day - embarrassed about it.\nO: Weight 74 kg (about 78 in October). Vitals otherwise as charted. Lungs: no wheeze, no crackles. Heart regular. No edema.\nA/P\n1. NSCLC IIIA, good response on CT 1/8 (2.3 cm). On durvalumab q4 weeks via oncology. Reviewed which symptoms should prompt a call to them (new cough or shortness of breath, diarrhea, rash).\n2. Tobacco: a few a day. No judgment; offered patch again - wants to keep tapering on his own.\n3. COPD: stable.\n4. Fatigue: expected after treatment; oncology following counts.\nRTC spring."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "outside_records",
+          "start": "2025-04-14T14:30",
+          "reason": "Oncology letter, surveillance CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-04-07T09:45",
+              "text": "CT chest with contrast. Comparison 01/08/2025. Right upper lobe treated mass and post-radiation change are stable. Mediastinal nodes stable. Right lower lobe 6 mm nodule unchanged. No new nodules, no effusion.",
+              "conclusion": "Stable. No evidence of progression."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2025-04-14T14:30",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 04/14/2025\nOn durvalumab, cycle 4 today. Tolerating well, no rash, no diarrhea, no new cough. Energy improving.\nCT chest 04/07: stable, no progression.\nPlan: continue durvalumab every 4 weeks. Next CT in July.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-05-09a",
+          "kind": "office_visit",
+          "start": "2025-05-09T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: COPD, lung cancer on immunotherapy",
+          "state": {
+            "weight_kg": 76.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current some day smoker"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "placed",
+              "order": "Fecal Immunochemical Test",
+              "category": "lab",
+              "reason": "Colorectal cancer screening"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-09T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - follow-up",
+              "author": "PCP",
+              "date": "2025-05-09T08:45",
+              "body": "S: Doing better. Energy most of the way back, doing light work for a buddy's crew a couple days a week. Durvalumab every 4 weeks, no side effects he's noticed. April CT stable per oncology. Cough mild, no blood. Breathing baseline. Smoking: 2-4 a day.\nO: Weight 76.5 kg, up from 74 in January. Vitals as charted. Lungs: no wheeze, no crackles. Heart regular. No edema, no rash.\nA/P\n1. NSCLC IIIA on consolidation durvalumab; stable April CT. Oncology following monthly with labs - reviewed their recent counts and chemistries, unremarkable.\n2. COPD: stable on tiotropium + albuterol; refills sent.\n3. Tobacco: down to a few a day. Encouraged a full stop - offered nicotine patch, still declines.\n4. CRC screening: FIT kit given.\nRTC fall, flu/COVID then. Text anytime."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "lab_only",
+          "start": "2025-05-20T09:00",
+          "reason": "FIT returned",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-17T06:00",
+              "results": [
+                {
+                  "test": "Fecal Immunochemical Test",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "fit-2025",
+              "action": "done",
+              "date": "2025-05-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT",
+              "author": "PCP",
+              "date": "2025-05-20T12:30",
+              "body": "FIT negative. Next due 05/2026."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-18a",
+          "kind": "pharmacy",
+          "start": "2025-06-18T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: tiotropium",
+              "author": "MA",
+              "date": "2025-06-18T09:15",
+              "body": "Pharmacy asking for a 90-day fill of tiotropium capsules; insurer switched preferred mail order. New script needed at the mail-order pharmacy."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill sent",
+              "author": "PCP",
+              "date": "2025-06-18T10:40",
+              "body": "New 90-day script with 3 refills sent to mail order."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-21a",
+          "kind": "outside_records",
+          "start": "2025-07-21T13:00",
+          "reason": "Oncology letter, surveillance CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-07-14T10:15",
+              "text": "CT chest with contrast. Comparison 04/07/2025. Treated right upper lobe mass and radiation change unchanged. Mediastinal nodes stable. 6 mm right lower lobe nodule unchanged. No new findings.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2025-07-21T13:00",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 07/21/2025\nDurvalumab cycle 7. Doing well. No immune-related side effects.\nCT 07/14: stable.\nPlan: continue. CT again in October.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-14a",
+          "kind": "ed_visit",
+          "start": "2025-09-14T10:40",
+          "end": "2025-09-14T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath, productive cough",
+          "vitals": [
+            {
+              "time": "2025-09-14T10:48",
+              "rr": 22,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-14T11:05",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 55
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 70
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-09-14T11:20",
+              "text": "Portable AP chest. Comparison 09/17/2024. Increased bronchial wall thickening. No consolidation. Post-treatment changes in the right upper lung. No pleural effusion or pneumothorax.",
+              "conclusion": "Bronchial wall thickening without consolidation."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-14T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "author": "emergency medicine",
+              "date": "2025-09-19T10:00",
+              "body": "EMERGENCY DEPARTMENT RECORD - received 09/19/2025\nDate of visit: 09/14/2025\n\nHPI: 48M with COPD and stage III non-small cell lung cancer on durvalumab, here with two days of increasing breathlessness and cough productive of green sputum.\nMeds: tiotropium, albuterol inhalers; durvalumab every 4 weeks (oncology).\nAllergies: NKDA.\nFamily: father COPD; paternal uncle lung cancer.\nSocial: smoker, 30 pack-years.\n\nTriage: RR 22, SpO2 88% on room air.\nExam: tachypneic, diffuse expiratory wheezes throughout.\nABG: pH 7.32, PaCO2 55, PaO2 70.\nCXR: bronchial wall thickening, no consolidation.\n\nImpression: acute exacerbation of COPD with acute respiratory acidosis.\nED course: continuous nebulized albuterol/ipratropium, steroids and antibiotics started, BiPAP initiated.\nDisposition: admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-14b",
+          "kind": "hospital_admission",
+          "start": "2025-09-14T16:30",
+          "end": "2025-09-17T12:00",
+          "service": "Hospital Medicine",
+          "reason": "COPD exacerbation",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-09-14T17:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-09-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2025-09-19T10:05",
+              "body": "DISCHARGE SUMMARY - received 09/19/2025\nAdmitted 09/14/2025, discharged 09/17/2025.\nPrincipal diagnosis: acute exacerbation of COPD.\nOther: stage IIIA NSCLC on consolidation durvalumab; tobacco use.\n\nCourse: admitted from the ED with hypercapnic exacerbation. Noninvasive ventilation overnight on admission, then nasal cannula; back on room air by the second hospital day. Treated with scheduled nebulized albuterol/ipratropium, prednisone 40 mg daily (5-day course) and azithromycin (5-day course). Chest imaging without consolidation; the team did not find evidence of pneumonitis. Oncology aware.\n\nDischarge medications: tiotropium 18 mcg daily; albuterol HFA as needed; prednisone 40 mg daily to complete 5 days (last dose 09/18); azithromycin to complete 5 days (last dose 09/18).\nAllergies: none known.\nFollow-up: primary care in 1-2 weeks; oncology as scheduled. Smoking cessation advised.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-22a",
+          "kind": "telephone",
+          "start": "2025-09-22T10:30",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2025-09-22T10:30",
+              "body": "Called after hospital discharge 9/17 for COPD flare. Finished prednisone and azithromycin 9/18. Breathing much better, back to his usual rescue use. No fever. Using tiotropium daily. Offered a follow-up visit this week or next - he'd rather wait, sees oncology on the 13th and says he's 'had enough appointments.' Advised to call or text for any worsening. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Post-discharge call",
+              "author": "PCP",
+              "date": "2025-09-22T13:15",
+              "body": "Thanks - read the discharge summary. Ok to hold off; front desk please offer him an October slot for a check plus flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "outside_records",
+          "start": "2025-10-20T13:30",
+          "reason": "Oncology letter, surveillance CT",
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2025-10-13T09:30",
+              "text": "CT chest with contrast. Comparison 07/14/2025. Treated right upper lobe mass and radiation change stable. Mediastinal nodes stable. 6 mm right lower lobe nodule unchanged. No consolidation. No new nodules.",
+              "conclusion": "Stable. No progression."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2025-10-20T13:30",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 10/20/2025\nHospitalized in September for a COPD exacerbation; recovered. Durvalumab given through it on schedule after review - no evidence of pneumonitis.\nCT 10/13: stable.\nPlan: continue durvalumab to complete 12 months (final dose end of December). Surveillance CT in spring.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "pharmacy",
+          "start": "2025-11-19T08:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: albuterol HFA",
+              "author": "MA",
+              "date": "2025-11-19T08:50",
+              "body": "Refill request albuterol HFA x2. Pt has not come in since May; did not book the October slot. Pended."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "author": "PCP",
+              "date": "2025-11-19T12:05",
+              "body": "Approved. Please reach out again about a visit and flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "outside_records",
+          "start": "2026-01-12T14:00",
+          "reason": "Oncology letter, durvalumab completed",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2026-01-12T14:00",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 01/12/2026\nCompleted 12 months of consolidation durvalumab; final dose 12/29/2025. No immune-related adverse events during therapy.\nFeels fair. Weight 76 kg.\nPlan: surveillance. CT chest in April, then every 3-6 months. Call for new cough, blood in sputum, weight loss or confusion.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-28a",
+          "kind": "ed_visit",
+          "start": "2026-03-28T14:00",
+          "end": "2026-03-28T20:00",
+          "service": "Emergency Medicine",
+          "reason": "Confusion, lethargy, poor appetite",
+          "vitals": [
+            {
+              "time": "2026-03-28T14:08",
+              "bp": [
+                116,
+                74
+              ],
+              "hr": 84
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-28T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 117
+                },
+                {
+                  "test": "Chloride",
+                  "value": 84
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Glucose",
+                  "value": 104
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-28T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-28T14:30",
+              "results": [
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mOsm/kg",
+                  "value": 247
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-28T15:10",
+              "results": [
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mOsm/kg",
+                  "value": 486
+                },
+                {
+                  "test": "Sodium [Moles/volume] in Urine",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "value": 58
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2026-03-28T15:30",
+              "text": "Noncontrast CT of the head. No intracranial hemorrhage, mass effect or acute infarct. Ventricles and sulci normal for age. No extra-axial collection.",
+              "conclusion": "No acute intracranial abnormality."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2026-03-28T16:10",
+              "text": "CT chest with intravenous contrast. Comparison 10/13/2025. Centrally located right upper lobe mass now measures 5.8 cm, enlarged compared with prior. Enlarged mediastinal lymph nodes. 6 mm right lower lobe nodule unchanged. No pleural effusion.",
+              "conclusion": "Enlarging central right upper lobe mass (5.8 cm) with enlarged mediastinal nodes, consistent with progression."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-28T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department note",
+              "author": "emergency medicine",
+              "date": "2026-04-06T09:30",
+              "body": "EMERGENCY DEPARTMENT RECORD - received 04/06/2026\nDate of visit: 03/28/2026\n\nHPI: 49M with COPD, tobacco use and stage IIIA NSCLC treated with chemoradiation and durvalumab (completed 12/2025), brought in by his sister. Over the past week he has become more confused and sluggish and has hardly been eating. She says he has dropped close to 7 kg in two months and has had an ongoing cough with occasional streaks of blood.\nMeds: tiotropium, albuterol.\nAllergies: NKDA.\nFamily: father COPD; paternal uncle lung cancer.\nSocial: 30 pack-year smoker.\n\nVitals: BP 116/74, HR 84.\nExam: drowsy, oriented to name only. Moist mucous membranes. No peripheral edema. Lungs without crackles. No focal motor deficit.\nLabs: Na 117, serum osm 247, urine osm 486, urine Na 58, K 3.9, creatinine 0.7, glucose 104, TSH 1.9. Hgb 12.6.\nCT head: no acute abnormality.\nCT chest: central RUL mass 5.8 cm, larger than in October, with enlarged mediastinal nodes.\n\nImpression: severe hypotonic hyponatremia from SIADH, in the setting of progressive lung cancer. Euvolemic.\nPlan: fluid restriction, admit to medicine with frequent sodium checks."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-28b",
+          "kind": "hospital_admission",
+          "start": "2026-03-28T20:00",
+          "end": "2026-04-02T13:00",
+          "service": "Hospital Medicine",
+          "reason": "Hyponatremia, SIADH",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-29T06:00",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 17
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-02T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 128
+                },
+                {
+                  "test": "Chloride",
+                  "value": 94
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-28T21:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-04-02T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-04-06T09:35",
+              "body": "DISCHARGE SUMMARY - received 04/06/2026\nAdmitted 03/28/2026, discharged 04/02/2026.\nPrincipal diagnosis: hyponatremia due to SIADH.\nSecondary: progression of stage IIIA non-small cell lung cancer, right upper lobe; COPD; tobacco use.\n\nCourse: presented confused with Na 117, low serum osmolality, concentrated urine and high urine sodium while clinically euvolemic; TSH 1.9 and AM cortisol 17, both normal. Managed with fluid restriction to 1 L/day and sodium chloride 1 g tablets three times daily, correcting slowly. Sodium 128 on day of discharge; mentation back to his baseline by day 3. Blood-streaked sputum only, hemoglobin stable at 12.6. CT chest showed growth of the central RUL mass to 5.8 cm with enlarged mediastinal nodes. Oncology consulted: progression after chemoradiation and durvalumab; plan second-line systemic therapy as an outpatient.\n\nDischarge medications: tiotropium 18 mcg daily; albuterol HFA as needed; sodium chloride 1 g by mouth three times daily. Fluid restriction 1 L/day.\nAllergies: none known.\nFollow-up: oncology next week with BMP; primary care.\ncc: primary care"
+            },
+            {
+              "type": "Result Note",
+              "title": "Records filed",
+              "author": "PCP",
+              "date": "2026-04-06T17:20",
+              "body": "Hospital records received and reviewed: SIADH with Na 117, progression of the RUL cancer. Discharged on fluid restriction and salt tabs, oncology starting second-line treatment. Asked front desk to reach out to him about coming in."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "portal_message",
+          "start": "2026-04-08T19:32",
+          "reason": "Message after hospital stay",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital",
+              "author": "patient",
+              "date": "2026-04-08T19:32",
+              "body": "Hi, wanted to let you know I was in the hospital last week, my sodium was really low and I was out of it. Cancer grew back. Starting new chemo next week with oncology. I'm ok, my sister is staying with me for a bit. Is it ok to keep using my inhalers the same?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital",
+              "author": "PCP",
+              "date": "2026-04-09T07:55",
+              "body": "Derek, thank you for telling me - I read the hospital records and I'm sorry this came back. Yes, keep both inhalers exactly as before. Stick with the 1 liter fluid limit and the salt tablets until oncology changes them, and get your blood checks with them. I'd like to see you once treatment is underway - the front desk will reach out, or text me a time that works."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-20a",
+          "kind": "outside_records",
+          "start": "2026-04-20T14:30",
+          "reason": "Oncology letter: docetaxel started",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-16T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Chloride",
+                  "value": 97
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2026-04-20T14:30",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 04/16/2026\nRecent admission for SIADH (Na 117) with progression of the RUL primary and mediastinal nodes, 3 months after completing durvalumab. Mental status normal today. Na 131 on 1 L fluid restriction and NaCl 1 g TID.\nPlan: second-line docetaxel 75 mg/m2 IV every 21 days, cycle 1 today. Continue fluid restriction and salt tablets; BMP with each cycle. Restage after 4 cycles.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "outside_records",
+          "start": "2026-07-13T13:45",
+          "reason": "Oncology letter, restaging CT",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-08T08:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 133
+                },
+                {
+                  "test": "Chloride",
+                  "value": 99
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT chest",
+              "performed": "2026-07-08T10:00",
+              "text": "CT chest with contrast. Comparison 03/28/2026. Central right upper lobe mass 5.6 cm (previously 5.8 cm). Mediastinal lymph nodes stable. 6 mm right lower lobe nodule unchanged. No new lesions. No effusion.",
+              "conclusion": "Stable disease."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology progress note",
+              "author": "oncology",
+              "date": "2026-07-13T13:45",
+              "body": "THORACIC ONCOLOGY - FOLLOW-UP\nDate of visit: 07/13/2026\nCompleted 4 cycles of docetaxel. Restaging CT 07/08: central RUL mass 5.6 cm, nodes stable - stable disease. Na 133 on fluid restriction and salt tablets. Alert, eating.\nPlan: continue docetaxel every 21 days; restage in 3 months. Continue SIADH measures.\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "pharmacy",
+          "start": "2026-08-12T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: tiotropium",
+              "author": "MA",
+              "date": "2026-08-12T09:10",
+              "body": "Mail-order renewal request for tiotropium 18 mcg capsules, 90 days. Last office visit 05/2025. Pended to PCP with note that he has not scheduled."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill approved",
+              "author": "PCP",
+              "date": "2026-08-12T11:25",
+              "body": "Approved x 90 days. He's in active chemo - will text him directly about a visit."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

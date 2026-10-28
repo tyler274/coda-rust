@@ -1,0 +1,58 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002624",
+      "events": [
+        {
+          "id": "2022-04-08a",
+          "kind": "office_visit",
+          "start": "2022-04-08T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2022-06-16a",
+          "kind": "office_visit",
+          "start": "2022-06-16T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 11}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2022-06-16T13:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-06-16T14:05",
+             "body": "S: Rescheduled from April (he cancelled that morning, said he had a job). Here for a routine check, nothing bothering him. Working steadily on a roofing crew this spring, which he says will likely end in the fall. Smoking unchanged, 1 ppd. Drinking: \"the usual,\" daily, heavy most nights; AUDIT-C 11. Cocaine on weekends. Still takes aspirin most days. No abdominal pain, no blood in vomit or stool, no chest pain.\n\nO: Vitals as charted. Alert, cooperative, short answers. Lungs clear, heart regular. Abdomen benign. No tremor.\n\nA/P: Alcohol, cocaine and tobacco use disorders, no change, precontemplative on all three. Brief intervention done, he isn't taking up a referral. Asked him again to give the daily aspirin a rest given how much he drinks. Physical in the fall."}
+          ]
+        },
+        {
+          "id": "2022-11-23a",
+          "kind": "ed_visit",
+          "start": "2022-11-23T01:50",
+          "end": "2022-11-23T07:30",
+          "service": "Emergency Medicine",
+          "reason": "brought in by police",
+          "conditions": [
+            {"label": "Antisocial personality disorder", "icd10": "F60.2", "action": "diagnosed", "onset": "2022-11-23"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2022-11-23T02:15", "results": [{"test": "Ethanol, blood", "loinc": "5640-8", "unit": "mg/dL", "value": 80, "resulted": "2022-11-23T02:55"}]},
+            {"panel": null, "collected": "2022-11-23T02:30", "results": [{"test": "Cocaine and metabolite screen, urine", "loinc": "42241-0", "text": "Positive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2022-11-23T01:50"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record (received 2023-03-06)", "author": "emergency medicine", "date": "2023-03-06T11:20",
+             "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nVisit date: 11/23/2022, arrival 01:50, by police\nPatient: Jacob Healey, 25 M\nAllergies: NKDA\nHome meds: aspirin 325 mg daily (OTC)\n\nCC: Medical clearance; police report pt was apprehended breaking into a parked car.\n\nHPI: 25 yo M with heavy alcohol, cocaine and tobacco use brought in by police for medical evaluation. Pt calm and talkative. Asked about the incident he says the only thing he feels bad about is that he got caught; no expression of regret toward the car owner. Mother arrived during the visit and gave collateral: he was suspended from school repeatedly before age 15 for fighting with other students and for stealing from his teachers. By his own account and per police, prior arrests for theft, assault and drug charges. Denies SI/HI. Denies injury tonight.\n\nSocial: cigarettes 1 ppd, ~6 yrs. Daily alcohol with binges most nights, 10-15 drinks. Cocaine, intranasal. Intermittent construction work, currently not working.\nFamily: father with alcohol use disorder, multiple incarcerations; mother with depression and anxiety; brother with opioid use disorder.\n\nExam: VS within normal range (see flowsheet). Alert, oriented x3, not ataxic, speech clear. Affect flat and indifferent; shows no concern for others affected. Multiple tattoos with violent imagery on arms and chest. Old scars across the knuckles of both hands. No acute injuries. Heart and lungs normal. Abdomen soft.\n\nLabs: blood alcohol 80 mg/dL (0.08%). Urine drug screen positive for cocaine.\n\nBehavioral health evaluation (ED behavioral health clinician): longstanding pattern since childhood of rule-breaking, aggression, theft and disregard for others, persisting into adulthood with arrests; lack of remorse on interview. No psychosis, no mood episode, no acute danger to self or others. Impression: antisocial personality disorder. Co-occurring severe alcohol use disorder and cocaine use disorder. Resources for substance use treatment provided; pt not interested.\n\nED course: observed, no intervention needed. Medically cleared.\nDiagnoses: antisocial personality disorder; alcohol use; cocaine use.\nDisposition: discharged 07:30.\n\n[Faxed to PCP office 03/06/2023 in response to records request]"}
+          ]
+        }
+      ]
+    }
+  ]
+}

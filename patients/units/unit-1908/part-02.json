@@ -1,0 +1,340 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001908",
+      "events": [
+        {
+          "id": "2024-02-06a",
+          "kind": "portal_message",
+          "start": "2024-02-06T06:52",
+          "reason": "cold sore, valacyclovir refill",
+          "medications": [
+            {"drug": "valacyclovir 1000 MG Oral Tablet", "action": "stop", "reason": "replaced by practice prescription"},
+            {"drug": "valacyclovir 1000 MG Oral Tablet", "action": "start", "sig": "Take 1 g by mouth at the first sign of a cold sore, then 1 g 12 hours later", "dose": {"value": 1000, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "recurrent herpes labialis"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cold Sore Starting",
+              "author": "patient",
+              "date": "2024-02-06T06:52",
+              "body": "Good morning. I have the tingle on my upper lip and just realized my valacyclovir bottle is empty. Could you send more to the pharmacy near school? I can pick up at lunch."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cold Sore Starting",
+              "author": "PCP",
+              "date": "2024-02-06T07:31",
+              "body": "Sent, 1 g tablets, enough for a few episodes. Take the first dose as soon as you have it and the second 12 hours later. Let me know if it spreads or you get sores inside the mouth."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-25a",
+          "kind": "office_visit",
+          "start": "2024-04-25T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spring allergies",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-04-25T16:10"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-04-25T16:40",
+              "body": "S: Two weeks of sneezing, itchy eyes and a blocked nose, the usual tree season but heavier this year. Using fluticasone most days, not every day. Cetirizine helps the itch. No fever, no facial pain, no cough or wheeze, no discolored drainage.\nO: Vitals as charted. Conjunctivae mildly injected, no discharge. Nasal mucosa pale and boggy, clear rhinorrhea. Sinuses nontender. Pharynx clear. Lungs clear, no wheeze.\nA: Allergic rhinitis, seasonal flare on a perennial background.\nP: Fluticasone every day through June, aimed toward the outer wall of each nostril. Cetirizine daily for now. Saline rinse after outdoor recess duty. Return if facial pain or fever."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-29a",
+          "kind": "annual_physical",
+          "start": "2024-08-29T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-29T08:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-29T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-29T08:00"},
+            {"procedure": "Venipuncture", "performed": "2024-08-29T08:40"}
+          ],
+          "orders": [
+            {"id": "derm-nevus", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "mole on upper back she would like evaluated"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-29T08:50",
+              "body": "PREVENTIVE VISIT\n\nLast week of summer before teachers report. Feels well. Two cold sores this year, both handled at home. Hands held up last winter. Spring allergies settled after the April visit.\n\nNew concern: a mole on her upper back that her sister noticed at the beach. She cannot see it herself and does not know if it has been there long. Would like a skin doctor to look at it and do a full skin check.\n\nMeds: mometasone ointment PRN, cetirizine PRN, fluticasone nasal daily, valacyclovir episodic.\nAllergies: dust mite, tree pollen. NKDA.\nSocial: unchanged. Never smoker.\n\nExam: Vitals as charted. Well appearing. HEENT clear, lips without lesions. Neck supple. Lungs clear. Heart regular. Abdomen soft. Skin: on the left upper back a single brown papule, about 6 mm, round, even color; no other notable lesions on the trunk or limbs. Faint dryness of the elbow creases.\n\nA/P:\n- Preventive: PHQ-2 0. CMP and lipids today. Pap due 2026. Flu and COVID at a nurse visit when this year's vaccines arrive.\n- Nevus, left upper back: referred to dermatology for evaluation and a full skin exam, at her request.\n- Atopic dermatitis and allergic rhinitis: stable on current regimen.\n- Herpes labialis: episodic valacyclovir.\n- History of childhood anaphylaxis during surgery: if dermatology plans to remove anything, she should tell them about it ahead of time.\nPhysical again next summer."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "portal_message",
+          "start": "2024-09-03T16:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "author": "PCP",
+              "date": "2024-09-03T16:15",
+              "body": "Chemistry panel and cholesterol from last Thursday are normal. The dermatology referral is in; their office will call you to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-03a",
+          "kind": "nurse_visit",
+          "start": "2024-10-03T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-03T15:25"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2024-10-03T15:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-03T15:25"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-03T15:45",
+              "body": "Flu (left arm) and this season's COVID (right arm). Feels well, no fever. Tolerated both, waited 15 minutes without problems. Next dose of either due next fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-21a",
+          "kind": "office_visit",
+          "start": "2024-10-21T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "painful sores on lips and in mouth",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Herpes simplex virus infection", "icd10": "B00.9", "action": "diagnosed", "onset": "2024-10-18", "note": "orolabial, lip vermilion and buccal mucosa; HSV-1 by serology"}
+          ],
+          "medications": [
+            {"drug": "valacyclovir 1000 MG Oral Tablet", "action": "start", "sig": "Take 1 g by mouth twice daily for 7 days", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "herpes simplex, lips and mouth"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-21T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2024-10-21T16:30", "resulted": "2024-10-24T10:05", "results": [
+              {"test": "Herpes simplex virus 1 IgG Ab [Presence] in Serum", "loinc": "17850-9", "text": "Positive"},
+              {"test": "Herpes simplex virus 2 IgG Ab [Presence] in Serum", "loinc": "17851-7", "text": "Negative"}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-21T15:50"},
+            {"procedure": "Venipuncture", "performed": "2024-10-21T16:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Same-Day Visit",
+              "author": "PCP",
+              "date": "2024-10-21T16:35",
+              "body": "S: Texted this morning; seen same day. Three days of sore blisters on her lips and a few inside her cheek. Similar to past episodes. Eating is uncomfortable. She did not feel the usual warning tingle, so she never took her valacyclovir. Over the years she has had these two or three times a year, though this past year fewer. No fever, no eye symptoms, no genital lesions. She denies any recent sexual activity or new partner. Her dermatology appointment for the back mole is coming up; she wants to make sure this clears first.\nO: Vitals as charted, afebrile. Clusters of small vesicles on a red base along the vermilion of the upper and lower lip, and a few of the same on the right buccal mucosa. No gingival involvement. No cervical or submandibular nodes. Eyes clear. Remainder of the exam unremarkable.\nA: Herpes simplex, orolabial with buccal lesions, in a patient with a long history of cold sores. Checking type-specific serology to confirm the type, and a CBC.\nP: Valacyclovir 1 g twice daily for 7 days. Mouth care: salt-water rinses, soft cool foods. Stay home from school until lesions crust if she can. CBC and HSV-1/HSV-2 IgG today. Call if eye pain, redness or blurred vision, or if not improving in a week."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-24a",
+          "kind": "portal_message",
+          "start": "2024-10-24T13:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "HSV Blood Test Results",
+              "author": "PCP",
+              "date": "2024-10-24T13:10",
+              "body": "Hi Lisa, blood count is normal. Your antibody test shows HSV type 1, the usual cold-sore virus, and no type 2. That fits with your history and with what we saw on Monday. Keep going with the full week of valacyclovir. How is your mouth feeling?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: HSV Blood Test Results",
+              "author": "patient",
+              "date": "2024-10-24T19:40",
+              "body": "Much better, the inside ones are almost gone and the lip is crusting. Thank you for squeezing me in."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "portal_message",
+          "start": "2024-12-03T18:05",
+          "reason": "dermatology update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mole on My Back",
+              "author": "patient",
+              "date": "2024-12-03T18:05",
+              "body": "Quick update: saw the dermatologist last week. They want to cut the mole out to be safe and scheduled it for January 16, after break and once the cold sore stuff is well behind me. I told them about my reaction as a kid. Do you need anything from me before then?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mole on My Back",
+              "author": "PCP",
+              "date": "2024-12-03T20:12",
+              "body": "Thanks for the update. Nothing needed from us. I have not received their note yet; I'll keep an eye out. Good that you told them about the childhood reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T07:15",
+          "reason": "reaction during procedure",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Bad Reaction Yesterday",
+              "author": "patient",
+              "date": "2025-01-17T07:15",
+              "body": "I wanted you to know: when they were finishing taking the mole off my back yesterday, I suddenly felt my throat closing, my face swelled up and I broke out in hives everywhere. They gave me a shot and IV fluids and sent me by ambulance to the ER. They watched me for hours and let me go home last night with an EpiPen. I feel washed out but OK. I am taking today off. It felt like what my mom described from when I was 8, but worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Bad Reaction Yesterday",
+              "author": "PCP",
+              "date": "2025-01-17T07:52",
+              "body": "I am so sorry, that sounds frightening. Glad you are home. Any return of throat tightness, trouble breathing or swelling: use the auto-injector and call 911. I'd like to see you next week; the front desk will call with a time. I'll request the records from the procedure and the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-23a",
+          "kind": "office_visit",
+          "start": "2025-01-23T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after anaphylaxis",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Herpes simplex virus infection", "icd10": "B00.9", "action": "resolved", "note": "October lesions healed"},
+            {"label": "Anaphylaxis", "icd10": "T78.2XXA", "action": "diagnosed", "onset": "2025-01-16", "note": "during excision of back nevus at an outside procedure suite; trigger not yet identified"}
+          ],
+          "medications": [
+            {"drug": "NDA019430 0.3 ML epinephrine 1 MG/ML Auto-Injector", "action": "historical", "sig": "Inject 0.3 mg into the outer thigh once for anaphylaxis; may repeat once after 5 to 15 minutes; call 911", "dose": {"value": 0.3, "unit": "mg"}, "frequency": "PRN", "route": "Intramuscular", "course": "chronic", "reason": "anaphylaxis"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-23T15:40"}],
+          "orders": [
+            {"id": "derm-nevus", "action": "done", "date": "2025-01-16T13:00"},
+            {"id": "allergy-ref", "action": "placed", "order": "Allergy and Immunology referral", "category": "referral", "to": "Allergy and Immunology", "reason": "intraoperative anaphylaxis twice, trigger unknown"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-01-23T16:20",
+              "body": "S: Follow-up one week after a reaction during excision of the nevus on her left upper back at an outside dermatology procedure suite on 1/16. By her account, near the end of the procedure she felt her throat tighten, her face and eyes swelled, she broke out in itchy hives everywhere and could not get a full breath. The team gave an injection in her thigh and started an IV, and she went by ambulance to the ER, was watched for several hours and sent home with an epinephrine auto-injector. She was told the reaction was anaphylaxis. Nobody has told her what caused it. Back at work since Monday. No symptoms since. The excision site is healing; sutures out next week at dermatology.\nThis is her second reaction during a procedure; the first was at age 8. She remembers no common thread except being in an operating room.\nWe have not yet received the procedure or ER records; requested again today. Pharmacy confirms an epinephrine 0.3 mg auto-injector two-pack filled 1/16 from the ER prescriber.\nO: Vitals as charted. Comfortable. No facial or lip swelling, no urticaria. Lungs clear, no wheeze. Left upper back: healing linear incision with sutures, no erythema or drainage. Lips without lesions.\nA: 1. Anaphylaxis during a skin procedure, resolved. Two perioperative episodes now; a procedure-related trigger needs to be found before she has anything else done.\n2. Herpes labialis from October healed.\nP: Referral to allergy and immunology. Reviewed auto-injector use with her trainer pen; carry two at all times, school nurse to be told. No elective procedures or dental work beyond cleanings until the allergy evaluation is done. Will follow the pathology from dermatology."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-20a",
+          "kind": "outside_records",
+          "start": "2025-02-20T10:30",
+          "reason": "records of 1/16 reaction",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Allergy and Immunology Event Record",
+              "author": "allergy and immunology",
+              "date": "2025-02-20T10:30",
+              "body": "OUTSIDE HOSPITAL ALLERGY AND IMMUNOLOGY SERVICE, PROCEDURE AREA RECORD\nDate of event: 01/16/2025\nPatient: Lisa O'Brien, 34 F\n\nCalled emergently to the outpatient procedure suite. Patient under local anesthesia for excisional biopsy of a nevus on the left upper back, wound being closed, when she abruptly reported her throat was closing, then developed facial swelling, trouble breathing and a generalized itchy rash. Reports a similar but milder reaction during surgery in childhood.\nAllergies on file: dust mite (rhinitis), tree pollen (rhinitis).\nHome meds: mometasone 0.1% ointment PRN, cetirizine 10 mg PRN, fluticasone nasal daily, valacyclovir episodic for cold sores (recently completed a course for herpes labialis).\nFamily: atopy in both parents.\nVitals on arrival: BP 85/50, HR 120, RR 28, SpO2 88% on room air.\nExam: bilateral periorbital edema, diffuse urticaria over trunk and limbs, expiratory wheeze both lungs. No JVD. No peripheral edema.\nTreatment: epinephrine 0.5 mg IM, lateral thigh. Peripheral IV placed; normal saline bolus started. Transferred to the emergency department for observation.\nImpression: anaphylaxis, intraoperative, during minor skin procedure. Agent unclear; exposures during the case included local anesthetic, skin prep, gloves and dressings.\nRecommendations: observe in ED; discharge with epinephrine auto-injector 0.3 mg; outpatient allergy evaluation; until then, flag chart for anaphylaxis during procedures.\nNo emergency department note was included in this packet."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-18a",
+          "kind": "outside_records",
+          "start": "2025-03-18T14:00",
+          "reason": "allergy consult letter",
+          "labs": [
+            {"panel": null, "collected": "2025-03-04T10:45", "resulted": "2025-03-07T09:00", "results": [
+              {"test": "Latex IgE Ab [Units/volume] in Serum", "loinc": "6158-0", "value": 5.2, "unit": "k[IU]/L"}
+            ]}
+          ],
+          "orders": [
+            {"id": "allergy-ref", "action": "done", "date": "2025-03-04T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Allergy and Immunology Consultation",
+              "author": "allergy and immunology",
+              "date": "2025-03-18T14:00",
+              "body": "OUTSIDE ALLERGY AND IMMUNOLOGY GROUP\nDate of visit: 03/04/2025\nRe: Lisa O'Brien, DOB 03/15/1990\n\nThank you for referring Ms. O'Brien, a 34-year-old teacher with atopic dermatitis, allergic rhinitis and recurrent HSV-1 labialis, after anaphylaxis on 1/16/2025 during excision of a back nevus. She also reacted during a tonsillectomy and adenoidectomy at age 8. Between those, she has had dental cleanings and routine care without trouble.\n\nCurrent allergies: dust mite and tree pollen (rhinitis).\nMeds: mometasone ointment PRN, cetirizine PRN (held 5 days before visit), fluticasone nasal, valacyclovir episodic, epinephrine auto-injector.\nExam today: normal, no urticaria, lungs clear.\n\nTesting: latex-specific IgE 5.2 kU/L, positive.\n\nImpression: IgE-mediated latex allergy with anaphylaxis. Both intraoperative reactions are best explained by latex exposure (gloves, drains, catheters). Local anesthetic allergy is unlikely and was not pursued.\n\nRecommendations:\n1. Strict latex avoidance. Every surgical, dental and procedural visit must be latex-free; she has a letter to give to all providers.\n2. Carry two epinephrine auto-injectors at all times, including at school.\n3. Medical alert bracelet recommended.\n4. Follow up here as needed.\n\nAllergies updated in our records: LATEX (anaphylaxis), dust mite, tree pollen."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "outside_records",
+          "start": "2025-03-26T09:45",
+          "reason": "pathology report",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2025-01-16T12:30",
+              "issued": "2025-01-21T15:00",
+              "text": "Specimen: skin, left upper back, excision. Gross: ellipse of skin 1.4 x 0.6 cm, with a centrally placed 0.6 cm brown papule. Microscopic: nests of banal melanocytes at the dermoepidermal junction and within the dermis, maturing with depth. No cytologic atypia, no mitoses, no pagetoid spread. Margins free of the lesion.",
+              "conclusion": "Benign compound melanocytic nevus, margins clear."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatopathology Report Received",
+              "author": "MA",
+              "date": "2025-03-26T09:45",
+              "body": "Pathology report for the 01/16/2025 left upper back excision received by fax after a second request to the dermatology office. Report dated 01/21/2025. Scanned for PCP review."
+            },
+            {
+              "type": "Result Note",
+              "title": "Pathology Reviewed",
+              "author": "PCP",
+              "date": "2025-03-26T12:15",
+              "body": "Benign compound nevus, completely removed. Messaged patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "office_visit",
+          "start": "2025-04-17T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "spring allergies, allergy consult follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "conditions": [
+            {"label": "Anaphylaxis", "icd10": "T78.2XXA", "action": "resolved", "note": "January episode; trigger latex"}
+          ],
+          "allergies": [
+            {"substance": "Latex", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2025-04-17T16:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-04-17T16:35",
+              "body": "S: Tree pollen season again: sneezing, itchy eyes, congestion for ten days. Using fluticasone daily and cetirizine daily this time, about 70% better. Saw allergy in early March; their letter came last month. Latex allergy confirmed and both OR reactions blamed on it. She has her latex-free letter, wears a medical alert bracelet now and keeps two auto-injectors in her school bag. She is relieved to have an answer. Pathology from the back was benign.\nO: Vitals as charted. Pale boggy turbinates, clear drainage. Mild conjunctival injection. Lungs clear. Back scar well healed.\nA: 1. Allergic rhinitis, seasonal flare, partly controlled.\n2. Latex allergy with anaphylaxis, now identified; added to the allergy list today. January's anaphylaxis episode closed; history of anaphylaxis stays on the problem list.\nP: Add saline rinses; continue daily fluticasone and cetirizine through the season. Chart flagged latex-free for any procedure here, including immunizations and blood draws. Auto-injector renewals through us going forward."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

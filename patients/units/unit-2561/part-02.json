@@ -1,0 +1,489 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002561",
+      "events": [
+        {
+          "id": "2022-03-08a",
+          "kind": "portal_message",
+          "start": "2022-03-08T21:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Used my icatibant", "author": "patient", "date": "2022-03-08T21:10",
+             "body": "FYI my upper lip started swelling at work this afternoon, I gave myself one icatibant shot around 3 and it's already going down. Only have one syringe left. Should the refill come from you or the allergist?"},
+            {"type": "Patient Message", "title": "RE: Used my icatibant", "author": "RN", "date": "2022-03-09T08:35",
+             "body": "Glad it worked. The allergist manages that prescription, so we sent their office a note this morning asking for the refill to go to your specialty pharmacy. Let us know if you hear nothing by Friday."}
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "office_visit",
+          "start": "2022-05-10T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath with exertion",
+          "state": {"weight_kg": 62.0},
+          "vitals": {"spo2": 93},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "orders": [{"id": "pulm-2022", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "progressive exertional dyspnea, low resting saturation"}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-05-10T15:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Dyspnea", "author": "PCP", "date": "2022-05-10T15:20",
+             "body": "S: Says his stamina has been slipping for a couple of years and he blamed working from home. Now gets winded going up one flight of stairs to his apartment, and he gave up running last fall. No wheezing, no chest pain, no cough or sputum. No fevers. No leg swelling. Never smoked or vaped. One HAE lip attack in March, treated.\n\nO: SpO2 93% RA at rest, which is low for him and for his age. Thin. Lungs: breath sounds diminished throughout, no wheeze or crackles. Heart RRR, no murmur. No clubbing, no edema.\n\nA/P: progressive exertional dyspnea in a 24 yo never smoker with low resting saturation. Needs a full pulmonary evaluation - referring to pulmonology, asked for the first available. Return precautions reviewed."}
+          ]
+        },
+        {
+          "id": "2022-06-24a",
+          "kind": "outside_records",
+          "start": "2022-06-24T09:15",
+          "reports": [
+            {"study": "Chest X-ray, 2 views", "performed": "2022-06-20T10:40", "text": "PA and lateral chest. Lungs are hyperinflated with bilateral hyperlucency. Several large bullae in both lower lobes. No consolidation, effusion or pneumothorax. Heart size normal. Mediastinum normal. Bones intact.", "conclusion": "Bilateral hyperlucency with several large lower-lobe bullae."}
+          ],
+          "orders": [{"id": "pulm-2022", "action": "done", "date": "2022-06-20T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Consultation", "author": "pulmonology", "date": "2022-06-24T09:15",
+             "body": "Outside pulmonary group. Date of visit: 06/20/2022.\n\nReason: referred by PCP for progressive dyspnea.\n\nHPI: 24-year-old man with NF1 and hereditary angioedema. Over roughly two years his exercise tolerance has gone down; he now gets short of breath after a single flight of stairs. No wheeze, chest pain or cough. Never smoker, no vaping, no recreational drugs. Drinks socially on weekends. No recent travel. Works for a software company.\nMeds: icatibant as needed. Allergies: NKDA.\nFamily: father died at 45 of liver failure, which the family attributes to alcohol.\n\nExam: thin young man, slightly tachypneic at rest. SpO2 92% on room air. Chest a little barrel-shaped; percussion mildly hyperresonant on both sides. Breath sounds decreased with a prolonged expiratory phase, no wheezes, no crackles. No clubbing. Heart regular, no murmur. Abdomen normal. No leg edema.\n\nImaging today: chest x-ray with bilateral hyperlucency and several large bullae in the lower lobes.\n\nImpression: lower-lobe predominant bullous lung disease in a young never smoker, strongly suggesting alpha-1 antitrypsin deficiency. We expect the PFTs to show obstruction and reduced diffusion.\n\nPlan: alpha-1 antitrypsin level and phenotype drawn today; full PFTs and CT chest; genetic counseling referral. He is understandably worried about the long term and what this means for his oxygen levels; we spent time on it and will go through results together."}
+          ]
+        },
+        {
+          "id": "2022-07-29a",
+          "kind": "outside_records",
+          "start": "2022-07-29T13:30",
+          "conditions": [
+            {"label": "Alpha-1-antitrypsin deficiency", "action": "diagnosed", "onset": "2022-07-06", "note": "PiZZ"},
+            {"label": "Panlobular emphysema", "icd10": "J43.1", "action": "diagnosed", "onset": "2022-07-06", "note": "early-onset, lower-lobe predominant, bullous"}
+          ],
+          "medications": [
+            {"drug_text": "alpha 1-proteinase inhibitor, human 1 MG Injection", "action": "historical", "sig": "60 mg/kg IV once weekly by home infusion", "dose": {"value": 60, "unit": "mg/kg"}, "frequency": "WEEKLY", "route": "Intravenous", "course": "chronic", "reason": "alpha-1 antitrypsin deficiency with emphysema"},
+            {"drug": "10 ACTUAT tiotropium 0.0025 MG/ACTUAT Inhalation Spray", "action": "historical", "sig": "Inhale 2 puffs once daily", "dose": {"value": 5, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "emphysema"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath", "dose": {"value": 180, "unit": "mcg"}, "frequency": "PRN", "route": "Inhalation", "course": "chronic", "reason": "emphysema"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2022-06-20T11:05", "resulted": "2022-06-28T10:00", "results": [
+              {"test": "Alpha 1 antitrypsin", "loinc": "1825-9", "unit": "mg/dL", "value": 22},
+              {"test": "Alpha 1 antitrypsin phenotype", "loinc": "6770-2", "text": "PiZZ"}
+            ]},
+            {"panel": null, "collected": "2022-07-06T09:00", "results": [
+              {"test": "FEV1", "loinc": "20150-9", "unit": "L", "value": 1.92},
+              {"test": "Forced vital capacity", "loinc": "19870-5", "unit": "L", "value": 4.10},
+              {"test": "FEV1/FVC", "loinc": "19926-5", "unit": "%", "value": 47},
+              {"test": "DLCO percent predicted", "loinc": "98130-8", "unit": "%", "value": 48}
+            ]}
+          ],
+          "reports": [
+            {"study": "Pulmonary function study", "loinc": "58477-1", "performed": "2022-07-06T09:00", "text": "Spirometry, lung volumes and diffusing capacity. Good effort, acceptable and repeatable. FEV1 1.92 L (45% predicted). FVC 4.10 L (79% predicted). FEV1/FVC 0.47. No significant change after albuterol. DLCO 48% predicted.", "conclusion": "Moderately severe airflow obstruction without significant bronchodilator response; reduced diffusing capacity."},
+            {"study": "CT chest", "performed": "2022-07-06T10:30", "text": "Noncontrast CT of the chest. Panlobular emphysema, predominantly in the lower lobes, with several large bullae in both lower lobes, the largest 6.1 cm in the left lower lobe. Upper lobes relatively spared. No pulmonary nodules. No consolidation or effusion. Airways patent. Heart and great vessels normal. No mediastinal or hilar lymphadenopathy. Visualized upper abdomen unremarkable.", "conclusion": "Lower-lobe predominant panlobular emphysema with large bullae; no nodules."}
+          ],
+          "orders": [{"id": "genetics-2022", "action": "placed", "order": "Medical Genetics referral", "category": "referral", "to": "Medical Genetics", "reason": "alpha-1 antitrypsin deficiency counseling"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2022-07-29T13:30",
+             "body": "Outside pulmonary group. Date of visit: 07/25/2022.\n\nResults reviewed with him today:\n- Alpha-1 antitrypsin 22 mg/dL (ref 100-190); phenotype PiZZ.\n- PFTs 7/6: FEV1 1.92 L (45%), FVC 4.10 L (79%), FEV1/FVC 0.47, no bronchodilator response; DLCO 48%.\n- CT chest 7/6: panlobular emphysema, lower-lobe predominant, multiple large bullae, largest 6.1 cm LLL; no nodules.\n\nAssessment: severe alpha-1 antitrypsin deficiency (PiZZ) with early-onset panacinar emphysema and moderately severe obstruction.\n\nPlan:\n- Start weekly IV alpha-1 proteinase inhibitor augmentation, 60 mg/kg, through home infusion. Insurance approval underway; first infusion expected early August.\n- Tiotropium 2 inhalations daily; albuterol 2 puffs q4-6h prn.\n- Absolutely no smoking or vaping, including secondhand where he can help it; keep alcohol modest given liver risk.\n- To PCP: please give pneumococcal and hepatitis A and B vaccines, and check liver tests and a liver ultrasound yearly.\n- Genetic counseling referral placed.\n- Return in 6 months with spirometry."}
+          ]
+        },
+        {
+          "id": "2022-08-03a",
+          "kind": "telephone",
+          "start": "2022-08-03T11:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Home infusion paperwork", "author": "front desk", "date": "2022-08-03T11:00",
+             "body": "Home infusion company called for his most recent H&P and med list to complete their intake for the weekly alpha-1 infusions ordered by pulmonology. Last office note and allergy list faxed with patient's verbal OK. First nurse visit at his home is 8/4."}
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "outside_records",
+          "start": "2022-08-18T10:20",
+          "orders": [{"id": "genetics-2022", "action": "done", "date": "2022-08-15T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Genetic Counseling", "author": "medical genetics", "date": "2022-08-18T10:20",
+             "body": "Genetic counseling session, 08/15/2022, by video.\n\nIndication: PiZZ alpha-1 antitrypsin deficiency with emphysema.\n\nPedigree: his father died at 45 of liver failure that was attributed to drinking. In the weeks since his diagnosis his mother obtained his father's old medical records: his father had been diagnosed with PiZZ alpha-1 antitrypsin deficiency and emphysema in his late thirties. Jacob was not told at the time. His mother and a maternal uncle had unexplained facial swelling when younger and have pigmented skin spots like his. He also carries diagnoses of NF1 and hereditary angioedema type I, both dominant conditions, which we reviewed briefly; the angioedema pattern points to his mother's side.\n\nCounseling: alpha-1 antitrypsin deficiency is autosomal recessive; he inherited a Z allele from each parent, so his mother is at least a carrier. Any future children would all carry one Z allele; their risk of being affected depends on a partner's status, and partner testing is simple. Discussed liver involvement as well as lung.\nPlan: mother offered carrier testing; letter provided for relatives. Follow up as needed."}
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "office_visit",
+          "start": "2022-08-30T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, alpha-1 antitrypsin deficiency",
+          "vitals": {"spo2": 93},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Hepatic Panel (LFT)", "collected": "2022-08-30T16:35", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2022-08-30T16:30"},
+            {"vaccine": "Hepatitis A and B (Twinrix)", "date": "2022-08-30T16:31"}
+          ],
+          "orders": [{"id": "liver-us-2022", "action": "placed", "order": "Right upper quadrant ultrasound", "category": "imaging", "reason": "alpha-1 antitrypsin deficiency, liver surveillance"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-08-30T16:00"},
+            {"procedure": "Immunization administration", "performed": "2022-08-30T16:30"},
+            {"procedure": "Venipuncture", "performed": "2022-08-30T16:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up - Alpha-1 Antitrypsin Deficiency", "author": "PCP", "date": "2022-08-30T16:00",
+             "body": "Here to go over the new diagnosis and get the vaccines pulmonology asked for.\n\nPulm letters reviewed: AAT 22, PiZZ; FEV1 45% predicted, DLCO 48%; CT with lower-lobe panlobular emphysema and large bullae. Now on weekly augmentation at home (third infusion this week, no reactions), tiotropium daily, albuterol about once a week on the stairs.\n\nFamily news: genetics session found that his father had the same alpha-1 diagnosis with emphysema. And after the allergist's advice last year his mother finally got tested and was diagnosed with hereditary angioedema type I this spring.\n\nHe's taking it in stride but admits it's a lot at 24. Still working full time. No smoking exposure at home or work. Cut back to a couple of drinks on weekends.\n\nExam: SpO2 93% RA. Lungs diminished, prolonged expiration, no wheeze. Port-free, uses peripheral IV for infusions; no arm phlebitis.\n\nA/P:\n1. AATD PiZZ with panlobular emphysema: per pulm. PCV20 today. Hep A/B combined series started today, #2 in a month, #3 at 6 months. Hepatic panel today; liver ultrasound ordered. Yearly liver tests going forward. Flu every fall.\n2. HAE type I: one attack in March, icatibant worked. Allergy follows.\n3. NF1: skin unchanged, BP normal.\nRTC for physical early next year."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "imaging",
+          "start": "2022-09-13T08:30",
+          "reports": [
+            {"study": "Right upper quadrant ultrasound", "performed": "2022-09-13T08:30", "text": "Liver normal in size and echotexture with smooth contour, no focal lesion. Gallbladder normal without stones or wall thickening. Common bile duct 3 mm. Portal vein patent with hepatopetal flow. Spleen normal in size. Right kidney normal.", "conclusion": "Normal liver and right upper quadrant ultrasound."}
+          ],
+          "orders": [{"id": "liver-us-2022", "action": "done", "date": "2022-09-13T08:30"}]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Liver results", "author": "PCP", "date": "2022-09-14T12:10",
+             "body": "Good news, Jacob: your liver blood tests from August and yesterday's ultrasound are both normal. We'll repeat the blood tests once a year and the ultrasound with your pulmonologist's schedule. Hep A/B shot #2 is due around the end of the month."}
+          ]
+        },
+        {
+          "id": "2022-09-26a",
+          "kind": "outside_records",
+          "start": "2022-09-26T14:00",
+          "documents": [
+            {"type": "Letter", "title": "Allergy and Immunology Follow-up", "author": "allergy and immunology", "date": "2022-09-26T14:00",
+             "body": "Outside allergy and immunology group. Date of visit: 09/19/2022.\nHAE type I, one-year follow-up. Two attacks in the past year (lip in March, hand in July), each treated with a single icatibant dose with good response. No laryngeal or abdominal attacks since diagnosis. New since last visit: PiZZ alpha-1 antitrypsin deficiency on weekly augmentation; no interaction concerns. His mother has now been diagnosed with HAE type I as well.\nExam normal.\nPlan: continue icatibant on demand; two syringes on hand at all times. Attack frequency does not warrant long-term prophylaxis right now. Pre-procedure prophylaxis plan on file for any surgery or dental work. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2022-09-30a",
+          "kind": "nurse_visit",
+          "start": "2022-09-30T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hepatitis A/B vaccine #2",
+          "immunizations": [{"vaccine": "Hepatitis A and B (Twinrix)", "date": "2022-09-30T08:17"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-09-30T08:17"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit - Hep A/B #2", "author": "RN", "date": "2022-09-30T08:15",
+             "body": "Hep A/B combined vaccine dose 2 of 3, R deltoid. Dose 1 8/30 without reaction. Dose 3 due late Feb, will do with his physical."}
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T17:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-18T17:22"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-18T17:24"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-18T17:22"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit - Vaccines", "author": "MA", "date": "2022-10-18T17:20",
+             "body": "Flu L arm, bivalent Pfizer booster R arm. Pt reports infusions going fine weekly at home. Observed 15 min."}
+          ]
+        },
+        {
+          "id": "2023-01-23a",
+          "kind": "outside_records",
+          "start": "2023-01-23T10:45",
+          "documents": [
+            {"type": "Letter", "title": "Pulmonology Follow-up", "author": "pulmonology", "date": "2023-01-23T10:45",
+             "body": "Outside pulmonary group. Date of visit: 01/17/2023.\nAATD PiZZ with panlobular emphysema, 6 months on weekly augmentation, tiotropium and as-needed albuterol. Feels his breathing is about the same, maybe slightly better on stairs with the inhaler. No exacerbations. Office spirometry stable compared with July. SpO2 93% RA. Exam unchanged.\nPlan: continue all three. Walking program encouraged. Return in 6 months."}
+          ]
+        },
+        {
+          "id": "2023-02-28a",
+          "kind": "annual_physical",
+          "start": "2023-02-28T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {"spo2": 94},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "GAD-7 total score", "value": 4}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-02-28T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-02-28T09:10", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Lipid Panel", "collected": "2023-02-28T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "immunizations": [{"vaccine": "Hepatitis A and B (Twinrix)", "date": "2023-02-28T09:05"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-02-28T08:30"},
+            {"procedure": "Immunization administration", "performed": "2023-02-28T09:05"},
+            {"procedure": "Venipuncture", "performed": "2023-02-28T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-02-28T08:30",
+             "body": "25 yo, annual exam. Breathing stable per him and per pulm's January letter. Infusions weekly, no problems. One small HAE hand swelling in the fall, icatibant x1. Mood ok; some worry about the future with the lungs, sleeping fine. Interviewing for a new job, hoping to start in the spring.\n\nMeds: alpha-1 proteinase inhibitor weekly IV (home infusion), tiotropium daily, albuterol prn, icatibant prn. NKDA.\n\nExam: SpO2 94% RA. Thin, comfortable. Skin: pigmented macules and axillary/inguinal freckling unchanged, no new nodules. Lungs diminished, prolonged expiration. Heart RRR. Abdomen soft, no liver edge. No edema.\n\nA/P:\n1. AATD with emphysema: stable. Labs with LFTs today.\n2. HAE type I: on-demand therapy, allergy following.\n3. NF1: stable skin, normal BP; ophthalmology yearly.\n4. Health maintenance: Hep A/B dose 3 today, series complete. PHQ-9 3, GAD-7 4. Lipids today. Flu and COVID up to date.\nRTC 1 yr, sooner prn."}
+          ]
+        },
+        {
+          "id": "2023-03-01a",
+          "kind": "portal_message",
+          "start": "2023-03-01T17:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from your physical", "author": "PCP", "date": "2023-03-01T17:30",
+             "body": "All of yesterday's labs are normal, including liver tests and cholesterol. Your hep A/B series is complete. Good luck with the job search."}
+          ]
+        },
+        {
+          "id": "2023-06-19a",
+          "kind": "outside_records",
+          "start": "2023-06-19T08:50",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-06-07T07:45", "results": [{"test": "Calcium", "value": 12.1}, {"test": "Creatinine", "value": 0.9}]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Employer health screening labs", "author": "front desk", "date": "2023-06-19T08:50",
+             "body": "Copy of new-employee health screening labs brought in by patient, collected 06/07/2023 at an outside lab. Flagged: calcium 12.1 mg/dL (ref 8.6-10.3). Creatinine 0.9 mg/dL. Remaining chemistry within range. Scanned for PCP review at today's visit."}
+          ]
+        },
+        {
+          "id": "2023-06-19b",
+          "kind": "office_visit",
+          "start": "2023-06-19T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "abnormal screening labs",
+          "state": {"labs": {"Calcium": 12.3}},
+          "vitals": {"spo2": 93},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-06-19T11:20", "resulted": "2023-06-21T09:30", "results": [
+              {"test": "Calcium", "value": 12.3},
+              {"test": "Parathyroid Hormone, Intact", "value": 8},
+              {"test": "Parathyroid hormone related protein", "loinc": "15087-0", "unit": "pmol/L", "value": 4.8},
+              {"test": "25-hydroxy Vitamin D", "value": 32}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-06-19T10:40"},
+            {"procedure": "Venipuncture", "performed": "2023-06-19T11:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - High Calcium", "author": "PCP", "date": "2023-06-19T10:40",
+             "body": "S: Started the new job in May. Their onboarding health package included bloodwork on 6/7 and his calcium came back high, so he brought the printout. He feels completely well. Exercising regularly again - walking hills and light weights. No excess thirst or urination, no kidney stones ever, no fractures. No calcium or vitamin D supplements, no antacids. Breathing at his baseline; infusions weekly; no HAE attacks since the fall.\n\nO: SpO2 93% RA. Well appearing, thin. Lungs diminished as before. Heart RRR. Abdomen soft, nontender. Skin unchanged.\nOutside labs 6/7: Ca 12.1 (8.6-10.3), creatinine 0.9.\n\nA/P: hypercalcemia, asymptomatic, kidney function normal. Not on anything that raises calcium. Need to confirm and sort out PTH-dependent vs not.\n- Repeat calcium, intact PTH, PTHrP, 25-OH vitamin D today.\n- Plenty of fluids meanwhile.\n- Will call with results."}
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "telephone",
+          "start": "2023-06-21T12:15",
+          "conditions": [{"label": "Hypercalcemia", "icd10": "E83.52", "action": "diagnosed", "onset": "2023-06-07", "note": "PTH-independent, PTHrP elevated"}],
+          "orders": [
+            {"id": "ct-chest-2023", "action": "placed", "order": "CT chest", "category": "imaging", "reason": "PTHrP-mediated hypercalcemia"},
+            {"id": "ct-ap-2023", "action": "placed", "order": "CT abdomen and pelvis with contrast", "category": "imaging", "reason": "PTHrP-mediated hypercalcemia"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results call - calcium workup", "author": "PCP", "date": "2023-06-21T12:15",
+             "body": "Called pt with results from 6/19: Ca 12.3, PTH 8 (low, ref 15-65), PTHrP 4.8 pmol/L (high, ref <2.0), 25-OH D 32. So the parathyroids are appropriately shut off and a PTH-related protein is driving the calcium. Explained that this pattern usually comes from a tumor and we need imaging now rather than later. He was quiet but asked good questions. CT chest/abdomen/pelvis with contrast ordered urgently - scheduled for Friday 6/23. Keep drinking 2-3 L a day; ED for confusion, vomiting, can't keep fluids down."}
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "imaging",
+          "start": "2023-06-23T07:30",
+          "reports": [
+            {"study": "CT chest", "performed": "2023-06-23T07:30", "text": "CT of the chest with IV contrast. Lower-lobe predominant panlobular emphysema with large bilateral lower-lobe bullae, unchanged from July 2022. No pulmonary nodule or mass. No mediastinal, hilar or axillary lymphadenopathy. No effusion. Heart normal in size. No bone lesion.", "conclusion": "Known emphysema and bullae. No thoracic adenopathy or nodule."},
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-06-23T07:30", "text": "CT of the abdomen and pelvis with IV contrast. A 3.6 cm enlarged interaortocaval lymph node at the level of the renal hilum. No other retroperitoneal, mesenteric or pelvic lymphadenopathy. Liver, spleen, pancreas, adrenal glands and kidneys normal. No hydronephrosis. Bowel normal. Bladder normal. No ascites. No bone lesion.", "conclusion": "Isolated 3.6 cm interaortocaval lymph node. Correlate with testicular exam and tumor markers."}
+          ],
+          "orders": [
+            {"id": "ct-chest-2023", "action": "done", "date": "2023-06-23T07:30"},
+            {"id": "ct-ap-2023", "action": "done", "date": "2023-06-23T07:30"}
+          ]
+        },
+        {
+          "id": "2023-06-23b",
+          "kind": "telephone",
+          "start": "2023-06-23T15:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "CT result call", "author": "PCP", "date": "2023-06-23T15:40",
+             "body": "Reviewed CT with pt: one enlarged lymph node, 3.6 cm, between the aorta and IVC; lungs show his known emphysema only, nothing else. In a 25 yo man that node location makes me think first of a testicular primary. He has not noticed any testicular change. Booked in office Monday 8:00 for exam, ultrasound and tumor markers. He'll bring his mother."}
+          ]
+        },
+        {
+          "id": "2023-06-26a",
+          "kind": "office_visit",
+          "start": "2023-06-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "retroperitoneal lymph node, testicular exam",
+          "vitals": {"spo2": 93},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-06-26T08:40", "resulted": "2023-06-27T11:00", "results": [
+              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 486},
+              {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 2140},
+              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 298}
+            ]}
+          ],
+          "reports": [
+            {"study": "US scrotum and testicle", "loinc": "25002-7", "performed": "2023-06-26T10:15", "text": "Grayscale and color Doppler ultrasound of the scrotum. Right testis contains a 2.6 cm heterogeneous, predominantly hypoechoic intratesticular mass with internal vascularity. Remaining right testicular parenchyma normal. Left testis normal in size and echotexture without mass. Epididymides normal. No hydrocele or varicocele.", "conclusion": "2.6 cm solid right intratesticular mass, suspicious for germ cell tumor. Normal left testis."}
+          ],
+          "orders": [{"id": "uro-2023", "action": "placed", "order": "Urology referral", "category": "referral", "to": "Urology", "reason": "right testicular mass with retroperitoneal node, urgent"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2023-06-26T08:00"},
+            {"procedure": "Venipuncture", "performed": "2023-06-26T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - Testicular Exam", "author": "PCP", "date": "2023-06-26T08:00",
+             "body": "Here with his mother after Friday's CT. No pain or swelling he has noticed, no breast tenderness, no back pain. Feels well.\n\nExam: SpO2 93% RA. Abdomen soft, no palpable mass. GU: in the right testis a firm, nontender nodule roughly 2-3 cm; left testis normal; no hydrocele; no inguinal nodes. No gynecomastia. Lungs at his baseline.\n\nScrotal ultrasound obtained same morning: 2.6 cm solid hypoechoic vascular mass in the right testis, left normal.\n\nA/P: right testicular mass with an isolated 3.6 cm interaortocaval node and PTHrP-mediated hypercalcemia - presumed testicular germ cell tumor with nodal spread until proven otherwise.\n- AFP, beta-hCG, LDH drawn now, before any surgery.\n- Urgent urology referral; spoke with the urologist on call, he will be seen this week.\n- Calcium 12.3 last week; he is asymptomatic and drinking well; recheck with urology's pre-op labs.\n- Messaged allergy: he will need their pre-op HAE prophylaxis.\nLong talk with him and his mother. They have a good grasp of the next steps."}
+          ]
+        },
+        {
+          "id": "2023-06-27a",
+          "kind": "portal_message",
+          "start": "2023-06-27T14:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Tumor markers", "author": "PCP", "date": "2023-06-27T14:20",
+             "body": "Jacob, the markers came back: AFP 486, hCG 2,140 and LDH 298, all raised. This fits a nonseminoma type of germ cell tumor, which is very treatable even when it has reached a lymph node. Urology has you Thursday 6/29; they will plan surgery and get oncology involved. Call me any time."},
+            {"type": "Patient Message", "title": "RE: Tumor markers", "author": "patient", "date": "2023-06-27T19:02",
+             "body": "Thanks for moving so fast on all of this. My mom is coming with me Thursday."}
+          ]
+        },
+        {
+          "id": "2023-07-12a",
+          "kind": "outside_records",
+          "start": "2023-07-12T09:30",
+          "conditions": [{"label": "Malignant neoplasm of descended right testis", "icd10": "C62.11", "action": "diagnosed", "onset": "2023-07-06", "note": "mixed nonseminomatous germ cell tumor, stage IIB, with PTHrP-mediated hypercalcemia"}],
+          "procedures": [{"procedure": "Radical inguinal orchiectomy, right", "snomed": "116171002", "performed": "2023-07-06T07:45"}],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2023-07-06T09:00", "issued": "2023-07-10T15:00", "text": "Specimen: right testis and spermatic cord, radical inguinal orchiectomy. Gross: testis 4.6 x 3.0 x 2.6 cm with a 2.8 cm tan-white, focally hemorrhagic intratesticular mass. Microscopic: mixed germ cell tumor composed of embryonal carcinoma and yolk sac tumor. Tumor confined to the testis; tunica albuginea, rete testis, epididymis and spermatic cord uninvolved. No lymphovascular invasion. Spermatic cord margin negative.", "conclusion": "Right testis: mixed nonseminomatous germ cell tumor (embryonal carcinoma and yolk sac tumor), 2.8 cm, confined to testis, no lymphovascular invasion, cord margin negative (pT1)."}
+          ],
+          "orders": [{"id": "uro-2023", "action": "done", "date": "2023-06-29T09:00"}],
+          "documents": [
+            {"type": "Operative Note", "title": "Urology - Operative Report and Pathology", "author": "urology", "date": "2023-07-12T09:30",
+             "body": "Outside urology group. Seen 06/29/2023; surgery 07/06/2023 at a regional hospital.\nPre-op: right testicular mass, interaortocaval node 3.6 cm, AFP 486, hCG 2,140, LDH 298, calcium 12.3. HAE type I: C1 inhibitor concentrate given 1 hour before incision per his allergist's plan.\nProcedure: right radical inguinal orchiectomy through a right inguinal incision with high ligation of the spermatic cord. EBL minimal. No complications; no angioedema. Home same day.\nPathology (signed 7/10): mixed nonseminomatous germ cell tumor (embryonal carcinoma, yolk sac tumor), 2.8 cm, organ-confined, no LVI, margin negative.\nStage with the 3.6 cm node: IIB. Post-op markers to be drawn 7/13. Referred to medical oncology; appointment 7/17."}
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "outside_records",
+          "start": "2023-07-20T11:15",
+          "medications": [{"drug_text": "ondansetron 8 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 8 hours as needed for nausea during chemotherapy", "dose": {"value": 8, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "short", "reason": "chemotherapy nausea"}],
+          "labs": [
+            {"panel": null, "collected": "2023-07-13T08:15", "results": [
+              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 210},
+              {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "value": 380},
+              {"test": "Calcium", "value": 11.6}
+            ]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Medical Oncology Consultation", "author": "oncology", "date": "2023-07-20T11:15",
+             "body": "Outside medical oncology group. Date of visit: 07/17/2023.\n\n25-year-old man with a right testicular mixed nonseminomatous germ cell tumor (embryonal carcinoma and yolk sac), s/p right radical inguinal orchiectomy 7/6, with an isolated 3.6 cm interaortocaval node on CT and no thoracic disease. Presented through asymptomatic hypercalcemia with suppressed PTH and raised PTHrP. Also AATD PiZZ with emphysema on augmentation (FEV1 45%, DLCO 48%), HAE type I and NF1.\nMarkers pre-op: AFP 486, hCG 2,140, LDH 298. Post-op 7/13: AFP 210, hCG 380, calcium 11.6.\n\nStage IIB, S1. IGCCCG good risk.\n\nPlan: four cycles of etoposide and cisplatin (EP), 21-day cycles, starting 7/24. Bleomycin is deliberately omitted because of his emphysema and low diffusing capacity; EP x4 is the equivalent good-risk regimen. Ondansetron as needed plus our standard premeds. Hydration with each cycle; we expect the calcium to normalize as the tumor responds. CBC and CMP each cycle; markers each cycle. CT chest/abdomen/pelvis after cycle 4. Allergy aware for any line placement."}
+          ]
+        },
+        {
+          "id": "2023-08-18a",
+          "kind": "outside_records",
+          "start": "2023-08-18T10:00",
+          "state": {"labs": {"Calcium": 9.6}},
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-07-24T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]},
+            {"panel": "CBC with Differential", "collected": "2023-08-14T08:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-14T08:10", "results": [{"test": "Calcium", "value": 9.6}, {"test": "Creatinine"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "documents": [
+            {"type": "Letter", "title": "Oncology - Cycle 2", "author": "oncology", "date": "2023-08-18T10:00",
+             "body": "Outside medical oncology group. Treatment update, cycle 2 day 1 given 08/14/2023.\nCycle 1 (7/24-7/28) tolerated with fatigue and two days of nausea controlled with ondansetron. No fever. Calcium today 9.6, now normal. Counts adequate for treatment. Creatinine stable. Proceeding with cycle 2 at full dose. Next cycle 9/4."}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "telehealth_visit",
+          "start": "2023-08-22T12:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during chemotherapy",
+          "conditions": [{"label": "Hypercalcemia", "icd10": "E83.52", "action": "resolved", "onset": "2023-06-07"}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-08-22T12:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit - Chemotherapy Check-in", "author": "PCP", "date": "2023-08-22T12:30",
+             "body": "Video from his apartment, mother there this week. Two cycles of EP in. Tired for the week after each cycle, nausea manageable with ondansetron. Eating, drinking well. Breathing at baseline, still doing infusions (oncology ok'd). No HAE attacks. Working reduced hours, employer flexible.\nOncology letter: calcium 9.6 on 8/14.\nA/P: hypercalcemia resolved with treatment - off the problem list. Testicular GCT on EP, oncology leading. Flu shot after chemo finishes. Call with anything."}
+          ]
+        },
+        {
+          "id": "2023-09-08a",
+          "kind": "outside_records",
+          "start": "2023-09-08T09:20",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-04T08:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-04T08:05", "results": [{"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Potassium"}]}
+          ],
+          "documents": [
+            {"type": "Letter", "title": "Oncology - Cycle 3", "author": "oncology", "date": "2023-09-08T09:20",
+             "body": "Outside medical oncology group. Cycle 3 day 1, 09/04/2023 (Labor Day schedule). Labs adequate. Fatigue as before. Markers falling. Proceeding; cycle 4 on 9/25."}
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "outside_records",
+          "start": "2023-09-25T15:00",
+          "documents": [
+            {"type": "Letter", "title": "Allergy and Immunology Follow-up", "author": "allergy and immunology", "date": "2023-09-25T15:00",
+             "body": "Outside allergy and immunology group. Date of visit: 09/18/2023.\nHAE type I, yearly visit. One hand attack in the past year, treated with icatibant x1. Peri-operative C1 inhibitor concentrate before his July orchiectomy, no swelling. Currently on EP chemotherapy for testicular germ cell tumor.\nPlan: on-demand icatibant continues; prophylaxis protocol remains in place for procedures. Return 1 year."}
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "outside_records",
+          "start": "2023-10-20T10:40",
+          "labs": [
+            {"panel": null, "collected": "2023-10-16T08:30", "results": [
+              {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4},
+              {"test": "Choriogonadotropin beta subunit", "loinc": "21198-7", "unit": "m[IU]/mL", "text": "<2"},
+              {"test": "Lactate dehydrogenase", "loinc": "2532-0", "unit": "U/L", "value": 182}
+            ]},
+            {"panel": "CBC with Differential", "collected": "2023-10-16T08:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Letter", "title": "Oncology - End of Treatment", "author": "oncology", "date": "2023-10-20T10:40",
+             "body": "Outside medical oncology group. Visit 10/16/2023, three weeks after cycle 4 of EP.\nTumor markers have normalized: AFP 4 ng/mL, beta-hCG <2, LDH 182. Counts recovering. Fatigue improving. CT chest/abdomen/pelvis scheduled 11/6."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-24T16:32"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-24T16:34"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-24T16:32"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Nurse Visit - Vaccines", "author": "RN", "date": "2023-10-24T16:30",
+             "body": "Chemo finished late September; oncology OK'd vaccines now. Flu L deltoid, updated COVID R deltoid. No fever today. Observed, fine."}
+          ]
+        },
+        {
+          "id": "2023-11-09a",
+          "kind": "outside_records",
+          "start": "2023-11-09T13:00",
+          "reports": [
+            {"study": "CT chest", "performed": "2023-11-06T08:00", "text": "CT chest with IV contrast. Stable lower-lobe panlobular emphysema and bullae. No nodules. No thoracic lymphadenopathy. No effusion.", "conclusion": "No thoracic disease. Stable emphysema."},
+            {"study": "CT abdomen and pelvis with contrast", "performed": "2023-11-06T08:00", "text": "CT abdomen and pelvis with IV contrast. Interaortocaval lymph node has decreased to 0.9 cm short axis, from 3.6 cm in June. No new lymphadenopathy. Solid organs normal. Postsurgical changes in the right inguinal region. No ascites.", "conclusion": "Interval decrease of interaortocaval node to 0.9 cm. No new disease."}
+          ],
+          "documents": [
+            {"type": "Letter", "title": "Oncology - Response Assessment", "author": "oncology", "date": "2023-11-09T13:00",
+             "body": "Outside medical oncology group. Visit 11/08/2023.\nCT 11/6: residual interaortocaval node 0.9 cm, below the 1 cm threshold; no other disease. Markers normal.\nAssessment: complete response after EP x4. No residual mass resection needed.\nSurveillance: markers every 2-3 months for the first year, then every 4-6 months; CT abdomen/pelvis at 6 and 12 months, then yearly. Next visit January."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "office_visit",
+          "start": "2023-12-05T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after chemotherapy",
+          "state": {"weight_kg": 59.0},
+          "vitals": {"spo2": 93},
+          "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
+          "conditions": [
+            {"label": "Malignant neoplasm of descended right testis", "icd10": "C62.11", "action": "resolved", "onset": "2023-07-06"},
+            {"label": "History of testicular cancer", "action": "diagnosed", "onset": "2023-11-08", "note": "stage IIB NSGCT, orchiectomy and EP x4, complete response; oncology surveillance"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 5}, {"survey": "GAD-7 total score", "value": 5}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-12-05T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - After Chemotherapy", "author": "PCP", "date": "2023-12-05T15:40",
+             "body": "First visit back since finishing chemo. Oncology calls it a complete response: markers normal in October, node down to 0.9 cm on 11/6 CT. Energy maybe 80% of normal. Lost weight during treatment (59 kg today), eating better now. Back at work full time remote. Mood: tired of being a patient, but sleeping, enjoying things, no hopelessness. PHQ-9 5, GAD-7 5. Breathing at baseline; infusions weekly.\n\nExam: SpO2 93% RA. Thin. Right inguinal incision healed. Left testis normal. Lungs diminished, unchanged. Heart RRR.\n\nA/P:\n1. Testicular NSGCT stage IIB, complete response: moved to history; oncology surveillance schedule in place.\n2. Weight down 3 kg from baseline: expect regain; recheck at physical.\n3. AATD/emphysema, HAE, NF1: unchanged.\n4. Vaccines current.\nPhysical in March."}
+          ]
+        }
+      ]
+    }
+  ]
+}

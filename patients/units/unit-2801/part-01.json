@@ -1,0 +1,657 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002801",
+      "given": "Jessenia",
+      "family": "Castro",
+      "birth_date": "1980-04-05",
+      "address_line": "41 Bristol Avenue, Apt 2",
+      "phone": "+1-518-555-0174",
+      "email": "jessenia.castro@example.test",
+      "marital_status": "single",
+      "summary": "Administrative assistant with childhood rheumatic fever and rheumatic mitral stenosis, unfollowed for years, who joins in 2020 on a thiazide. Cardiology finds severe mitral stenosis with heart failure in 2022 and paroxysmal AF on Holter (warfarin), then pulmonary hypertension in 2024; after her last practice visit in July 2024 she has an ED visit and admission for decompensated heart failure in 2026 and a balloon valvotomy, known to the practice only through late records and her messages.",
+      "events": [
+        {
+          "id": "2020-09-08a",
+          "kind": "telephone",
+          "start": "2020-09-08T11:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2020-09-08T11:20",
+              "body": "Caller wants to transfer her primary care here; her old office is closing its adult panel. Medicaid, card on file. Says she has a heart valve problem from rheumatic fever as a kid and takes a water pill and potassium. New patient slot booked 9/22 at 9:00. Release signed for her former primary care office; records requested by fax."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "establish_care",
+          "start": "2020-09-22T09:00",
+          "end": "2020-09-22T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Rheumatic heart disease",
+              "icd10": "I09.9",
+              "action": "history",
+              "onset": "1991-03-01",
+              "note": "rheumatic fever in childhood; mitral valve narrowing found as a teenager; no cardiology follow-up in years"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "fluid / valve disease"
+            },
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily with food",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "potassium replacement on thiazide"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "weight_kg": 71.5,
+            "height_cm": 160.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ]
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "1988-07-12T08:00"
+            },
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T09:45"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Neutrophils %"
+                },
+                {
+                  "test": "Lymphocytes %"
+                },
+                {
+                  "test": "Monocytes %"
+                },
+                {
+                  "test": "Eosinophils %"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "card-ref-2020",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "rheumatic mitral valve disease, no follow-up in years"
+            },
+            {
+              "id": "mammo-2020",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-09-22T09:50",
+              "body": "40-year-old woman new to the practice, transferring from another primary care office.\n\nHPI: Had rheumatic fever as a child. Was told around high school that one of her heart valves (mitral) was narrowed from it. Saw a heart doctor a few times back then, nothing for many years since. During her last pregnancy in 2017 she got short of breath and puffy; the OB team put her on a diuretic and told her to cut salt. Her prior PCP kept her on HCTZ 25 with potassium afterward. Today she feels fine. Works full time as an administrative assistant, climbs the stairs at work without stopping. No chest pain, palpitations, orthopnea, leg swelling, fainting.\n\nPMH: rheumatic fever in childhood, rheumatic mitral valve disease.\nPSH: tonsillectomy at 8.\nMeds: hydrochlorothiazide 25 mg daily, KCl ER 20 mEq daily.\nAllergies: no known drug allergies.\nFH: mother had rheumatic fever. Father has type 2 diabetes. A maternal uncle had an ischemic stroke at 65.\nSH: never smoker, does not drink, no drug use. Administrative assistant.\n\nExam: well appearing, NAD. BP 116/74. Neck: no JVD. Heart: regular rhythm; low apical diastolic murmur, otherwise normal sounds. Lungs clear. Abdomen soft. Ext: no edema. Skin intact.\n\nA/P:\n1. Rheumatic heart disease, mitral valve: known since adolescence, never re-imaged as an adult that she knows of. She has no symptoms on the thiazide. Recommended she get back in with cardiology for an echo and baseline; referral placed. She is agreeable though busy with work.\n2. Diuretic: continue HCTZ 25 and KCl 20. CMP today.\n3. Health maintenance: CBC, lipids, A1c (father diabetic), TSH; one-time HIV and hep C screens, consented. Screening mammogram ordered. Pap due per her history, will do at the physical in spring. Flu shot next month, nurse visit.\n4. Prior records requested.\n\nReturn for a physical in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "portal_message",
+          "start": "2020-09-29T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2020-09-29T16:05",
+              "body": "Hi Jessenia, all of your blood work from last week looks good. Kidney function, sodium and potassium are normal on the water pill. Blood counts, sugar (A1c), thyroid and cholesterol are all in a healthy range. The HIV and hepatitis C screens were negative. Please keep the cardiology appointment on your list when they call you."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "outside_records",
+          "start": "2020-10-06T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care",
+              "author": "MA",
+              "date": "2020-10-06T10:30",
+              "body": "Received 22 pages by fax from patient's former primary care office (2016 to 2020). Summary for chart:\n- Problem list: rheumatic heart disease / mitral valve disease, history of rheumatic fever.\n- Medications: hydrochlorothiazide 25 mg daily and potassium chloride ER 20 mEq daily since 2017.\n- Pap smear 2018: negative for intraepithelial lesion.\n- Basic metabolic panels 2018 and 2019 within normal limits.\n- No cardiology notes in the packet.\nAllergies: NKDA.\nScanned to media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "nurse_visit",
+          "start": "2020-10-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-20T15:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-20T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2020-10-20T15:45",
+              "body": "Here for seasonal influenza vaccine. Screening questions negative, no prior reactions. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Tolerated well, waited 15 minutes, left in good condition."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "imaging",
+          "start": "2020-11-17T08:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-11-17T08:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. No prior studies for comparison. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "done",
+              "date": "2020-11-17T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "author": "PCP",
+              "date": "2020-11-19T12:10",
+              "body": "Screening mammogram negative, BI-RADS 1. Letter mailed to patient. Repeat in 1 to 2 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "telephone",
+          "start": "2021-01-12T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral follow-up",
+              "author": "front desk",
+              "date": "2021-01-12T10:15",
+              "body": "Cardiology office reports they mailed a letter and left two voicemails, no appointment made. Called pt: she says work has been hectic and she feels fine, will call them herself. Gave her the scheduling number again."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "annual_physical",
+          "start": "2021-03-16T08:30",
+          "end": "2021-03-16T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-03-16T09:05"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-03-16T08:50",
+              "text": "Specimen: ThinPrep cervical cytology. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-16T09:00",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-03-16T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Platelet Volume"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-03-16T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-03-16T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-03-16T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2021-03-16T09:15",
+              "body": "Annual exam. Feeling well. Working, mostly from the office again. Has not seen cardiology yet, says she will call this spring. No exertional symptoms, no swelling, no palpitations.\n\nMeds: HCTZ 25 daily, KCl ER 20 mEq daily. NKDA.\nPHQ-9: 2.\nExam: BP and vitals as charted, looks well. HEENT normal. Thyroid not enlarged. Heart regular with the same soft low-pitched apical diastolic murmur. Lungs clear. Breasts without masses bilaterally. Pelvic: normal external genitalia, cervix without lesions; Pap/HPV collected. Ext without edema.\n\nPlan:\n- Pap with HPV collected today.\n- Tdap today, last one she remembers was in pregnancy, not documented.\n- BMP and CBC for the diuretic.\n- COVID vaccine: eligible soon, she plans to get it at her pharmacy.\n- Encouraged the cardiology visit again. She understands the valve should be looked at.\nNext routine visit in 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Pap and labs",
+              "author": "PCP",
+              "date": "2021-03-24T13:40",
+              "body": "Your Pap test was normal and the HPV test was negative, so the next one is not due for 5 years. Potassium, kidney tests and blood counts were normal too."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "portal_message",
+          "start": "2021-05-04T19:12",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T12:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shots",
+              "author": "patient",
+              "date": "2021-05-04T19:12",
+              "body": "Hi, just letting you know I got both of my covid vaccines at the pharmacy, April 6 and April 27, Pfizer. Arm was sore and I was tired one day after the second. I have the card if you need a picture."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shots",
+              "author": "MA",
+              "date": "2021-05-05T09:20",
+              "body": "Thank you! Both doses are added to your record. No need to send the card."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "pharmacy",
+          "start": "2021-06-08T08:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "author": "RN",
+              "date": "2021-06-08T08:15",
+              "body": "E-refill request for hydrochlorothiazide 25 mg and potassium chloride ER 20 mEq. BMP in March normal. Approved 90 days with 3 refills per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "office_visit",
+          "start": "2021-09-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-09-21T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "card-ref-2020",
+              "action": "cancelled",
+              "date": "2021-09-21T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2021-09-21T14:30",
+              "body": "S: Routine check. Says she has been doing well. Walks to the bus and up two flights at work, no trouble. No palpitations, no swelling, no chest pain. Taking HCTZ and potassium daily, no missed doses. Never got to cardiology; the referral from last year lapsed and she would rather wait.\nO: Vitals as charted. Regular rhythm, low apical diastolic murmur unchanged. Lungs clear. No edema.\nA/P: Rheumatic mitral valve disease, asymptomatic on a thiazide. I again recommended an echo through cardiology. She declines for now; we closed the old referral and she will tell us right away if she gets short of breath, swollen or notices racing heartbeats, and we will refer again. Continue current meds. Flu shot next month. Physical in March."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T16:12"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "author": "RN",
+              "date": "2021-10-19T16:20",
+              "body": "Seasonal flu vaccine given, 0.5 mL IM right deltoid, lot recorded. Denies fever or illness today. No issues after observation."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "portal_message",
+          "start": "2021-12-20T20:31",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-14T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "booster",
+              "author": "patient",
+              "date": "2021-12-20T20:31",
+              "body": "Got my booster last Tuesday the 14th at the pharmacy, same kind as before."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: booster",
+              "author": "MA",
+              "date": "2021-12-21T08:45",
+              "body": "Got it, your booster is on your record now. Happy holidays!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

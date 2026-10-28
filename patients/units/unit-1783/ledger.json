@@ -1,0 +1,1744 @@
+{
+  "unit": "unit-1783",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001783",
+      "given": "Nicole",
+      "family": "Rousseau",
+      "birth_date": "1995-09-07",
+      "address_line": "41 Mohawk Ridge Road",
+      "phone": "+1-201-555-0197",
+      "email": "nicole.rousseau@example.test",
+      "marital_status": "married",
+      "summary": "Healthy high school math teacher who joined in 2022. Evaluated by an outside gynecology office in 2024 for unexplained infertility (normal workup, two clomiphene cycles, normal clomiphene challenge test), with mild dysmenorrhea; treatment paused. One ED visit in January 2026 for left lower quadrant pain that settled.",
+      "events": [
+        {
+          "id": "2022-04-26a",
+          "kind": "telephone",
+          "start": "2022-04-26T10:20",
+          "reason": "new patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-04-26T10:20",
+              "author": "front desk",
+              "body": "Caller is looking for a new primary care doctor; her old office is closing its adult panel at the end of the school year and she would rather move now. 26 y/o, teaches high school math, BCBS PPO verified. No current concerns, would like a physical. Booked new patient preventive visit 5/10 at 3:45 (after school dismissal per her request). Records release form emailed for her prior office."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "establish_care",
+          "start": "2022-05-10T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              75
+            ],
+            "hr": 65,
+            "rr": 12,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 61.9,
+            "height_cm": 164.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-05-10T16:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 216
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-10T16:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 111
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-05-10T16:40",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 199
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T16:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-10T16:40",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-05-10T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2022-05-10T17:30",
+              "author": "PCP",
+              "body": "26-year-old woman establishing care. Moving over from her previous primary care office; release signed, records requested.\n\nFeels well, no complaints. Periods come regularly, roughly monthly, nothing she considers abnormal. No chronic medical problems, no hospitalizations, no surgeries. Takes nothing daily, no supplements.\n\nAllergies: no known drug allergies.\n\nFamily: mother with hypothyroidism on treatment; father has hypertension; maternal grandmother had type 2 diabetes. Nobody she knows of with fertility trouble, endometriosis or early menopause.\n\nSocial: married. Teaches math at a high school. Has never smoked, does not drink. Walks most evenings.\n\nROS negative across systems.\n\nExam: well-appearing, in no distress. Vitals as charted, BMI in the normal range. HEENT normal, thyroid not enlarged, no nodules. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Skin without rashes. Extremities warm, no swelling. Mood and affect appropriate. PHQ-2 0.\n\nAssessment/plan:\n1. Adult preventive care. Healthy. Baseline CBC, CMP, lipids. One-time HIV and hepatitis C screening, she agrees.\n2. Cervical screening: reports a normal Pap last year at her prior office; will confirm when records come and plan the next one for 2024-25.\n3. Vaccines: believes Tdap was within the last several years and HPV done as a kid. Will reconcile with outside records. Flu shot in the fall.\n\nFollow up in a year for a physical."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.2,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-05-12a",
+          "kind": "portal_message",
+          "start": "2022-05-12T08:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent lab work",
+              "date": "2022-05-12T08:05",
+              "author": "PCP",
+              "body": "Hi Nicole, everything from your visit came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do for now. Nice meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-24a",
+          "kind": "outside_records",
+          "start": "2022-05-24T11:10",
+          "immunizations": [
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-10-02T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-12-04T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2009-04-09T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2017-06-20T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-27T12:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T12:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-20T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-05-24T11:10",
+              "author": "MA",
+              "body": "32 pages received by fax from patient's previous PCP. Abstracted:\n- Preventive visits yearly 2016-2021, unremarkable.\n- Pap 2021: negative for intraepithelial lesion or malignancy.\n- Immunizations: HPV x3 (2008-2009), Tdap 06/2017, COVID Pfizer primary series 2021 plus booster 11/2021.\n- No problem list entries, no medications, NKDA.\nImmunizations entered into our record. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "date": "2022-05-25T07:40",
+              "author": "PCP",
+              "body": "Prior records reviewed. Nothing of note. Pap 2021 normal, next due 2024. Tdap good until 2027."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-18a",
+          "kind": "nurse_visit",
+          "start": "2022-10-18T15:30",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-18T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-18T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-18T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine administration",
+              "date": "2022-10-18T15:50",
+              "author": "RN",
+              "body": "Here after school for her seasonal vaccines. Feeling well, no fever. Influenza IM left deltoid; bivalent COVID booster IM right deltoid. VIS given. Waited 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "annual_physical",
+          "start": "2023-06-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              130,
+              84
+            ],
+            "hr": 69,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 61.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-06-13T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 198
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-13T09:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.68
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-06-13T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-06-13T10:20",
+              "author": "PCP",
+              "body": "Annual exam. School is out for the summer and she is enjoying the break.\n\nInterval: no illnesses, no new medications. She and her husband stopped using contraception and started trying for a pregnancy about a month ago. Cycles regular. Asks what is normal in terms of how long it takes; reviewed that most couples conceive within a year, sooner to evaluate if cycles become irregular.\n\nAllergies: none to medications.\nFamily and social history unchanged. Never smoker, no alcohol.\n\nExam: healthy-appearing. Vitals reviewed. Neck supple, thyroid normal. Cardiac exam normal. Lungs clear. Abdomen benign. No edema. Normal affect, PHQ-2 0.\n\nA/P:\n1. Preventive care: CBC and CMP today. Lipids normal last year, not repeating.\n2. Trying to conceive: reassurance as above; check in at her next physical or sooner if a year passes.\n3. Pap due next year.\n\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-06-15a",
+          "kind": "portal_message",
+          "start": "2023-06-15T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-06-15T12:30",
+              "author": "PCP",
+              "body": "Labs from your physical are all normal. Enjoy the summer!"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T16:00",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-24T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine administration",
+              "date": "2023-10-24T16:20",
+              "author": "RN",
+              "body": "Flu and 2023-24 COVID vaccine given, one in each arm. Denies illness today. Pt asked if the vaccines are fine while trying to get pregnant; reassured both are recommended. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-28a",
+          "kind": "portal_message",
+          "start": "2024-05-28T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about getting pregnant",
+              "date": "2024-05-28T19:40",
+              "author": "patient",
+              "body": "Hi, it's been over a year now that we've been trying and nothing yet. My periods are still regular. You mentioned last summer to check in if it got to a year. Should I come in or go straight to a gynecologist?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about getting pregnant",
+              "date": "2024-05-29T08:15",
+              "author": "front desk",
+              "body": "Hi Nicole, the doctor would like to see you first to go over things and send the referral. We have June 11 at 3:30 open, does that work? Reply here and we'll lock it in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about getting pregnant",
+              "date": "2024-05-29T12:02",
+              "author": "patient",
+              "body": "Yes that works, thank you."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "unable to conceive",
+          "vitals": {
+            "bp": [
+              120,
+              77
+            ],
+            "hr": 67,
+            "temp_c": 37.1,
+            "weight_kg": 61.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-06-11T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "obgyn-referral",
+              "action": "placed",
+              "order": "Obstetrics & Gynecology referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "infertility evaluation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-06-11T16:15",
+              "author": "PCP",
+              "body": "28 y/o here because she and her husband have not conceived after about 13 months of regular unprotected intercourse.\n\nCycles regular, every 28-30 days, flow normal. No bleeding between periods. Never had a sexually transmitted infection, never had pelvic or abdominal surgery, has never been told she has endometriosis. No galactorrhea, no change in hair or skin, no heat or cold intolerance. Weight stable. Husband has not had any testing yet.\n\nMeds: none. Allergies: none to medications.\n\nExam: BP and pulse as charted, weight unchanged from last year. Thyroid normal size, no nodules. No hirsutism or acne. Abdomen soft, nontender.\n\nA/P: Infertility, >12 months, regular cycles, no obvious risk factors. Discussed that the workup involves both partners. Referral to Ob/Gyn for evaluation; they will likely coordinate hormone testing around her cycle, imaging, and a semen analysis for her husband, so I am not duplicating labs here. She is comfortable with that plan."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "lab_only",
+          "start": "2024-07-09T07:45",
+          "service": "Obstetrics & Gynecology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-09T07:45",
+              "resulted": "2024-07-10T14:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 11.7
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 6.4
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 5.6
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 44
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Follicle Stimulating Hormone": 6.3,
+              "Prolactin": 11.3,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          }
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "specialist_visit",
+          "start": "2024-07-16T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "infertility consultation",
+          "conditions": [
+            {
+              "label": "Female infertility",
+              "action": "diagnosed",
+              "onset": "2024-05-15",
+              "note": "unexplained so far; HSG pending"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clomiphene citrate 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily on cycle days 5 through 9",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "ovulation induction"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-07-16T10:50",
+              "text": "Transvaginal technique. Uterus anteverted, normal in size and contour, homogeneous myometrium. Endometrium thin and uniform, appropriate for early follicular phase. Right and left ovaries normal in size, each with several small antral follicles. No adnexal mass. No free fluid.",
+              "conclusion": "Normal uterus and ovaries; small antral follicles bilaterally."
+            }
+          ],
+          "orders": [
+            {
+              "id": "obgyn-referral",
+              "action": "done",
+              "date": "2024-07-16T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2024-07-19T09:00",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN GROUP - CONSULTATION LETTER\nVisit date: 07/16/2024\nReason for referral: infertility\n\nThank you for asking us to see Ms. Rousseau, a 28-year-old nulligravida. She and her partner have had 14 months of unprotected intercourse without a pregnancy. Menses every 28 to 30 days. No STI history, no prior pelvic surgery and no known endometriosis.\n\nMedications: none. Allergies: no known drug allergies.\nFamily history: maternal grandmother with type 2 diabetes; mother hypothyroid; father hypertensive. No relatives with infertility, endometriosis or early menopause.\nSocial: never smoker, no alcohol, works as a high school math teacher.\n\nExamination: normal general, breast, abdominal and pelvic exam.\n\nData: Day-3 bloodwork drawn here last week shows normal TSH, prolactin, FSH and LH. Her partner's semen analysis was normal. Transvaginal ultrasound in our office today: normal uterus, both ovaries normal with small antral follicles.\n\nImpression: female infertility, unexplained on the evaluation so far. Tubal patency still needs to be confirmed.\n\nPlan: hysterosalpingogram scheduled for the next follicular window. Assuming the tubes are open, she will start clomiphene citrate 50 mg on cycle days 5-9 to promote ovulation, with timed intercourse. Prescription sent. Follow-up in about two months.\n\nAllergies: NKDA."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Consult letter reviewed",
+              "date": "2024-07-19T15:05",
+              "author": "PCP",
+              "body": "Gyn consult reviewed. Infertility added to problem list. Clomiphene cycles planned after HSG. Will let gyn manage."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "imaging",
+          "start": "2024-07-29T08:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Hysterosalpingogram",
+              "loinc": "25022-5",
+              "performed": "2024-07-29T08:30",
+              "text": "Indication: infertility. Cycle day 8, negative pregnancy test confirmed by the ordering office. After sterile preparation the cervix was cannulated and water-soluble contrast instilled under fluoroscopy. The uterine cavity is normal in size and shape with smooth margins and no filling defect. Both fallopian tubes fill promptly along their full length with free intraperitoneal spill bilaterally. No complications.",
+              "conclusion": "Normal hysterosalpingogram. Bilateral tubal patency.",
+              "issued": "2024-07-29T13:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Hysterosalpingogram",
+              "date": "2024-07-30T09:20",
+              "author": "radiology",
+              "body": "Copy of outside HSG report received from the gynecology office. Normal uterine cavity, both tubes patent with free spill. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "specialist_visit",
+          "start": "2024-09-17T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "infertility follow-up",
+          "conditions": [
+            {
+              "label": "Dysmenorrhea",
+              "action": "diagnosed",
+              "onset": "2024-09-17",
+              "note": "mild cramps with menses, no treatment",
+              "icd10": "N94.6"
+            },
+            {
+              "label": "Clomiphene citrate challenge testing indication",
+              "action": "diagnosed",
+              "onset": "2024-09-17",
+              "icd10": "Z31.41"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clomiphene citrate 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (100 mg) by mouth daily on cycle days 5 through 9 for the challenge test",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "clomiphene citrate challenge test"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up",
+              "date": "2024-09-20T10:30",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN GROUP - FOLLOW-UP LETTER\nVisit date: 09/17/2024\n\nMs. Rousseau came back to review her fertility evaluation and to plan ovarian reserve testing. Per her intake the couple has been trying for 14 months. Cycles remain regular at about 29 days. She gets mild cramping with her periods; no abnormal bleeding and no pelvic pain otherwise. She completed two cycles of clomiphene 50 mg since July without conceiving.\n\nAllergies: NKDA. She does not smoke or drink; BMI in the healthy range.\nExam today unremarkable.\n\nResults to date: baseline TSH, prolactin, FSH, LH and estradiol all normal. HSG 07/29: normal cavity, both tubes patent. Husband's semen analysis within normal limits.\n\nAssessment:\n1. Unexplained infertility.\n2. Dysmenorrhea, mild, not needing treatment.\n3. Indication for clomiphene citrate challenge testing to assess ovarian reserve.\n\nPlan: clomiphene citrate challenge test with her next cycle. Day-3 FSH and estradiol, clomiphene 100 mg on days 5 through 9, then day-10 FSH. We will send results and discuss next steps."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up letter reviewed",
+              "date": "2024-09-20T16:40",
+              "author": "PCP",
+              "body": "Gyn f/u letter reviewed. HSG normal, unexplained infertility. Mild dysmenorrhea added. Challenge test next cycle. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "lab_only",
+          "start": "2024-10-07T07:30",
+          "service": "Obstetrics & Gynecology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-07T07:30",
+              "resulted": "2024-10-08T11:00",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 6.8
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 38
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "lab_only",
+          "start": "2024-10-14T07:35",
+          "service": "Obstetrics & Gynecology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-14T07:35",
+              "resulted": "2024-10-15T10:40",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 7.4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "outside_records",
+          "start": "2024-10-22T13:00",
+          "conditions": [
+            {
+              "label": "Clomiphene citrate challenge testing indication",
+              "action": "resolved",
+              "onset": "2024-09-17",
+              "note": "challenge test completed, normal",
+              "icd10": "Z31.41"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology results letter",
+              "date": "2024-10-22T13:00",
+              "author": "gynecology",
+              "body": "OUTSIDE OB/GYN GROUP - RESULTS\n\nClomiphene citrate challenge test, October 2024:\n- Cycle day 3 (10/07): FSH 6.8 IU/L, estradiol 38 pg/mL\n- Cycle day 10 (10/14), after clomiphene 100 mg days 5-9: FSH 7.4 IU/L\n\nInterpretation: normal response; no evidence of diminished ovarian reserve.\n\nI reviewed these with Ms. Rousseau by phone. We talked about further clomiphene ovulation-induction cycles. She would like to wait for now and will call our office when she is ready to resume. No medications at this time. NKDA."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Results letter reviewed",
+              "date": "2024-10-23T07:50",
+              "author": "PCP",
+              "body": "Challenge test normal. Pausing treatment by her choice, gyn to resume when she calls. Testing item closed on problem list."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "nurse_visit",
+          "start": "2024-10-29T15:45",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-29T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-29T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-29T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine administration",
+              "date": "2024-10-29T16:05",
+              "author": "RN",
+              "body": "Seasonal flu (trivalent this year) and updated COVID vaccine administered IM, left and right deltoids. No acute complaints. Observed briefly, left ambulatory and well."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "annual_physical",
+          "start": "2025-03-25T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-03-24T07:55",
+              "author": "front desk",
+              "body": "Pt called, parent-teacher conferences were moved to tomorrow afternoon and she can't make her physical. Rebooked 4/8 at 7:40 am before school."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "annual_physical",
+          "start": "2025-04-08T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              75
+            ],
+            "hr": 78,
+            "rr": 13,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 60.1
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-04-08T08:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 235
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-04-08T08:25",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 64
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-04-08T08:25",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-08T08:25",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2025-04-08T08:05",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2025-04-10T16:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-04-08T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-04-08T09:10",
+              "author": "PCP",
+              "body": "Early-morning physical before her school day.\n\nSince last year: seen by an outside gynecology group for infertility. Thyroid, prolactin and pituitary hormones normal, office ultrasound normal, HSG normal with open tubes, husband's semen analysis normal. Two clomiphene cycles did not result in pregnancy; challenge test in October showed normal ovarian reserve. Diagnosis unexplained infertility. She has decided to take a break from treatment and is not on anything. Periods remain regular with mild cramps that she manages without medication.\n\nNo other concerns. No new family history.\nAllergies: NKDA.\n\nExam: well, pleasant. Vitals as recorded, weight steady. Thyroid normal. Heart and lungs normal. Abdomen soft, nontender. Pelvic: external genitalia normal, cervix without lesions, Pap collected; no adnexal tenderness or masses. Skin and extremities normal. PHQ-2 1, she says winter was long but mood is fine.\n\nA/P:\n1. Health maintenance: CBC, CMP, lipids. TSH given mother's thyroid disease and the fertility history (gyn checked it last summer, rechecking yearly is reasonable).\n2. Cervical screening: Pap today, cytology only at 29.\n3. Infertility, unexplained, treatment on hold: she knows to reconnect with gyn when ready.\n4. Dysmenorrhea, mild: no treatment wanted.\n\nNext physical in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-11a",
+          "kind": "portal_message",
+          "start": "2025-04-11T07:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and blood work",
+              "date": "2025-04-11T07:15",
+              "author": "PCP",
+              "body": "Hi Nicole - your Pap is normal, so the next one is in three years. Blood counts, chemistries, cholesterol and thyroid were all normal as well."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap and blood work",
+              "date": "2025-04-11T17:48",
+              "author": "patient",
+              "body": "Great news, thanks for letting me know."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T15:40",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T15:44"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-21T15:44"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T15:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine administration",
+              "date": "2025-10-21T15:58",
+              "author": "RN",
+              "body": "Came in for her yearly flu and COVID 2025-26 vaccines. No fever or illness. Given IM in each deltoid. No immediate reaction; she had a sore arm last year for about a day after the COVID shot, expects the same."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-17a",
+          "kind": "ed_visit",
+          "start": "2026-01-17T14:10",
+          "end": "2026-01-17T17:55",
+          "service": "Emergency Medicine",
+          "reason": "left lower abdominal pain",
+          "conditions": [
+            {
+              "label": "Left lower quadrant pain",
+              "action": "diagnosed",
+              "onset": "2026-01-17",
+              "icd10": "R10.32"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              80
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-01-17T14:35",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-01-17T14:35",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "Pain severity (0-10)",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-01-17T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2026-01-20T10:05",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT - PROVIDER NOTE\nArrival 01/17/2026 14:10\n\nCC: left lower abdominal pain\n\nHPI: 30 yo F with a history of female infertility and a prior clomiphene citrate challenge test. Left-sided lower abdominal pain began suddenly this morning. Sharp, comes and goes, 6/10 at worst. LMP started 14 days ago, ordinary flow and length; cycles regular at 28 days. Not sexually active at present; uses no contraception. No STI history. Denies nausea, vomiting, fevers, dysuria, frequency.\n\nPMH (per records): female infertility; clomiphene citrate challenge testing indication.\nMeds: none. Allergies: NKDA.\nFHx: MGM type 2 DM, mother hypothyroidism, father HTN; no infertility, endometriosis or early menopause in the family.\nSHx: never smoker, no alcohol, math teacher.\n\nExam: VS within normal limits. Uncomfortable but nontoxic. Abdomen: mild LLQ tenderness on palpation; no rebound, no guarding. No CVA tenderness. Pelvic: normal external exam and cervix, no cervical motion tenderness, no adnexal tenderness or mass.\n\nUA: leukocyte esterase, nitrite and blood all negative. Urine hCG negative.\n\nMDM: well-appearing young woman with mid-cycle unilateral pain, benign exam and negative urine studies. No evidence of infection, stone or pregnancy-related cause.\n\nImpression: left lower quadrant pain.\nDisposition: discharged home in stable condition. Follow up with PCP this week; return for worsening pain, fever, vomiting or bleeding."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "ED record reviewed",
+              "date": "2026-01-20T12:30",
+              "author": "PCP",
+              "body": "ED record from Saturday reviewed. LLQ pain mid-cycle, exam and UA/hCG negative, sent home. Patient already messaged; follow-up booked."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "portal_message",
+          "start": "2026-01-20T06:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit over the weekend",
+              "date": "2026-01-20T06:50",
+              "author": "patient",
+              "body": "Hi - I went to the ER Saturday with pain on my lower left side. They checked my urine and did an exam and said it all looked ok and to follow up with you. It's a lot better already. Do I need an appointment?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit over the weekend",
+              "date": "2026-01-20T09:30",
+              "author": "RN",
+              "body": "Glad it's easing up. Yes, the doctor would like a quick follow-up. Booked you Friday 1/23 at 3:45. If the pain comes back strongly, or you get fever or vomiting before then, call us right away."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "office_visit",
+          "start": "2026-01-23T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, abdominal pain",
+          "conditions": [
+            {
+              "label": "Left lower quadrant pain",
+              "action": "resolved",
+              "onset": "2026-01-17",
+              "icd10": "R10.32"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              87
+            ],
+            "hr": 66,
+            "temp_c": 37.0,
+            "weight_kg": 60.9
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-01-23T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - ED follow-up",
+              "date": "2026-01-23T16:20",
+              "author": "PCP",
+              "body": "Follow-up after ED visit 1/17 for left lower abdominal pain. ED record reviewed: benign abdominal and pelvic exam, UA negative, urine pregnancy test negative, discharged.\n\nThe pain settled within two days and has not come back. No fever, bowel or urinary changes, no abnormal bleeding.\n\nMeds: none. NKDA.\n\nExam: afebrile, vitals normal. Abdomen soft, nontender throughout including the left lower quadrant, no masses, normal bowel sounds.\n\nA/P: Left lower quadrant pain, resolved. Timing at mid-cycle with a reassuring workup. No further testing now. Call if it recurs. Physical in March as planned."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "annual_physical",
+          "start": "2026-03-09T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              81
+            ],
+            "hr": 63,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 61.5
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-09T08:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-09T08:20",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-03-09T08:20",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 113
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 199
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 137
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-03-09T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-03-09T09:00",
+              "author": "PCP",
+              "body": "30 y/o here for her yearly exam.\n\nInterval: ED visit in January for left lower quadrant pain, settled on its own, nothing since. Fertility treatment still on hold; she has not gone back to gyn. Cycles regular, mild cramps as before, nothing needing medication. No other new symptoms.\n\nMeds: none. Allergies: no known drug allergies.\nFamily history unchanged. Never smoker, no alcohol.\n\nExam: well-appearing. Vitals reviewed, BMI stable around 22. Thyroid normal. Heart regular without murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Mood good, PHQ-2 0.\n\nA/P:\n1. Preventive care: CBC, BMP, lipids today. Pap next due 2028. Tdap due 2027. Vaccines current for this season.\n2. Female infertility, unexplained, on pause: she can call gyn directly when ready.\n3. Dysmenorrhea, mild, stable.\n\nSee her in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "portal_message",
+          "start": "2026-03-11T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2026-03-11T12:10",
+              "author": "PCP",
+              "body": "Nicole, your blood work from this week's physical is normal across the board. Have a good spring."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine record",
+              "date": "2026-05-19T20:15",
+              "author": "patient",
+              "body": "The district is updating staff files and asked for a copy of my vaccination record. Could you send one through here?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine record",
+              "date": "2026-05-20T08:40",
+              "author": "front desk",
+              "body": "Attached is your immunization history as we have it on file. Let us know if the district needs a different form."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Clomiphene citrate challenge testing indication|Z31.41": {
+        "code": "Z31.41",
+        "display": "Encounter for fertility testing",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Dysmenorrhea|N94.6": {
+        "code": "N94.6",
+        "display": "Dysmenorrhea, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Left lower quadrant pain|R10.32": {
+        "code": "R10.32",
+        "display": "Left lower quadrant pain",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "clomiphene citrate 50 MG Oral Tablet": {
+        "code": "1093060",
+        "display": "clomiphene citrate 50 MG Oral Tablet",
+        "ingredient": "clomiphene",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Estradiol": {
+        "code": "2243-4",
+        "display": "Estradiol (E2) [Mass/volume] in Serum or Plasma",
+        "unit": "pg/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Hysterosalpingogram": {
+        "code": "25022-5",
+        "display": "RF Uterus and Fallopian tubes Views W contrast IU",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

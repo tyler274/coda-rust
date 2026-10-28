@@ -1,0 +1,317 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002836",
+      "events": [
+        {
+          "id": "2019-01-22a",
+          "kind": "pharmacy",
+          "start": "2019-01-22T13:30",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2019-01-22T13:30"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy immunization record", "author": "front desk", "date": "2019-01-24T08:45", "body": "Pharmacy notification: Shingrix dose 2 administered 1/22/2019. Series complete. Added to immunization record."}
+          ]
+        },
+        {
+          "id": "2019-02-12a",
+          "kind": "office_visit",
+          "start": "2019-02-12T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "state": {"weight_kg": 54.5},
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2019-02-12T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2019-02-12T10:20", "body": "Routine six-month visit. No complaints beyond winter knee stiffness. Weight a little lower than last year; says she has been eating lighter and walking the mall track. BP at goal. Shingrix series finished last month.\nExam: unremarkable; no edema.\nPlan: same medications. Wellness visit with labs in August."}
+          ]
+        },
+        {
+          "id": "2019-07-16a",
+          "kind": "imaging",
+          "start": "2019-07-16T09:00",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2019-07-16T09:00", "text": "Right diagnostic mammogram, left mastectomy. Comparison 2017 and 2018. Scattered fibroglandular tissue. No mass, suspicious calcification or distortion. Skin and nipple normal.", "conclusion": "BI-RADS 1, negative. Annual follow-up."}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result note", "author": "PCP", "date": "2019-07-17T08:05", "body": "Mammogram negative. Routine annual."}
+          ]
+        },
+        {
+          "id": "2019-08-05a",
+          "kind": "annual_physical",
+          "start": "2019-08-05T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "state": {"weight_kg": 54.0, "labs": {"Calcium": 10.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, initial", "performed": "2019-08-05T08:20"},
+            {"procedure": "Venipuncture", "performed": "2019-08-05T09:00"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-08-05T09:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium", "value": 10.9}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2019-08-05T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-08-05T09:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2019-08-05T08:20", "body": "Medicare annual wellness visit, 66.\nHealth risk assessment reviewed: independent, no falls, no hearing concerns, lives alone and manages well. Mood screen negative.\nShe mentions being thirsty a lot this summer and getting up at night to pass urine more than she used to; blames the heat and drinking more water. Some tiredness. No dysuria, no weight-loss concern raised by her (weight down a couple of kilos over the year, intentional per her).\nMeds: unchanged. Allergies: PCN, contrast.\nExam: thin, well. BP fine. Heart, lungs, abdomen normal.\nPlan: CMP, CBC, lipids. Thirst and nocturia - will look at sugar, calcium and kidney numbers today. Proxy form now signed, copy scanned. Flu shot and the second pneumonia vaccine in the fall."}
+          ]
+        },
+        {
+          "id": "2019-08-07a",
+          "kind": "portal_message",
+          "start": "2019-08-07T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Your labs", "author": "PCP", "date": "2019-08-07T12:10", "body": "Svetlana - your sugar and kidney tests are normal, so diabetes isn't the reason for the thirst. Your calcium came back high at 10.9. It has been at the upper edge for a few years. I'd like to repeat it next week along with a parathyroid hormone level and a phosphorus. It's a quick lab-only visit, no fasting needed. Keep drinking water in the meantime."},
+            {"type": "Patient Message", "title": "RE: Your labs", "author": "patient", "date": "2019-08-07T18:44", "body": "Booked for Monday morning. Is this anything to do with the cancer?"},
+            {"type": "Patient Message", "title": "RE: Your labs", "author": "PCP", "date": "2019-08-08T07:30", "body": "The most common reason for a mildly high calcium in someone your age is an overactive parathyroid gland, and that's what I'm checking first. I'll let you know as soon as I have the numbers."}
+          ]
+        },
+        {
+          "id": "2019-08-12a",
+          "kind": "lab_only",
+          "start": "2019-08-12T08:10",
+          "state": {"labs": {"Calcium": 11.0}},
+          "procedures": [{"procedure": "Venipuncture", "performed": "2019-08-12T08:10"}],
+          "labs": [
+            {"panel": null, "collected": "2019-08-12T08:10", "results": [{"test": "Calcium", "loinc": "17861-6", "unit": "mg/dL", "value": 11.0}, {"test": "Parathyroid Hormone, Intact", "value": 96}, {"test": "Phosphorus", "value": 3.1}]}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Lab draw", "author": "MA", "date": "2019-08-12T08:10", "body": "Venipuncture right antecubital, one attempt. Calcium, intact PTH, phosphorus sent."}
+          ]
+        },
+        {
+          "id": "2019-08-14a",
+          "kind": "telephone",
+          "start": "2019-08-14T17:05",
+          "conditions": [
+            {"label": "Hyperparathyroidism, primary", "action": "diagnosed", "onset": "2019-08-12"}
+          ],
+          "orders": [
+            {"id": "endo-2019", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "primary hyperparathyroidism, calcium 11.0, PTH 96, polyuria"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Results call", "author": "PCP", "date": "2019-08-14T17:05", "body": "Called pt with Monday's results: calcium 11.0 with an intact PTH of 96 - PTH should be low when calcium is high, so this is primary hyperparathyroidism. Phosphorus normal. Explained the gland, that it often runs in the background for years, and that her stone history and osteoporosis make it worth a specialist's opinion. The thirst and night urination may well be from the calcium. Referral to endocrinology placed. She asked whether her water pill matters - told her endocrinology will weigh in on the HCTZ. Questions answered."}
+          ]
+        },
+        {
+          "id": "2019-09-24a",
+          "kind": "nurse_visit",
+          "start": "2019-09-24T11:00",
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2019-09-24T11:05"},
+            {"procedure": "Immunization administration", "performed": "2019-09-24T11:06"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2019-09-24T11:05"},
+            {"vaccine": "Pneumococcal polysaccharide PPSV23", "date": "2019-09-24T11:06"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2019-09-24T11:00", "body": "High-dose flu (left arm) and PPSV23 (right arm), a year after her PCV13. Feeling okay, no fever. Endocrinology appointment is next week, she says. Observed 15 min."}
+          ]
+        },
+        {
+          "id": "2019-10-10a",
+          "kind": "outside_records",
+          "start": "2019-10-10T09:30",
+          "vitals": {"bp": [138, 82], "hr": 80},
+          "labs": [
+            {"panel": null, "collected": "2019-10-02T10:30", "results": [
+              {"test": "Sodium", "loinc": "2951-2", "unit": "mmol/L", "value": 148},
+              {"test": "Calcium", "loinc": "17861-6", "unit": "mg/dL", "value": 11.4},
+              {"test": "Osmolality of Serum or Plasma", "loinc": "2692-2", "unit": "mOsm/kg", "value": 305},
+              {"test": "Osmolality of Urine", "loinc": "2695-5", "unit": "mOsm/kg", "value": 120}
+            ]}
+          ],
+          "orders": [{"id": "endo-2019", "action": "done", "date": "2019-10-10T09:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology consultation", "author": "endocrinology", "date": "2019-10-10T09:30", "body": "OUTSIDE ENDOCRINOLOGY GROUP\nConsultation, seen 10/02/2019. Referring: primary care.\n\nReason: hypercalcemia with elevated PTH; polyuria.\n\nHistory: 66-year-old woman with recently found primary hyperparathyroidism. For several months she has been drinking water through the whole day and getting up repeatedly overnight to void. She is tired and her muscles feel mildly weak. Background of hypertension, osteoarthritis, osteoporosis, a remote calcium oxalate stone, and left breast cancer in 2014 on letrozole without known recurrence.\n\nMedications: lisinopril 20 mg, hydrochlorothiazide 25 mg, atorvastatin 20 mg, letrozole 2.5 mg, acetaminophen as needed.\nAllergies: penicillin (anaphylaxis), iodinated contrast (urticaria).\nFamily: father with gout and recurrent kidney stones; sister with severe osteoporosis; mother breast cancer.\n\nExam: BP 138/82, pulse 80. Thin, comfortable. Neck without palpable mass. Neurologic examination normal.\n\nData: sodium 148, calcium 11.4, serum osmolality 305, urine osmolality 120 - dilute urine despite a high-normal serum osmolality. A supervised water deprivation test in our unit produced no meaningful rise in urine osmolality, and desmopressin afterwards did not concentrate the urine either.\n\nImpression:\n1. Primary hyperparathyroidism, calcium 11.4.\n2. Polyuria and thirst from a renal concentrating defect related to the hypercalcemia (no response to desmopressin, so not a pituitary problem).\n\nRecommendations: drink to thirst and do not restrict fluids. Repeat calcium and PTH with her next labs. We will see her again in about four months.\n\nThank you for the referral."}
+          ]
+        },
+        {
+          "id": "2019-10-16a",
+          "kind": "portal_message",
+          "start": "2019-10-16T20:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Endocrinology letter", "author": "patient", "date": "2019-10-16T20:15", "body": "The specialist said my kidneys can't hold onto water because of the calcium. That test was a long morning. They didn't say anything about stopping any pills. Should I keep everything the same?"},
+            {"type": "Patient Message", "title": "RE: Endocrinology letter", "author": "PCP", "date": "2019-10-17T08:20", "body": "Yes - keep your medicines as they are and drink whenever you're thirsty. I have the letter. They'll repeat the calcium and see you again in the new year."}
+          ]
+        },
+        {
+          "id": "2019-12-05a",
+          "kind": "telephone",
+          "start": "2019-12-05T08:35",
+          "orders": [
+            {"id": "rheum-2019", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "acute left knee swelling, possible crystal arthritis"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Knee pain", "author": "RN", "date": "2019-12-05T08:35", "body": "Pt calls: left knee swelled up yesterday, hot and very painful, can barely bend it. No fall or twist. No fever she knows of. Uses a cane today. Discussed with PCP: wants the joint tapped. PCP called the rheumatology group directly; they will see her tomorrow morning. Pt agreed, a neighbor will drive. ED precautions for fever, spreading redness or inability to bear weight."}
+          ]
+        },
+        {
+          "id": "2019-12-12a",
+          "kind": "portal_message",
+          "start": "2019-12-12T10:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Knee update", "author": "patient", "date": "2019-12-12T10:05", "body": "Wanted you to know the knee is so much better. They drew fluid out and put a steroid shot in. They called it pseudogout, from calcium crystals. Walking without the cane since Sunday."},
+            {"type": "Patient Message", "title": "RE: Knee update", "author": "PCP", "date": "2019-12-12T13:40", "body": "Very glad to hear it. I'll watch for their letter. Call us if it flares again."}
+          ]
+        },
+        {
+          "id": "2020-01-21a",
+          "kind": "outside_records",
+          "start": "2020-01-21T14:10",
+          "conditions": [
+            {"label": "Other chondrocalcinosis, left knee", "icd10": "M11.262", "action": "diagnosed", "onset": "2019-12-06", "note": "acute pseudogout in calcium pyrophosphate deposition disease"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2019-12-06T09:45", "results": [
+              {"test": "Calcium", "loinc": "17861-6", "unit": "mg/dL", "value": 11.8},
+              {"test": "Phosphorus", "value": 2.9},
+              {"test": "Creatinine", "loinc": "2160-0", "unit": "mg/dL", "value": 1.2},
+              {"test": "Erythrocyte Sedimentation Rate", "value": 30},
+              {"test": "Parathyroid Hormone, Intact", "text": "Elevated"},
+              {"test": "Crystals in synovial fluid", "loinc": "5805-7", "text": "Rhomboid, positively birefringent crystals (calcium pyrophosphate) present"}
+            ]}
+          ],
+          "reports": [
+            {"study": "Knee X-ray", "performed": "2019-12-06T09:20", "text": "LEFT KNEE, AP, lateral and sunrise views. Chondrocalcinosis of the articular cartilage. No fracture or dislocation. Joint effusion present. Bones otherwise unremarkable.", "conclusion": "Chondrocalcinosis."}
+          ],
+          "procedures": [
+            {"procedure": "Arthrocentesis or injection, major joint", "performed": "2019-12-06T10:10"}
+          ],
+          "orders": [{"id": "rheum-2019", "action": "done", "date": "2020-01-21T14:10"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology consultation", "author": "rheumatology", "date": "2020-01-21T14:10", "body": "Outside rheumatology practice - office visit 12/06/2019\n\nCC: two days of a hot, painful, swollen left knee.\n\nHPI: No injury. Under endocrine care for hyperparathyroidism. Has had polyuria and constipation for a few months. History of breast cancer (2014) on letrozole.\n\nMeds: letrozole 2.5 daily, lisinopril 20 daily, hydrochlorothiazide 25 daily, atorvastatin 20 daily, acetaminophen 650 q6h prn.\nAllergies: PCN - anaphylaxis; iodinated contrast - urticaria.\n\nExam: left knee warm and swollen with an effusion, tender along the joint line, flexion limited by pain. Other joints quiet.\n\nResults: calcium 11.8 (8.5-10.2), phosphorus 2.9, PTH elevated, creatinine 1.2, ESR 30. X-ray of the knee shows chondrocalcinosis.\nArthrocentesis: synovial fluid with rhomboid-shaped, positively birefringent crystals under polarized light.\n\nAssessment: acute pseudogout (CPPD crystal arthritis) of the left knee, in the setting of primary hyperparathyroidism.\n\nPlan: knee aspirated and injected with triamcinolone 40 mg. Rest and ice for 48 hours. Hyperparathyroidism is a known driver of CPPD - continue with endocrinology. Return as needed for flares."},
+            {"type": "Progress Notes", "title": "Outside letter reviewed", "author": "PCP", "date": "2020-01-22T07:40", "body": "Rheumatology letter from December reached us today. CPPD with pseudogout of the left knee confirmed by crystals; injected. Calcium 11.8 there, creatinine 1.2. Problem list updated. Will recheck BMP at her February visit."}
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "office_visit",
+          "start": "2020-02-11T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, calcium",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-02-11T13:20"},
+            {"procedure": "Venipuncture", "performed": "2020-02-11T13:50"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2020-02-11T13:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up visit", "author": "PCP", "date": "2020-02-11T13:20", "body": "S: Knee fully settled after the December injection. Still thirsty and up twice a night; constipated on and off for months, manages with prunes. Endocrinology follow-up is booked for the spring. Mood fine.\nO: Vitals as charted. Left knee without effusion, full motion. Abdomen soft.\nA/P:\n1. Primary hyperparathyroidism - BMP today; endocrinology to follow.\n2. CPPD/pseudogout L knee - resolved flare.\n3. HTN - controlled, no changes.\n4. Constipation - fluids, fiber; likely calcium-related.\nReturn in 4 months."}
+          ]
+        },
+        {
+          "id": "2020-04-14a",
+          "kind": "telephone",
+          "start": "2020-04-14T11:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Medication supply", "author": "MA", "date": "2020-04-14T11:30", "body": "Pt staying home during the pandemic and asked to switch her maintenance meds to mail order. New 90-day prescriptions sent to the mail-order pharmacy for lisinopril, HCTZ and atorvastatin. Letrozole comes from oncology. June visit can be by video - she has a tablet and her sister helped her set it up."}
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-09T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-06-09T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video visit", "author": "PCP", "date": "2020-06-09T10:00", "body": "Video, she is at her kitchen table; consent given. Home cuff readings mostly 120s/70s. Staying in, walking her street daily. Knees okay. Thirst unchanged. No new symptoms.\nAppears well on video, speaking comfortably.\nPlan: no changes. Mammogram is scheduled for July. Labs at the wellness visit in the fall."}
+          ]
+        },
+        {
+          "id": "2020-07-21a",
+          "kind": "imaging",
+          "start": "2020-07-21T11:10",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2020-07-21T11:10", "text": "Right breast mammogram, post left mastectomy. Compared with 2018 and 2019. Scattered fibroglandular tissue, stable. No new mass or suspicious calcifications. Axilla unremarkable.", "conclusion": "BI-RADS 1, negative. One-year follow-up."}
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "annual_physical",
+          "start": "2020-09-29T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2020-09-29T09:00"},
+            {"procedure": "Venipuncture", "performed": "2020-09-29T09:40"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-09-29T09:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2020-09-29T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2020-09-29T09:00", "body": "In person, masked. AWV reviewed: independent, no falls, mood screen negative. Hearing fine. Lives alone; sister checks in by phone daily.\nCurrent issues: hyperparathyroidism followed by endocrinology (calcium hovering around 11), thirst ongoing. No joint flares since December.\nExam: vitals as charted. Heart, lungs normal. Right breast without mass. Joints quiet.\nPlan: CMP and lipids. Flu shot in two weeks at a nurse visit (supply arriving). Advance directive on file."}
+          ]
+        },
+        {
+          "id": "2020-10-13a",
+          "kind": "nurse_visit",
+          "start": "2020-10-13T14:30",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-13T14:35"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2020-10-13T14:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu vaccine", "author": "MA", "date": "2020-10-13T14:30", "body": "Curbside high-dose flu shot, left deltoid. Pt mentioned her lower back has been bothering her at night the past few weeks; advised to book a visit with the PCP. Appointment made for November 16."}
+          ]
+        },
+        {
+          "id": "2020-11-16a",
+          "kind": "office_visit",
+          "start": "2020-11-16T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "low back pain",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2020-11-16T10:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Low back pain", "author": "PCP", "date": "2020-11-16T10:40", "body": "S: About six weeks of aching low back pain, central, worst at night and waking her; not better with acetaminophen or other over-the-counter pain relievers. No fall, lifting or twisting. No leg weakness, numbness, or bladder or bowel change beyond her usual constipation. No fever.\nPMH notable for left breast cancer 2014 on letrozole, osteoporosis, hyperparathyroidism.\nO: Vitals as charted. Tender to percussion over the lower lumbar spinous processes. Straight-leg raise negative. Strength, reflexes and sensation in the legs normal.\nA: Night-predominant back pain in a woman with prior breast cancer - needs evaluation for spread to bone before calling it mechanical; osteoporotic fracture is the other concern.\nP: Called her oncologist's office while she was here; they are moving her yearly visit up to early December and will order a bone scan beforehand. Acetaminophen as before. Return precautions for weakness, numbness, or bladder or bowel loss."}
+          ]
+        },
+        {
+          "id": "2020-12-22a",
+          "kind": "outside_records",
+          "start": "2020-12-22T09:15",
+          "labs": [
+            {"panel": null, "collected": "2020-12-10T09:00", "results": [
+              {"test": "Calcium", "loinc": "17861-6", "unit": "mg/dL", "value": 11.2},
+              {"test": "Albumin", "loinc": "1751-7", "unit": "g/dL", "value": 4.0},
+              {"test": "Alkaline Phosphatase", "loinc": "6768-6", "unit": "U/L", "value": 120},
+              {"test": "Creatinine", "loinc": "2160-0", "unit": "mg/dL", "value": 0.9}
+            ]}
+          ],
+          "reports": [
+            {"study": "NM whole body bone scan", "loinc": "39818-0", "performed": "2020-12-08T11:00", "text": "Whole-body planar bone scintigraphy after IV Tc-99m MDP. Increased radiotracer uptake in multiple lumbar vertebral bodies. Remainder of the skeleton shows physiologic distribution. Kidneys and bladder visualized normally.", "conclusion": "Multiple foci of increased uptake in the lumbar vertebrae, compatible with osseous metastases in this patient with a history of breast cancer."}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology visit", "author": "oncology", "date": "2020-12-22T09:15", "body": "OUTSIDE ONCOLOGY GROUP - Clinic note, 12/10/2020\n\nMs. Foley is a 67-year-old woman treated in 2014 for left breast IDC (mastectomy, sentinel node biopsy, adjuvant chemotherapy) and on letrozole since. Her primary care physician called about two months of lower back pain that is worse at night and has not responded to over-the-counter analgesics. She recalls no injury. She also has hypercalcemia from primary hyperparathyroidism and had pseudogout of the knee last December.\n\nExam: tenderness over the lumbar vertebrae. Neurologic exam of the lower extremities normal.\n\nLabs: calcium 11.2, albumin 4.0, alkaline phosphatase 120, creatinine 0.9.\nBone scan 12/8: increased uptake in multiple lumbar vertebrae.\n\nAssessment: recurrent breast cancer, now metastatic to bone (stage IV).\n\nPlan:\n- Continue letrozole 2.5 mg daily.\n- Pain: morphine sulfate extended-release 30 mg every 12 hours and gabapentin 300 mg three times daily; acetaminophen as needed may continue.\n- Opioid agreement and bowel precautions reviewed.\n- Return in 6 weeks.\n\nAllergies: penicillin (anaphylaxis), iodinated contrast (urticaria).\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2020-12-28a",
+          "kind": "telephone",
+          "start": "2020-12-28T16:30",
+          "conditions": [
+            {"label": "History of breast cancer", "action": "resolved", "onset": "2014-02-01"},
+            {"label": "Malignant neoplasm of breast", "action": "diagnosed", "onset": "2020-12-10", "note": "left breast IDC 2014, recurrent and metastatic to bone (stage IV) December 2020"},
+            {"label": "Secondary malignant neoplasm of bone", "icd10": "C79.51", "action": "diagnosed", "onset": "2020-12-10", "note": "lumbar vertebrae on bone scan"},
+            {"label": "Long term (current) use of opiate analgesic", "action": "diagnosed", "onset": "2020-12-10"}
+          ],
+          "medications": [
+            {"drug_text": "morphine sulfate 30 MG Extended Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every 12 hours", "dose": {"value": 30, "unit": "mg"}, "frequency": "Q12H", "route": "Oral", "course": "chronic", "reason": "bone pain; prescribed by oncology"},
+            {"drug": "gabapentin 300 MG Oral Capsule", "action": "historical", "sig": "Take 1 capsule by mouth three times daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "bone pain; prescribed by oncology"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call after oncology results", "author": "PCP", "date": "2020-12-28T16:30", "body": "Called Svetlana after reading the oncology note. She already knew from her oncologist that the cancer has come back in the spine bones. She sounded steady; her sister is staying with her over the holidays. Morphine ER and gabapentin started by oncology are helping her sleep - pain down to a 'dull hum'. Talked about constipation with morphine; she will use prunes and fluids and call if no movement in 3 days. Offered a visit any time. Lists updated: metastatic breast cancer to bone, morphine ER 30 q12h and gabapentin 300 TID (oncology). Visit in March."}
+          ]
+        }
+      ]
+    }
+  ]
+}

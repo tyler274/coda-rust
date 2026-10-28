@@ -1,0 +1,191 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002631",
+      "events": [
+        {
+          "id": "2024-02-18a",
+          "kind": "ed_visit",
+          "start": "2024-02-18T11:20",
+          "end": "2024-02-18T15:05",
+          "service": "Emergency Medicine",
+          "reason": "clear drainage from right nostril",
+          "conditions": [
+            {"label": "Cerebrospinal fluid rhinorrhea", "icd10": "G96.08", "action": "diagnosed", "onset": "2024-02-04", "note": "after minor collision in late January 2024"},
+            {"label": "Concussion, mild, January 2024 collision", "icd10": "S06.0XAA", "action": "history", "onset": "2024-01-28", "note": "no hospitalization"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-02-18T12:05", "results": [{"test": "Glucose", "value": 98}]},
+            {"panel": null, "collected": "2024-02-18T12:10", "results": [
+              {"test": "Glucose, nasal fluid", "loinc": "2344-0", "value": 60, "unit": "mg/dL"},
+              {"test": "Protein, nasal fluid", "loinc": "2881-1", "text": "Elevated"}
+            ]},
+            {"panel": null, "collected": "2024-02-18T12:10", "resulted": "2024-02-21T14:30", "results": [
+              {"test": "Beta-2 transferrin, nasal fluid", "loinc": "13876-8", "text": "Positive"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Emergency department visit, moderate MDM", "performed": "2024-02-18T11:20"}],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Record", "author": "emergency medicine", "date": "2024-02-22T09:40",
+             "body": "Regional emergency department\nDate of service: 02/18/2024\n\nCC: watery drip from the right side of the nose x 2 weeks.\n\nHPI: 35M, history of a 2019 collision with rib fractures, lung contusion and mild TBI. About three weeks ago he was in a low-speed car accident and had a mild concussion; he did not go to a hospital for it. For the last two weeks he has had a thin, clear drip from the right nostril only. It runs more when he leans forward to tie his boots and when he bears down on the toilet. No cold symptoms, no seasonal allergies, no stuffiness.\n\nPMH: as above, plus not immune to hepatitis A (travel clinic 12/2023). PSH: none. Meds: multivitamin. Allergies: NKDA. FHx: father with hypertension; no autoimmune or bleeding disorders. SHx: never smoker, 2-3 drinks/wk, wildlife photographer.\n\nExam: afebrile, vitals normal. Nonfocal neurologic exam. Anterior rhinoscopy: clear fluid from the right naris, mucosa without redness or swelling, no polyps or mass. Head and neck otherwise normal.\n\nLabs: serum glucose 98 mg/dL. Nasal fluid glucose 60 mg/dL, nasal fluid protein elevated. Nasal fluid sent for beta-2 transferrin.\n\nMDM: unilateral clear rhinorrhea after head trauma with glucose-containing fluid, concerning for CSF leak. No fever or meningeal signs. Discussed with patient.\n\nDisposition: home. Head of bed up, no nose blowing, avoid straining and heavy lifting, return for fever, stiff neck, worsening headache or confusion. Follow up with PCP in 2-3 days and ENT.\n\nAddendum 02/21/2024: beta-2 transferrin POSITIVE. Patient called with result. Diagnosis: CSF rhinorrhea.\n\nAllergies: NKDA. Copy to primary care."},
+            {"type": "Outside Records", "title": "ED record filed", "author": "MA", "date": "2024-02-22T09:45",
+             "body": "ED record with 2/21 addendum received by fax and scanned. Routed to PCP; patient already seen 2/21."}
+          ]
+        },
+        {
+          "id": "2024-02-19a",
+          "kind": "portal_message",
+          "start": "2024-02-19T07:12",
+          "documents": [
+            {"type": "Patient Message", "title": "ER yesterday", "author": "patient", "date": "2024-02-19T07:12",
+             "body": "Morning. I ended up in the ER yesterday because my right nostril has been dripping clear water for two weeks, ever since a fender bender at the end of January. They think it might be spinal fluid and sent a test. They said see you this week. Is that a big deal? I bumped my head in the crash but didn't think much of it."},
+            {"type": "Patient Message", "title": "RE: ER yesterday", "author": "PCP", "date": "2024-02-19T08:03",
+             "body": "Thanks for letting me know. Usually these settle on their own, but we take them seriously. Front desk will put you in Wednesday morning. Until then keep doing what the ER said: no blowing your nose, no heavy lifting or straining. If you get a fever, a stiff neck or a bad headache, go straight back to the ER."}
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "office_visit",
+          "start": "2024-02-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, clear nasal drainage",
+          "conditions": [
+            {"label": "Concussion, mild, January 2024 collision", "icd10": "S06.0XAA", "action": "resolved", "note": "symptoms brief, none now"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "medications": [
+            {"drug_text": "docusate sodium 100 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily to keep stools soft", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "avoid straining with CSF leak"}
+          ],
+          "orders": [
+            {"id": "ent-referral", "action": "placed", "order": "Otolaryngology referral", "category": "referral", "to": "Otolaryngology", "reason": "CSF rhinorrhea after head trauma"}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-02-21T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "ED Follow-up", "author": "PCP", "date": "2024-02-21T09:40",
+             "body": "S: Seen in the ER Sunday for two weeks of clear right-sided nasal drip after a minor car accident around 1/28 in which he hit his head (mild concussion, did not seek care at the time). Drip continues, worse leaning forward. No fever, no headache, no neck stiffness, no vision change. Concussion symptoms were brief and are gone. ER called him this morning: beta-2 transferrin came back positive.\n\nMeds: multivitamin. NKDA.\n\nO: vitals as charted, afebrile. Alert, conversant. Clear thin fluid at right naris, more with head forward. Neck supple. CN II-XII intact, strength symmetric, gait normal. Lungs clear, heart regular.\n\nA/P: Traumatic CSF rhinorrhea, confirmed by beta-2 transferrin.\n- Most of these close with conservative care; ENT referral placed (urgent) for skull base evaluation and imaging.\n- Head of bed raised, no nose blowing, sneeze with mouth open, nothing heavy, no straining.\n- Docusate 100 mg twice daily so he doesn't strain.\n- Meningitis warning signs reviewed again: fever, stiff neck, worsening headache, confusion -> ER.\n- He had planned to leave on a long trip this spring; advised holding off until ENT clears him."}
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "telephone",
+          "start": "2024-02-23T14:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral scheduled", "author": "front desk", "date": "2024-02-23T14:20",
+             "body": "ENT office confirmed receipt of referral. Pt scheduled with them 3/4 at 10:15. Pt notified by phone, verbalized understanding."}
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "specialist_visit",
+          "start": "2024-03-04T10:15",
+          "service": "Otolaryngology",
+          "reason": "CSF rhinorrhea",
+          "measure": ["bp", "hr"],
+          "reports": [
+            {"study": "CT sinuses without contrast, thin section", "loinc": "36529-6", "performed": "2024-03-04T11:30",
+             "text": "Technique: thin-section axial CT of the paranasal sinuses and anterior skull base without contrast, with coronal and sagittal reformats.\n\nFindings: No fracture of the anterior skull base, cribriform plate, ethmoid roof, sphenoid sinus walls or frontal sinus. No pneumocephalus. No discrete bony defect is identified to localize a leak. Paranasal sinuses are clear and well aerated. Nasal septum midline. Osteomeatal units patent. Visualized orbits and intracranial contents unremarkable.",
+             "conclusion": "No skull base fracture or pneumocephalus. Leak site not localized."}
+          ],
+          "orders": [{"id": "ent-referral", "action": "done", "date": "2024-03-04T10:15"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Otolaryngology Consultation", "author": "otolaryngology", "date": "2024-03-07T15:10",
+             "body": "Outside otolaryngology group\nDate of visit: 03/04/2024\n\nReason: CSF rhinorrhea after head trauma, referred by PCP.\n\nHistory: 35M with clear right-sided rhinorrhea since early February, starting about a week after a minor car accident with mild concussion. Positive beta-2 transferrin from the ED on 2/18. No fever, meningismus or visual symptoms. Drainage is somewhat less over the past week. Using docusate, sleeping with head elevated.\nPMH: remote multitrauma 2019 (healed rib fractures, resolved pulmonary contusion, mild TBI). Meds: multivitamin, docusate. Allergies: NKDA.\n\nExam: afebrile. Nasal endoscopy: small amount of clear fluid on the right with head-down positioning, mucosa healthy, no mass. Neuro grossly intact.\n\nImaging: thin-section sinus CT today shows no skull base fracture or pneumocephalus; site not localized.\n\nImpression: post-traumatic CSF rhinorrhea, low volume and improving.\n\nPlan: continue conservative management (head elevation, stool softener, no nose blowing or heavy lifting). Most post-traumatic leaks close within weeks. Recheck in four weeks; if still leaking, further localization would be considered. Travel and flying deferred until then.\n\nAllergies: NKDA. Copy to primary care."}
+          ]
+        },
+        {
+          "id": "2024-04-01a",
+          "kind": "specialist_visit",
+          "start": "2024-04-01T09:30",
+          "service": "Otolaryngology",
+          "reason": "CSF rhinorrhea follow-up",
+          "measure": ["bp", "hr"],
+          "documents": [
+            {"type": "Consult Note", "title": "Otolaryngology Follow-up", "author": "otolaryngology", "date": "2024-07-30T11:00",
+             "body": "Outside otolaryngology group\nDate of visit: 04/01/2024\n\nFollow-up of post-traumatic CSF rhinorrhea. Drainage stopped completely around the middle of March and has not returned, including with bending and exertion. No fever or headache.\n\nExam: nasal endoscopy shows no fluid at rest or with head-down positioning. Mucosa normal.\n\nImpression: post-traumatic CSF leak, resolved with conservative care.\n\nPlan: may resume normal activity gradually. Cleared to fly and travel. Stop stool softener. Return for any recurrence of clear drainage, and seek urgent care for fever, stiff neck or severe headache.\n\nAllergies: NKDA. Copy to primary care."},
+            {"type": "Outside Records", "title": "Late letter filed", "author": "MA", "date": "2024-07-30T11:05",
+             "body": "ENT follow-up letter from 4/1/24 received today after records request. Scanned and routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "portal_message",
+          "start": "2024-04-02T18:30",
+          "medications": [
+            {"drug_text": "docusate sodium 100 MG Oral Capsule", "action": "stop", "reason": "leak resolved, ENT advised stopping"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Cleared!", "author": "patient", "date": "2024-04-02T18:30",
+             "body": "Saw ENT yesterday. The drip stopped mid March and they said it's healed, I'm cleared to fly. They told me to stop the stool softener. We leave next week for the trip, back around early July. Do I need anything else before I go?"},
+            {"type": "Patient Message", "title": "RE: Cleared!", "author": "PCP", "date": "2024-04-03T07:55",
+             "body": "Great news. Nothing else from us before you leave; the travel clinic covered you. Your second hepatitis A shot is due this summer, so we'll give it at your physical when you're back. If the clear drip ever comes back, call ENT right away. Safe travels."}
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "telephone",
+          "start": "2024-06-27T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2024-06-27T10:05",
+             "body": "No ENT letter from the 4/1 follow-up in chart. Called ENT office, requested visit note be faxed. They will send."}
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "annual_physical",
+          "start": "2024-08-13T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {"label": "Susceptibility to hepatitis A virus infection", "icd10": "Z28.39", "action": "resolved", "note": "hepatitis A series completed today"},
+            {"label": "Cerebrospinal fluid rhinorrhea", "icd10": "G96.08", "action": "resolved", "note": "no drainage since mid-March 2024, ENT confirmed"}
+          ],
+          "state": {"weight_kg": 78.6},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "immunizations": [{"vaccine": "Hepatitis A, adult", "date": "2024-08-13T08:50"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-13T08:55", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-13T08:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-13T08:55", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-13T08:15"},
+            {"procedure": "Immunization administration", "performed": "2024-08-13T08:50"},
+            {"procedure": "Venipuncture", "performed": "2024-08-13T08:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-08-13T09:00",
+             "body": "Yearly visit. Back from three months overseas since early July. Trip went well, no illnesses while away or since return. Lost a little weight walking all day with camera gear.\n\nCSF leak: no nasal drainage since mid-March. ENT follow-up letter (4/1) now in chart, confirms resolution. No headaches.\n\nMeds: multivitamin only. Off docusate since April. NKDA.\n\nExam: vitals as charted. Well. Nares clear, no drainage with head forward. Neck supple. Lungs clear. Heart RRR. Abdomen soft, nontender. Neuro nonfocal. Skin tanned, no worrisome lesions.\n\nPHQ-2 0.\n\nA/P:\n1. Preventive care: CBC, CMP, lipids. Hep A dose #2 given today, series complete; removing hep A susceptibility from the list.\n2. Post-traumatic CSF rhinorrhea, resolved. Marking resolved.\n3. Flu and COVID this fall.\nRTC one year."}
+          ]
+        },
+        {
+          "id": "2024-08-15a",
+          "kind": "portal_message",
+          "start": "2024-08-15T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs", "author": "PCP", "date": "2024-08-15T16:40",
+             "body": "Hi Nathan, your blood counts, chemistry panel and cholesterol are all normal. See you for shots in the fall."}
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-22T17:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-22T17:07"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-22T17:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization visit", "author": "RN", "date": "2024-10-22T17:20",
+             "body": "Flu and 2024-25 COVID given, left and right deltoid. Feels well, no fever. Observed 15 min without incident."}
+          ]
+        }
+      ]
+    }
+  ]
+}

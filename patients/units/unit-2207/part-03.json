@@ -1,0 +1,1106 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002207",
+   "events": [
+    {
+     "id": "2022-02-10a",
+     "kind": "office_visit",
+     "start": "2022-02-10T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and hypertension follow-up",
+     "state": {
+      "weight_kg": 87.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-02-10T10:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-02-10T10:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-02-10T10:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-02-10T10:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2022-02-10T10:55",
+       "body": "Rebooked after the December miss. Quiet winter. No palpitation runs. Weight down a pound or two since fall - he's been skipping dessert. Sugars fine.\nExam: irregular, rate 70s, click; lungs clear; no edema; feet normal.\nA1c, BMP. No changes. Spring visit in about 3-4 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-03-15a",
+     "kind": "pharmacy",
+     "start": "2022-03-15T10:30",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Metformin refill",
+       "author": "MA",
+       "date": "2022-03-15T10:30",
+       "body": "Mail order requesting metformin 1000 mg BID, 90 days. Last A1c 2/10. Approved and sent."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-29a",
+     "kind": "hospital_admission",
+     "start": "2022-04-29T18:20",
+     "end": "2022-05-06T12:00",
+     "service": "Internal Medicine",
+     "reason": "Hemoptysis, weight loss, upper lobe infiltrates",
+     "state": {
+      "weight_kg": 81.0
+     },
+     "conditions": [
+      {
+       "label": "Tuberculosis of lung",
+       "icd10": "A15.0",
+       "action": "diagnosed",
+       "onset": "2022-04-29"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-04-30T06:30",
+       "results": [
+        {
+         "test": "Acid-fast stain, sputum",
+         "loinc": "11477-7",
+         "text": "Acid-fast bacilli seen"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-04-30T06:30",
+       "results": [
+        {
+         "test": "M. tuberculosis complex DNA, sputum",
+         "loinc": "85362-2",
+         "text": "Detected"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "hospital medicine",
+       "date": "2022-06-14T14:10",
+       "body": "Regional hospital, inpatient medicine. Admitted 04/29/2022, discharged 05/06/2022. Copy to primary care on request.\n\nReason for admission: coughing up blood, unintended weight loss, upper lobe infiltrates on chest imaging.\nHistory: 69-year-old man with a mechanical aortic valve on warfarin, atrial fibrillation, coronary disease with prior inferior MI, insulin-treated diabetes and hypertension. Weight 81 kg on admission, down from 87 kg at a February office visit.\nAllergies: no known drug allergies.\nHospital course: placed in airborne isolation. Sputum acid-fast smear positive; nucleic acid amplification positive for M. tuberculosis complex. Diagnosis pulmonary tuberculosis, made 05/03. Four-drug therapy started 05/03: rifampin 600 mg, isoniazid 300 mg, pyrazinamide 2000 mg and ethambutol 1600 mg daily. Health department notified; care transferred to the regional TB clinic for directly observed therapy.\nAnticoagulation: warfarin continued; rifampin is expected to lower its effect substantially. Anticoagulation clinic notified to increase INR checks.\nDischarge medications: the TB regimen above; warfarin per anticoagulation clinic; metoprolol succinate 100 mg daily; lisinopril 20 mg daily; amlodipine 5 mg daily; metformin 1000 mg twice daily; insulin glargine 24 units nightly; atorvastatin 40 mg daily.\nFollow-up: TB clinic, anticoagulation clinic, primary care."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-09a",
+     "kind": "telephone",
+     "start": "2022-05-09T11:45",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Patient reports hospitalization",
+       "author": "RN",
+       "date": "2022-05-09T11:45",
+       "body": "Pt called to let us know he was admitted 4/29-5/6 at the regional hospital - coughing up blood, lost weight over the winter, and was told he has tuberculosis. Started on four TB pills on 5/3; the TB clinic watches him take them each day. Anticoag clinic aware. Feels tired but better, no blood in a week.\nNo discharge paperwork came to us. Request sent to the hospital. Offered a visit; he'd rather wait until he's out of isolation precautions per the TB clinic. Routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "PCP note on call",
+       "author": "PCP",
+       "date": "2022-05-09T16:20",
+       "body": "Reviewed. TB clinic is running the regimen. Key issue for us is the rifampin-warfarin interaction with his mechanical valve - the anticoag clinic knows. Visit once cleared by the TB clinic."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-24a",
+     "kind": "ed_visit",
+     "start": "2022-05-24T09:10",
+     "end": "2022-05-24T14:00",
+     "service": "Emergency Medicine",
+     "reason": "Bleeding on warfarin",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c"
+     ],
+     "conditions": [
+      {
+       "label": "Hemorrhagic disorder due to extrinsic circulating anticoagulants",
+       "icd10": "D68.32",
+       "action": "diagnosed",
+       "onset": "2022-05-24",
+       "note": "blood-streaked sputum on warfarin during rifampin therapy"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2022-05-24T09:30",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 1.7
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2022-05-24T09:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department note",
+       "author": "emergency medicine",
+       "date": "2022-05-27T08:30",
+       "body": "Regional hospital emergency department, visit 05/24/2022.\n\nChief concern: bleeding on warfarin.\nHPI: 70-year-old man with a mechanical aortic valve on long-term warfarin and atrial fibrillation, discharged three weeks ago with newly diagnosed pulmonary tuberculosis, now on rifampin, isoniazid, pyrazinamide and ethambutol. Since last evening a small amount of blood streaking in his sputum. No other bleeding - no black stools, no nosebleeds, no bruising. No dietary change. His warfarin was increased last week after an INR of 1.2.\nROS: no chest pain, no shortness of breath, no melena.\nAllergies: NKDA.\nVitals within normal limits. Exam: unremarkable; lungs without distress, mechanical valve click present.\nINR today 1.7 - still below his goal.\nAssessment: minor anticoagulation-related bleeding in a patient whose warfarin effect is being lowered by rifampin.\nPlan: continue warfarin 10 mg daily; anticoagulation clinic to recheck INR in 3 days; TB clinic informed. Return for larger-volume blood, dizziness or black stools."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-02a",
+     "kind": "office_visit",
+     "start": "2022-06-02T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after hospitalization and ED visit",
+     "state": {
+      "weight_kg": 82.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug_text": "warfarin sodium 7.5 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dose increased by anticoagulation clinic during rifampin"
+      },
+      {
+       "drug_text": "warfarin sodium 10 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily or as directed by anticoagulation clinic",
+       "dose": {
+        "value": 10,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Mechanical aortic valve and atrial fibrillation"
+      },
+      {
+       "drug_text": "rifampin 300 MG Oral Capsule",
+       "action": "historical",
+       "sig": "Take 2 capsules (600 mg) by mouth daily, directly observed",
+       "dose": {
+        "value": 600,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pulmonary tuberculosis"
+      },
+      {
+       "drug_text": "isoniazid 300 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily, directly observed",
+       "dose": {
+        "value": 300,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pulmonary tuberculosis"
+      },
+      {
+       "drug_text": "pyrazinamide 500 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 4 tablets (2000 mg) by mouth daily, directly observed",
+       "dose": {
+        "value": 2000,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pulmonary tuberculosis"
+      },
+      {
+       "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 4 tablets (1600 mg) by mouth daily, directly observed",
+       "dose": {
+        "value": 1600,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Pulmonary tuberculosis"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-06-02T11:30",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-06-02T11:30",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, high MDM",
+       "performed": "2022-06-02T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-06-02T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit - TB, warfarin, ED follow-up",
+       "author": "PCP",
+       "date": "2022-06-02T11:50",
+       "body": "First visit since his TB diagnosis. TB clinic cleared him to be seen; he's had four weeks of observed therapy. Hospital discharge summary still not received - working from his account, his pill bottles and the ED note (received 5/27).\n\nTimeline per him and the ED note: admitted 4/29-5/6 with hemoptysis and weight loss, TB diagnosed 5/3, four drugs started. Anticoag clinic found INR 1.2 on 5/17 and raised warfarin to 10 mg. On 5/24 he had some blood-streaked sputum and went to the ED: INR 1.7, warfarin left at 10 mg, home.\nSince then: no more blood. Cough much less. Appetite returning. No black stools, no bruising.\n\nExam: weight 82 kg (87 in Feb). Afebrile. Irregular rhythm, crisp click. Lungs: no distress, no crackles. No edema. No jaundice.\n\nA/P\n1. Pulmonary TB on RIPE - TB clinic directs. Added to list; drugs entered as outside-managed. CMP for liver tests today (TB clinic checks as well).\n2. Anticoagulation-related bleeding (ED label), minor, resolved. Added to problem list.\n3. Mechanical AVR/AF on warfarin with rifampin interaction - warfarin now 10 mg; dosing stays with anticoag clinic. Will update the list as they change it.\n4. Diabetes - weight loss; watch for lows on glargine 24. No lows so far.\nVisit again mid-August."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-18a",
+     "kind": "office_visit",
+     "start": "2022-08-18T09:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "state": {
+      "weight_kg": 83.0,
+      "labs": {
+       "Hemoglobin A1c": 7.1
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug_text": "pyrazinamide 500 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Intensive phase completed per TB clinic"
+      },
+      {
+       "drug_text": "ethambutol hydrochloride 400 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Intensive phase completed per TB clinic"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-08-18T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.1
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-08-18T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-08-18T09:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-08-18T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2022-08-18T10:15",
+       "body": "Brought his bottles. Only rifampin and isoniazid now - the TB clinic stopped pyrazinamide and ethambutol on 7/5 at the end of the two-month phase; cultures negative by then and the organism is fully sensitive, per the clinic nurse. Nobody told us; our list had all four. Corrected today.\nDischarge summary from the May admission still outstanding - third request sent.\nFeels well. Weight coming back. No bleeding. INRs have been 'all over the place' but in range the last two checks on 10 mg, per him.\nExam: irregular, click, lungs clear, no edema.\nA1c today, likely better with the weight loss. Continue. RTC December after he finishes TB treatment."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2022-08-19T12:15",
+       "body": "A1c 7.1 - the lowest since you joined, likely the weight change this spring. No lows reported, so glargine stays at 24 units for now, but call if any morning sugar is under 80."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-06a",
+     "kind": "nurse_visit",
+     "start": "2022-10-06T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-06T14:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-06T14:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-06T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse visit - vaccines",
+       "author": "RN",
+       "date": "2022-10-06T14:20",
+       "body": "Flu high dose L deltoid, bivalent COVID R deltoid. Held pressure 2 minutes each, no oozing. He asked about the lung CT - PCP said to skip this year while the TB clinic is imaging him."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-17a",
+     "kind": "outside_records",
+     "start": "2022-11-17T10:15",
+     "reports": [
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2022-11-03T09:00",
+       "text": "Comparison: admission imaging April 2022. PA and lateral views. Upper lobe opacities have largely cleared, with residual linear scarring. No new consolidation. No effusion. No cavity. Sternotomy wires and prosthetic aortic valve. Heart size normal.",
+       "conclusion": "Improved upper lobe opacities with residual scarring, consistent with treated tuberculosis."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "TB clinic treatment completion letter",
+       "author": "infectious disease",
+       "date": "2022-11-17T10:15",
+       "body": "Regional tuberculosis clinic - letter to primary care.\nRe: William Howland, DOB 05/02/1952. Allergies: none known.\n\nMr. Howland has completed six months of directly observed therapy for drug-susceptible pulmonary tuberculosis. Intensive phase (rifampin, isoniazid, pyrazinamide, ethambutol) 05/03-07/05/2022; sputum cultures converted to negative within the first two months. Continuation phase with rifampin and isoniazid through 11/03/2022, when both were stopped. Liver tests stayed normal throughout.\nEnd-of-treatment chest film 11/03: improved upper lobe opacities with residual scarring.\nWe have let his anticoagulation clinic know rifampin has stopped; warfarin needs will fall over the next several weeks.\nNo further TB clinic follow-up needed. Please call if new cough, hemoptysis or weight loss."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-07a",
+     "kind": "office_visit",
+     "start": "2022-12-07T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up after TB treatment",
+     "state": {
+      "weight_kg": 84.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Tuberculosis of lung",
+       "icd10": "A15.0",
+       "action": "resolved"
+      },
+      {
+       "label": "Personal history of tuberculosis",
+       "action": "diagnosed",
+       "onset": "2022-05-03",
+       "note": "pulmonary, drug-susceptible, treated May-Nov 2022"
+      },
+      {
+       "label": "Hemorrhagic disorder due to extrinsic circulating anticoagulants",
+       "icd10": "D68.32",
+       "action": "resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "rifampin 300 MG Oral Capsule",
+       "action": "stop",
+       "reason": "TB treatment completed 11/03/2022"
+      },
+      {
+       "drug_text": "isoniazid 300 MG Oral Tablet",
+       "action": "stop",
+       "reason": "TB treatment completed 11/03/2022"
+      },
+      {
+       "drug_text": "warfarin sodium 10 MG Oral Tablet",
+       "action": "stop",
+       "reason": "Dose lowered after rifampin stopped"
+      },
+      {
+       "drug_text": "warfarin sodium 7.5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily or as directed by anticoagulation clinic",
+       "dose": {
+        "value": 7.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Mechanical aortic valve and atrial fibrillation"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-12-07T14:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-12-07T14:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-12-07T14:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-07T14:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-07T14:05",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-12-07T13:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-12-07T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2022-12-07T14:20",
+       "body": "TB clinic completion letter (rec'd 11/17) reviewed: six months done 11/3, cultures negative early, end-of-treatment film improved with scarring. TB moved to history; ED bleeding label resolved - nothing since May.\nAnticoag clinic has walked warfarin back down; he is on 7.5 mg daily again as of this week. List updated.\nThe May discharge summary finally arrived in June - consistent with his account.\nFeels like himself. Weight 84. Sugars running a little higher now that he's eating normally.\nExam: irregular, click, lungs clear, no edema. Feet normal.\nAnnual labs today (wellness visit was skipped this fall). Lung CT back on the schedule next fall. RTC March."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2022-12-09T09:40",
+       "body": "Labs: A1c 7.2, liver tests normal after the TB drugs, kidney function normal, blood count normal, cholesterol about the same."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-10a",
+     "kind": "outside_records",
+     "start": "2023-01-10T16:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Anticoagulation clinic INR summary",
+       "author": "cardiology",
+       "date": "2023-01-10T16:00",
+       "body": "Anticoagulation clinic update, outside cardiology group. Indication: mechanical AVR, atrial fibrillation; goal INR 2.5-3.5. NKDA.\nRifampin stopped 11/03/2022; warfarin stepped down from 10 mg to 7.5 mg daily over November.\nINRs: 12/06 2.6, 12/20 3.0, 01/03 2.8.\nStable on 7.5 mg daily. Returning to checks every 4 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-16a",
+     "kind": "office_visit",
+     "start": "2023-03-16T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and hypertension follow-up",
+     "state": {
+      "weight_kg": 86.0,
+      "labs": {
+       "Hemoglobin A1c": 7.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-03-16T10:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-16T10:25",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-03-16T10:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-03-16T10:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2023-03-16T10:35",
+       "body": "Back to his old weight. No cough. No palpitations of note. Sugars 130s-170s, higher than last year.\nExam: rhythm regular today, click crisp, lungs clear, no edema.\nA1c today. If over 7.5 will talk about adjusting glargine. RTC June."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-21a",
+     "kind": "office_visit",
+     "start": "2023-06-21T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-06-21T15:25",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.5
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-06-21T15:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-06-21T15:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2023-06-21T15:30",
+       "body": "March A1c 7.6. We talked about nudging glargine up; he'd rather work on evening snacking first. Says it's going OK.\nExam: irregular today, rate fine, click. Lungs clear.\nRepeat A1c today. Optometry in August. Wellness visit in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-09a",
+     "kind": "outside_records",
+     "start": "2023-08-09T11:20",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2023-08-09T11:20",
+       "body": "Optometry report. Dilated exam 08/02/2023. Diabetes, insulin. NKDA.\nAcuity 20/25 each eye with correction. Normal pressures. Lens changes mild. No diabetic retinopathy OU. No macular edema.\nOne-year recall."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-28a",
+     "kind": "annual_physical",
+     "start": "2023-09-28T09:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-28T09:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-28T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-28T09:45",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-28T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.7
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-28T09:45",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-09-28T09:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-09-28T09:52"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-09-28T09:10"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-09-28T09:50"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2023-09-28T09:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-09-28T10:10",
+       "body": "Medicare wellness, subsequent.\nNo falls. Independent. Recall 3/3. PHQ-2 0. Proxy on file.\nNo chest pain on exertion - raking, hauling mulch. Occasional flutter, short. Sugars middling.\nExam: vitals as charted; irregular rhythm, crisp click; lungs clear; no edema; feet normal, monofilament intact.\nPrevention: flu and updated COVID today. Lung screening resumes - CT ordered for October; told him old TB scarring will show. Colonoscopy due 2025.\nLabs drawn."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2023-09-29T16:30",
+       "body": "A1c 7.7. Kidney and liver tests, blood count and urine protein normal. LDL unchanged. Let's talk about the sugars again in December."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-19a",
+     "kind": "imaging",
+     "start": "2023-10-19T08:30",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2023-10-19T08:30",
+       "text": "Comparison: 10/28/2021. Low-dose non-contrast technique. Interval linear scarring in the upper lobes, consistent with history of treated tuberculosis. No pulmonary nodules. No consolidation, cavitation or effusion. Prosthetic aortic valve, sternotomy wires and coronary stent. No adenopathy.",
+       "conclusion": "Lung-RADS 2: benign-appearing upper lobe scarring from treated tuberculosis. No nodules. Annual screening."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "done",
+       "date": "2023-10-19T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 2023",
+       "author": "PCP",
+       "date": "2023-10-20T12:45",
+       "body": "Lung-RADS 2 - only the expected post-TB scarring, no nodules. Annual CT next fall. Portal message sent."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-15a",
+     "kind": "hospital_admission",
+     "start": "2023-11-15T07:20",
+     "end": "2023-11-18T11:30",
+     "service": "Cardiology",
+     "reason": "Chest pain, inferior ST elevation",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.8
+      }
+     },
+     "vitals": [
+      {
+       "time": "2023-11-15T07:25",
+       "bp": [
+        160,
+        90
+       ],
+       "hr": 102,
+       "rr": 22,
+       "spo2": 94
+      }
+     ],
+     "conditions": [
+      {
+       "label": "ST elevation (STEMI) myocardial infarction involving right coronary artery",
+       "icd10": "I21.11",
+       "action": "diagnosed",
+       "onset": "2023-11-15",
+       "note": "inferior STEMI, mid RCA stent"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-11-15T07:35",
+       "results": [
+        {
+         "test": "Troponin I",
+         "loinc": "10839-9",
+         "unit": "ng/mL",
+         "value": 0.5
+        }
+       ],
+       "resulted": "2023-11-15T08:20"
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-11-15T07:35",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.2
+        }
+       ],
+       "resulted": "2023-11-15T08:20"
+      },
+      {
+       "panel": null,
+       "collected": "2023-11-15T07:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.8
+        }
+       ],
+       "resulted": "2023-11-15T08:20"
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-11-15T07:35",
+       "results": [
+        {
+         "test": "Total Cholesterol",
+         "value": 185
+        }
+       ],
+       "resulted": "2023-11-15T08:20"
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2023-11-15T07:24",
+       "text": "Regular rhythm. ST-segment elevation in leads II, III and aVF. Old inferior Q waves.",
+       "conclusion": "Acute inferior ST-elevation myocardial infarction."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2023-11-15T07:20"
+      },
+      {
+       "procedure": "Coronary stent placement, single vessel",
+       "performed": "2023-11-15T08:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary - inferior STEMI",
+       "author": "cardiology",
+       "date": "2024-01-09T13:30",
+       "body": "Regional hospital, cardiology service. Admitted 11/15/2023 via the emergency department; discharged 11/18/2023. Sent to primary care on request.\n\nPresentation: 71-year-old man with prior myocardial infarction, mechanical aortic valve on warfarin, atrial fibrillation, diabetes and hypertension, with pressure-like substernal chest pain spreading to the left arm, breathlessness and sweating.\nED: BP 160/90, HR 102, RR 22, SpO2 94% on room air. Regular rhythm; no murmur, rub or gallop; lungs clear. Troponin I 0.5 ng/mL (reference <0.04). Creatinine 1.2. A1c 7.8%. Total cholesterol 185. ECG: ST elevation in II, III and aVF.\nCourse: inferior STEMI. Emergent coronary angiography: culprit lesion in the mid right coronary artery, treated with one drug-eluting stent. Aspirin given during the hospital stay only. Warfarin continued. Uncomplicated recovery.\nAllergies: no known drug allergies.\nDischarge medications: clopidogrel 75 mg daily for 12 months (new); warfarin per anticoagulation clinic; metoprolol succinate 100 mg daily; lisinopril 20 mg daily; amlodipine 5 mg daily; atorvastatin 40 mg daily; metformin 1000 mg twice daily; insulin glargine 24 units nightly.\nFollow-up: cardiology in 3 months; primary care within 2 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-20a",
+     "kind": "portal_message",
+     "start": "2023-11-20T19:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Another heart attack",
+       "author": "patient",
+       "date": "2023-11-20T19:40",
+       "body": "I had another heart attack last Wednesday. Ambulance to the hospital, they put in a new stent and I came home Saturday. I'm on a new blood thinner pill along with the warfarin - clopidogrel. They said to see you in two weeks. Feeling sore but OK."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Another heart attack",
+       "author": "RN",
+       "date": "2023-11-21T08:25",
+       "body": "So sorry to hear it, and glad you're home. You're booked with the doctor Tuesday 11/28 at 10:20. Please bring every medicine you're taking and your hospital papers. Any chest pain at rest, black stools or bleeding that won't stop - call 911."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-28a",
+     "kind": "office_visit",
+     "start": "2023-11-28T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Post-hospital follow-up, STEMI",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "clopidogrel 75 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 75,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Coronary stent 11/2023, planned 12 months"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2023-11-28T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital visit",
+       "author": "PCP",
+       "date": "2023-11-28T11:00",
+       "body": "Seen 10 days after discharge. No summary from the hospital yet; his account plus the bottles and the discharge med sheet he brought.\nWoke 11/15 with chest pressure into the left arm, sweaty, short of breath. EMS, ED, cath lab - new stent in the right coronary, he was told. Home 11/18. Clopidogrel 75 daily added for a year alongside warfarin. Everything else unchanged.\nSince: no chest pain. Walks the driveway twice a day. No bleeding, no black stools.\nExam: BP and HR as charted. Regular rhythm today, click crisp. Groin/wrist site clean. Lungs clear. No edema.\nA/P\n1. Inferior STEMI s/p RCA stent - added to list. Clopidogrel 75 for 12 months with warfarin. Cardiology follow-up booked for February.\n2. Bleeding risk on two agents - reviewed warning signs. INR dosing still with the anticoag clinic.\n3. Rest unchanged. Requested discharge summary and cath report."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-12a",
+     "kind": "pharmacy",
+     "start": "2023-12-12T09:20",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Clopidogrel refill request",
+       "author": "MA",
+       "date": "2023-12-12T09:20",
+       "body": "Pharmacy request: clopidogrel 75 mg daily, original 30-day fill from the hospital. On list as of 11/28 for 12 months post stent. PCP approved 90 days with 2 refills. End date around mid-November 2024 noted on the order."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

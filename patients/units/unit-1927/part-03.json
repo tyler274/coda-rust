@@ -1,0 +1,198 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001927",
+      "events": [
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T10:31",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June MRI",
+              "author": "patient",
+              "date": "2026-03-09T10:31",
+              "body": "Hi - the cancer center booked my MRI for June 10. Is it ok to keep my physical in July after that, or do you want me in sooner? Nothing is wrong, just planning around a work trip."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: June MRI",
+              "author": "PCP",
+              "date": "2026-03-09T17:50",
+              "body": "July is perfect, that way I will have the MRI result in hand. Front desk will send you a few July options."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "portal_message",
+          "start": "2026-05-28T20:14",
+          "reason": "changing mole",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mole on my back",
+              "author": "patient",
+              "date": "2026-05-28T20:14",
+              "body": "I have a mole on my upper back that has been there forever. I took a picture with my phone in the mirror and it looks bigger and darker than I remember, and the edge looks uneven. It doesn't itch or hurt. Given everything with my genetics I don't want to sit on it. Can someone look at it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mole on my back",
+              "author": "RN",
+              "date": "2026-05-29T08:20",
+              "body": "Thanks for letting us know. The doctor would like to see it in person. We have Tuesday 6/2 at 1:15. Please reply to confirm."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mole on my back",
+              "author": "patient",
+              "date": "2026-05-29T08:41",
+              "body": "Confirmed, see you Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "office_visit",
+          "start": "2026-06-02T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "changing mole on back",
+          "measure": ["bp", "hr", "weight_kg"],
+          "orders": [
+            {"id": "derm", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "changing pigmented lesion upper back, urgent"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-06-02T13:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-06-02T13:50",
+              "body": "35F with BRCA1 and fair skin here for a mole on the upper back. Present for many years; over the last few months she thinks it has grown and darkened, edge looks irregular in her photos. No pain, itch or bleeding. Burns easily; gets sun on her back at the beach on vacations.\n\nMeds: OCP, D3. NKDA.\n\nExam: Upper back, left of midline: pigmented lesion about 1 cm, asymmetric, with an irregular border and color varying from brown to black. No other lesions of concern on back, chest, arms or legs. No cervical, supraclavicular or axillary nodes.\n\nA/P: Changing pigmented lesion with asymmetry, border irregularity and color variation - needs dermatology evaluation and likely biopsy, not watchful waiting. Urgent dermatology referral placed; our referral coordinator called and got her in on 6/15. Told her to call if it bleeds or changes further before then. Photo taken with her consent and saved to the media tab."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "outside_records",
+          "start": "2026-06-12T15:05",
+          "reason": "breast MRI",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2026-06-10T07:45",
+              "text": "Outside cancer center imaging. Indication: BRCA1 carrier, annual high-risk MRI. Comparison: 06/11/2025 MRI, 12/10/2025 mammogram.\nTechnique: bilateral breast MRI with and without IV gadolinium, subtraction and kinetic analysis.\nFindings: Heterogeneous fibroglandular tissue with minimal background parenchymal enhancement. Right breast 10 o'clock biopsy-proven fibroadenoma with clip artifact, unchanged. No new mass or non-mass enhancement in either breast. Lymph nodes normal. Chest wall unremarkable.",
+              "conclusion": "Stable benign findings. No MRI evidence of malignancy. BI-RADS 2. Continue alternating surveillance; mammogram December 2026."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Breast MRI report",
+              "author": "MA",
+              "date": "2026-06-12T15:05",
+              "body": "6/10 breast MRI from high-risk program received: BI-RADS 2, stable. Filed to imaging, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "outside_records",
+          "start": "2026-06-17T11:25",
+          "reason": "dermatology consult",
+          "procedures": [
+            {"procedure": "Excisional biopsy of skin", "snomed": "1251630002", "performed": "2026-06-15T10:40"}
+          ],
+          "orders": [
+            {"id": "derm", "action": "done", "date": "2026-06-15T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatology consultation and excisional biopsy",
+              "author": "dermatology",
+              "date": "2026-06-17T11:25",
+              "body": "Outside dermatology group\nDate of visit: 06/15/2026\nReferring: primary care physician\n\nHPI: 35-year-old woman, BRCA1 carrier (worked up after a breast mass in late 2024, benign fibroadenoma), referred for a longstanding mole on the upper back that she feels has changed in look over recent months. Denies pain or pruritus.\n\nPMH: hereditary breast and ovarian cancer syndrome (BRCA1); right breast fibroadenoma. Fitzpatrick skin type II.\nPSH: tonsillectomy (8), wisdom teeth (21), breast core biopsy 2024.\nMeds: ethinyl estradiol/norgestimate daily; cholecalciferol 2000 IU daily.\nAllergies: NKDA.\nFamily: father has had melanoma. Maternal breast and ovarian cancers as documented.\nSocial: never smoker, no alcohol, software engineer.\n\nExam (full skin exam): Upper back - 1 cm pigmented lesion, asymmetric, irregular borders, mixed brown and black. She reports this area gets sun on vacations. Dermoscopy: irregular streaks at the periphery and a blue-white veil. No palpable cervical, axillary or inguinal lymphadenopathy. Remainder of the skin exam unremarkable; scattered benign-appearing freckles and nevi.\n\nAssessment: atypical pigmented lesion of the upper back, highly concerning for melanoma.\n\nProcedure today: excisional biopsy with 2 mm margins, elliptical, closed in layers, after informed consent and local lidocaine with epinephrine. Specimen to dermatopathology. Tolerated well. Wound care reviewed.\n\nPlan: pathology in about 1 week; we will call her. Suture removal in 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "outside_records",
+          "start": "2026-06-23T09:05",
+          "reason": "dermatopathology",
+          "conditions": [
+            {"label": "Malignant melanoma of other part of trunk", "icd10": "C43.59", "action": "diagnosed", "onset": "2026-06-15", "note": "nodular melanoma, upper back, Breslow 1.6 mm, nonulcerated, pT2a"}
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-15T10:40",
+              "issued": "2026-06-19T14:30",
+              "text": "Outside dermatopathology.\nSpecimen: skin, upper back, excisional biopsy.\nGross: skin ellipse 1.6 x 0.9 cm, excised to a depth of 0.6 cm, with a central 1.0 cm variegated pigmented lesion; inked and serially sectioned, entirely submitted.\nMicroscopic: Invasive melanoma, nodular type.\n- Breslow thickness: 1.6 mm\n- Ulceration: absent\n- Dermal mitotic rate: 3 per mm2\n- Microsatellites: not identified\n- Lymphovascular invasion: not identified\n- Perineural invasion: not identified\n- Regression: not identified\n- Tumor-infiltrating lymphocytes: non-brisk\n- Margins: peripheral and deep margins free of melanoma; closest peripheral margin 1.5 mm.\nPathologic stage (AJCC 8th edition): pT2a.",
+              "conclusion": "Skin, upper back, excision: invasive nodular melanoma, Breslow 1.6 mm, nonulcerated, mitoses 3/mm2, margins negative (narrow). pT2a. Wide local excision and sentinel lymph node evaluation advised."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatopathology and dermatology note",
+              "author": "dermatology",
+              "date": "2026-06-23T09:05",
+              "body": "Outside dermatology group - result note 06/19/2026\nPathology reviewed with the patient by phone today. Excisional biopsy of the upper back shows nodular melanoma, 1.6 mm, without ulceration (pT2a). Discussed that the standard next step is wider excision with sentinel lymph node biopsy. Referred to surgical oncology; appointment requested within 2 weeks. She will continue full skin exams with us every 3 months after surgery.\nAllergies: NKDA.\nCopy: primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23b",
+          "kind": "telephone",
+          "start": "2026-06-23T12:30",
+          "reason": "melanoma diagnosis",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call after skin pathology",
+              "author": "PCP",
+              "date": "2026-06-23T12:45",
+              "body": "Called her after receiving the derm pathology. She had heard from derm Friday. Melanoma on the back, 1.6 mm, not ulcerated. Surgical oncology visit is set for 7/8 with surgery planned that day if the node mapping is arranged. She is upset but organized; she watched her mother go through cancer care and knows how to ask questions. Answered questions: this is separate from the BRCA1 result as far as we know, and her breast surveillance stays on schedule. She will keep her July physical; told her to message any time before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "outside_records",
+          "start": "2026-07-16T14:10",
+          "reason": "surgical oncology operative and pathology reports",
+          "procedures": [
+            {"procedure": "Wide excision of skin lesion", "snomed": "177302005", "performed": "2026-07-08T09:30"},
+            {"procedure": "Sentinel lymph node biopsy", "snomed": "396487001", "performed": "2026-07-08T09:30"}
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-07-08T09:30",
+              "issued": "2026-07-13T16:00",
+              "text": "Outside hospital pathology.\nA. Skin and subcutaneous tissue, upper back, wide local excision: ellipse 7.2 x 4.4 cm, depth to fascia, with a healing scar centrally. No residual melanoma. Margins free.\nB. Lymph node, right axillary sentinel #1 (hot, blue): one lymph node, negative for metastatic melanoma (0/1) on H&E and immunohistochemistry (SOX10, Melan-A).\nC. Lymph node, right axillary sentinel #2 (hot): one lymph node, negative for metastatic melanoma (0/1) on H&E and immunohistochemistry.\nFinal pathologic stage with prior biopsy: pT2a pN0 (0/2 sentinel nodes).",
+              "conclusion": "No residual melanoma, margins clear. Two right axillary sentinel lymph nodes negative (0/2). pT2a N0 - stage IB."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surgical oncology operative note and pathology",
+              "author": "surgical oncology",
+              "date": "2026-07-16T14:10",
+              "body": "Outside surgical oncology\nDate of surgery: 07/08/2026\nPreoperative diagnosis: melanoma of the upper back, Breslow 1.6 mm, nonulcerated (pT2a)\nProcedure: wide local excision upper back with 2 cm margins, primary closure; preoperative lymphoscintigraphy and sentinel lymph node biopsy, right axilla.\nAnesthesia: general. EBL minimal. No complications.\nLymphoscintigraphy showed drainage to the right axilla only. Two sentinel nodes removed (one hot and blue, one hot); no further hot nodes after removal.\nAllergies: NKDA. Medications: oral contraceptive, vitamin D3.\nDischarged home same day.\n\nAddendum 07/13/2026: final pathology - no residual melanoma, clear margins; both sentinel nodes negative. Stage IB (pT2a N0 M0). No adjuvant systemic therapy is indicated. Surveillance: skin and lymph node examination every 3 to 6 months, alternating between dermatology and our clinic, for the first years. Routine cross-sectional imaging is not indicated in the absence of symptoms. Post-op visit 07/28."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

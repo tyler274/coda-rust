@@ -1,0 +1,2242 @@
+{
+  "unit": "unit-2752",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002752",
+      "given": "Morgan",
+      "family": "Hale",
+      "birth_date": "1984-09-07",
+      "address_line": "38 Brainerd Ridge Road",
+      "phone": "+1-617-555-0135",
+      "email": "morgan.hale@example.test",
+      "marital_status": "single",
+      "summary": "Travel agent and daily smoker on a combined estrogen pill who joins the practice in 2023 with migraine, mild depression and irregular menses. Three pulmonary emboli after long flights (April 2025, October 2025, April 2026); the pill is stopped only after the third, and she is now on indefinite apixaban.",
+      "events": [
+        {
+          "id": "2023-08-10a",
+          "kind": "telephone",
+          "start": "2023-08-10T10:20",
+          "reason": "New patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake call",
+              "date": "2023-08-10T10:20",
+              "author": "front desk",
+              "body": "Caller wants to move her primary care here; her old office has had a hard time getting her in around her work travel. Booked a new-patient appointment for 8/22 at 2:40 pm. Gave her the release form so we can get her old office's chart. Insurance card photo uploaded through the portal while on the line."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T14:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Migraine without aura",
+              "action": "history",
+              "onset": "2006-06-01",
+              "note": "Episodic, no aura; manages without prescriptions"
+            },
+            {
+              "label": "Major depressive disorder, single episode, mild",
+              "action": "history",
+              "onset": "2021-03-01",
+              "icd10": "F32.0"
+            },
+            {
+              "label": "Irregular menstruation, unspecified",
+              "action": "history",
+              "onset": "2016-01-01",
+              "icd10": "N92.6"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "2004-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Irregular menses"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              115,
+              72
+            ],
+            "hr": 82,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 63.2,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-22T15:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.62
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T15:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T15:30",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 108
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T15:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T15:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-22T15:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "International travel agent"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1 to 2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-08-22T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-08-22T16:10",
+              "author": "PCP",
+              "body": "38 yo woman transferring care. Books international trips for a living, mostly from a desk, but she is on a long-haul flight several times a year for work.\n\nHeadaches: migraines since her early twenties, a few a month, throbbing and one-sided with nausea and light sensitivity. No visual or sensory warning before them, no weakness. Dark room and sleep take care of most; she has never wanted a prescription for them.\n\nMood: a depressive episode about two years ago, mild, worked through it on her own and with friends. Never took medication, never saw a therapist. Some low days still. PHQ-9 today 7. No thoughts of self-harm.\n\nGyn: cycles have been irregular for years; started a combined pill around 2017 for that and it keeps her regular. Takes it daily, no missed packs to speak of. Not trying to conceive.\n\nTobacco: a pack a day, has smoked since about 19, so roughly 20 pack-years. Has tried cold turkey twice. Not interested in patches or pills right now. Alcohol a drink or two a month. No drugs.\n\nNo surgeries. No medication allergies.\nFamily: mother had a DVT at 45. Father has high blood pressure. An uncle on her father's side had a blood clot in the lung.\n\nMeds: ethinyl estradiol 0.035 / norgestimate 0.25, one daily.\n\nExam: well, pleasant. Vitals as recorded. HEENT unremarkable, neck supple without thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft. Legs without swelling. Neuro nonfocal. Affect a little flat but appropriate.\n\nA/P:\n1. Migraine without aura, episodic. Lifestyle triggers reviewed. Return if frequency changes.\n2. Mild depression, single episode, residual low mood. Watchful; she would rather not start anything. Rescreen next visit.\n3. Irregular menses on combined pill. Refills here going forward.\n4. Cigarette dependence. Strongly encouraged quitting; she knows where to find us when ready.\n5. Health maintenance: CBC, CMP, lipids, TSH, one-time HIV and hep C screens today. Requesting her old office's records for her last Pap.\nFollow up in about 6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              114,
+              72
+            ],
+            "weight_kg": 64.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-08-24T09:05",
+              "author": "PCP",
+              "body": "Hi Morgan, all of the blood work from Tuesday looks fine: blood counts, kidney and liver tests, thyroid and cholesterol are normal, and the HIV and hepatitis C screens were negative. Nothing to do there. Good meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-06a",
+          "kind": "outside_records",
+          "start": "2023-09-06T11:30",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-05-18T10:00",
+              "text": "Specimen adequate for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2023-09-06T11:30",
+              "author": "front desk",
+              "body": "Faxed chart from her previous primary care office, 41 pages, scanned. Includes visit notes 2017 to 2023, a Pap with HPV co-test from May 2021 (negative for lesion, HPV not detected), and pill prescriptions going back to 2017. Routed to PCP for review.\n\nPCP addendum: reviewed. Nothing new beyond what she told us. Next cervical screening due 2026."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T08:15",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T08:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T08:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-17T08:30",
+              "author": "RN",
+              "body": "Here before work for her seasonal shots. Feeling well, no fever. Influenza vaccine in the left deltoid and the updated COVID vaccine in the right deltoid. Lot numbers in the immunization record. Observed afterward, no reaction. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "pharmacy",
+          "start": "2024-01-09T13:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: oral contraceptive",
+              "date": "2024-01-09T13:40",
+              "author": "MA",
+              "body": "Pharmacy e-request for ethinyl estradiol/norgestimate, 3 packs with 3 refills. Last seen 8/2023. Pended for PCP.\n\nPCP: approved, 3 packs x 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up: mood, headaches",
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 60,
+            "spo2": 98,
+            "weight_kg": 64.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2024-02-20T11:35",
+              "author": "PCP",
+              "body": "Six-month check. Winter has been busy at work with people booking spring trips; she has been in the office more than usual.\n\nMood about the same, steady, sleeping okay. PHQ-9 6. Declines counseling referral again, though she took the list of local therapists.\nHeadaches: two or three a month, same pattern as before, no new features, nothing that wakes her.\nCycles regular on the pill.\nStill at about a pack a day. We talked through what quitting could look like; she wants to try cutting back on her own first.\n\nVitals as recorded. Looks well. Heart and lungs normal.\n\nPlan: continue current pill. Recheck mood at the physical in the fall. Book the physical before she leaves the office."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T21:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2024-06-12T21:47",
+              "author": "patient",
+              "body": "So sorry about yesterday, I was stuck at the airport after a delayed connection and completely forgot to call. Everything is fine on my end. Can we just roll it into my physical in September?\n\nFront desk reply 6/13: no problem, you're set for 9/24 at 10:00."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              79
+            ],
+            "hr": 59,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 64.5,
+            "height_cm": 164.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T10:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 321
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T10:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-24T10:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 184
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 101
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-09-24T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-09-24T10:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "Routine screening, age 40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-09-24T11:20",
+              "author": "PCP",
+              "body": "Annual exam, just turned 40.\n\nInterval: no illnesses, no ED visits. Headaches unchanged at a couple a month. Mood a bit lower this summer with long hours; PHQ-9 8, mild range. No self-harm thoughts. She still prefers no medication and no therapy right now; we agreed to keep an eye on it and she will message if it slides.\nCycles regular on the pill. LMP two weeks ago.\nSmoking about a pack a day, the cutting-back plan did not stick. Again offered help when she wants it.\nTravel: roughly six long-haul trips this year for work.\n\nMeds: ethinyl estradiol 0.035 / norgestimate 0.25 daily. No medication allergies.\n\nExam: well-appearing. Vitals as recorded. Eyes, ears, throat normal. No thyroid enlargement or nodes. Heart regular, no murmur. Lungs clear. Breasts without masses, skin changes or nipple discharge, no axillary nodes. Abdomen soft, nontender. No leg swelling. Skin without suspicious lesions.\n\nA/P:\n- Health maintenance: CBC, CMP and lipids today. Tdap today (none on record). Screening mammogram ordered. Pap due 2026. Flu and COVID later this fall when the season's supply comes in.\n- Mild depression: watchful, rescreen at each visit.\n- Migraine: no change.\n- Tobacco: counseled.\nRTC one year, or sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "imaging",
+          "start": "2024-10-08T08:30",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-10-08T08:30",
+              "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies for comparison. The breasts are scattered areas of fibroglandular density. No suspicious mass, architectural distortion or suspicious calcifications in either breast.",
+              "conclusion": "BI-RADS 1: negative. Routine annual screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-10-08T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram result",
+              "date": "2024-10-09T12:15",
+              "author": "PCP",
+              "body": "Your mammogram came back normal, no findings. We'll plan to repeat it next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "nurse_visit",
+          "start": "2024-10-29T16:30",
+          "reason": "Vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-29T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-29T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-10-29T16:45",
+              "author": "RN",
+              "body": "Seasonal flu and 2024-25 COVID vaccines given, one in each arm. Afebrile, no complaints. Tolerated without issue and left after the observation period."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T07:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill before trip",
+              "date": "2025-01-21T07:52",
+              "author": "patient",
+              "body": "Hi, I leave for a work trip on the 3rd and I'm down to my last pack of the pill. Could you send a refill a little early so I have enough while I'm away?\n\nMA reply: sent to your pharmacy, 3 packs. Safe travels."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "ed_visit",
+          "start": "2025-04-14T17:05",
+          "end": "2025-04-14T23:40",
+          "service": "Emergency Medicine",
+          "reason": "Sudden shortness of breath",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "action": "diagnosed",
+              "onset": "2025-04-14",
+              "note": "Right segmental, after a 12-hour flight",
+              "icd10": "I26.99"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth twice daily for 7 days, then 1 tablet twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pulmonary embolism, planned 3 months"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-04-14T17:12",
+              "bp": [
+                106,
+                68
+              ],
+              "hr": 114,
+              "rr": 28,
+              "temp_c": 37.0,
+              "spo2": 91
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-14T17:30",
+              "resulted": "2025-04-14T18:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 292
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.83
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-14T17:30",
+              "resulted": "2025-04-14T18:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T17:30",
+              "resulted": "2025-04-14T18:20",
+              "results": [
+                {
+                  "test": "Fibrin D-dimer FEU",
+                  "loinc": "48065-7",
+                  "unit": "mg/L",
+                  "value": 2.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T17:25",
+              "resulted": "2025-04-14T18:15",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.48
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 31
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T17:30",
+              "resulted": "2025-04-14T18:20",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-14T17:15",
+              "text": "Sinus tachycardia, rate 114. Normal axis and intervals. No ST-segment or T-wave abnormality.",
+              "conclusion": "Sinus tachycardia, otherwise normal ECG.",
+              "issued": "2025-04-14T17:50"
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-04-14T17:50",
+              "text": "PA and lateral views. Lungs clear. No effusion or pneumothorax. Heart size and mediastinum normal.",
+              "conclusion": "Normal chest radiograph.",
+              "issued": "2025-04-14T18:25"
+            },
+            {
+              "study": "CT pulmonary angiography",
+              "loinc": "88322-3",
+              "performed": "2025-04-14T19:20",
+              "text": "CT angiogram of the chest with IV contrast, pulmonary embolism protocol. Adequate opacification of the pulmonary arteries. Filling defect in a right segmental pulmonary artery consistent with acute embolus. Main and lobar arteries patent. Heart size normal. Lungs clear. No pleural effusion.",
+              "conclusion": "Acute right segmental pulmonary embolism.",
+              "issued": "2025-04-14T19:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-14T17:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2025-05-06T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Date of service 04/14/2025. Received by fax 05/06/2025 at the practice's request.\n\nCC: shortness of breath, lightheaded.\n\nHPI: 40F, came in after getting short of breath on the walk from the parking lot to the front door. Onset abrupt, with a racing heart and the feeling she could not get a full breath, no better sitting down. Denies fever, cough, sputum. Flew home from Australia within the last day or two, about 12 hours in the air.\n\nPMH: migraine, mild depression, irregular cycles, smoker. No surgeries. Meds: combined oral contraceptive daily. Allergies: none to medications.\nFH: DVT in her mother at 45; father hypertensive; paternal uncle had a PE.\nSH: about a pack a day for 20 years.\n\nTriage: 37.0 C, 106/68, pulse 114, RR 28, 91% RA.\nExam: breathing fast, somewhat anxious. Lungs clear to auscultation.\n\nWorkup: ABG with pH 7.48 and PaCO2 31. D-dimer 2.4 mg/L FEU (ref < 0.50). CBC and BMP unremarkable. Urine hCG negative. CXR clear. ECG sinus tachycardia only. CTA chest: acute right segmental PE.\n\nCourse/MDM: hemodynamically stable throughout, breathing easier and comfortable at rest by the time of disposition. Low-risk features for outpatient care. First dose of apixaban given in the department.\n\nDx: acute pulmonary embolism, right segmental.\nDispo: home. Apixaban 10 mg BID x 7 days, then 5 mg BID, for 3 months. Follow up with PCP within a week. Return for chest pain, worse breathing, fainting or bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "portal_message",
+          "start": "2025-04-16T08:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit Monday",
+              "date": "2025-04-16T08:31",
+              "author": "patient",
+              "body": "Wanted you to know I ended up in the ER Monday night. I'd just gotten back from Sydney and couldn't catch my breath walking in from the car. They did a CT and found a blood clot in my lung. They sent me home on apixaban and said to see you this week or next. I'm doing ok, still winded on stairs. Do you need anything from the hospital?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit Monday",
+              "date": "2025-04-16T12:40",
+              "author": "PCP",
+              "body": "Thanks for letting me know, and I'm glad you're home. Keep taking the apixaban exactly as prescribed, two tablets twice a day for the first week and then one twice a day. Front desk will get you in next week, and we'll send for the ER records. If you get chest pain, worsening shortness of breath, fainting, or any bleeding that won't stop, go back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "pharmacy",
+          "start": "2025-04-17T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication fill history reviewed",
+              "date": "2025-04-17T09:10",
+              "author": "MA",
+              "body": "Pulled the external fill history ahead of next week's visit. Apixaban 5 mg starter pack filled 4/14 late evening, prescriber is the ED physician. Pill packs last filled 2/2025. Added apixaban to the med list as an outside prescription."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-23a",
+          "kind": "office_visit",
+          "start": "2025-04-23T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, pulmonary embolism",
+          "vitals": {
+            "bp": [
+              125,
+              75
+            ],
+            "hr": 60,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 64.2
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-23T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "date": "2025-04-23T14:05",
+              "author": "PCP",
+              "body": "Seen 9 days after the ED visit for a right segmental PE found by CT after a long flight home from Australia. We do not have the ED chart yet; history from her and the fill record.\n\nBreathing much better, only short of breath on a fast flight of stairs now, resolving. No chest pain, no hemoptysis. No leg pain or swelling. Finished the 7-day loading phase Monday and is on apixaban 5 mg twice daily. No bleeding, no bruising beyond a small spot on the shin. Periods regular.\n\nVitals as recorded, saturation normal at rest. Comfortable. Heart regular without murmur. Lungs clear. Calves soft, no swelling or tenderness.\n\nA/P: Acute PE after air travel. Continue apixaban 5 mg BID for a total of 3 months, through about mid-July. Bleeding precautions and NSAID avoidance reviewed; acetaminophen for headaches while on it. Calf exercises and walking the aisle on flights. Records requested from the hospital. Smoking: discussed again in the context of clots; she says she will try. Follow up in July."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "telephone",
+          "start": "2025-05-06T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital records reviewed",
+              "date": "2025-05-06T15:20",
+              "author": "PCP",
+              "body": "ED record from 4/14 arrived today after the second request, scanned to the chart. Reviewed: matches what she reported. CTA shows a right segmental embolus, no other findings; discharged on apixaban for 3 months. No change to the plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pulmonary embolism follow-up",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "action": "resolved",
+              "onset": "2025-04-14",
+              "icd10": "I26.99"
+            },
+            {
+              "label": "History of pulmonary embolism",
+              "action": "diagnosed",
+              "onset": "2025-04-14"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Three-month course completed"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              98,
+              75
+            ],
+            "hr": 72,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 64.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-22T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 314
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-22T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2025-07-22T16:25",
+              "author": "PCP",
+              "body": "Three months out from her April PE. Back to her usual activity, walks most evenings, no exertional symptoms. No chest pain, no palpitations, no leg symptoms. Took apixaban without missed doses; last tablet this week. No bleeding.\nHeadaches about the same, acetaminophen working. Mood okay, PHQ-9 6.\nStill smoking, down a little, maybe 15 a day some days.\n\nVitals as recorded. Lungs clear, heart regular, no leg swelling.\n\nA/P:\n1. PE, provoked by long-haul travel: completed 3 months of apixaban. Stopping today. CBC today.\n2. Travel precautions for future flights: aisle seat, walk every hour or two, hydrate, calf pumps.\n3. Tobacco: counseled; she is not ready for medication.\n4. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "pharmacy",
+          "start": "2025-08-19T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: oral contraceptive",
+              "date": "2025-08-19T10:05",
+              "author": "MA",
+              "body": "Electronic request from the pharmacy for her pill packs, 3-month supply. Approved per standing refill, sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "ed_visit",
+          "start": "2025-10-01T18:25",
+          "end": "2025-10-02T02:10",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath and palpitations",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "action": "diagnosed",
+              "onset": "2025-10-01",
+              "note": "Recurrent, left lower lobe segmental, after a 10-hour flight",
+              "icd10": "I26.99"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth twice daily for 7 days, then 1 tablet twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Recurrent pulmonary embolism, planned 3 months"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-10-01T18:30",
+              "hr": 112,
+              "rr": 28,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-01T18:50",
+              "resulted": "2025-10-01T19:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 279
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-01T18:50",
+              "resulted": "2025-10-01T19:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T18:50",
+              "resulted": "2025-10-01T19:40",
+              "results": [
+                {
+                  "test": "Fibrin D-dimer FEU",
+                  "loinc": "48065-7",
+                  "unit": "mg/L",
+                  "value": 3.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T18:45",
+              "resulted": "2025-10-01T19:35",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.47
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T18:50",
+              "resulted": "2025-10-01T19:40",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-10-01T18:35",
+              "text": "Sinus tachycardia at 112. Normal axis, normal intervals, no acute ST or T-wave changes.",
+              "conclusion": "Sinus tachycardia, otherwise unremarkable.",
+              "issued": "2025-10-01T19:10"
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-10-01T19:05",
+              "text": "Frontal and lateral views. No infiltrate, pleural effusion or consolidation. Normal cardiomediastinal silhouette. No pneumothorax.",
+              "conclusion": "No acute cardiopulmonary process.",
+              "issued": "2025-10-01T19:40"
+            },
+            {
+              "study": "CT pulmonary angiography",
+              "loinc": "88322-3",
+              "performed": "2025-10-01T20:40",
+              "text": "CT angiogram of the chest, pulmonary embolism protocol. Good contrast bolus. Acute filling defect in a left lower lobe segmental pulmonary artery. The previously described right segmental clot is not seen. Main pulmonary artery normal in caliber. Lungs clear. No effusion.",
+              "conclusion": "Acute left lower lobe segmental pulmonary embolism.",
+              "issued": "2025-10-01T21:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-01T18:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "date": "2025-10-21T11:00",
+              "author": "emergency medicine",
+              "body": "Emergency department, regional hospital. Visit 10/01/2025, record released to PCP 10/21/2025.\n\nChief complaint: SOB, palpitations x 1 hr.\n\n41-year-old woman with a PE this past April, treated, on an oral contraceptive, presenting with breathlessness and a pounding heartbeat that started about an hour ago going up stairs and has gotten worse since; now lightheaded and anxious. No chest pain, cough, fever or recent illness. Just returned from South America, roughly 10 hours of flying.\nHx: migraine, mild depression, irregular menses, tobacco use. On ethinyl estradiol/norgestimate for about 8 years for her cycles. NKDA. Mother DVT age 45, father HTN, paternal uncle PE. 20 pack-years. Works as a travel agent.\n\nVS on arrival: RR 28, HR 112, SpO2 92% RA.\nExam: anxious, mildly diaphoretic. JVP not elevated. Heart sounds normal. Lungs clear bilaterally, no wheezes, crackles or rhonchi. Calves soft and nontender, symmetric.\n\nData: ABG pH 7.47. D-dimer 3.1 mg/L FEU. CBC, BMP normal. Urine hCG negative. CXR without infiltrate, effusion or consolidation. ECG sinus tach, otherwise unremarkable. CTA: acute LLL segmental PE.\n\nImpression: recurrent acute pulmonary embolism, left lower lobe segmental. Hemodynamically stable through her stay; comfortable at rest on room air before discharge.\nPlan: apixaban 10 mg BID x 7 days then 5 mg BID, 3 months. PCP follow-up this week. Return precautions given."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "telephone",
+          "start": "2025-10-02T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call after ED visit",
+              "date": "2025-10-02T11:15",
+              "author": "RN",
+              "body": "Pt called this morning. Was in the ED last night, another clot in the lung, sent home around 2 am on apixaban again. Breathing better than last night, a little tight with walking around the house. No chest pain, no fainting, no bleeding. Has the starter pack and took this morning's dose. Booked with PCP next Wednesday. Reviewed reasons to go back in. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "office_visit",
+          "start": "2025-10-08T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, recurrent pulmonary embolism",
+          "vitals": {
+            "bp": [
+              121,
+              69
+            ],
+            "hr": 62,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 63.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-08T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T10:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T10:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "date": "2025-10-08T10:30",
+              "author": "PCP",
+              "body": "Back one week after an ED visit on 10/1 for a second pulmonary embolism, this time on the left per her, again right after a long flight (South America). ED record not received yet; requested.\n\nFeels nearly back to normal. Mild breathlessness on hills only. No chest pain, palpitations settled. No leg symptoms. On day 8 of apixaban, switching to 1 tablet twice daily today as instructed. No bleeding.\n\nVitals as recorded. Not short of breath in conversation. Heart regular. Lungs clear. No calf asymmetry or tenderness.\n\nA/P:\n1. Second PE, again travel-associated: apixaban 5 mg BID, 3-month course per ED, through early January. Bleeding precautions again. Travel precautions reinforced; she has a trip in November and will keep it short-haul if she can.\n2. Tobacco: discussed.\n3. Flu and COVID vaccines given today.\nRecheck in January."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "telephone",
+          "start": "2025-10-21T14:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Second ED record received",
+              "date": "2025-10-21T14:45",
+              "author": "PCP",
+              "body": "Records from the 10/1 ED visit arrived and are in the chart. CTA showed a new left lower lobe segmental embolus; the April right-sided clot is no longer seen. Discharged on 3 months of apixaban, which is what we are doing. Plan unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flying on apixaban",
+              "date": "2025-11-18T19:12",
+              "author": "patient",
+              "body": "Quick question, I have a 5 hour flight to the West Coast next week. Is it ok to fly while I'm on the blood thinner? Anything else I should do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flying on apixaban",
+              "date": "2025-11-19T08:20",
+              "author": "PCP",
+              "body": "Yes, you can fly. Being on apixaban is actually the best protection you could have for that trip. Keep taking it on schedule (set an alarm for the time change), get up and walk every hour or so, do ankle pumps in your seat, and drink water. Enjoy the trip."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: apixaban",
+              "date": "2025-12-09T09:30",
+              "author": "MA",
+              "body": "Pharmacy asking for a refill of apixaban 5 mg BID. Per the October note the course runs through early January. Sent a 30-day supply, no refills, to bridge to her January visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "telephone",
+          "start": "2026-01-06T12:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment change",
+              "date": "2026-01-06T12:10",
+              "author": "front desk",
+              "body": "Pt asked to move Thursday's appointment because of a client event; rebooked for Tues 1/13 at 4:00. She confirmed she has enough apixaban to get there."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pulmonary embolism follow-up",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "action": "resolved",
+              "onset": "2025-10-01",
+              "icd10": "I26.99"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Three-month course completed"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              78
+            ],
+            "hr": 66,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 64.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-13T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2026-01-13T16:40",
+              "author": "PCP",
+              "body": "Follow-up three months after the October PE. Feels well, back to her normal pace, exercise tolerance good. No chest pain, no palpitations, no leg swelling. The West Coast trip in November went fine. No bleeding on apixaban; finishing the last of the bottle this week.\nMood a bit flat with the dark months, PHQ-9 7, no self-harm thoughts; still declines treatment.\nHeadaches unchanged.\nSmoking about a pack a day. Talked about it again, she is thinking about it.\n\nVitals as recorded. Lungs clear, heart regular, calves soft and symmetric.\n\nA/P:\n1. Recurrent PE, both after long-haul flights: 3-month course complete, stopping apixaban as planned. Strict travel precautions on every flight over 4 hours. Call or go to the ED for any recurrence of breathlessness.\n2. Mild depression: monitoring.\n3. Tobacco: counseled.\nRTC 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "pharmacy",
+          "start": "2026-02-17T10:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: oral contraceptive",
+              "date": "2026-02-17T10:40",
+              "author": "MA",
+              "body": "E-refill request for ethinyl estradiol/norgestimate, 3 packs. On active med list, seen last month. Approved and sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "hospital_admission",
+          "start": "2026-04-08T15:20",
+          "end": "2026-04-11T12:30",
+          "service": "Internal Medicine",
+          "reason": "Acute pulmonary embolism",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "action": "diagnosed",
+              "onset": "2026-04-08",
+              "note": "Third episode, right lower lobe, one week after a flight to Tokyo",
+              "icd10": "I26.99"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth twice daily for 7 days, then 1 tablet twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Third pulmonary embolism, indefinite duration"
+            },
+            {
+              "drug_text": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Recurrent venous thromboembolism; avoid estrogen"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2026-04-08T15:28",
+              "bp": [
+                108,
+                72
+              ],
+              "hr": 116,
+              "rr": 30,
+              "temp_c": 36.8,
+              "spo2": 91
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-08T15:50",
+              "resulted": "2026-04-08T16:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 330
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.73
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-04-08T15:50",
+              "resulted": "2026-04-08T16:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-08T15:40",
+              "resulted": "2026-04-08T16:30",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.49
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 29
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-08T15:50",
+              "resulted": "2026-04-08T16:40",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-10T05:30",
+              "resulted": "2026-04-10T06:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 284
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.63
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-04-08T15:32",
+              "text": "Sinus tachycardia, rate 116. Normal axis. Intervals normal. No acute ST changes.",
+              "conclusion": "Sinus tachycardia.",
+              "issued": "2026-04-08T16:07"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-04-08T16:00",
+              "text": "Portable AP view. Lungs clear. No effusion, consolidation or pneumothorax. Cardiac silhouette normal.",
+              "conclusion": "Unremarkable portable chest.",
+              "issued": "2026-04-08T16:35"
+            },
+            {
+              "study": "CT pulmonary angiography",
+              "loinc": "88322-3",
+              "performed": "2026-04-08T17:15",
+              "text": "CT pulmonary angiogram with IV contrast. Diagnostic opacification. Wedge-shaped perfusion defect in the right lower lobe consistent with acute pulmonary embolism. No left-sided filling defect; the prior left lower lobe clot is not seen. Main pulmonary artery caliber normal. No pleural effusion.",
+              "conclusion": "Acute pulmonary embolism, right lower lobe.",
+              "issued": "2026-04-08T17:50"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-04-08T19:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-04-11T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-04-13T09:00",
+              "author": "hospital medicine",
+              "body": "Regional hospital, internal medicine service. Admitted 04/08/2026, discharged 04/11/2026.\n\nPrincipal diagnosis: acute pulmonary embolism, right lower lobe (third lifetime episode).\n\nPresentation: 41-year-old woman with pulmonary emboli in April and October 2025 who came in after abrupt breathlessness and chest tightness, worse with a deep breath, that began while she was out shopping. She said it felt like the earlier clots but harder to breathe. No fever or sputum, no known lung disease, never diagnosed with asthma or COPD. No leg swelling; some soreness in the right calf the day before that went away on its own. Flew Los Angeles to Tokyo one week before. Only home medication: combined oral contraceptive (ethinyl estradiol/norgestimate). No drug allergies. Smoker, about 20 pack-years. Desk-based travel agent.\nFamily history: mother DVT at 45, father hypertension, paternal uncle PE.\n\nAdmission exam: T 36.8 C, BP 108/72, P 116, RR 30, SpO2 91% on room air. Anxious, tachypneic, using accessory muscles. Regular rhythm, loud P2. Lungs clear.\n\nStudies: ABG pH 7.49, PaCO2 29. CBC and BMP within normal limits; urine hCG negative. CXR unremarkable. ECG sinus tachycardia. CTPA: wedge-shaped perfusion defect in the right lower lobe.\n\nHospital course: started on apixaban 10 mg twice daily the evening of admission. Nasal cannula oxygen for the first day and a half, then off with comfortable breathing at rest and with walking the halls. Heart rate settled over 48 hours. Repeat CBC stable. No bleeding.\nWith three venous thromboembolic events, the last two while on an estrogen-containing pill, anticoagulation is now planned indefinitely. The combined pill was stopped and she was told to avoid all estrogen-containing contraception; she will discuss alternatives for her cycles with her PCP and gynecology.\n\nDischarge medications: apixaban 10 mg BID through 4/14, then 5 mg BID, no planned stop date. STOP ethinyl estradiol/norgestimate.\nFollow-up: PCP within one week.\nCondition at discharge: stable, ambulatory, room air."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "telephone",
+          "start": "2026-04-13T13:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-04-13T13:30",
+              "author": "RN",
+              "body": "Discharge summary came in this morning (admitted 4/8 to 4/11 for a third PE). Called pt. Home, resting, breathing easier day by day, gets winded with laundry stairs. Taking apixaban 2 tabs twice daily until tomorrow then 1 twice daily, has the bottle in hand. Stopped her pill as the hospital told her. No bleeding. Appt with PCP Thursday 4/16 confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-16a",
+          "kind": "office_visit",
+          "start": "2026-04-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pulmonary embolism",
+          "conditions": [
+            {
+              "label": "Long-term current use of anticoagulants",
+              "action": "diagnosed",
+              "onset": "2026-04-08"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              113,
+              68
+            ],
+            "hr": 54,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 64.1
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2026-04-16T10:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gyn-referral-2026",
+              "action": "placed",
+              "order": "Gynecology referral",
+              "category": "referral",
+              "to": "Gynecology",
+              "reason": "Irregular menses; non-estrogen contraception after recurrent PE"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2026-04-16T11:15",
+              "author": "PCP",
+              "body": "Five days after discharge from a 3-night admission for her third pulmonary embolism, right lower lobe on CT, one week after a flight to Tokyo. Discharge summary reviewed.\n\nBreathing improving each day; short of breath on one flight of stairs, none at rest. No chest pain, no hemoptysis, no leg swelling or pain. Now on apixaban 5 mg BID after the 10 mg week. No bleeding, no dark stools. Stopped the combined pill on 4/11. Worried about what her periods will do off it and what to use for contraception now.\nShaken by this one. PHQ-9 8. Sleeping poorly the first few nights, better now. No self-harm thoughts. Declines medication or counseling but agreed to message if it gets worse.\nSmoking: still about a pack a day.\n\nVitals as recorded, saturation normal at rest. Looks well, speaking full sentences. Heart regular. Lungs clear. Calves soft, no asymmetry.\n\nA/P:\n1. Third PE, recurrent VTE: apixaban 5 mg BID indefinitely per the hospital team and I agree. Updated the problem and medication lists. Reviewed bleeding precautions, acetaminophen rather than NSAIDs for headaches, and taking every dose on schedule during travel.\n2. Combined estrogen pill stopped; no estrogen products going forward. Referral to gynecology for irregular menses and a non-estrogen contraceptive plan.\n3. Tobacco: told her plainly that quitting is one of the few things that lowers her clot risk that she controls; she will think about it.\n4. Mild depression: rescreen at next visit.\nFollow up in about 10 weeks with CBC and BMP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "pharmacy",
+          "start": "2026-04-21T14:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Prior authorization: apixaban",
+              "date": "2026-04-21T14:05",
+              "author": "MA",
+              "body": "Pharmacy says her plan wants a prior authorization for apixaban beyond the discharge supply. Submitted through the insurer portal with diagnosis of recurrent PE, indefinite therapy. Approved same day for 12 months. Pharmacy notified, 90-day supply going through."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T20:18",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gynecology appointment",
+              "date": "2026-05-12T20:18",
+              "author": "patient",
+              "body": "Hi, the gyn office called me back but their first opening is in late summer and I'm traveling a lot in June. Is it ok if I wait to schedule? My period came late this month, which I guess is my normal without the pill."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gynecology appointment",
+              "date": "2026-05-13T07:55",
+              "author": "PCP",
+              "body": "That's fine, the referral stays open. Irregular cycles are what we'd expect off the pill. Until you've seen them, please use condoms for contraception, and don't start any hormonal method without checking with us first. Keep your July appointment with me."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "office_visit",
+          "start": "2026-07-01T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Anticoagulation follow-up",
+          "vitals": {
+            "bp": [
+              104,
+              76
+            ],
+            "hr": 67,
+            "rr": 18,
+            "spo2": 98,
+            "weight_kg": 64.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-01T14:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-01T14:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-01T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "date": "2026-07-01T14:50",
+              "author": "PCP",
+              "body": "Follow-up on long-term apixaban, about 12 weeks after the April admission.\n\nBack to full activity. No breathlessness, chest pain or leg symptoms. Flew to two conferences in June, walked the aisle, no trouble. Takes apixaban twice a day with phone reminders, maybe one late dose. No bleeding, bruising or dark stools.\nCycles irregular off the pill, as before she started it. Using condoms. Has not booked with gynecology yet; plans to call once her travel calms down.\nMood better than in April, PHQ-9 6.\nHeadaches a couple a month, acetaminophen helps.\nSmoking about a pack a day.\n\nVitals as recorded. Well-appearing. Heart regular, lungs clear, no edema, calves symmetric.\n\nA/P:\n1. Recurrent PE on indefinite apixaban 5 mg BID: doing well. CBC and BMP today. Refills through the PA period.\n2. Irregular menses / contraception: gynecology referral still open; encouraged her to book.\n3. Mild depression: stable.\n4. Tobacco: counseled again.\nPhysical in the fall; Pap due this year and mammogram is overdue, both to be arranged then."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "portal_message",
+          "start": "2026-07-02T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-07-02T12:30",
+              "author": "PCP",
+              "body": "Morgan, yesterday's blood count and kidney tests are normal. No sign of blood loss and your kidneys are clearing the apixaban fine. Same dose."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "pharmacy",
+          "start": "2026-08-04T09:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: apixaban",
+              "date": "2026-08-04T09:45",
+              "author": "MA",
+              "body": "E-request from the pharmacy for apixaban 5 mg BID, 90 days. PA on file through 4/2027. Seen 7/1. Approved, 90 days with 1 refill."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Irregular menstruation, unspecified|N92.6": {
+        "code": "N92.6",
+        "display": "Irregular menstruation, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder, single episode, mild|F32.0": {
+        "code": "F32.0",
+        "display": "Major depressive disorder, single episode, mild",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Other pulmonary embolism without acute cor pulmonale|I26.99": {
+        "code": "I26.99",
+        "display": "Other pulmonary embolism without acute cor pulmonale",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet": {
+        "code": "240128",
+        "display": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+        "ingredient": "ethinyl",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrin D-dimer FEU": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "unit": "mg/L",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT pulmonary angiography": {
+        "code": "88322-3",
+        "display": "CT Chest W contrast IV and CT angiogram Pulmonary arteries for pulmonary embolus W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

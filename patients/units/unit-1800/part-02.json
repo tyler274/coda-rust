@@ -1,0 +1,180 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001800",
+      "events": [
+        {
+          "id": "2022-05-10a",
+          "kind": "telephone",
+          "start": "2022-05-10T11:15",
+          "reason": "family concern about behavior",
+          "orders": [
+            {"id": "psych-referral", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "two years of isolation, talking to herself, unusual beliefs; urgent new evaluation"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from patient's mother", "author": "PCP", "date": "2022-05-10T11:40",
+             "body": "Mother called, patient on the line and gave verbal permission for me to talk with both of them. Mother reports Paige has been pulling away for about two years: stays in her room, has been heard talking to herself, and has said things the family finds strange about the TV news and about her professors. Paige was guarded on the phone, said she is \"just tired\" and that people at school are not being straight with her. Would not say more. Asked directly: she said she sometimes thinks about not being here but has no plan and has not done anything to hurt herself. Mother staying with her this week.\n\nThis needs a psychiatric evaluation soon. Paige agreed. Urgent referral to outpatient psychiatry placed; family will drive her. Gave both of them the crisis line and told them to go to the ED for any thoughts of acting on it. I'd like to see her in the office after she's been evaluated."}
+          ]
+        },
+        {
+          "id": "2022-05-27a",
+          "kind": "specialist_visit",
+          "start": "2022-05-27T13:00",
+          "service": "Psychiatry",
+          "reason": "initial psychiatric evaluation",
+          "conditions": [
+            {"label": "Schizoaffective disorder, depressive type", "icd10": "F25.1", "action": "diagnosed", "onset": "2021-04-01"},
+            {"label": "Major depressive disorder, recurrent, severe with psychotic symptoms", "icd10": "F33.3", "action": "history", "onset": "2021-04-01", "note": "2021 episode, superseded by schizoaffective disorder"},
+            {"label": "Major depressive disorder, recurrent, severe with psychotic symptoms", "icd10": "F33.3", "action": "resolved", "note": "reclassified as schizoaffective disorder"}
+          ],
+          "state": {"labs": {"Thyroid Stimulating Hormone": 1.7}},
+          "measure": ["bp", "hr"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-05-27T14:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-05-27T14:10", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": null, "collected": "2022-05-27T14:10", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [{"procedure": "Psychiatric diagnostic evaluation with medical services", "performed": "2022-05-27T13:00"}],
+          "orders": [{"id": "psych-referral", "action": "done", "date": "2022-05-27T13:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Psychiatry Initial Evaluation", "author": "psychiatry", "date": "2022-06-02T10:30",
+             "body": "OUTSIDE PSYCHIATRY GROUP\nInitial psychiatric evaluation, 5/27/2022\nRe: Paige Howland, DOB 6/28/1995\nReferred by: primary care\n\nReason for evaluation: 26-year-old graduate student brought in by her parents, who describe roughly two years of withdrawal, talking under her breath when alone, and increasingly unusual beliefs.\n\nHistory: Per parents, she spends most of the day in her room. Paige herself describes a conviction that television news presenters are directing concealed messages at her, and that faculty in her department are taking her research ideas by way of \"electromagnetic readings.\" She reports voices that remark on what she is doing, heard when no one else is present. Mood: she describes stretches of feeling \"numb\" lasting weeks, with so little energy she skips showering and meals. Frequently hopeless. Has passing thoughts about death; no intent, plan or preparatory acts. Denies any period of elevated mood, decreased need for sleep or impulsive behavior.\n\nPast psychiatric history: a depressive episode in college (2016), counseling only. Last year, a depressive episode of about three months in which the same voices and suspiciousness were present. Records reviewed show an inpatient psychiatric stay approximately six months ago at another hospital for auditory hallucinations and delusional thinking; at that time she reported no depressive or manic symptoms. She cannot recall being sent home on any medication, and the discharge paperwork was not available to us.\n\nMedical: none. Surgical: none. Medications: none. Allergies: NKDA.\nFamily history: mother with major depression; maternal aunt with bipolar disorder; maternal uncle with schizophrenia.\nSocial: graduate student, lives with a roommate. No alcohol, tobacco or drugs.\n\nMental status: appropriately dressed, cooperative, eye contact minimal. Speech at times tangential and hard to follow. Mood \"flat.\" Affect constricted. Thought content with referential and persecutory delusions as above. Endorses auditory hallucinations. Passive death wish without intent or plan. Insight limited, judgment fair.\n\nPhysical exam: within normal limits. Screening labs today (CBC, BMP, TSH) unremarkable.\n\nFormulation: psychotic symptoms present for more than two weeks without mood symptoms (the inpatient episode), alongside recurrent major depressive episodes with psychosis, now again depressed with psychosis.\nDiagnosis: Schizoaffective disorder, depressive type.\n\nRisk: chronic elevated risk given diagnosis and hopelessness; acute risk judged low today (no intent or plan, family support, future oriented about her degree). Safety plan completed with her and parents.\n\nPlan:\n1. Weekly individual psychotherapy, referral given.\n2. Medication options discussed at length. She prefers to hold off for now and start with therapy; we will revisit at each visit.\n3. Return in 3 months, sooner as needed. Crisis numbers provided.\n\nCopy to primary care."}
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "office_visit",
+          "start": "2022-06-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after psychiatry evaluation",
+          "state": {"weight_kg": 59.5},
+          "vitals": {"weight_kg": 59.5},
+          "measure": ["bp", "hr", "spo2"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 16}],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-06-21T14:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2022-06-21T14:45",
+             "body": "Seen after her psychiatry evaluation; their letter is in the chart. She came alone. She learned there that she was hospitalized last fall at another hospital; she had not told us and we never got records. Says she has been to two therapy sessions and likes the therapist. Not on medication, her choice for now, and psychiatry is following.\n\nShe describes low energy and not eating much. Down about 1.5 kg since 2019. Still hears a voice now and then, less when she's busy. Passive thoughts of death on bad days, no intent, no plan, no access to firearms. Parents check in daily.\n\nExam: thin, quiet, fair grooming. Vitals fine. Heart and lungs normal. Affect flat, answers brief but coherent today.\n\nPHQ-9: 16.\n\nA/P:\n1. Schizoaffective disorder, depressive type, per psychiatry. Agree with plan. Encouraged her to keep therapy weekly and to keep the medication conversation open with psychiatry. Safety plan reviewed, crisis line in her phone.\n2. Weight: small meals and a protein drink if she isn't eating; recheck at next visit.\nPhysical still owed; will fold it in next time. RTC 3 months or sooner."}
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "specialist_visit",
+          "start": "2022-08-23T10:00",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "conditions": [
+            {"label": "Body dysmorphic disorder", "icd10": "F45.22", "action": "diagnosed", "onset": "2022-02-01"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Psychiatry Follow-up", "author": "psychiatry", "date": "2022-08-29T15:10",
+             "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up visit, 8/23/2022\nRe: Paige Howland\n\nSeen three months after her initial evaluation. The main concern today is new to us: for about half a year she has been preoccupied with her nose, which she believes is grotesquely oversized and misshapen. She spends several hours a day examining it in mirrors and applies heavy makeup to hide it. No injury to the nose, no prior nasal surgery.\n\nShe continues weekly therapy. Psychotic symptoms present at a lower level; mood remains low. No suicidal intent or plan.\n\nMeds: none. Allergies: NKDA.\nFamily history: unchanged (maternal depression, bipolar disorder and schizophrenia in maternal relatives).\nSocial: graduate student, never smoker, no alcohol.\n\nExam: nose of normal size and shape, no deformity. Breathing comfortably. Remainder of the exam normal.\n\nAssessment:\n1. Body dysmorphic disorder, new.\n2. Schizoaffective disorder, depressive type.\n\nPlan: She asked for a referral to a plastic surgeon for rhinoplasty. I explained that cosmetic surgery does not relieve body dysmorphic disorder and often leaves people more distressed, so I am not making that referral. Recommended her therapist address the appearance concerns directly. Raised medication again; she will think about it. Return in about 8 weeks.\n\nCopy to primary care."}
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "portal_message",
+          "start": "2022-09-06T21:48",
+          "documents": [
+            {"type": "Patient Message", "title": "Referral question", "author": "patient", "date": "2022-09-06T21:48",
+             "body": "Hi, could you send a referral to a plastic surgeon? My psychiatrist won't do it. It's about my nose. I've thought about it a lot and it's what I want."},
+            {"type": "Patient Message", "title": "RE: Referral question", "author": "PCP", "date": "2022-09-07T12:30",
+             "body": "Hi Paige, thanks for asking me directly. I read your psychiatrist's letter, and I agree with them, so I'm not going to send that referral. Surgery doesn't usually take this kind of worry away, and it can make it worse. I know how much this weighs on you. Can you bring it to your therapist this week? I'm also glad to talk it over at your next visit."}
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:40",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-04T15:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-04T15:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-04T15:45"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2022-10-04T15:55",
+             "body": "Flu L arm, Pfizer bivalent R arm. Pt quiet, wearing a mask and hood, kept her face turned away. Tolerated both. Physical not yet rescheduled; gave her the front desk number."}
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "pharmacy",
+          "start": "2022-10-21T17:20",
+          "medications": [
+            {"drug": "sertraline 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "schizoaffective disorder, depressive type; prescribed by psychiatry"}
+          ],
+          "documents": [
+            {"type": "Pharmacy Note", "title": "Fill notification", "author": "MA", "date": "2022-10-21T17:20",
+             "body": "Pharmacy fill history notice: sertraline 50 mg tablets #30, 1 daily, prescriber outside psychiatry, filled 10/21/22. Added to med list as outside prescription."}
+          ]
+        },
+        {
+          "id": "2022-11-11a",
+          "kind": "specialist_visit",
+          "start": "2022-11-11T11:00",
+          "service": "Psychiatry",
+          "reason": "sertraline follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Outpatient Psychiatry Follow-up", "author": "psychiatry", "date": "2022-11-17T09:40",
+             "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 11/11/2022\nRe: Paige Howland\n\nCheck-in three weeks after starting sertraline 50 mg daily for her depressive symptoms. She notices a lift in mood, is eating normally again and sleeping better. No nausea, GI upset, headache or other side effects.\n\nContinues weekly therapy. Mirror checking about the same. No suicidal thoughts this month.\n\nMeds: sertraline 50 mg daily. Allergies: NKDA.\nFamily and social history unchanged.\n\nAssessment: schizoaffective disorder, depressive type, early response to sertraline. Body dysmorphic disorder.\nPlan: continue sertraline 50 mg daily. Therapy weekly. Return in 3 months.\n\nCopy to primary care."}
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "annual_physical",
+          "start": "2023-03-07T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 61.5},
+          "vitals": {"weight_kg": 61.5},
+          "measure": ["bp", "hr", "spo2"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 7}],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2023-03-07T09:45", "issued": "2023-03-13T14:00", "text": "Specimen satisfactory for evaluation. Transformation zone present. Negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-03-07T09:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-03-07T10:10",
+             "body": "Physical, last one 2021. Since the fall she has been on sertraline 50 from psychiatry and in weekly therapy. Mood is better, back to working on her thesis a few hours a day. Still worries about her nose but says she is \"trying not to look.\" Voices rare. No side effects from sertraline.\n\nWeight back up to 61.5.\n\nExam: well groomed, better eye contact than last summer. HEENT normal. Heart RRR. Lungs clear. Abdomen soft. Pelvic normal, Pap taken. Skin without lesions. Affect mildly constricted, thought process linear.\n\nPHQ-9 7.\n\nMeds: sertraline 50 mg daily (psychiatry). NKDA.\n\nA/P:\n- Schizoaffective disorder, depressive type, and BDD: improving on sertraline, followed by psychiatry and therapy.\n- Pap today.\n- Vaccines current.\n- Physical next year."}
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "portal_message",
+          "start": "2023-03-14T08:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "PCP", "date": "2023-03-14T08:50",
+             "body": "Pap normal. Good to see you looking more like yourself."}
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "specialist_visit",
+          "start": "2023-06-13T10:30",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {"type": "Consult Note", "title": "Psychiatry Follow-up", "author": "psychiatry", "date": "2023-06-19T13:00",
+             "body": "OUTSIDE PSYCHIATRY GROUP\nMedication management, 6/13/2023\nRe: Paige Howland\n\nStable. Mood reasonably steady, attending therapy every week. Denies hearing voices since winter; no referential thinking described today. Appearance concerns persist but she spends less time at the mirror. No suicidal thoughts. Tolerating sertraline 50 mg daily without side effects.\n\nMSE: casually dressed, calm, cooperative, linear. Mood \"okay.\" No psychotic content elicited.\n\nPlan: continue sertraline 50 mg daily and weekly therapy. Follow up in 6 months.\n\nCopy to primary care."}
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:20",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-10T16:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-10T16:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-10T16:25"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccines", "author": "RN", "date": "2023-10-10T16:35",
+             "body": "Seasonal flu and 2023-24 COVID given, one each arm. No issues. Pt chatty today, talked about her teaching assistant job."}
+          ]
+        }
+      ]
+    }
+  ]
+}

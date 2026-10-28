@@ -1,0 +1,840 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002264",
+   "events": [
+    {
+     "id": "2022-01-11a",
+     "kind": "telephone",
+     "start": "2022-01-11T14:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill and scheduling",
+       "author": "MA",
+       "date": "2022-01-11T14:20",
+       "body": "Mail-order pharmacy requested HCTZ 25 mg #90; sent. Pt reminded he is overdue for his BP recheck; booked 2/23. He says home numbers are \"mostly 150s on top.\" Asked him to bring the log."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-23a",
+     "kind": "office_visit",
+     "start": "2022-02-23T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Blood pressure recheck",
+     "state": {
+      "bp": [
+       168,
+       94
+      ]
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2022-02-23T10:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "echo-2022",
+       "action": "placed",
+       "order": "Transthoracic echocardiogram",
+       "category": "imaging",
+       "reason": "Uncontrolled hypertension, assess LV"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-02-23T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-02-23T10:55",
+       "body": "BP recheck. Brought a neat log in graph paper (former math teacher): mornings 150-170 systolic over the past month, evenings a bit lower. No headache, chest pain, vision change or SOB. Taking HCTZ daily. No salt shaker at home but likes canned soup.\nAdrenal: same hydrocortisone and fludrocortisone doses, no dizziness.\n\nBP 168/94 here, repeat similar. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\nHTN, not controlled on HCTZ alone; fludrocortisone likely contributes but he needs it. Echo to look at the LV before we add a second agent. BMP. Lower-sodium soups. Back in 2 months with the log; will add a second drug then if still up."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       168,
+       94
+      ]
+     }
+    },
+    {
+     "id": "2022-03-08a",
+     "kind": "imaging",
+     "start": "2022-03-08T13:00",
+     "service": "Outside cardiac imaging",
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2022-03-08T13:00",
+       "text": "Complete transthoracic echocardiogram. Left ventricle normal in size with normal wall thickness and normal systolic function; estimated ejection fraction 60%. No regional wall motion abnormality. Right ventricle normal size and function. Atria normal size. Valves structurally normal without significant stenosis or regurgitation. No pericardial effusion. IVC normal with normal respiratory variation.",
+       "conclusion": "Normal left ventricular size and function, EF 60%. Normal study."
+      }
+     ],
+     "orders": [
+      {
+       "id": "echo-2022",
+       "action": "done",
+       "date": "2022-03-08T13:00"
+      }
+     ]
+    },
+    {
+     "id": "2022-03-10a",
+     "kind": "portal_message",
+     "start": "2022-03-10T17:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Echo result",
+       "author": "PCP",
+       "date": "2022-03-10T17:20",
+       "body": "Your heart ultrasound is normal: good pumping function and normal heart walls. Keep the log going and we'll decide on a second blood pressure medicine at your April visit."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-08a",
+     "kind": "portal_message",
+     "start": "2022-04-08T09:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Home readings",
+       "author": "patient",
+       "date": "2022-04-08T09:30",
+       "body": "Readings for the last 3 weeks: morning average 163/91, evening average 152/86 (n=21 each). Cutting back on the soup has not moved the needle much. See you on the 26th."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Home readings",
+       "author": "PCP",
+       "date": "2022-04-08T12:05",
+       "body": "Thanks for the averages, very useful. That is still too high; we'll plan on adding a medicine on the 26th."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-26a",
+     "kind": "office_visit",
+     "start": "2022-04-26T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hypertension follow-up",
+     "state": {
+      "bp": [
+       166,
+       92
+      ]
+     },
+     "measure": [
+      "hr",
+      "weight_kg"
+     ],
+     "medications": [
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "start",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Hypertension"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-04-26T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-04-26T15:30",
+       "body": "HTN f/u. Home averages as messaged, 150s-160s. Feels fine. Echo normal.\nBP 166/92 today.\nNo edema, lungs clear.\n\nA/P\nHTN uncontrolled on HCTZ 25. Adding amlodipine 5 mg daily. Holding off on an ACE inhibitor or ARB for now with the fludrocortisone and potassium in mind. Ankle swelling is a known side effect, told him to mention it. Continue HCTZ. Recheck 6 weeks."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       166,
+       92
+      ]
+     }
+    },
+    {
+     "id": "2022-06-07a",
+     "kind": "office_visit",
+     "start": "2022-06-07T09:45",
+     "end": "2022-06-07T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Ankle swelling",
+     "state": {
+      "bp": [
+       132,
+       80
+      ],
+      "weight_kg": 80.0
+     },
+     "measure": [
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c"
+     ],
+     "conditions": [
+      {
+       "label": "Calcium channel blocker-induced peripheral edema",
+       "icd10": "R60.0",
+       "action": "diagnosed",
+       "onset": "2022-05-10"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-06-07T10:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-06-07T10:20",
+       "results": [
+        {
+         "test": "B-type natriuretic peptide",
+         "loinc": "30934-4",
+         "unit": "pg/mL",
+         "value": 42
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-06-07T10:05",
+       "text": "Normal sinus rhythm. Normal axis and intervals. No ST or T wave changes. No prior for comparison in this office.",
+       "conclusion": "Normal sinus rhythm. Normal ECG."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2022-06-07T10:05"
+      },
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-06-07T09:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2022-06-07T10:35",
+       "body": "74 yo M with primary adrenal insufficiency and recurrent BPH, here 6 weeks after amlodipine was added to HCTZ.\nBP response is good: home systolics now about 130, down from the 160s; 132 here (was 168 in Feb). Feels better overall.\nBut both ankles swell, painless, starting a couple of weeks after the new pill. Worse by evening, a little better in the morning. Socks leave marks.\nNo shortness of breath, chest pain, orthopnea or PND. No NSAIDs, and no steroids other than his replacement hydrocortisone/fludrocortisone at the usual doses.\nMeds: amlodipine 5, HCTZ 25, ASA 81, hydrocortisone 20/10, fludrocortisone 0.1, tamsulosin 0.4, quetiapine 200 qhs, acetaminophen prn.\n\nVitals otherwise normal. JVP not elevated. Heart RRR, no murmur or gallop. Lungs clear. Abdomen soft, no liver edge, no fluid wave. 2+ pitting edema both legs to above the ankles, symmetric, calves soft and nontender.\nECG in office: NSR, normal.\nEcho from March reviewed: normal LV function.\n\nA/P\nBilateral ankle edema, timing and pattern fit amlodipine (dihydropyridine effect), not heart failure: JVP, lungs and March echo normal. Checking CMP (kidneys, albumin) and BNP today.\nPlan discussed: he doesn't want to give up the first real BP control he's had, and the swelling doesn't bother him much. Keep amlodipine 5, elevate legs in the evening, knee-high compression stockings (light). Re-evaluate at the wellness visit; if worse we'll switch agents.\nHTN - improved on two agents."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       132,
+       80
+      ],
+      "weight_kg": 80.0
+     }
+    },
+    {
+     "id": "2022-06-09a",
+     "kind": "portal_message",
+     "start": "2022-06-09T13:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2022-06-09T13:10",
+       "body": "Your kidney function, protein level (albumin) and the heart strain test (BNP 42, normal) all came back normal. That fits the swelling being from amlodipine and not from the heart or kidneys. Stockings and leg elevation as we discussed."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-02a",
+     "kind": "telephone",
+     "start": "2022-08-02T11:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill",
+       "author": "MA",
+       "date": "2022-08-02T11:00",
+       "body": "Mail order asked for a 90-day amlodipine 5 mg script with refills now that he's staying on it. Sent #90 x3. Pt says ankles \"about the same, the stockings are a chore in July.\""
+      }
+     ]
+    },
+    {
+     "id": "2022-09-30a",
+     "kind": "annual_physical",
+     "start": "2022-09-30T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "state": {
+      "bp": [
+       134,
+       80
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-09-30T11:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-09-30T11:45",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-09-30T11:45",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-09-30T11:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-09-30T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-09-30T11:50",
+       "body": "AWV.\nBP controlled at home, 120s-130s. Ankles still puff by evening, wears stockings most days, no worse. Urinary stream fine on tamsulosin. Endocrinology saw him in the spring (his report), same doses. Psychiatry stable.\nNo falls. Independent. Daughter visits twice a week.\nPHQ-2 0. Recall 3/3.\n\nBP as charted. Trace to 1+ ankle edema both sides, calves soft. Heart and lungs normal.\n\nA/P\nHTN controlled on amlodipine + HCTZ.\nAmlodipine edema - stable, tolerated, continue measures.\nAdrenal insufficiency, recurrent BPH, schizophrenia - stable.\nAnnual labs. Flu and bivalent COVID next month. RTC spring."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "nurse_visit",
+     "start": "2022-10-18T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-18T09:25"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T09:30"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T09:25"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2022-10-18T09:45",
+       "body": "Flu (high-dose) L arm, bivalent COVID R arm. Tolerated. He keeps the extra hydrocortisone at home for sick days and knows when to use it."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-25a",
+     "kind": "portal_message",
+     "start": "2022-10-25T20:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Swelling question",
+       "author": "patient",
+       "date": "2022-10-25T20:15",
+       "body": "Ankles are the same as always. Is it all right to skip the stockings on days I'm not going out? They take me ten minutes to get on."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Swelling question",
+       "author": "PCP",
+       "date": "2022-10-25T22:00",
+       "body": "Yes, on home days putting your feet up in the afternoon works fine. Wear them when you'll be on your feet a lot. Let us know if one leg ever swells more than the other or gets painful."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-24a",
+     "kind": "telephone",
+     "start": "2023-01-24T10:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill routing",
+       "author": "MA",
+       "date": "2023-01-24T10:05",
+       "body": "Pharmacy faxed a fludrocortisone refill request to us by mistake; prescriber is endocrinology. Called endocrinology's office, they will send it today. Pt aware; has 6 days left."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-13a",
+     "kind": "office_visit",
+     "start": "2023-03-13T13:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Hypertension and adrenal follow-up",
+     "state": {
+      "bp": [
+       136,
+       80
+      ]
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-03-13T14:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-03-13T13:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-03-13T14:15",
+       "body": "Routine f/u. Quiet winter. BP log in range. Ankles unchanged with stockings. Voiding fine. No dizziness on standing. Takes hydrocortisone on schedule; hasn't needed sick-day doses this winter.\nBP as charted. 1+ ankle edema, same. Lungs clear, heart regular.\nA/P: HTN controlled. Adrenal insufficiency stable - BMP. Edema stable. RTC fall AWV, sooner prn."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-20a",
+     "kind": "office_visit",
+     "start": "2023-04-20T11:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Bruising on arms",
+     "measure": [
+      "bp",
+      "hr",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-20T12:00",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2023-04-20T12:00",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-ref-2023",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "Recurrent purple patches on hands and forearms"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-04-20T11:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2023-04-20T12:05",
+       "body": "Here with his daughter, who scheduled the visit. Over the past few months purple patches keep appearing on the backs of his hands and forearms after small knocks (car door, kitchen cabinet). Each fades over weeks. Not painful or itchy. No nosebleeds, gum bleeding, blood in urine or stool. On aspirin 81. No new meds.\n\nVitals as charted. Several flat purple patches, non-blanching, on the dorsal hands and extensor forearms, various ages. No petechiae elsewhere. No LAD, no spleen tip.\n\nA/P\nBruising on sun-exposed, thin forearm skin - likely benign age-related fragility, possibly with his steroid replacement and aspirin, but checking CBC with platelets and PT/INR first. Daughter would like a dermatologist to look; referral placed and labs will go with it."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-24a",
+     "kind": "portal_message",
+     "start": "2023-04-24T08:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Blood count and clotting",
+       "author": "PCP",
+       "date": "2023-04-24T08:40",
+       "body": "Blood count, platelets and clotting test are all normal, so there is no bleeding disorder behind the bruises. I've sent the results to dermatology with the referral."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-05a",
+     "kind": "specialist_visit",
+     "start": "2023-06-05T14:00",
+     "service": "Dermatology",
+     "reason": "Purple patches after minor trauma",
+     "conditions": [
+      {
+       "label": "Senile purpura",
+       "icd10": "D69.2",
+       "action": "diagnosed",
+       "onset": "2022-12-01"
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-ref-2023",
+       "action": "done",
+       "date": "2023-06-05T14:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office consultation, comprehensive",
+       "performed": "2023-06-05T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology consultation",
+       "author": "dermatology",
+       "date": "2023-07-11T09:15",
+       "body": "Dermatology clinic note, visit 06/05/2023 (received 07/11/2023).\n\n75 y/o man with primary adrenal insufficiency since 2020, accompanied by his daughter. Several months of purple patches that come up after trivial bumps and fade over weeks to months. No pain, pruritus or bleeding.\nMeds per referral: hydrochlorothiazide, amlodipine, hydrocortisone, fludrocortisone, tamsulosin, quetiapine, aspirin 81. NKDA.\n\nExam: several non-blanching violaceous ecchymoses over the extensor hands and forearms, no warmth, edema or tenderness. Remainder of the skin exam unremarkable.\nLabs from referring office: CBC, coagulation studies and platelet count normal.\n\nImpression: senile (actinic) purpura.\nPlan: reassurance; long sleeves or forearm sleeves for protection, emollient for dry skin. No further workup. Follow up as needed."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-06a",
+     "kind": "portal_message",
+     "start": "2023-06-06T19:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Dermatology visit",
+       "author": "patient",
+       "date": "2023-06-06T19:30",
+       "body": "This is his daughter writing on Dad's account. The skin doctor said the bruises are 'senile purpura', thin skin from age and sun, nothing dangerous, no treatment needed. She said to keep his arms covered. Just letting you know. Should he stop the baby aspirin?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Dermatology visit",
+       "author": "PCP",
+       "date": "2023-06-06T21:05",
+       "body": "Thanks for the update, that matches what we thought. No need to change any medicines for this; arm sleeves are a good idea. We'll look for the dermatology letter."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-28a",
+     "kind": "annual_physical",
+     "start": "2023-09-28T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-09-28T11:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Albumin"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-09-28T11:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-28T11:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-09-28T11:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-09-28T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-09-28T11:20",
+       "body": "AWV.\nDermatology letter in: senile purpura, reassurance. Wearing sleeves.\nBP fine at home. Ankles same. Voiding fine. Endocrinology yearly in spring, unchanged. Psychiatry unchanged.\nNo falls. Stopped driving at night. Independent.\nPHQ-2 0. Recall 3/3, clock normal.\n\nVitals as charted. Scattered purpura on the forearms. 1+ ankle edema. Heart and lungs normal.\n\nPlan: annual labs. Flu and updated COVID with nurse in October. RSV vaccine recommended at 75+, he'll get it at the pharmacy. Tdap due next year. RTC winter."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-17a",
+     "kind": "nurse_visit",
+     "start": "2023-10-17T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Influenza and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-17T09:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-17T09:10"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-17T09:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2023-10-17T09:25",
+       "body": "Flu L deltoid, 2023-24 COVID R deltoid. Bandage over a small bruise on the R arm from the stick, pressure held a little longer. Fine."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-31a",
+     "kind": "pharmacy",
+     "start": "2023-10-31T14:30",
+     "immunizations": [
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-10-31T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy vaccine notification",
+       "author": "pharmacy",
+       "date": "2023-10-31T15:00",
+       "body": "RSV vaccine (adjuvanted), single dose, administered at community pharmacy, left deltoid."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,319 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002151",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "nurse_visit",
+          "start": "2024-01-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-01-16T14:05"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-01-16T14:05"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2024-01-16T14:00",
+              "body": "Shingrix #2 given L deltoid. Says the first one made his arm ache and he felt run down for a day and a half, ok with getting the second anyway. Series now complete. Observed, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "pharmacy",
+          "start": "2024-02-20T09:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: methotrexate, folic acid",
+              "author": "MA",
+              "date": "2024-02-20T09:30",
+              "body": "eRx refill request from pharmacy, methotrexate 2.5 mg #24 and folic acid 1 mg #90. Rheum is the usual prescriber for MTX but pt asked us since his rheum refill lapsed. December CBC/CMP normal. Routed to PCP: approved x1 each, pt told to ask rheum for future MTX refills."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "office_visit",
+          "start": "2024-03-19T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hand pain worse",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-03-19T15:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-03-19T15:50", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "orders": [
+            {"id": "rheum-2024", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "RA flaring on methotrexate, asking for an earlier visit"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-03-19T15:20"},
+            {"procedure": "Venipuncture", "performed": "2024-03-19T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-03-19T15:20",
+              "body": "CC: hands worse.\n\nOver the last two or three months the stiffness in his hands and wrists has been lasting longer, two hours some mornings, loosening up by early afternoon. Trouble with buttons and the coffee pot. No new joints beyond hands/wrists. Taking MTX faithfully. Next rheum appt isn't until late June.\n\nExam: Tender and swollen MCPs and PIPs on both hands, worst R 2nd/3rd MCP. Wrists tender at extremes. Lungs clear. No rash.\n\nA/P: RA, not controlled on MTX 15 + pred 5. This is rheum's decision on escalation. Sent referral/message asking them to move his visit up. Not adjusting prednisone myself. Monitoring labs today. Tylenol as needed is fine. Remains off tobacco and alcohol.\n\nRTC after rheum visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "specialist_visit",
+          "start": "2024-06-10T13:00",
+          "service": "Rheumatology",
+          "reason": "worsening hand and wrist pain and stiffness",
+          "labs": [
+            {"panel": null, "collected": "2024-06-10T13:45", "results": [{"test": "Erythrocyte Sedimentation Rate", "value": 48}, {"test": "C Reactive Protein", "value": 31}]}
+          ],
+          "reports": [
+            {
+              "study": "Hand X-ray",
+              "performed": "2024-06-10T14:00",
+              "text": "BILATERAL HANDS AND WRISTS, 3 VIEWS EACH\nIndication: Rheumatoid arthritis, worsening symptoms.\nFindings: Periarticular osteopenia at the MCP joints bilaterally. Marginal erosions at several MCP joints of both hands. Joint spaces otherwise preserved. No fracture. No soft-tissue calcification.",
+              "conclusion": "Erosive changes consistent with rheumatoid arthritis."
+            }
+          ],
+          "medications": [
+            {"drug_text": "1 ML etanercept 50 MG/ML Prefilled Syringe", "action": "historical", "sig": "Inject 50 mg under the skin once weekly", "dose": {"value": 50, "unit": "mg"}, "frequency": "WEEKLY", "route": "Subcutaneous", "course": "chronic", "reason": "rheumatoid arthritis, prescribed by rheumatology"}
+          ],
+          "orders": [
+            {"id": "rheum-2024", "action": "done", "date": "2024-06-10T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "author": "rheumatology",
+              "date": "2024-06-14T10:20",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nVisit date: 06/10/2024\nRe: Craig Roy, DOB 05/19/1970\n\nDear colleague,\n\nThanks for your note in March. Mr. Roy returns with escalating pain and stiffness in both hands and wrists. Mornings are the worst and he improves gradually as the day goes on.\n\nExam: tenderness and swelling across multiple MCP and PIP joints on both sides.\n\nLabs today: ESR 48 mm/h, CRP 31 mg/L.\nHand radiographs today: marginal MCP erosions with periarticular osteopenia, consistent with erosive RA.\n\nCurrent medications: methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily, calcium carbonate 600 mg twice daily, vitamin D3 2000 IU daily.\nAllergies: NKDA.\nHistory: pulmonary TB treated in the early 2000s; asbestos exposure; former smoker; alcohol use disorder in remission.\n\nAssessment: active seropositive erosive RA despite methotrexate.\nPlan: we discussed adding a TNF inhibitor and he agreed. Etanercept 50 mg subcutaneous weekly, in addition to methotrexate. Injection teaching done here; specialty pharmacy will ship and he plans his first dose next week. Continue prednisone 5 mg for now. Follow up in 3 months.\n\nSincerely,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "portal_message",
+          "start": "2024-06-20T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New shot from rheumatology",
+              "author": "patient",
+              "date": "2024-06-20T19:12",
+              "body": "Rheumatology started me on Enbrel, did my first shot Monday. The leaflet says a lot about infections. Anything I should watch for with you guys?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: New shot from rheumatology",
+              "author": "PCP",
+              "date": "2024-06-21T08:30",
+              "body": "Hi Craig, I saw their letter. The main thing is that it lowers your defenses a bit, so call us for a fever, a cough that won't quit, night sweats or a wound that isn't healing, rather than waiting it out. Your vaccines are up to date. Hope it helps the hands."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-09a",
+          "kind": "hospital_admission",
+          "start": "2024-08-09T17:40",
+          "end": "2024-08-17T12:30",
+          "service": "Internal Medicine",
+          "reason": "fever, night sweats, weight loss, productive cough",
+          "conditions": [
+            {"label": "Tuberculosis of lung", "icd10": "A15.0", "action": "diagnosed", "onset": "2024-07-15", "note": "recurrent, cavitary, on etanercept"}
+          ],
+          "medications": [
+            {"drug_text": "1 ML etanercept 50 MG/ML Prefilled Syringe", "action": "stop", "reason": "active tuberculosis"},
+            {"drug_text": "isoniazid 300 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily (directly observed)", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pulmonary tuberculosis, TB program"},
+            {"drug_text": "rifampin 300 MG Oral Capsule", "action": "historical", "sig": "Take 2 capsules (600 mg) by mouth daily (directly observed)", "dose": {"value": 600, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pulmonary tuberculosis, TB program"},
+            {"drug_text": "pyrazinamide 500 MG Oral Tablet", "action": "historical", "sig": "Take 4 tablets (2000 mg) by mouth daily (directly observed)", "dose": {"value": 2000, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pulmonary tuberculosis, TB program"},
+            {"drug_text": "ethambutol hydrochloride 400 MG Oral Tablet", "action": "historical", "sig": "Take 4 tablets (1600 mg) by mouth daily (directly observed)", "dose": {"value": 1600, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pulmonary tuberculosis, TB program"},
+            {"drug_text": "vitamin B6 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily with isoniazid", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "neuropathy prevention on isoniazid"}
+          ],
+          "state": {"weight_kg": 107.7},
+          "vitals": [
+            {"time": "2024-08-09T17:50", "temp_c": 38.6, "hr": 102, "rr": 22, "bp": [128, 76], "spo2": 94, "weight_kg": 107.7},
+            {"time": "2024-08-17T08:00", "temp_c": 37.0, "hr": 84, "rr": 16, "bp": [122, 74], "spo2": 96}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-08-09T18:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-09T18:20", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": null, "collected": "2024-08-09T18:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-08-09T21:00", "results": [{"test": "Microscopic observation in Sputum by Acid fast stain", "loinc": "11477-7", "text": "Acid-fast bacilli seen (2+), specimen 1 of 3; specimens 2 and 3 also positive"}]},
+            {"panel": null, "collected": "2024-08-09T21:00", "resulted": "2024-08-10T11:00", "results": [{"test": "Mycobacterium tuberculosis complex DNA in Specimen by NAA", "loinc": "38379-4", "text": "Detected. rpoB mutation (rifampin resistance) not detected."}]}
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-08-09T18:05",
+              "text": "CHEST, PA AND LATERAL\nIndication: Fever, cough, weight loss; on TNF inhibitor; prior TB.\nFindings: Patchy airspace opacities in both lungs, predominantly in the upper lobes. Thick-walled cavity in the right upper lobe measuring 3.2 cm. No pleural effusion. No pneumothorax. Heart size normal. Mediastinal contours normal.",
+              "conclusion": "Bilateral upper-lobe-predominant airspace disease with right upper lobe cavitation, concerning for active tuberculosis."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Initial hospital inpatient care", "performed": "2024-08-09T20:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2024-08-17T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospitalist",
+              "date": "2024-08-19T08:45",
+              "body": "REGIONAL HOSPITAL - MEDICINE SERVICE\nAdmitted 08/09/2024, discharged 08/17/2024\nPatient: Craig Roy, 54 M\n\nPrincipal diagnosis: Pulmonary tuberculosis, recurrent, smear positive, with right upper lobe cavity.\n\nHistory: 54-year-old man with seropositive erosive RA and pulmonary TB treated in the early 2000s, started on etanercept by his rheumatologist roughly eight weeks ago in addition to methotrexate and prednisone. He came in with three weeks of fevers, drenching night sweats, productive cough, weight loss and fatigue.\n\nOn arrival: T 38.6 C, HR 102, RR 22, BP 128/76, SpO2 94% on room air. Obese, BMI 34, weight 107.7 kg. Crackles throughout both lung fields.\n\nChest film: patchy bilateral upper-lobe opacities and a 3.2 cm thick-walled right upper lobe cavity.\n\nMicrobiology: sputum AFB smear positive on all three induced specimens. MTB complex PCR detected, no rifampin resistance mutation. Cultures pending at discharge. HIV Ag/Ab nonreactive.\n\nHospital course: placed in airborne isolation on arrival. Etanercept discontinued. Health department TB program notified. Four-drug therapy started 08/10: isoniazid 300 mg, rifampin 600 mg, pyrazinamide 2000 mg, ethambutol 1600 mg daily, with pyridoxine 50 mg. Tolerated without nausea or rash. Baseline liver tests normal. Fevers resolved by day 5. Methotrexate, folic acid and prednisone continued after discussion with his rheumatologist.\n\nDischarge medications: isoniazid 300 mg daily, rifampin 600 mg daily, pyrazinamide 2000 mg daily, ethambutol 1600 mg daily, pyridoxine 50 mg daily (all via TB program DOT); methotrexate 15 mg weekly; folic acid 1 mg daily; prednisone 5 mg daily; calcium carbonate 600 mg twice daily; vitamin D3 2000 IU daily.\nSTOPPED: etanercept.\nAllergies: NKDA.\n\nDisposition: home with home isolation until cleared by the TB program. DOT through the health department starts 08/18. Follow up with PCP within one week (video is fine while isolated) and with rheumatology."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T11:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from hospital case manager",
+              "author": "RN",
+              "date": "2024-08-12T11:10",
+              "body": "Case manager from the regional hospital called: our patient admitted 8/9 with active pulmonary TB, smear positive, in isolation, started on four-drug treatment. Health dept involved. Expected discharge later this week; they want a PCP follow-up within 7 days, video ok since he'll be on home isolation. Message to PCP. Will book once discharge date is known."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "telehealth_visit",
+          "start": "2024-08-22T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2024-08-22T11:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit - Post-discharge",
+              "author": "PCP",
+              "date": "2024-08-22T11:00",
+              "body": "Video, pt at home on home isolation per TB program. Identity verified.\n\nDischarged 8/17 after admission for recurrent pulmonary TB, cavitary, smear positive, about 8 weeks after starting etanercept. Discharge summary reviewed.\n\nNow: no fever since the hospital. Cough still there but less sputum. Sleeping through without soaking the sheets. Appetite coming back. Health dept nurse comes daily for DOT, has had no missed doses. Orange urine, knows it's the rifampin. No nausea, no yellowing, no rash, no vision change.\n\nMeds reconciled: INH 300, rifampin 600, PZA 2000, ethambutol 1600, B6 50 daily via DOT; MTX 15 weekly; folate; pred 5; calcium; D3. Etanercept off.\n\nA/P:\n1. Pulmonary TB, recurrent, on RIPE via health dept. Agree with plan; they manage dosing and cultures. Reviewed liver warning signs and to stop drinking entirely (he already has). He asked whether the Enbrel caused this - told him it likely allowed old TB to wake up, and that rheumatology will need a non-TNF option later.\n2. RA on MTX/pred, biologic stopped. Rheum aware.\nIn-person visit once the TB program clears him from isolation. LFTs then."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-04a",
+          "kind": "specialist_visit",
+          "start": "2024-09-04T10:00",
+          "service": "Public Health TB Clinic",
+          "reason": "TB treatment follow-up",
+          "labs": [
+            {"panel": null, "collected": "2024-08-10T06:00", "resulted": "2024-09-03T14:00", "results": [{"test": "Mycobacterium sp identified in Sputum by Organism specific culture", "loinc": "539-7", "text": "Mycobacterium tuberculosis complex isolated. Susceptible to isoniazid, rifampin, pyrazinamide and ethambutol."}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2024-09-04T10:15", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Bilirubin, Total"}]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB program progress note",
+              "author": "public health TB clinic",
+              "date": "2024-09-10T13:30",
+              "body": "HEALTH DEPARTMENT TUBERCULOSIS PROGRAM\nClinic visit: 09/04/2024\nClient: Craig Roy, DOB 05/19/1970\n\nWeek 4 of intensive phase (INH/RIF/PZA/EMB daily by DOT, started 08/10/2024). DOT log complete, no missed doses. Afebrile, cough improving, gaining weight back. No visual complaints; color vision screen normal. No GI upset, no rash, no paresthesias.\n\nCulture from 08/10 sputum: M. tuberculosis complex, pan-susceptible (INH, RIF, PZA, EMB).\nLFTs today within normal limits.\n\nPlan: continue four drugs to complete 8 weeks, then repeat sputum culture. Home isolation released 09/04 after three consecutive negative smears.\n\nTB nurse case manager, county health department"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "office_visit",
+          "start": "2024-10-08T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after TB admission",
+          "state": {"weight_kg": 108.6},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-08T10:05", "results": [{"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-08T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T10:15"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T10:17"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-10-08T09:40"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T10:15"},
+            {"procedure": "Venipuncture", "performed": "2024-10-08T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-10-08T09:40",
+              "body": "First in-person visit since the TB admission. Cleared from isolation by health dept in early September.\n\nFeels much better. No fevers or sweats for over a month. Cough occasional, dry. Weight up about a kilo from the hospital. DOT daily, nothing missed. Finishing the 8 weeks of four drugs this week; TB clinic sent the 2-month sputum last week.\n\nHands: stiff without the Enbrel but tolerable on MTX + pred. Rheum visit end of the month.\n\nExam: afebrile, vitals as charted. Lungs: few faint crackles R upper field, otherwise clear. No jaundice. No rash. MCPs puffy.\n\nA/P:\n1. Pulmonary TB on treatment, improving. CMP for LFTs on INH/RIF/PZA plus MTX. TB clinic owns dosing.\n2. RA - per rheum. CBC today.\n3. Flu and COVID today.\n4. Still abstinent from alcohol and tobacco.\nRTC early November."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "specialist_visit",
+          "start": "2024-10-10T10:30",
+          "service": "Public Health TB Clinic",
+          "reason": "end of intensive phase",
+          "labs": [
+            {"panel": null, "collected": "2024-10-01T06:15", "resulted": "2024-10-09T15:00", "results": [{"test": "Mycobacterium sp identified in Sputum by Organism specific culture", "loinc": "539-7", "text": "No mycobacteria isolated."}]}
+          ],
+          "medications": [
+            {"drug_text": "pyrazinamide 500 MG Oral Tablet", "action": "stop", "reason": "intensive phase complete"},
+            {"drug_text": "ethambutol hydrochloride 400 MG Oral Tablet", "action": "stop", "reason": "intensive phase complete"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "TB program letter",
+              "author": "public health TB clinic",
+              "date": "2024-10-15T09:10",
+              "body": "HEALTH DEPARTMENT TUBERCULOSIS PROGRAM\nClinic visit: 10/10/2024\nClient: Craig Roy, DOB 05/19/1970\n\nIntensive phase complete (8 weeks, 56 DOT doses). Two-month sputum culture collected 10/01/2024: negative. Isolate pan-susceptible.\n\nChanges: pyrazinamide and ethambutol stopped 10/10/2024. Continuation phase: isoniazid 300 mg, rifampin 600 mg and pyridoxine 50 mg daily by DOT for four months, planned end date 02/10/2025.\n\nPlease forward any LFTs drawn at your office. Thank you.\nTB nurse case manager, county health department"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "specialist_visit",
+          "start": "2024-10-31T14:00",
+          "service": "Rheumatology",
+          "reason": "RA follow-up after TB",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "author": "rheumatology",
+              "date": "2024-11-05T11:40",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nVisit date: 10/31/2024\nRe: Craig Roy, DOB 05/19/1970\n\nDear colleague,\n\nMr. Roy is seen after his hospitalization for reactivated pulmonary tuberculosis that developed on etanercept, which was stopped in August. He is in the continuation phase of treatment with the health department.\n\nToday he has active synovitis at the MCPs and wrists. We are continuing methotrexate 15 mg weekly with folic acid and prednisone 5 mg daily. No biologic will be given until his TB treatment is finished. At that point my plan is rituximab, which carries less TB risk than TNF blockade, after hepatitis B screening.\n\nFollow up in early 2025.\n\nSincerely,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "office_visit",
+          "start": "2024-11-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "author": "front desk",
+              "date": "2024-11-11T15:25",
+              "body": "Pt called to cancel tomorrow's 10:00, his ride fell through. Says he feels fine. Rebooked for January."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

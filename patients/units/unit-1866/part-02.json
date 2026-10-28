@@ -1,0 +1,200 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001866",
+      "events": [
+        {
+          "id": "2025-02-03a",
+          "kind": "telephone",
+          "start": "2025-02-03T07:05",
+          "reason": "urinary symptoms",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Same-day request",
+              "author": "RN",
+              "date": "2025-02-03T07:05",
+              "body": "Pt calling before work. Two days of burning, frequency and lower belly ache, says it feels exactly like November. No fever, no back pain, no vomiting. Not pregnant per pt, period was a couple weeks ago. Offered 12:40 (her lunch block); accepted. Asked her to bring a urine sample or come in able to give one."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-03b",
+          "kind": "office_visit",
+          "start": "2025-02-03T12:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "dysuria, frequency, suprapubic pain",
+          "conditions": [
+            {"label": "Acute cystitis without hematuria", "action": "diagnosed", "onset": "2025-02-01"}
+          ],
+          "medications": [
+            {"drug": "nitrofurantoin, macrocrystals 25 MG / nitrofurantoin, monohydrate 75 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule by mouth twice daily with food for 5 days", "dose": {"value": 100, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "acute cystitis"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Urinalysis", "collected": "2025-02-03T12:45", "results": [
+              {"test": "Urine Leukocyte Esterase", "text": "2+"},
+              {"test": "Urine Nitrite", "text": "Positive"},
+              {"test": "Urine Blood", "text": "Negative"},
+              {"test": "Urine White Blood Cells", "value": 35},
+              {"test": "Urine Red Blood Cells", "value": 2}
+            ]},
+            {"panel": null, "collected": "2025-02-03T12:45", "results": [
+              {"test": "Bacteria in Urine sediment by Microscopy high power field", "loinc": "5769-5", "text": "Many"}
+            ]},
+            {"panel": null, "collected": "2025-02-03T12:45", "resulted": "2025-02-05T08:40", "results": [
+              {"test": "Urine Culture", "text": "Escherichia coli, 50,000-100,000 CFU/mL. Susceptible to nitrofurantoin."}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-02-03T12:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit - Urinary Symptoms",
+              "author": "PCP",
+              "date": "2025-02-03T13:20",
+              "body": "27 y/o F with recurrent UTIs.\n\nHPI: Since Saturday, painful urination, frequency and a dull ache above the pubic bone. By her count this is the third bout in about a year: April (urgent care), November here (culture E. coli, treated with nitrofurantoin), and now. No fever, rigors or flank pain. Denies discharge, genital lesions, or any new partner; same partner, condoms used inconsistently. LMP about two weeks ago, normal.\n\nMeds: none. NKDA.\n\nExam: vitals normal (see flowsheet). Nontoxic. Abdomen soft, tender suprapubically, no rebound. No CVA tenderness.\n\nUA today: LE 2+, nitrite +, blood neg; WBC 35/hpf, RBC 2/hpf, many bacteria.\n\nAssessment: acute cystitis, recurrent pattern. Prior culture E. coli sensitive to nitrofurantoin.\n\nPlan:\n- Nitrofurantoin 100 mg twice daily x 5 days.\n- Urine culture sent; will adjust if resistant.\n- Hydration, void after intercourse.\n- Call for fever, flank pain, vomiting, or no improvement in 2 days."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-05a",
+          "kind": "portal_message",
+          "start": "2025-02-05T11:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Culture back",
+              "author": "PCP",
+              "date": "2025-02-05T11:30",
+              "body": "Culture grew E. coli again, sensitive to what you're taking. Keep going through the full course. How are the symptoms?"
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "portal_message",
+          "start": "2025-02-10T16:48",
+          "conditions": [
+            {"label": "Acute cystitis without hematuria", "action": "resolved"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: Culture back",
+              "author": "patient",
+              "date": "2025-02-10T16:48",
+              "body": "Totally fine now, done with the antibiotic yesterday. Thanks."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scheduling",
+              "author": "patient",
+              "date": "2025-08-25T20:14",
+              "body": "Is it time for my yearly checkup? Kids come back next week so anything after 3:15 works best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Scheduling",
+              "author": "front desk",
+              "date": "2025-08-26T09:02",
+              "body": "Yes, you're due. You're booked Monday 9/8 at 3:30. No fasting needed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-08a",
+          "kind": "annual_physical",
+          "start": "2025-09-08T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2025-09-08T16:05"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-08T15:30"},
+            {"procedure": "Immunization administration", "performed": "2025-09-08T16:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-09-08T16:15",
+              "body": "Annual exam. 28 y/o teacher, school year just started, feels good.\n\nInterval: no UTIs since the February episode. No urinary symptoms now. No other illnesses, no ED or urgent care visits.\n\nMeds: none. Allergies: NKDA.\nSocial unchanged: never smoker, 1-2 drinks a month, same partner.\nPHQ-2 = 0.\n\nROS otherwise negative.\n\nExam: BP and vitals on flowsheet, normal. Weight steady. Eyes, ears, throat normal. No lymphadenopathy, thyroid normal. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no masses. Extremities normal. Skin: no worrisome lesions. Neuro grossly intact.\n\nAssessment and plan:\n- Recurrent UTIs: quiet since February. Same-day visits with a urine sample remain the plan if symptoms recur.\n- Last Tdap 2009 per old records: Tdap given today.\n- Pap from 2023 normal, due next year.\n- Labs from last fall all normal; nothing needed today.\n- Flu and COVID vaccines in October at a nurse visit.\nFollow up next year."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "pharmacy",
+          "start": "2025-10-14T08:20",
+          "medications": [
+            {"drug_text": "metronidazole 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 7 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "prescribed by outside gynecology"}
+          ],
+          "documents": [
+            {
+              "type": "Medication History",
+              "title": "External fill history",
+              "author": "MA",
+              "date": "2025-10-14T08:20",
+              "body": "External prescription history import flagged a new fill: metronidazole 500 mg tablets, #14, 1 tab twice daily, filled 10/13/2025. Prescriber is an outside gynecologist. No visit note from that office on file. Added to med list as an outside short course; routing to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-21T15:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-21T15:47"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-21T15:45"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2025-10-21T16:00",
+              "body": "Here for flu and updated COVID shots. Feels well, afebrile. Asked about the metronidazole that showed up on her fill history: she went to her gynecologist last week for discharge with an odor and was told it was a bacterial imbalance (BV). Finished the 7 days yesterday, avoided alcohol while on it, symptoms gone. No urinary symptoms.\n\nFlu (trivalent) IM L deltoid, COVID-19 updated mRNA IM R deltoid. VIS reviewed. Waited 15 minutes, no reaction.\n\nRecords request faxed to the gynecology office for the 10/13 visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "telephone",
+          "start": "2025-11-18T14:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request follow-up",
+              "author": "front desk",
+              "date": "2025-11-18T14:05",
+              "body": "Called the gynecology office about our 10/21 records request. Their records person said it's in the queue; re-faxed the signed release at their request. Will check again."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

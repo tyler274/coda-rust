@@ -1,0 +1,172 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002082",
+      "given": "Derek",
+      "family": "Plante",
+      "birth_date": "1976-10-26",
+      "address_line": "112 Sewall Street",
+      "phone": "+1-201-555-0169",
+      "email": "derek.plante@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker and current smoker with COPD who joined in 2020; a 2022 low-dose CT found a small right lower lobe nodule, and in 2024 a right upper lobe mass proved to be stage IIIA non-small cell lung cancer treated with chemoradiation and durvalumab. Last seen 2025-05-09; outside records then show a COPD admission in 2025 and progression with SIADH in 2026, now on docetaxel.",
+      "events": [
+        {
+          "id": "2020-08-19a",
+          "kind": "establish_care",
+          "start": "2020-08-19T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease", "action": "history", "onset": "2018-05-01", "note": "On tiotropium since diagnosis by prior PCP"},
+            {"label": "Nicotine dependence, cigarettes", "action": "history", "onset": "1994-01-01", "note": "Current smoker, about 30 pack-years"}
+          ],
+          "medications": [
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 1-2 puffs every 4 to 6 hours as needed for shortness of breath", "dose": {"value": 90, "unit": "mcg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 84.0, "height_cm": 178.0},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "Occupation", "value": "Construction worker"},
+            {"item": "History of alcohol use", "value": "Occasional social use"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2020-08-19T08:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-19T08:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2020-08-19T08:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2020-08-19T08:10", "results": [{"test": "Hemoglobin A1c", "value": 5.3}]},
+            {"panel": null, "collected": "2020-08-19T08:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2020-08-19T08:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2020-08-19T07:30"}, {"procedure": "Venipuncture", "performed": "2020-08-19T08:10"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-08-19T08:30", "body": "43M, framer/carpenter on commercial crews, coming over from his old primary care office because his coworker is a member here and he wanted to be able to text a doctor. Came in at 7:30 so he could get to the site by 9.\n\nCOPD: told about two years ago by his last doctor after he got winded on ladders; did a breathing test then. On tiotropium capsule every morning and albuterol, uses the rescue maybe 2-3x a week, more in humid weather or around drywall dust. No ED visits, no steroid bursts he can remember. Mild morning cough, clear phlegm.\n\nTobacco: started at around 17, a pack and a half most days for years, now about a pack. Roughly 30 pack-years. Has tried cold turkey twice. Not interested in a quit date right now - 'it's the only break I get on the job.'\nAlcohol: a few beers on weekends, not every weekend. No drugs.\n\nPMH: COPD. PSH: none. Allergies: none known.\nFamily: father with COPD. Paternal uncle had lung cancer. No other family history he knows of.\nSocial: single, lives in Ludlow. Construction worker.\n\nMeds: tiotropium 18 mcg inhaled daily, albuterol HFA 1-2 puffs q4-6h prn.\n\nExam: well appearing, talks in full sentences. HEENT unremarkable. Neck supple, no nodes. Lungs: good air movement, no wheeze, no crackles. Heart regular, no murmur. Abd soft. Ext: no clubbing, no edema. Skin: no lesions of concern.\n\nA/P\n1. COPD, on LAMA, symptoms controlled. Continue tiotropium and albuterol. Will get old records including his spirometry.\n2. Tobacco use disorder. Advised quitting, offered patch/varenicline and quitline. Declined for now. Will revisit.\n3. Health maintenance: CMP, CBC, lipids, A1c, one-time hep C and HIV screen drawn today. Flu shot when the vaccine arrives.\nRTC for physical in spring, sooner as needed. Records release signed."}
+          ]
+        },
+        {
+          "id": "2020-08-24a",
+          "kind": "portal_message",
+          "start": "2020-08-24T12:20",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your recent lab work", "author": "PCP", "date": "2020-08-24T12:20", "body": "Hi Derek - all of your bloodwork from last week came back normal: kidney and liver function, blood counts, sugar (A1c) and cholesterol are all fine. Hepatitis C and HIV screens were negative. Nothing to do. We'll see you for your physical in the spring."},
+            {"type": "Patient Message", "title": "RE: Your recent lab work", "author": "patient", "date": "2020-08-24T18:47", "body": "Thanks doc. Good to hear."}
+          ]
+        },
+        {
+          "id": "2020-09-02a",
+          "kind": "outside_records",
+          "start": "2020-09-02T10:00",
+          "reason": "Records from prior primary care office",
+          "reports": [
+            {"study": "Spirometry", "performed": "2018-05-10T09:00", "text": "Pre- and post-bronchodilator spirometry. Good effort, acceptable and reproducible maneuvers. Post-bronchodilator FEV1/FVC 0.62. Post-bronchodilator FEV1 71% of predicted. No significant bronchodilator response.", "conclusion": "Obstructive ventilatory defect, consistent with COPD (moderate airflow limitation by FEV1)."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Prior primary care records", "author": "front desk", "date": "2020-09-02T10:00", "body": "Records received by fax from the patient's previous primary care office, 23 pages, covering 2014 to 2020. Includes office notes, a 2018 spirometry report, medication list (tiotropium daily, albuterol as needed) and immunization history (influenza most years). No hospitalizations recorded. Scanned to chart and routed to PCP."},
+            {"type": "Progress Notes", "title": "Outside records review", "author": "PCP", "date": "2020-09-03T16:40", "body": "Reviewed old records. Spirometry May 2018: post-BD FEV1/FVC 0.62, FEV1 71% predicted - fits his COPD diagnosis, moderate obstruction. Started on tiotropium after that. Smoking documented at every visit there. Nothing else outstanding. Problem list confirmed."}
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "nurse_visit",
+          "start": "2020-10-07T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-07T16:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-07T16:20"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccination", "author": "RN", "date": "2020-10-07T16:30", "body": "Came by after work for flu shot. No egg allergy, no prior reaction, feeling well today. Influenza vaccine 0.5 mL IM left deltoid. VIS given. Waited 15 min, no issues."}
+          ]
+        },
+        {
+          "id": "2021-02-10a",
+          "kind": "pharmacy",
+          "start": "2021-02-10T09:05",
+          "reason": "Refill request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: tiotropium", "author": "MA", "date": "2021-02-10T09:05", "body": "Pharmacy refill request for tiotropium 18 mcg capsules, 90-day supply. Last visit 08/2020, on med list. Pended to PCP."},
+            {"type": "Telephone Encounter", "title": "Refill approved", "author": "PCP", "date": "2021-02-10T11:32", "body": "Approved x 90 days with 3 refills."}
+          ]
+        },
+        {
+          "id": "2021-03-22a",
+          "kind": "annual_physical",
+          "start": "2021-03-22T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-03-22T08:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-03-22T08:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2021-03-22T08:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2021-03-22T08:15"},
+            {"vaccine": "Tdap", "date": "2021-03-22T08:16"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2021-03-22T07:30"},
+            {"procedure": "Immunization administration", "performed": "2021-03-22T08:15"},
+            {"procedure": "Venipuncture", "performed": "2021-03-22T08:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-03-22T08:40", "body": "Physical. 44 y/o. Busy winter - indoor work on a renovation, says breathing has been about the same. Rescue inhaler a couple times a week. No exacerbations, no antibiotics this year. Still about a pack a day.\n\nROS otherwise negative: no chest pain, no weight change, no blood in sputum, no GI or urinary complaints, mood fine.\n\nMeds: tiotropium daily, albuterol prn. NKDA.\n\nExam: NAD. Eyes, ears, throat normal. No lymphadenopathy. Lungs with no wheeze or crackles today. RRR no murmur. Abdomen soft, nontender, no organomegaly. No edema, no clubbing. Skin ok.\n\nA/P\n- COPD: stable. Inhaler technique reviewed, good. Continue current regimen.\n- Tobacco: discussed again. He knows. Not ready to pick a date. Offered meds - declined.\n- Vaccines: PCV20 today given COPD and smoking; Tdap today (no record of one since his teens). He'll get his COVID shots at the pharmacy when his group opens.\n- Labs today. Colon cancer screening starts at 45 - next year.\nRTC 6 months for COPD check."}
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T13:10",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical labs", "author": "PCP", "date": "2021-03-24T13:10", "body": "Derek, your labs from Monday all look good - normal kidney and liver numbers, normal blood counts and a healthy cholesterol profile."}
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "pharmacy",
+          "start": "2021-05-12T10:20",
+          "reason": "Outside immunization record",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-14T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-05T15:30"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy immunization record", "author": "MA", "date": "2021-05-12T10:20", "body": "Patient sent a photo of his vaccine card through the portal. Pfizer COVID-19 primary series at a retail pharmacy: dose 1 on 4/14/2021, dose 2 on 5/5/2021. Entered into immunization history."}
+          ]
+        },
+        {
+          "id": "2021-09-14a",
+          "kind": "office_visit",
+          "start": "2021-09-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-09-14T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - COPD", "author": "PCP", "date": "2021-09-14T16:35", "body": "S: 6-mo COPD check. Summer was hot and he was roofing for part of it; used albuterol more on the worst days, maybe daily for a stretch in July, back to 2-3x/week now. No fevers, no change in sputum, no ED or urgent care. Still smoking about a pack. Asked about vaping as a way to cut down - we talked through it; he hasn't tried.\nO: Vitals as charted, sat fine on room air. Lungs: no wheeze, no crackles. No edema.\nA/P: COPD, stable, no exacerbations. Continue tiotropium + albuterol. Heat/dust on site are his triggers - mask with a real respirator rating when cutting or sanding.\nTobacco: brief counseling again, quitline card given. Precontemplative.\nFlu shot next month. Physical in March."}
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "nurse_visit",
+          "start": "2021-10-13T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-13T16:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-13T16:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccination", "author": "RN", "date": "2021-10-13T16:25", "body": "Seasonal flu vaccine given IM right deltoid, lot and expiration logged. Tolerated well. Patient declined the COVID booster today, says he may get it at the pharmacy later."}
+          ]
+        }
+      ]
+    }
+  ]
+}

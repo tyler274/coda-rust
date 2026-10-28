@@ -1,0 +1,250 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001874",
+      "events": [
+        {
+          "id": "2023-05-09a",
+          "kind": "annual_physical",
+          "start": "2023-05-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2023-05-08T07:15",
+              "body": "Pt left voicemail, has to stay late for a parent conference tomorrow. Cancelled 5/9 physical, rebooked 5/23 at 3:30. She will keep the Pap on that visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "annual_physical",
+          "start": "2023-05-23T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-23T15:25", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-05-23T15:25", "results": [{"test": "Creatinine"}, {"test": "Albumin"}]},
+            {"panel": "Urinalysis", "collected": "2023-05-23T15:25", "results": [{"test": "Urine Protein"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2023-05-23T15:50", "issued": "2023-05-30T13:00", "text": "Specimen type: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. General categorization: negative.", "conclusion": "Negative for intraepithelial lesion or malignancy (NILM)."}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-05-23T15:30"},
+            {"procedure": "Venipuncture", "performed": "2023-05-23T15:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2023-05-23T16:20",
+              "body": "Annual. Rebooked from 5/9. Doing well. Tired by June like every year, nothing beyond that. Bowels normal. No breast changes. Periods regular.\n\nMeds D3 only. NKDA.\nSH: no tobacco, occasional glass of wine.\n\nVitals per flowsheet.\nGen: well. CV: regular, no murmur. Resp: clear bilaterally. Abd: soft, nontender, scar well healed. Breasts: symmetric, no palpable mass, no skin or nipple change, axillae negative. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Ext: no edema.\n\nPlan\n1. Cervical screening - Pap today.\n2. BRCA2 - MRI 11/2022 negative. November MRI ordered. We talked briefly about what comes later (mammograms at 30, other options down the road); she would rather take it a year at a time.\n3. Single kidney - creatinine and UA.\n4. PHQ-2 1, mood fine.\n5. Vaccines in the fall.\nReturn 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-31a",
+          "kind": "portal_message",
+          "start": "2023-05-31T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and Labs",
+              "author": "PCP",
+              "date": "2023-05-31T09:15",
+              "body": "Hi Erin, Pap smear was normal, and the blood and urine tests from last week were all normal too. Next Pap is due in 3 years. Enjoy the last weeks of school."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-19T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-19T15:52"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-19T15:50"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2023-10-19T16:05",
+              "body": "Flu vaccine L arm, 2023-24 COVID vaccine R arm. Feeling well, no contraindications. Waited 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T16:30",
+          "reports": [
+            {"study": "MRI breast, bilateral, with and without contrast", "loinc": "30795-9", "performed": "2023-11-14T16:30", "text": "Exam: bilateral breast MRI with and without contrast. History: high-risk screening (BRCA2). Comparison: 11/08/2022 and 11/09/2021. Fibroglandular tissue is heterogeneous. Background enhancement minimal and symmetric. No suspicious mass or non-mass enhancement. No new findings compared with prior studies. Axillae unremarkable.", "conclusion": "Negative. BI-RADS 1. Annual screening MRI recommended."}
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "portal_message",
+          "start": "2023-11-16T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "MRI Result",
+              "author": "PCP",
+              "date": "2023-11-16T12:30",
+              "body": "Breast MRI negative, stable. Pt notified through portal. Next MRI 11/2024."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "annual_physical",
+          "start": "2024-04-23T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-04-23T15:20", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-04-23T15:20", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Urinalysis", "collected": "2024-04-23T15:20", "results": [{"test": "Urine Protein"}, {"test": "Urine Blood"}]}
+          ],
+          "orders": [
+            {"id": "gi-referral-2024", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "colorectal cancer screening plan after childhood abdominopelvic radiation"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-04-23T15:30"},
+            {"procedure": "Venipuncture", "performed": "2024-04-23T15:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "author": "PCP",
+              "date": "2024-04-23T16:25",
+              "body": "Erin, 28. Here for yearly exam. Feels great. No abdominal pain, normal bowel habits, no bleeding, no weight change. No breast lumps.\n\nShe read a survivorship article over spring break and asked whether her childhood radiation changes what she needs for colon screening. It does: survivors who had abdominal or pelvic radiation are generally advised to start colonoscopy much earlier than the general population, often around 30. I don't want to guess the interval on my own, so GI referral placed to set a plan.\n\nMeds: D3. NKDA. SH unchanged, no tobacco, wine rarely.\n\nExam: Well. BP fine. Heart RRR. Lungs clear. Abdomen soft, nontender, no masses, no hepatosplenomegaly. Breast exam normal bilaterally. No lymphadenopathy. Skin normal.\n\nA/P\n1. Hx Wilms tumor with abdominopelvic RT - GI referral for screening plan.\n2. BRCA2 - MRI 11/2023 negative. Next 11/2024. Mammography starts next year at 30.\n3. Solitary kidney - labs today.\n4. Health maintenance - Pap 2023 normal; vaccines in fall. PHQ-2 0.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-25a",
+          "kind": "portal_message",
+          "start": "2024-04-25T10:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results and Referral",
+              "author": "PCP",
+              "date": "2024-04-25T10:10",
+              "body": "Your labs were all normal. Kidney function unchanged. GI should call you within a couple of weeks to schedule; let us know if you haven't heard by mid-May."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "specialist_visit",
+          "start": "2024-06-10T13:00",
+          "service": "Gastroenterology",
+          "reason": "cancer screening plan after childhood abdominopelvic radiation",
+          "conditions": [
+            {"label": "History of childhood Wilms tumor with abdominopelvic radiation therapy (high risk for secondary colorectal cancer)", "icd10": "Z92.3", "action": "diagnosed", "onset": "2024-06-10"}
+          ],
+          "orders": [
+            {"id": "gi-referral-2024", "action": "done", "date": "2024-06-10T13:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "author": "gastroenterology",
+              "date": "2024-07-22T09:00",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP - CONSULTATION\nDate of service: 06/10/2024\nReferring: primary care\nReason: screening recommendations given childhood cancer treatment history\n\nThank you for asking us to see Ms. Winslow, a 29-year-old teacher. She comes in feeling well, with no GI complaints at all, wanting to know which extra cancer screening her history calls for. Her vaccinations are current per her report.\n\nHistory: stage II Wilms tumor at 6, managed by left nephrectomy followed by radiation to the abdomen and pelvis; no recurrence since. Known BRCA2 mutation carrier, followed with annual breast MRI through primary care.\nMedications: cholecalciferol 2000 units daily.\nAllergies: NKDA.\nFamily: mother with breast cancer diagnosed at 45.\nSocial: no tobacco, alcohol rare. Eats a produce-heavy diet and exercises on a regular basis.\n\nExam: vitals normal. Abdomen soft, nontender, nondistended, no mass, no organomegaly; healed left flank incision.\n\nImpression: History of childhood Wilms tumor with abdominopelvic radiation therapy, which places her at increased risk for a second colorectal cancer.\n\nRecommendations:\n1. Begin screening colonoscopy at age 30 (spring 2025), then every 5 years if normal. Our office will contact her next spring to schedule.\n2. No colon testing needed before then while asymptomatic.\n3. Breast and gynecologic risk management per PCP and her established screening.\n\nThank you for this referral."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "author": "PCP",
+              "date": "2024-07-23T08:05",
+              "body": "GI consult letter from 6/10 finally received (requested twice). Matches what she told us in June. Colonoscopy at 30, q5y. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI Appointment",
+              "author": "patient",
+              "date": "2024-06-12T20:40",
+              "body": "Just wanted to let you know I saw the GI doctor Monday. She said because of the radiation I should start colonoscopies at 30 and then every 5 years, so next spring. Nothing needed before that. She said she'd send you a letter."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: GI Appointment",
+              "author": "PCP",
+              "date": "2024-06-13T07:30",
+              "body": "Thanks for the update, that's the plan I expected. I'll watch for the letter and note the colonoscopy for next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-17T15:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-17T15:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-17T15:45"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2024-10-17T16:00",
+              "body": "Flu (trivalent) and 2024-25 COVID given, one in each deltoid. Afebrile, feels well. No issues after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T16:15",
+          "reports": [
+            {"study": "MRI breast, bilateral, with and without contrast", "loinc": "30795-9", "performed": "2024-11-12T16:15", "text": "Indication: BRCA2 mutation, annual high-risk screening. Comparison: 11/14/2023. Technique: dynamic contrast-enhanced bilateral breast MRI. Amount of fibroglandular tissue: heterogeneous. Background parenchymal enhancement: minimal. No enhancing mass, non-mass enhancement or suspicious focus in either breast. No skin thickening. Axillary nodes normal.", "conclusion": "No evidence of malignancy. BI-RADS 1, negative. Continue annual MRI; begin annual mammography at age 30."}
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "portal_message",
+          "start": "2024-11-14T11:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI Result",
+              "author": "PCP",
+              "date": "2024-11-14T11:50",
+              "body": "Your MRI was negative again. Next spring we'll add a mammogram once you turn 30, and GI will be in touch about the colonoscopy."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

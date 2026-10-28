@@ -1,0 +1,964 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002273",
+   "events": [
+    {
+     "id": "2022-01-25a",
+     "kind": "nurse_visit",
+     "start": "2022-01-25T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Shingrix dose 2",
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2022-01-25T10:35"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-01-25T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Shingrix #2",
+       "author": "RN",
+       "date": "2022-01-25T10:45",
+       "body": "Second Shingrix given R deltoid. First dose gave him a sore arm and one tired day. Series complete."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-08a",
+     "kind": "imaging",
+     "start": "2022-02-08T14:10",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2022-02-08T14:10",
+       "text": "Indication: annual lung cancer screening. Comparison 1/26/2021. Technique: low-dose noncontrast chest CT. Findings: No pulmonary nodules. Lungs clear. No effusion. No adenopathy. Heart size normal.",
+       "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "done",
+       "date": "2022-02-08T14:10"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT result",
+       "author": "PCP",
+       "date": "2022-02-09T08:15",
+       "body": "Screening CT negative again. Portal message sent. Next due early 2023."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-28a",
+     "kind": "annual_physical",
+     "start": "2022-04-28T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-04-28T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-04-28T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-04-28T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "derm-2022",
+       "action": "placed",
+       "order": "Dermatology referral",
+       "category": "referral",
+       "to": "Dermatology",
+       "reason": "enlarging scaly patch left cheek"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2022-04-28T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Medicare Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2022-04-28T10:30",
+       "body": "Subsequent AWV.\nNo falls, independent, still driving. PHQ-2 0. Proxy form completed - daughter.\nNew concern: rough spot on his left cheek that has slowly gotten bigger over about a year, itches once in a while. Spent 35 years on job sites without sunscreen.\nExam: left cheek ~1.5 cm red scaly plaque, slightly raised edge. A few smaller rough spots on scalp and backs of hands. Lungs clear, no edema.\nA/P: Cheek lesion - likely actinic but size and edge warrant a look; derm referral. Sun protection discussed.\nHTN/HFpEF stable. Labs today.\nPrevention: LDCT 2/2022 negative, colonoscopy 2017, vaccines current through Shingrix."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-31a",
+     "kind": "specialist_visit",
+     "start": "2022-05-31T13:15",
+     "service": "Dermatology",
+     "reason": "scaly patch left cheek",
+     "conditions": [
+      {
+       "label": "Actinic keratosis",
+       "action": "diagnosed",
+       "onset": "2021-05-01"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "fluorouracil 50 MG/ML Topical Cream",
+       "action": "historical",
+       "sig": "Apply thin layer to left cheek twice daily for 3 weeks",
+       "frequency": "BID",
+       "route": "Topical",
+       "course": "short",
+       "reason": "actinic keratosis"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Shave biopsy of lesion of skin of head or neck",
+       "snomed": "177347006",
+       "performed": "2022-05-31T13:40"
+      },
+      {
+       "procedure": "Cryotherapy of skin lesion with liquid nitrogen",
+       "snomed": "7430007",
+       "performed": "2022-05-31T13:50"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2022-05-31T13:40",
+       "issued": "2022-06-03T15:00",
+       "text": "Specimen: skin, left cheek, shave biopsy. Microscopic: hyperkeratosis and parakeratosis overlying atypical basal keratinocytes confined to the lower epidermis, with solar elastosis in the dermis. No full-thickness atypia. No invasive carcinoma. Margins: peripheral margin involved by actinic change.",
+       "conclusion": "Hypertrophic actinic keratosis. No squamous cell carcinoma identified."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Dermatology consultation",
+       "author": "dermatology",
+       "date": "2022-06-21T10:00",
+       "body": "Outside dermatology group. Date of visit: 05/31/2022. Received by fax 06/21/2022.\n\nThank you for sending Mr. Talbot, 66, retired construction worker with long outdoor exposure and little sunscreen use.\nConcern: left cheek patch growing slowly over the past year; itchy at times, mostly no symptoms.\nMeds per patient: lisinopril, metoprolol, furosemide, atorvastatin, aspirin. Allergies: NKDA. Former smoker.\nExam: Left malar cheek, sun-exposed, 1.5 cm erythematous scaly plaque with a slightly elevated, irregular border. Several smaller scaly lesions of similar character on the scalp and dorsal hands. No cervical or preauricular lymphadenopathy.\nProcedure: shave biopsy left cheek plaque. Liquid nitrogen cryotherapy to 6 lesions of scalp and dorsal hands.\nPathology (06/03): hypertrophic actinic keratosis, no carcinoma.\nAssessment: actinic keratoses, cheek lesion hypertrophic.\nPlan: 5-fluorouracil 5% cream to the left cheek twice daily for 3 weeks; expect redness and crusting. Broad-spectrum SPF daily, hat outdoors. Skin check in 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-07a",
+     "kind": "telephone",
+     "start": "2022-06-07T13:15",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Skin cream question",
+       "author": "RN",
+       "date": "2022-06-07T13:30",
+       "body": "Pt calling for a refill of metoprolol and mentioned the skin doctor gave him a cream for his cheek that's making it red and crusty after a week. Told him the dermatologist expects that with this cream and to call their office if it's raw or bleeding. Metoprolol tartrate refill sent, 90 days."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-21a",
+     "kind": "outside_records",
+     "start": "2022-06-21T10:00",
+     "orders": [
+      {
+       "id": "derm-2022",
+       "action": "done",
+       "date": "2022-06-21T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Dermatology letter reviewed",
+       "author": "PCP",
+       "date": "2022-06-21T16:40",
+       "body": "Derm letter arrived 3 wks after his visit. Biopsy AK without cancer, cryo to scalp/hands, 5-FU course. Added AK to list. He'd already told us about the cream at a refill call."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-30a",
+     "kind": "telephone",
+     "start": "2022-08-30T15:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call from daughter",
+       "author": "RN",
+       "date": "2022-08-30T15:20",
+       "body": "Daughter (on HIPAA form) calling. Worried her father has pulled back from people over the summer - skipped the family cookout, doesn't call friends. She thinks it's his hearing: he doesn't answer when she calls him from the next room and the TV is blasting. He gets annoyed when he can't follow conversation. No safety concerns, eating fine. Offered visit next week, she'll bring him. Booked 9/8."
+      }
+     ]
+    },
+    {
+     "id": "2022-09-08a",
+     "kind": "office_visit",
+     "start": "2022-09-08T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "hearing difficulty",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 4
+      }
+     ],
+     "orders": [
+      {
+       "id": "ent-2022",
+       "action": "placed",
+       "order": "Otolaryngology referral",
+       "category": "referral",
+       "to": "Otolaryngology",
+       "reason": "bilateral hearing loss"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-09-08T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - hearing",
+       "author": "PCP",
+       "date": "2022-09-08T11:50",
+       "body": "Here with daughter.\nShe notes he doesn't respond when she calls from another room and keeps the TV much louder than he used to. He admits he's frustrated - can't follow what people are saying, especially in restaurants or at family gatherings, so he's been staying home. No ear pain, no drainage, no spinning. No new meds.\nPHQ-9 4: low mood is about the hearing, sleeping and eating fine, no SI.\nExam: canals clear both sides, TMs intact and normal. Conversational voice fine face to face, misses words when I turn away.\nA/P: Bilateral hearing loss, likely age-related given years of job-site noise. ENT/audiology referral. Mood: situational, will recheck once hearing is addressed.\nBP a little up today, he was keyed up about this visit - recheck next time. HF stable."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-05a",
+     "kind": "specialist_visit",
+     "start": "2022-10-05T09:30",
+     "service": "Otolaryngology",
+     "reason": "hearing loss",
+     "conditions": [
+      {
+       "label": "Presbycusis",
+       "icd10": "H91.13",
+       "action": "diagnosed",
+       "onset": "2021-06-01"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Audiogram",
+       "performed": "2022-10-05T10:15",
+       "text": "Pure-tone audiometry: bilateral symmetric sensorineural hearing loss, mild in the low frequencies sloping to moderate in the high frequencies. Air-bone gaps absent. Speech reception thresholds consistent with pure tones. Word recognition good bilaterally. Tympanometry type A both ears.",
+       "conclusion": "Bilateral symmetric sensorineural hearing loss, mild sloping to moderate. Candidate for amplification."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Otolaryngology consultation",
+       "author": "otolaryngology",
+       "date": "2022-12-13T09:00",
+       "body": "Outside ENT practice. Date of service 10/05/2022. Received 12/13/2022.\n\nReason for referral: hearing.\nHistory: 67-year-old man, history of hypertension, heart failure, hyperlipidemia, arthritis and treated TB. His daughter reports he often does not respond when called from another room and turns the television up well beyond his old level. He is frustrated by trouble following conversation in noisy settings and has been avoiding social events. Denies otalgia, otorrhea and vertigo.\nMedications: lisinopril 20, metoprolol 50 BID, HCTZ 25, furosemide 40, atorvastatin 40, ASA 81. NKDA.\nExam: otoscopy normal bilaterally. Whispered voice test: reduced recognition of whispered phrases on both sides. Rinne and Weber without lateralizing or conductive pattern. Head and neck exam otherwise normal.\nAudiology: see attached audiogram, symmetric SNHL mild sloping to moderate, good word recognition.\nImpression: presbycusis.\nPlan: bilateral hearing aids, referred to our audiologist for fitting. Communication strategies reviewed with patient and daughter. Return as needed."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-18a",
+     "kind": "nurse_visit",
+     "start": "2022-10-18T09:45",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-18T09:50"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-18T09:52"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-18T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fall vaccines",
+       "author": "RN",
+       "date": "2022-10-18T10:05",
+       "body": "High-dose flu and bivalent COVID given, separate arms. Says ENT saw him and he's getting hearing aids. Observed 15 min, fine."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-21a",
+     "kind": "portal_message",
+     "start": "2022-11-21T19:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Hearing aids",
+       "author": "patient",
+       "date": "2022-11-21T19:30",
+       "body": "This is his daughter writing on his account. Dad got hearing aids in both ears last Thursday from the ENT office's audiologist. He already answered the phone on the first ring. Just wanted you to have it for his chart. They said they'd send you the paperwork."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Hearing aids",
+       "author": "PCP",
+       "date": "2022-11-22T08:10",
+       "body": "That's great to hear. Thanks for letting us know - we haven't received the ENT notes yet but will watch for them."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-13a",
+     "kind": "outside_records",
+     "start": "2022-12-13T09:00",
+     "orders": [
+      {
+       "id": "ent-2022",
+       "action": "done",
+       "date": "2022-12-13T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "ENT records reviewed",
+       "author": "PCP",
+       "date": "2022-12-13T13:15",
+       "body": "ENT note from October and audiogram finally in. Presbycusis, symmetric SNHL mild to moderate, aids fitted 11/17. Problem list updated."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-26a",
+     "kind": "office_visit",
+     "start": "2023-01-26T15:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and heart failure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-01-26T15:40",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-01-26T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-01-26T15:45",
+       "body": "Hearing aids in, and he's a different guy - back at the coffee group on Saturdays, joking with the MA. PHQ-2 0.\nNo dyspnea, no edema, weights stable. Knees achy in the cold, manageable.\nCheek healed after the cream.\nExam: lungs clear, heart regular, no edema.\nA/P: HTN, HFpEF stable on current meds. BMP. Presbycusis - aids working. AWV in March."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-22a",
+     "kind": "annual_physical",
+     "start": "2023-03-22T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2023-03-22T10:45",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-03-22T10:45",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening, overdue since February"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-03-22T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Medicare Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-03-22T11:20",
+       "body": "AWV.\nFunction: independent. No falls. Hearing aids daily. PHQ-2 0.\nHM: LDCT due last month - ordered, imaging will call him to schedule. Colonoscopy due 2027. Vaccines current.\nHTN/HFpEF: no symptoms, BP at goal.\nExam: lungs clear, no edema. Skin: no new cheek lesion.\nLabs today."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-13a",
+     "kind": "portal_message",
+     "start": "2023-06-13T07:55",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "pink pee",
+       "author": "patient",
+       "date": "2023-06-13T07:55",
+       "body": "Doc for the last few weeks my urine has been pinkish some mornings. Doesn't hurt. I didn't think much of it but my daughter said to tell you."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: pink pee",
+       "author": "RN",
+       "date": "2023-06-13T09:30",
+       "body": "Thanks for telling us. The doctor wants to see you this week and check a urine sample. We have Friday at 8:30 - I've put you in. Please don't skip your aspirin unless we tell you to."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-16a",
+     "kind": "office_visit",
+     "start": "2023-06-16T08:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "painless hematuria",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Gross hematuria",
+       "action": "diagnosed",
+       "onset": "2023-05-25",
+       "note": "painless, intermittent",
+       "icd10": "R31.0"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Urinalysis",
+       "collected": "2023-06-16T08:40",
+       "results": [
+        {
+         "test": "Urine Blood",
+         "text": "Positive"
+        },
+        {
+         "test": "Urine Red Blood Cells",
+         "value": 25
+        },
+        {
+         "test": "Urine White Blood Cells",
+         "value": 0
+        },
+        {
+         "test": "Urine Leukocyte Esterase",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Nitrite",
+         "text": "Negative"
+        },
+        {
+         "test": "Urine Protein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-06-16T08:40",
+       "resulted": "2023-06-18T07:00",
+       "results": [
+        {
+         "test": "Urine Culture",
+         "text": "No growth"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "uro-2023",
+       "action": "placed",
+       "order": "Urology referral",
+       "category": "referral",
+       "to": "Urology",
+       "reason": "painless gross hematuria, 40 pack-year former smoker"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-06-16T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit - hematuria",
+       "author": "PCP",
+       "date": "2023-06-16T09:20",
+       "body": "About 3 weeks of intermittent pink urine, mostly mornings. No pain, no burning, no urgency or frequency, no flank pain, no fever. No injury. On aspirin 81 only.\nExam: comfortable. Abdomen soft, nontender, no CVA tenderness.\nUA: blood positive, 25 RBC/hpf, no WBC, LE and nitrite negative. Culture sent.\nA/P: Painless hematuria in a 67 y/o former heavy smoker - needs cystoscopy and upper tract imaging. Urgent urology referral today. Continue aspirin. Call if clots or can't urinate."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-19a",
+     "kind": "portal_message",
+     "start": "2023-06-19T10:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Urine culture",
+       "author": "PCP",
+       "date": "2023-06-19T10:10",
+       "body": "Your urine culture showed no infection. That's why we still want urology to look - their office should call you this week. Let us know if you haven't heard by Thursday."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-05a",
+     "kind": "telephone",
+     "start": "2023-07-05T11:00",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Urology appointment",
+       "author": "front desk",
+       "date": "2023-07-05T11:05",
+       "body": "Called urology to check on the urgent referral. Pt is booked 7/26, earliest they had. Asked them to call if a cancellation opens. Pt informed."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-26a",
+     "kind": "specialist_visit",
+     "start": "2023-07-26T10:00",
+     "service": "Urology",
+     "reason": "painless hematuria",
+     "vitals": {
+      "bp": [
+       135,
+       85
+      ],
+      "hr": 78
+     },
+     "orders": [
+      {
+       "id": "uro-2023",
+       "action": "done",
+       "date": "2023-07-26T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Urology consultation",
+       "author": "urology",
+       "date": "2023-07-28T11:00",
+       "body": "Outside urology group. Seen 07/26/2023.\n\nRe: Herbert Talbot, 67M. Referred for hematuria.\nHPI: painless visible hematuria on and off for about two months. No dysuria, urgency or frequency.\nPMH: HTN (well controlled), CHF, hyperlipidemia, osteoarthritis, treated TB, actinic keratosis, presbycusis.\nMeds: lisinopril 20, HCTZ 25, furosemide 40, atorvastatin 40, aspirin 81. NKDA.\nSocial: 40 pack-years, quit about ten years ago.\nVitals: BP 135/85, HR 78.\nExam: unremarkable.\nData: urinalysis with RBCs, no casts, no evidence of infection. CBC and chemistries normal.\nAssessment: painless hematuria in a former heavy smoker; bladder neoplasm must be excluded.\nPlan: CT urogram, then cystoscopy. Will be in touch with results."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-02a",
+     "kind": "imaging",
+     "start": "2023-08-02T12:30",
+     "reports": [
+      {
+       "study": "CT abdomen and pelvis with contrast",
+       "performed": "2023-08-02T12:30",
+       "issued": "2023-08-03T09:00",
+       "text": "CT urogram, multiphase. Kidneys normal in size and enhancement, no renal mass, no hydronephrosis, no calculi. Collecting systems and ureters opacify normally without filling defect. Bladder: 3 cm enhancing mass along the right lateral wall. No pelvic adenopathy. No free fluid.",
+       "conclusion": "3 cm right lateral wall bladder mass, suspicious for urothelial neoplasm. Upper tracts normal."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "CT urogram reviewed",
+       "author": "PCP",
+       "date": "2023-08-04T08:30",
+       "body": "CT urogram copy received: 3 cm bladder wall mass. Called pt - urology has already told him and scheduled the scope with resection for 8/22. He's anxious but steady. Daughter will drive."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-22a",
+     "kind": "procedure_visit",
+     "start": "2023-08-22T07:30",
+     "end": "2023-08-22T13:00",
+     "service": "Urology",
+     "reason": "bladder mass",
+     "conditions": [
+      {
+       "label": "Bladder urothelial carcinoma (lateral wall)",
+       "icd10": "C67.2",
+       "action": "diagnosed",
+       "onset": "2023-07-26"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Cystoscopy and transurethral resection of neoplasm of urinary bladder",
+       "snomed": "386791007",
+       "performed": "2023-08-22T08:15"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Surgical pathology report",
+       "performed": "2023-08-22T08:15",
+       "issued": "2023-08-25T14:00",
+       "text": "Specimen: bladder tumor, right lateral wall, transurethral resection. Microscopic: papillary fronds lined by urothelium with mild architectural and cytologic atypia, low mitotic activity. No invasion of lamina propria. Detrusor muscle present in specimen and free of tumor. No lymphovascular invasion.",
+       "conclusion": "Low-grade papillary urothelial carcinoma, noninvasive (pTa). Muscularis propria present, not involved."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Cystoscopy and TURBT",
+       "author": "urology",
+       "date": "2023-09-01T10:00",
+       "body": "Outside urology, ambulatory surgery. Date of procedure 08/22/2023. Received 09/01/2023.\nProcedure: cystoscopy, transurethral resection of bladder tumor.\nAnesthesia: general. Findings: urethra normal, prostate mildly enlarged, single papillary tumor about 3 cm on the right lateral wall, well away from the ureteric orifice. No other lesions. Complete resection with deep bites including muscle. Hemostasis good. Single postoperative instillation of gemcitabine in recovery, held one hour, drained.\nAllergies: NKDA.\nPathology (8/25): low-grade papillary urothelial carcinoma, pTa, muscle present and uninvolved.\nPlan: catheter out next morning (done). Surveillance cystoscopy at 3 months, then 9 months later, then yearly if clear."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-13a",
+     "kind": "office_visit",
+     "start": "2023-09-13T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after bladder tumor resection",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Gross hematuria",
+       "action": "resolved",
+       "icd10": "R31.0"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-09-13T14:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-09-13T13:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-09-13T14:05",
+       "body": "Three weeks out from bladder tumor resection. Urine clear since the catheter came out. Some burning the first two days, gone.\nWent over the path with him: low-grade, didn't invade, all removed; the risk is it comes back, which is why urology will scope him every few months at first. He wrote the schedule down. Reminded him smoking was the big risk factor and he did the right thing quitting.\nBP and HF stable, no edema.\nA/P: Bladder urothelial carcinoma pTa low grade s/p TURBT - surveillance per urology (first scope ~late Nov). Hematuria resolved. HTN/HFpEF unchanged. BMP.\nFlu/COVID next month."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-10T10:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T10:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Fall vaccines",
+       "author": "RN",
+       "date": "2023-10-10T10:20",
+       "body": "High-dose flu L arm, 2023-24 COVID R arm. No reactions."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

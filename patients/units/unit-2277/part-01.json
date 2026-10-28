@@ -1,0 +1,214 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002277",
+      "given": "Russell",
+      "family": "Abbott",
+      "birth_date": "1959-11-25",
+      "address_line": "41 Ridgeview Terrace",
+      "phone": "+1-508-555-0111",
+      "email": "russell.abbott@example.test",
+      "marital_status": "married",
+      "summary": "Retired construction foreman with COPD and type 2 diabetes who joined in 2023; a screening low-dose CT in January 2025 found the stage IIIB non-small cell lung cancer treated with chemoradiation. Two pulmonary infections followed in 2026, the second with an ICU stay and a saline-related hyperchloremic acidosis.",
+      "events": [
+        {
+          "id": "2023-08-29a",
+          "kind": "telephone",
+          "start": "2023-08-29T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Inquiry", "author": "front desk", "date": "2023-08-29T10:20", "body": "Caller Russell Abbott, 63, says his longtime doctor's office is closing at the end of the month and a neighbor recommended us. Has COPD and diabetes, on three meds. Explained membership and that insurance still covers labs and specialists. Booked new-patient visit 9/12 at 9:00. Sent intake forms and a records release by email; he'll sign and send the release to his old office."}
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "establish_care",
+          "start": "2023-09-12T09:00",
+          "end": "2023-09-12T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; COPD and diabetes",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease", "action": "diagnosed", "onset": "2016-03-01"},
+            {"label": "Type 2 diabetes mellitus without complications", "action": "diagnosed", "onset": "2014-06-01"}
+          ],
+          "medications": [
+            {"drug": "metformin hydrochloride 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily with meals", "dose": {"value": 1000, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Type 2 diabetes"},
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale the contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 2 puffs every 4 to 6 hours as needed for wheezing", "dose": {"value": 180, "unit": "mcg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "1-2 drinks per week"},
+            {"item": "Occupation", "value": "Retired construction foreman"}
+          ],
+          "state": {"weight_kg": 93.0, "height_cm": 178.0, "labs": {"Hemoglobin A1c": 7.1, "Low Density Lipoprotein": 112, "Microalbumin/Creatinine Ratio": 12}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": null, "collected": "2023-09-12T10:05", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-12T10:05", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-12T10:05", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-12T10:05", "results": [{"test": "Hemoglobin"}]},
+            {"panel": null, "collected": "2023-09-12T10:05", "results": [{"test": "Microalbumin/Creatinine Ratio"}]},
+            {"panel": null, "collected": "2023-09-12T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-09-12T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-09-12T09:00"}],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "former smoker, 30 pack-years, quit 2015"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2023-09-12T10:00", "body": "63-year-old retired construction foreman establishing care; his prior office is closing.\n\nCOPD: diagnosed around 2016 by his old doctor, a couple of years after he stopped smoking. Uses tiotropium every morning and reaches for albuterol maybe twice a week, more with humid weather or when he's out splitting wood. Walks the dog a mile most days at his own pace. No hospital stays for his lungs, no steroid bursts he can recall in the last couple of years.\n\nDiabetes: about 9 years. Metformin 1000 twice a day, tolerates it. Doesn't check sugars at home. Last A1c 'around 7' per him.\n\nSmoking: 30 pack-years, quit in 2015. Alcohol: a beer or two on weekends. Married.\n\nFamily: father had lung cancer; mother had type 2 diabetes; older brother has COPD.\n\nPSH: none. Allergies: none to medications.\nMeds: metformin 1000 mg BID; tiotropium 18 mcg inhaled daily; albuterol HFA 2 puffs q4-6h prn wheeze.\n\nExam: well-appearing, talking in full sentences. HEENT unremarkable. Lungs with slightly diminished air movement throughout, no wheeze or crackles today. Heart regular, no murmur. Abdomen soft. Feet: skin intact, pulses 2+, monofilament intact bilaterally. No edema.\n\nA/P\n1. COPD, stable on LAMA with rare rescue use. Checked inhaler technique with the capsule device, good. Continue.\n2. Type 2 diabetes. A1c, CMP, urine albumin/creatinine today. Eye exam due; he'll book with his optometrist.\n3. Lung cancer screening: 63, 30 pack-years, quit 8 years ago, so he qualifies. Talked through what a low-dose CT finds and the chance of a false alarm; he wants it, especially given his father. Ordered.\n4. Lipids and CBC with today's draw. Hep C and HIV screen once, he agreed.\n5. Records release sent to prior office. He thinks he had a colonoscopy around 2019.\n6. Flu, COVID and pneumococcal at a nurse visit in early October.\n\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2023-09-13a",
+          "kind": "portal_message",
+          "start": "2023-09-13T16:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2023-09-13T16:40", "body": "Russell, nice meeting you yesterday. Your A1c came back right about where we want it on metformin. Kidney numbers and blood counts are normal, and the hepatitis C and HIV screens were negative. The cholesterol panel is back as well. The CT scheduling office should be calling you in the next week or two."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "outside_records",
+          "start": "2023-09-26T11:15",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "front desk", "date": "2023-09-26T11:15", "body": "38 pages received by fax from the patient's former primary care office, covering 2012-2023. Highlights pulled for the chart:\n- COPD on the problem list since 2016; maintained on tiotropium; albuterol as needed.\n- Type 2 diabetes since 2014, on metformin; A1c values between 6.8 and 7.4 over the last five years.\n- Screening colonoscopy 2019: normal to the cecum, no polyps, repeat at 10 years.\n- Tdap 2017. Influenza vaccine most years.\nForwarded to PCP for review."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T14:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T14:07"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-10-03T14:09"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-03T14:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2023-10-03T14:30", "body": "Here for vaccines per PCP. Afebrile, no current illness. Screening questions negative. Given flu (L deltoid), updated COVID (R deltoid) and PCV20 (R deltoid, separate site). VIS sheets given. Sat 15 minutes, no reaction. Reminded him his CT is 10/17."}
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "imaging",
+          "start": "2023-10-17T08:30",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2023-10-17T08:30", "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (BASELINE)\nIndication: 63-year-old former smoker, 30 pack-years, quit 2015.\nTechnique: Low-dose helical CT of the chest without contrast.\nComparison: None.\nFindings: No pulmonary nodules. No consolidation or pleural effusion. Airways patent. Heart normal in size; no pericardial effusion. No mediastinal or hilar lymphadenopathy. Visualized upper abdomen unremarkable. No acute osseous abnormality.", "conclusion": "Negative baseline screening. Lung-RADS 1. Continue annual screening with low-dose CT in 12 months."}
+          ],
+          "orders": [{"id": "ldct-2023", "action": "done", "date": "2023-10-17T08:30"}],
+          "documents": [
+            {"type": "Result Note", "title": "Screening CT Result", "author": "PCP", "date": "2023-10-18T12:10", "body": "Baseline screening CT clean, Lung-RADS 1. Repeat next fall. Released to portal with a note."}
+          ]
+        },
+        {
+          "id": "2024-01-16a",
+          "kind": "office_visit",
+          "start": "2024-01-16T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes and COPD follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-01-16T10:55", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2024-01-16T10:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-01-16T11:00", "body": "Follow-up for diabetes and COPD. Holiday eating 'went about how you'd expect.' No cold this winter so far. Albuterol a couple of times a week, mostly shoveling. No nocturnal symptoms.\n\nMeds unchanged: metformin 1000 BID, tiotropium daily, albuterol prn.\n\nExam: lungs with mildly reduced breath sounds, no wheeze. RRR. No edema.\n\nA/P\n- T2DM: A1c today. Has an eye appointment in August.\n- COPD: stable. Refills sent.\n- Due for shingles series; will start at next visit.\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "pharmacy",
+          "start": "2024-03-19T09:12",
+          "documents": [
+            {"type": "Refill Request", "title": "Metformin Refill", "author": "MA", "date": "2024-03-19T09:12", "body": "Pharmacy request: metformin 1000 mg tab, #180, 90-day supply. Last A1c 1/16. Approved per protocol, 1 refill."}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diabetes follow-up; foot exam",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2024-05-14T09:10", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-05-14T09:05"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-05-14T08:45"},
+            {"procedure": "Immunization administration", "performed": "2024-05-14T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-05-14T09:15", "body": "Routine check. Pollen season, rescue inhaler a bit more, maybe 3 times a week, settles quickly. Out in the garden most days. No chest pain.\n\nExam: lungs without wheeze. Feet: no calluses or ulcers, sensation intact to monofilament, DP pulses palpable.\n\nA/P\n- T2DM: A1c drawn. Foot exam normal.\n- COPD: seasonal uptick, fine on current regimen.\n- Shingrix #1 today; second dose in the fall.\nRTC with fall physical."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "outside_records",
+          "start": "2024-08-20T13:30",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic Eye Exam", "author": "optometry", "date": "2024-08-20T13:30", "body": "OUTSIDE OPTOMETRY PRACTICE\nDilated diabetic eye examination, date of exam 2024-08-08.\nPatient: Russell Abbott, DOB 1959-11-25.\nAllergies: NKDA.\nVA 20/25 OD, 20/25 OS with correction. Dilated fundus exam: no diabetic retinopathy either eye; macula flat.\nImpression: Type 2 diabetes without retinopathy. Recheck in 12 months.\nCopy to primary care."}
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "annual_physical",
+          "start": "2024-10-01T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2024-10-01T09:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-01T09:40", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-01T09:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-10-01T09:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-01T09:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-01T09:31"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-10-01T09:32"},
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-10-01T09:33"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2024-10-01T09:00"},
+            {"procedure": "Immunization administration", "performed": "2024-10-01T09:30"}
+          ],
+          "orders": [
+            {"id": "ldct-2024", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "annual lung cancer screening"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-01T09:50", "body": "Annual exam, turns 65 next month. Feels well. Breathing about the same as last year; no flares, no antibiotics or prednisone since joining. Sugars not checked at home. Eye exam in August, no retinopathy. Mood fine, PHQ-2 0.\n\nROS otherwise negative.\n\nExam: BMI about 29. Clear oropharynx. Lungs diminished at bases equally, no wheeze. RRR, no murmur. Abdomen soft, nontender. Skin without concerning lesions. Feet intact. No edema.\n\nA/P\n1. Health maintenance: annual labs today (A1c, CMP, lipids, UACR). Colonoscopy 2019 normal, next 2029.\n2. Vaccines today: flu, updated COVID, Shingrix #2, and RSV given his COPD. He's fine getting all four.\n3. Annual low-dose CT ordered.\n4. Medicare starts in November; Welcome to Medicare visit in December.\n5. COPD and diabetes stable; no changes."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "telephone",
+          "start": "2024-11-12T15:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Imaging Reschedule", "author": "front desk", "date": "2024-11-12T15:05", "body": "Pt called; can't make the 11/19 CT, has a conflict that week. Imaging center's next opening that works for him is 1/21. Rebooked. Order still active."}
+          ]
+        },
+        {
+          "id": "2024-12-03a",
+          "kind": "annual_physical",
+          "start": "2024-12-03T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Welcome to Medicare visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [{"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2024-12-03T13:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Initial Preventive Physical Examination", "author": "PCP", "date": "2024-12-03T14:10", "body": "Welcome to Medicare visit, 65 as of last week.\n\nFunctional: independent in all ADLs and IADLs. Drives. No falls this year. Hearing OK in conversation; vision corrected. Lives with wife in a two-story house, stairs fine.\nScreens: PHQ-2 0. No memory concerns from him or his wife.\nAdvance directives: has a health care proxy (wife); will bring a copy.\n\nPreventive plan reviewed and printed: colonoscopy next 2029; lung screening CT on 1/21; vaccines current (flu, COVID, PCV20, Shingrix complete, RSV); yearly diabetic eye exam.\n\nExam: BP and weight as charted, otherwise as in October.\n\nNo medication changes."}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,508 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001880",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "pharmacy",
+          "start": "2025-01-21T10:35",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Prior authorization expired: cinacalcet",
+              "author": "front desk",
+              "date": "2025-01-21T10:35",
+              "body": "Fax from patient's pharmacy: insurance prior authorization for cinacalcet 30 mg tablets expired 12/31, claim rejected on refill attempt. Prescriber on file is the outside endocrinology office, not us. Faxed the notice over to them and left the patient a voicemail that endocrinology needs to renew the authorization."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "office_visit",
+          "start": "2025-08-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, aches, urinating often",
+          "medications": [
+            {
+              "action": "stop",
+              "reason": "patient stopped in January 2025 when insurance authorization lapsed",
+              "drug_text": "cinacalcet 30 MG Oral Tablet"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-19T10:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 11.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Albumin"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T10:40",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T10:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2025",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "primary hyperparathyroidism, now symptomatic, off cinacalcet"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-08-19T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-08-19T10:00",
+              "body": "CC: tired, achy, up to the bathroom a lot.\n\nHPI: 33F with primary hyperparathyroidism. About four months of feeling worn out most days, achiness all over without a particular joint, and urinating more often, including once or twice a night. Hard to focus on spreadsheets at work in the afternoons. Occasional constipation, new for her. No fever, no weight loss, no recent illness, no flank pain or blood in the urine.\n\nOn review she has not taken cinacalcet since January. The pharmacy couldn't fill it after the insurance authorization ran out, and between work and the holidays she never followed up. Has not been back to endocrinology since the first visit.\n\nMeds: none currently. NKDA.\n\nExam: BMI 43. Tired-appearing but in no distress. Neck: no palpable mass. Heart regular. Lungs clear. Abdomen soft, nontender. Normal strength. No edema. Affect appropriate.\n\nA/P:\n1. Primary hyperparathyroidism, off treatment, now with symptoms that fit hypercalcemia. CMP, intact PTH today. CBC, TSH and A1c as well to cover the fatigue and urinary frequency.\n   Removed cinacalcet from the active list since she is not taking it. Rather than restart it myself, I'd like endocrinology to see her promptly and reconsider the whole plan now that she has symptoms. New referral placed, marked urgent; asked her to call them too.\n2. Severe obesity: unchanged.\nReturn precautions given for vomiting, confusion, or inability to keep fluids down."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T13:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from Tuesday",
+              "author": "PCP",
+              "date": "2025-08-21T13:10",
+              "body": "Hi Beth. Your calcium is 11.2 and the parathyroid hormone is 118, both higher than last year, which fits how you've been feeling. Kidney function is normal (creatinine 0.8). Blood count, thyroid and A1c are all normal, so nothing else is pointing to a second cause.\n\nI spoke with the endocrinology office this morning. They are going to order neck imaging before your appointment so they have it in hand. Keep drinking plenty of water, avoid calcium supplements, and call us if you start feeling worse."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Results from Tuesday",
+              "author": "patient",
+              "date": "2025-08-21T19:47",
+              "body": "Thank you. They called me too, appointment is October 3rd and scans are the week before. Will keep you posted."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "measure": [
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T07:57"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "author": "MA",
+              "date": "2025-10-14T07:50",
+              "body": "Early slot before work. Feels okay today, no fever. Flu vaccine to L deltoid and COVID vaccine to R deltoid, lot numbers in the immunization record. Tolerated well, waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "outside_records",
+          "start": "2025-10-21T15:05",
+          "conditions": [
+            {
+              "label": "Parathyroid adenoma",
+              "icd10": "D35.1",
+              "action": "diagnosed",
+              "onset": "2025-10-03",
+              "note": "left, localized by ultrasound and sestamibi"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2025",
+              "action": "done",
+              "date": "2025-10-21T15:05"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Thyroid ultrasound",
+              "performed": "2025-09-26T08:30",
+              "text": "OUTPATIENT IMAGING CENTER\nNECK / THYROID ULTRASOUND\nIndication: primary hyperparathyroidism, localization.\nTechnique: grayscale and color Doppler imaging of the thyroid and central neck with a high-frequency linear transducer.\nFindings: The thyroid is normal in size and echotexture, with no thyroid nodules. Posterior and inferior to the left thyroid lobe there is a 1.4 cm oval hypoechoic lesion, separate from the thyroid, with a feeding vessel on color flow. No similar lesion on the right. No enlarged cervical lymph nodes.",
+              "conclusion": "1.4 cm hypoechoic lesion adjacent to the left thyroid lobe, compatible with a parathyroid adenoma. Normal thyroid."
+            },
+            {
+              "study": "Parathyroid scan, Tc-99m sestamibi",
+              "loinc": "44145-1",
+              "performed": "2025-09-26T10:15",
+              "text": "OUTPATIENT IMAGING CENTER\nNM PARATHYROID SCAN WITH TC-99M SESTAMIBI, EARLY AND DELAYED PLANAR IMAGES WITH SPECT\nIndication: primary hyperparathyroidism.\nFindings: Early images show expected thyroid uptake. On delayed images there is persistent focal uptake at the inferior aspect of the left thyroid lobe, corresponding to the lesion on same-day ultrasound. No ectopic or mediastinal focus.",
+              "conclusion": "Focal retained sestamibi uptake inferior to the left thyroid lobe, consistent with a single left parathyroid adenoma."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up, date of service 2025-10-03",
+              "author": "endocrinology",
+              "date": "2025-10-21T15:05",
+              "body": "OUTSIDE ENDOCRINE PRACTICE\nFollow-up visit. Date of service: 10/03/2025\n\nInterval history: Ms. Gauthier, 33, returns for primary hyperparathyroidism, which was diagnosed here in April 2024. She was lost to follow-up after starting cinacalcet and has been off it since early this year. Over roughly six months she has had persistent tiredness, diffuse body aches, urinary frequency, poor concentration at her job and some constipation. No fevers, weight loss or intercurrent illness. Her primary care physician re-referred her in August.\n\nMedications: none. Allergies: NKDA.\nFamily history: aunt (maternal) with primary hyperparathyroidism; father with recurrent stones; mother hypothyroid.\nSocial: no tobacco, little alcohol, no drug use.\n\nExam: unremarkable. No palpable neck mass.\n\nData: creatinine normal. Intact PTH remains elevated.\nNeck ultrasound 09/26/2025: 1.4 cm hypoechoic lesion next to the left thyroid lobe.\nSestamibi scan 09/26/2025: increased uptake in the same location.\n\nAssessment: symptomatic primary hyperparathyroidism due to a single left parathyroid adenoma, with concordant localization.\n\nPlan: with symptoms and a well-localized adenoma, surgery is now the better path, and a focused approach is reasonable at her size. Referred to endocrine surgery. Not restarting cinacalcet while she awaits that visit unless symptoms worsen.\n\ncc: primary care"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records review",
+              "author": "PCP",
+              "date": "2025-10-22T07:40",
+              "body": "Endo note and imaging reviewed. Single left parathyroid adenoma on ultrasound and sestamibi; referred on to endocrine surgery. Added adenoma to the problem list. Referral closed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "portal_message",
+          "start": "2026-01-13T18:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Had my surgery",
+              "author": "patient",
+              "date": "2026-01-13T18:22",
+              "body": "Hi! Just letting you know I had the parathyroid surgery last Friday (the 9th). They took out the one on the left and I went home the same afternoon. Recovering fine so far. The surgeon said she'd send you a report. Do I need to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Had my surgery",
+              "author": "PCP",
+              "date": "2026-01-14T08:15",
+              "body": "Great news, Beth, glad it went smoothly. Nothing has come over from the surgeon yet. Let's see you in about 8 weeks to check your calcium and see how you're feeling. The front desk will reach out to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up after parathyroid surgery",
+          "conditions": [
+            {
+              "label": "Hyperparathyroidism, primary",
+              "action": "resolved",
+              "note": "cured after left parathyroidectomy 2026-01-09"
+            },
+            {
+              "label": "Parathyroid adenoma",
+              "icd10": "D35.1",
+              "action": "resolved",
+              "note": "excised 2026-01-09"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-10T14:55",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-10T14:55",
+              "results": [
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 41
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-10T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-03-10T14:20",
+              "body": "S: Two months out from a focused left parathyroidectomy (01/09/2026) with an outside endocrine surgery group, whom she saw in consultation in November. Same-day discharge. She says the difference is noticeable: the constant tiredness and aches have lifted, she's not getting up at night to urinate, and work feels easier to concentrate on. Bowels back to normal. No tingling in fingers or around the mouth, no cramps. No voice change.\nNo medications.\n\nO: BMI 43. Well. Low anterior neck incision well healed, no swelling or tenderness. Voice normal. Heart and lungs normal.\n\nA/P:\n1. Primary hyperparathyroidism s/p excision of left parathyroid adenoma. Calcium and PTH today. If normal, consider this resolved; updating problem list and surgical history.\n2. We still have no operative or pathology report. Records request sent to the surgical group again today.\n3. Severe obesity: discussed, no change in her plan.\nPhysical due this summer, with Pap/HPV."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Calcium is normal",
+              "author": "PCP",
+              "date": "2026-03-11T17:30",
+              "body": "Your calcium is 9.3 and parathyroid hormone 41, both squarely normal. The surgery did its job. See you for your physical in the summer."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "outside_records",
+          "start": "2026-04-02T09:45",
+          "procedures": [
+            {
+              "procedure": "Parathyroidectomy",
+              "snomed": "53304009",
+              "performed": "2026-01-09T08:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-01-09T09:40",
+              "issued": "2026-01-13T14:00",
+              "text": "SURGICAL PATHOLOGY\nSpecimen: left inferior parathyroid gland.\nGross: an ovoid tan-brown nodule, 1.4 cm in greatest dimension, weighing 610 mg. Sectioned and submitted entirely.\nMicroscopic: hypercellular parathyroid tissue composed predominantly of chief cells with scant stromal fat, surrounded by a thin capsule; a compressed rim of normal parathyroid is present at one edge. No capsular or vascular invasion, no atypia.",
+              "conclusion": "Parathyroid adenoma, 1.4 cm, 610 mg."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report, date of surgery 2026-01-09",
+              "author": "general surgery",
+              "date": "2026-04-02T09:45",
+              "body": "ENDOCRINE SURGERY, OUTSIDE HOSPITAL\nDate of surgery: 01/09/2026\nPreoperative diagnosis: primary hyperparathyroidism, left parathyroid adenoma localized by ultrasound and sestamibi.\nPostoperative diagnosis: same.\nProcedure: focused left parathyroidectomy with intraoperative PTH monitoring.\nAnesthesia: general.\nAllergies: NKDA.\n\nFindings: enlarged left inferior parathyroid gland in the expected position. The left superior gland appeared normal and was not disturbed. Intraoperative PTH 142 pg/mL before excision, 19 pg/mL at 10 minutes after excision, meeting criteria for cure.\nEstimated blood loss: minimal. No complications. Recurrent laryngeal nerve identified and preserved.\nDisposition: discharged home the same day in good condition.\n\nReceived on records request. Scanned to media."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "annual_physical",
+          "start": "2026-07-13T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, Pap",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-13T08:45",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-13T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-07-13T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-13T08:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-07-13T08:30",
+              "issued": "2026-07-20T11:00",
+              "text": "Specimen: cervical, liquid-based preparation. Satisfactory for evaluation; transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.\nHigh-risk HPV: not detected.",
+              "conclusion": "NILM, high-risk HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-13T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2026-07-13T08:00",
+              "body": "34-year-old here for yearly exam and Pap.\n\nSince last visit: feels the best she has in a couple of years. Six months after removal of a left parathyroid adenoma; calcium normal in March. No urinary frequency, no aches. Working full time. Walking more now that she has the energy, though weight hasn't moved much.\n\nMeds: none. NKDA.\nPSH: focused left parathyroidectomy 01/2026.\nFHx and social history reviewed, no change. Never smoker, rare alcohol.\n\nExam: BMI 43. Well-appearing. Neck scar faint, thyroid normal to palpation. Heart RRR, lungs clear. Breasts without masses bilaterally. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap with HPV collected. No edema. Skin clear.\nPHQ-9: 1.\n\nA/P:\n1. Health maintenance: CMP, CBC, lipids, A1c. Pap/HPV sent. Tdap current (2024). Flu and COVID this fall.\n2. History of primary hyperparathyroidism, cured surgically: calcium with today's panel; if normal, a yearly check with her physical is plenty.\n3. Severe obesity, BMI 43: we talked through options again, including nutrition referral; she wants to keep building the walking habit first. Will revisit next year.\nRTC 1 year."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-15a",
+          "kind": "portal_message",
+          "start": "2026-07-15T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2026-07-15T12:05",
+              "body": "Beth, all of Monday's bloodwork is normal, including calcium at 9.4. Cholesterol and A1c look good. Pap result should follow in about a week."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-21a",
+          "kind": "portal_message",
+          "start": "2026-07-21T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "author": "RN",
+              "date": "2026-07-21T09:30",
+              "body": "Hi Beth, your Pap and HPV test came back normal. With both negative, the next one isn't due for five years."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap result",
+              "author": "patient",
+              "date": "2026-07-21T12:48",
+              "body": "Thank you!!"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

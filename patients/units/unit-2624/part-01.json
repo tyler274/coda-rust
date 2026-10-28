@@ -1,0 +1,152 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002624",
+      "given": "Jacob",
+      "family": "Healey",
+      "birth_date": "1997-08-23",
+      "address_line": "27 Silver Street, Apt 3",
+      "phone": "+1-603-555-0134",
+      "email": "jacob.healey@example.test",
+      "marital_status": "partnered",
+      "summary": "Young man with severe alcohol, cocaine and tobacco use disorders who joined in 2019 and comes in irregularly. Antisocial personality disorder diagnosed at a 2022 ED visit after an arrest; a 2023 ED visit for intoxication, a 2024 visit after a minor car accident, and a 2026 ED visit for small-volume hematemesis attributed to stress-related mucosal disease.",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Call", "author": "front desk", "date": "2019-08-27T10:12",
+             "body": "Caller would like to start care with us. 22 y/o, no PCP for a few years, says the last office he went to was \"a while back\" and he doesn't remember the name. MassHealth card on file, copy requested at visit. No meds he can think of besides OTC aspirin. Scheduled new patient appt 9/10 at 9:40. Intake forms emailed."}
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:40",
+          "end": "2019-09-10T10:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {"label": "Nicotine dependence, cigarettes", "action": "history", "onset": "2016-06-01"},
+            {"label": "Severe alcohol use disorder", "icd10": "F10.20", "action": "history", "onset": "2016-01-01"},
+            {"label": "Cocaine use disorder", "icd10": "F14.20", "action": "history", "onset": "2017-01-01"}
+          ],
+          "medications": [
+            {"drug_text": "aspirin 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily (self-directed, over the counter)", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "headaches; takes it to head off hangovers"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 78.5, "height_cm": 178.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-09-10T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-10T10:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2019-09-10T10:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-09-10T10:40", "results": [{"test": "Hepatitis C Antibody", "text": "Non-reactive"}]},
+            {"panel": null, "collected": "2019-09-10T10:40", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Non-reactive"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2},
+            {"survey": "AUDIT-C total score", "value": 11}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "History of alcohol use", "value": "Daily heavy drinking; binges 5-6 nights a week, 10-15 drinks each"},
+            {"item": "Occupation", "value": "Unemployed; intermittent construction laborer"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-09-10T10:30"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2019-09-10T09:40"},
+            {"procedure": "Immunization administration", "performed": "2019-09-10T10:30"},
+            {"procedure": "Venipuncture", "performed": "2019-09-10T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-09-10T10:35",
+             "body": "22M establishing care. Has not had a regular doctor since his teens. No specific complaint today; came in because his partner wanted him to \"get checked out.\"\n\nPMH: no chronic medical illness he knows of. Gets headaches a few times a week, usually the morning after drinking, and takes a regular-strength aspirin (325) most days on his own for those and \"so the hangover isn't as bad.\" No GI symptoms.\nPSH: none.\nMeds: aspirin 325 mg OTC daily. No Rx meds.\nAllergies: NKDA.\n\nSubstance use, in his words fairly matter-of-fact:\n- Cigarettes since about 18, a pack a day, roughly 3 yrs. No quit attempts.\n- Alcohol: drinks every day; most nights of the week (5 or 6) it turns into a binge, which he puts at 10-15 drinks. Denies withdrawal shakes or seizures. Doesn't see the drinking as a problem.\n- Cocaine: intranasal, mostly on weekends with friends, for a couple of years. No injection use, no other drugs.\nAUDIT-C 11.\n\nFH: father has alcohol use disorder and has been incarcerated several times. Mother treated for major depression and generalized anxiety. Older brother with opioid use disorder.\nSH: lives with his partner. Picks up construction labor when it's available, otherwise out of work. MassHealth.\n\nROS otherwise negative. PHQ-9 2.\n\nExam: Well-appearing young man, relaxed, somewhat guarded about details. Vitals as charted. HEENT normal, no scleral icterus. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no hepatomegaly. Skin: several tattoos on forearms. No tremor. Neuro grossly nonfocal.\n\nA/P\n1. Severe alcohol use disorder. Long talk about amount and pattern; he is not interested in cutting down at this point and declines a referral to treatment. Gave written info and our number. Will keep asking.\n2. Cocaine use disorder. Same conversation; declines.\n3. Nicotine dependence, cigarettes. Advised to quit; precontemplative.\n4. Headaches, using daily aspirin. Advised it isn't a great habit with this much alcohol (stomach), would rather he cut the drinking. He'll \"think about it.\"\n5. Health maintenance: CMP, CBC, lipids, one-time HCV and HIV screens today. Tdap given (no record of one since childhood).\n\nRTC 3-4 months."}
+          ]
+        },
+        {
+          "id": "2019-09-13a",
+          "kind": "portal_message",
+          "start": "2019-09-13T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2019-09-13T16:05",
+             "body": "Jacob, your blood work from Tuesday came back fine: kidney and liver numbers normal, blood counts normal, cholesterol fine. Hepatitis C and HIV screens were both negative. Nothing to do on these. The bigger health issue for you is still the drinking and smoking, and my door is open whenever you want to talk about it. See you in a few months."}
+          ]
+        },
+        {
+          "id": "2020-01-30a",
+          "kind": "office_visit",
+          "start": "2020-01-30T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2020-05-20a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in",
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 12}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-05-20T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-05-20T11:25",
+             "body": "Video check-in; we reached out after the missed January appointment. He's at his apartment, identity verified by DOB.\n\nNo construction work since March with everything shut down. Says he's \"bored mostly.\" Drinking is the same or a little more, hard to pin down; AUDIT-C 12. Still a pack a day. Cocaine \"not much lately,\" which he puts down to not seeing friends. No chest pain, no breathing trouble, no GI bleeding, no fevers. Still uses aspirin for headaches.\n\nNo distress on camera, speech normal, conversational.\n\nA/P: Alcohol, cocaine and tobacco use disorders, unchanged. Not ready to change any of it; declines counseling referral again. Reviewed signs of withdrawal that should send him to the ED if he ever stops abruptly. Asked him to come in for a physical in the fall."}
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "annual_physical",
+          "start": "2021-10-27T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "physical",
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-10-27T09:05", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-10-27T09:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 1},
+            {"survey": "AUDIT-C total score", "value": 11}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T13:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-05-11T13:00"},
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-27T08:55"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-10-27T08:20"},
+            {"procedure": "Immunization administration", "performed": "2021-10-27T08:55"},
+            {"procedure": "Venipuncture", "performed": "2021-10-27T09:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-10-27T09:00",
+             "body": "24M for a physical; first time in the office since 2019 (one missed visit, one video visit in between).\n\nInterval: no illnesses, no ED visits. Got both Pfizer shots at a pharmacy this spring (April and May, he showed the card). Working again on and off, framing and demo crews.\n\nHabits: still about a pack a day, now ~5 years. Drinking daily with binges most nights; AUDIT-C 11. Cocaine \"sometimes, weekends.\" Aspirin most mornings. No hematemesis, melena, abdominal pain. No withdrawal symptoms.\nPHQ-9 1.\n\nExam: Healthy-appearing. Vitals as recorded. Eyes and oropharynx normal. No lymphadenopathy. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, liver edge not felt. Extremities normal. Skin with tattoos, no spider angiomata. No tremor.\n\nA/P\n- Severe alcohol use disorder / cocaine use disorder: discussed again in plain terms. He listens politely and says he has it handled. Offered referral to outpatient substance use treatment; declined.\n- Nicotine dependence: advised to quit. Not interested.\n- Labs today: CMP and CBC.\n- Flu shot given. COVID series entered from his card.\nRTC 1 yr, sooner if he's ready to work on any of this."}
+          ]
+        },
+        {
+          "id": "2021-10-29a",
+          "kind": "portal_message",
+          "start": "2021-10-29T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2021-10-29T12:40",
+             "body": "Hi Jacob, labs from Wednesday look good. Liver tests, kidneys, electrolytes and blood counts are all in the normal range. No changes needed."}
+          ]
+        }
+      ]
+    }
+  ]
+}

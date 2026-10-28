@@ -1,0 +1,2259 @@
+{
+  "unit": "unit-2631",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [
+    "left text-only (not verified): drug \"multivitamin Oral Tablet\""
+  ],
+  "patients": [
+    {
+      "mrn": "MRN00002631",
+      "given": "Nathan",
+      "family": "Sullivan",
+      "birth_date": "1988-10-11",
+      "address_line": "27 Kettle Hollow Road",
+      "phone": "+1-646-555-0118",
+      "email": "nathan.sullivan@example.test",
+      "marital_status": "partnered",
+      "summary": "Wildlife photographer who joined in 2022 with healed injuries from a 2019 collision. A 2024 collision left a CSF leak that settled with conservative care, a missed diaphragm injury presented and was repaired in January 2025, and after he was last seen in July 2025 an ICU admission for clinical rabies reached the practice only as a records request and an admission note.",
+      "events": [
+        {
+          "id": "2022-09-07a",
+          "kind": "telephone",
+          "start": "2022-09-07T10:40",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-09-07T10:40",
+              "author": "front desk",
+              "body": "Caller is a 33 y/o man, moved his care here after his last doctor retired. Healthy, no chronic prescriptions, sees nobody regularly. Cigna OAP card info taken. Booked new patient visit 9/20 at 8:30. Membership packet and records release emailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-20a",
+          "kind": "establish_care",
+          "start": "2022-09-20T08:30",
+          "end": "2022-09-20T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "History of multiple traumatic rib fractures (healed)",
+              "action": "history",
+              "onset": "2019-08-10",
+              "note": "2019 motor vehicle collision, managed without surgery",
+              "icd10": "Z87.81"
+            },
+            {
+              "label": "History of pulmonary contusion (resolved)",
+              "action": "history",
+              "onset": "2019-08-10",
+              "note": "same 2019 collision",
+              "icd10": "Z87.828"
+            },
+            {
+              "label": "History of mild traumatic brain injury",
+              "action": "history",
+              "onset": "2019-08-10",
+              "note": "same 2019 collision, no residual deficits",
+              "icd10": "Z87.820"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "multivitamin Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              74
+            ],
+            "hr": 70,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 79.4,
+            "height_cm": 179.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-09-20T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 254
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.1
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-20T09:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 102
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-20T09:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 83
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T09:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-20T09:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social drinker, 2-3 drinks per week"
+            },
+            {
+              "item": "Occupation",
+              "value": "Wildlife photographer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-20T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-20T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-09-20T09:20",
+              "author": "PCP",
+              "body": "33M joining the practice. Previous PCP retired; records release signed today.\n\nHPI: Feels well. No complaints today. Works as a wildlife photographer, lots of time outdoors and in the field, often hiking long distances with gear.\n\nPast history: In August 2019 he was in a car crash. Was taken to a trauma center: several broken ribs, a bruised lung, and a mild brain injury, plus belly trauma that was watched and did not need an operation. Admitted a few days, no surgery. Ribs healed over a couple of months. Fully back to baseline since. No ongoing breathing problems.\nSurgical: none.\nMeds: multivitamin daily. No Rx.\nAllergies: none to medications.\nFamily: father has high blood pressure, well controlled. No autoimmune disease or bleeding problems in the family.\nSocial: never smoked. 2-3 drinks/week, socially. No drug use. Lives with his male partner, monogamous. No tattoos, never had a transfusion. Thinks he had the hep B series as a kid or teen; no paperwork.\nImmunizations: unsure of tetanus date, possibly at the trauma center. Will confirm from records.\n\nROS: negative except as above.\n\nExam: Vitals as recorded. Well-appearing, fit. HEENT: TMs clear, nares patent, oropharynx clear. Neck supple, no thyromegaly or nodes. Lungs clear, symmetric expansion, nontender chest wall. Heart regular, no murmur. Abdomen soft, nontender, no masses. Extremities no edema. Neuro: alert, oriented, CN II-XII intact, strength and gait normal. Skin: no rashes.\n\nPHQ-2 0. AUDIT-C 2.\n\nA/P:\n1. Health maintenance, 33M. Baseline CBC, CMP, lipids today. HIV and hep C one-time screening offered and accepted. Flu and COVID boosters when the fall supply is in, nurse visit.\n2. Remote multiple rib fractures, pulmonary contusion and mild TBI from 2019 collision, healed, no residual issues. Will review trauma records when they come.\n3. Tdap status unclear, will check records before giving.\nFollow up yearly, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.6,
+            "height_cm": 180.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-23a",
+          "kind": "portal_message",
+          "start": "2022-09-23T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-09-23T13:05",
+              "author": "PCP",
+              "body": "Hi Nathan, all of your bloodwork from Tuesday came back normal: blood counts, kidney and liver tests, sugar and cholesterol. HIV and hepatitis C screens were negative. Nothing to do here. We'll get you in for flu and COVID shots next month once the clinic has stock."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-14a",
+          "kind": "outside_records",
+          "start": "2022-10-14T11:00",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-08-10T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "date": "2022-10-14T11:00",
+              "author": "outside primary care",
+              "body": "Records from former primary care office, 2016 to 2022, 41 pages.\n\nContents: yearly wellness visits 2016-2021, normal exams and normal routine bloodwork. Medication list: multivitamin. Allergies: NKDA.\n\nIncluded trauma center discharge summary, admission 08/10/2019 to 08/13/2019: restrained occupant in a motor vehicle collision. Injuries: multiple rib fractures, pulmonary contusion, mild traumatic brain injury, blunt abdominal trauma. Managed nonoperatively with pain control and incentive spirometry. Tdap given in the trauma bay 08/10/2019. Discharged home in stable condition with outpatient follow-up.\n\nPost-crash PCP visit 09/2019: recovering as expected. Visit 11/2019: back to work, symptoms resolved.\n\nReviewed. Tdap 2019 entered into immunization record; not due until 2029."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-27a",
+          "kind": "nurse_visit",
+          "start": "2022-10-27T16:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-27T16:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-27T16:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-27T16:22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2022-10-27T16:30",
+              "author": "RN",
+              "body": "Here for flu and bivalent COVID booster. Afebrile, no illness today. Flu to L deltoid, COVID to R deltoid. Lot numbers and VIS documented. Waited 15 min after, felt fine, left ambulatory."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "portal_message",
+          "start": "2023-04-11T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "New insurance card",
+              "date": "2023-04-11T19:48",
+              "author": "patient",
+              "body": "Hi, my employer reissued our Cigna cards with a new group number. Uploading a photo of front and back. Same plan otherwise."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: New insurance card",
+              "date": "2023-04-12T09:10",
+              "author": "front desk",
+              "body": "Thanks Nathan, the new card is on file and coverage verified."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              68
+            ],
+            "hr": 69,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 80.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.97
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-09-19T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 172
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 105
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 125
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-19T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-09-19T08:45",
+              "author": "PCP",
+              "body": "Annual exam. Busy summer, shooting a lot of bird migration work up north. Feels great. No chest pain, shortness of breath, headaches. Sleeping fine.\n\nMeds: multivitamin. NKDA.\nSocial unchanged, still a few drinks a week, never smoker.\n\nExam: vitals as charted. Appears well. HEENT normal. Lungs clear. Heart RRR without murmur. Abdomen soft, nontender. No edema. Neuro grossly normal. Skin: sun-exposed, no concerning lesions seen; reminded about sunscreen and a hat in the field.\n\nPHQ-2 0.\n\nPlan: CMP and lipids today. Tdap current (2019). Flu and COVID next month. Recheck in a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 80.3
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "portal_message",
+          "start": "2023-09-21T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2023-09-21T12:30",
+              "author": "PCP",
+              "body": "Labs from Tuesday look normal across the board, cholesterol included. Enjoy the rest of the fall."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "nurse_visit",
+          "start": "2023-10-24T07:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.5
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-24T07:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-24T07:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-24T07:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-24T08:10",
+              "author": "RN",
+              "body": "Flu (L arm) and 2023-24 COVID (R arm) given before work. No acute symptoms. Tolerated, observed 15 minutes, no reaction."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-13a",
+          "kind": "portal_message",
+          "start": "2023-11-13T21:14",
+          "orders": [
+            {
+              "id": "id-travel-referral",
+              "action": "placed",
+              "order": "Infectious Disease referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "pre-travel consultation, 3-month backpacking trip"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Travel shots?",
+              "date": "2023-11-13T21:14",
+              "author": "patient",
+              "body": "Hey doc, my partner and I are finally doing the big trip, about three months backpacking through Vietnam, Cambodia and Laos, leaving sometime in the spring. Lots of rural areas and some wildlife sanctuaries for work. What shots or pills do I need? Can you do that or do I go somewhere?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Travel shots?",
+              "date": "2023-11-14T07:42",
+              "author": "PCP",
+              "body": "Sounds like an amazing trip. For a long rural itinerary like that I'd like you to see the travel medicine clinic with infectious disease; they stock the travel vaccines and handle malaria and other region-specific advice. Referral sent. Their office should call you within a week or two. Bring whatever vaccine records you have."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-04a",
+          "kind": "specialist_visit",
+          "start": "2023-12-04T13:30",
+          "service": "Infectious Disease",
+          "reason": "pre-travel consultation",
+          "conditions": [
+            {
+              "label": "Susceptibility to hepatitis A virus infection",
+              "action": "diagnosed",
+              "onset": "2023-12-04",
+              "note": "no hepatitis A vaccination on record",
+              "icd10": "Z28.39"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              106,
+              75
+            ],
+            "hr": 75,
+            "temp_c": 36.7,
+            "weight_kg": 79.8
+          },
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-12-04T14:20",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2023-12-04T14:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-travel-referral",
+              "action": "done",
+              "date": "2023-12-04T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Travel Medicine Consultation",
+              "date": "2023-12-12T10:15",
+              "author": "infectious disease",
+              "body": "Outside infectious disease / travel medicine clinic\nDate of visit: 12/04/2023\nReason for referral: pre-travel advice, about 3 months of backpacking through Vietnam, Cambodia and Laos, departing spring 2024.\n\nThank you for sending this pleasant 35-year-old photographer. He will be traveling overland for roughly three months, mostly rural, with some time at wildlife reserves.\n\nPast medical history: remote collision with healed rib fractures, a pulmonary contusion that resolved, and a mild TBI without residua. No surgeries.\nMedications: multivitamin daily only.\nAllergies: NKDA.\nFamily history: father with treated hypertension; no autoimmune or bleeding disorders in the family.\nSocial: monogamous relationship with a male partner. Denies illicit drugs, prior transfusion or tattoos. Never smoker, light social alcohol.\nImmunizations: reports a completed hepatitis B series in the past. No documentation of hepatitis A vaccine.\n\nExam: afebrile, vital signs within normal limits. General exam unremarkable.\n\nLabs: liver function tests drawn today were normal.\n\nAssessment: healthy traveler, not immune to hepatitis A by history, at risk on this itinerary.\n\nPlan:\n- Hepatitis A vaccine, dose 1 given today in clinic. Second dose due in 6 to 12 months; his primary care office can give it.\n- Food and water precautions, insect avoidance, and traveler's diarrhea guidance reviewed with handouts.\n- He will contact us if itinerary changes.\n\nAllergies: NKDA. Copy to referring primary care physician."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Consult letter filed",
+              "date": "2023-12-12T10:20",
+              "author": "MA",
+              "body": "Travel clinic letter received by fax, scanned. Hep A #1 (12/4/23) added to immunization history. Second dose reminder set for summer 2024."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-18a",
+          "kind": "ed_visit",
+          "start": "2024-02-18T11:20",
+          "end": "2024-02-18T15:05",
+          "service": "Emergency Medicine",
+          "reason": "clear drainage from right nostril",
+          "conditions": [
+            {
+              "label": "Cerebrospinal fluid rhinorrhea",
+              "action": "diagnosed",
+              "onset": "2024-02-04",
+              "note": "after minor collision in late January 2024",
+              "icd10": "G96.08"
+            },
+            {
+              "label": "Concussion, mild, January 2024 collision",
+              "action": "history",
+              "onset": "2024-01-28",
+              "note": "no hospitalization",
+              "icd10": "S06.0XAA"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              69
+            ],
+            "hr": 72,
+            "rr": 16,
+            "temp_c": 37.3,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-02-18T12:05",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 106
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-18T12:10",
+              "results": [
+                {
+                  "test": "Glucose, nasal fluid",
+                  "loinc": "2344-0",
+                  "unit": "mg/dL",
+                  "value": 60
+                },
+                {
+                  "test": "Protein, nasal fluid",
+                  "loinc": "2881-1",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-18T12:10",
+              "resulted": "2024-02-21T14:30",
+              "results": [
+                {
+                  "test": "Beta-2 transferrin, nasal fluid",
+                  "loinc": "13876-8",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2024-02-18T11:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2024-02-22T09:40",
+              "author": "emergency medicine",
+              "body": "Regional emergency department\nDate of service: 02/18/2024\n\nCC: watery drip from the right side of the nose x 2 weeks.\n\nHPI: 35M, history of a 2019 collision with rib fractures, lung contusion and mild TBI. About three weeks ago he was in a low-speed car accident and had a mild concussion; he did not go to a hospital for it. For the last two weeks he has had a thin, clear drip from the right nostril only. It runs more when he leans forward to tie his boots and when he bears down on the toilet. No cold symptoms, no seasonal allergies, no stuffiness.\n\nPMH: as above, plus not immune to hepatitis A (travel clinic 12/2023). PSH: none. Meds: multivitamin. Allergies: NKDA. FHx: father with hypertension; no autoimmune or bleeding disorders. SHx: never smoker, 2-3 drinks/wk, wildlife photographer.\n\nExam: afebrile, vitals normal. Nonfocal neurologic exam. Anterior rhinoscopy: clear fluid from the right naris, mucosa without redness or swelling, no polyps or mass. Head and neck otherwise normal.\n\nLabs: serum glucose 98 mg/dL. Nasal fluid glucose 60 mg/dL, nasal fluid protein elevated. Nasal fluid sent for beta-2 transferrin.\n\nMDM: unilateral clear rhinorrhea after head trauma with glucose-containing fluid, concerning for CSF leak. No fever or meningeal signs. Discussed with patient.\n\nDisposition: home. Head of bed up, no nose blowing, avoid straining and heavy lifting, return for fever, stiff neck, worsening headache or confusion. Follow up with PCP in 2-3 days and ENT.\n\nAddendum 02/21/2024: beta-2 transferrin POSITIVE. Patient called with result. Diagnosis: CSF rhinorrhea.\n\nAllergies: NKDA. Copy to primary care."
+            },
+            {
+              "type": "Outside Records",
+              "title": "ED record filed",
+              "date": "2024-02-22T09:45",
+              "author": "MA",
+              "body": "ED record with 2/21 addendum received by fax and scanned. Routed to PCP; patient already seen 2/21."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-02-19a",
+          "kind": "portal_message",
+          "start": "2024-02-19T07:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER yesterday",
+              "date": "2024-02-19T07:12",
+              "author": "patient",
+              "body": "Morning. I ended up in the ER yesterday because my right nostril has been dripping clear water for two weeks, ever since a fender bender at the end of January. They think it might be spinal fluid and sent a test. They said see you this week. Is that a big deal? I bumped my head in the crash but didn't think much of it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER yesterday",
+              "date": "2024-02-19T08:03",
+              "author": "PCP",
+              "body": "Thanks for letting me know. Usually these settle on their own, but we take them seriously. Front desk will put you in Wednesday morning. Until then keep doing what the ER said: no blowing your nose, no heavy lifting or straining. If you get a fever, a stiff neck or a bad headache, go straight back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "office_visit",
+          "start": "2024-02-21T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, clear nasal drainage",
+          "conditions": [
+            {
+              "label": "Concussion, mild, January 2024 collision",
+              "action": "resolved",
+              "note": "symptoms brief, none now",
+              "icd10": "S06.0XAA"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "docusate sodium 100 MG Oral Capsule",
+              "action": "start",
+              "sig": "Take 1 capsule by mouth twice daily to keep stools soft",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "avoid straining with CSF leak"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              65
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 80.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-02-21T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "placed",
+              "order": "Otolaryngology referral",
+              "category": "referral",
+              "to": "Otolaryngology",
+              "reason": "CSF rhinorrhea after head trauma"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "ED Follow-up",
+              "date": "2024-02-21T09:40",
+              "author": "PCP",
+              "body": "S: Seen in the ER Sunday for two weeks of clear right-sided nasal drip after a minor car accident around 1/28 in which he hit his head (mild concussion, did not seek care at the time). Drip continues, worse leaning forward. No fever, no headache, no neck stiffness, no vision change. Concussion symptoms were brief and are gone. ER called him this morning: beta-2 transferrin came back positive.\n\nMeds: multivitamin. NKDA.\n\nO: vitals as charted, afebrile. Alert, conversant. Clear thin fluid at right naris, more with head forward. Neck supple. CN II-XII intact, strength symmetric, gait normal. Lungs clear, heart regular.\n\nA/P: Traumatic CSF rhinorrhea, confirmed by beta-2 transferrin.\n- Most of these close with conservative care; ENT referral placed (urgent) for skull base evaluation and imaging.\n- Head of bed raised, no nose blowing, sneeze with mouth open, nothing heavy, no straining.\n- Docusate 100 mg twice daily so he doesn't strain.\n- Meningitis warning signs reviewed again: fever, stiff neck, worsening headache, confusion -> ER.\n- He had planned to leave on a long trip this spring; advised holding off until ENT clears him."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "telephone",
+          "start": "2024-02-23T14:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral scheduled",
+              "date": "2024-02-23T14:20",
+              "author": "front desk",
+              "body": "ENT office confirmed receipt of referral. Pt scheduled with them 3/4 at 10:15. Pt notified by phone, verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "specialist_visit",
+          "start": "2024-03-04T10:15",
+          "service": "Otolaryngology",
+          "reason": "CSF rhinorrhea",
+          "vitals": {
+            "bp": [
+              121,
+              63
+            ],
+            "hr": 67
+          },
+          "reports": [
+            {
+              "study": "CT sinuses without contrast, thin section",
+              "loinc": "36529-6",
+              "performed": "2024-03-04T11:30",
+              "text": "Technique: thin-section axial CT of the paranasal sinuses and anterior skull base without contrast, with coronal and sagittal reformats.\n\nFindings: No fracture of the anterior skull base, cribriform plate, ethmoid roof, sphenoid sinus walls or frontal sinus. No pneumocephalus. No discrete bony defect is identified to localize a leak. Paranasal sinuses are clear and well aerated. Nasal septum midline. Osteomeatal units patent. Visualized orbits and intracranial contents unremarkable.",
+              "conclusion": "No skull base fracture or pneumocephalus. Leak site not localized."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ent-referral",
+              "action": "done",
+              "date": "2024-03-04T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Consultation",
+              "date": "2024-03-07T15:10",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology group\nDate of visit: 03/04/2024\n\nReason: CSF rhinorrhea after head trauma, referred by PCP.\n\nHistory: 35M with clear right-sided rhinorrhea since early February, starting about a week after a minor car accident with mild concussion. Positive beta-2 transferrin from the ED on 2/18. No fever, meningismus or visual symptoms. Drainage is somewhat less over the past week. Using docusate, sleeping with head elevated.\nPMH: remote multitrauma 2019 (healed rib fractures, resolved pulmonary contusion, mild TBI). Meds: multivitamin, docusate. Allergies: NKDA.\n\nExam: afebrile. Nasal endoscopy: small amount of clear fluid on the right with head-down positioning, mucosa healthy, no mass. Neuro grossly intact.\n\nImaging: thin-section sinus CT today shows no skull base fracture or pneumocephalus; site not localized.\n\nImpression: post-traumatic CSF rhinorrhea, low volume and improving.\n\nPlan: continue conservative management (head elevation, stool softener, no nose blowing or heavy lifting). Most post-traumatic leaks close within weeks. Recheck in four weeks; if still leaking, further localization would be considered. Travel and flying deferred until then.\n\nAllergies: NKDA. Copy to primary care."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-04-01a",
+          "kind": "specialist_visit",
+          "start": "2024-04-01T09:30",
+          "service": "Otolaryngology",
+          "reason": "CSF rhinorrhea follow-up",
+          "vitals": {
+            "bp": [
+              119,
+              72
+            ],
+            "hr": 76
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Otolaryngology Follow-up",
+              "date": "2024-07-30T11:00",
+              "author": "otolaryngology",
+              "body": "Outside otolaryngology group\nDate of visit: 04/01/2024\n\nFollow-up of post-traumatic CSF rhinorrhea. Drainage stopped completely around the middle of March and has not returned, including with bending and exertion. No fever or headache.\n\nExam: nasal endoscopy shows no fluid at rest or with head-down positioning. Mucosa normal.\n\nImpression: post-traumatic CSF leak, resolved with conservative care.\n\nPlan: may resume normal activity gradually. Cleared to fly and travel. Stop stool softener. Return for any recurrence of clear drainage, and seek urgent care for fever, stiff neck or severe headache.\n\nAllergies: NKDA. Copy to primary care."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Late letter filed",
+              "date": "2024-07-30T11:05",
+              "author": "MA",
+              "body": "ENT follow-up letter from 4/1/24 received today after records request. Scanned and routed to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "portal_message",
+          "start": "2024-04-02T18:30",
+          "medications": [
+            {
+              "drug_text": "docusate sodium 100 MG Oral Capsule",
+              "action": "stop",
+              "reason": "leak resolved, ENT advised stopping"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cleared!",
+              "date": "2024-04-02T18:30",
+              "author": "patient",
+              "body": "Saw ENT yesterday. The drip stopped mid March and they said it's healed, I'm cleared to fly. They told me to stop the stool softener. We leave next week for the trip, back around early July. Do I need anything else before I go?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Cleared!",
+              "date": "2024-04-03T07:55",
+              "author": "PCP",
+              "body": "Great news. Nothing else from us before you leave; the travel clinic covered you. Your second hepatitis A shot is due this summer, so we'll give it at your physical when you're back. If the clear drip ever comes back, call ENT right away. Safe travels."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-27a",
+          "kind": "telephone",
+          "start": "2024-06-27T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2024-06-27T10:05",
+              "author": "MA",
+              "body": "No ENT letter from the 4/1 follow-up in chart. Called ENT office, requested visit note be faxed. They will send."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "annual_physical",
+          "start": "2024-08-13T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Susceptibility to hepatitis A virus infection",
+              "action": "resolved",
+              "note": "hepatitis A series completed today",
+              "icd10": "Z28.39"
+            },
+            {
+              "label": "Cerebrospinal fluid rhinorrhea",
+              "action": "resolved",
+              "note": "no drainage since mid-March 2024, ENT confirmed",
+              "icd10": "G96.08"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              69
+            ],
+            "hr": 61,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 79.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-08-13T08:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-13T08:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.09
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-08-13T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 46
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 99
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-13T08:15"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-08-13T08:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-13T08:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Hepatitis A, adult",
+              "date": "2024-08-13T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-13T09:00",
+              "author": "PCP",
+              "body": "Yearly visit. Back from three months overseas since early July. Trip went well, no illnesses while away or since return. Lost a little weight walking all day with camera gear.\n\nCSF leak: no nasal drainage since mid-March. ENT follow-up letter (4/1) now in chart, confirms resolution. No headaches.\n\nMeds: multivitamin only. Off docusate since April. NKDA.\n\nExam: vitals as charted. Well. Nares clear, no drainage with head forward. Neck supple. Lungs clear. Heart RRR. Abdomen soft, nontender. Neuro nonfocal. Skin tanned, no worrisome lesions.\n\nPHQ-2 0.\n\nA/P:\n1. Preventive care: CBC, CMP, lipids. Hep A dose #2 given today, series complete; removing hep A susceptibility from the list.\n2. Post-traumatic CSF rhinorrhea, resolved. Marking resolved.\n3. Flu and COVID this fall.\nRTC one year."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-15a",
+          "kind": "portal_message",
+          "start": "2024-08-15T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2024-08-15T16:40",
+              "author": "PCP",
+              "body": "Hi Nathan, your blood counts, chemistry panel and cholesterol are all normal. See you for shots in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.8
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T17:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-22T17:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T17:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-10-22T17:20",
+              "author": "RN",
+              "body": "Flu and 2024-25 COVID given, left and right deltoid. Feels well, no fever. Observed 15 min without incident."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "hospital_admission",
+          "start": "2025-01-17T18:40",
+          "end": "2025-01-21T11:30",
+          "service": "General Surgery",
+          "reason": "sudden shortness of breath and left chest pain",
+          "conditions": [
+            {
+              "label": "Traumatic diaphragmatic hernia",
+              "action": "diagnosed",
+              "onset": "2025-01-17",
+              "note": "left-sided, delayed presentation of 2019 blunt trauma",
+              "icd10": "S27.808A"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "oxycodone hydrochloride 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every 6 hours as needed for pain",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "Q6H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            },
+            {
+              "drug": "acetaminophen 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets by mouth every 8 hours as needed for pain",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "Q8H PRN",
+              "route": "Oral",
+              "course": "short",
+              "reason": "postoperative pain"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-01-17T18:45",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 105,
+              "rr": 22,
+              "temp_c": 36.9,
+              "spo2": 92
+            },
+            {
+              "time": "2025-01-19T08:00",
+              "bp": [
+                124,
+                78
+              ],
+              "hr": 84,
+              "rr": 16,
+              "temp_c": 37.1,
+              "spo2": 96
+            },
+            {
+              "time": "2025-01-21T08:00",
+              "bp": [
+                120,
+                76
+              ],
+              "hr": 76,
+              "rr": 14,
+              "temp_c": 36.7,
+              "spo2": 98
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-01-17T19:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 264
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-01-17T19:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-01-17T19:15",
+              "text": "Single upright AP view of the chest. The left hemidiaphragm is elevated, and gas-filled loops of bowel project over the left lower and mid thorax. The mediastinum is shifted toward the right. The right lung is clear. No pneumothorax.",
+              "conclusion": "Elevated left hemidiaphragm with bowel loops in the left hemithorax and rightward mediastinal shift, consistent with diaphragmatic hernia."
+            },
+            {
+              "study": "CT chest",
+              "performed": "2025-01-17T20:10",
+              "text": "CT chest with IV contrast, including the upper abdomen. There is a defect in the left hemidiaphragm through which loops of bowel herniate into the left thorax, with rightward mediastinal shift. Herniated bowel enhances normally; no free air or pneumatosis. No pleural effusion. No pneumothorax. Heart size normal.",
+              "conclusion": "Left diaphragmatic defect with herniated bowel into the left chest and mediastinal shift. Bowel enhancement preserved."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-01-17T18:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-01-17T22:30"
+            },
+            {
+              "procedure": "Laparoscopic repair of diaphragmatic hernia",
+              "snomed": "112977000",
+              "performed": "2025-01-18T08:15"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-01-21T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-01-24T10:20",
+              "author": "emergency medicine",
+              "body": "Hospital emergency department\nDate of service: 01/17/2025\n\nCC: abrupt shortness of breath and pain on the left side of the chest.\n\nHPI: 36M, photographer, with a past collision that broke several ribs and bruised his lung. This afternoon he became suddenly short of breath with left chest pain. No fever or cough.\n\nPMH (per prior records): hepatitis A susceptibility, CSF rhinorrhea, healed rib fractures, resolved pulmonary contusion, mild TBI. PSH: none. Meds: multivitamin. Allergies: NKDA. FHx: father HTN; no autoimmune or bleeding disorders. SHx: never smoker, social alcohol 2-3/week.\n\nVitals on arrival: BP 130/85, HR 105, RR 22, SpO2 92% on room air.\nExam: breath sounds diminished over the left chest, tympanic to percussion on that side. Right chest clear. Abdomen soft.\n\nLabs: CBC and chemistries within normal limits.\nUpright CXR: elevated left hemidiaphragm, bowel loops in the left chest, mediastinum pushed to the right.\nCT chest: left diaphragmatic defect with herniated bowel, enhancement preserved.\n\nAssessment: traumatic diaphragmatic hernia, presenting late after prior blunt trauma.\n\nPlan: NG decompression, supplemental oxygen, general surgery consulted, admitted to surgery for repair.\n\nAllergies: NKDA. Copy to primary care."
+            },
+            {
+              "type": "Operative Note",
+              "title": "Operative Report",
+              "date": "2025-03-12T14:00",
+              "author": "general surgery",
+              "body": "Hospital general surgery\nDate of operation: 01/18/2025\n\nPreoperative diagnosis: left traumatic diaphragmatic hernia.\nPostoperative diagnosis: same.\nProcedure: laparoscopic reduction of hernia contents and primary repair of left diaphragm.\nAnesthesia: general endotracheal.\n\nFindings: defect in the left hemidiaphragm with herniated bowel loops into the left chest. Contents reduced without difficulty; bowel pink, peristalsing and viable throughout, no resection needed. Defect closed primarily with interrupted nonabsorbable sutures. Left chest re-expanded under positive pressure; no chest tube needed.\n\nEBL minimal. No complications. To recovery in stable condition."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-03-12T14:05",
+              "author": "general surgery",
+              "body": "Hospital general surgery\nAdmitted 01/17/2025, discharged 01/21/2025.\n\nDiagnosis: traumatic left diaphragmatic hernia, delayed presentation.\nProcedure: laparoscopic reduction and primary repair 01/18/2025.\n\nCourse: presented through the ED with acute dyspnea and left chest pain; imaging showed bowel in the left chest. Repaired the next morning. Oxygen weaned off on postoperative day 1, diet advanced, ambulating, pain controlled on oral medication. Discharged home on hospital day 5.\n\nDischarge medications: oxycodone 5 mg every 6 hours as needed (#12), acetaminophen 1000 mg every 8 hours as needed, home multivitamin.\nInstructions: no lifting over 10 lb for six weeks; may shower; surgical clinic follow-up in about three weeks.\n\nAllergies: NKDA. Copy to primary care physician."
+            },
+            {
+              "type": "Outside Records",
+              "title": "Hospital records filed",
+              "date": "2025-03-12T14:10",
+              "author": "MA",
+              "body": "Operative report and discharge summary for January admission received today after second request. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "telephone",
+          "start": "2025-01-22T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Home from hospital",
+              "date": "2025-01-22T11:15",
+              "author": "RN",
+              "body": "Pt called. Was admitted Fri 1/17 with a diaphragm hernia, had laparoscopic surgery Sat, discharged yesterday. Pain manageable, using the oxycodone mostly at night plus Tylenol. Breathing comfortably, no fever, eating. Pharmacy fill history shows oxycodone 5 mg #12 filled 1/21. No hospital paperwork here yet. Scheduled post-hospital visit 1/29. Advised ER for fever, worsening shortness of breath or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-29a",
+          "kind": "office_visit",
+          "start": "2025-01-29T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-hospital follow-up",
+          "vitals": {
+            "bp": [
+              120,
+              73
+            ],
+            "hr": 81,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 77.4
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2025-01-29T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-01-29T11:10",
+              "author": "PCP",
+              "body": "Post-discharge visit. Admitted 1/17 to 1/21 for a left diaphragmatic hernia, felt to be from the 2019 crash, missed at the time. Laparoscopic repair 1/18 per patient and ED record (received 1/24); op note and discharge summary not yet received.\n\nNow: soreness at the port sites, improving. Stopped the oxycodone 2 days ago, using acetaminophen occasionally. No shortness of breath, cough, fever, nausea or vomiting. Bowels moving normally. Walking a few miles a day.\n\nMeds: multivitamin, acetaminophen as needed. NKDA.\n\nExam: vitals as charted, SpO2 normal on room air. Comfortable. Breath sounds equal bilaterally, no tympany. Heart regular. Abdomen soft, appropriately tender near port sites, incisions clean and dry, no erythema or drainage.\n\nA/P: s/p laparoscopic repair of traumatic diaphragmatic hernia, recovering as expected.\n- Lifting limit 10 lb until early March per surgery.\n- Surgical follow-up already scheduled.\n- Records request sent to hospital for op note and discharge summary.\n- Call for fever, worsening pain, shortness of breath."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.1
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-12a",
+          "kind": "portal_message",
+          "start": "2025-02-12T20:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgeon visit",
+              "date": "2025-02-12T20:02",
+              "author": "patient",
+              "body": "Saw the surgeon yesterday. All healed, he's happy. Still no lifting heavy camera stuff until early March and then I can go back to normal. FYI in case you don't get a letter."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgeon visit",
+              "date": "2025-02-13T08:20",
+              "author": "PCP",
+              "body": "Thanks, Nathan, good to hear. Noted in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-26a",
+          "kind": "annual_physical",
+          "start": "2025-06-26T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-06-27a",
+          "kind": "portal_message",
+          "start": "2025-06-27T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Missed appointment",
+              "date": "2025-06-27T09:15",
+              "author": "front desk",
+              "body": "Hi Nathan, we missed you for your physical yesterday morning. Would you like to rebook?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2025-06-27T12:41",
+              "author": "patient",
+              "body": "So sorry, I was out on a shoot before dawn and completely lost track. Any morning the week of July 7 works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Missed appointment",
+              "date": "2025-06-27T13:02",
+              "author": "front desk",
+              "body": "You're booked Thursday 7/10 at 8:00. Come fasting if you can."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "annual_physical",
+          "start": "2025-07-10T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "conditions": [
+            {
+              "label": "Traumatic diaphragmatic hernia",
+              "action": "resolved",
+              "note": "repaired laparoscopically January 2025",
+              "icd10": "S27.808A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              66
+            ],
+            "hr": 73,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 79.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-10T08:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 240
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-07-10T08:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.7
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-07-10T08:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 164
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-07-10T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-10T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-10T08:50",
+              "author": "PCP",
+              "body": "Yearly exam, rescheduled from 6/26. Fully back to work and hiking with full packs since March. No chest pain, shortness of breath, reflux or bowel trouble since the January surgery. No nasal drainage. No headaches.\n\nMeds: multivitamin. NKDA.\nSocial: never smoker; a few drinks a week. Same partner, same work.\n\nExam: vitals as charted, weight back to his usual. Well. Nares clear. Lungs clear with equal breath sounds both bases. Heart RRR. Abdomen soft, nontender, port scars well healed. No hernia at port sites. Neuro nonfocal.\n\nPHQ-2 0.\n\nA/P:\n1. Annual preventive: CBC, CMP, lipids today.\n2. Traumatic diaphragmatic hernia, repaired 1/2025: healed, no symptoms. Resolving on problem list.\n3. Hep A series complete 2024. Tdap good to 2029. Flu and COVID this fall.\nRTC 1 year."
+            }
+          ],
+          "state": {
+            "weight_kg": 79.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-11a",
+          "kind": "portal_message",
+          "start": "2025-07-11T15:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results",
+              "date": "2025-07-11T15:22",
+              "author": "PCP",
+              "body": "Nathan, your labs from yesterday are normal. No changes needed. See you next summer, or sooner if anything comes up."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-18a",
+          "kind": "pharmacy",
+          "start": "2025-10-18T13:30",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-18T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy immunization report",
+              "date": "2025-10-20T08:15",
+              "author": "pharmacy",
+              "body": "Community pharmacy immunization notification. Influenza vaccine, trivalent, 0.5 mL IM, left deltoid, administered 10/18/2025. No adverse reaction observed. Filed to immunization history."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "telephone",
+          "start": "2025-11-24T08:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from hospital ICU",
+              "date": "2025-11-24T08:35",
+              "author": "RN",
+              "body": "ICU nurse at an outside hospital called. Patient admitted to their ICU overnight; they are asking for his immunization history, specifically any rabies vaccine. Reviewed our record: no rabies vaccine ever documented. Hep A x2 (12/2023, 8/2024), Tdap 8/2019, flu and COVID per record. Immunization record faxed to the ICU. PCP notified."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP note",
+              "date": "2025-11-24T09:10",
+              "author": "PCP",
+              "body": "Aware. Asked ICU to send admission records."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-03a",
+          "kind": "outside_records",
+          "start": "2025-12-03T13:50",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-23T04:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-23T04:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 135
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-23T07:30",
+              "results": [
+                {
+                  "test": "Leukocytes, CSF",
+                  "loinc": "26465-5",
+                  "text": "Increased, lymphocyte predominant"
+                },
+                {
+                  "test": "Glucose, CSF",
+                  "loinc": "2342-4",
+                  "text": "Normal"
+                },
+                {
+                  "test": "Protein, CSF",
+                  "loinc": "2880-3",
+                  "text": "Normal"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "ICU Admission Note",
+              "date": "2025-12-03T13:50",
+              "author": "critical care",
+              "body": "Outside hospital medical ICU\nDate of admission: 11/23/2025\n\nCC: fever, headache and confusion for two days; tingling around an old scratch on the left forearm.\n\nHPI: 37M. History of traumatic injuries including rib fractures, pulmonary contusion, mild TBI and a diaphragmatic hernia. Two days of fever and headache, now confused. He describes pins-and-needles around a healed wound on the left forearm. He remembers a bat scratching him there about two months ago while camping; he did not seek care at the time.\n\nPMH (outside list): hepatitis A susceptibility, CSF rhinorrhea, traumatic diaphragmatic hernia, healed rib fractures, resolved pulmonary contusion, mild TBI. PSH: none listed. Home meds: multivitamin daily. Allergies: NKDA. FHx: father with treated hypertension; no autoimmune or bleeding disorders. SHx: never smoker, social alcohol, wildlife photographer.\n\nVitals: T 38.9 C, HR 110, BP 145/90.\nExam: agitated. Excess salivation; difficulty swallowing when offered water. Hyperreflexic. Encephalopathic. Healed scratch on left forearm; no other wounds or signs of infection.\n\nLabs: WBC 11.0, Hgb 14.2, Plt 250. Na 135, K 4.0, BUN 14, Cr 1.0, glucose 98. CSF: lymphocytic pleocytosis, glucose and protein normal.\n\nAssessment: clinical rabies, symptomatic phase, after bat exposure.\n\nPlan: ICU admission, precautions and supportive care. Rabies diagnostics (saliva, serum, CSF, nuchal skin biopsy) sent to the state public health laboratory, results pending.\n\nAllergies: NKDA. Copy to primary care physician."
+            },
+            {
+              "type": "Outside Records",
+              "title": "ICU records filed",
+              "date": "2025-12-03T13:55",
+              "author": "MA",
+              "body": "ICU admission note from 11/23 received by fax. Scanned to chart, routed to PCP."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Cerebrospinal fluid rhinorrhea|G96.08": {
+        "code": "G96.08",
+        "display": "Other cranial cerebrospinal fluid leak",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Concussion, mild, January 2024 collision|S06.0XAA": {
+        "code": "S06.0XAA",
+        "display": "Concussion with loss of consciousness status unknown, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of mild traumatic brain injury|Z87.820": {
+        "code": "Z87.820",
+        "display": "Personal history of traumatic brain injury",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of multiple traumatic rib fractures (healed)|Z87.81": {
+        "code": "Z87.81",
+        "display": "Personal history of (healed) traumatic fracture",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of pulmonary contusion (resolved)|Z87.828": {
+        "code": "Z87.828",
+        "display": "Personal history of other (healed) physical injury and trauma",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Susceptibility to hepatitis A virus infection|Z28.39": {
+        "code": "Z28.39",
+        "display": "Other underimmunization status",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Traumatic diaphragmatic hernia|S27.808A": {
+        "code": "S27.808A",
+        "display": "Other injury of diaphragm, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "docusate sodium 100 MG Oral Capsule": {
+        "code": "1115005",
+        "display": "docusate sodium 100 MG Oral Capsule",
+        "ingredient": "docusate",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      },
+      "oxycodone hydrochloride 5 MG Oral Tablet": {
+        "code": "1049621",
+        "display": "oxycodone hydrochloride 5 MG Oral Tablet",
+        "ingredient": "oxycodone",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Beta-2 transferrin, nasal fluid": {
+        "code": "13876-8",
+        "display": "Beta-2 transferrin [Presence] in Body fluid",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, CSF": {
+        "code": "2342-4",
+        "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Glucose, nasal fluid": {
+        "code": "2344-0",
+        "display": "Glucose [Mass/volume] in Body fluid",
+        "unit": "mg/dL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Leukocytes, CSF": {
+        "code": "26465-5",
+        "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein, CSF": {
+        "code": "2880-3",
+        "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein, nasal fluid": {
+        "code": "2881-1",
+        "display": "Protein [Mass/volume] in Body fluid",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT sinuses without contrast, thin section": {
+        "code": "36529-6",
+        "display": "CT Sinuses WO contrast",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Laparoscopic repair of diaphragmatic hernia": {
+        "code": "112977000",
+        "display": "Repair of diaphragmatic hernia",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    },
+    "rejected": [
+      "drug \"multivitamin Oral Tablet\""
+    ]
+  }
+}

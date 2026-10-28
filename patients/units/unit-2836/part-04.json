@@ -1,0 +1,301 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002836",
+      "events": [
+        {
+          "id": "2023-01-18a",
+          "kind": "outside_records",
+          "start": "2023-01-18T10:30",
+          "labs": [
+            {"panel": null, "collected": "2023-01-11T09:30", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 22},
+              {"test": "C Reactive Protein", "value": 6}
+            ]}
+          ],
+          "orders": [{"id": "rheum-2022", "action": "done", "date": "2023-01-18T10:30"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Rheumatology follow-up", "author": "rheumatology", "date": "2023-01-18T10:30", "body": "Outside rheumatology practice. Seen 1/11/2023 after admission for biopsy-proven giant cell arteritis.\n\nShe has had no headache or jaw pain since the IV pulse. Scalp no longer tender. Right-eye vision remains reduced and is followed by ophthalmology. Prednisone 60 mg daily since discharge; sleep is broken and appetite up, otherwise tolerating it.\n\nExam: temporal arteries non-tender. No synovitis.\nLabs today: ESR 22, CRP 0.6 mg/dL.\n\nAssessment: GCA, clinically and biochemically quiet on high-dose prednisone.\n\nPlan: taper prednisone by 10 mg every two weeks to 20 mg, then more slowly, aiming to be off in roughly a year if no relapse. Written schedule given. We will check inflammatory markers at each visit. She knows to call at once for any new headache, jaw pain or visual change.\n\nAllergies: penicillin, iodinated contrast."}
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "telehealth_visit",
+          "start": "2023-02-21T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "steroid follow-up",
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2023-02-21T13:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video visit", "author": "PCP", "date": "2023-02-21T13:40", "body": "Video, at home. Following the rheumatology taper; now down to 30 mg a day on their written schedule. No headache or jaw symptoms. Right eye vision unchanged; ophthalmology following. Sleeping better as the dose comes down. Home BP 120s-130s.\nAppears well.\nPlan: continue the taper per rheumatology. In-person visit with labs in May."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "office_visit",
+          "start": "2023-05-16T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-05-16T09:00"},
+            {"procedure": "Venipuncture", "performed": "2023-05-16T09:30"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-05-16T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-16T09:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2023-05-16T09:00", "body": "S: Prednisone now 12.5 mg per rheumatology, no GCA symptoms. Back pain stable on oncology's regimen. Reads with a magnifier for the right eye. No falls.\nO: Vitals as charted. Heart, lungs normal. No edema.\nA/P: GCA on taper - per rheumatology. Steroid exposure - BMP for glucose today. Hgb was 11.2 at the hospital in November; CBC today. Continue other meds. Wellness in September."}
+          ]
+        },
+        {
+          "id": "2023-05-18a",
+          "kind": "portal_message",
+          "start": "2023-05-18T12:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2023-05-18T12:30", "body": "Blood sugar normal even on the prednisone - good. Calcium still mildly up, as before. Hemoglobin slightly low, similar to the hospital value; we'll keep watching it."}
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "annual_physical",
+          "start": "2023-09-26T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2023-09-26T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-09-26T09:10"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-26T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-26T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2023-09-26T08:30", "body": "AWV, 70. Independent; gave up night driving because of the right eye. No falls, PHQ-2 0.\nPrednisone down to 2.5 mg, rheumatology expects to stop it this fall.\nExam: vitals as charted; unremarkable apart from known findings.\nPlan: CMP, lipids. Flu and updated COVID next week; RSV vaccine at the pharmacy. Proxy current."}
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T10:40",
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-03T10:45"},
+            {"procedure": "Immunization administration", "performed": "2023-10-03T10:46"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, quadrivalent", "date": "2023-10-03T10:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T10:46"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Fall vaccines", "author": "RN", "date": "2023-10-03T10:40", "body": "High-dose flu and 2023-24 COVID vaccine given. She plans the RSV shot at her pharmacy later this month. No reactions."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "pharmacy",
+          "start": "2023-10-24T15:15",
+          "immunizations": [{"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2023-10-24T15:15"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy immunization record", "author": "front desk", "date": "2023-10-26T09:00", "body": "Pharmacy reports RSV vaccine (Arexvy) given 10/24/2023. Recorded."}
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T11:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Medication history discrepancy", "author": "MA", "date": "2023-12-05T11:20", "body": "While processing her atorvastatin renewal, the pharmacy fill history shows dexamethasone 4 mg tablets, #30, filled 11/21 and prescribed by her oncologist. Not on our list. No prednisone fill since October. Called pt - she says rheumatology finished the prednisone at the start of November and oncology started dexamethasone for bone pain. Flagged for PCP; oncology note requested."}
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "outside_records",
+          "start": "2024-01-08T14:00",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology clinic note", "author": "oncology", "date": "2024-01-08T14:00", "body": "OUTSIDE ONCOLOGY GROUP - note of 11/20/2023, faxed on request.\n\nHR-positive breast cancer metastatic to bone, on letrozole. Rheumatology tapered her GCA prednisone off on 11/1/2023. Since coming off steroids she reports more aching through the lumbar spine, which the prednisone had been masking. No new focal symptoms. Morphine ER 30 mg q12h and gabapentin 300 mg TID continue.\n\nExam: diffuse lumbar tenderness, neuro intact.\n\nPlan: start dexamethasone 4 mg daily with breakfast for bone pain. Continue letrozole and current analgesics. Return 3 months.\n\nAllergies: penicillin (anaphylaxis), iodinated contrast (urticaria)."}
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "office_visit",
+          "start": "2024-01-23T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "medication reconciliation, follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "medications": [
+            {"drug": "prednisone 20 MG Oral Tablet", "action": "stop", "reason": "GCA taper completed by rheumatology 11/1/2023"},
+            {"drug_text": "dexamethasone 4 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily with breakfast", "dose": {"value": 4, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "bone pain; prescribed by oncology"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-01-23T10:20"},
+            {"procedure": "Venipuncture", "performed": "2024-01-23T10:55"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-23T10:55", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up and reconciliation", "author": "PCP", "date": "2024-01-23T10:20", "body": "Oncology note from November arrived; list brought up to date today.\n- Prednisone: finished 11/1/2023 per rheumatology - removed.\n- Dexamethasone 4 mg daily from oncology since late November for bone pain - added.\nShe feels the dexamethasone has taken the edge off the back aching. No GCA symptoms off prednisone. Appetite good.\nExam: vitals as charted, weight steady. Temporal arteries non-tender. Lumbar tenderness unchanged. No edema.\nPlan: BMP for glucose and calcium on the dexamethasone. Continue lisinopril, HCTZ, atorvastatin, letrozole; oncology analgesics as prescribed. Follow up in spring."}
+          ]
+        },
+        {
+          "id": "2024-04-15a",
+          "kind": "telephone",
+          "start": "2024-04-15T09:50",
+          "conditions": [
+            {"label": "Hypercalcemia", "icd10": "E83.52", "action": "diagnosed", "onset": "2024-04-12", "note": "malignancy-associated, per patient report of ED visit 4/12/2024"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "ED visit report", "author": "RN", "date": "2024-04-15T09:50", "body": "Pt called to tell us she was in the ED Friday. For about a month she had been getting more tired and muddled, constipated, weak and off her food, and last week started vomiting. ED said her calcium was very high from the cancer in her bones. They gave IV fluids and an IV bone-strengthening drug (she thinks zoledronic) and sent her home that night. They did x-rays of her bones, a head CT without dye and an EKG. Feels clearer today, eating a little. Oncology appointment next week. She does not have discharge papers. Requested ED records and imaging. Reviewed with PCP, who added hypercalcemia to her problem list; pt to call if confusion or vomiting returns."}
+          ]
+        },
+        {
+          "id": "2024-04-22a",
+          "kind": "outside_records",
+          "start": "2024-04-22T15:30",
+          "reports": [
+            {"study": "XR bones survey for metastasis", "loinc": "37365-4", "performed": "2024-04-12T15:10", "text": "Skeletal survey: skull, spine, pelvis, ribs, and long bones. Multiple lytic lesions involving the vertebrae, the pelvis and several ribs. Long bones and skull without lytic lesion. No acute fracture.", "conclusion": "Multiple lytic osseous lesions of the vertebrae, pelvis and ribs, consistent with metastatic disease."},
+            {"study": "CT head without contrast", "performed": "2024-04-12T14:20", "text": "Noncontrast CT of the head. No acute hemorrhage, mass effect, midline shift or territorial infarct. Ventricles and sulci appropriate for age. Calvarium intact.", "conclusion": "No acute intracranial abnormality."},
+            {"study": "12-lead ECG", "performed": "2024-04-12T13:40", "text": "Sinus rhythm. Normal axis. Short QT interval. No acute ST-T changes.", "conclusion": "Sinus rhythm with shortened QT interval."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Imaging and ECG from ED visit", "author": "front desk", "date": "2024-04-22T15:30", "body": "Hospital radiology sent the skeletal survey and head CT reports and the ED ECG tracing from 4/12/2024. The ED physician note itself was not included; a second request has been sent."},
+            {"type": "Progress Notes", "title": "Outside imaging reviewed", "author": "PCP", "date": "2024-04-23T07:45", "body": "Skeletal survey with lytic lesions in vertebrae, pelvis and ribs - more extensive than the 2020 lumbar disease. Head CT negative. ECG short QT, fits hypercalcemia. Oncology seeing her this week. No ED note or calcium value received yet."}
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telephone",
+          "start": "2024-05-14T14:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from hospital case manager", "author": "RN", "date": "2024-05-14T14:05", "body": "Case manager from the community teaching hospital: pt came in Saturday 5/11 with a week of worsening weakness, constipation and confusion; calcium very high again, admitted to the ICU and now on the medical floor. Expected discharge later this week with oncology follow-up. Asked for a PCP visit within a week of discharge - booked 5/23. Our medication list faxed to them."}
+          ]
+        },
+        {
+          "id": "2024-05-23a",
+          "kind": "office_visit",
+          "start": "2024-05-23T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, hypercalcemia",
+          "state": {"weight_kg": 51.0, "bp": [134, 82], "labs": {"Calcium": 9.9, "Creatinine": 1.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "medications": [
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "stop", "reason": "stopped at hospital admission for hypercalcemia"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2024-05-23T11:00"},
+            {"procedure": "Venipuncture", "performed": "2024-05-23T11:40"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-05-23T11:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-hospital visit", "author": "PCP", "date": "2024-05-23T11:00", "body": "Discharged 5/16 after admission 5/11 (ICU first) for severe hypercalcemia from bone metastases - second episode in a month. Discharge summary not yet here; going from patient, her discharge med sheet and the case manager.\nPer pt: fluids, a nasal or injected calcitonin, and a denosumab injection; told to stop the water pill for good. Oncology visit next week to talk about changing treatment.\nToday: thinking clearly, bowels moving on PEG, still weak on stairs, appetite poor. Weight down to 51 kg.\nExam: thin, tired but oriented x3. Mucous membranes moist. BP as charted. Heart regular. Lungs clear. Abdomen soft, non-tender. Strength symmetric, still somewhat weak getting up from the chair.\nA/P:\n1. Malignancy-associated hypercalcemia - HCTZ off the list. BMP today for calcium and kidney function (creatinine was up in hospital per pt).\n2. HTN - lisinopril 20 alone now; recheck BP next visit, home log.\n3. Metastatic breast cancer - oncology next week.\n4. Weight loss/weakness - recovering from admission; small frequent meals.\nRecords requested again."}
+          ]
+        },
+        {
+          "id": "2024-05-24a",
+          "kind": "portal_message",
+          "start": "2024-05-24T16:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs", "author": "PCP", "date": "2024-05-24T16:15", "body": "Your calcium is back to normal and your kidney number is better than in the hospital, though still a little above where it used to be. Keep drinking fluids. Please send me a few home blood pressure readings next week now that you are off the water pill."},
+            {"type": "Patient Message", "title": "RE: Labs", "author": "patient", "date": "2024-05-30T09:20", "body": "Readings this week: 136/84, 132/80, 138/82, 130/78."},
+            {"type": "Patient Message", "title": "RE: Labs", "author": "PCP", "date": "2024-05-30T12:05", "body": "Those are acceptable. No change for now."}
+          ]
+        },
+        {
+          "id": "2024-06-05a",
+          "kind": "outside_records",
+          "start": "2024-06-05T10:10",
+          "labs": [
+            {"panel": null, "collected": "2024-05-11T13:05", "results": [
+              {"test": "Calcium", "loinc": "17861-6", "unit": "mg/dL", "value": 14.2},
+              {"test": "Creatinine", "loinc": "2160-0", "unit": "mg/dL", "value": 1.8},
+              {"test": "Sodium", "loinc": "2951-2", "unit": "mmol/L", "value": 142},
+              {"test": "Potassium", "loinc": "2823-3", "unit": "mmol/L", "value": 4.0},
+              {"test": "Phosphorus", "value": 2.9},
+              {"test": "Albumin", "loinc": "1751-7", "unit": "g/dL", "value": 4.0},
+              {"test": "Parathyroid Hormone, Intact", "value": 10}
+            ]},
+            {"panel": null, "collected": "2024-05-16T06:00", "results": [
+              {"test": "Calcium", "loinc": "17861-6", "unit": "mg/dL", "value": 10.1},
+              {"test": "Creatinine", "loinc": "2160-0", "unit": "mg/dL", "value": 1.3}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-05-11T12:30"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2024-05-11T18:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2024-05-16T11:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospitalist", "date": "2024-06-05T10:10", "body": "COMMUNITY TEACHING HOSPITAL - DISCHARGE SUMMARY\nAdmission 05/11/2024 (ED to medical ICU, transferred to the floor 05/13). Discharge 05/16/2024.\n\nReason for admission: severe hypercalcemia.\n\nHistory: 70-year-old woman with stage IV breast cancer with lytic bone metastases, seen in our ED in April for hypercalcemia and treated with fluids and zoledronic acid. One week of progressive weakness, constipation and confusion. Takes hydrochlorothiazide for hypertension.\n\nExam on arrival: lethargic; oriented to person and place but not time. Abdomen not distended, bowel sounds hypoactive. Generalized weakness in all four limbs.\n\nLabs on arrival: calcium 14.2, creatinine 1.8, sodium 142, potassium 4.0, phosphorus 2.9, albumin 4.0, PTH 10 pg/mL (suppressed).\n\nAssessment: recurrent malignancy-associated hypercalcemia, PTH-independent, with creatinine raised by volume depletion.\n\nCourse: aggressive IV normal saline; calcitonin for the first 48 hours; denosumab 120 mg subcutaneously on 5/12 given recurrence within a month of zoledronic acid. Hydrochlorothiazide discontinued permanently. Mental status cleared by day 3. Calcium 10.1 and creatinine 1.3 on the morning of discharge.\n\nDischarge medications: STOP hydrochlorothiazide. Continue lisinopril 20 mg daily, atorvastatin 20 mg, letrozole 2.5 mg, dexamethasone 4 mg daily, morphine ER 30 mg q12h, gabapentin 300 mg TID, acetaminophen prn, polyethylene glycol daily.\nAllergies: penicillin (anaphylaxis), iodinated contrast (urticaria).\n\nFollow-up: oncology within 2 weeks to discuss systemic therapy and ongoing bone-targeted treatment; PCP within 1 week."},
+            {"type": "Progress Notes", "title": "Discharge summary reviewed", "author": "PCP", "date": "2024-06-06T07:30", "body": "Received three weeks after discharge. Admission calcium 14.2 with PTH 10 - suppressed, so this is the cancer, not the parathyroid. Creatinine 1.8 down to 1.3. Denosumab 120 mg given. HCTZ already off our list. Nothing further to change."}
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "pharmacy",
+          "start": "2024-07-09T10:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Fill history review", "author": "MA", "date": "2024-07-09T10:45", "body": "Annual Part D medication review from her plan lists capecitabine 500 mg tablets filled 6/11 and 7/2 from an oncology specialty pharmacy. Letrozole last filled in May. Neither change appears in our chart; no oncology note received since January. Asked oncology to fax their recent notes. Will flag for PCP at next visit."}
+          ]
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "portal_message",
+          "start": "2024-08-27T19:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Update", "author": "patient", "date": "2024-08-27T19:30", "body": "Just so you know - my oncologist had me meet the palliative care team last week to help with the pain and the tiredness. They were very kind. I am on the chemo pills now, two weeks on and one off. See you in September."},
+            {"type": "Patient Message", "title": "RE: Update", "author": "PCP", "date": "2024-08-27T21:00", "body": "Thank you for telling me, Svetlana. I'm glad you have them on your side. Bring your pill bottles in September and we'll get our list matched up."}
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "office_visit",
+          "start": "2024-09-10T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, medication reconciliation",
+          "state": {"labs": {"Alkaline Phosphatase": 180, "Hemoglobin": 11.0, "Calcium": 9.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "medications": [
+            {"drug_text": "letrozole 2.5 MG Oral Tablet", "action": "stop", "reason": "stopped by oncology June 2024 when chemotherapy started"},
+            {"drug_text": "capecitabine 500 MG Oral Tablet", "action": "historical", "sig": "Take 3 tablets (1500 mg) by mouth twice daily within 30 minutes after meals, days 1-14 of each 21-day cycle", "dose": {"value": 1500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "metastatic breast cancer; prescribed by oncology"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-09-10T10:00"},
+            {"procedure": "Venipuncture", "performed": "2024-09-10T10:40"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-10T10:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alkaline Phosphatase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-10T10:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2024-09-10T10:00", "body": "Brought her bottles. Reconciled against her account and the pharmacy fill history (oncology notes still not received):\n- Letrozole stopped in June.\n- Capecitabine 1500 mg twice daily, 14 days on / 7 off, since June.\n- Denosumab injection monthly at the cancer center.\n- Dexamethasone 4, morphine ER 30 q12h, gabapentin 300 TID unchanged; palliative care now co-managing pain.\n- Lisinopril 20, atorvastatin 20, PEG daily, acetaminophen prn. No HCTZ.\nHow she is: tired in the chemo weeks, otherwise managing at home. Sister comes twice a week. No confusion since May. Bowels okay.\nExam: thin, weight stable since May. Oriented, conversant. Heart regular, lungs clear. Diffuse mild tenderness lumbar spine and pelvis. No edema.\nA/P: lists updated. CMP and CBC today (counts and liver tests on capecitabine; calcium on denosumab). BP acceptable on lisinopril alone. Annual wellness with fall vaccines in October."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Annual wellness visit, subsequent", "performed": "2024-10-08T09:20"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T09:55"},
+            {"procedure": "Immunization administration", "performed": "2024-10-08T09:56"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T09:55"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T09:56"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-10-08T09:20", "body": "AWV, 71. Uses a cane outdoors since the admission; no falls. Needs help with heavy shopping (sister). PHQ-2 0 - says her spirits are 'better than you'd think.' Hearing fine; right eye vision poor since GCA.\nAdvance care planning touched on; she has a proxy and has talked goals with palliative care, will bring their form.\nExam: vitals as charted. No new findings.\nPlan: flu (high-dose) and updated COVID today. Labs were done last month. Colonoscopy, due by the old schedule next year, not pursued given her stage IV cancer - she agrees."}
+          ]
+        }
+      ]
+    }
+  ]
+}

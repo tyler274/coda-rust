@@ -1,0 +1,241 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001860",
+      "given": "Tamika",
+      "family": "Kenney",
+      "birth_date": "1986-09-23",
+      "address_line": "214 Bardwell Street",
+      "phone": "+1-518-555-0175",
+      "email": "tamika.kenney@example.test",
+      "marital_status": "single",
+      "summary": "Administrative assistant who joined the practice healthy in 2019. Heavy periods from a submucosal fibroid (resected 2022) led to iron deficiency anemia and then restless legs; pulmonary arterial hypertension was diagnosed by an outside pulmonology group in 2024 and treated with tadalafil. Last seen January 2026 for a wellness visit with ongoing fatigue.",
+      "events": [
+        {
+          "id": "2019-05-29a",
+          "kind": "telephone",
+          "start": "2019-05-29T11:20",
+          "reason": "new patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2019-05-29T11:20",
+             "body": "Caller wants to transfer her primary care here; says the membership model appeals to her because she can never get a same-week appointment where she is now. Healthy, no regular meds per caller. Commercial PPO card info taken. New patient physical scheduled 6/11 at 8:40. Records release form emailed for her prior office."}
+          ]
+        },
+        {
+          "id": "2019-06-11a",
+          "kind": "establish_care",
+          "start": "2019-06-11T08:40",
+          "end": "2019-06-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 68.2, "height_cm": 164.0, "labs": {"Hemoglobin": 12.9, "Mean Corpuscular Volume": 88, "Ferritin": 46, "Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "None"},
+            {"item": "Occupation", "value": "Administrative assistant"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-06-11T09:45", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-06-11T09:45", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2019-06-11T09:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-06-11T09:45", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2019-06-11T09:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2019-06-11T09:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2019-06-11T09:20", "issued": "2019-06-17T14:00",
+             "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+             "conclusion": "NILM, HPV negative."}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-06-11T09:35"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-06-11T08:40"},
+            {"procedure": "Immunization administration", "performed": "2019-06-11T09:35"},
+            {"procedure": "Venipuncture", "performed": "2019-06-11T09:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2019-06-11T09:40",
+             "body": "32-year-old woman establishing care. Transferring from another primary care office for easier access; she has had no ongoing problems there.\n\nHISTORY: Generally well. No chronic illnesses. No hospitalizations. Takes no prescription or OTC medicines regularly.\nOB/GYN: G1P1, one uncomplicated vaginal delivery. Menses monthly and manageable, about 5 days. Last Pap at prior office, normal per patient; records requested.\nSurgical: none apart from the delivery.\nAllergies: none to medications.\nFamily: mother has fibroids and restless legs. A maternal aunt has pulmonary arterial hypertension. No other heart, lung or blood disorders she knows of.\nSocial: administrative assistant, desk work. Never smoked. Does not drink. No drug use.\n\nROS: negative across systems; no fatigue, dyspnea, bleeding problems.\n\nEXAM: Pleasant, well appearing. Vitals per flowsheet. HEENT unremarkable. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no masses. Extremities warm, no swelling. Skin clear. Pelvic: normal external genitalia, cervix appears healthy, uterus normal size and nontender, no adnexal fullness. Pap with HPV obtained.\n\nASSESSMENT/PLAN:\n1. Adult preventive care. Tdap given today (last tetanus unknown). CBC, CMP, lipids, TSH. One-time HIV and hepatitis C screening, she agrees. PHQ-2 negative.\n2. Cervical screening: co-test sent; if negative, next in 5 years.\n3. Family history noted; nothing to act on now.\nFollow up yearly or as needed. She has the portal and knows she can text."}
+          ]
+        },
+        {
+          "id": "2019-06-13a",
+          "kind": "portal_message",
+          "start": "2019-06-13T12:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-06-13T12:05",
+             "body": "Hi Tamika, your blood count, chemistry panel, thyroid and cholesterol all look healthy. HIV and hepatitis C screens were negative. The Pap result usually takes a few more days; I'll message you when it posts."}
+          ]
+        },
+        {
+          "id": "2019-06-18a",
+          "kind": "portal_message",
+          "start": "2019-06-18T08:50",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "PCP", "date": "2019-06-18T08:50",
+             "body": "Pap smear was normal and the HPV test was negative. You won't need another until 2024."},
+            {"type": "Patient Message", "title": "RE: Pap result", "author": "patient", "date": "2019-06-18T19:12",
+             "body": "Great, thank you!"}
+          ]
+        },
+        {
+          "id": "2019-06-27a",
+          "kind": "outside_records",
+          "start": "2019-06-27T10:30",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2019-06-27T10:30",
+             "body": "Fourteen pages faxed from her previous primary care office, covering 2014 to 2019. Contents: yearly physicals with normal exams; Pap 2016 negative; tetanus status not documented; no chronic problems; no prescriptions on file; allergies listed as none. Routed to PCP for review.\n\nPCP review: nothing outstanding. Consistent with her history."}
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T16:30",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-22T16:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-22T16:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccination", "author": "RN", "date": "2019-10-22T16:40",
+             "body": "Seasonal influenza vaccine, left deltoid, IM. Feeling well today, no prior reactions. VIS given. Tolerated; left after a short wait."}
+          ]
+        },
+        {
+          "id": "2020-03-24a",
+          "kind": "portal_message",
+          "start": "2020-03-24T09:15",
+          "documents": [
+            {"type": "Patient Message", "title": "Your June physical", "author": "front desk", "date": "2020-03-24T09:15",
+             "body": "Hi Ms. Kenney, with the pandemic restrictions we are pausing in-person preventive visits for now. We'll reach out to reschedule your physical for later this summer. If you need anything sooner, message or call us and the doctor can see you by video."}
+          ]
+        },
+        {
+          "id": "2020-08-18a",
+          "kind": "annual_physical",
+          "start": "2020-08-18T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin": 12.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2020-08-18T10:40", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-08-18T10:00"},
+            {"procedure": "Venipuncture", "performed": "2020-08-18T10:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-08-18T10:35",
+             "body": "Masked visit. Has been working from home since spring and finds she sits more. Otherwise feels fine. Periods regular. No new symptoms. No medications.\n\nExam: comfortable. Heart regular without murmur, lungs clear, abdomen benign, no peripheral swelling. Vitals per flowsheet.\n\nPlan: CBC with this year's labs. Flu vaccine in October. Co-test not due. Encouraged a daily walk now that her commute is gone. Return in a year."}
+          ]
+        },
+        {
+          "id": "2020-08-19a",
+          "kind": "portal_message",
+          "start": "2020-08-19T13:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Blood count", "author": "PCP", "date": "2020-08-19T13:30",
+             "body": "Your blood count came back normal, no anemia."}
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "nurse_visit",
+          "start": "2020-10-20T08:15",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-20T08:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-20T08:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu shot", "author": "MA", "date": "2020-10-20T08:25",
+             "body": "Curbside screening done, afebrile, no symptoms. Quadrivalent flu vaccine given right deltoid. No issues."}
+          ]
+        },
+        {
+          "id": "2021-05-24a",
+          "kind": "outside_records",
+          "start": "2021-05-24T14:10",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T15:20"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "COVID-19 vaccination record", "author": "MA", "date": "2021-05-24T14:10",
+             "body": "Patient uploaded a photo of her vaccination card through the portal. Pfizer dose 1 on 04/09/2021 and dose 2 on 04/30/2021, both at a retail pharmacy. Entered into immunization history and state registry checked; matches."}
+          ]
+        },
+        {
+          "id": "2021-06-22a",
+          "kind": "annual_physical",
+          "start": "2021-06-22T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Hemoglobin": 12.5}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2021-06-22T10:00", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2021-06-22T10:00", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-06-22T09:20"},
+            {"procedure": "Venipuncture", "performed": "2021-06-22T10:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-06-22T09:55",
+             "body": "34F, well. Back in the office at work three days a week. Fully vaccinated for COVID in April. Periods monthly, about five days, no change. No meds, no allergies.\n\nROS negative. Exam: well. Normal heart and lung exam, abdomen soft and nontender, no edema. Vitals reviewed.\n\nA/P: health maintenance. Basic labs. PHQ-2 0. Pap next due 2024. Flu in the fall. RTC one year."}
+          ]
+        },
+        {
+          "id": "2021-06-23a",
+          "kind": "portal_message",
+          "start": "2021-06-23T11:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Labs from your physical", "author": "PCP", "date": "2021-06-23T11:45",
+             "body": "All of yesterday's results are in the normal range. Have a good summer."}
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "nurse_visit",
+          "start": "2021-10-26T17:00",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-26T17:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-26T17:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2021-10-26T17:10",
+             "body": "Came after work for her flu shot. No contraindications. Given IM left arm, lot logged. She'll get a COVID booster at her pharmacy when eligible."}
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "office_visit",
+          "start": "2021-12-20T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "heavy periods",
+          "conditions": [{"label": "Heavy menstrual bleeding", "action": "diagnosed", "onset": "2021-07-01"}],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "orders": [{"id": "gyn-referral", "action": "placed", "order": "Gynecology referral", "category": "referral", "to": "Gynecology", "reason": "heavy prolonged menses with clots"}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2021-12-20T15:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit: Heavy Menses", "author": "PCP", "date": "2021-12-20T16:10",
+             "body": "S: Since about July her periods have gotten longer and heavier. Now running well over a week, with big clots, and cramping bad enough that she has left work early twice. Using pads and tampons together on the heaviest days. Cycle still monthly. Not pregnant per her; not currently trying. No bleeding between periods or after intercourse. Mother had fibroids.\nO: Looks well. Vitals per flowsheet. Abdomen soft, nontender, no palpable mass.\nA: Heavy menstrual bleeding, likely structural given family history.\nP: Gynecology referral placed for evaluation and pelvic imaging. She has an opening there in mid-January and would rather have blood drawn once, so the gyn office will check her counts at that visit. Call if she feels faint or soaks a pad an hour."}
+          ]
+        },
+        {
+          "id": "2021-12-22a",
+          "kind": "portal_message",
+          "start": "2021-12-22T10:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Gyn appointment", "author": "patient", "date": "2021-12-22T10:05",
+             "body": "The gyn office called, I'm booked for January 17. Just letting you know."},
+            {"type": "Patient Message", "title": "RE: Gyn appointment", "author": "MA", "date": "2021-12-22T13:20",
+             "body": "Thanks for the update, we sent your referral and notes over. Happy holidays."}
+          ]
+        }
+      ]
+    }
+  ]
+}

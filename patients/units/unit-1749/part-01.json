@@ -1,0 +1,225 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001749",
+      "given": "Grace",
+      "family": "Paquette",
+      "birth_date": "1992-11-02",
+      "address_line": "58 Quarry Hill Road",
+      "phone": "+1-413-555-0173",
+      "email": "grace.paquette@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher with recurrent genital HSV on episodic valacyclovir who joins the practice in 2022. Three deliveries follow in consecutive Januaries at an outside hospital: a vaginal birth with a third-degree sphincter injury (2024), a cesarean for active HSV lesions in labor (2025), and a trial of labor after cesarean ending in uterine rupture, emergency repair and transfusion (2026), after the practice last saw her.",
+      "events": [
+        {
+          "id": "2022-09-07a",
+          "kind": "telephone",
+          "start": "2022-09-07T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient inquiry", "author": "front desk", "date": "2022-09-07T10:20",
+             "body": "Caller is a 29 y/o teacher looking for a new primary care doctor; her old office is closing its adult panel. Went over membership and what insurance still covers (labs, imaging, specialists). She'd like to start. New patient physical booked for Tues 9/13 at 8:00 before school. Asked her to sign the release so we can get her old chart. BCBS PPO card info entered."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:00",
+          "end": "2022-09-13T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {"label": "Recurrent genital herpes", "action": "diagnosed", "note": "longstanding per patient; episodic therapy"}
+          ],
+          "medications": [
+            {"drug_text": "valacyclovir 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 3 days, starting at the first sign of an outbreak", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "recurrent genital herpes, episodic treatment"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 63.2, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.37}},
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 glasses of wine per month"},
+            {"item": "Occupation", "value": "High school mathematics teacher"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-13T08:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-13T08:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-13T08:45", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-13T08:45", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2022-09-13T08:45", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-13T08:45", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-13T08:00"},
+            {"procedure": "Venipuncture", "performed": "2022-09-13T08:45"}
+          ],
+          "documents": [
+            {"type": "History and physical note", "title": "New Patient Preventive Visit", "author": "PCP", "date": "2022-09-13T08:50",
+             "body": "NEW PATIENT. 29F, teaches math at the high school, here to establish. Prior PCP office closing its adult panel; release signed, chart requested.\n\nConcerns: none acute. Wants a doctor she can reach.\n\nHx: Genital herpes for years, flares a few times a year at most, usually tingling first. Keeps valacyclovir at home and takes 500 mg twice a day for 3 days when she feels it coming; that has worked well. Never on daily suppression. Last flare she thinks was spring.\nOB: G1P1, one vaginal birth in 2017, no complications. No surgeries.\nMeds: valacyclovir 500 mg BID x3 days PRN prodrome.\nAllergies: none to medications.\nFHx: mother had a C-section; one sister also has recurrent HSV-2; maternal aunt with osteoporosis. No early heart disease or cancers she knows of.\nSocial: married, one child at home. Never smoked. Wine once or twice a month.\n\nROS negative except as above.\n\nExam: Well appearing. HEENT unremarkable. Neck supple, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No genital exam today, she has no active lesions. Skin clear. Mood and affect normal.\nPHQ-2 0. AUDIT-C 1.\n\nA/P\n1. Preventive: CBC, CMP, lipids, TSH. One-time HIV and hep C screening, she agrees. Pap/HPV per old records (believes 2021, normal); will confirm when chart arrives. Flu and COVID boosters next month when the fall supply is in.\n2. Recurrent genital HSV: continue episodic valacyclovir; discussed daily suppression as an option if flares get more frequent. She prefers episodic. Message us for refills.\n\nRTC yearly, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T16:05",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your results from Tuesday", "author": "PCP", "date": "2022-09-16T16:05",
+             "body": "Hi Grace, everything from Tuesday came back fine: blood counts, kidney and liver tests, thyroid and cholesterol are all in the normal range, and the HIV and hepatitis C screens are negative. Nothing to do. Good to meet you."}
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "outside_records",
+          "start": "2022-09-28T11:30",
+          "reason": "prior primary care records",
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2021-08-10T09:00", "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative."}
+          ],
+          "immunizations": [
+            {"vaccine": "HPV, quadrivalent", "date": "2007-09-18T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2007-11-20T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-03-25T10:00"},
+            {"vaccine": "Tdap", "date": "2017-04-11T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-02T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-23T15:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2022-09-28T11:30",
+             "body": "Prior office sent 38 pages (2014 to 2022). Summary for the chart:\n- Pap with HPV co-test 08/10/2021: negative cytology, HPV not detected.\n- Vaccines: HPV series x3 2007-2008; Tdap 04/2017 during pregnancy; COVID primary series 04/2021.\n- Problem list there: genital herpes, recurrent, on episodic valacyclovir.\n- Allergies: NKDA.\nAbstracted and sent to PCP inbox. Originals scanned under Media."},
+            {"type": "Progress Notes", "title": "Outside records reviewed", "author": "PCP", "date": "2022-09-29T07:40",
+             "body": "Old chart reviewed. Matches her history. Pap/HPV normal 2021, next due 2026. Tdap 2017. Nothing outstanding."}
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "nurse_visit",
+          "start": "2022-10-05T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-05T15:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-05T15:27"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-05T15:25"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunizations", "author": "RN", "date": "2022-10-05T15:40",
+             "body": "Came in after school. Afebrile, feeling well. Screening questions negative. Flu (quadrivalent) L deltoid, Pfizer bivalent booster R deltoid. Lot numbers in the immunization record. Waited 15 min, no reaction. VIS given."}
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "portal_message",
+          "start": "2022-10-24T06:48",
+          "reason": "herpes prodrome, valacyclovir refill",
+          "documents": [
+            {"type": "Patient Message", "title": "Refill please", "author": "patient", "date": "2022-10-24T06:48",
+             "body": "Good morning - I've got the tingling that usually means a flare is coming. I have enough valacyclovir for today and tomorrow but not the full three days. Could you send more to the pharmacy on Main? Thanks, Grace"},
+            {"type": "Patient Message", "title": "RE: Refill please", "author": "PCP", "date": "2022-10-24T07:35",
+             "body": "Sent - valacyclovir 500 mg, one twice a day for 3 days, with a few courses' worth and refills so you're not caught short next time. Start now. If it isn't settling in a week or looks different from your usual, let me know."},
+            {"type": "Medication Refill", "title": "Valacyclovir refill", "author": "PCP", "date": "2022-10-24T07:33",
+             "body": "valacyclovir 500 mg tab, 1 PO BID x 3 days at onset of outbreak. Disp #18, RF 2. E-prescribed."}
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "telephone",
+          "start": "2023-05-16T12:10",
+          "reason": "positive home pregnancy test",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2023-04-24"}
+          ],
+          "orders": [
+            {"id": "ob-2023", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "prenatal care, intrauterine pregnancy about 5 weeks"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Positive pregnancy test", "author": "RN", "date": "2023-05-16T12:10",
+             "body": "Called on her lunch break. Two positive home tests this weekend. LMP 4/10/23, cycles regular. Planned, she is happy. No bleeding or cramping. Hx genital HSV - she knows not to use the valacyclovir in pregnancy without talking to OB; reminded her to tell OB about the herpes history. Wants the same OB group as last time. Referral to OB sent. Routed to PCP."},
+            {"type": "Progress Notes", "title": "Note to chart", "author": "PCP", "date": "2023-05-16T17:20",
+             "body": "Agree. Pregnancy added to the list. OB to manage prenatal care; we'll keep seeing her for primary care. Valacyclovir on hold for now, OB to advise."}
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "outside_records",
+          "start": "2023-06-21T09:15",
+          "reason": "obstetrics new patient letter",
+          "orders": [
+            {"id": "ob-2023", "action": "done", "date": "2023-06-21T09:15"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: new OB visit", "author": "obstetrics", "date": "2023-06-21T09:15",
+             "body": "OUTSIDE OBSTETRICS GROUP\nNew OB visit 06/13/2023\n\nRe: Grace Paquette, DOB 11/02/1992\n\nThank you for referring Ms. Paquette, G2P1001, seen at 9w1d by LMP 04/10/2023. First-trimester ultrasound shows a single intrauterine pregnancy with cardiac activity, size consistent with dates; EDD 01/15/2024.\n\nOB history: term spontaneous vaginal delivery 2017, uncomplicated. No prior uterine surgery.\nMedical: recurrent genital HSV, episodic valacyclovir, none currently.\nAllergies: NKDA.\n\nPrenatal labs drawn: blood type and screen, CBC, rubella and varicella immunity, hepatitis B, HIV, syphilis, urine culture, all unremarkable; she is rubella immune.\nExam: BP normal, normal pelvic exam, no lesions.\n\nPlan: routine prenatal care every 4 weeks; anatomy scan at 20 weeks. We will see her through delivery.\n\nObstetrics attending"}
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 69.4, "labs": {"Hemoglobin": 11.7}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-09-19T08:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-19T07:40"},
+            {"procedure": "Venipuncture", "performed": "2023-09-19T08:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Preventive Visit", "author": "PCP", "date": "2023-09-19T08:20",
+             "body": "ANNUAL. 30F, G2P1, 23 wks by dates, prenatal care with OB, going well; anatomy scan normal per pt. Back at school, tired by Friday but managing.\nNo HSV flare since last October.\nMeds: valacyclovir on hold in pregnancy.\nAllergies: NKDA.\nFHx/social unchanged.\n\nExam: Comfortable. Gravid abdomen, fundus near umbilicus. Heart RRR, lungs clear. No edema. Thyroid normal.\nPHQ-2 0.\n\nA/P\n- Health maintenance up to date. Pap 2021, next 2026.\n- CBC today since OB will want a 28-wk check anyway; she asked us to draw while here.\n- Flu and COVID in October, both recommended in pregnancy. Tdap will be done by OB in the third trimester.\n- HSV: per OB.\nSee next year."},
+            {"type": "Patient Message", "title": "CBC result", "author": "PCP", "date": "2023-09-20T12:30",
+             "body": "Your blood count is normal for this point in pregnancy - the hemoglobin is a touch lower than last year, which is expected as blood volume expands. I'll send a copy to your OB."}
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-11T15:40"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-11T15:42"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-11T15:40"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunizations", "author": "MA", "date": "2023-10-11T15:55",
+             "body": "26 wks pregnant, feels well, no fever. Flu (preservative-free quadrivalent) and updated Pfizer COVID given, one each arm. Observed 15 min, fine. Copy of record emailed to her for OB."}
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "outside_records",
+          "start": "2023-11-29T10:05",
+          "reason": "obstetrics prenatal update",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-11-21T14:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: prenatal update", "author": "obstetrics", "date": "2023-11-29T10:05",
+             "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 11/21/2023, 32w1d\n\nMs. Paquette continues to do well. Fundal height appropriate, fetal heart tones normal, BP normal, no edema. Glucose challenge at 27 weeks normal. Tdap given today.\nPlan: visits every 2 weeks, then weekly from 36 weeks. Delivery planned at our hospital.\n\nObstetrics attending"}
+          ]
+        }
+      ]
+    }
+  ]
+}

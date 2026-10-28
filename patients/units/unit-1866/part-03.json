@@ -1,0 +1,119 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001866",
+      "events": [
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "outside_records",
+          "start": "2026-06-12T11:25",
+          "labs": [
+            {"panel": null, "collected": "2025-10-13T10:15", "results": [
+              {"test": "pH of Vaginal fluid", "loinc": "48037-6", "unit": "[pH]", "value": 5.0},
+              {"test": "Clue cells in Vaginal fluid by Wet preparation", "loinc": "20502-1", "text": "Present"}
+            ]},
+            {"panel": null, "collected": "2026-06-01T09:40", "results": [
+              {"test": "pH of Vaginal fluid", "loinc": "48037-6", "unit": "[pH]", "value": 5.5},
+              {"test": "Clue cells in Vaginal fluid by Wet preparation", "loinc": "20502-1", "text": "Present"}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology office visit 10/13/2025",
+              "author": "gynecology",
+              "date": "2026-06-12T11:25",
+              "body": "OUTSIDE GYNECOLOGY GROUP - OFFICE NOTE\nDate of service: 10/13/2025\nPatient: Isabelle Beaulieu, 28 y/o\n\nReason for visit: vaginal discharge x 1 week.\n\nHistory: Notes a thin, white discharge for about a week with a pronounced fishy smell, more noticeable after sex. No itching, no burning. Hx recurrent bladder infections, most recently cystitis in February treated by her PCP. Currently on no medications. NKDA. Monogamous, condoms used inconsistently.\n\nExam: External genitalia normal, no erythema or swelling of the vulva. Speculum: homogeneous white discharge adherent to the vaginal walls. Cervix normal appearing.\n\nOffice testing: pH 5.0. Amine (whiff) test positive. Saline wet prep with clue cells.\n\nImpression: bacterial vaginosis.\n\nPlan: metronidazole 500 mg PO BID x 7 days; no alcohol during treatment and for 3 days after. Return if symptoms persist.\n\ncc: primary care"
+            },
+            {
+              "type": "Outside Records",
+              "title": "Gynecology office visit 06/01/2026",
+              "author": "gynecology",
+              "date": "2026-06-12T11:26",
+              "body": "OUTSIDE GYNECOLOGY GROUP - OFFICE NOTE\nDate of service: 06/01/2026\nPatient: Isabelle Beaulieu, 29 y/o\n\nCC: discharge with odor, one week.\n\nHPI: Returns with grayish-white discharge and a fishy smell for the past week, again worse after intercourse. Similar to her BV last October. Denies itching, burning or painful urination. LMP 2 weeks ago.\n\nPMH: recurrent UTIs; acute cystitis 2025; bacterial vaginosis 10/2025.\nMeds: none. Allergies: NKDA.\nSocial: one partner, inconsistent condom use.\n\nExam: Vulva without erythema or edema. Speculum: thin gray discharge pooled in the vaginal vault. Bimanual: no cervical motion tenderness.\n\nMicroscopy: clue cells present (squamous cells with stippled, bacteria-coated borders). Vaginal pH 5.5.\n\nAssessment: bacterial vaginosis, recurrent.\n\nPlan: metronidazole 500 mg twice daily for 7 days, avoid alcohol. Follow up as needed.\n\nPrior note from 10/13/2025 enclosed per your request."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-26a",
+          "kind": "office_visit",
+          "start": "2026-06-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, review gynecology records, Pap",
+          "conditions": [
+            {"label": "Bacterial vaginosis", "icd10": "N76.0", "action": "diagnosed", "onset": "2025-10-13"}
+          ],
+          "medications": [
+            {"drug_text": "metronidazole 500 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth twice daily for 7 days", "dose": {"value": 500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "short", "reason": "bacterial vaginosis, prescribed by outside gynecology June 2026"}
+          ],
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2026-06-26T10:20", "issued": "2026-07-01T14:30", "text": "Specimen: liquid-based cervical cytology. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2026-06-26T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-06-26T10:45",
+              "body": "Summer break, in to catch up and get her Pap done.\n\nReviewed the gynecology notes that came in on 6/12: BV in October 2025 (pH 5.0, whiff positive, clue cells) and again 6/1/2026 (pH 5.5, clue cells), metronidazole 7 days both times. She finished the June course and the discharge cleared. Adding BV to her problem list; it wasn't put on after the October visit.\n\nUrinary: no cystitis since February 2025. No dysuria or frequency now.\n\nMeds: none current. NKDA. Social unchanged.\n\nExam: vitals normal. Abdomen soft, nontender. Pelvic: external genitalia normal, normal vaginal mucosa, no discharge today, cervix without lesions. Pap collected.\n\nA/P\n1. Bacterial vaginosis, twice in 8 months, treated by her gynecologist; resolved for now. She'll go back to them if it returns.\n2. Recurrent UTIs, quiet for over a year. Same plan for symptoms.\n3. Cervical screening: cytology sent today; result by portal.\nPhysical in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-02a",
+          "kind": "portal_message",
+          "start": "2026-07-02T08:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap result",
+              "author": "PCP",
+              "date": "2026-07-02T08:10",
+              "body": "Hi Isabelle, your Pap came back normal. Next one in three years. Enjoy the rest of the summer."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pap result",
+              "author": "patient",
+              "date": "2026-07-02T12:37",
+              "body": "Great news, thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-17a",
+          "kind": "portal_message",
+          "start": "2026-08-17T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Upcoming appointment",
+              "author": "front desk",
+              "date": "2026-08-17T09:30",
+              "body": "Reminder: annual physical Monday 9/14 at 3:30 pm. Reply here if you need to move it."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "annual_physical",
+          "start": "2026-09-14T15:30",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

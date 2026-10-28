@@ -1,0 +1,3503 @@
+{
+  "unit": "unit-2801",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002801",
+      "given": "Jessenia",
+      "family": "Castro",
+      "birth_date": "1980-04-05",
+      "address_line": "41 Bristol Avenue, Apt 2",
+      "phone": "+1-518-555-0174",
+      "email": "jessenia.castro@example.test",
+      "marital_status": "single",
+      "summary": "Administrative assistant with childhood rheumatic fever and rheumatic mitral stenosis, unfollowed for years, who joins in 2020 on a thiazide. Cardiology finds severe mitral stenosis with heart failure in 2022 and paroxysmal AF on Holter (warfarin), then pulmonary hypertension in 2024; after her last practice visit in July 2024 she has an ED visit and admission for decompensated heart failure in 2026 and a balloon valvotomy, known to the practice only through late records and her messages.",
+      "events": [
+        {
+          "id": "2020-09-08a",
+          "kind": "telephone",
+          "start": "2020-09-08T11:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2020-09-08T11:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer her primary care here; her old office is closing its adult panel. Medicaid, card on file. Says she has a heart valve problem from rheumatic fever as a kid and takes a water pill and potassium. New patient slot booked 9/22 at 9:00. Release signed for her former primary care office; records requested by fax."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "establish_care",
+          "start": "2020-09-22T09:00",
+          "end": "2020-09-22T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Rheumatic heart disease",
+              "action": "history",
+              "onset": "1991-03-01",
+              "note": "rheumatic fever in childhood; mitral valve narrowing found as a teenager; no cardiology follow-up in years",
+              "icd10": "I09.9"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 25,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "fluid / valve disease"
+            },
+            {
+              "drug": "potassium chloride 20 MEQ Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily with food",
+              "dose": {
+                "value": 20,
+                "unit": "meq"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "potassium replacement on thiazide"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 82,
+            "temp_c": 36.2,
+            "spo2": 98,
+            "weight_kg": 72.3,
+            "height_cm": 159.7
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 105
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 199
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 137
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-09-22T09:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Tonsillectomy",
+              "performed": "1988-07-12T08:00"
+            },
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-22T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-09-22T09:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "card-ref-2020",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "rheumatic mitral valve disease, no follow-up in years"
+            },
+            {
+              "id": "mammo-2020",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2020-09-22T09:50",
+              "author": "PCP",
+              "body": "40-year-old woman new to the practice, transferring from another primary care office.\n\nHPI: Had rheumatic fever as a child. Was told around high school that one of her heart valves (mitral) was narrowed from it. Saw a heart doctor a few times back then, nothing for many years since. During her last pregnancy in 2017 she got short of breath and puffy; the OB team put her on a diuretic and told her to cut salt. Her prior PCP kept her on HCTZ 25 with potassium afterward. Today she feels fine. Works full time as an administrative assistant, climbs the stairs at work without stopping. No chest pain, palpitations, orthopnea, leg swelling, fainting.\n\nPMH: rheumatic fever in childhood, rheumatic mitral valve disease.\nPSH: tonsillectomy at 8.\nMeds: hydrochlorothiazide 25 mg daily, KCl ER 20 mEq daily.\nAllergies: no known drug allergies.\nFH: mother had rheumatic fever. Father has type 2 diabetes. A maternal uncle had an ischemic stroke at 65.\nSH: never smoker, does not drink, no drug use. Administrative assistant.\n\nExam: well appearing, NAD. BP 116/74. Neck: no JVD. Heart: regular rhythm; low apical diastolic murmur, otherwise normal sounds. Lungs clear. Abdomen soft. Ext: no edema. Skin intact.\n\nA/P:\n1. Rheumatic heart disease, mitral valve: known since adolescence, never re-imaged as an adult that she knows of. She has no symptoms on the thiazide. Recommended she get back in with cardiology for an echo and baseline; referral placed. She is agreeable though busy with work.\n2. Diuretic: continue HCTZ 25 and KCl 20. CMP today.\n3. Health maintenance: CBC, lipids, A1c (father diabetic), TSH; one-time HIV and hep C screens, consented. Screening mammogram ordered. Pap due per her history, will do at the physical in spring. Flu shot next month, nurse visit.\n4. Prior records requested.\n\nReturn for a physical in about 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.5,
+            "height_cm": 160.0,
+            "labs": {
+              "Hemoglobin A1c": 5.4,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "portal_message",
+          "start": "2020-09-29T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2020-09-29T16:05",
+              "author": "PCP",
+              "body": "Hi Jessenia, all of your blood work from last week looks good. Kidney function, sodium and potassium are normal on the water pill. Blood counts, sugar (A1c), thyroid and cholesterol are all in a healthy range. The HIV and hepatitis C screens were negative. Please keep the cardiology appointment on your list when they call you."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "outside_records",
+          "start": "2020-10-06T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care",
+              "date": "2020-10-06T10:30",
+              "author": "MA",
+              "body": "Received 22 pages by fax from patient's former primary care office (2016 to 2020). Summary for chart:\n- Problem list: rheumatic heart disease / mitral valve disease, history of rheumatic fever.\n- Medications: hydrochlorothiazide 25 mg daily and potassium chloride ER 20 mEq daily since 2017.\n- Pap smear 2018: negative for intraepithelial lesion.\n- Basic metabolic panels 2018 and 2019 within normal limits.\n- No cardiology notes in the packet.\nAllergies: NKDA.\nScanned to media. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-20a",
+          "kind": "nurse_visit",
+          "start": "2020-10-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-20T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-20T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2020-10-20T15:45",
+              "author": "RN",
+              "body": "Here for seasonal influenza vaccine. Screening questions negative, no prior reactions. Quadrivalent flu 0.5 mL IM left deltoid. VIS given. Tolerated well, waited 15 minutes, left in good condition."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-17a",
+          "kind": "imaging",
+          "start": "2020-11-17T08:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2020-11-17T08:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. No prior studies for comparison. Breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Skin and nipples unremarkable.",
+              "conclusion": "BI-RADS 1: Negative. Routine screening recommended."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2020",
+              "action": "done",
+              "date": "2020-11-17T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2020-11-19T12:10",
+              "author": "PCP",
+              "body": "Screening mammogram negative, BI-RADS 1. Letter mailed to patient. Repeat in 1 to 2 years."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "telephone",
+          "start": "2021-01-12T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Referral follow-up",
+              "date": "2021-01-12T10:15",
+              "author": "front desk",
+              "body": "Cardiology office reports they mailed a letter and left two voicemails, no appointment made. Called pt: she says work has been hectic and she feels fine, will call them herself. Gave her the scheduling number again."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "annual_physical",
+          "start": "2021-03-16T08:30",
+          "end": "2021-03-16T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              109,
+              59
+            ],
+            "hr": 77,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 71.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-16T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-03-16T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.56
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-03-16T08:50",
+              "text": "Specimen: ThinPrep cervical cytology. Specimen adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2021-03-16T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-03-16T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-03-16T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2021-03-16T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-03-16T09:15",
+              "author": "PCP",
+              "body": "Annual exam. Feeling well. Working, mostly from the office again. Has not seen cardiology yet, says she will call this spring. No exertional symptoms, no swelling, no palpitations.\n\nMeds: HCTZ 25 daily, KCl ER 20 mEq daily. NKDA.\nPHQ-9: 2.\nExam: BP and vitals as charted, looks well. HEENT normal. Thyroid not enlarged. Heart regular with the same soft low-pitched apical diastolic murmur. Lungs clear. Breasts without masses bilaterally. Pelvic: normal external genitalia, cervix without lesions; Pap/HPV collected. Ext without edema.\n\nPlan:\n- Pap with HPV collected today.\n- Tdap today, last one she remembers was in pregnancy, not documented.\n- BMP and CBC for the diuretic.\n- COVID vaccine: eligible soon, she plans to get it at her pharmacy.\n- Encouraged the cardiology visit again. She understands the valve should be looked at.\nNext routine visit in 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2021-03-24a",
+          "kind": "portal_message",
+          "start": "2021-03-24T13:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Pap and labs",
+              "date": "2021-03-24T13:40",
+              "author": "PCP",
+              "body": "Your Pap test was normal and the HPV test was negative, so the next one is not due for 5 years. Potassium, kidney tests and blood counts were normal too."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "portal_message",
+          "start": "2021-05-04T19:12",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-06T12:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-27T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "covid shots",
+              "date": "2021-05-04T19:12",
+              "author": "patient",
+              "body": "Hi, just letting you know I got both of my covid vaccines at the pharmacy, April 6 and April 27, Pfizer. Arm was sore and I was tired one day after the second. I have the card if you need a picture."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: covid shots",
+              "date": "2021-05-05T09:20",
+              "author": "MA",
+              "body": "Thank you! Both doses are added to your record. No need to send the card."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "pharmacy",
+          "start": "2021-06-08T08:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2021-06-08T08:15",
+              "author": "RN",
+              "body": "E-refill request for hydrochlorothiazide 25 mg and potassium chloride ER 20 mEq. BMP in March normal. Approved 90 days with 3 refills per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "office_visit",
+          "start": "2021-09-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "vitals": {
+            "bp": [
+              110,
+              72
+            ],
+            "hr": 78,
+            "spo2": 96,
+            "weight_kg": 71.3
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-09-21T14:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "card-ref-2020",
+              "action": "cancelled",
+              "date": "2021-09-21T14:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2021-09-21T14:30",
+              "author": "PCP",
+              "body": "S: Routine check. Says she has been doing well. Walks to the bus and up two flights at work, no trouble. No palpitations, no swelling, no chest pain. Taking HCTZ and potassium daily, no missed doses. Never got to cardiology; the referral from last year lapsed and she would rather wait.\nO: Vitals as charted. Regular rhythm, low apical diastolic murmur unchanged. Lungs clear. No edema.\nA/P: Rheumatic mitral valve disease, asymptomatic on a thiazide. I again recommended an echo through cardiology. She declines for now; we closed the old referral and she will tell us right away if she gets short of breath, swollen or notices racing heartbeats, and we will refer again. Continue current meds. Flu shot next month. Physical in March."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T16:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T16:12"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T16:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2021-10-19T16:20",
+              "author": "RN",
+              "body": "Seasonal flu vaccine given, 0.5 mL IM right deltoid, lot recorded. Denies fever or illness today. No issues after observation."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "portal_message",
+          "start": "2021-12-20T20:31",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-12-14T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "booster",
+              "date": "2021-12-20T20:31",
+              "author": "patient",
+              "body": "Got my booster last Tuesday the 14th at the pharmacy, same kind as before."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: booster",
+              "date": "2021-12-21T08:45",
+              "author": "MA",
+              "body": "Got it, your booster is on your record now. Happy holidays!"
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "annual_physical",
+          "start": "2022-03-22T08:30",
+          "end": "2022-03-22T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              66
+            ],
+            "hr": 74,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 72.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-03-22T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-03-22T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 327
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-03-22T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 199
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-03-22T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2022-03-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-22T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-03-22T09:10",
+              "author": "PCP",
+              "body": "Here for her yearly visit, turning 42 next month. No complaints. Busy season at work. Denies shortness of breath with stairs, palpitations, ankle swelling or chest discomfort. Taking HCTZ and KCl.\n\nNKDA. Never smoker, no alcohol.\nPHQ-2 negative.\n\nExam: vitals as charted. Well. Neck supple, no JVD. Heart regular, apical low diastolic murmur, no change from prior. Lungs clear. Abdomen soft, nontender. Breasts no masses. Legs without edema.\n\nA/P: Healthy visit. Rheumatic mitral disease clinically stable, no symptoms; I brought up cardiology again and she would still like to hold off. CMP, CBC, lipids, A1c today. Screening mammogram ordered. Pap/HPV up to date through 2026. Flu in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-03-29a",
+          "kind": "portal_message",
+          "start": "2022-03-29T12:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your physical",
+              "date": "2022-03-29T12:25",
+              "author": "PCP",
+              "body": "Everything came back in the normal range, including potassium and kidney function, cholesterol and your A1c. Please schedule the mammogram at your convenience."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "imaging",
+          "start": "2022-04-26T07:50",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2022-04-26T07:50",
+              "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 11/2020. Heterogeneously dense breast tissue. No new mass, distortion or suspicious calcification. Stable appearance bilaterally.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2022",
+              "action": "done",
+              "date": "2022-04-26T07:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2022-04-27T08:55",
+              "author": "PCP",
+              "body": "Negative screening mammogram. Normal letter sent."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "pharmacy",
+          "start": "2022-07-12T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2022-07-12T09:05",
+              "author": "RN",
+              "body": "Pharmacy e-request: HCTZ 25 mg #90 and KCl ER 20 mEq #90. Labs from March normal. Sent with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "portal_message",
+          "start": "2022-09-06T21:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "getting winded",
+              "date": "2022-09-06T21:48",
+              "author": "patient",
+              "body": "Hi doctor, for the last few months I have been getting out of breath going up the stairs at work and even doing laundry and cleaning, and I'm tired all the time. Sometimes my heart flutters. My ankles are puffy at night. No chest pain. Should I come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: getting winded",
+              "date": "2022-09-07T08:30",
+              "author": "RN",
+              "body": "Yes, the doctor would like to see you. I booked you for next Tuesday 9/13 at 3:15. If you get short of breath at rest, have chest pain or faint, go to the emergency room or call 911."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "office_visit",
+          "start": "2022-09-13T15:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath on exertion, fatigue",
+          "vitals": {
+            "bp": [
+              120,
+              70
+            ],
+            "hr": 81,
+            "rr": 14,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 73.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-09-13T15:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-13T15:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 316
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T15:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-09-13T15:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T15:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "card-ref-2022",
+              "action": "placed",
+              "order": "Cardiology referral",
+              "category": "referral",
+              "to": "Cardiology",
+              "reason": "rheumatic mitral valve disease with exertional dyspnea, palpitations and edema"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - Dyspnea",
+              "date": "2022-09-13T15:55",
+              "author": "PCP",
+              "body": "CC: winded with exertion, tired.\n\nHPI: Over roughly the past several months she has had to stop halfway up the stairs at work and gets breathless with housework, which she never used to. Tired by mid-afternoon. Now and then feels her heart flutter for a few minutes. Ankles swell toward evening and are down by morning. Denies chest pain, cough, or needing to sleep propped up. No fever. Meds unchanged, takes them daily.\n\nExam: vitals as charted. Comfortable at rest, speaking in full sentences. No JVD. Heart: regular today, loud first sound, low rumbling diastolic murmur at the apex. Lungs clear to auscultation today. Trace to mild ankle edema both sides.\n\nA/P:\n1. Exertional dyspnea, fatigue, palpitations and edema in a patient with rheumatic mitral valve disease: concerning for progression of the stenosis. She agrees to cardiology now. Referral placed as urgent; asked them for the earliest new-patient slot. Echo will come through them.\n2. Checking CBC, BMP and TSH for other causes of fatigue.\n3. Continue HCTZ and KCl, keep salt down. ED precautions reviewed.\nFollow up after cardiology."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-09-15a",
+          "kind": "portal_message",
+          "start": "2022-09-15T11:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2022-09-15T11:10",
+              "author": "PCP",
+              "body": "Your blood count, thyroid and kidney/electrolyte tests are normal, so anemia and thyroid trouble are not the reason for the tiredness. Cardiology has you on October 11 - please keep that appointment."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-11a",
+          "kind": "specialist_visit",
+          "start": "2022-10-11T10:00",
+          "service": "Cardiology",
+          "reason": "rheumatic mitral valve disease, exertional dyspnea",
+          "conditions": [
+            {
+              "label": "Rheumatic mitral stenosis",
+              "action": "diagnosed",
+              "onset": "1996-06-01",
+              "note": "severe by echo 10/2022",
+              "icd10": "I05.0"
+            },
+            {
+              "label": "Rheumatic heart failure",
+              "action": "diagnosed",
+              "onset": "2022-06-01",
+              "note": "chronic heart failure from mitral stenosis, LVEF 60%",
+              "icd10": "I09.81"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR metoprolol succinate 50 MG Extended Release Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "heart rate control in mitral stenosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              118,
+              72
+            ],
+            "hr": 92,
+            "spo2": 98,
+            "weight_kg": 73.0
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2022-10-11T10:10",
+              "text": "Sinus rhythm, rate 92. Normal axis. Normal intervals. No ST-segment or T-wave changes.",
+              "conclusion": "Sinus rhythm, 92 bpm. No acute ST changes."
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2022-10-11T10:40",
+              "text": "PA and lateral views. Heart size within normal limits. Mild pulmonary vascular congestion. No pleural effusion, no focal consolidation, no pneumothorax. Bones unremarkable.",
+              "conclusion": "Mild pulmonary vascular congestion."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2022-10-11T11:15",
+              "text": "Complete 2D, M-mode and Doppler study. Mitral valve: rheumatic appearance with commissural fusion and diastolic doming of the anterior leaflet. Mitral valve area 1.1 cm2 by planimetry. Mean transmitral gradient 10 mmHg at a heart rate of 92. Left atrium enlarged, LA volume index 52 mL/m2. Left ventricle normal in size and wall thickness, LVEF 60%, no regional wall motion abnormality. Right ventricle normal size and function. Estimated PA systolic pressure 38 mmHg. Aortic, tricuspid and pulmonic valves without significant regurgitation or stenosis. No pericardial effusion.",
+              "conclusion": "Severe rheumatic mitral stenosis (MVA 1.1 cm2, mean gradient 10 mmHg). Enlarged left atrium. Normal LV function, LVEF 60%. Estimated PASP 38 mmHg."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2022-10-11T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "card-ref-2022",
+              "action": "done",
+              "date": "2022-10-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Consultation",
+              "date": "2022-10-24T13:30",
+              "author": "cardiology",
+              "body": "Outside cardiology group - consultation letter\nVisit date: 10/11/2022\nReferred by: primary care\nReason: rheumatic mitral valve disease with worsening exertional symptoms\n\nThank you for asking us to see this 42-year-old woman. She had rheumatic fever as a child and was told of a mitral valve problem in her teens, but has not been followed by cardiology in many years. Over several months she has become short of breath with stairs and household chores, tires easily, has occasional palpitations and notices her legs swell late in the day. No chest pain, cough or orthopnea.\n\nMedications: hydrochlorothiazide 25 mg daily, potassium chloride 20 mEq daily.\nAllergies: NKDA\nPSH: tonsillectomy age 8.\nFamily: mother with rheumatic fever; father with type 2 diabetes; maternal uncle with stroke at 65.\nSocial: administrative assistant, never smoker, no alcohol.\n\nExam: HR 92, BP 118/72. Loud S1. Low-pitched rumbling diastolic murmur at the apex, best with the bell with the patient turned onto her left side. Fine crackles at both bases. Mild ankle edema bilaterally. No JVD.\n\nECG: sinus rhythm 92, no ST changes.\nChest x-ray: mild pulmonary vascular congestion.\nEcho today: rheumatic mitral valve with commissural fusion and doming; MVA 1.1 cm2 by planimetry, mean gradient 10 mmHg at HR 92; LA enlarged (LAVI 52 mL/m2); LVEF 60%; RV normal; PASP estimated 38 mmHg.\n\nImpression:\n1. Severe rheumatic mitral stenosis.\n2. Chronic heart failure due to mitral stenosis, LV function preserved.\n3. Palpitations, rhythm not yet defined.\n\nPlan:\n- Start metoprolol succinate 50 mg daily to slow the heart rate and lengthen diastolic filling.\n- Continue hydrochlorothiazide 25 mg and KCl 20 mEq; 2 g sodium diet.\n- 48-hour Holter to look for atrial fibrillation.\n- Return after the Holter."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "nurse_visit",
+          "start": "2022-10-25T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-25T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-25T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Influenza Vaccine",
+              "date": "2022-10-25T16:15",
+              "author": "RN",
+              "body": "Flu vaccine 0.5 mL IM left deltoid. Pt mentions she started a new heart pill from cardiology two weeks ago, metoprolol, and is wearing a heart monitor next. Cardiology letter is in the chart. No reactions after waiting."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "specialist_visit",
+          "start": "2022-11-08T14:00",
+          "service": "Cardiology",
+          "reason": "Holter results",
+          "conditions": [
+            {
+              "label": "Paroxysmal atrial fibrillation",
+              "action": "diagnosed",
+              "onset": "2022-10-18"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet (5 mg) by mouth daily in the evening or as directed by the anticoagulation clinic; goal INR 2.0-3.0",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "paroxysmal atrial fibrillation with rheumatic mitral stenosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              74
+            ],
+            "hr": 69,
+            "weight_kg": 73.1
+          },
+          "reports": [
+            {
+              "study": "Holter monitor",
+              "performed": "2022-10-18T09:30",
+              "text": "48-hour ambulatory ECG, 10/18/2022 to 10/20/2022. Predominant rhythm sinus, mean heart rate 88. Three episodes of atrial fibrillation, longest 3 hours 10 minutes; AF burden 6%. Ventricular rate during AF up to 138. Patient-triggered events for palpitations correspond to atrial fibrillation. No pauses, no sustained ventricular arrhythmia.",
+              "conclusion": "Paroxysmal atrial fibrillation, burden 6%, with symptomatic episodes."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2023-01-10T10:05",
+              "author": "cardiology",
+              "body": "Outside cardiology group - follow-up letter (sent at your request)\nVisit date: 11/08/2022\n\nReturns to review her Holter. Tolerating metoprolol, palpitations less frequent. Holter 10/18-10/20: mostly sinus rhythm, mean HR 88, three runs of atrial fibrillation up to 3 h 10 min (burden 6%), rates to 138 in AF, matching her symptom diary.\n\nImpression: paroxysmal atrial fibrillation with severe rheumatic mitral stenosis. Anticoagulation is indicated regardless of risk score in this setting; a DOAC is not appropriate with rheumatic mitral stenosis.\n\nPlan: start warfarin 5 mg daily, dose adjusted to INR 2.0-3.0, managed by our anticoagulation clinic (first INR in one week). Continue metoprolol succinate 50 mg daily, hydrochlorothiazide 25 mg and KCl 20 mEq. Return in 6 months or sooner for symptoms.\nAllergies: NKDA."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-22a",
+          "kind": "office_visit",
+          "start": "2022-11-22T14:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after cardiology",
+          "conditions": [
+            {
+              "label": "Long-term current use of anticoagulants",
+              "action": "diagnosed",
+              "onset": "2022-11-08"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              68
+            ],
+            "hr": 81,
+            "spo2": 98,
+            "weight_kg": 73.3
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-11-22T15:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.78
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-22T15:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 286
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-11-22T14:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-22T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2022-11-22T15:10",
+              "author": "PCP",
+              "body": "S: Back after cardiology. The October consult letter is here (severe rheumatic MS, MVA 1.1 cm2, EF 60%, metoprolol started). She tells me the heart monitor showed atrial fibrillation coming and going and that two weeks ago cardiology started warfarin; their anticoagulation clinic is checking her INR weekly for now. Pharmacy fill history confirms warfarin 5 mg filled 11/8. We do not have that letter or the Holter report yet. Breathing a little better on the metoprolol, still winded on the stairs. Fewer flutters. Ankles less swollen.\n\nMeds now: HCTZ 25 daily, KCl ER 20 mEq daily, metoprolol succinate 50 daily, warfarin 5 mg daily per anticoag clinic.\n\nO: Vitals as charted. Regular rhythm today. Loud S1, apical diastolic rumble. Lungs clear. No edema.\n\nA/P:\n1. Severe rheumatic mitral stenosis with chronic heart failure: followed by cardiology. Continue meds and low-salt diet.\n2. Paroxysmal AF on warfarin (per patient and pharmacy): will request the cardiology note and Holter. Warfarin teaching: bleeding signs, keep vitamin K foods steady, no ibuprofen or naproxen, acetaminophen is fine, tell us before any new medicine or antibiotic. Warfarin can harm a pregnancy - she is not planning one and understands to tell us right away if that changes.\n3. Long-term anticoagulant use added to problem list.\n4. BMP and CBC today.\nFollow up in 4 months for her physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-20a",
+          "kind": "outside_records",
+          "start": "2022-12-20T09:00",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-11-29T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-12-06T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-12-13T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 26.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anticoagulation clinic INR log",
+              "date": "2022-12-20T09:00",
+              "author": "MA",
+              "body": "Faxed INR flowsheet from the cardiology group's anticoagulation clinic, three point-of-care INRs 11/29 through 12/13 on warfarin 5 mg daily; values entered as results. Clinic moving her to every 2 weeks. Scanned. FYI to PCP."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.3
+            }
+          }
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "telephone",
+          "start": "2023-01-10T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records request",
+              "date": "2023-01-10T10:00",
+              "author": "MA",
+              "body": "Second request to the cardiology office for the 11/8 note and Holter report. They faxed both this morning. Scanned and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "annual_physical",
+          "start": "2023-03-21T08:30",
+          "end": "2023-03-21T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              67
+            ],
+            "hr": 78,
+            "temp_c": 36.4,
+            "spo2": 98,
+            "weight_kg": 72.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-03-21T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-03-21T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 281
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 34
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-03-21T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 138
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-03-21T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2023-03-21T08:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-03-21T09:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-21T09:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-03-21T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-21T09:15",
+              "author": "PCP",
+              "body": "Yearly exam. Says she is about the same as in the fall: OK on flat ground, stops once on the stairs at work. No orthopnea. No bleeding on warfarin, no bruising to speak of. INRs at the cardiology clinic mostly in range, every 2 to 4 weeks now. Palpitations rare.\n\nMeds: HCTZ 25 mg, KCl ER 20 mEq, metoprolol succinate 50 mg, warfarin 5 mg (per anticoag clinic). NKDA.\nPHQ-9: 3.\n\nExam: vitals as charted. Well. No JVD. Regular rhythm, loud S1, apical diastolic rumble. Lungs clear. No edema. Breasts normal. Skin without bruising.\n\nA/P:\n1. Severe rheumatic MS, chronic HF, paroxysmal AF on warfarin: stable on current regimen, cardiology recheck due this spring/summer. Holter and November letter reviewed.\n2. Pneumococcal vaccine: indicated for her chronic heart disease; PCV20 given today.\n3. CMP, CBC, lipids, A1c.\n4. Mammogram due next year. Pap/HPV current.\nBack in 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-03-28a",
+          "kind": "portal_message",
+          "start": "2023-03-28T17:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-03-28T17:20",
+              "author": "PCP",
+              "body": "Hi Jessenia - your labs look fine. Potassium and kidney function are normal on your water pill and potassium, blood count normal, A1c and cholesterol good."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2023-03-28T19:02",
+              "author": "patient",
+              "body": "Thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "outside_records",
+          "start": "2023-05-16T09:30",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-02-14T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.8
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 34.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-03-14T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.7
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 32.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-04-11T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-05-09T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.8
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 34.2
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anticoagulation clinic INR log",
+              "date": "2023-05-16T09:30",
+              "author": "MA",
+              "body": "INR flowsheet faxed from anticoagulation clinic covering February to May. Same warfarin dose, monthly checks. Results entered. Scanned."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.7
+            }
+          }
+        },
+        {
+          "id": "2023-06-13b",
+          "kind": "telephone",
+          "start": "2023-06-13T08:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2023-06-13T08:10",
+              "author": "front desk",
+              "body": "Pt left a message cancelling this afternoon; covering a coworker's shift. Rebooked for 7/18 at 4:00."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic disease follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "office_visit",
+          "start": "2023-07-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic disease follow-up",
+          "vitals": {
+            "bp": [
+              107,
+              70
+            ],
+            "hr": 87,
+            "spo2": 97,
+            "weight_kg": 73.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-07-18T16:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-07-18T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-18T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-07-18T16:30",
+              "author": "PCP",
+              "body": "Follow-up for valve disease, HF and AF. Feels about the same, heat has made her more tired. Still stops once on the stairs. No orthopnea, no swelling lately, no palpitations in weeks. No bleeding. Has not been back to cardiology since November; says their office will call her.\n\nMeds reviewed, no changes. NKDA.\nExam: vitals as charted. Regular. Loud S1, apical diastolic murmur. Lungs clear. No edema.\n\nA/P: Stable. BMP today for the thiazide/potassium. Asked her to call cardiology to book the 6-month follow-up herself. Flu and COVID vaccines in the fall. Return in 4 to 6 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "outside_records",
+          "start": "2023-09-19T10:40",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-06-06T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 26.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-07-11T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 26.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-08-08T08:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-09-12T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 26.8
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anticoagulation clinic INR log",
+              "date": "2023-09-19T10:40",
+              "author": "MA",
+              "body": "Anticoag clinic INR summary, June through September, warfarin unchanged. Results entered and scanned."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.2
+            }
+          }
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-17T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-17T16:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-17T16:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit - Vaccines",
+              "date": "2023-10-17T16:50",
+              "author": "RN",
+              "body": "Influenza vaccine IM left deltoid and 2023-24 COVID vaccine IM right deltoid. On warfarin: fine-gauge needle, firm pressure 2 minutes each site, no hematoma. Observed 15 minutes, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "telehealth_visit",
+          "start": "2023-12-05T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "medication review",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2023-12-05T12:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2023-12-05T12:35",
+              "author": "PCP",
+              "body": "Video, she is on lunch break at work, identity verified with DOB. Wanted to go over her pills before the holidays and get 90-day supplies. Breathing unchanged from summer: fine walking around the office, short of breath on two flights. No new swelling, no orthopnea. Warfarin managed by the cardiology clinic, last INR she was told was in range. Her cardiology follow-up is booked for April.\n\nMeds: HCTZ 25, KCl ER 20 mEq, metoprolol succinate 50, warfarin per clinic.\n\nPlan: 90-day refills sent for HCTZ, KCl and metoprolol. Warfarin stays with the anticoag clinic. Physical in March with labs and her mammogram."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "outside_records",
+          "start": "2024-01-23T11:15",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-10-10T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.9
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 35.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-11-14T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.8
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 34.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-12-12T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.8
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 34.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-01-16T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.9
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 35.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anticoagulation clinic INR log",
+              "date": "2024-01-23T11:15",
+              "author": "MA",
+              "body": "Anticoagulation clinic flowsheet, October to January. Warfarin dose unchanged. Results entered, scanned to chart."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.8
+            }
+          }
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "annual_physical",
+          "start": "2024-03-19T08:30",
+          "end": "2024-03-19T09:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              114,
+              68
+            ],
+            "hr": 72,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-03-19T09:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-03-19T09:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 303
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 32
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-19T09:00",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 198
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-03-19T09:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 40-64",
+              "performed": "2024-03-19T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-03-19T09:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-19T09:15",
+              "author": "PCP",
+              "body": "Annual visit, 43 next month. Feels a bit more winded than last year - stairs at work slower, tired by the evening. Sleeps flat. No swelling, no chest pain, palpitations only now and then. INRs at the clinic in range per her. Cardiology appointment is April 15.\n\nMeds: HCTZ 25 daily, KCl ER 20 mEq daily, metoprolol succinate 50 daily, warfarin 5 mg (anticoag clinic). NKDA.\nPHQ-2: 1.\n\nExam: vitals as charted. No JVD. Regular rhythm, loud S1, apical diastolic rumble. Lungs clear. No edema. Breasts without masses.\n\nA/P:\n1. Severe rheumatic MS with chronic HF, PAF on warfarin: somewhat more exertional symptoms; keep the April cardiology visit and ask them to send us the note.\n2. CMP, CBC, lipids, A1c.\n3. Screening mammogram ordered. Pap/HPV due 2026.\n4. Colon cancer screening starts at 45; we will set it up next year.\nReturn in 4 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "portal_message",
+          "start": "2024-03-26T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2024-03-26T13:05",
+              "author": "PCP",
+              "body": "Your labs from the physical are all normal. Please don't forget the mammogram and your heart appointment next month."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-02a",
+          "kind": "imaging",
+          "start": "2024-04-02T07:40",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2024-04-02T07:40",
+              "text": "Bilateral screening mammogram with tomosynthesis. Comparison 04/2022 and 11/2020. Heterogeneously dense tissue. No suspicious mass, calcification or distortion. No interval change.",
+              "conclusion": "BI-RADS 1: Negative."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2024",
+              "action": "done",
+              "date": "2024-04-02T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Mammogram result",
+              "date": "2024-04-03T09:20",
+              "author": "PCP",
+              "body": "Negative mammogram, BI-RADS 1. Patient notified through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-15a",
+          "kind": "specialist_visit",
+          "start": "2024-04-15T09:30",
+          "service": "Cardiology",
+          "reason": "valve follow-up, worsening dyspnea",
+          "conditions": [
+            {
+              "label": "Pulmonary hypertension due to mitral stenosis",
+              "action": "diagnosed",
+              "onset": "2024-04-15",
+              "note": "WHO group 2; PASP 56 mmHg on echo",
+              "icd10": "I27.22"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              82
+            ],
+            "hr": 104,
+            "rr": 21,
+            "spo2": 97,
+            "weight_kg": 73.3
+          },
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2024-04-15T09:55",
+              "text": "PA and lateral. Mild enlargement of the left atrium. Redistribution of pulmonary vascular markings toward the upper lobes. No effusion, consolidation or pneumothorax.",
+              "conclusion": "Mild left atrial enlargement with pulmonary vascular redistribution."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-04-15T10:30",
+              "text": "Comparison 10/2022. Rheumatic mitral valve with commissural fusion. Mitral valve area 0.9 cm2 by planimetry. Mean transmitral gradient 13 mmHg at a heart rate of 104. LA volume index 58 mL/m2. LV normal size, LVEF 60%. Right ventricle mildly dilated with preserved systolic function. Estimated PA systolic pressure 56 mmHg. No pericardial effusion.",
+              "conclusion": "Severe rheumatic mitral stenosis, MVA 0.9 cm2, mean gradient 13 mmHg. Estimated PASP 56 mmHg; mildly dilated RV with preserved function. LVEF 60%."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-15T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Cardiology Follow-up",
+              "date": "2024-08-13T10:20",
+              "author": "cardiology",
+              "body": "Outside cardiology group - follow-up note (faxed on request)\nVisit date: 04/15/2024\n\nShe is back for her rheumatic mitral stenosis, first seen here in October 2022 for progressive exertional dyspnea and fatigue. Her exertional breathlessness and tiredness have crept up over the last several years, and she now needs extra pillows at night. She reports taking hydrochlorothiazide every day as directed.\n\nMeds: hydrochlorothiazide 25 mg daily, potassium chloride 20 mEq daily, metoprolol succinate 50 mg daily, warfarin 5 mg daily (INR 2-3).\nAllergies: NKDA.\n\nExam: HR 104, RR 21, BP 112/82. Loud S1 with a prominent opening snap after S2 and a low rumbling diastolic murmur at the apex late in diastole. Palpable RV lift at the left sternal border. No JVD. No peripheral edema. Lungs clear.\n\nChest x-ray: mild left atrial enlargement, redistribution of pulmonary vascular markings.\nEcho: MVA 0.9 cm2, mean gradient 13 mmHg at HR 104, LAVI 58 mL/m2, LVEF 60%, RV mildly dilated with normal function, PASP 56 mmHg.\n\nImpression:\n1. Severe rheumatic mitral stenosis, progressing.\n2. Pulmonary hypertension due to mitral stenosis (WHO group 2).\n3. Chronic heart failure, new orthopnea.\n4. Paroxysmal atrial fibrillation on warfarin.\n\nPlan: no medication changes today. Continue sodium restriction. Follow up in cardiology."
+            }
+          ],
+          "measure": [
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-21a",
+          "kind": "outside_records",
+          "start": "2024-05-21T09:50",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-02-13T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-03-12T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-04-09T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-05-14T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anticoagulation clinic INR log",
+              "date": "2024-05-21T09:50",
+              "author": "MA",
+              "body": "INR log from the anticoagulation clinic, February to May. No dose changes. Entered and scanned. No cardiology visit note came with it."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.4
+            }
+          }
+        },
+        {
+          "id": "2024-07-24a",
+          "kind": "office_visit",
+          "start": "2024-07-24T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, more short of breath",
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 77,
+            "rr": 12,
+            "spo2": 98,
+            "weight_kg": 74.5
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-07-24T16:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-07-24T16:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.27
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 267
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-07-24T15:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-24T16:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-07-24T16:20",
+              "author": "PCP",
+              "body": "S: Follow-up. Breathing has been worse since spring. Walks slowly, rests partway up a flight of stairs, and for a couple of months has slept on two pillows because lying flat makes her short of breath. No chest pain. No ankle swelling. Occasional flutters. No bleeding. She saw cardiology on April 15; she was told the pressure in her lungs is up from the valve and to keep cutting salt, no medicine changes. We do not have that note - requesting it today.\n\nMeds: HCTZ 25 daily, KCl ER 20 mEq daily, metoprolol succinate 50 daily, warfarin 5 mg per anticoag clinic. NKDA.\n\nO: Vitals as charted. Comfortable at rest. No JVD. Loud S1, apical diastolic rumble. Lungs clear. No edema.\n\nA/P:\n1. Severe rheumatic mitral stenosis with chronic HF, now orthopnea; pulmonary pressure elevated per cardiology (report pending). Records request to cardiology sent. Continue current regimen and 2 g sodium. She knows to go to the ED for breathlessness at rest or chest pain.\n2. PAF on warfarin, anticoag clinic managing.\n3. BMP and CBC today.\nReturn in 3 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-26a",
+          "kind": "portal_message",
+          "start": "2024-07-26T10:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2024-07-26T10:40",
+              "author": "PCP",
+              "body": "Your potassium, kidney function and blood count from Wednesday are normal. Still waiting on the cardiology note; we'll call them again if it isn't here next week."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "outside_records",
+          "start": "2024-08-13T10:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Cardiology note received",
+              "date": "2024-08-13T10:20",
+              "author": "MA",
+              "body": "After a second fax request, cardiology sent the 4/15/2024 follow-up note with chest x-ray and echo. Scanned to media and routed to PCP for review."
+            },
+            {
+              "type": "Result Note",
+              "title": "Reviewed",
+              "date": "2024-08-14T07:45",
+              "author": "PCP",
+              "body": "Reviewed April cardiology note: MVA 0.9 cm2, PASP 56, RV mildly dilated. Pulmonary hypertension from MS noted. Will discuss at her October visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "portal_message",
+          "start": "2024-10-22T09:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your follow-up",
+              "date": "2024-10-22T09:00",
+              "author": "front desk",
+              "body": "Hello Jessenia, our records show you are due for your 3-month follow-up and your flu vaccine. Please reply here or call the office to choose a time."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "pharmacy",
+          "start": "2024-12-10T08:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-12-10T08:30",
+              "author": "RN",
+              "body": "E-refill for HCTZ 25, KCl ER 20 mEq and metoprolol succinate 50. Last BMP 7/2024 normal. Approved 90 days, no further refills until she is seen. Left message asking her to book; October follow-up never scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "outside_records",
+          "start": "2025-03-25T10:05",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-12-17T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.8
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 34.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-01-21T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 3.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 36.6
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-02-18T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.8
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 34.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-18T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 3.0
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 36.6
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anticoagulation clinic INR log",
+              "date": "2025-03-25T10:05",
+              "author": "MA",
+              "body": "Faxed INR flowsheet December to March from the anticoagulation clinic. Warfarin 5 mg daily continued. Entered and scanned."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.9
+            }
+          }
+        },
+        {
+          "id": "2025-04-15a",
+          "kind": "portal_message",
+          "start": "2025-04-15T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Overdue visit and colon screening",
+              "date": "2025-04-15T09:10",
+              "author": "RN",
+              "body": "Hi Jessenia, you have now turned 45, which is when colon cancer screening starts, and you are also overdue for a visit with the doctor (last seen in July). Can we get you in? Reply with days that work."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Overdue visit and colon screening",
+              "date": "2025-04-18T21:37",
+              "author": "patient",
+              "body": "Sorry I've been so busy with work and family. I will call next week to make the appointment."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "pharmacy",
+          "start": "2025-06-17T08:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2025-06-17T08:20",
+              "author": "RN",
+              "body": "Pharmacy requesting HCTZ, KCl and metoprolol. Not seen since 7/2024, labs due. Per PCP, 30-day bridge sent; pharmacy and patient told she needs a visit and a BMP for further refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "telephone",
+          "start": "2025-07-08T14:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling outreach",
+              "date": "2025-07-08T14:45",
+              "author": "front desk",
+              "body": "Called the number on file to book her overdue follow-up. No answer, voicemail left with our number."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "outside_records",
+          "start": "2025-11-18T11:30",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-08-19T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-09-16T08:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 26.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-10-14T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-11-11T08:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Anticoagulation clinic INR log",
+              "date": "2025-11-18T11:30",
+              "author": "MA",
+              "body": "Anticoagulation clinic INR log August to November. Entered and scanned."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.3
+            }
+          }
+        },
+        {
+          "id": "2026-03-31a",
+          "kind": "ed_visit",
+          "start": "2026-03-31T18:55",
+          "end": "2026-03-31T23:10",
+          "service": "Emergency Medicine",
+          "reason": "acute shortness of breath, palpitations, cough",
+          "vitals": [
+            {
+              "time": "2026-03-31T19:00",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 120,
+              "rr": 22,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-31T19:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.7
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-03-31T19:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.14
+                },
+                {
+                  "test": "Platelets",
+                  "value": 313
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-03-31T19:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-03-31T19:20",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "value": 2860
+                },
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-03-31T19:05",
+              "text": "Atrial fibrillation with rapid ventricular response, ventricular rate about 120. Normal axis. No ST elevation or depression.",
+              "conclusion": "Atrial fibrillation with rapid ventricular response. No ST changes."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-03-31T19:25",
+              "text": "Portable AP. Left atrial enlargement with elevation of the left mainstem bronchus. Interstitial pulmonary edema. No pleural effusion. No focal consolidation. No pneumothorax.",
+              "conclusion": "Left atrial enlargement with elevated left mainstem bronchus; interstitial pulmonary edema."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-03-31T18:55"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-03-31T19:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency Department Record",
+              "date": "2026-04-21T15:40",
+              "author": "emergency medicine",
+              "body": "Hospital emergency department - physician record (received by fax 4/21/2026)\nDate of service: 3/31/2026\n\nCC: short of breath, heart racing, cough.\n\nHPI: 45-year-old woman with rheumatic mitral stenosis and pulmonary hypertension followed by cardiology, brought in after a few hours of rapidly increasing breathlessness with palpitations and a cough that kept getting worse.\n\nPMH: rheumatic fever in childhood; rheumatic mitral stenosis; pulmonary hypertension; chronic heart failure; paroxysmal atrial fibrillation.\nPSH: tonsillectomy at 8.\nHome meds: hydrochlorothiazide 25 mg daily, metoprolol succinate 50 mg daily, warfarin 5 mg daily (INR 2-3), potassium chloride 20 mEq daily.\nAllergies: NKDA.\nFH: mother rheumatic fever; father type 2 diabetes; maternal uncle stroke at 65.\nSH: administrative assistant; never smoker; no alcohol.\n\nExam: BP 130/85, HR 120 and irregularly irregular, RR 22, SpO2 92% on room air. Diastolic rumble at the apex, heard best in left lateral decubitus. Crackles at both bases.\n\nECG: atrial fibrillation, rapid rate, no ST changes.\nCXR: left atrial enlargement, elevated left mainstem bronchus, interstitial edema.\nLabs: NT-proBNP 2860 pg/mL; hs-troponin I 9 ng/L; INR 2.4; Na 137, K 3.7, Cr 0.84; Hgb 12.4, WBC 7.6.\n\nED course: oxygen 2 L by nasal cannula with SpO2 to 96%. Furosemide 40 mg IV. Metoprolol tartrate 5 mg IV twice for rate control. Warfarin therapeutic, held tonight pending inpatient team.\n\nImpression: acute decompensated heart failure with pulmonary edema; atrial fibrillation with rapid ventricular response; severe rheumatic mitral stenosis.\nDisposition: admitted to cardiology telemetry."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-31b",
+          "kind": "hospital_admission",
+          "start": "2026-03-31T23:10",
+          "end": "2026-04-03T12:30",
+          "service": "Cardiology",
+          "reason": "acute decompensated heart failure, atrial fibrillation with rapid ventricular response",
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-04-01T11:00",
+              "text": "Comparison 04/2024. Rheumatic mitral valve with commissural fusion. Mitral valve area 0.8 cm2 by planimetry. Mean transmitral gradient 14 mmHg at a heart rate of 78, sinus rhythm. LVEF 60%. Estimated PA systolic pressure 62 mmHg. No pericardial effusion.",
+              "conclusion": "Severe rheumatic mitral stenosis, MVA 0.8 cm2, mean gradient 14 mmHg. Estimated PASP 62 mmHg. LVEF 60%."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-31T23:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-04-03T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-08-11T14:20",
+              "author": "cardiology",
+              "body": "Hospital discharge summary (received 8/11/2026 after patient request)\nAdmitted 3/31/2026, discharged 4/3/2026. Service: inpatient cardiology.\n\nPrincipal diagnosis: acute decompensated heart failure with pulmonary edema.\nSecondary: atrial fibrillation with rapid ventricular response; severe rheumatic mitral stenosis; pulmonary hypertension due to mitral stenosis.\n\nCourse: Admitted from the ED after IV furosemide and IV metoprolol. Diuresed with IV furosemide with steady improvement in breathing; off oxygen by day 2. Converted on her own to sinus rhythm on 4/1. Warfarin resumed, INR stayed therapeutic. Echo 4/1: MVA 0.8 cm2, mean gradient 14 mmHg at HR 78, PASP 62 mmHg, LVEF 60%.\n\nDischarge medications:\n- Furosemide 40 mg by mouth daily (NEW)\n- Metoprolol succinate 100 mg daily (INCREASED from 50 mg)\n- Warfarin 5 mg daily, INR goal 2-3 (continue; anticoagulation clinic)\n- Potassium chloride 20 mEq daily (continue)\n- Hydrochlorothiazide: STOPPED\nAllergies: NKDA.\n\nFollow-up: referred to the structural heart program for evaluation for percutaneous balloon mitral valvotomy; INR check within a week; primary care follow-up in 1 to 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-08a",
+          "kind": "pharmacy",
+          "start": "2026-04-08T10:25",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2026-04-08T10:25",
+              "author": "RN",
+              "body": "Pharmacist called: patient filled new furosemide 40 mg daily and metoprolol succinate 100 mg from a hospital discharge on 4/3, and an auto-refill for HCTZ 25 (our Rx) is also queued. Asked whether HCTZ should still be filled. Called pt - she says the hospital told her to stop HCTZ. Told pharmacy to cancel the HCTZ refill. We have no hospital records; requested discharge summary and ED record from the hospital. PCP aware."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-09a",
+          "kind": "portal_message",
+          "start": "2026-04-09T19:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "was in the hospital",
+              "date": "2026-04-09T19:50",
+              "author": "patient",
+              "body": "Hi, wanted to tell you I was in the hospital at the end of March for 3 days, fluid in my lungs and my heart went into the fast irregular rhythm. They gave me a different water pill and a higher metoprolol and stopped the hydrochlorothiazide. Now they want me to see a valve team about fixing the valve with a balloon. I'm feeling much better."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: was in the hospital",
+              "date": "2026-04-10T08:15",
+              "author": "PCP",
+              "body": "Thank you for letting me know, and I'm glad you are feeling better. We have asked the hospital for your records. Please book a visit with me in the next week or two so we can go over your medicines and check your blood work - the front desk can find you a time."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "outside_records",
+          "start": "2026-04-21T15:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Hospital ED record received",
+              "date": "2026-04-21T15:45",
+              "author": "MA",
+              "body": "Hospital sent the 3/31/2026 ED record only; discharge summary not included. Scanned. Second request sent for the discharge summary. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "specialist_visit",
+          "start": "2026-05-19T13:00",
+          "service": "Cardiology",
+          "reason": "structural heart evaluation, mitral stenosis",
+          "vitals": {
+            "bp": [
+              104,
+              65
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 73.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office consultation, comprehensive",
+              "performed": "2026-05-19T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Structural Heart Consultation",
+              "date": "2026-06-02T11:10",
+              "author": "cardiology",
+              "body": "Structural heart program - consultation letter\nVisit date: 5/19/2026\n\n46-year-old woman with severe rheumatic mitral stenosis, pulmonary hypertension and paroxysmal atrial fibrillation on warfarin, hospitalized 3/31-4/3/2026 for decompensated heart failure with pulmonary edema and AF with rapid rates. Since discharge her breathing is better: she walks a block and takes stairs slowly. Sinus rhythm today.\n\nMeds: furosemide 40 mg daily, metoprolol succinate 100 mg daily, warfarin 5 mg daily (INR 2-3), potassium chloride 20 mEq daily.\nAllergies: NKDA.\n\nReview of echoes 2022, 2024 and 4/2026: progressive severe rheumatic MS, MVA now 0.8 cm2, mean gradient 14 mmHg, PASP 62 mmHg, LVEF 60%. Valve anatomy suitable for a balloon approach.\n\nRecommendation: percutaneous balloon mitral valvotomy, preceded by a transesophageal echo to exclude left atrial thrombus. Continue warfarin and the current regimen. Our office will schedule.\n\nThank you for allowing us to share in her care."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-28a",
+          "kind": "portal_message",
+          "start": "2026-07-28T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "valve procedure done",
+              "date": "2026-07-28T20:15",
+              "author": "patient",
+              "body": "Hi doctor, I had the balloon procedure on my valve last Tuesday, July 21. Went home the next day. I can already breathe easier walking. They said they will send you the report. I still need to make my appointment with you, sorry."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: valve procedure done",
+              "date": "2026-07-29T07:50",
+              "author": "PCP",
+              "body": "That is wonderful news. We have not received the report yet and will ask for it. Please do come in when you can - I would like to see you and catch up on everything since 2024."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "outside_records",
+          "start": "2026-08-11T14:20",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Discharge summary received",
+              "date": "2026-08-11T14:25",
+              "author": "MA",
+              "body": "Discharge summary from the 3/31-4/3/2026 admission received after the patient asked the hospital to send it. Scanned and routed to PCP. Valvotomy report from 7/21 still not received; request faxed to the structural heart program."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T09:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2026-08-18T09:35",
+              "author": "RN",
+              "body": "E-refill request addressed to us for metoprolol succinate 100 mg daily. Prescriber of record is cardiology (hospital discharge). Pharmacy redirected to cardiology. Patient still has not scheduled with us; message left."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Pulmonary hypertension due to mitral stenosis|I27.22": {
+        "code": "I27.22",
+        "display": "Pulmonary hypertension due to left heart disease",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rheumatic heart disease|I09.9": {
+        "code": "I09.9",
+        "display": "Rheumatic heart disease, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rheumatic heart failure|I09.81": {
+        "code": "I09.81",
+        "display": "Rheumatic heart failure",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Rheumatic mitral stenosis|I05.0": {
+        "code": "I05.0",
+        "display": "Rheumatic mitral stenosis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    }
+  }
+}

@@ -1,0 +1,1342 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002227",
+      "given": "Eugene",
+      "family": "Connolly",
+      "birth_date": "1954-09-09",
+      "address_line": "62 Hendrick Lane",
+      "phone": "+1-603-555-0197",
+      "email": "eugene.connolly@example.test",
+      "marital_status": "married",
+      "summary": "Retired construction foreman with long-standing type 2 diabetes, hypertension and chronic atrial fibrillation on warfarin who joins in 2020. Over six years he has diabetic polyneuropathy, a nasal basal cell carcinoma, a pharyngoesophageal diverticulum, endophthalmitis after cataract surgery, a venous air embolism at angiography, a diabetic foot osteomyelitis, an appendiceal abscess and finally a locally advanced mucin-producing pancreatic adenocarcinoma with chronic DIC.",
+      "events": [
+        {
+          "id": "2020-09-22a",
+          "kind": "establish_care",
+          "start": "2020-09-22T09:00",
+          "end": "2020-09-22T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "history",
+              "onset": "2006-04-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2006-04-01"
+            },
+            {
+              "label": "Chronic atrial fibrillation",
+              "icd10": "I48.20",
+              "action": "history",
+              "onset": "2016-06-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with meals",
+              "dose": {
+                "value": 1000,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "hydrochlorothiazide 12.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 12.5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily or as directed per INR",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Atrial fibrillation"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Diabetes, cardiovascular risk"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "bp": [
+              132,
+              80
+            ],
+            "weight_kg": 88.0,
+            "height_cm": 178.0,
+            "labs": {
+              "Hemoglobin A1c": 7.8,
+              "Low Density Lipoprotein": 74,
+              "High Density Lipoprotein": 42,
+              "Triglycerides": 160,
+              "Creatinine": 1.0,
+              "Glucose": 158
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired construction foreman"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-09-22T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2020-09-22T10:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-09-22T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2020-09-22T10:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2020-09-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2020-09-22T11:30",
+              "body": "66 y/o retired construction foreman transferring care from his former primary care office.\n\nHPI: Type 2 diabetes since about 2006, on metformin the whole time, no hypoglycemia. Hypertension about as long, on lisinopril and HCTZ. Atrial fibrillation picked up at his old practice around 2016; has been on warfarin since, INR drawn monthly there. No palpitations he notices, no chest pain, no shortness of breath, no bleeding.\n\nPMH: T2DM, HTN, chronic atrial fibrillation.\nPSH: tonsils and adenoids out at age 7.\nMeds: metformin 1000 mg BID, lisinopril 10 mg daily, HCTZ 12.5 mg daily, warfarin 5 mg daily (adjusted to INR), atorvastatin 40 mg daily.\nAllergies: no known drug allergies.\nFamily: father had type 2 diabetes and an MI at 72. Mother hypertension and a basal cell skin cancer. An uncle on his father's side had pancreatic cancer.\nSocial: smoked about a pack a day for 20 years, stopped in 2016. A drink or two a week, socially. Retired foreman, ran residential framing crews for decades.\n\nExam: well-appearing, comfortable. Vitals as charted. Heart irregularly irregular, rate controlled, no murmur. Lungs clear. Abdomen soft, nontender. No edema. Feet: skin intact, pulses present, monofilament sensation intact today.\n\nA/P:\n1. Type 2 diabetes - A1c sent. Continue metformin.\n2. Hypertension - at goal, continue lisinopril/HCTZ. BMP today.\n3. Chronic AF on warfarin - CHA2DS2-VASc 3 (age, HTN, DM). We will manage INR here; RN to set him up with monthly checks, goal 2-3. INR today.\n4. Lipids - on atorvastatin 40, lipid panel today.\n5. Health maintenance - will request old records including colonoscopy. Flu shot and Tdap at a nurse visit next month.\n\nRTC 3 months."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab results",
+              "author": "RN",
+              "date": "2020-09-23T14:05",
+              "body": "Called pt with results. INR 2.4, in range: continue warfarin 5 mg daily, next INR in about 6 weeks with the nurse visit. A1c 7.8, kidney function normal, LDL 74. PCP reviewed. Pt verbalized understanding."
+            }
+          ]
+        },
+        {
+          "id": "2020-09-29a",
+          "kind": "outside_records",
+          "start": "2020-09-29T13:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Records from former primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Former primary care records",
+              "author": "front desk",
+              "date": "2020-09-29T13:00",
+              "body": "Records received by fax from the patient's prior primary care office, 48 pages, scanned.\n\nSummary for chart (PCP):\n- Problem list: type 2 diabetes, hypertension, atrial fibrillation (noted 2016, started on warfarin then).\n- Colonoscopy 2017: normal to the cecum, no polyps; advised repeat at 10 years.\n- INR log 2019-2020: mostly 2.0-2.8 on 5 mg daily.\n- Med list matches what he brought.\n- No drug allergies recorded."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-07a",
+          "kind": "nurse_visit",
+          "start": "2020-10-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu shot, Tdap, INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2020-10-07T10:25",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2020-10-07T10:30"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2020-10-07T10:32"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-07T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2020-10-07T10:45",
+              "body": "In for high-dose flu and Tdap (last tetanus shot he can remember was in his forties, not in old records). Both given L deltoid / R deltoid, tolerated well. INR drawn: 2.6. No bleeding or bruising, no missed doses, no new meds or antibiotics. Continue warfarin 5 mg daily. Next INR in 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-04a",
+          "kind": "lab_only",
+          "start": "2020-11-04T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2020-11-04T08:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-11-04T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation",
+              "author": "RN",
+              "date": "2020-11-04T13:10",
+              "body": "INR 2.2. Spoke with pt - no changes in diet, no bleeding. Continue 5 mg daily. Recheck 4 wks."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-02a",
+          "kind": "lab_only",
+          "start": "2020-12-02T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2020-12-02T08:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 3.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-12-02T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation",
+              "author": "RN",
+              "date": "2020-12-02T14:30",
+              "body": "INR 3.1, slightly above goal. Pt says Thanksgiving week he ate less greens than usual, otherwise nothing new. No bleeding. Take 2.5 mg (half tab) tonight only, then back to 5 mg daily. Recheck 2 weeks with his visit."
+            }
+          ]
+        },
+        {
+          "id": "2020-12-16a",
+          "kind": "office_visit",
+          "start": "2020-12-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes and blood pressure follow-up",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-12-16T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.9
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2020-12-16T14:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2020-12-16T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2020-12-16T15:10",
+              "body": "S: Doing fine. Taking meds as prescribed. Home sugars in the 140s-170s fasting. No lows. No chest pain or palpitations, no bleeding on warfarin.\n\nO: Vitals as charted. Irregularly irregular, rate in the 70s. Lungs clear. No edema.\n\nA/P:\n- T2DM: A1c 7.9 today, about where it was in September. Continue metformin 1000 BID.\n- HTN: at goal on lisinopril 10 / HCTZ 12.5.\n- AF on warfarin: INR 2.5 today, back in range after last month's 3.1. Continue 5 mg daily.\n- COVID vaccine: encouraged when his age group opens up; he plans to go to a pharmacy.\n\nRTC 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-13a",
+          "kind": "lab_only",
+          "start": "2021-01-13T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-01-13T09:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-01-13T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation",
+              "author": "RN",
+              "date": "2021-01-13T15:00",
+              "body": "INR 2.3 - continue warfarin 5 mg daily. Left detailed message per pt's permission. Next INR mid-February."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-03a",
+          "kind": "pharmacy",
+          "start": "2021-02-03T11:00",
+          "service": "Community pharmacy",
+          "reason": "COVID-19 vaccine dose 1",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-02-03T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID-19 vaccine dose 1",
+              "author": "pharmacist",
+              "date": "2021-02-03T11:30",
+              "body": "Moderna COVID-19 vaccine, dose 1 of 2, 0.5 mL IM left deltoid. Observed 15 minutes, no reaction. Dose 2 scheduled in 4 weeks. Copy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-10a",
+          "kind": "lab_only",
+          "start": "2021-02-10T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-02-10T08:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-02-10T08:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation",
+              "author": "RN",
+              "date": "2021-02-10T12:40",
+              "body": "INR 2.7. Got his first COVID shot last week, sore arm only. No bleeding. Continue current dose, recheck 4-5 wks."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-03a",
+          "kind": "pharmacy",
+          "start": "2021-03-03T11:15",
+          "service": "Community pharmacy",
+          "reason": "COVID-19 vaccine dose 2",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-03-03T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID-19 vaccine dose 2",
+              "author": "pharmacist",
+              "date": "2021-03-03T11:45",
+              "body": "Moderna COVID-19 vaccine, dose 2 of 2, 0.5 mL IM left deltoid. No immediate reaction. Primary series complete. Copy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-17a",
+          "kind": "office_visit",
+          "start": "2021-03-17T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up; feet burning at night",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.0,
+              "Vitamin B12": 410,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-17T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-03-17T11:10",
+              "results": [
+                {
+                  "test": "Vitamin B12",
+                  "value": 410
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-03-17T11:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2021-03-17T11:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "b12-2021",
+              "action": "placed",
+              "order": "Vitamin B12",
+              "category": "lab"
+            },
+            {
+              "id": "tsh-2021",
+              "action": "placed",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-03-17T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2021-03-17T11:40",
+              "body": "S: Routine diabetes check. Both COVID shots done. Mentions at the end that his feet have been burning at night for the last few months, both sides, sometimes pins and needles; says it is worse when he gets into bed. No injuries, no sores he has seen. Hasn't changed shoes.\n\nO: Vitals as charted. Heart irregular, rate controlled. Feet look fine - no calluses or breaks in the skin. Didn't have time for a full sensory exam today.\n\nA/P:\n- T2DM, A1c 8.0 today. Continue metformin.\n- Burning feet, likely diabetes related but will check B12 (on metformin for years) and TSH first. Book a dedicated visit to look at the feet properly.\n- HTN controlled. BMP today.\n- AF: INR checks continue with RN."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2021-03-19T08:20",
+              "body": "Hi Eugene - your B12 (410) and thyroid test (TSH 1.9) are both normal, and your kidney numbers and potassium are fine. A1c is 8.0. We'll go over the feet in detail at the visit you booked. Have a good weekend."
+            }
+          ]
+        },
+        {
+          "id": "2021-04-14a",
+          "kind": "lab_only",
+          "start": "2021-04-14T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-04-14T09:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-04-14T09:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation",
+              "author": "RN",
+              "date": "2021-04-14T13:50",
+              "body": "INR 2.1. Continue 5 mg daily. Reminder card mailed for next month."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-12a",
+          "kind": "nurse_visit",
+          "start": "2021-05-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2021-05-19a",
+          "kind": "lab_only",
+          "start": "2021-05-19T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check (rescheduled)",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-05-19T08:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-05-19T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation",
+              "author": "RN",
+              "date": "2021-05-19T12:15",
+              "body": "Missed last week's draw - says he was helping a friend frame a shed and forgot. INR today 2.4. Continue 5 mg daily."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-25a",
+          "kind": "office_visit",
+          "start": "2021-06-25T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up of chronic foot pain",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus with diabetic polyneuropathy",
+              "action": "diagnosed",
+              "onset": "2020-12-15"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "capsaicin 0.75 MG/ML Topical Cream",
+              "action": "start",
+              "sig": "Apply a thin layer to both feet twice daily; wash hands after use",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Painful diabetic neuropathy"
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 8.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-06-25T10:15",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 8.1
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-06-25T10:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-06-25T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - feet",
+              "author": "PCP",
+              "date": "2021-06-25T10:40",
+              "body": "S: Here about his feet as planned. About six months now of burning and tingling in both feet. Worst at night, keeps him up some nights. No falls or injuries, no fevers, no swelling. B12 and TSH were normal in March.\n\nO: Vitals as charted.\nFeet: skin intact, no ulcers, no color change. Vibration sense reduced at both great toes and ankles; pinprick dulled to just above the ankles both sides, stocking pattern. Strength 5/5 at hips, knees, ankles and toes. Ankle jerks diminished bilaterally, knees 2+.\nA1c 8.1.\n\nA/P:\n1. Diabetic polyneuropathy, symmetric, sensory. Talked about foot care, checking feet daily, well-fitting shoes. Prefers to avoid another pill. Capsaicin 0.075% cream to both feet twice daily; warned it burns for the first week or two and to wash hands well. Message me in a month with how it's going.\n2. T2DM: A1c 8.1. Continue metformin.\n3. AF: INR 2.6, continue warfarin per RN."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-23a",
+          "kind": "portal_message",
+          "start": "2021-07-23T19:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Update on foot cream",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Foot cream",
+              "author": "patient",
+              "date": "2021-07-23T19:40",
+              "body": "You asked me to write in about the cream. First week it stung pretty good but I kept at it morning and night like you said. It has been about 4 weeks and the burning is a lot less, sleeping better most nights. Should I keep using it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Foot cream",
+              "author": "PCP",
+              "date": "2021-07-26T08:15",
+              "body": "Glad to hear it. Yes, keep using it twice a day - it works best with steady use. Let me know if it stops helping."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-11a",
+          "kind": "lab_only",
+          "start": "2021-08-11T08:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-08-11T08:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-11T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Anticoagulation",
+              "author": "RN",
+              "date": "2021-08-11T14:20",
+              "body": "INR 1.9, just under. Garden is in, eating a lot of salads and green beans. No missed doses. Take 7.5 mg (1.5 tabs) tonight, then 5 mg daily; try to keep the greens steady rather than up and down. Recheck 2-3 wks or at the physical."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-29a",
+          "kind": "annual_physical",
+          "start": "2021-09-29T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "state": {
+            "labs": {
+              "Hemoglobin A1c": 7.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 7.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Red Cell Distribution Width"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Mean Platelet Volume"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-09-29T09:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-09-29T10:05"
+            },
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-09-29T10:06"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-09-29T10:08"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us-2021",
+              "action": "placed",
+              "order": "Abdominal ultrasound",
+              "category": "imaging",
+              "reason": "One-time AAA screening, male former smoker"
+            },
+            {
+              "id": "ldct-2021",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "20 pack-years, quit 2016"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2021-09-29T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-09-29T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2021-09-29T10:45",
+              "body": "Medicare AWV, first one with us.\n\nInterval: capsaicin cream still helping the feet, uses it most days. Nothing else new. Lives in his own house in town, independent in all ADLs and IADLs, still drives. No falls. Hearing and vision ok with readers. PHQ-2 0. Advance directive: has not done one, information given.\n\nMeds reviewed: metformin 1000 BID, lisinopril 10, HCTZ 12.5, warfarin 5 (per INR), atorvastatin 40, capsaicin cream.\nAllergies: NKDA.\n\nExam: Vitals as charted. Irregularly irregular, no murmur. Lungs clear. Abdomen soft, no pulsatile mass. Feet: intact skin, reduced vibration at toes unchanged, pulses palpable.\n\nPrevention:\n- Colonoscopy 2017 normal per old records, next 2027.\n- Lung cancer screening: 20 pack-years, quit 2016 - eligible. Discussed benefits and false positives; he wants it. LDCT ordered.\n- AAA screening: ever-smoker man 65-75, ultrasound ordered.\n- Hep C and HIV one-time screening today.\n- Vaccines: high-dose flu, PCV20, Shingrix #1 today. Shingrix #2 in 2-6 months. COVID booster when eligible.\n- Labs: A1c, CMP, CBC, lipids, urine microalbumin.\n\nRTC 3-4 months for diabetes."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Your labs",
+              "author": "PCP",
+              "date": "2021-10-01T09:30",
+              "body": "Your labs from the wellness visit look good. A1c 7.9. Kidney and liver tests normal, urine protein normal, blood count normal, LDL cholesterol in a good range on the atorvastatin. Hepatitis C and HIV screens negative. INR 2.5. The ultrasound and lung scan schedulers will call you."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-13a",
+          "kind": "imaging",
+          "start": "2021-10-13T13:30",
+          "service": "Radiology",
+          "reason": "AAA screening",
+          "orders": [
+            {
+              "id": "aaa-us-2021",
+              "action": "done",
+              "date": "2021-10-13T13:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Abdominal ultrasound",
+              "performed": "2021-10-13T13:30",
+              "text": "INDICATION: AAA screening, 67-year-old male former smoker.\nTECHNIQUE: Grayscale and color imaging of the abdominal aorta.\nFINDINGS: The abdominal aorta is normal in caliber throughout, maximum diameter 2.1 cm at the infrarenal level. No aneurysm. Iliac arteries normal at their origins. Incidental views of the kidneys show normal size without hydronephrosis.",
+              "conclusion": "No abdominal aortic aneurysm."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result",
+              "author": "RN",
+              "date": "2021-10-14T10:00",
+              "body": "Notified pt aorta ultrasound normal, no aneurysm. No further screening needed per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-20a",
+          "kind": "outside_records",
+          "start": "2021-10-20T12:00",
+          "service": "Optometry",
+          "reason": "Diabetic eye exam report",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic eye examination",
+              "author": "optometry",
+              "date": "2021-10-20T12:00",
+              "body": "Optometry report, exam date 10/18/2021.\nPatient: Eugene Connolly. Diabetes about 15 years.\nAllergies: none known.\nBest corrected acuity 20/25 right, 20/25 left. Pressures normal both eyes. Dilated fundus exam: no diabetic retinopathy either eye, no macular edema.\nImpression: no diabetic retinopathy. Return in 12 months.\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "pharmacy",
+          "start": "2021-10-27T15:20",
+          "service": "Community pharmacy",
+          "reason": "COVID-19 booster",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, original",
+              "date": "2021-10-27T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Immunization Record",
+              "title": "COVID-19 booster",
+              "author": "pharmacist",
+              "date": "2021-10-27T15:40",
+              "body": "Moderna COVID-19 booster (0.25 mL) IM right deltoid. Tolerated. Record sent to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "office_visit",
+          "start": "2021-11-10T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Spot on nose that bleeds",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-11-10T15:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-2021",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Nasal lesion, bleeds with shaving"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2021-11-10T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2021-11-10T15:40",
+              "body": "S: Bump on the side of his nose for about a year, slowly bigger. Catches it shaving and it bleeds, then scabs. Doesn't hurt. Mother had a skin cancer removed.\n\nO: Vitals as charted. Small raised lesion on the lateral nose, shiny surface with a few fine vessels. No other lesions on face.\n\nA/P: Nasal lesion - concerning for a basal cell; dermatology referral for evaluation and biopsy. INR 2.3 today, in range."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-30a",
+          "kind": "imaging",
+          "start": "2021-11-30T11:00",
+          "service": "Radiology",
+          "reason": "Lung cancer screening",
+          "orders": [
+            {
+              "id": "ldct-2021",
+              "action": "done",
+              "date": "2021-11-30T11:00"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2021-11-30T11:00",
+              "text": "INDICATION: Lung cancer screening, baseline. Former smoker, 20 pack-years, quit 2016.\nTECHNIQUE: Low-dose noncontrast CT of the chest.\nFINDINGS: No pulmonary nodules. No consolidation or effusion. Airways clear. Heart size normal. No mediastinal or hilar adenopathy.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung screening",
+              "author": "PCP",
+              "date": "2021-12-01T08:40",
+              "body": "Your lung screening CT was negative - no nodules. We'll repeat it each year."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-08a",
+          "kind": "nurse_visit",
+          "start": "2021-12-08T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Shingrix dose 2 and INR",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-12-08T10:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.8
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2021-12-08T10:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-12-08T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "author": "RN",
+              "date": "2021-12-08T10:25",
+              "body": "Shingrix #2 given L deltoid, series complete. First dose gave him a sore arm and he felt tired for a day. INR 2.8, continue 5 mg daily. Dermatology appt next week - reminded him to tell them he's on warfarin."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-13a",
+          "kind": "specialist_visit",
+          "start": "2021-12-13T13:20",
+          "service": "Dermatology",
+          "reason": "Lesion on nose",
+          "orders": [
+            {
+              "id": "derm-2021",
+              "action": "done",
+              "date": "2021-12-13T13:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Tangential skin biopsy, single lesion",
+              "performed": "2021-12-13T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "author": "dermatology",
+              "date": "2021-12-16T09:00",
+              "body": "Outside dermatology group\nDate of service: 12/13/2021\nRe: Eugene Connolly, DOB 09/09/1954\n\nThank you for referring Mr. Connolly, a 67-year-old with diabetes, for a nasal lesion. He reports a bump on the nose for about a year that bleeds now and then when he shaves and is otherwise without symptoms.\n\nMedications: metformin, lisinopril, hydrochlorothiazide, warfarin, atorvastatin, capsaicin cream. Allergies: no known drug allergies.\n\nExam: On the lateral aspect of the nose there is a 1.5 cm pearly, flesh-colored nodule with overlying telangiectasias and a central depression. No cervical, preauricular or submandibular lymphadenopathy. Remainder of the face, scalp, neck, arms and trunk examined without other suspicious lesions.\n\nProcedure: After consent and local anesthesia, a shave biopsy was taken. Hemostasis with aluminum chloride. Warfarin continued.\n\nImpression: clinically a basal cell carcinoma; pathology pending. Given the location, margin-controlled excision would be recommended if confirmed. We will call him with results."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-20a",
+          "kind": "outside_records",
+          "start": "2021-12-20T10:30",
+          "service": "Dermatology",
+          "reason": "Pathology report",
+          "conditions": [
+            {
+              "label": "Basal cell carcinoma of skin of nose",
+              "icd10": "C44.311",
+              "action": "diagnosed",
+              "onset": "2021-12-13"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2021-12-13T13:45",
+              "issued": "2021-12-17T15:00",
+              "text": "SPECIMEN: Skin, lateral nose, shave biopsy.\nMICROSCOPIC: Nests of basaloid cells with peripheral palisading and retraction artifact arising from the epidermis and extending into the dermis.\nDIAGNOSIS: Basal cell carcinoma, nodular type. Tumor extends to the deep and peripheral margins of the specimen.",
+              "conclusion": "Basal cell carcinoma, nodular type, lateral nose."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatopathology",
+              "author": "front desk",
+              "date": "2021-12-20T10:30",
+              "body": "Biopsy result from dermatology received and scanned. Nodular basal cell carcinoma, nose. Dermatology scheduling the excision. PCP reviewed, added to problem list."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

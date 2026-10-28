@@ -1,0 +1,1439 @@
+{
+  "unit": "unit-1927",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001927",
+      "given": "Deborah",
+      "family": "Lipschitz",
+      "birth_date": "1990-10-21",
+      "address_line": "27 Arbutus Lane",
+      "phone": "+1-413-555-0110",
+      "email": "deborah.lipschitz@example.test",
+      "marital_status": "single",
+      "summary": "Software engineer in her thirties with a strong maternal breast and ovarian cancer history who joined in 2023, found a right breast fibroadenoma in late 2024 that led to BRCA1 testing and high-risk surveillance, and had a stage IB nodular melanoma of the upper back excised in mid-2026.",
+      "events": [
+        {
+          "id": "2023-07-31a",
+          "kind": "telephone",
+          "start": "2023-07-31T14:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2023-07-31T14:20",
+              "author": "front desk",
+              "body": "Ms. Lipschitz called; her previous doctor retired and she was given our name by a coworker. Explained the membership model and fees, she is fine with it. Booked new patient physical 8/21 at 9:00. Records release signed electronically for her prior primary care office and her gynecologist. Asked her to bring her vitamin and pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-14a",
+          "kind": "outside_records",
+          "start": "2023-08-14T10:05",
+          "reason": "prior records received",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-05-17T09:40",
+              "text": "Outside gynecology office, received with prior records. Liquid-based cervical cytology: satisfactory for evaluation, endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative. Routine interval."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care and gynecology records",
+              "date": "2023-08-14T10:05",
+              "author": "MA",
+              "body": "38 pages from prior primary care office (visits 2016 to early 2023) and 6 pages from her gynecologist. Summary for the new patient visit:\n- No chronic medical problems on their list\n- Meds: combined OCP (norgestimate/ethinyl estradiol) daily, prescribed by gyn; vitamin D3 2000 units daily\n- NKDA\n- Surgeries: tonsillectomy as a child, wisdom teeth out in college\n- Fam hx on their intake: mother breast and ovarian cancer\n- Last routine labs 2021 unremarkable\n- Pap with HPV co-test 5/2022 negative\nScanned to the media tab and flagged for PCP before the 8/21 visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "establish_care",
+          "start": "2023-08-21T09:00",
+          "end": "2023-08-21T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {
+              "label": "Family history of breast cancer",
+              "action": "history",
+              "note": "mother at 42, maternal aunt at 39, maternal grandmother at 44"
+            },
+            {
+              "label": "Family history of malignant neoplasm of ovary",
+              "action": "history",
+              "note": "mother at 51",
+              "icd10": "Z80.41"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "contraception"
+            },
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              81
+            ],
+            "hr": 74,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 60.8,
+            "height_cm": 164.7
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 248
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 91
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-08-21T09:50",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.84
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Software engineer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2023-08-21T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-08-21T09:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-21T09:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-08-21T09:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Physical",
+              "date": "2023-08-21T10:05",
+              "author": "PCP",
+              "body": "32F software engineer, works remotely, establishing care. Prior PCP retired; records reviewed.\n\nNo complaints. Sleeps ok, walks most days, some yoga.\n\nPMH: none.\nPSH: tonsillectomy age 8, third molars removed age 21.\nGyn: menarche 11, G0, regular cycles on OCP. Sees her own gynecologist; last Pap/HPV 5/2022 negative.\nMeds: norgestimate 0.25 / EE 35 mcg daily (gyn prescribes), vitamin D3 2000 units daily.\nAllergies: no known drug allergies.\nSH: never smoker, no alcohol, no drugs. Single.\nFH: mother - breast cancer at 42, then ovarian cancer at 51. Maternal aunt breast cancer at 39. Maternal grandmother breast cancer at 44. Father has hypertension. Family is of Eastern European Jewish background.\n\nExam: well appearing. HEENT normal, thyroid not enlarged. Heart RRR without murmur. Lungs clear. Breasts symmetric, no masses, skin or nipple changes; no axillary or supraclavicular nodes. Abdomen soft, nontender. Skin fair, burns easily (Fitzpatrick II by her description), no lesions of concern on a quick look at arms, face, back. No edema.\n\nA/P:\n1. Health maintenance - CBC, CMP, lipids, TSH; HIV and hep C once. Tdap today (last one was in high school). Cervical screening per her gyn, next due 2027.\n2. Family history of breast and ovarian cancer - three affected relatives on mom's side, two diagnosed before 45, plus ovarian. This easily meets criteria for genetic counseling and BRCA testing, and her ancestry adds to it. Talked through what a positive result would mean for screening. She has thought about it before and wants to hold off for now; she wants to look into insurance implications first. Will revisit at next physical. Encouraged breast self-awareness, report any change.\n3. Contraception - continue OCP through gyn.\n4. Fair skin - sunscreen, hats; low threshold for a skin check if anything changes.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.2,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T16:40",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2023-08-24T16:40",
+              "author": "PCP",
+              "body": "Hi Deborah, all of your labs from Monday came back normal: blood counts, kidney and liver tests, thyroid and cholesterol. HIV and hepatitis C screens were negative. Nothing to do here. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T08:30",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T08:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T08:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T08:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2023-10-12T08:50",
+              "author": "RN",
+              "body": "In for seasonal vaccines. Screening questions negative, no prior reactions. Influenza left deltoid, COVID 2023-24 right deltoid. VIS given. Waited 15 min, felt fine, left for work."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-04a",
+          "kind": "portal_message",
+          "start": "2024-03-04T11:12",
+          "reason": "form request",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Employer wellness form",
+              "date": "2024-03-04T11:12",
+              "author": "patient",
+              "body": "Hi, my employer's insurance wants a form signed saying I had a physical in the last 12 months so I get the premium credit. Can I upload it here? Thanks, Deborah"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Employer wellness form",
+              "date": "2024-03-04T15:30",
+              "author": "MA",
+              "body": "Yes, attach it to a reply here. The doctor signed the ones from last week within a day, so it should be back to you by Wednesday."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "annual_physical",
+          "start": "2024-07-29T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              79
+            ],
+            "hr": 70,
+            "spo2": 97,
+            "weight_kg": 60.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-29T09:15",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 38
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-07-29T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-29T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-07-29T09:25",
+              "author": "PCP",
+              "body": "33F annual. Feels well. Busy release cycle at work, sleeping fine. No breast changes. Periods light and regular on the pill.\n\nMeds: OCP daily (gyn), D3 2000 units.\nNKDA.\n\nROS negative.\n\nExam: NAD. Heart and lungs normal. Breasts without masses, nipple discharge or nodes. Abdomen benign. Skin: fair, scattered freckles on shoulders, nothing irregular. Neuro grossly normal.\n\nA/P:\n- Wellness: PHQ-2 0. Checking vitamin D since she has been on 3 years of supplement and asked. Flu/COVID in the fall.\n- Family hx breast/ovarian cancer: brought up genetic counseling again. She is still not ready, says she will think about it after her work project wraps. Offered to place the referral whenever she wants.\n- Sun protection reviewed.\nNext physical summer 2025."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T17:10",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T17:14"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T17:14"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T17:16"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2024-10-08T17:30",
+              "author": "RN",
+              "body": "Evening vaccine slot. Flu (trivalent) L arm, COVID 2024-25 formula R arm. Last year only mild soreness. Observed 15 min, no issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "portal_message",
+          "start": "2024-12-04T21:48",
+          "reason": "breast lump",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lump",
+              "date": "2024-12-04T21:48",
+              "author": "patient",
+              "body": "Hi Doctor, I felt a hard lump in my right breast in the shower this week, toward the armpit side. It doesn't hurt. I called my gynecologist and they can see me Monday the 9th and said they would try to get imaging the same day. Should I also come in? Given my mom's history I'm pretty anxious."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lump",
+              "date": "2024-12-05T07:55",
+              "author": "PCP",
+              "body": "Thank you for telling me. Keeping the Monday visit with your gynecologist is the right move, especially if they can get the mammogram and ultrasound done that day - that is the fastest path. You don't need a separate visit here first. Please ask them to send me their note and the imaging, and message me once you hear anything. If they can't get imaging scheduled quickly, let me know and I will order it."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-12a",
+          "kind": "outside_records",
+          "start": "2024-12-12T13:20",
+          "reason": "gynecology consult and breast imaging",
+          "conditions": [
+            {
+              "label": "Unspecified lump in the right breast, upper outer quadrant",
+              "action": "diagnosed",
+              "onset": "2024-12-02",
+              "icd10": "N63.11"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Diagnostic mammogram",
+              "performed": "2024-12-09T11:05",
+              "text": "Outside breast imaging center. Indication: palpable right breast mass, upper outer quadrant, found on self-exam. Family history of breast cancer. No prior mammograms for comparison.\nTechnique: bilateral diagnostic digital mammography with tomosynthesis; spot compression views of the right breast at the palpable marker.\nFindings: The breasts are heterogeneously dense, which may obscure small masses. Underlying the palpable marker in the right upper outer quadrant there is an irregular mass with indistinct margins. No associated calcifications or architectural distortion elsewhere. Left breast without suspicious mass, calcifications or distortion. No skin thickening.",
+              "conclusion": "Right breast upper outer quadrant irregular mass corresponding to the palpable finding, suspicious. BI-RADS 4. Ultrasound performed same day, see separate report; tissue sampling recommended."
+            },
+            {
+              "study": "Breast ultrasound",
+              "performed": "2024-12-09T11:40",
+              "text": "Outside breast imaging center. Targeted right breast and right axillary ultrasound.\nFindings: At 10 o'clock, 6 cm from the nipple, at the palpable site, there is an irregular hypoechoic mass measuring 2.3 x 1.8 x 1.6 cm, not parallel to the skin. No internal vascularity of note. No skin thickening. The right axilla shows normal-appearing lymph nodes with preserved fatty hila.",
+              "conclusion": "Irregular hypoechoic mass right breast 10 o'clock, 2.3 cm, corresponding to the mammographic finding. BI-RADS 4. Ultrasound-guided core biopsy recommended and scheduled."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology consult: right breast mass",
+              "date": "2024-12-12T13:20",
+              "author": "gynecology",
+              "body": "Outside gynecology practice\nDate of service: 12/09/2024\nPatient: Deborah Lipschitz, DOB 10/21/1990\n\nReason: palpable mass right breast.\n\n34-year-old G0, menarche at 11, presents after noticing a firm lump in the upper outer right breast while showering last week. Asymptomatic otherwise - no pain, no nipple discharge, no skin change.\n\nMedications: norgestimate/ethinyl estradiol 0.25 mg/35 mcg daily; cholecalciferol 2000 IU daily.\nAllergies: NKDA.\nSurgical history: tonsillectomy (age 8), wisdom tooth extraction (age 21).\nFamily history: mother with breast cancer at 42 and ovarian cancer at 51; maternal aunt breast cancer at 39; maternal grandmother breast cancer at 44. Father hypertension.\nSocial: nonsmoker, no alcohol.\n\nExam: right breast UOQ with a firm, fixed 2.5 cm mass. Overlying skin normal, no retraction, no nipple discharge on expression. Left breast normal. No axillary, supraclavicular or cervical adenopathy. Remainder of exam unremarkable.\n\nImaging today: diagnostic mammogram shows a suspicious irregular mass at the palpable site; same-day ultrasound confirms a 2.3 cm irregular mass at 10 o'clock, BI-RADS 4. Reports attached.\n\nAssessment/Plan:\n1. Right breast mass, suspicious on imaging - ultrasound-guided core biopsy booked for 12/13.\n2. Strong maternal history of breast and ovarian cancer and Jewish ancestry - hereditary cancer panel sent today after pre-test counseling; results in about 3-4 weeks. Will refer to genetic counseling for results.\n3. Contraception - continue current pill for now pending results.\nCopy to primary care physician."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19a",
+          "kind": "outside_records",
+          "start": "2024-12-19T09:30",
+          "reason": "breast biopsy pathology",
+          "conditions": [
+            {
+              "label": "Unspecified lump in the right breast, upper outer quadrant",
+              "action": "resolved",
+              "onset": "2024-12-02",
+              "note": "biopsy: fibroadenoma",
+              "icd10": "N63.11"
+            },
+            {
+              "label": "Benign neoplasm of right breast",
+              "action": "diagnosed",
+              "onset": "2024-12-13",
+              "note": "fibroadenoma, 10 o'clock, core biopsy 12/13/2024, clip placed",
+              "icd10": "D24.1"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-12-13T10:15",
+              "text": "Outside pathology laboratory.\nSpecimen: right breast, 10 o'clock, ultrasound-guided core needle biopsy (14-gauge, 4 cores). Post-biopsy clip placed; post-procedure mammogram confirms clip at the biopsy site.\nGross: four tan-white cores, 1.2 to 1.6 cm, entirely submitted.\nMicroscopic: biphasic lesion with proliferating stroma of low cellularity and compressed ducts lined by benign epithelium with a myoepithelial layer. No stromal overgrowth or atypia. No atypical ductal hyperplasia, in situ or invasive carcinoma identified.\nRadiology-pathology correlation (breast imaging): benign concordant result.",
+              "conclusion": "Right breast 10 o'clock core biopsy: fibroadenoma. Negative for atypia and malignancy. Concordant; follow-up ultrasound of the right breast in 6 months.",
+              "issued": "2024-12-17T15:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Core needle biopsy of breast using imaging guidance",
+              "snomed": "1264555004",
+              "performed": "2024-12-13T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Breast biopsy result",
+              "date": "2024-12-19T09:30",
+              "author": "MA",
+              "body": "Received from the breast imaging center: procedure note for US-guided core biopsy R breast 12/13 (uncomplicated, clip placed) and pathology dated 12/17 - fibroadenoma, benign, concordant. 6 month follow-up US recommended. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-19b",
+          "kind": "portal_message",
+          "start": "2024-12-19T12:05",
+          "reason": "biopsy result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your biopsy",
+              "date": "2024-12-19T12:05",
+              "author": "PCP",
+              "body": "Hi Deborah, I received the pathology from your biopsy. It is a fibroadenoma, which is benign, and the radiologist reviewed it and agrees it matches what they saw on imaging. I know the last two weeks were stressful. The plan is a repeat ultrasound in about six months to make sure it stays stable. Your genetic test is still out; once it is back, let's meet to talk about what it means for you either way."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your biopsy",
+              "date": "2024-12-19T12:40",
+              "author": "patient",
+              "body": "The gyn office called me yesterday too. Such a relief. I'll book something once the genetics result comes. Thank you!"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "outside_records",
+          "start": "2025-01-09T14:45",
+          "reason": "genetic test result",
+          "conditions": [
+            {
+              "label": "BRCA1 gene mutation positive",
+              "action": "diagnosed",
+              "onset": "2025-01-06",
+              "note": "hereditary breast and ovarian cancer syndrome; heterozygous pathogenic variant"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-12-09T12:00",
+              "resulted": "2025-01-06T10:00",
+              "results": [
+                {
+                  "test": "BRCA1 gene mutations found",
+                  "loinc": "21636-6",
+                  "text": "Pathogenic variant detected in BRCA1, heterozygous. No other pathogenic or likely pathogenic variants identified on the multigene hereditary cancer panel."
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Genetic counseling letter: hereditary cancer panel",
+              "date": "2025-01-09T14:45",
+              "author": "genetic counseling",
+              "body": "Outside cancer genetics service\nDate of result disclosure: 01/07/2025\nRe: Deborah Lipschitz, DOB 10/21/1990\nOrdering clinician: her gynecologist; copy to primary care.\n\nMs. Lipschitz had a multigene hereditary cancer panel sent on 12/09/2024 in the setting of a right breast mass (since shown to be a fibroadenoma) and a significant maternal history: mother with breast cancer at 42 and ovarian cancer at 51, maternal aunt with breast cancer at 39, maternal grandmother with breast cancer at 44. Jewish ancestry.\n\nResult (reported 01/06/2025): heterozygous pathogenic variant in BRCA1. No other pathogenic or likely pathogenic variants were found.\n\nInterpretation: this confirms hereditary breast and ovarian cancer syndrome. Women with a BRCA1 pathogenic variant have a substantially increased lifetime risk of breast cancer and of ovarian/fallopian tube cancer compared with the general population.\n\nWe discussed by video for about an hour:\n- Breast: high-risk surveillance with yearly MRI and yearly mammogram; risk-reducing mastectomy as an option.\n- Ovarian: risk-reducing salpingo-oophorectomy is the recommended approach, generally between 35 and 40 or when childbearing is complete. Screening ultrasound and CA-125 are not reliable substitutes.\n- Family: each first-degree relative has a 50% chance of carrying the variant. Family letter provided; whether to share it is her choice.\n- Insurance and GINA protections reviewed.\nWe recommend referral to a high-risk breast program. She was given the full lab report.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "office_visit",
+          "start": "2025-01-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "discuss genetic test result",
+          "vitals": {
+            "bp": [
+              119,
+              80
+            ],
+            "hr": 77,
+            "weight_kg": 61.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-21T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hr-breast",
+              "action": "placed",
+              "order": "Oncology referral",
+              "category": "referral",
+              "to": "Oncology",
+              "reason": "BRCA1 pathogenic variant, high-risk breast surveillance and risk-reduction planning"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-21T16:40",
+              "author": "PCP",
+              "body": "34F here to go over her genetics result with me. Panel from 12/9: BRCA1 pathogenic variant, nothing else. Genetic counselor letter reviewed together.\n\nShe is processing it; not surprised given her mom. Somewhat regrets waiting, I told her that the timing changed nothing that matters now. No new breast symptoms. The right breast fibroadenoma has not changed in size to her touch.\n\nMeds: OCP, vitamin D3. NKDA.\nBP and weight as charted. Breasts: R UOQ firm area at the healed biopsy site, as before; no new mass, no nodes.\n\nA/P:\n1. Hereditary breast and ovarian cancer syndrome (BRCA1) - added to problem list. Referral to high-risk breast program for MRI/mammogram surveillance and a discussion of risk-reducing options. Ovarian risk reduction (salpingo-oophorectomy) explained in broad strokes; she is single, does not know yet about children, and is not ready to think about surgery. The OCP actually lowers ovarian risk; fine to continue, will defer to the high-risk team.\n2. Fibroadenoma R breast - 6 mo US due June, the high-risk program can coordinate with MRI.\n3. Offered behavioral health support if the news weighs on her; she will reach out if she wants it.\nFollow up at physical or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-24a",
+          "kind": "outside_records",
+          "start": "2025-02-24T11:00",
+          "reason": "high-risk breast consult",
+          "orders": [
+            {
+              "id": "hr-breast",
+              "action": "done",
+              "date": "2025-02-18T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "High-risk breast program consultation",
+              "date": "2025-02-24T11:00",
+              "author": "oncology",
+              "body": "Outside cancer center, High-Risk Breast Program\nVisit date: 02/18/2025\nReferred by: primary care physician\n\nDear Doctor,\nThank you for referring Ms. Lipschitz, a 34-year-old woman with a newly identified BRCA1 pathogenic variant. In December she presented with a palpable right breast mass at 10 o'clock, 2.3 cm on ultrasound and BI-RADS 4; core biopsy showed fibroadenoma, concordant. Menarche 11, nulliparous, on a combined oral contraceptive. Family history as documented by genetics (mother breast 42 and ovarian 51; maternal aunt breast 39; maternal grandmother breast 44). No prior chest radiation.\nMedications: norgestimate/ethinyl estradiol daily; vitamin D3 2000 IU. Allergies: NKDA.\n\nExam: breasts symmetric; healed biopsy site right upper outer quadrant with a firm area consistent with the known fibroadenoma. No other masses, skin or nipple changes. No axillary or supraclavicular nodes.\n\nAssessment and recommendations:\n1. BRCA1 carrier - high-risk surveillance: contrast breast MRI yearly and mammogram yearly, staggered six months apart. First MRI in June together with the planned 6-month right breast ultrasound; mammogram in December. Clinical breast exam here every 6 to 12 months.\n2. Risk-reducing bilateral mastectomy reviewed in detail, including reconstruction. She does not wish to pursue it at present, which is a reasonable choice with MRI surveillance; we will revisit yearly.\n3. Risk-reducing salpingo-oophorectomy recommended between ages 35 and 40, once her plans about childbearing are clearer. We will refer to gynecologic oncology whenever she is ready to discuss timing.\n4. The oral contraceptive may be continued.\nReturn in 6 months after her MRI."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-16a",
+          "kind": "outside_records",
+          "start": "2025-06-16T10:20",
+          "reason": "breast MRI and ultrasound",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2025-06-11T07:30",
+              "text": "Outside cancer center imaging. Indication: BRCA1 carrier, high-risk screening, baseline. Known fibroadenoma right breast.\nTechnique: bilateral breast MRI before and after IV gadolinium, multiplanar, with subtraction and kinetic analysis.\nFindings: Heterogeneous fibroglandular tissue, mild background parenchymal enhancement. Right breast 10 o'clock: oval circumscribed mass with dark internal septations corresponding to the biopsy-proven fibroadenoma, with associated clip artifact; size unchanged from ultrasound. No suspicious masses or non-mass enhancement in either breast. No axillary or internal mammary adenopathy. Visualized chest wall unremarkable.",
+              "conclusion": "Biopsy-proven fibroadenoma right breast, unchanged. No MRI evidence of malignancy. BI-RADS 2, benign. Continue high-risk surveillance: mammogram in 6 months, MRI in 12 months."
+            },
+            {
+              "study": "Breast ultrasound",
+              "performed": "2025-06-11T08:45",
+              "text": "Outside cancer center imaging. Targeted right breast ultrasound, 6-month follow-up of biopsied fibroadenoma at 10 o'clock.\nFindings: hypoechoic mass at the biopsy site with echogenic clip, size unchanged from December 2024. No new solid or cystic lesions in the scanned area. Normal right axillary nodes.",
+              "conclusion": "Stable biopsy-proven fibroadenoma. BI-RADS 2. No further dedicated ultrasound follow-up needed; continue surveillance imaging."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Breast MRI and ultrasound reports",
+              "date": "2025-06-16T10:20",
+              "author": "MA",
+              "body": "High-risk breast program sent 6/11 MRI and right breast US reports. Both BI-RADS 2, fibroadenoma stable. Next mammogram December. Routed to PCP for review."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "annual_physical",
+          "start": "2025-07-28T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              132,
+              78
+            ],
+            "hr": 83,
+            "spo2": 97,
+            "weight_kg": 59.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-07-28T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-07-28T09:55",
+              "author": "PCP",
+              "body": "34F annual. Doing well. Says the BRCA news has settled; she is following with the high-risk breast team and liked them. MRI and US in June were benign. Has not decided about the ovaries; aware the window they mentioned is 35 to 40.\n\nMeds: OCP daily, D3 2000 units. NKDA. Never smoker, no alcohol.\n\nExam: well. Thyroid normal. Heart RRR. Lungs clear. Breast exam deferred to the high-risk program per her preference (seen there in February, next in August). Abdomen benign. Skin fair, freckling of shoulders, no irregular lesions noted on exposed skin and back.\n\nA/P:\n- Preventive: PHQ-2 negative. Labs not needed this year; vitamin D last summer was normal. Pap through her gyn, due 2027. Flu/COVID in October.\n- BRCA1: surveillance per high-risk program, mammogram in December. Reminded her we are here to help with the gyn onc referral whenever she wants it.\n- Fibroadenoma: stable.\nSee next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-25a",
+          "kind": "portal_message",
+          "start": "2025-08-25T13:02",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram order",
+              "date": "2025-08-25T13:02",
+              "author": "patient",
+              "body": "Quick one - the cancer center says the December mammogram is ordered by them, so I don't need anything from your office, right? Just want to make sure insurance doesn't bounce it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mammogram order",
+              "date": "2025-08-25T16:18",
+              "author": "RN",
+              "body": "Correct, the high-risk program orders your breast imaging. Your plan covers it as surveillance with the genetics result on file. If you get any notice from insurance, send it to us and we will help sort it out."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "nurse_visit",
+          "start": "2025-10-14T08:15",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-14T08:19"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-14T08:19"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-14T08:21"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2025-10-14T08:35",
+              "author": "RN",
+              "body": "Annual flu and 2025-26 COVID given, L and R deltoid. No reactions in the past. Tolerated well."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-15a",
+          "kind": "outside_records",
+          "start": "2025-12-15T09:40",
+          "reason": "mammogram",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-12-10T08:20",
+              "text": "Outside cancer center imaging. Indication: BRCA1 carrier, high-risk surveillance (alternating with MRI). Comparison: 12/09/2024 mammogram, 06/11/2025 MRI.\nTechnique: bilateral digital mammography with tomosynthesis, CC and MLO views.\nFindings: Heterogeneously dense breasts. Right upper outer quadrant: biopsy clip within an oval circumscribed mass at the site of the known fibroadenoma, stable. No new masses, suspicious calcifications or architectural distortion in either breast. Skin and nipples normal.",
+              "conclusion": "Stable biopsy-proven fibroadenoma right breast. No evidence of malignancy. BI-RADS 2, benign. Next breast MRI June 2026."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Mammogram report",
+              "date": "2025-12-15T09:40",
+              "author": "MA",
+              "body": "12/10 bilateral mammogram from the high-risk program: BI-RADS 2, benign. Filed and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-09a",
+          "kind": "portal_message",
+          "start": "2026-03-09T10:31",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "June MRI",
+              "date": "2026-03-09T10:31",
+              "author": "patient",
+              "body": "Hi - the cancer center booked my MRI for June 10. Is it ok to keep my physical in July after that, or do you want me in sooner? Nothing is wrong, just planning around a work trip."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: June MRI",
+              "date": "2026-03-09T17:50",
+              "author": "PCP",
+              "body": "July is perfect, that way I will have the MRI result in hand. Front desk will send you a few July options."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-28a",
+          "kind": "portal_message",
+          "start": "2026-05-28T20:14",
+          "reason": "changing mole",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mole on my back",
+              "date": "2026-05-28T20:14",
+              "author": "patient",
+              "body": "I have a mole on my upper back that has been there forever. I took a picture with my phone in the mirror and it looks bigger and darker than I remember, and the edge looks uneven. It doesn't itch or hurt. Given everything with my genetics I don't want to sit on it. Can someone look at it?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mole on my back",
+              "date": "2026-05-29T08:20",
+              "author": "RN",
+              "body": "Thanks for letting us know. The doctor would like to see it in person. We have Tuesday 6/2 at 1:15. Please reply to confirm."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mole on my back",
+              "date": "2026-05-29T08:41",
+              "author": "patient",
+              "body": "Confirmed, see you Tuesday."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "office_visit",
+          "start": "2026-06-02T13:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "changing mole on back",
+          "vitals": {
+            "bp": [
+              113,
+              74
+            ],
+            "hr": 81,
+            "weight_kg": 60.1
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-02T13:15"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "changing pigmented lesion upper back, urgent"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-06-02T13:50",
+              "author": "PCP",
+              "body": "35F with BRCA1 and fair skin here for a mole on the upper back. Present for many years; over the last few months she thinks it has grown and darkened, edge looks irregular in her photos. No pain, itch or bleeding. Burns easily; gets sun on her back at the beach on vacations.\n\nMeds: OCP, D3. NKDA.\n\nExam: Upper back, left of midline: pigmented lesion about 1 cm, asymmetric, with an irregular border and color varying from brown to black. No other lesions of concern on back, chest, arms or legs. No cervical, supraclavicular or axillary nodes.\n\nA/P: Changing pigmented lesion with asymmetry, border irregularity and color variation - needs dermatology evaluation and likely biopsy, not watchful waiting. Urgent dermatology referral placed; our referral coordinator called and got her in on 6/15. Told her to call if it bleeds or changes further before then. Photo taken with her consent and saved to the media tab."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-06-12a",
+          "kind": "outside_records",
+          "start": "2026-06-12T15:05",
+          "reason": "breast MRI",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2026-06-10T07:45",
+              "text": "Outside cancer center imaging. Indication: BRCA1 carrier, annual high-risk MRI. Comparison: 06/11/2025 MRI, 12/10/2025 mammogram.\nTechnique: bilateral breast MRI with and without IV gadolinium, subtraction and kinetic analysis.\nFindings: Heterogeneous fibroglandular tissue with minimal background parenchymal enhancement. Right breast 10 o'clock biopsy-proven fibroadenoma with clip artifact, unchanged. No new mass or non-mass enhancement in either breast. Lymph nodes normal. Chest wall unremarkable.",
+              "conclusion": "Stable benign findings. No MRI evidence of malignancy. BI-RADS 2. Continue alternating surveillance; mammogram December 2026."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Breast MRI report",
+              "date": "2026-06-12T15:05",
+              "author": "MA",
+              "body": "6/10 breast MRI from high-risk program received: BI-RADS 2, stable. Filed to imaging, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "outside_records",
+          "start": "2026-06-17T11:25",
+          "reason": "dermatology consult",
+          "procedures": [
+            {
+              "procedure": "Excisional biopsy of skin",
+              "snomed": "1251630002",
+              "performed": "2026-06-15T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm",
+              "action": "done",
+              "date": "2026-06-15T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatology consultation and excisional biopsy",
+              "date": "2026-06-17T11:25",
+              "author": "dermatology",
+              "body": "Outside dermatology group\nDate of visit: 06/15/2026\nReferring: primary care physician\n\nHPI: 35-year-old woman, BRCA1 carrier (worked up after a breast mass in late 2024, benign fibroadenoma), referred for a longstanding mole on the upper back that she feels has changed in look over recent months. Denies pain or pruritus.\n\nPMH: hereditary breast and ovarian cancer syndrome (BRCA1); right breast fibroadenoma. Fitzpatrick skin type II.\nPSH: tonsillectomy (8), wisdom teeth (21), breast core biopsy 2024.\nMeds: ethinyl estradiol/norgestimate daily; cholecalciferol 2000 IU daily.\nAllergies: NKDA.\nFamily: father has had melanoma. Maternal breast and ovarian cancers as documented.\nSocial: never smoker, no alcohol, software engineer.\n\nExam (full skin exam): Upper back - 1 cm pigmented lesion, asymmetric, irregular borders, mixed brown and black. She reports this area gets sun on vacations. Dermoscopy: irregular streaks at the periphery and a blue-white veil. No palpable cervical, axillary or inguinal lymphadenopathy. Remainder of the skin exam unremarkable; scattered benign-appearing freckles and nevi.\n\nAssessment: atypical pigmented lesion of the upper back, highly concerning for melanoma.\n\nProcedure today: excisional biopsy with 2 mm margins, elliptical, closed in layers, after informed consent and local lidocaine with epinephrine. Specimen to dermatopathology. Tolerated well. Wound care reviewed.\n\nPlan: pathology in about 1 week; we will call her. Suture removal in 2 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "outside_records",
+          "start": "2026-06-23T09:05",
+          "reason": "dermatopathology",
+          "conditions": [
+            {
+              "label": "Malignant melanoma of other part of trunk",
+              "action": "diagnosed",
+              "onset": "2026-06-15",
+              "note": "nodular melanoma, upper back, Breslow 1.6 mm, nonulcerated, pT2a",
+              "icd10": "C43.59"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-06-15T10:40",
+              "text": "Outside dermatopathology.\nSpecimen: skin, upper back, excisional biopsy.\nGross: skin ellipse 1.6 x 0.9 cm, excised to a depth of 0.6 cm, with a central 1.0 cm variegated pigmented lesion; inked and serially sectioned, entirely submitted.\nMicroscopic: Invasive melanoma, nodular type.\n- Breslow thickness: 1.6 mm\n- Ulceration: absent\n- Dermal mitotic rate: 3 per mm2\n- Microsatellites: not identified\n- Lymphovascular invasion: not identified\n- Perineural invasion: not identified\n- Regression: not identified\n- Tumor-infiltrating lymphocytes: non-brisk\n- Margins: peripheral and deep margins free of melanoma; closest peripheral margin 1.5 mm.\nPathologic stage (AJCC 8th edition): pT2a.",
+              "conclusion": "Skin, upper back, excision: invasive nodular melanoma, Breslow 1.6 mm, nonulcerated, mitoses 3/mm2, margins negative (narrow). pT2a. Wide local excision and sentinel lymph node evaluation advised.",
+              "issued": "2026-06-19T14:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Dermatopathology and dermatology note",
+              "date": "2026-06-23T09:05",
+              "author": "dermatology",
+              "body": "Outside dermatology group - result note 06/19/2026\nPathology reviewed with the patient by phone today. Excisional biopsy of the upper back shows nodular melanoma, 1.6 mm, without ulceration (pT2a). Discussed that the standard next step is wider excision with sentinel lymph node biopsy. Referred to surgical oncology; appointment requested within 2 weeks. She will continue full skin exams with us every 3 months after surgery.\nAllergies: NKDA.\nCopy: primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23b",
+          "kind": "telephone",
+          "start": "2026-06-23T12:30",
+          "reason": "melanoma diagnosis",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call after skin pathology",
+              "date": "2026-06-23T12:45",
+              "author": "PCP",
+              "body": "Called her after receiving the derm pathology. She had heard from derm Friday. Melanoma on the back, 1.6 mm, not ulcerated. Surgical oncology visit is set for 7/8 with surgery planned that day if the node mapping is arranged. She is upset but organized; she watched her mother go through cancer care and knows how to ask questions. Answered questions: this is separate from the BRCA1 result as far as we know, and her breast surveillance stays on schedule. She will keep her July physical; told her to message any time before then."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-16a",
+          "kind": "outside_records",
+          "start": "2026-07-16T14:10",
+          "reason": "surgical oncology operative and pathology reports",
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-07-08T09:30",
+              "text": "Outside hospital pathology.\nA. Skin and subcutaneous tissue, upper back, wide local excision: ellipse 7.2 x 4.4 cm, depth to fascia, with a healing scar centrally. No residual melanoma. Margins free.\nB. Lymph node, right axillary sentinel #1 (hot, blue): one lymph node, negative for metastatic melanoma (0/1) on H&E and immunohistochemistry (SOX10, Melan-A).\nC. Lymph node, right axillary sentinel #2 (hot): one lymph node, negative for metastatic melanoma (0/1) on H&E and immunohistochemistry.\nFinal pathologic stage with prior biopsy: pT2a pN0 (0/2 sentinel nodes).",
+              "conclusion": "No residual melanoma, margins clear. Two right axillary sentinel lymph nodes negative (0/2). pT2a N0 - stage IB.",
+              "issued": "2026-07-13T16:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Wide excision of skin lesion",
+              "snomed": "177302005",
+              "performed": "2026-07-08T09:30"
+            },
+            {
+              "procedure": "Sentinel lymph node biopsy",
+              "snomed": "396487001",
+              "performed": "2026-07-08T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surgical oncology operative note and pathology",
+              "date": "2026-07-16T14:10",
+              "author": "surgical oncology",
+              "body": "Outside surgical oncology\nDate of surgery: 07/08/2026\nPreoperative diagnosis: melanoma of the upper back, Breslow 1.6 mm, nonulcerated (pT2a)\nProcedure: wide local excision upper back with 2 cm margins, primary closure; preoperative lymphoscintigraphy and sentinel lymph node biopsy, right axilla.\nAnesthesia: general. EBL minimal. No complications.\nLymphoscintigraphy showed drainage to the right axilla only. Two sentinel nodes removed (one hot and blue, one hot); no further hot nodes after removal.\nAllergies: NKDA. Medications: oral contraceptive, vitamin D3.\nDischarged home same day.\n\nAddendum 07/13/2026: final pathology - no residual melanoma, clear margins; both sentinel nodes negative. Stage IB (pT2a N0 M0). No adjuvant systemic therapy is indicated. Surveillance: skin and lymph node examination every 3 to 6 months, alternating between dermatology and our clinic, for the first years. Routine cross-sectional imaging is not indicated in the absence of symptoms. Post-op visit 07/28."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "annual_physical",
+          "start": "2026-07-22T10:00",
+          "end": "2026-07-22T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical, check after melanoma surgery",
+          "conditions": [
+            {
+              "label": "Family history of malignant neoplasm of other organs or systems",
+              "action": "history",
+              "note": "father with melanoma",
+              "icd10": "Z80.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              80
+            ],
+            "hr": 72,
+            "temp_c": 37.2,
+            "spo2": 98,
+            "weight_kg": 60.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-22T10:40",
+              "resulted": "2026-07-23T07:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 243
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 84
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-22T10:40",
+              "resulted": "2026-07-23T07:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-07-22T10:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-07-22T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-07-22T10:50",
+              "author": "PCP",
+              "body": "35F annual, two weeks out from wide excision and sentinel node biopsy for melanoma of the upper back.\n\nInterval: derm saw a changing mole 6/15 and excised it - nodular melanoma, Breslow 1.6 mm, no ulceration. Surgical oncology 7/8: WLE with 2 cm margins, 2 R axillary sentinel nodes, all negative, no residual tumor. Stage IB, no further treatment, surveillance every 3-6 months alternating derm and surg onc. Breast MRI 6/10 BI-RADS 2.\n\nRecovering well. Back incision a little tight when she reaches overhead; armpit sore the first week, now fine. No arm swelling. Little pain after the first few days. Mood: shaken but steady, sleeping ok, back at work full time. Tells me her father had a melanoma removed years ago; she had not known to mention it.\n\nMeds: norgestimate/EE daily, D3 2000 units. NKDA.\nSH: never smoker, no alcohol.\n\nExam: well, NAD. Heart RRR, lungs clear. Upper back: long horizontal incision healing well, edges together, no erythema, drainage or fluid collection. Right axilla: small healed incision, no seroma, no palpable nodes. No cervical or supraclavicular nodes. Breasts deferred to high-risk program (seen with MRI in June). Abdomen benign. No arm edema.\n\nA/P:\n1. Melanoma upper back, stage IB, s/p WLE/SLNB - healing well. Follow-up per derm and surg onc. Daily sunscreen, protective clothing, monthly self skin checks; suggested mirror or phone photos for her back.\n2. Hereditary breast and ovarian cancer syndrome (BRCA1) - surveillance up to date, mammogram due December. She turns 36 in October; we talked again about the 35-40 window for salpingo-oophorectomy. She would like the gyn onc conversation this fall once she is past the surgery recovery; we will place it at her fall visit.\n3. Family history - father's melanoma added.\n4. Fibroadenoma R breast - stable on imaging.\n5. Preventive: PHQ-2 1, not depressed, coping. CBC and CMP today as a baseline after surgery. Pap per gyn 2027. Flu/COVID at the October visit.\nRTC October."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-07-24a",
+          "kind": "portal_message",
+          "start": "2026-07-24T12:10",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs",
+              "date": "2026-07-24T12:10",
+              "author": "PCP",
+              "body": "Deborah, your blood work from Wednesday is all normal - blood counts, kidney and liver function, electrolytes. Glad you are healing so well. See you in October."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "outside_records",
+          "start": "2026-07-31T10:15",
+          "reason": "surgical oncology post-op letter",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Surgical oncology post-operative visit",
+              "date": "2026-07-31T10:15",
+              "author": "surgical oncology",
+              "body": "Outside surgical oncology\nDate of visit: 07/28/2026\n\nMs. Lipschitz returns 3 weeks after wide local excision of her upper back melanoma and right axillary sentinel lymph node biopsy. Final pathology was reviewed again with her: no residual disease, 0/2 nodes, stage IB.\nShe is doing well with minimal discomfort.\nExam: back incision well healed, no seroma. Axillary incision healed. No palpable adenopathy. No lymphedema.\nAllergies: NKDA.\nPlan unchanged: skin and nodal exams every 3 to 6 months alternating with dermatology; next here in 6 months. Activity without restriction. Sun protection reinforced."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T09:02",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "October appointment",
+              "date": "2026-08-18T09:02",
+              "author": "patient",
+              "body": "Hello, I need to move my October follow-up to the morning if possible. Also can I get my flu shot at that same visit? Dermatology has me for my first skin check in September."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: October appointment",
+              "date": "2026-08-18T11:26",
+              "author": "front desk",
+              "body": "Moved you to Tuesday 10/6 at 9:30. Flu vaccine can be given then; COVID too if you want it. See you then."
+            }
+          ]
+        },
+        {
+          "id": "2026-10-06a",
+          "kind": "office_visit",
+          "start": "2026-10-06T09:30",
+          "reason": "follow-up after melanoma surgery; flu vaccine",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Benign neoplasm of right breast|D24.1": {
+        "code": "D24.1",
+        "display": "Benign neoplasm of right breast",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Family history of malignant neoplasm of other organs or systems|Z80.8": {
+        "code": "Z80.8",
+        "display": "Family history of malignant neoplasm of other organs or systems",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Family history of malignant neoplasm of ovary|Z80.41": {
+        "code": "Z80.41",
+        "display": "Family history of malignant neoplasm of ovary",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant melanoma of other part of trunk|C43.59": {
+        "code": "C43.59",
+        "display": "Malignant melanoma of other part of trunk",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Unspecified lump in the right breast, upper outer quadrant|N63.11": {
+        "code": "N63.11",
+        "display": "Unspecified lump in the right breast, upper outer quadrant",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet": {
+        "code": "240128",
+        "display": "ethinyl estradiol 0.035 MG / norgestimate 0.25 MG Oral Tablet",
+        "ingredient": "ethinyl",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "BRCA1 gene mutations found": {
+        "code": "21636-6",
+        "display": "BRCA1 gene mutations found [Identifier] in Blood or Tissue by Targeted gene mutation analysis Nominal",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI breast, bilateral, with and without contrast": {
+        "code": "30795-9",
+        "display": "MR Breast - bilateral",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Core needle biopsy of breast using imaging guidance": {
+        "code": "1264555004",
+        "display": "Imaging guided core needle biopsy of breast",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Excisional biopsy of skin": {
+        "code": "1251630002",
+        "display": "Excisional biopsy of skin",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Sentinel lymph node biopsy": {
+        "code": "396487001",
+        "display": "Sentinel lymph node biopsy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Wide excision of skin lesion": {
+        "code": "177302005",
+        "display": "Wide excision of skin lesion",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

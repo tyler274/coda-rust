@@ -1,0 +1,391 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002301",
+      "events": [
+        {
+          "id": "2026-01-12a",
+          "kind": "telephone",
+          "start": "2026-01-12T16:05",
+          "reason": "Appointment cancellation",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled Appointment",
+              "author": "front desk",
+              "date": "2026-01-12T16:05",
+              "body": "Pt called to cancel tomorrow's 3-month follow-up, roads are bad out his way and he'd rather not drive in it. Says he feels fine. Offered February dates, he will call back once he checks his calendar."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and hypertension follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T09:25",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2026-02-10T09:25",
+              "body": "Electronic requests from his pharmacy for lisinopril 10 mg and atorvastatin 40 mg, 90 days. Last BP in October controlled, last labs normal. Approved by PCP x1 with a note on the bottle to book his overdue follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "hospital_admission",
+          "start": "2026-03-20T05:50",
+          "end": "2026-05-27T11:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Acute hypoxemic respiratory failure",
+          "vitals": [
+            {
+              "time": "2026-03-20T08:30",
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-20T08:20",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 50
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 58
+                },
+                {
+                  "test": "Bicarbonate [Moles/volume] in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 24
+                }
+              ],
+              "resulted": "2026-03-20T08:35"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-03-20T07:10",
+              "text": "Portable AP chest, intubated patient. Endotracheal tube tip above the carina. Bilateral airspace infiltrates. No pneumothorax. Heart size not enlarged.",
+              "conclusion": "Bilateral infiltrates consistent with acute respiratory distress syndrome.",
+              "issued": "2026-03-20T07:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Insertion of endotracheal tube",
+              "snomed": "112798008",
+              "performed": "2026-03-20T06:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-20T09:00"
+            },
+            {
+              "procedure": "Temporary tracheostomy",
+              "snomed": "43988005",
+              "performed": "2026-04-03T10:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-05-27T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "ICU Admission Note",
+              "author": "critical care",
+              "date": "2026-05-29T10:00",
+              "body": "Regional hospital medical ICU. Date of service 3/20/2026. Received with the discharge packet 5/29.\n\nReason for admission: acute hypoxemic respiratory failure.\n\n68-year-old man with COPD (GOLD Group C), hypertension and hyperlipidemia, seen in this hospital's ED about six months ago for acute cholecystitis. Brought in with worsening shortness of breath and low oxygen; intubated in the ED and moved to the ICU on mechanical ventilation.\n\nHome medications: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg. Allergy: sulfa drugs (rash). Former smoker, 48 pack-years, quit 2023. Social alcohol.\n\nVentilator: volume control, tidal volume 450 mL, rate 16, FiO2 60%, PEEP 5 cm H2O. SpO2 only 88% on these settings.\nExam: sedated on the ventilator. Crackles in both lungs, breath sounds decreased at both bases. Heart regular. No leg edema.\nABG on FiO2 0.60: pH 7.32, PaCO2 50, PaO2 58, HCO3 24.\nChest film: bilateral infiltrates consistent with ARDS.\n\nAssessment: ARDS with refractory hypoxemia on underlying COPD.\nPlan: low tidal volume ventilation, PEEP titration upward, prone positioning if oxygenation does not improve, sedation, ICU care."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "critical care",
+              "date": "2026-05-29T10:05",
+              "body": "Regional hospital. Admitted 3/20/2026, discharged 5/27/2026 to an inpatient rehabilitation facility.\n\nDiagnoses: acute respiratory distress syndrome with refractory hypoxemia; acute hypoxic respiratory failure; prolonged mechanical ventilation; acute acalculous cholecystitis (4/28), treated with percutaneous cholecystostomy. Chronic: COPD, hypertension, hyperlipidemia.\n\nCourse:\nRespiratory. Intubated on arrival for hypoxemia, SpO2 88% on FiO2 60% and PEEP 5. ABG pH 7.32 / PaCO2 50 / PaO2 58 / HCO3 24. Bilateral infiltrates on chest film. Managed with lung-protective ventilation, PEEP titrated up, and several prone positioning sessions for refractory hypoxemia. A specific precipitant was not established. Oxygenation improved slowly, but he could not be weaned, and a tracheostomy was placed 4/3. Liberated from the ventilator 5/11. Decannulated 5/19, stoma covered and healing.\nBiliary. On ICU day 40 (4/28) he developed fever, leukocytosis and new RUQ tenderness. Ultrasound showed a thick-walled gallbladder with pericholecystic fluid and no stones. General surgery consulted; interventional radiology placed a percutaneous cholecystostomy drain 4/29, and IV antibiotics were given. Fever resolved within two days. Drain remains in place at discharge, to be studied by IR in about 6 weeks.\n\nDischarge medications: home regimen resumed unchanged: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: sulfa drugs (rash).\n\nFollow-up: interventional radiology drain check in about 6 weeks; primary care after rehab discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "telephone",
+          "start": "2026-03-24T11:20",
+          "reason": "Hospital notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Hospital Case Manager",
+              "author": "RN",
+              "date": "2026-03-24T11:20",
+              "body": "ICU case manager from the regional hospital called to let us know pt was admitted 3/20 with respiratory failure, on a ventilator in the ICU. Asked for his medication list and recent notes, faxed. They will send records at discharge. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Call from Hospital Case Manager",
+              "author": "PCP",
+              "date": "2026-03-24T15:00",
+              "body": "Noted. Please flag the chart so we catch the discharge summary and set up a hospital follow-up when he's out."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "specialist_visit",
+          "start": "2026-04-28T14:30",
+          "service": "General Surgery",
+          "reason": "Fever and new right upper quadrant pain in the ICU",
+          "vitals": [
+            {
+              "time": "2026-04-28T14:30",
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-28T13:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-28T13:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-28T13:10",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 22
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-04-28T15:40",
+              "text": "Portable bedside study in the ICU. Indication: fever, leukocytosis, right upper quadrant pain. Gallbladder wall is thickened with pericholecystic fluid. No gallstones. Common bile duct normal in caliber. Liver normal in echotexture without focal lesion.",
+              "conclusion": "Thickened gallbladder wall with pericholecystic fluid, no gallstones; acalculous cholecystitis.",
+              "issued": "2026-04-28T16:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Percutaneous cholecystostomy and drainage using ultrasound guidance",
+              "snomed": "442833003",
+              "performed": "2026-04-29T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Consultation",
+              "author": "general surgery",
+              "date": "2026-05-29T10:10",
+              "body": "Regional hospital general surgery, inpatient consult in the medical ICU, 4/28/2026. Received with the discharge packet.\n\nAsked to see for fever and RUQ pain. 68M, ICU day 40 for ARDS, trached and on the ventilator. Over the last 24 hours temperature to 38.9, rising white count, new pain on RUQ exam. Had an episode of acalculous cholecystitis last September managed without surgery.\n\nExam: sedated on the ventilator. Grimaces with pressure over the right upper quadrant. Murphy sign can't be judged with sedation. Abdomen otherwise soft, not distended.\nLabs: WBC 16.0, Hgb 13.2, plt 210. AST 70, ALT 65, alk phos 120, T bili 1.2. Lipase 22.\nUS: no stones, thick gallbladder wall, pericholecystic fluid.\n\nImpression: acute acalculous cholecystitis in a critically ill ventilated patient. Not an operative candidate now.\nRecommend: IV antibiotics; IR percutaneous cholecystostomy. We will follow.\n\nAddendum 4/29: IR placed an ultrasound-guided cholecystostomy drain. Tolerated without complication."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "hospital_admission",
+          "start": "2026-05-27T14:00",
+          "end": "2026-06-17T11:00",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Rehabilitation after critical illness",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Rehabilitation Discharge Summary",
+              "author": "physical medicine and rehabilitation",
+              "date": "2026-06-19T09:15",
+              "body": "Inpatient rehabilitation facility, admitted 5/27/2026 from the regional hospital ICU, discharged home 6/17/2026.\n\nReason for admission: debility after a prolonged ICU stay for ARDS with tracheostomy (decannulated 5/19) and a percutaneous cholecystostomy drain for acalculous cholecystitis.\n\nCourse: daily physical and occupational therapy. Progressed from a walker to walking household and short community distances without a device. Stairs with one rail. Self-care independent by discharge. Trach stoma closed. Cholecystostomy drain flushed daily, output low and clear, no fevers. Breathing at rest comfortable on room air throughout.\n\nDischarge medications: unchanged home regimen: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: sulfa (rash).\n\nFollow-up: IR drain check scheduled 7/8; PCP within 2 weeks; home exercise program."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T19:45",
+          "reason": "Home from rehab",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home now",
+              "author": "patient",
+              "date": "2026-06-18T19:45",
+              "body": "Got home from the rehab place yesterday. They said to see you in a couple weeks. Also need refills on the two inhalers, I'm down to a few days. Still have the tube in my side until the radiology appointment."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home now",
+              "author": "front desk",
+              "date": "2026-06-19T09:05",
+              "body": "Welcome home. You're booked with your doctor July 14 at 11:00. Refill request sent to the nurse."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "pharmacy",
+          "start": "2026-06-22T10:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Inhaler Refills",
+              "author": "RN",
+              "date": "2026-06-22T10:40",
+              "body": "Tiotropium capsules and fluticasone/salmeterol 250/50 refilled, 90 days, per PCP. Rehab summary reviewed, regimen unchanged from before admission. Pharmacy confirmed ready for pickup."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "procedure_visit",
+          "start": "2026-07-08T09:30",
+          "service": "Interventional Radiology",
+          "reason": "Cholecystostomy drain check",
+          "reports": [
+            {
+              "study": "Cholangiogram via cholecystostomy catheter",
+              "loinc": "86376-1",
+              "performed": "2026-07-08T09:45",
+              "text": "Contrast injected through the existing cholecystostomy catheter. The gallbladder fills without filling defect. The cystic duct is patent and contrast flows into the common bile duct and on into the duodenum. No leak.",
+              "conclusion": "Patent cystic duct. Catheter removed.",
+              "issued": "2026-07-08T11:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Removal of tube cholecystostomy",
+              "snomed": "75639003",
+              "performed": "2026-07-08T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Interventional Radiology Procedure Letter",
+              "author": "interventional radiology",
+              "date": "2026-07-10T14:20",
+              "body": "Interventional radiology, regional hospital. Date of procedure 7/8/2026.\n\nDrain study through the percutaneous cholecystostomy placed 4/29. Patient has felt well, no fevers or right-sided pain since rehab. Cholangiogram: cystic duct open, free flow into the duodenum, no leak. Catheter removed intact; dry dressing on the site. Keep it covered for 48 hours. Call for fever, pain or drainage from the site.\n\nAllergies: sulfa (rash). No change to his medications."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "telephone",
+          "start": "2026-07-13T15:30",
+          "reason": "Appointment cancellation",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled Appointment",
+              "author": "front desk",
+              "date": "2026-07-13T15:30",
+              "body": "Pt called to cancel tomorrow, his ride fell through and he is not driving yet after the hospital stay. Doing ok otherwise. Asked him to call back with a date when he has transportation; gave him the number for the senior van."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T08:10",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rescheduling",
+              "author": "patient",
+              "date": "2026-08-04T08:10",
+              "body": "Sorry about missing last month. Radiology took the tube out and I'm getting around better. Can we pick a day in early September, mornings are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rescheduling",
+              "author": "front desk",
+              "date": "2026-08-04T10:25",
+              "body": "Booked for Thursday, September 3 at 9:20 with your doctor. We'll send a reminder the day before."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-03a",
+          "kind": "office_visit",
+          "start": "2026-09-03T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

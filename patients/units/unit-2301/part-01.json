@@ -1,0 +1,103 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002301",
+      "given": "Robert",
+      "family": "Davidson",
+      "birth_date": "1957-11-14",
+      "address_line": "31 Overlook Drive, Florence, MA 01062",
+      "phone": "+1-978-555-0133",
+      "email": "robert.davidson@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired construction foreman with COPD, hypertension and hyperlipidemia who joined the practice in late 2024. Acute acalculous cholecystitis in September 2025 treated without surgery; in March 2026 a long ICU stay for ARDS with tracheostomy, a second acalculous cholecystitis drained percutaneously, rehab, and home by June. Not seen in the office since October 2025; post-hospital visit booked.",
+      "events": [
+        {
+          "id": "2024-11-19a",
+          "kind": "establish_care",
+          "start": "2024-11-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {"label": "Chronic obstructive pulmonary disease", "action": "history", "note": "GOLD Group C per prior practice"},
+            {"label": "Essential hypertension", "action": "history"},
+            {"label": "Hyperlipidemia", "action": "history"},
+            {"label": "History of tobacco dependence", "action": "history", "onset": "2023-10-01", "note": "48 pack-years, quit 2023"}
+          ],
+          "medications": [
+            {"drug_text": "tiotropium 0.018 MG Inhalation Powder", "action": "historical", "sig": "Inhale contents of 1 capsule once daily", "dose": {"value": 18, "unit": "mcg"}, "frequency": "DAILY", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler", "action": "historical", "sig": "Inhale 1 puff twice daily, rinse mouth after", "dose": {"value": 1, "unit": "puff"}, "frequency": "BID", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler", "action": "historical", "sig": "Inhale 1 to 2 puffs every 4 to 6 hours as needed for shortness of breath", "dose": {"value": 90, "unit": "mcg"}, "frequency": "Q4-6H PRN", "route": "Inhalation", "course": "chronic", "reason": "COPD"},
+            {"drug": "lisinopril 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hypertension"},
+            {"drug": "atorvastatin 40 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 40, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hyperlipidemia"},
+            {"drug": "aspirin 81 MG Delayed Release Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 81, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "Sulfonamide antibiotics", "reaction": "Rash", "severity": "mild", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 86.2, "height_cm": 178.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "Occupation", "value": "Retired construction foreman"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-11-19T09:20"},
+            {"procedure": "Appendectomy", "snomed": "80146002", "performed": "1972-07-01T12:00"},
+            {"procedure": "Inguinal hernia repair", "performed": "2019-04-10T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-11-19T10:05"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-11-19T10:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-11-19T10:07"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-11-19T10:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-19T10:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2024-11-19T10:15", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "orders": [
+            {"id": "ldct-2025", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "48 pack-years, quit 2023"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2024-11-19T10:30", "body": "67 yo retired construction foreman, new to us. Had been seeing a doctor in another town for years and wants someone closer to home in Florence. Signed release for the old office's records today.\n\nMain issue is COPD. Prior office called it GOLD Group C; he does not have his spirometry with him. Uses tiotropium capsule every morning and the fluticasone/salmeterol disk morning and night. Albuterol a couple times a week, mostly carrying things up stairs or in cold air. Gets winded on a long flight of stairs but walks his usual loop around the neighborhood fine. No hospitalizations for breathing that he can recall. No cough with blood, no fevers.\n\nBP on lisinopril 10 for years, no side effects. Atorvastatin 40 and aspirin 81 for cholesterol, started by the prior doctor.\n\nPMH: COPD, HTN, hyperlipidemia.\nPSH: appendix out at 14. Left inguinal hernia repaired at 61.\nMeds: tiotropium 18 mcg inhaled daily; fluticasone/salmeterol 250/50 one inhalation twice daily; albuterol 90 mcg 1-2 puffs q4-6h prn; lisinopril 10 mg daily; atorvastatin 40 mg daily; aspirin 81 mg daily.\nAllergies: sulfa drugs, rash.\nFH: father had a heart attack at 68. Mother had COPD. Brother had an ischemic stroke at 66.\nSH: smoked for decades, about 48 pack-years, quit in 2023 and has stayed off. A drink or two a week, social. Divorced, lives alone. Spent his career running crews on commercial jobs.\n\nExam: well appearing, talking in full sentences. Lungs with mildly diminished air movement throughout, no wheeze, no crackles. Heart regular, no murmur. No edema. Abdomen soft, nontender, healed RLQ and left groin scars.\n\nA/P\n1. COPD, stable on LAMA plus ICS/LABA. Inhaler technique reviewed, capsule device done correctly. Continue.\n2. HTN, controlled today. Continue lisinopril 10.\n3. Hyperlipidemia. Continue atorvastatin 40, aspirin 81. CMP, CBC, lipids drawn.\n4. Lung cancer screening: qualifies on pack-years and quit date. Low-dose CT ordered.\n5. High-dose flu and updated COVID given. RSV vaccine at a nurse visit next month. Pneumococcal and shingles to sort out once old records are in.\nReturn for Medicare wellness visit in the winter."}
+          ]
+        },
+        {
+          "id": "2024-11-22a",
+          "kind": "portal_message",
+          "start": "2024-11-22T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Your blood work", "author": "PCP", "date": "2024-11-22T08:40", "body": "Robert, kidney and liver numbers are normal, blood count normal, and the cholesterol is where it should be on the atorvastatin. Nothing to change. The CT scheduling office will call you about the lung screening scan."}
+          ]
+        },
+        {
+          "id": "2024-12-06a",
+          "kind": "outside_records",
+          "start": "2024-12-06T13:10",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {"type": "Outside Records", "title": "Prior Primary Care Records", "author": "outside primary care", "date": "2024-12-06T13:10", "body": "Records received by fax from the patient's previous primary care office, covering several years of visits.\n\nProblem list on their summary: COPD (GOLD Group C), hypertension, hyperlipidemia. Former tobacco use.\nMedications: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergy: sulfa (rash).\nScreening: colonoscopy 2018, no polyps, repeat interval 10 years.\nNo spirometry report included in the packet.\n\nScanned to the chart. PCP reviewed; lists match what he gave us."}
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "nurse_visit",
+          "start": "2024-12-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "RSV vaccine",
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-12-17T14:05"}
+          ],
+          "immunizations": [
+            {"vaccine": "RSV, adjuvanted (Arexvy)", "date": "2024-12-17T14:05"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit: Vaccine", "author": "RN", "date": "2024-12-17T14:20", "body": "Here for RSV vaccine per PCP plan (age plus COPD). Screening questions negative, no prior RSV dose. Arexvy given L deltoid, lot recorded. Waited 15 min, no reaction. VIS given."}
+          ]
+        }
+      ]
+    }
+  ]
+}

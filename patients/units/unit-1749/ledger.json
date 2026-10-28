@@ -1,0 +1,2057 @@
+{
+  "unit": "unit-1749",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001749",
+      "given": "Grace",
+      "family": "Paquette",
+      "birth_date": "1992-11-02",
+      "address_line": "58 Quarry Hill Road",
+      "phone": "+1-413-555-0173",
+      "email": "grace.paquette@example.test",
+      "marital_status": "married",
+      "summary": "High school math teacher with recurrent genital HSV on episodic valacyclovir who joins the practice in 2022. Three deliveries follow in consecutive Januaries at an outside hospital: a vaginal birth with a third-degree sphincter injury (2024), a cesarean for active HSV lesions in labor (2025), and a trial of labor after cesarean ending in uterine rupture, emergency repair and transfusion (2026), after the practice last saw her.",
+      "events": [
+        {
+          "id": "2022-09-07a",
+          "kind": "telephone",
+          "start": "2022-09-07T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2022-09-07T10:20",
+              "author": "front desk",
+              "body": "Caller is a 29 y/o teacher looking for a new primary care doctor; her old office is closing its adult panel. Went over membership and what insurance still covers (labs, imaging, specialists). She'd like to start. New patient physical booked for Tues 9/13 at 8:00 before school. Asked her to sign the release so we can get her old chart. BCBS PPO card info entered."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "establish_care",
+          "start": "2022-09-13T08:00",
+          "end": "2022-09-13T08:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "conditions": [
+            {
+              "label": "Recurrent genital herpes",
+              "action": "diagnosed",
+              "note": "longstanding per patient; episodic therapy"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "valacyclovir 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily for 3 days, starting at the first sign of an outbreak",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "recurrent genital herpes, episodic treatment"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              75
+            ],
+            "hr": 73,
+            "rr": 15,
+            "spo2": 97,
+            "weight_kg": 64.0,
+            "height_cm": 166.9
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2022-09-13T08:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-09-13T08:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 100
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 96
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-13T08:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 59
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T08:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.35
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T08:45",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-09-13T08:45",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 glasses of wine per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "High school mathematics teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2022-09-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-09-13T08:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and physical note",
+              "title": "New Patient Preventive Visit",
+              "date": "2022-09-13T08:50",
+              "author": "PCP",
+              "body": "NEW PATIENT. 29F, teaches math at the high school, here to establish. Prior PCP office closing its adult panel; release signed, chart requested.\n\nConcerns: none acute. Wants a doctor she can reach.\n\nHx: Genital herpes for years, flares a few times a year at most, usually tingling first. Keeps valacyclovir at home and takes 500 mg twice a day for 3 days when she feels it coming; that has worked well. Never on daily suppression. Last flare she thinks was spring.\nOB: G1P1, one vaginal birth in 2017, no complications. No surgeries.\nMeds: valacyclovir 500 mg BID x3 days PRN prodrome.\nAllergies: none to medications.\nFHx: mother had a C-section; one sister also has recurrent HSV-2; maternal aunt with osteoporosis. No early heart disease or cancers she knows of.\nSocial: married, one child at home. Never smoked. Wine once or twice a month.\n\nROS negative except as above.\n\nExam: Well appearing. HEENT unremarkable. Neck supple, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. No genital exam today, she has no active lesions. Skin clear. Mood and affect normal.\nPHQ-2 0. AUDIT-C 1.\n\nA/P\n1. Preventive: CBC, CMP, lipids, TSH. One-time HIV and hep C screening, she agrees. Pap/HPV per old records (believes 2021, normal); will confirm when chart arrives. Flu and COVID boosters next month when the fall supply is in.\n2. Recurrent genital HSV: continue episodic valacyclovir; discussed daily suppression as an option if flares get more frequent. She prefers episodic. Message us for refills.\n\nRTC yearly, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.2,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.37
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-09-16a",
+          "kind": "portal_message",
+          "start": "2022-09-16T16:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your results from Tuesday",
+              "date": "2022-09-16T16:05",
+              "author": "PCP",
+              "body": "Hi Grace, everything from Tuesday came back fine: blood counts, kidney and liver tests, thyroid and cholesterol are all in the normal range, and the HIV and hepatitis C screens are negative. Nothing to do. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "outside_records",
+          "start": "2022-09-28T11:30",
+          "reason": "prior primary care records",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2021-08-10T09:00",
+              "text": "Specimen: cervical, liquid-based. Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-09-18T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-11-20T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-03-25T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2017-04-11T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-02T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-23T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-28T11:30",
+              "author": "front desk",
+              "body": "Prior office sent 38 pages (2014 to 2022). Summary for the chart:\n- Pap with HPV co-test 08/10/2021: negative cytology, HPV not detected.\n- Vaccines: HPV series x3 2007-2008; Tdap 04/2017 during pregnancy; COVID primary series 04/2021.\n- Problem list there: genital herpes, recurrent, on episodic valacyclovir.\n- Allergies: NKDA.\nAbstracted and sent to PCP inbox. Originals scanned under Media."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2022-09-29T07:40",
+              "author": "PCP",
+              "body": "Old chart reviewed. Matches her history. Pap/HPV normal 2021, next due 2026. Tdap 2017. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-05a",
+          "kind": "nurse_visit",
+          "start": "2022-10-05T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-05T15:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-05T15:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-05T15:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2022-10-05T15:40",
+              "author": "RN",
+              "body": "Came in after school. Afebrile, feeling well. Screening questions negative. Flu (quadrivalent) L deltoid, Pfizer bivalent booster R deltoid. Lot numbers in the immunization record. Waited 15 min, no reaction. VIS given."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-10-24a",
+          "kind": "portal_message",
+          "start": "2022-10-24T06:48",
+          "reason": "herpes prodrome, valacyclovir refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill please",
+              "date": "2022-10-24T06:48",
+              "author": "patient",
+              "body": "Good morning - I've got the tingling that usually means a flare is coming. I have enough valacyclovir for today and tomorrow but not the full three days. Could you send more to the pharmacy on Main? Thanks, Grace"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Refill please",
+              "date": "2022-10-24T07:35",
+              "author": "PCP",
+              "body": "Sent - valacyclovir 500 mg, one twice a day for 3 days, with a few courses' worth and refills so you're not caught short next time. Start now. If it isn't settling in a week or looks different from your usual, let me know."
+            },
+            {
+              "type": "Medication Refill",
+              "title": "Valacyclovir refill",
+              "date": "2022-10-24T07:33",
+              "author": "PCP",
+              "body": "valacyclovir 500 mg tab, 1 PO BID x 3 days at onset of outbreak. Disp #18, RF 2. E-prescribed."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "telephone",
+          "start": "2023-05-16T12:10",
+          "reason": "positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2023-04-24"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-2023",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "prenatal care, intrauterine pregnancy about 5 weeks"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Positive pregnancy test",
+              "date": "2023-05-16T12:10",
+              "author": "RN",
+              "body": "Called on her lunch break. Two positive home tests this weekend. LMP 4/10/23, cycles regular. Planned, she is happy. No bleeding or cramping. Hx genital HSV - she knows not to use the valacyclovir in pregnancy without talking to OB; reminded her to tell OB about the herpes history. Wants the same OB group as last time. Referral to OB sent. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Note to chart",
+              "date": "2023-05-16T17:20",
+              "author": "PCP",
+              "body": "Agree. Pregnancy added to the list. OB to manage prenatal care; we'll keep seeing her for primary care. Valacyclovir on hold for now, OB to advise."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-21a",
+          "kind": "outside_records",
+          "start": "2023-06-21T09:15",
+          "reason": "obstetrics new patient letter",
+          "orders": [
+            {
+              "id": "ob-2023",
+              "action": "done",
+              "date": "2023-06-21T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: new OB visit",
+              "date": "2023-06-21T09:15",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nNew OB visit 06/13/2023\n\nRe: Grace Paquette, DOB 11/02/1992\n\nThank you for referring Ms. Paquette, G2P1001, seen at 9w1d by LMP 04/10/2023. First-trimester ultrasound shows a single intrauterine pregnancy with cardiac activity, size consistent with dates; EDD 01/15/2024.\n\nOB history: term spontaneous vaginal delivery 2017, uncomplicated. No prior uterine surgery.\nMedical: recurrent genital HSV, episodic valacyclovir, none currently.\nAllergies: NKDA.\n\nPrenatal labs drawn: blood type and screen, CBC, rubella and varicella immunity, hepatitis B, HIV, syphilis, urine culture, all unremarkable; she is rubella immune.\nExam: BP normal, normal pelvic exam, no lesions.\n\nPlan: routine prenatal care every 4 weeks; anatomy scan at 20 weeks. We will see her through delivery.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              121,
+              75
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 70.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-09-19T08:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.97
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T07:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-09-19T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2023-09-19T08:20",
+              "author": "PCP",
+              "body": "ANNUAL. 30F, G2P1, 23 wks by dates, prenatal care with OB, going well; anatomy scan normal per pt. Back at school, tired by Friday but managing.\nNo HSV flare since last October.\nMeds: valacyclovir on hold in pregnancy.\nAllergies: NKDA.\nFHx/social unchanged.\n\nExam: Comfortable. Gravid abdomen, fundus near umbilicus. Heart RRR, lungs clear. No edema. Thyroid normal.\nPHQ-2 0.\n\nA/P\n- Health maintenance up to date. Pap 2021, next 2026.\n- CBC today since OB will want a 28-wk check anyway; she asked us to draw while here.\n- Flu and COVID in October, both recommended in pregnancy. Tdap will be done by OB in the third trimester.\n- HSV: per OB.\nSee next year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "CBC result",
+              "date": "2023-09-20T12:30",
+              "author": "PCP",
+              "body": "Your blood count is normal for this point in pregnancy - the hemoglobin is a touch lower than last year, which is expected as blood volume expands. I'll send a copy to your OB."
+            }
+          ],
+          "state": {
+            "weight_kg": 69.4,
+            "labs": {
+              "Hemoglobin": 11.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.7
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-11T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2023-10-11T15:55",
+              "author": "MA",
+              "body": "26 wks pregnant, feels well, no fever. Flu (preservative-free quadrivalent) and updated Pfizer COVID given, one each arm. Observed 15 min, fine. Copy of record emailed to her for OB."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2023-11-29a",
+          "kind": "outside_records",
+          "start": "2023-11-29T10:05",
+          "reason": "obstetrics prenatal update",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-11-21T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: prenatal update",
+              "date": "2023-11-29T10:05",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 11/21/2023, 32w1d\n\nMs. Paquette continues to do well. Fundal height appropriate, fetal heart tones normal, BP normal, no edema. Glucose challenge at 27 weeks normal. Tdap given today.\nPlan: visits every 2 weeks, then weekly from 36 weeks. Delivery planned at our hospital.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-08a",
+          "kind": "hospital_admission",
+          "start": "2024-01-08T04:40",
+          "end": "2024-01-10T12:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "spontaneous labor at 39 weeks",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2023-04-24",
+              "note": "delivered 01/08/2024"
+            },
+            {
+              "label": "Third degree perineal laceration during delivery, unspecified",
+              "action": "diagnosed",
+              "onset": "2024-01-08",
+              "note": "external anal sphincter injury from episiotomy extension; repaired",
+              "icd10": "O70.20"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              79
+            ],
+            "hr": 70,
+            "temp_c": 37.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-01-09T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.95
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Episiotomy",
+              "snomed": "85548006",
+              "performed": "2024-01-08T13:52"
+            },
+            {
+              "procedure": "Anal sphincteroplasty for current obstetrical laceration",
+              "snomed": "359944002",
+              "performed": "2024-01-08T20:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Labor and delivery discharge summary",
+              "date": "2024-01-12T09:40",
+              "author": "obstetrics",
+              "body": "REGIONAL MEDICAL CENTER - LABOR & DELIVERY\nDischarge Summary\nAdmitted 01/08/2024 04:40   Discharged 01/10/2024 12:15\nPatient: Grace Paquette   DOB 11/02/1992\n\nAdmission: G2P1001 at 39w0d in spontaneous labor. Prenatal course without complications.\n\nHospital course: Labor advanced slowly but steadily. In the second stage she pushed for several hours with the vertex low and engaged and descent minimal. Given maternal fatigue and a tight perineum, an episiotomy was cut as the head crowned. She delivered a liveborn infant spontaneously at 13:58; no forceps or vacuum were used. Infant scores 8 and 9 at one and five minutes.\n\nAbout four hours after delivery she told nursing she could not feel when she needed to move her bowels and had one episode of leaking stool. On examination the episiotomy had extended past its intended margin into the external anal sphincter; the rectal mucosa was intact. Assessed as a third-degree perineal laceration. Taken to the OR at 20:15 and the external anal sphincter was repaired under her epidural, with layered closure of the perineum.\n\nRecovery thereafter was routine. Voiding without difficulty, passing soft stool by day 2, pain controlled with oral analgesics. Hemoglobin on postpartum day 1 acceptable.\n\nDischarge diagnoses: term vaginal delivery; third-degree perineal laceration (external anal sphincter injury), repaired. Recurrent genital HSV, no lesions this admission.\nAllergies: NKDA.\nDischarge instructions: high-fiber diet and fluids; avoid straining; sitz baths. Referral placed to pelvic floor physical therapy. Postpartum visit in 6 weeks with our office.\n\ncc: Primary care"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "telephone",
+          "start": "2024-01-17T13:30",
+          "reason": "post-discharge check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-delivery check-in",
+              "date": "2024-01-17T13:30",
+              "author": "RN",
+              "body": "Called after discharge summary came in. Baby doing well, she's sore but up and around. Bowels moving. Still occasionally can't hold gas and had one small leak of stool this week - OB told her to expect this early on. PT eval scheduled for next Wed. No fever, incision not opening as far as she can tell, bleeding tapering. Mood good, sleeping in bits. Knows to call OB for fever, worsening pain or any foul discharge. Postpartum f/u with us in late Feb."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-24a",
+          "kind": "outside_records",
+          "start": "2024-01-25T15:10",
+          "reason": "pelvic floor physical therapy evaluation",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pelvic floor physical therapy: initial evaluation",
+              "date": "2024-01-25T15:10",
+              "author": "physical therapy",
+              "body": "PELVIC HEALTH PHYSICAL THERAPY\nInitial evaluation 01/24/2024\n\nReferral: obstetrics, s/p third-degree perineal laceration with sphincter repair 01/08/2024.\nSubjective: 16 days postpartum. Reduced awareness of rectal filling, occasional flatus she cannot hold back, one small episode of stool leakage since discharge. No urinary leakage.\nObjective (external exam only at this stage): perineum healing, sutures intact. Gentle voluntary contraction present, reduced endurance.\nAssessment: postpartum anal sphincter weakness after obstetric injury, good prognosis.\nPlan: biweekly visits x 8; graded pelvic floor strengthening, coordination and urge-deferral training; bowel habit education.\n\nPhysical therapist"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-21a",
+          "kind": "outside_records",
+          "start": "2024-02-21T10:00",
+          "reason": "obstetrics postpartum visit letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: postpartum visit",
+              "date": "2024-02-21T10:00",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nPostpartum visit 02/19/2024\n\nMs. Paquette is six weeks out from a vaginal delivery complicated by a third-degree laceration, repaired. Perineum well healed; anal sphincter intact and contracting on exam. Stool leakage has become rare and she is in pelvic floor PT. Bleeding has stopped. Mood screen negative.\n\nCounseled that the sphincter injury should be considered when planning any future delivery. Resume usual activity as tolerated.\nNo medication changes.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "office_visit",
+          "start": "2024-02-27T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum follow-up",
+          "vitals": {
+            "bp": [
+              125,
+              73
+            ],
+            "hr": 65,
+            "weight_kg": 66.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-27T16:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 286
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 37.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-27T15:45"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-02-27T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Follow-up",
+              "date": "2024-02-27T16:25",
+              "author": "PCP",
+              "body": "Seven weeks after delivery (01/08, vaginal, episiotomy extended into a 3rd-degree tear, sphincter repaired same night - see L&D summary). OB postpartum visit last week was fine.\n\nShe's doing PT every other week and doing the exercises at home. Leakage was a few times in the first two weeks, nothing in the past 10 days. Can sense the urge again. No urinary symptoms. Tired but okay; husband home evenings. PHQ-9 3. Back to school after spring break.\n\nNo HSV flare since fall 2022.\n\nExam: Looks well. Heart/lungs normal. Abdomen soft. Deferred perineal exam, done by OB last week.\n\nA/P\n1. Obstetric anal sphincter injury, repaired - recovering well with PT. Keep it on the problem list; it matters for any future delivery. Call if leakage comes back.\n2. Postpartum - mood fine. CBC today; she was told her count was a little low after delivery.\n3. HSV - episodic valacyclovir as before.\nPhysical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 65.9,
+            "labs": {
+              "Hemoglobin": 12.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-28a",
+          "kind": "portal_message",
+          "start": "2024-02-28T11:15",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2024-02-28T11:15",
+              "author": "PCP",
+              "body": "Grace, your blood count has bounced back and is normal now. No need for iron."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "portal_message",
+          "start": "2024-05-07T20:40",
+          "reason": "positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2024-04-17"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-2024",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "prenatal care; third-degree laceration 01/2024"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surprise",
+              "date": "2024-05-07T20:40",
+              "author": "patient",
+              "body": "Well, this is earlier than we planned - positive test tonight. Last period started April 3. Can you send the referral to the same OB group? I know they'll want to talk about the tear."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surprise",
+              "date": "2024-05-08T07:15",
+              "author": "PCP",
+              "body": "Congratulations, and thanks for telling us. Referral to OB is in - they'll call you to set up the first visit around 8 weeks. Please hold off on valacyclovir unless OB says otherwise, same as last time. Let me know how you're doing."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-29a",
+          "kind": "outside_records",
+          "start": "2024-05-29T14:00",
+          "reason": "obstetrics new patient letter",
+          "orders": [
+            {
+              "id": "ob-2024",
+              "action": "done",
+              "date": "2024-05-29T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: new OB visit",
+              "date": "2024-05-29T14:00",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nNew OB visit 05/28/2024\n\nG3P2002 at 8w0d by LMP 04/03/2024, consistent with ultrasound; EDD 01/08/2025. Single intrauterine pregnancy, cardiac activity seen.\n\nHistory: vaginal deliveries 2017 and 01/2024; the 2024 delivery was complicated by a third-degree laceration, repaired, with good recovery in PT. Recurrent genital HSV. NKDA.\nPrenatal labs drawn, results unremarkable.\n\nDelivery planning to be revisited in the third trimester. Routine prenatal care.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "office_visit",
+          "start": "2024-06-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2024-06-11T08:05",
+              "author": "front desk",
+              "body": "Pt left VM cancelling tomorrow's check-in, last week of school and she has graduation duty. Says nothing pressing, will pick it up at her fall physical."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-06-20a",
+          "kind": "outside_records",
+          "start": "2024-06-20T09:30",
+          "reason": "physical therapy discharge",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pelvic floor physical therapy: discharge summary",
+              "date": "2024-06-20T09:30",
+              "author": "physical therapy",
+              "body": "PELVIC HEALTH PHYSICAL THERAPY\nDischarge summary, 8 visits 01/24/2024 to 05/22/2024\n\nGoals met. Patient reports normal awareness of rectal filling and no fecal or flatal leakage since March. Pelvic floor strength and endurance improved and symmetric. Now early in a new pregnancy; cleared to continue her home program through pregnancy.\nDischarged to home exercise program.\n\nPhysical therapist"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "annual_physical",
+          "start": "2024-10-08T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              119,
+              75
+            ],
+            "hr": 67,
+            "spo2": 98,
+            "weight_kg": 70.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-10-08T08:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 299
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.51
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-10-08T07:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T08:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-08T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-10-08T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-08T08:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-10-08T08:15",
+              "author": "PCP",
+              "body": "Annual. 31F G3P2, 27 wks (EDD 1/8/25). OB following; she says all has been routine, glucose test passed.\nSphincter: no leakage since spring, still doing the PT exercises a few times a week.\nHSV: quiet, no outbreaks.\nNo alcohol in pregnancy. Mood good, PHQ-2 0.\n\nExam: BP fine. Gravid, fundus above umbilicus. Heart and lungs clear. No edema.\n\nA/P\n- Preventive: flu and Moderna updated COVID today. CBC for OB's 28-week labs at her request.\n- Delivery plans are OB's; she knows they'll discuss route given January.\n- Pap due 2026.\nSee in a year, or postpartum."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2024-10-09T12:45",
+              "author": "PCP",
+              "body": "Blood count looks as expected for 28 weeks. Copy sent to OB."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.9,
+            "labs": {
+              "Hemoglobin": 11.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-27a",
+          "kind": "outside_records",
+          "start": "2024-11-27T11:20",
+          "reason": "obstetrics prenatal update",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2024-11-20T15:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: prenatal update",
+              "date": "2024-11-27T11:20",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 11/20/2024, 33w1d\n\nUncomplicated so far. Growth and fluid normal on today's ultrasound; BP normal. Tdap given. After discussion of the prior third-degree laceration, she wishes to plan a vaginal birth and avoid episiotomy if possible; we will support this.\nWeekly visits from 36 weeks.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-01a",
+          "kind": "hospital_admission",
+          "start": "2025-01-01T09:20",
+          "end": "2025-01-04T11:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "labor at 39 weeks with vulvar lesions",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "resolved",
+              "onset": "2024-04-17",
+              "note": "delivered 01/01/2025 by cesarean"
+            },
+            {
+              "label": "Herpesviral vulvovaginitis",
+              "action": "diagnosed",
+              "onset": "2024-12-25",
+              "note": "active genital HSV at term",
+              "icd10": "A60.04"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 67,
+            "rr": 14,
+            "temp_c": 37.2,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-01-01T09:50",
+              "resulted": "2025-01-01T15:10",
+              "results": [
+                {
+                  "test": "Herpes simplex virus 2 DNA [Presence] in Genital specimen by NAA with probe detection",
+                  "loinc": "91858-1",
+                  "text": "Detected"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cesarean section",
+              "snomed": "11466000",
+              "performed": "2025-01-01T11:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Labor and delivery discharge summary",
+              "date": "2025-01-08T10:15",
+              "author": "obstetrics",
+              "body": "REGIONAL MEDICAL CENTER - LABOR & DELIVERY\nDischarge Summary\nAdmitted 01/01/2025 09:20   Discharged 01/04/2025 11:40\nPatient: Grace Paquette   DOB 11/02/1992\n\nPresentation: 32-year-old G3P2002 at 39w0d with contractions every five minutes for the past two hours. About a week ago painful blisters appeared on the vulva. She has known recurrent genital herpes, quiet for more than a year, and took no antiviral prophylaxis in this pregnancy. Pregnancy otherwise routine. Her first birth was vaginal; her second (01/2024) was vaginal with a repaired third-degree laceration.\n\nOn arrival: T 37.2 C (99.0 F), BP 120/78. Fetal tracing category I.\nExam: clusters of vesicles and shallow ulcerations over both labia majora. Speculum exam: cervix free of lesions. Lesion swab sent for HSV PCR; HSV-2 detected.\n\nCourse: With active genital lesions in labor, cesarean delivery was recommended and she agreed. Primary low transverse cesarean under spinal anesthesia; liveborn infant handed to the newborn team. Uncomplicated surgery and recovery. She restarted her own valacyclovir 500 mg twice daily for 3 days on postoperative day 1 for the outbreak; lesions crusting at discharge.\n\nDischarge diagnoses: term pregnancy delivered by primary low transverse cesarean; active genital HSV at term (HSV-2). History of third-degree laceration, healed.\nAllergies: NKDA.\nFollow-up: incision check 2 weeks, postpartum visit 6 weeks.\n\ncc: Primary care"
+            }
+          ],
+          "measure": [
+            "hr",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "telephone",
+          "start": "2025-01-07T11:00",
+          "reason": "post-discharge check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-delivery call",
+              "date": "2025-01-07T11:00",
+              "author": "RN",
+              "body": "Pt called to let us know - baby came 1/1 by C-section because she had an outbreak when labor started. Home since Saturday. Finished the 3 days of valacyclovir, sores almost gone. Incision sore, no redness or drainage, no fever. Walking around the house. Hospital will send summary. Postpartum appt with PCP set for Feb."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum follow-up",
+          "conditions": [
+            {
+              "label": "Herpesviral vulvovaginitis",
+              "action": "resolved",
+              "onset": "2024-12-25",
+              "icd10": "A60.04"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              81
+            ],
+            "hr": 72,
+            "weight_kg": 66.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-02-11T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum Follow-up",
+              "date": "2025-02-11T16:10",
+              "author": "PCP",
+              "body": "6 wks after primary LTCS 1/1/25 for an HSV outbreak in labor (PCR HSV-2). Saw OB for the incision check; postpartum OB visit next week.\n\nFeels well. Sores healed within about 10 days, nothing since. Incision comfortable. Bowel control normal, no leakage. Mood good, PHQ-9 2. Plans to go back to teaching after February break.\n\nExam: Well. Low transverse incision healed, no erythema. Abdomen soft. Heart and lungs normal.\n\nA/P\n1. HSV outbreak at term - resolved. Back to episodic valacyclovir; she has tablets at home.\n2. Hx 3rd-degree laceration 2024 - stable, no symptoms.\n3. S/p cesarean - healing well.\nPhysical in the fall."
+            }
+          ],
+          "state": {
+            "weight_kg": 67.1,
+            "labs": {
+              "Hemoglobin": 12.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "pharmacy",
+          "start": "2025-03-19T09:05",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Valacyclovir refill request",
+              "date": "2025-03-19T09:05",
+              "author": "RN",
+              "body": "Electronic request from pharmacy: valacyclovir 500 mg #18. Last filled 10/2022, used in January. Episodic use, on list. Approved per PCP protocol, 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "portal_message",
+          "start": "2025-05-08T21:10",
+          "reason": "positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of normal pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-04-17"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-2025",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "prenatal care; prior cesarean 01/2025"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant again",
+              "date": "2025-05-08T21:10",
+              "author": "patient",
+              "body": "Hi - positive test this evening, LMP was 4/3. Not exactly the plan but here we are! Can you put in the OB referral again please?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant again",
+              "date": "2025-05-09T07:20",
+              "author": "PCP",
+              "body": "Congratulations, Grace. Referral to your OB group is in. Since the C-section was only in January, they'll want to see you soon to talk through the plan. Hold the valacyclovir unless they say otherwise."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "outside_records",
+          "start": "2025-05-28T13:30",
+          "reason": "obstetrics new patient letter",
+          "orders": [
+            {
+              "id": "ob-2025",
+              "action": "done",
+              "date": "2025-05-28T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: new OB visit",
+              "date": "2025-05-28T13:30",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nNew OB visit 05/27/2025\n\nG4P3003 at 7w6d by LMP 04/03/2025, ultrasound concordant; EDD 01/08/2026. Single intrauterine pregnancy.\n\nHistory: vaginal births 2017 and 01/2024 (third-degree laceration, repaired); primary low transverse cesarean 01/2025 for active HSV in labor. Interpregnancy interval about 3 months. Recurrent genital HSV. NKDA.\nPrenatal labs drawn, unremarkable.\n\nDelivery options after cesarean to be discussed at the next visit.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "outside_records",
+          "start": "2025-07-16T10:45",
+          "reason": "obstetrics counseling letter",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: delivery planning",
+              "date": "2025-07-16T10:45",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 07/15/2025, 14w6d\n\nWe discussed trial of labor after cesarean versus elective repeat cesarean. One prior low transverse cesarean (operative report reviewed), plus two prior vaginal births. We reviewed the benefits of a successful vaginal birth and the risks of a trial of labor, including uterine rupture. Ms. Paquette chooses a trial of labor after cesarean; she will labor on our unit with continuous fetal monitoring. Consent signed; plan to revisit near term.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T07:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              118,
+              83
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 71.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-23T08:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.93
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-09-23T07:35"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-09-23T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-09-23T08:10",
+              "author": "PCP",
+              "body": "Annual. 32F, G4P3, 24w6d, EDD 1/8/26. OB says all routine. She and OB have settled on a trial of labor after the January cesarean.\nNo HSV outbreaks since January. Bowels normal.\nNo alcohol. Mood ok, a lot going on with three kids, PHQ-2 1. School year started.\n\nExam: Gravid, fundus about umbilicus. Heart RRR, lungs clear, no edema.\n\nA/P\n- Preventive: CBC for OB. Flu and COVID in a couple of weeks at a nurse visit; Tdap with OB in the third trimester. Pap/HPV due next year - after delivery.\n- Episodic valacyclovir on hold in pregnancy.\nNext physical fall 2026."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-09-24T13:00",
+              "author": "PCP",
+              "body": "Blood count normal for where you are in the pregnancy. Sent to OB."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.4,
+            "labs": {
+              "Hemoglobin": 11.6
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "vitals": {
+            "temp_c": 36.4
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunizations",
+              "date": "2025-10-07T15:50",
+              "author": "RN",
+              "body": "27 wks. Well, afebrile. Trivalent flu L arm, 2025-26 Pfizer COVID R arm. 15 min observation, tolerated. Record printed for her OB folder."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "portal_message",
+          "start": "2025-11-19T19:25",
+          "reason": "leave paperwork",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Leave forms",
+              "date": "2025-11-19T19:25",
+              "author": "patient",
+              "body": "The district wants a medical certification from my doctor for maternity leave starting in late December. OB says they only do the delivery part and the district also needs my primary. Do I need to come in for that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Leave forms",
+              "date": "2025-11-20T08:40",
+              "author": "front desk",
+              "body": "Hi Grace, the doctor would like a quick visit to go over the form. We have Tuesday 12/2 at 3:45. Bring the form with you. You're booked - reply if that time doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "outside_records",
+          "start": "2025-11-26T09:10",
+          "reason": "obstetrics prenatal update",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-11-18T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: prenatal update",
+              "date": "2025-11-26T09:10",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 11/18/2025, 32w5d\n\nDoing well. Growth on track, BP normal. Tdap given. She continues to plan a trial of labor after cesarean; reviewed signs of labor and when to come in. Weekly visits from 36 weeks.\n\nObstetrics attending"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "office_visit",
+          "start": "2025-12-02T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "maternity leave paperwork",
+          "vitals": {
+            "bp": [
+              119,
+              77
+            ],
+            "hr": 62,
+            "weight_kg": 73.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, straightforward MDM",
+              "performed": "2025-12-02T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-12-02T16:05",
+              "author": "PCP",
+              "body": "Here with the district leave certification. 34w6d, G4P3, EDD 1/8/26, prenatal care with OB, planning TOLAC.\n\nFeels well. Busy end of semester. No HSV symptoms.\n\nVitals normal. Comfortable, no edema.\n\nForm completed: pregnancy with expected delivery in early January; leave from 12/22/2025, expected 12 weeks; certifying provider for delivery and recovery details is OB. Copy scanned.\n\nWe'll see her after the baby comes. Call with anything."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "telephone",
+          "start": "2025-12-04T10:30",
+          "reason": "forms",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Forms faxed",
+              "date": "2025-12-04T10:30",
+              "author": "front desk",
+              "body": "Leave certification signed and faxed to the district HR number she gave. Confirmation page scanned. Left her a VM."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-01a",
+          "kind": "hospital_admission",
+          "start": "2026-01-01T01:50",
+          "end": "2026-01-05T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "labor at term, trial of labor after cesarean",
+          "vitals": {
+            "bp": [
+              112,
+              74
+            ],
+            "hr": 60,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-01T02:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.0
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-01T08:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.8
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.69
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-05T06:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 8.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 288
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.88
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 26.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cesarean section",
+              "snomed": "11466000",
+              "performed": "2026-01-01T07:06"
+            },
+            {
+              "procedure": "Repair of current obstetric laceration of uterus",
+              "snomed": "9724000",
+              "performed": "2026-01-01T07:20"
+            },
+            {
+              "procedure": "Transfusion of red blood cells",
+              "snomed": "116863004",
+              "performed": "2026-01-01T07:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Labor and delivery / ICU discharge summary",
+              "date": "2026-01-09T14:20",
+              "author": "obstetrics",
+              "body": "REGIONAL MEDICAL CENTER - LABOR & DELIVERY\nDischarge Summary\nAdmitted 01/01/2026 01:50   Discharged 01/05/2026 11:30\nPatient: Grace Paquette   DOB 11/02/1992\n\nAdmission: 33-year-old G4P3003 at 39w0d in spontaneous labor, attempting a trial of labor after one prior low transverse cesarean (01/2025, for active HSV). Other births vaginal (2017; 01/2024 with a repaired third-degree laceration). Recurrent genital HSV, no lesions on admission. Uncomplicated pregnancy. NKDA. Admission hemoglobin 12.1.\n\nCourse: Contractions every 2 to 3 minutes. She reached complete dilation and had been at 10 cm with the vertex at +1 station for about an hour when the fetal heart rate fell abruptly from a baseline of 140 to 60 and did not recover for more than 3 minutes. At the same time she reported sudden, sharp lower abdominal pain. The uterus was firm, tense and tender; vaginal bleeding was minimal. Uterine rupture suspected and emergency cesarean called.\n\nOperative findings: rupture through the prior low transverse scar with hemoperitoneum. Liveborn infant delivered and handed to the neonatal team. The uterine defect was repaired in two layers; the uterus was preserved. Estimated blood loss 1,700 mL. Two units of packed red cells transfused.\n\nPostoperative: transferred to the ICU for overnight monitoring after the hemorrhage; hemodynamically stable, hemoglobin 7.8 after surgery. Transferred to postpartum floor 01/02. Ambulating, tolerating diet, incision clean. Hemoglobin 8.6 on 01/05.\n\nDischarge diagnoses: uterine rupture during trial of labor after cesarean; emergency repeat cesarean with repair of uterine rupture; acute blood loss requiring transfusion. Recurrent genital HSV.\nDischarge medications: ferrous sulfate 325 mg by mouth once daily for 3 months.\nCounseling: any future pregnancy must be delivered by planned cesarean before the onset of labor; she should not labor again. Recommend early prenatal care if she conceives.\nFollow-up: incision check 1 to 2 weeks; postpartum visit with CBC at 6 weeks.\n\ncc: Primary care"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2026-01-09T17:50",
+              "author": "PCP",
+              "body": "Hospital summary reviewed: TOLAC 1/1 ended in uterine rupture at the old scar, emergency cesarean and repair, uterus kept, 2 u PRBC, a night in the ICU. Hgb 8.6 at discharge, on iron per OB. OB following postpartum. Filed. Will reach out to her."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "portal_message",
+          "start": "2026-01-12T10:05",
+          "reason": "checking in after delivery",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Checking in",
+              "date": "2026-01-12T10:05",
+              "author": "PCP",
+              "body": "Grace, I read the hospital summary and I'm so sorry it was such a frightening delivery. I hope you and the baby are settling in at home. OB will see you for the incision and your six-week visit and recheck your blood count. Once you're up to it, I'd like to see you here too - no rush, just let the front desk know."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Checking in",
+              "date": "2026-01-12T18:40",
+              "author": "patient",
+              "body": "Thank you, that means a lot. We're home and doing okay - still pretty wiped out and the incision is sore but getting better every day. Taking the iron. I'll call once things calm down."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "outside_records",
+          "start": "2026-02-11T11:00",
+          "reason": "obstetrics postpartum visit letter",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-10T09:15",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.0
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 33.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics: postpartum visit",
+              "date": "2026-02-11T11:00",
+              "author": "obstetrics",
+              "body": "OUTSIDE OBSTETRICS GROUP\nPostpartum visit 02/10/2026\n\nMs. Paquette is six weeks after emergency cesarean with repair of a uterine rupture. Incision well healed. Lochia resolved. Energy improving. Hemoglobin today 11.0, up from 8.6 at discharge; finish the 3-month iron course.\n\nWe again reviewed that any future pregnancy requires a scheduled cesarean before labor begins and early prenatal care.\nMood screen negative. Cleared for usual activity.\n\nObstetrics attending"
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside records reviewed",
+              "date": "2026-02-12T07:30",
+              "author": "PCP",
+              "body": "OB postpartum note: healed, Hgb 11.0. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "pharmacy",
+          "start": "2026-03-17T08:50",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Medication Refill",
+              "title": "Valacyclovir refill request",
+              "date": "2026-03-17T08:50",
+              "author": "RN",
+              "body": "Pharmacy e-request: valacyclovir 500 mg tab, 1 BID x3 days at outbreak onset, #18. On active list, episodic. Approved 1 refill per protocol. Pt not seen since 12/2025 - flag to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T20:15",
+          "reason": "scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2026-06-09T20:15",
+              "author": "patient",
+              "body": "Hi, I know I owe you a visit. Summer is chaos with four kids home. Could I do my physical in the fall? I'll call in August once I know my teaching schedule."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2026-06-10T09:00",
+              "author": "front desk",
+              "body": "Of course - just call or message when you know your schedule and we'll find a morning that works."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Herpesviral vulvovaginitis|A60.04": {
+        "code": "A60.04",
+        "display": "Herpesviral vulvovaginitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Third degree perineal laceration during delivery, unspecified|O70.20": {
+        "code": "O70.20",
+        "display": "Third degree perineal laceration during delivery, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "valacyclovir 500 MG Oral Tablet": {
+        "code": "313565",
+        "display": "valacyclovir 500 MG Oral Tablet",
+        "ingredient": "valacyclovir",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Herpes simplex virus 2 DNA [Presence] in Genital specimen by NAA with probe detection": {
+        "code": "91858-1",
+        "display": "Herpes simplex virus 2 DNA [Presence] in Genital specimen by NAA with probe detection",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Anal sphincteroplasty for current obstetrical laceration": {
+        "code": "359944002",
+        "display": "Anal sphincteroplasty for current obstetrical laceration",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Cesarean section": {
+        "code": "11466000",
+        "display": "Cesarean section",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Episiotomy": {
+        "code": "85548006",
+        "display": "Episiotomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Repair of current obstetric laceration of uterus": {
+        "code": "9724000",
+        "display": "Repair of current obstetric laceration of uterus",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Transfusion of red blood cells": {
+        "code": "116863004",
+        "display": "Transfusion of red blood cells",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

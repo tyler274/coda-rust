@@ -1,0 +1,918 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002207",
+   "given": "William",
+   "family": "Howland",
+   "birth_date": "1952-05-02",
+   "address_line": "214 Kensington Avenue",
+   "phone": "+1-508-555-0102",
+   "email": "william.howland@example.test",
+   "marital_status": "married",
+   "summary": "Retired landscape architect with a mechanical aortic valve, atrial fibrillation on warfarin, insulin-treated type 2 diabetes and coronary disease after a 2012 inferior MI. Joins in 2018; pulmonary TB in 2022 complicates warfarin dosing and brings a minor bleed; inferior STEMIs in 2023 and 2025 (the second after his last visit, with RV involvement).",
+   "events": [
+    {
+     "id": "2018-09-05a",
+     "kind": "telephone",
+     "start": "2018-09-05T10:40",
+     "reason": "New patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake call",
+       "author": "front desk",
+       "date": "2018-09-05T10:40",
+       "body": "Mr. Howland phoned about joining. His internist of many years is retiring at the end of the month. Medicare. Sees an outside cardiology group for his heart valve and atrial fibrillation; their anticoagulation clinic handles his warfarin. Membership agreement emailed. New patient slot given for 9/18 at 9:20. Asked him to sign a release so we can get his old office's chart, and to bring all his pill bottles and his insulin pen."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-18a",
+     "kind": "establish_care",
+     "start": "2018-09-18T09:20",
+     "end": "2018-09-18T10:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Establish care",
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "note": "long-standing, on three drugs"
+      },
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "diagnosed",
+       "note": "on metformin and basal insulin"
+      },
+      {
+       "label": "Long-term current use of insulin",
+       "action": "diagnosed"
+      },
+      {
+       "label": "Unspecified atrial fibrillation",
+       "icd10": "I48.91",
+       "action": "diagnosed",
+       "note": "rate control with metoprolol; anticoagulated for valve and AF"
+      },
+      {
+       "label": "Coronary artery disease",
+       "action": "diagnosed"
+      },
+      {
+       "label": "Old myocardial infarction",
+       "action": "diagnosed",
+       "onset": "2012-01-01",
+       "note": "inferior STEMI 2012, RCA stent"
+      },
+      {
+       "label": "Presence of coronary artery stent",
+       "action": "diagnosed",
+       "onset": "2012-01-01"
+      },
+      {
+       "label": "Presence of prosthetic heart valve",
+       "icd10": "Z95.2",
+       "action": "diagnosed",
+       "onset": "2018-03-01",
+       "note": "mechanical aortic valve for bicuspid aortic stenosis, early 2018"
+      },
+      {
+       "label": "Long-term current use of anticoagulants",
+       "action": "diagnosed",
+       "note": "warfarin, dosed by outside anticoagulation clinic, goal INR 2.5-3.5"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "diagnosed",
+       "onset": "2012-01-01",
+       "note": "30 pack-years, quit 2012"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "warfarin sodium 7.5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily or as directed by anticoagulation clinic",
+       "dose": {
+        "value": 7.5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "Mechanical aortic valve and atrial fibrillation"
+      },
+      {
+       "drug": "24 HR metoprolol succinate 100 MG Extended Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 100,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug": "amlodipine 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug": "metformin hydrochloride 1000 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily with meals",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject 24 units under the skin at bedtime",
+       "dose": {
+        "value": 24,
+        "unit": "units"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "state": {
+      "bp": [
+       134,
+       80
+      ],
+      "weight_kg": 88.2,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin A1c": 7.6,
+       "Low Density Lipoprotein": 108,
+       "High Density Lipoprotein": 42,
+       "Triglycerides": 160,
+       "Creatinine": 1.05,
+       "Microalbumin/Creatinine Ratio": 12
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "rr",
+      "weight_kg",
+      "height_cm"
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired landscape architect"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "Rare, less than 1 drink per month"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-09-18T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2018-09-18T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-09-18T10:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-18T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-18T10:05",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-18T10:05",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-09-18T10:05",
+       "results": [
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2018-09-18T09:55",
+       "text": "Atrial fibrillation with controlled ventricular response. Normal axis. Narrow QRS. Small inferior Q waves. No acute ST-T changes.",
+       "conclusion": "Atrial fibrillation, rate controlled. Inferior Q waves consistent with old infarct."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2018-09-18T09:20"
+      },
+      {
+       "procedure": "Electrocardiogram, 12-lead, with interpretation",
+       "performed": "2018-09-18T09:55"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2018-09-18T10:05"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2018",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "30 pack-years, quit 2012"
+      },
+      {
+       "id": "aaa-2018",
+       "action": "placed",
+       "order": "Abdominal ultrasound",
+       "category": "imaging",
+       "reason": "AAA screening, male former smoker"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2018-09-18T10:20",
+       "body": "66M, retired landscape architect, transferring care; his longtime internist is retiring.\n\nCardiac history is the bulk of it. Born with a bicuspid aortic valve (a brother has one too); it became stenotic and he had a mechanical aortic valve put in this past March. Atrial fibrillation on top of that, rate controlled on metoprolol. Inferior STEMI in 2012 with a stent to the right coronary; he stopped smoking that year after about 30 pack-years. Followed by an outside cardiology group. Their anticoagulation clinic doses his warfarin (goal 2.5-3.5); he gets fingersticks there every few weeks and says the numbers have been steady since surgery.\n\nDiabetes for years, on metformin and glargine 24 units at night. Checks sugars mornings, mostly 120s-150s. No lows. BP checked at the cardiology visits, told it was fine.\n\nMeds (bottles reviewed): warfarin 7.5 mg daily per clinic, metoprolol succinate 100, lisinopril 20, amlodipine 5, metformin 1000 BID, glargine 24 u qhs, atorvastatin 40.\nAllergies: none to drugs.\nFamily: father MI at 62. Mother type 2 diabetes. Brother bicuspid valve.\nSocial: retired from landscape design, still keeps up a big garden. Ex-smoker as above. Alcohol maybe once a month or less.\nROS: no chest pain since the stent, no palpitations lately, no bleeding or bruising beyond the usual, no claudication, no foot numbness.\n\nExam: well, unhurried. Vitals as charted. Healed sternotomy. Irregularly irregular rhythm with a crisp mechanical closing click; no new murmur. Lungs clear. No edema. Feet: skin intact, monofilament felt throughout, pulses present.\nECG here: AF, rate controlled, old inferior Q waves.\n\nA/P\n1. Mechanical AVR, AF, on warfarin - managed by cardiology's anticoag clinic. Asked them to copy us on INR reports.\n2. CAD, old inferior MI, RCA stent - no angina. Same beta blocker and statin.\n3. T2DM on insulin - A1c, UACR today. Eye exam due; he has an optometrist.\n4. HTN - acceptable today.\n5. HLD - lipids today.\n6. Health maintenance: hep C and HIV screen once. Former heavy smoker - low-dose CT for lung screening and a one-time AAA ultrasound ordered. Old office says colonoscopy around 2015; will confirm in records. Flu and pneumococcal next month at a nurse visit.\nRecords release signed. Back in about 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-21a",
+     "kind": "portal_message",
+     "start": "2018-09-21T16:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your new-patient bloodwork",
+       "author": "PCP",
+       "date": "2018-09-21T16:05",
+       "body": "Hi Mr. Howland, your labs from Tuesday look reasonable. A1c 7.6 - a bit above where we'd aim, but not far, and no change needed yet. Kidney function and urine protein are normal. Cholesterol about what I'd expect on atorvastatin 40. Hep C and HIV screens negative. Blood counts normal. I'll see you in December."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-11a",
+     "kind": "outside_records",
+     "start": "2018-10-11T11:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2018-10-11T11:30",
+       "body": "Received 62 pages from the patient's former internal medicine office, covering 2009-2018.\n\nProblem list there: hypertension, type 2 diabetes, coronary artery disease with inferior MI 2012 (RCA stent), hyperlipidemia, atrial fibrillation, bicuspid aortic valve with stenosis, s/p mechanical aortic valve replacement March 2018. Former smoker, quit 2012.\nMedications match what he brought to his first visit.\nScreening: colonoscopy 2015 - normal, no polyps. No drug allergies listed.\nCardiac surgery operative summary (March 2018): bicuspid aortic valve, severe calcific stenosis, replaced with a mechanical prosthesis; uneventful recovery.\n2012 catheterization summary: inferior STEMI, culprit right coronary artery, one stent.\n\nFiled. PCP to review."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-11b",
+     "kind": "nurse_visit",
+     "start": "2018-10-11T14:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2018-10-11T14:20"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2018-10-11T14:22"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-10-11T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse visit - immunizations",
+       "author": "RN",
+       "date": "2018-10-11T14:30",
+       "body": "High-dose flu L deltoid, PCV13 R deltoid. On warfarin - fine-gauge needle, firm pressure 2 min each site, no hematoma. Tolerated well. PPSV23 due in a year."
+      }
+     ]
+    },
+    {
+     "id": "2018-10-25a",
+     "kind": "imaging",
+     "start": "2018-10-25T08:30",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2018-10-25T08:30",
+       "text": "Indication: lung cancer screening, former smoker, 30 pack-years, quit 2012. Technique: low-dose non-contrast CT of the chest. Findings: No pulmonary nodules. Lungs clear. Airways patent. No pleural effusion. Postoperative sternotomy wires and a mechanical aortic valve prosthesis. Coronary stent in the right coronary artery. Heart size normal. No adenopathy.",
+       "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+      },
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2018-10-25T09:15",
+       "text": "Indication: AAA screening. Abdominal aorta normal in caliber throughout, maximum diameter 2.1 cm. No aneurysm. Iliac origins unremarkable. Visualized liver and kidneys unremarkable.",
+       "conclusion": "No abdominal aortic aneurysm."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2018",
+       "action": "done",
+       "date": "2018-10-25T08:30"
+      },
+      {
+       "id": "aaa-2018",
+       "action": "done",
+       "date": "2018-10-25T09:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Screening CT and aorta ultrasound",
+       "author": "PCP",
+       "date": "2018-10-26T12:10",
+       "body": "Lung screening CT clean, Lung-RADS 1; repeat next fall. Aorta normal size - no further AAA screening. Portal note sent."
+      }
+     ]
+    },
+    {
+     "id": "2018-12-13a",
+     "kind": "office_visit",
+     "start": "2018-12-13T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and blood pressure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2018-12-13T11:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.5
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-12-13T11:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2018-12-13T10:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2018-12-13T11:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up visit",
+       "author": "PCP",
+       "date": "2018-12-13T11:10",
+       "body": "S: Doing fine. Raking and splitting wood without chest symptoms. Morning sugars 120-160. Anticoag clinic has kept him on 7.5 mg daily; last INR there 2.9 per his card. Old records reviewed - colonoscopy 2015 normal, op note consistent with his account.\nO: Vitals as charted. Rhythm irregular, rate fine, valve click crisp. Lungs clear. No edema.\nA/P: T2DM - A1c today, glargine unchanged for now. HTN controlled. AF/mechanical AVR stable on warfarin through cardiology. Return March."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2018-12-14T12:30",
+       "body": "A1c 7.5, a hair better than September. Kidney function and potassium normal. No changes - see you in March."
+      }
+     ]
+    },
+    {
+     "id": "2019-01-22a",
+     "kind": "pharmacy",
+     "start": "2019-01-22T09:10",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Insulin glargine pen refill",
+       "author": "MA",
+       "date": "2019-01-22T09:10",
+       "body": "Pharmacy request for glargine pens, last filled by prior internist. 24 units nightly, 5 pens per 30 days plus pen needles. Sent per PCP standing refill protocol, 90-day supply with 3 refills."
+      }
+     ]
+    },
+    {
+     "id": "2019-03-20a",
+     "kind": "office_visit",
+     "start": "2019-03-20T14:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-03-20T14:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2019-03-20T14:35"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-03-20T14:36"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-03-20T14:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-03-20T14:35"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-03-20T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2019-03-20T14:40",
+       "body": "Winter was quiet. Walking at the mall most mornings. No chest pain, no palpitations he notices, no lightheadedness. Glucose log mostly under 150. No hypoglycemia.\nExam: as charted. Irregular rhythm, mechanical click. Lungs clear. Feet intact.\nPlan: A1c drawn. No med changes. Tdap and first Shingrix today; second Shingrix in 2-6 months. RTC June."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2019-03-21T09:15",
+       "body": "A1c 7.4 - drifting in the right direction. Keep doing what you're doing."
+      }
+     ]
+    },
+    {
+     "id": "2019-05-14a",
+     "kind": "outside_records",
+     "start": "2019-05-14T13:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2019-05-14T13:00",
+       "body": "Optometry report, dilated exam 05/07/2019. Patient: William Howland. Diabetes on insulin. Allergies: NKDA.\nVisual acuity correctable to 20/25 OU. IOP normal. Lens: early age-appropriate changes. Fundus: no diabetic retinopathy either eye, no macular edema.\nRecall one year."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-27a",
+     "kind": "office_visit",
+     "start": "2019-06-27T08:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-06-27T09:00",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-06-27T09:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-06-27T08:40"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-06-27T09:05"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-06-27T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2019-06-27T09:15",
+       "body": "Brief visit. Garden in full swing, working most mornings before the heat. Arm sore for a day or two after the first Shingrix, nothing more. No bleeding issues on warfarin.\nBP fine. Heart irregular, click present. No edema.\nSecond Shingrix today. BMP for lisinopril. Next: wellness visit in September."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-06a",
+     "kind": "outside_records",
+     "start": "2019-08-06T15:20",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Anticoagulation clinic INR summary",
+       "author": "cardiology",
+       "date": "2019-08-06T15:20",
+       "body": "Anticoagulation clinic summary, outside cardiology group. Indication: mechanical aortic valve, atrial fibrillation. Goal INR 2.5-3.5. Warfarin 7.5 mg daily, unchanged.\nRecent fingerstick INRs: 06/04 2.7, 07/02 3.1, 07/30 2.9.\nNo bleeding reported. Allergies: NKDA. Next check 4 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2019-09-23a",
+     "kind": "annual_physical",
+     "start": "2019-09-23T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2019-09-23T09:40",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-09-23T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-09-23T09:40",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-23T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.3
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-09-23T09:40",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2019-09-23T09:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-09-23T09:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2019-09-23T10:00",
+       "body": "Medicare annual wellness visit, first one here.\nFunction: independent in all ADLs and IADLs. Drives. No falls this year. Hearing and vision adequate with glasses. Cognition: three-word recall 3/3, clock normal.\nMood: PHQ-2 0.\nSafety: seat belt, smoke detectors, no firearms in the house.\nAdvance directive: has a health care proxy on file with his lawyer; will bring a copy.\nPreventive: Tdap 3/2019, Shingrix series done, PCV13 last fall - PPSV23 due now (nurse visit with flu). Colonoscopy 2015 normal. Lung CT due next month. AAA screen done. Hep C/HIV done.\nChronic: no chest pain, no palpitations he notices, garden work without breathlessness. Sugars steady.\nExam: vitals as charted. Irregular rhythm, crisp valve click, lungs clear, no edema. Feet - normal sensation, no lesions.\nLabs drawn. Personalized prevention plan given."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2019-09-25T16:40",
+       "body": "Labs from your wellness visit: A1c 7.3, kidney and liver tests normal, blood counts normal, urine protein normal. LDL about the same as last year on atorvastatin. Nothing to change."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-10a",
+     "kind": "nurse_visit",
+     "start": "2019-10-10T13:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2019-10-10T13:35"
+      },
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2019-10-10T13:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-10T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nursing Note",
+       "title": "Nurse visit - flu and PPSV23",
+       "author": "RN",
+       "date": "2019-10-10T13:45",
+       "body": "Flu (high dose) L arm, PPSV23 R arm. Pressure held on both, no bleeding. Pneumococcal series now complete. Reminded about lung CT on the 24th."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-24a",
+     "kind": "imaging",
+     "start": "2019-10-24T08:00",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2019-10-24T08:00",
+       "text": "Comparison: 10/25/2018. Technique: low-dose non-contrast chest CT. Findings: No pulmonary nodules. No consolidation. No effusion. Mechanical aortic valve and sternotomy wires again noted. Coronary stent. No adenopathy.",
+       "conclusion": "Lung-RADS 1. Continue annual screening."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Lung screening CT",
+       "author": "PCP",
+       "date": "2019-10-25T08:50",
+       "body": "Negative again. Annual screening continues. Patient notified via portal."
+      }
+     ]
+    },
+    {
+     "id": "2019-12-19a",
+     "kind": "office_visit",
+     "start": "2019-12-19T15:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and hypertension follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-12-19T15:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.5
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-12-19T15:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2019-12-19T15:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2019-12-19T15:50",
+       "body": "Seasonal check-in. Holiday eating has started; sugars a little higher in the evenings. Otherwise no complaints. Cardiology visit this past summer was routine by his report.\nExam unchanged - irregular rhythm with click, lungs clear, feet fine.\nA1c today. Talked portion sizes and keeping up the walks over winter. No medication changes. Next visit in early spring."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2019-12-20T11:05",
+       "body": "A1c 7.5, up slightly with the holidays as we expected. Recheck in spring."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

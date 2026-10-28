@@ -1,0 +1,1569 @@
+{
+  "unit": "unit-2656",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002656",
+      "given": "Asher",
+      "family": "Kane",
+      "birth_date": "1995-02-22",
+      "address_line": "41 Bridge Rd, Apt 3",
+      "phone": "+1-518-555-0112",
+      "email": "asher.kane@example.test",
+      "marital_status": "single",
+      "summary": "Young unemployed former maintenance worker with recurrent moderate depression, insomnia on trazodone and a long pattern of stopping medicines. An ED visit for arterial priapism in 2025 ends trazodone; in 2026 an ED treats a bleeding coagulopathy after he put out rat poison, which the practice learns of from a pharmacy fill and a late record.",
+      "events": [
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T10:05",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "date": "2022-08-16T10:05",
+              "author": "front desk",
+              "body": "Caller wants to transfer primary care here; his old office is closing its Medicaid panel. 27M. Main issues per him: depression and trouble sleeping, on one med at night. Insurance verified, Medicaid active. New patient appt set for 8/23 at 9:00. Asked him to sign release so we can get records from prior office; form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T09:00",
+          "end": "2022-08-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; depression and insomnia",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, recurrent, moderate",
+              "action": "diagnosed",
+              "onset": "2018-03-01",
+              "note": "recurrent episodes since about age 23, per patient and prior records"
+            },
+            {
+              "label": "Insomnia",
+              "action": "diagnosed",
+              "onset": "2020-06-01"
+            },
+            {
+              "label": "Medication non-adherence",
+              "action": "diagnosed",
+              "onset": "2019-01-01",
+              "note": "prior office records show missed refills and self-stopped antidepressants",
+              "icd10": "Z91.148"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "trazodone hydrochloride 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth at bedtime for sleep",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "AT BEDTIME",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Insomnia"
+            },
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder, recurrent, moderate"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              112,
+              74
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 82.7,
+            "height_cm": 179.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 293
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.02
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 103
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 170
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 106
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 15
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 8
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Does not drink alcohol"
+            },
+            {
+              "item": "Occupation",
+              "value": "Unemployed; previously maintenance worker"
+            },
+            {
+              "item": "Housing status",
+              "value": "Rents an apartment with a roommate"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-08-23T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-23T10:05",
+              "author": "PCP",
+              "body": "27-year-old man transferring care. Main concerns are low mood and poor sleep.\n\nHPI: Describes depression on and off since his early twenties, with at least two prior stretches bad enough that he stopped leaving the apartment much. Current stretch has gone on most of this year: low energy, little interest, sleeps poorly, appetite fine. Has tried antidepressants through his old office but cannot name them; says he never stayed on any for long because he 'didn't see the point.' Prior office notes (faxed 8/19) list depression, insomnia and repeated missed refills. Sleep: trouble falling asleep, trazodone 50 at night helps when he takes it. No SI now or in the past, no plan, no prior attempts. No mania by history.\n\nPMH: depression, recurrent. Insomnia.\nPSH: none.\nMeds: trazodone 50 mg qhs.\nAllergies: no known drug allergies.\nFamily: mother with depression. Father with high blood pressure. No bleeding problems or sickle cell in the family that he knows of.\nSocial: out of work; used to do building maintenance. Shares an apartment with a roommate. Never smoked, no alcohol, no drugs.\n\nROS otherwise negative.\n\nExam: Well-appearing, flat affect, good eye contact, speech normal rate. HEENT normal. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin without bruising or rash. Neuro grossly nonfocal.\n\nPHQ-9 15. GAD-7 8.\n\nAssessment/plan:\n1. Major depressive disorder, recurrent, moderate. Talked through options. He is willing to try sertraline 50 mg daily; reviewed that it takes several weeks and early GI upset usually passes. Gave crisis line number. Video check-in in about a month.\n2. Insomnia. Continue trazodone 50 mg at bedtime; I'll take over the prescription.\n3. History of stopping medicines on his own: named it with him, plain and nonjudgmental. He agrees to message before stopping anything.\n4. Baseline labs today: CBC, CMP, TSH, lipids, HIV and hep C screening."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 180.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-26a",
+          "kind": "portal_message",
+          "start": "2022-08-26T14:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2022-08-26T14:30",
+              "author": "PCP",
+              "body": "Hi Asher, all of the blood work from Tuesday came back normal: blood counts, kidney and liver tests, thyroid, and cholesterol. HIV and hepatitis C screens were negative. Nothing to act on. Keep going with the sertraline and we'll talk next month."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "telehealth_visit",
+          "start": "2022-09-27T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression follow-up",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "patient stopped on his own after about ten days"
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2022-09-27T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral-2022",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "recurrent major depression, poor medication persistence"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Follow-up",
+              "date": "2022-09-27T15:45",
+              "author": "PCP",
+              "body": "Video, he is at his apartment, alone in the room.\n\nStopped the sertraline after roughly ten days. No side effect he can name, just 'felt the same, so why bother.' Did not message first. Mood about the same as last month. Sleep OK on nights he takes trazodone. Denies SI.\n\nPHQ-9 14.\n\nNot willing to restart an antidepressant right now. Open to seeing someone. Placed referral to outpatient psychiatry, which also has a therapy program. Sertraline off the list. Trazodone continues. Revisit in a couple of months."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T11:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "vitals": {
+            "temp_c": 36.6
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T11:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T11:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T11:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine Visit",
+              "date": "2022-10-13T12:00",
+              "author": "RN",
+              "body": "Flu vaccine L deltoid, bivalent COVID booster R deltoid. Screening questions negative, afebrile. VIS given. Waited 15 min, no reaction. Reminded him psychiatry intake office should be calling him."
+            }
+          ],
+          "measure": [
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "office_visit",
+          "start": "2022-11-29T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-02-01a",
+          "kind": "outside_records",
+          "start": "2023-02-01T09:15",
+          "orders": [
+            {
+              "id": "psych-referral-2022",
+              "action": "done",
+              "date": "2023-02-01T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Intake Evaluation",
+              "date": "2023-02-01T09:15",
+              "author": "psychiatry",
+              "body": "Outpatient behavioral health clinic, adult psychiatry\nDate of evaluation: 01/24/2023\nReferral from: primary care, for recurrent depression\n\nMr. Kane is a 27-year-old single man, not working, who lives with a roommate. He reports several episodes of depression since about 2018, the current one present most of the past year, with anhedonia, fatigue, low motivation and initial insomnia. He has tried antidepressants and stopped each within weeks. He denies suicidal ideation, intent or past attempts. No history of mania or psychosis. No substance use. Mother has depression.\n\nMental status: casually dressed, cooperative, psychomotor normal, mood 'blah', affect constricted, thought process linear, no SI/HI, insight fair.\n\nPHQ-9: 13.\nAllergies: NKDA. Medications: trazodone 50 mg at bedtime.\n\nImpression: Major depressive disorder, recurrent episode, moderate. Insomnia.\n\nRecommendations:\n- Re-trial of an SSRI. Sertraline 50 mg daily is reasonable; we ask that primary care prescribe and follow.\n- Individual therapy here, weekly to start; he has been given a therapist assignment.\n- Continue trazodone for sleep.\n\nThank you for the referral."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-07a",
+          "kind": "office_visit",
+          "start": "2023-02-07T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression follow-up after psychiatry intake",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Major depressive disorder, recurrent, moderate"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              95,
+              74
+            ],
+            "hr": 67,
+            "weight_kg": 80.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-02-07T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-02-07T10:50",
+              "author": "PCP",
+              "body": "Missed November. Here today after his psychiatry intake on 1/24; their letter is in the chart and suggests trying sertraline again with therapy there.\n\nHas had one therapy session so far, plans to keep going. Mood unchanged. Sleep fair with trazodone. No SI.\n\nPHQ-9 13. Vitals fine. Calm, flat, engaged in the conversation.\n\nPlan: restart sertraline 50 mg daily. We agreed on two things this time: give it six weeks before judging, and send a message rather than quitting. Trazodone same. Back in 2 to 3 months, sooner if needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "telephone",
+          "start": "2023-04-25T11:10",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "patient stopped again"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication Adherence Call",
+              "date": "2023-04-25T11:25",
+              "author": "RN",
+              "body": "Pharmacy adherence line flagged sertraline: filled once in February, never refilled. Called pt. He confirms he quit it about three weeks in, says it made him 'feel flat' and he didn't want to message about it. No SI. Still seeing the therapist, though he has missed a few. Trazodone he is still taking most nights.\n\nRoute to PCP. Sertraline marked as stopped per pt. He will keep the June appointment."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "PCP Addendum",
+              "date": "2023-04-25T16:40",
+              "author": "PCP",
+              "body": "Reviewed. Will discuss alternatives in June; no change today."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "depression and sleep follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              68
+            ],
+            "hr": 69,
+            "weight_kg": 82.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-06-13T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-06-13T14:30",
+              "author": "PCP",
+              "body": "Follow-up, mood and sleep.\n\nOff sertraline since about March. Doesn't want another antidepressant, including a different class; we went over a couple of options and he listened but is clear. Going to therapy roughly every other week, sometimes skips. Mood a bit better with warmer weather. Takes trazodone most nights, sleeps about six hours. No SI.\n\nPHQ-9 12. Exam: alert, mood 'okay', affect brighter than February.\n\nA/P: Recurrent depression, moderate, not on an antidepressant by his choice. Respecting that; door stays open. Keep therapy going. Trazodone 50 qhs refilled for 90 days. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "annual_physical",
+          "start": "2023-09-19T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preventive visit",
+          "vitals": {
+            "bp": [
+              108,
+              77
+            ],
+            "hr": 72,
+            "rr": 13,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 81.6,
+            "height_cm": 180.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 11
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-09-19T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-19T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-09-19T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-09-19T10:06"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2023-09-19T10:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive Visit",
+              "date": "2023-09-19T10:15",
+              "author": "PCP",
+              "body": "Yearly exam, 28-year-old man.\n\nInterval: no illnesses. Still looking for work, some applications out. Therapy on and off. Sleep acceptable with trazodone. Not on an antidepressant. Denies SI.\n\nHabits: never smoker, no alcohol or drugs. Walks most days. Seatbelt yes. No firearms at home.\n\nMeds: trazodone 50 mg qhs. NKDA.\n\nExam: BP and weight at baseline. HEENT clear, TMs normal. Neck without nodes or thyroid enlargement. Heart regular without murmur. Lungs clear. Abdomen soft, no masses. Skin normal. Mood mildly low, affect reactive.\n\nPHQ-9 11.\n\nPlan: no labs needed this year, baseline from last summer normal. Flu, updated COVID and Tdap today (no Tdap on record). Continue current plan for mood and sleep. See me in the spring, sooner if mood slides."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-12-05a",
+          "kind": "pharmacy",
+          "start": "2023-12-05T08:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2023-12-05T08:50",
+              "author": "MA",
+              "body": "Electronic request for trazodone 50 mg #90. Last 90-day fill was in June, so about 3 months overdue; pt says he ran out and \"just didn't call.\" Sent to PCP queue."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approved",
+              "date": "2023-12-05T12:15",
+              "author": "PCP",
+              "body": "Approved x90 with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "worse sleep",
+          "vitals": {
+            "bp": [
+              107,
+              69
+            ],
+            "hr": 63,
+            "weight_kg": 81.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            },
+            {
+              "survey": "GAD-7 total score",
+              "value": 9
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-16T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-04-16T15:35",
+              "author": "PCP",
+              "body": "Came in for sleep. Lying awake past 2 or 3 am most nights for about two months, even on trazodone; wanted something stronger. Mood lower since winter. Stopped going to therapy around January. Denies SI, intent or plan; no self-harm.\n\nPHQ-9 16, GAD-7 9. Vitals unremarkable. Tired-appearing, linear, no psychomotor change.\n\nA/P:\n- Insomnia: not adding a second sedative. Kept trazodone at 50 mg. Went over a fixed wake time, no screens in bed, getting up if awake more than 20 minutes. CBT-I app info given.\n- Depression, recurrent, moderate, worse: offered sertraline again or another agent; declines. Encouraged him to call the psychiatry clinic to restart therapy; he has the number. Crisis line reviewed.\n- Follow-up in 2 to 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "office_visit",
+          "start": "2024-07-09T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "mood and sleep follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "preventive visit",
+          "vitals": {
+            "bp": [
+              118,
+              71
+            ],
+            "hr": 66,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 99,
+            "weight_kg": 82.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 16.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-24T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.96
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 10
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-09-24T08:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-24T09:25"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-24T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-24T09:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-09-24T09:26"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Preventive Visit",
+              "date": "2024-09-24T09:40",
+              "author": "PCP",
+              "body": "Physical. Missed July follow-up.\n\nSays summer was easier. Sleep improved after he started getting up at the same time each day; still uses trazodone, though not every night. No therapy since winter. No SI.\n\nNever smoker, no alcohol. Not working.\n\nMeds: trazodone 50 qhs. NKDA.\n\nExam: well, mood euthymic-to-low, affect fuller than April. Heart and lungs normal. Abdomen benign. No edema. Skin clear.\n\nPHQ-9 10.\n\nPlan: CBC and CMP today since none in two years. Flu and COVID vaccines today. Revisit mood in the spring or as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "portal_message",
+          "start": "2024-09-26T13:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-09-26T13:05",
+              "author": "PCP",
+              "body": "Asher, your blood count and chemistry panel from the physical are both normal. No follow-up needed for these."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab Results",
+              "date": "2024-09-26T19:48",
+              "author": "patient",
+              "body": "ok thanks"
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "pharmacy",
+          "start": "2025-03-11T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2025-03-11T09:30",
+              "author": "MA",
+              "body": "Pharmacy requesting trazodone 50 mg, 90-day supply. Fill history: last picked up in October. Pt reports he takes it on bad nights only. Pended for PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Approved",
+              "date": "2025-03-11T13:00",
+              "author": "PCP",
+              "body": "Sent #90, 1 refill. Please get him on the schedule for a mood check, video is fine."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "mood follow-up",
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-10T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-06-10T16:25",
+              "author": "PCP",
+              "body": "Video from his bedroom, camera on.\n\nMood 'up and down.' Spends a lot of time at home. Sleep varies; uses trazodone some nights, skips others, refills late. Not in therapy. Denies SI.\n\nPHQ-9 13.\n\nRecurrent depression, moderate, untreated by choice; insomnia on intermittent trazodone. Raised medication and therapy again; he'd rather leave things as they are for now. No change. Reach out any time; check back in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "ed_visit",
+          "start": "2025-09-02T06:50",
+          "end": "2025-09-02T11:40",
+          "service": "Emergency Medicine",
+          "reason": "painful erection for 6 hours",
+          "conditions": [
+            {
+              "label": "Non-ischemic (arterial) priapism",
+              "action": "diagnosed",
+              "onset": "2025-09-02",
+              "icd10": "N48.39"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              72
+            ],
+            "hr": 63,
+            "rr": 15,
+            "temp_c": 36.8,
+            "spo2": 99
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-02T07:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-02T07:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.04
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-09-02T07:30",
+              "results": [
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.019
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.7
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 2
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-09-02T06:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-09-08T10:20",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED\nVisit: 09/02/2025, arrived 06:50\n\nCC: erection, painful, about 6 hours\n\n30-year-old man woke with an erection around 1 am that has not gone down. Painful. No injury to the groin or perineum, no illicit drugs, no erectile medications. History of depression; takes trazodone at night. No known sickle cell disease or blood disorder, none in the family.\n\nPMH: depression, insomnia. PSH: none.\nMeds: trazodone 50 mg qhs.\nAllergies: NKDA.\nSocial: never smoker, no alcohol, not employed (former maintenance worker).\n\nVitals: normal throughout.\nGU: penile shaft fully rigid and tender to touch. No bruising, laceration or other sign of injury. Glans and corpus spongiosum soft, not engorged. Testes normal.\n\nLabs: CBC and basic chemistries unremarkable. UA normal.\nCorporal aspiration: bright red blood. Corporal gas pH 7.40, pO2 96 mmHg, pCO2 39 mmHg, consistent with arterial (non-ischemic) flow.\n\nCourse: ice packs and observation, no intracavernosal medication. Gradual detumescence by about 10:45. Pain resolved.\n\nDx: non-ischemic (arterial) priapism.\n\nDisposition: home. Stop trazodone until reviewed by your primary care physician. Outpatient urology follow-up. Return at once for an erection lasting more than 4 hours."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-09-03a",
+          "kind": "telephone",
+          "start": "2025-09-03T09:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient Call After ED Visit",
+              "date": "2025-09-03T09:55",
+              "author": "RN",
+              "body": "Pt called. Was in the ED yesterday morning for a prolonged erection, resolved there with ice and waiting, sent home. Told to stop his trazodone and see urology. Feeling fine now, no recurrence. Instructed: do not take trazodone, return to ED for any erection over 4 hours. Will request the ED record. Visit booked 10/2 with PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "office_visit",
+          "start": "2025-10-02T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit; sleep",
+          "conditions": [
+            {
+              "label": "Non-ischemic (arterial) priapism",
+              "action": "resolved",
+              "onset": "2025-09-02",
+              "note": "single episode, no recurrence",
+              "icd10": "N48.39"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "trazodone hydrochloride 50 MG Oral Tablet",
+              "action": "stop",
+              "reason": "priapism"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              130,
+              68
+            ],
+            "hr": 75,
+            "weight_kg": 81.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 14
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-02T11:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-02T11:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-02T11:35"
+            }
+          ],
+          "orders": [
+            {
+              "id": "uro-referral-2025",
+              "action": "placed",
+              "order": "Urology referral",
+              "category": "referral",
+              "to": "Urology",
+              "reason": "non-ischemic priapism, ED recommendation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-02T11:40",
+              "author": "PCP",
+              "body": "Post-ED follow-up. ED record from 9/2 reviewed: about 6 hours of painful priapism, aspirate bright red with an arterial-pattern gas, settled with ice and observation. CBC, chemistries and UA were normal there.\n\nSince then: no further episodes. Has not taken trazodone since that night. No groin injury he can recall.\n\nSleep is worse off trazodone, taking an hour or more to fall asleep. Mood low, not hopeless. No SI.\n\nPHQ-9 14. Vitals normal. Comfortable, flat.\n\nA/P:\n1. Arterial priapism, one episode, resolved. Trazodone discontinued and should stay off. Urology referral placed as the ED advised.\n2. Insomnia: no new sleep medicine today. Gave CBT-I workbook and app info, consistent wake time, limit naps.\n3. Depression, recurrent, moderate: offered an antidepressant again; declines. Psychiatry clinic number given again.\n4. Flu shot today.\nFollow-up in 6 to 8 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T21:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2025-11-18T21:12",
+              "author": "patient",
+              "body": "cant make the appt on the 25th, i'll call to set something else up"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2025-11-19T08:40",
+              "author": "front desk",
+              "body": "Hi Asher, your 11/25 visit is cancelled. Call or message whenever you're ready and we'll find a time. Also, urology hasn't heard from you yet; their scheduling line is on your referral printout."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "ed_visit",
+          "start": "2026-05-12T19:25",
+          "end": "2026-05-13T10:30",
+          "service": "Emergency Medicine",
+          "reason": "gum bleeding and bruising",
+          "vitals": {
+            "bp": [
+              111,
+              78
+            ],
+            "hr": 76,
+            "rr": 16,
+            "temp_c": 36.8,
+            "spo2": 98
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-12T19:50",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 180
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.28
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-05-12T19:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 24
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T19:50",
+              "resulted": "2026-05-12T20:40",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "3173-2",
+                  "unit": "s",
+                  "value": 61
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T20:30",
+              "results": [
+                {
+                  "test": "Bleeding time",
+                  "loinc": "11067-6",
+                  "unit": "min",
+                  "value": 5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-12T19:50",
+              "results": [
+                {
+                  "test": "Opiates screen, serum",
+                  "loinc": "8219-8",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Benzodiazepines screen, serum",
+                  "loinc": "46976-7",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Acetaminophen, serum",
+                  "loinc": "3297-9",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-05-12T19:25"
+            },
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2026-05-12T22:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-08-11T14:05",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, with overnight observation\nVisit: 05/12/2026 19:25 to 05/13/2026 10:30\n\nCC: bleeding gums, bruises on arms and legs\n\n31-year-old man brought in by his roommate. Gums bleeding on their own for a couple of days and bruises appearing on his arms and legs. Roommate says he has kept to his room more and more the past few weeks and worries he swallowed something. Patient says he is depressed. On further questions, he had been setting out a store-bought rat poison around the apartment several days ago. Denies prescription medicines or supplements now. Seen here last September for priapism.\n\nPMH: depression, recurrent; insomnia; history of not taking medicines as prescribed; priapism 2025.\nHome meds (from prior record): trazodone 50 mg qhs. Patient denies taking any.\nAllergies: NKDA.\nSocial: no alcohol. Never smoker.\nFamily: no bleeding disorders or sickle cell disease.\n\nVitals within normal limits on arrival and through observation.\nExam: multiple ecchymoses over both upper extremities. Slow oozing at the gum line. No petechiae. Abdomen soft, no liver or spleen enlargement. Neuro intact.\n\nLabs: platelets 180,000/uL. PT 24 s. PTT 61 s. Bleeding time 5 min. Serum tox screen negative for opioids, benzodiazepines and acetaminophen.\n\nPsychiatry consult (evening of 5/12): depressed mood, cooperative. Denies suicidal intent, thoughts of self-harm, or intentional ingestion; describes the exposure as happening while he was putting out the bait. Not felt to need inpatient care. Advised outpatient behavioral health follow-up; resources given.\n\nCourse: vitamin K1 10 mg IV. Observed overnight; gum oozing stopped by morning, no new bruising.\n\nDx: rotenone poisoning, accidental, with coagulopathy.\n\nDisposition: home with roommate. Vitamin K1 5 mg by mouth daily, prescription sent. INR recheck with primary care in a few days. Remove remaining bait from the apartment. Return for any bleeding."
+            }
+          ],
+          "measure": [
+            "bp",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-20a",
+          "kind": "pharmacy",
+          "start": "2026-05-20T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy Fill Notice",
+              "date": "2026-05-20T10:15",
+              "author": "RN",
+              "body": "Fill history update: vitamin K1 (phytonadione) 5 mg tabs filled 5/13/26, prescriber from a regional hospital ED. No ED notification received here. Called pt, no answer, voicemail full. Sent portal message asking him to call. Front desk to request ED records."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2026-05-20T11:00",
+              "author": "front desk",
+              "body": "Faxed request to regional hospital HIM for any ED/observation records from May 2026."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "telephone",
+          "start": "2026-05-27T17:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Patient Returned Call",
+              "date": "2026-05-27T17:20",
+              "author": "RN",
+              "body": "Pt returned call. Went to the ED earlier this month for bleeding gums and bruises after putting out rat poison at home. Kept overnight, given vitamin K. Says the bleeding has stopped and he's taking the pills. Does not recall being told about a blood test. Advised he needs a visit and an INR check soon. He will call back to schedule once he knows his ride. Asked him to call 911 or go back to the ED for any bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "telephone",
+          "start": "2026-07-14T09:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request, Second",
+              "date": "2026-07-14T09:20",
+              "author": "front desk",
+              "body": "Nothing received from the May request. Re-faxed to the hospital records office and called; they say it is in queue."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-13a",
+          "kind": "portal_message",
+          "start": "2026-08-13T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Need appointment",
+              "date": "2026-08-13T20:40",
+              "author": "patient",
+              "body": "hi can i get an appointment sometime soon. not urgent. still feeling pretty down and not sleeping good"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Need appointment",
+              "date": "2026-08-14T08:55",
+              "author": "front desk",
+              "body": "Hi Asher, you're booked Tuesday 9/8 at 10:20 with your doctor. If things feel worse before then, call us, and for a crisis call or text 988."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-08a",
+          "kind": "office_visit",
+          "start": "2026-09-08T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit; mood and sleep",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Medication non-adherence|Z91.148": {
+        "code": "Z91.148",
+        "display": "Patient's other noncompliance with medication regimen for other reason",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Non-ischemic (arterial) priapism|N48.39": {
+        "code": "N48.39",
+        "display": "Other priapism",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Acetaminophen, serum": {
+        "code": "3297-9",
+        "display": "Acetaminophen [Presence] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Activated partial thromboplastin time": {
+        "code": "3173-2",
+        "display": "aPTT in Blood by Coagulation assay",
+        "unit": "s",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Benzodiazepines screen, serum": {
+        "code": "46976-7",
+        "display": "Benzodiazepines [Presence] in Serum or Plasma by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bleeding time": {
+        "code": "11067-6",
+        "display": "Bleeding time",
+        "unit": "min",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Opiates screen, serum": {
+        "code": "8219-8",
+        "display": "Opiates [Presence] in Serum or Plasma by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

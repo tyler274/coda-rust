@@ -1,0 +1,1449 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002224",
+   "given": "Desmond",
+   "family": "Washington",
+   "birth_date": "1951-10-17",
+   "address_line": "31 Briar Hill Road",
+   "phone": "+1-978-555-0199",
+   "email": "desmond.washington@example.test",
+   "marital_status": "divorced",
+   "summary": "Retired postal worker on Medicare and Medicaid who joins in 2017 with stage 5 CKD, insulin-treated type 2 diabetes and hypertension, starts hemodialysis in late 2018 and then has anemia of CKD, treated pulmonary TB, an ED hypoglycemia, a pulmonary edema admission after missed dialysis and MSSA access bacteremia. Last seen May 2024; dialysis-related amyloidosis (2025) and normal pressure hydrocephalus (2026) reach the chart only as outside letters.",
+   "events": [
+    {
+     "id": "2017-08-29a",
+     "kind": "telephone",
+     "start": "2017-08-29T10:20",
+     "reason": "new patient intake",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient intake call",
+       "author": "front desk",
+       "date": "2017-08-29T10:20",
+       "body": "Mr. Washington phoned about moving his primary care to us. He lives in Williamsburg, has Medicare and MassHealth. Sees an outside kidney group already and wants a doctor closer to home who can coordinate. Takes insulin. Booked new patient visit 9/12, 75 min slot. Release form mailed so we can request his old office's records. Asked him to bring all his pill bottles and insulin pens."
+      }
+     ]
+    },
+    {
+     "id": "2017-09-12a",
+     "kind": "establish_care",
+     "start": "2017-09-12T09:00",
+     "end": "2017-09-12T10:10",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care; diabetes, blood pressure, kidney disease",
+     "conditions": [
+      {
+       "label": "Chronic kidney disease, stage 5",
+       "icd10": "N18.5",
+       "action": "diagnosed",
+       "onset": "2017-03-01",
+       "note": "followed by outside nephrology; not yet on dialysis"
+      },
+      {
+       "label": "Type 2 diabetes mellitus without complications",
+       "action": "history",
+       "onset": "2004-01-01"
+      },
+      {
+       "label": "Essential hypertension",
+       "action": "history",
+       "onset": "2006-01-01"
+      },
+      {
+       "label": "History of tobacco dependence",
+       "action": "history",
+       "onset": "2009-06-01",
+       "note": "40 pack-years, quit about 2009"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "3 ML insulin glargine 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject 24 units under the skin at bedtime",
+       "dose": {
+        "value": 24,
+        "unit": "[iU]"
+       },
+       "frequency": "QHS",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "3 ML insulin lispro 100 UNT/ML Pen Injector",
+       "action": "historical",
+       "sig": "Inject under the skin with meals per sliding scale",
+       "frequency": "TID with meals",
+       "route": "Subcutaneous",
+       "course": "chronic",
+       "reason": "type 2 diabetes"
+      },
+      {
+       "drug": "lisinopril 5 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 5,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "None"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired postal worker (disability retirement)"
+      }
+     ],
+     "state": {
+      "bp": [
+       144,
+       86
+      ],
+      "weight_kg": 86.0,
+      "height_cm": 178.0,
+      "labs": {
+       "Hemoglobin A1c": 8.1,
+       "Creatinine": 4.4,
+       "Hemoglobin": 12.1,
+       "Low Density Lipoprotein": 84,
+       "Potassium": 4.9,
+       "Blood Urea Nitrogen": 58
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg",
+      "height_cm"
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2017-09-12T10:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine",
+         "value": 4.4
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2017-09-12T10:15",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 12.1
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-09-12T10:15",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.1
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2017-09-12T10:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 84
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, high MDM",
+       "performed": "2017-09-12T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2017-09-12T10:10",
+       "body": "65-year-old man new to the practice, transferring from an office he'd been at for years; wanted someone closer to home.\n\nKidneys: followed by an outside nephrology group for advanced CKD. Told at his last nephrology visit that he is at stage 5 and should plan access for dialysis. Not on dialysis. He has been putting off the vascular surgery consult - 'I'm not ready to think about the machine.' Makes urine, no swelling, appetite fair, no itching or nausea.\nDiabetes: on insulin for many years. Glargine 24 units at bedtime, lispro by a sliding scale with meals. Checks sugars twice a day, mostly 140s-220s. Rare lows, none needing help.\nBP: lisinopril 5 mg daily, nephrology manages dose.\nAlso on aspirin 81 and atorvastatin 40.\n\nPSH: left carpal tunnel release, about 2013.\nFH: father had a heart attack at 62. Mother with type 2 diabetes. Sister with high blood pressure.\nSH: retired from the postal service on disability. Smoked about a pack a day for 40 years, quit around 2009. No alcohol. Lives in Williamsburg. Divorced; a daughter in the area.\nAllergies: none to medications.\n\nExam: BP 144/86 on recheck, pleasant, no distress. Weight 86 kg, height 178 cm. Conjunctivae pink. Neck supple, no JVD. Heart regular, no murmur, rub or gallop. Lungs clear. Abdomen soft. No edema. Both radial pulses full, no access in either arm. Feet: skin intact, monofilament felt at all sites, DP pulses 2+.\n\nA/P\n1. CKD stage 5, not on dialysis - nephrology owns this. Encouraged him to keep the vascular surgery appointment; better to have a fistula ready than start through a neck line. Labs today.\n2. Type 2 diabetes on basal-bolus insulin - A1c today. Same doses for now.\n3. Hypertension - a bit above goal today; nephrology to adjust.\n4. Former heavy smoker - lung cancer screening at next visit.\n5. Health maintenance - records request to his old office for colonoscopy and vaccines. Flu shot next month.\n\nRTC 3 months."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       144,
+       86
+      ]
+     }
+    },
+    {
+     "id": "2017-09-14a",
+     "kind": "portal_message",
+     "start": "2017-09-14T16:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2017-09-14T16:40",
+       "body": "Hi Mr. Washington, your bloodwork from Tuesday is in. A1c is 8.1 - a little higher than we'd like, but your sugars at home sound reasonable and I don't want to push the insulin while your kidneys are this weak, since lows become more likely. Kidney numbers are in the range your nephrologist has been watching, and potassium is okay. Cholesterol is well controlled on atorvastatin. Please send the results to your kidney doctor too, or I can fax them. See you in December."
+      }
+     ]
+    },
+    {
+     "id": "2017-10-04a",
+     "kind": "outside_records",
+     "start": "2017-10-04T11:00",
+     "procedures": [
+      {
+       "procedure": "Carpal tunnel release",
+       "performed": "2013-04-09T08:00"
+      },
+      {
+       "procedure": "Colonoscopy, screening, average risk",
+       "performed": "2015-06-16T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prior primary care records",
+       "author": "front desk",
+       "date": "2017-10-04T11:00",
+       "body": "Records from the patient's previous primary care office, 38 pages, received by fax. Includes problem list (type 2 diabetes on insulin, hypertension, chronic kidney disease), med list matching what he brought, and:\n- Left carpal tunnel release April 2013, outpatient hand surgery.\n- Screening colonoscopy June 2015: normal to the cecum, good prep, no polyps; repeat in 10 years.\n- Flu shots most years. No pneumococcal vaccine on file. Last tetanus over 10 years ago.\nAbstracted into chart; paper copy to the scanning bin."
+      }
+     ]
+    },
+    {
+     "id": "2017-10-17a",
+     "kind": "nurse_visit",
+     "start": "2017-10-17T14:00",
+     "reason": "vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2017-10-17T14:05"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV13",
+       "date": "2017-10-17T14:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2017-10-17T14:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine visit",
+       "author": "RN",
+       "date": "2017-10-17T14:15",
+       "body": "High-dose flu L deltoid, PCV13 R deltoid per PCP order. VIS given. No prior reactions. Afebrile. Waited 15 min, fine. Told him PPSV23 is due in a year."
+      }
+     ]
+    },
+    {
+     "id": "2017-12-12a",
+     "kind": "office_visit",
+     "start": "2017-12-12T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.9,
+       "Creatinine": 4.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2017-12-12T11:05",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2017-12-12T11:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2018",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "former smoker, 40 pack-years, quit 2009"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2017-12-12T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2017-12-12T11:00",
+       "body": "Here for 3-month check. Saw nephrology in November; they want him to see vascular surgery 'after the holidays.' Still has not booked. No new symptoms. Sugar log: fasting 130-190, one 74 before lunch after a long morning, felt shaky, ate.\n\nBP as charted. Lungs clear, heart regular, no edema. Feet unchanged.\n\nA/P\nT2DM: A1c today. No change to insulin.\nCKD 5: urged him again about the fistula consult. Will message nephrology that we're seeing him.\nLung cancer screening: shared decision discussion done - he qualifies (40 pk-yr, quit within 15 years). Wants it. LDCT ordered.\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2018-01-23a",
+     "kind": "imaging",
+     "start": "2018-01-23T13:30",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2018-01-23T13:30",
+       "text": "Low-dose non-contrast CT of the chest, baseline screening exam. Lungs: no pulmonary nodules. No consolidation or effusion. Central airways patent. Mild coronary artery calcification. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2018",
+       "action": "done",
+       "date": "2018-01-23T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "LDCT lung screening",
+       "author": "radiology",
+       "date": "2018-01-23T16:10",
+       "body": "Baseline low-dose screening CT. No nodules. Lung-RADS 1. Next annual screen January 2019."
+      }
+     ]
+    },
+    {
+     "id": "2018-01-25a",
+     "kind": "portal_message",
+     "start": "2018-01-25T09:10",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "CT result",
+       "author": "PCP",
+       "date": "2018-01-25T09:10",
+       "body": "Your lung screening CT was clear - no spots at all. We'll repeat it once a year while you qualify."
+      }
+     ]
+    },
+    {
+     "id": "2018-02-27a",
+     "kind": "pharmacy",
+     "start": "2018-02-27T15:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill authorization",
+       "author": "MA",
+       "date": "2018-02-27T15:10",
+       "body": "Pharmacy refill request for lisinopril 5 mg, atorvastatin 40 mg and insulin lispro pens. Last visit 12/2017, next 3/20. Approved 90 days per standing refill protocol."
+      }
+     ]
+    },
+    {
+     "id": "2018-03-20a",
+     "kind": "office_visit",
+     "start": "2018-03-20T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "3-month follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.8,
+       "Creatinine": 4.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-03-20T10:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine",
+         "value": 4.9
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-03-20T10:00",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.8
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2018-03-20T10:05"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2018-03-20T09:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-03-20T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2018-03-20T10:05",
+       "body": "Doing ok. Some fatigue by afternoon, no worse than fall. Appetite fine. No itch, nausea, swelling. Vascular surgery consult still not scheduled - says the phone tree defeated him; we gave him the number again and the MA offered to sit with him while he called. He declined, will do it this week.\n\nExam: BP as charted. No JVD, lungs clear, no edema, no rub.\n\nA/P: CKD 5 - nephrology following, labs today and copy to them. DM - A1c today, same insulin. Tdap today (none in 10+ years). RTC 4 months for wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2018-05-08a",
+     "kind": "outside_records",
+     "start": "2018-05-08T12:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2018-05-08T12:00",
+       "body": "Dilated diabetic eye exam, outside optometry office, 5/1/2018. Acuity 20/25 OD, 20/30 OS with correction. Lens: early nuclear changes, not visually significant. Fundus: no diabetic retinopathy either eye; no macular edema. Recall 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2018-06-12a",
+     "kind": "telephone",
+     "start": "2018-06-12T10:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records to vascular surgery",
+       "author": "front desk",
+       "date": "2018-06-12T10:05",
+       "body": "Vascular surgery office requested his recent labs and med list before his consult. Faxed last two visit notes, BMP and CBC with patient's permission."
+      }
+     ]
+    },
+    {
+     "id": "2018-07-10a",
+     "kind": "annual_physical",
+     "start": "2018-07-10T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Medicare annual wellness visit",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 8.0,
+       "Creatinine": 5.3,
+       "Hemoglobin": 11.6,
+       "Low Density Lipoprotein": 78,
+       "Potassium": 5.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2018-07-10T09:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine",
+         "value": 5.3
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2018-07-10T09:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 11.6
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2018-07-10T09:50",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 8.0
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2018-07-10T09:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 78
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us-2018",
+       "action": "placed",
+       "order": "Abdominal ultrasound",
+       "category": "imaging",
+       "reason": "one-time AAA screening, male former smoker 65-75"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2018-07-10T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2018-07-10T09:55",
+       "body": "Initial Medicare AWV.\n\nFunctional: independent in ADLs and IADLs. Drives short distances; daughter helps with longer trips. No falls in the past year. Hearing fine. Vision corrected, eye exam May - no retinopathy.\nMood: PHQ-2 = 0.\nCognition: recalls 3/3, clock normal.\nHome safety reviewed, has smoke detectors.\nAdvance care planning: wants his daughter as health care proxy; form given to take home.\n\nMedication review: glargine 24 at bedtime, lispro scale with meals, lisinopril 5, aspirin 81, atorvastatin 40. Takes them as listed.\n\nKidneys: did see vascular surgery in June - vein mapping done, they want to schedule a left arm fistula 'in the fall.' Nephrology says dialysis likely within the year.\n\nExam: BP as charted. Heart regular, lungs clear, no edema. Feet: intact, sensation normal, pulses good.\n\nPrevention: colonoscopy 2015 normal, next 2025. PCV13 2017, PPSV23 due October. Tdap 2018. Shingles vaccine - will look into coverage. LDCT Jan 2018 negative, next Jan 2019. AAA screening ultrasound ordered.\n\nLabs today: CMP, CBC, A1c, lipids."
+      }
+     ]
+    },
+    {
+     "id": "2018-07-24a",
+     "kind": "imaging",
+     "start": "2018-07-24T08:30",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2018-07-24T08:30",
+       "text": "Limited abdominal aortic ultrasound for AAA screening. Abdominal aorta visualized from the diaphragm to the bifurcation. Maximum diameter 2.0 cm, infrarenal. No aneurysm. Common iliac arteries normal caliber. Kidneys are small and echogenic bilaterally without hydronephrosis.",
+       "conclusion": "No abdominal aortic aneurysm."
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us-2018",
+       "action": "done",
+       "date": "2018-07-24T08:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "AAA screening ultrasound",
+       "author": "radiology",
+       "date": "2018-07-24T11:20",
+       "body": "Aorta 2.0 cm maximum. No AAA. Small echogenic kidneys, consistent with known chronic kidney disease."
+      }
+     ]
+    },
+    {
+     "id": "2018-09-18a",
+     "kind": "office_visit",
+     "start": "2018-09-18T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up, kidney function",
+     "state": {
+      "bp": [
+       142,
+       84
+      ],
+      "labs": {
+       "Creatinine": 6.1,
+       "Potassium": 5.2,
+       "Blood Urea Nitrogen": 72
+      }
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2018-09-18T10:35",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine",
+         "value": 6.1
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2018-09-18T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2018-09-18T10:35",
+       "body": "More tired, food tastes off for a few weeks. No vomiting, no confusion, no shortness of breath, no swelling. Nephrology saw him in August and told him to expect to start dialysis this fall. Fistula surgery was postponed once by the surgeon's office; now set for 'December.' He is anxious about it but resigned.\n\nExam: BP 142/84. Alert, a little tired-looking. No asterixis. Lungs clear, no rub, no edema.\n\nA/P\nCKD 5 approaching dialysis: BMP today, results to nephrology. Reviewed warning signs that need same-day care (breathlessness, confusion, vomiting, much less urine). Told him if dialysis has to start before the fistula is ready they will likely place a temporary neck catheter.\nDM: stable, A1c from July 8.0. No change.\nFlu and pneumococcal next month at nurse visit."
+      }
+     ],
+     "vitals": {
+      "bp": [
+       142,
+       84
+      ]
+     }
+    },
+    {
+     "id": "2018-10-23a",
+     "kind": "nurse_visit",
+     "start": "2018-10-23T13:30",
+     "reason": "vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2018-10-23T13:35"
+      },
+      {
+       "vaccine": "Pneumococcal polysaccharide PPSV23",
+       "date": "2018-10-23T13:37"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2018-10-23T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine visit",
+       "author": "RN",
+       "date": "2018-10-23T13:45",
+       "body": "High-dose flu and PPSV23 given, right and left deltoid. Pneumococcal series now complete per PCP. Tolerated well."
+      }
+     ]
+    },
+    {
+     "id": "2018-11-19a",
+     "kind": "telephone",
+     "start": "2018-11-19T11:40",
+     "conditions": [
+      {
+       "label": "Chronic kidney disease, stage 5",
+       "icd10": "N18.5",
+       "action": "resolved",
+       "onset": "2017-03-01"
+      },
+      {
+       "label": "End stage renal disease",
+       "action": "diagnosed",
+       "onset": "2018-11-12"
+      },
+      {
+       "label": "Dependence on renal dialysis",
+       "icd10": "Z99.2",
+       "action": "diagnosed",
+       "onset": "2018-11-12"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "sevelamer carbonate 800 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth with each meal",
+       "dose": {
+        "value": 800,
+        "unit": "mg"
+       },
+       "frequency": "TID with meals",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "phosphate binder, started by nephrology"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Insertion of tunneled hemodialysis catheter",
+       "snomed": "736922008",
+       "performed": "2018-11-09T09:00"
+      },
+      {
+       "procedure": "Hemodialysis",
+       "snomed": "302497006",
+       "performed": "2018-11-12T06:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Patient update: dialysis started",
+       "author": "RN",
+       "date": "2018-11-19T11:40",
+       "body": "Pt called to let us know he started hemodialysis last Monday, 11/12. Labs at nephrology were worse and they didn't want to wait for the fistula. Had a tunneled catheter put in the right side of his neck on 11/9 at the hospital's IR suite. Goes Monday, Wednesday, Friday mornings, about 4 hours. Kidney doctor also started a phosphorus binder, sevelamer 800 mg with meals. Feels washed out after treatments but appetite better already. Fistula surgery still planned for December. Updated med list and problem list. Asked dialysis unit to fax monthly labs. Routed to PCP."
+      },
+      {
+       "type": "Telephone Encounter",
+       "title": "PCP review",
+       "author": "PCP",
+       "date": "2018-11-19T15:10",
+       "body": "Reviewed. ESRD now on HD MWF via R IJ tunneled catheter. Insulin needs may drop on dialysis - asked RN to remind him to call for any sugar under 80. Follow-up visit January."
+      }
+     ]
+    },
+    {
+     "id": "2018-12-20a",
+     "kind": "outside_records",
+     "start": "2018-12-20T10:00",
+     "procedures": [
+      {
+       "procedure": "Creation of upper limb arteriovenous fistula",
+       "snomed": "405331002",
+       "performed": "2018-12-11T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Vascular surgery operative note",
+       "author": "vascular surgery",
+       "date": "2018-12-20T10:00",
+       "body": "OPERATIVE NOTE - outside vascular surgery service. Date of surgery 12/11/2018.\nPreoperative diagnosis: end-stage renal disease on hemodialysis via right internal jugular tunneled catheter.\nProcedure: left upper extremity arteriovenous fistula creation, radiocephalic not suitable on mapping; brachiocephalic fistula created.\nAnesthesia: regional block with sedation. EBL minimal. Strong thrill at completion. No complications.\nAllergies: NKDA.\nPlan: hand exercises, check maturation at 6 weeks; continue dialysis via catheter until fistula usable; no BP cuffs or blood draws in the left arm."
+      }
+     ]
+    },
+    {
+     "id": "2019-01-22a",
+     "kind": "office_visit",
+     "start": "2019-01-22T10:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up after starting dialysis",
+     "state": {
+      "weight_kg": 85.0,
+      "labs": {
+       "Hemoglobin A1c": 7.7,
+       "Hemoglobin": 10.9,
+       "Creatinine": 5.2,
+       "Blood Urea Nitrogen": 50,
+       "Potassium": 4.9
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-01-22T11:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.7
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-01-22T11:05",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 10.9
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2019",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2019-01-22T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-01-22T11:05",
+       "body": "Two months into HD (MWF). Tolerating it; tired on dialysis days, better on off days. Fistula made 12/11 in the left upper arm, healing, hand exercises. Still dialyzing through the right neck catheter. No fevers, catheter site clean per the unit. Sugars running a bit lower - fasting 110-160, no readings under 80. Dialysis unit is giving his hepatitis B series.\n\nExam (BP right arm only): as charted. Catheter dressing R chest clean and dry. L upper arm incision healed, good thrill and bruit. Lungs clear, no edema.\n\nA/P\nESRD on HD - per nephrology. No BP or blood draws L arm, noted on chart banner.\nDM - A1c today; no insulin change unless lows.\nLDCT annual screen ordered.\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-02-05a",
+     "kind": "imaging",
+     "start": "2019-02-05T14:00",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2019-02-05T14:00",
+       "text": "Annual low-dose screening CT compared with January 2018. No pulmonary nodules. No consolidation. Right internal jugular dialysis catheter with tip at the cavoatrial junction. Mild coronary calcification, unchanged. No adenopathy or effusion.",
+       "conclusion": "Lung-RADS 1, negative. Annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2019",
+       "action": "done",
+       "date": "2019-02-05T14:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "LDCT lung screening",
+       "author": "radiology",
+       "date": "2019-02-05T17:30",
+       "body": "Annual screen. Negative, Lung-RADS 1."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-02a",
+     "kind": "outside_records",
+     "start": "2019-04-02T09:30",
+     "procedures": [
+      {
+       "procedure": "Removal of hemodialysis catheter",
+       "snomed": "448423006",
+       "performed": "2019-03-26T10:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Hepatitis B, adult",
+       "date": "2018-11-26T07:00"
+      },
+      {
+       "vaccine": "Hepatitis B, adult",
+       "date": "2018-12-24T07:00"
+      },
+      {
+       "vaccine": "Hepatitis B, adult",
+       "date": "2019-01-21T07:00"
+      },
+      {
+       "vaccine": "Hepatitis B, adult",
+       "date": "2019-03-18T07:00"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2018-11-12T06:15",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "Hepatitis B Surface Antigen",
+         "text": "Nonreactive"
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2019-03-25T06:20",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-03-25T06:20",
+       "results": [
+        {
+         "test": "Phosphorus",
+         "value": 5.1,
+         "unit": "mg/dL"
+        },
+        {
+         "test": "Albumin",
+         "value": 3.8,
+         "unit": "g/dL"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Dialysis unit records",
+       "author": "nephrology",
+       "date": "2019-04-02T09:30",
+       "body": "Faxed from the outpatient dialysis unit.\n- Admission labs 11/12/2018: hepatitis C antibody nonreactive, hepatitis B surface antigen nonreactive.\n- Hepatitis B vaccine, dialysis dosing: 11/26, 12/24, 1/21, 3/18.\n- Access: left brachiocephalic AVF cannulated from 3/4/2019 with two needles without problems; right IJ tunneled catheter removed in the unit 3/26/2019, site clean.\n- March monthly labs (pre-treatment): K, CO2, BUN, Cr, Ca as listed; phosphorus 5.1, albumin 3.8.\n- Schedule MWF first shift."
+      }
+     ]
+    },
+    {
+     "id": "2019-04-16a",
+     "kind": "office_visit",
+     "start": "2019-04-16T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2019-04-16T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2019-04-16T09:25",
+       "body": "Catheter out last month, using the fistula now and 'glad to have nothing hanging off my neck.' Sugars steady. No lows below 80. No new complaints.\n\nBP R arm as charted. L arm fistula with thrill. Lungs clear. Feet fine.\n\nA/P: ESRD on HD via L AVF - stable. DM - A1c was 7.7 in January; recheck at July wellness visit. Dialysis unit labs reviewed. Refilled insulin pens and pen needles for 90 days."
+      }
+     ]
+    },
+    {
+     "id": "2019-05-21a",
+     "kind": "outside_records",
+     "start": "2019-05-21T12:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2019-05-21T12:00",
+       "body": "Annual diabetic eye exam 5/14/2019. Dilated. No diabetic retinopathy OU. Mild nuclear sclerosis, stable. Return 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2019-06-04a",
+     "kind": "portal_message",
+     "start": "2019-06-04T19:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Appointment question",
+       "author": "patient",
+       "date": "2019-06-04T19:40",
+       "body": "Can I move my July appointment to a Tuesday or Thursday? Monday Wednesday Friday I'm at dialysis all morning and wiped out after. Thanks, Desmond"
+      }
+     ]
+    },
+    {
+     "id": "2019-06-05a",
+     "kind": "portal_message",
+     "start": "2019-06-05T09:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Re: Appointment question",
+       "author": "front desk",
+       "date": "2019-06-05T09:15",
+       "body": "Hi Mr. Washington, you're now booked for Tuesday 7/23 at 9:00. We've added a note to your chart to schedule you on non-dialysis days."
+      }
+     ]
+    },
+    {
+     "id": "2019-07-23a",
+     "kind": "annual_physical",
+     "start": "2019-07-23T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.9,
+       "Hemoglobin": 10.1,
+       "Low Density Lipoprotein": 80
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2019-07-23T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.9
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2019-07-23T09:45",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 80
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2019-07-23T09:45",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-07-23T09:45",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 10.1
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-07-23T09:50"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2019-07-23T09:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-07-23T09:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2019-07-23T09:55",
+       "body": "Subsequent AWV.\nDaily life: dialysis three mornings a week, rides from a neighbor or his daughter. Independent at home. No falls. PHQ-2 0. Memory concerns: none, 3-word recall intact.\nProxy form completed - daughter is his health care agent; scanned.\nMeds reviewed and unchanged.\n\nExam: BP R arm as charted. Heart regular. Lungs clear. L AVF thrill. No edema. Feet: no ulcers, monofilament intact.\n\nPrevention: Shingrix dose 1 today; dose 2 in 2-6 months. Flu in October. Eye exam May normal. LDCT 2/2019 negative.\nLabs: A1c, lipids, liver tests (statin), CBC."
+      }
+     ]
+    },
+    {
+     "id": "2019-08-20a",
+     "kind": "pharmacy",
+     "start": "2019-08-20T14:30",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization - insulin pens",
+       "author": "MA",
+       "date": "2019-08-20T14:30",
+       "body": "Pharmacy says his plan now wants a PA for the glargine pens (formulary switch for the new plan year). Completed PA online with diagnosis and A1c history. Approved same day for 12 months. Pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2019-10-08a",
+     "kind": "nurse_visit",
+     "start": "2019-10-08T13:00",
+     "reason": "vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, trivalent",
+       "date": "2019-10-08T13:05"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2019-10-08T13:07"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2019-10-08T13:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine visit",
+       "author": "RN",
+       "date": "2019-10-08T13:20",
+       "body": "Flu (high-dose) R deltoid, Shingrix #2 R deltoid lower site. No left arm (fistula). After dose 1 he had a sore arm and felt tired for a day. Shingles series complete."
+      }
+     ]
+    },
+    {
+     "id": "2019-11-25a",
+     "kind": "specialist_visit",
+     "start": "2019-11-25T13:00",
+     "service": "Nephrology",
+     "reason": "fatigue and reduced exercise tolerance",
+     "conditions": [
+      {
+       "label": "Anemia in chronic kidney disease",
+       "icd10": "D63.1",
+       "action": "diagnosed",
+       "onset": "2019-11-25"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "epoetin alfa 10000 UNT/ML Injectable Solution",
+       "action": "historical",
+       "sig": "4,000 units IV with each hemodialysis treatment",
+       "dose": {
+        "value": 4000,
+        "unit": "[iU]"
+       },
+       "frequency": "three times weekly with dialysis",
+       "route": "Intravenous",
+       "course": "chronic",
+       "reason": "anemia of CKD; given at the dialysis unit"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2019-11-25T06:20",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 7.5
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 9.0
+        },
+        {
+         "test": "Mean Corpuscular Volume",
+         "value": 88
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2019-11-25T06:20",
+       "results": [
+        {
+         "test": "Reticulocytes/Erythrocytes in Blood by Automated count",
+         "loinc": "17849-1",
+         "unit": "%",
+         "text": "Low"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Nephrology follow-up letter",
+       "author": "nephrology",
+       "date": "2019-12-09T10:00",
+       "body": "Outside nephrology group - clinic note, visit 11/25/2019, copy to primary care.\n\nReason: tiredness and reduced stamina, worse over recent months.\nHe has now been on in-center hemodialysis for about one year, MWF via left brachiocephalic AVF. Reports tiring easily walking and with chores.\n\nPMH: ESRD on HD, type 2 diabetes, hypertension.\nPSH: L UE AV fistula; R IJ dialysis catheter (removed); L carpal tunnel release.\nMeds: insulin glargine 24 u qhs, insulin lispro sliding scale with meals, lisinopril 5 mg, sevelamer carbonate 800 mg with meals, aspirin 81 mg, atorvastatin 40 mg.\nAllergies: NKDA.\nFH: father MI at 62; mother T2DM; sister HTN.\nSH: ex-smoker 40 pk-yr, quit ~10 yrs. No alcohol. Retired postal worker on disability.\n\nExam: unremarkable.\n\nLabs (pre-dialysis 11/25): Hgb 9.0 g/dL, MCV 88 fL, WBC 7.5, platelets 250. Smear: normocytic, normochromic red cells. Reticulocyte count low.\n\nAssessment: anemia of chronic kidney disease, hypoproliferative.\nPlan: start epoetin alfa 4,000 units IV with each dialysis; titrate to Hgb 10-11 by unit protocol. Iron indices with next monthly labs. Recheck 3-4 months."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

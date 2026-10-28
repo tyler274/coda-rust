@@ -1,0 +1,350 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001707",
+      "events": [
+        {
+          "id": "2024-01-16a",
+          "kind": "imaging",
+          "start": "2024-01-16T18:00",
+          "reports": [
+            {"study": "MR Pituitary and Sella turcica WO and W contrast IV", "loinc": "24879-9", "performed": "2024-01-16T18:00", "issued": "2024-01-17T09:40", "text": "Indication: known prolactinoma; worsening headaches, peripheral vision complaints. Comparison: 2/8/2022.\nTechnique: sagittal and coronal T1, coronal T2, pre- and post-gadolinium imaging of the sella, with dynamic coronal post-contrast series.\nFindings: The previously described left pituitary lesion has enlarged and now forms a 1.5 cm sellar mass measured in greatest craniocaudal dimension, extending upward out of the sella. Its superior margin elevates and compresses the optic chiasm. The pituitary stalk is displaced slightly to the right. No hemorrhage within the mass. Cavernous sinuses are symmetric and the internal carotid flow voids are preserved. The visualized brain parenchyma, ventricles and extra-axial spaces are normal.", "conclusion": "Interval enlargement of the pituitary adenoma, now a 1.5 cm macroadenoma compressing the optic chiasm."}
+          ],
+          "orders": [
+            {"id": "mri-pituitary-2023", "action": "done", "date": "2024-01-16T18:00"}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "MRI pituitary", "author": "radiology", "date": "2024-01-17T09:40", "body": "Outside imaging center: MRI pituitary with and without contrast 1/16/2024, ordered by PCP. Impression: interval enlargement of pituitary adenoma, now 1.5 cm, compressing the optic chiasm. Critical finding called to the ordering office at 09:35."}
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "telephone",
+          "start": "2024-01-17T10:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "MRI result call", "author": "PCP", "date": "2024-01-17T10:20", "body": "Called pt with MRI: adenoma is larger, about 1.5 cm, pressing on the optic nerves where they cross, which fits her side-vision symptoms. Spoke directly with her endocrinologist, who will see her within the next few weeks and wants her to keep taking cabergoline in the meantime; neurology appointment next Tuesday stands. Reviewed warning signs (sudden severe headache, sudden worse vision, vomiting, confusion) that mean the ED. She asked good questions, husband on speaker. Not driving."}
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "specialist_visit",
+          "start": "2024-01-23T09:00",
+          "service": "Neurology",
+          "reason": "Progressive headaches, reduced peripheral vision",
+          "labs": [
+            {"panel": null, "collected": "2024-01-23T09:50", "results": [{"test": "Prolactin", "value": 125, "unit": "ng/mL"}]}
+          ],
+          "orders": [
+            {"id": "neuro-referral-2023", "action": "done", "date": "2024-01-23T09:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Neurology consultation", "author": "neurology", "date": "2024-01-30T15:00", "body": "OUTSIDE NEUROLOGY - NEW PATIENT CONSULTATION\nVisit date: 1/23/2024\nReferred by: primary care\n\nHistory: 35-year-old woman under endocrinology care for a prolactinoma, with ongoing galactorrhea and amenorrhea, referred for headaches that have been building over 3 months together with shrinking peripheral vision. Her periods are irregular, and milk still leaks from both breasts without any squeezing. She is not pregnant and has never taken hormonal birth control.\nROS: no weight change. No recent stress.\nMeds: levothyroxine 75 mcg daily (cabergoline per patient, managed by endocrinology). Allergies: NKDA.\n\nExamination: alert and fully oriented, language and memory normal. Visual fields to confrontation show loss of the temporal field in each eye, a bitemporal hemianopia. Acuity grossly preserved. Pupils reactive without an afferent defect. Remaining cranial nerves normal. Strength, tone, reflexes, coordination and gait normal.\n\nData: prolactin today 125 ng/mL. MRI pituitary of 1/16/2024 personally reviewed: 1.5 cm sellar mass compressing the optic chiasm.\n\nImpression: macroprolactinoma with chiasmal compression causing bitemporal hemianopia; headaches attributable to the mass.\n\nRecommendations: discussed with her endocrinologist today, who will see her early February to adjust treatment. Formal perimetry through ophthalmology. Return to the ED for sudden headache or acute visual decline. Neurology follow-up as needed.\n\ncc: PCP, endocrinology"}
+          ]
+        },
+        {
+          "id": "2024-02-06a",
+          "kind": "specialist_visit",
+          "start": "2024-02-06T10:40",
+          "service": "Endocrinology",
+          "reason": "Macroprolactinoma",
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology follow-up", "author": "endocrinology", "date": "2024-02-12T09:15", "body": "Outside endocrinology group\nFollow-up 2/6/2024\n\nProlactinoma has grown to 1.5 cm with chiasmal compression and a bitemporal field defect (neurology 1/23). Prolactin 125 on cabergoline 0.25 mg twice weekly, restarted in August. Headaches unchanged. Taking it reliably now, she says.\n\nPlan:\n1. Increase cabergoline to 0.5 mg (one full tablet) twice weekly. Medical therapy remains first line even with chiasmal compression; most tumors shrink and fields recover. Surgery would be reconsidered if vision worsens or there is no response.\n2. Pregnancy should be avoided until the tumor shrinks away from the chiasm, since these tumors can grow in pregnancy. Recommend a combined estrogen-progestin pill, which also gives her the estrogen her ovaries are not making. Asked her PCP to prescribe.\n3. Formal visual fields at ophthalmology, already booked for 2/20.\n4. MRI and prolactin in 5 to 6 months.\n\nAllergies: NKDA. cc: PCP"}
+          ]
+        },
+        {
+          "id": "2024-02-13a",
+          "kind": "telehealth_visit",
+          "start": "2024-02-13T12:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Contraception per endocrinology",
+          "medications": [
+            {"drug_text": "cabergoline 0.5 MG Oral Tablet", "action": "stop", "reason": "Dose increased by endocrinology"},
+            {"drug_text": "cabergoline 0.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet (0.5 mg) by mouth twice weekly", "dose": {"value": 0.5, "unit": "mg"}, "frequency": "TWICE WEEKLY", "route": "Oral", "course": "chronic", "reason": "Prolactinoma; prescribed by endocrinology"},
+            {"drug": "drospirenone 3 MG / ethinyl estradiol 0.02 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "tablet"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Contraception during macroprolactinoma treatment; estrogen replacement"}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-02-13T12:15"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Telehealth Visit", "author": "PCP", "date": "2024-02-13T12:40", "body": "Video, she is at her office with the door closed; identity verified.\n\nEndocrinology (2/6 letter) increased cabergoline to 0.5 mg twice weekly and asked us to start a combined pill: avoid pregnancy while the macroadenoma shrinks, and replace estrogen for her ovarian insufficiency. Hard conversation for her after years of trying, but she understands the reasoning and wants to follow it.\n\nScreening for estrogen: never smoker, no migraine with aura (her headaches are the tumor kind, no aura), no personal or family history of clots, no liver disease, no breast cancer history. Home BP readings this week 112/70 to 118/76.\n\nPlan:\n- Start drospirenone 3 mg / ethinyl estradiol 0.02 mg, one daily, starting Sunday. Spotting the first months is common. Reviewed clot warning signs.\n- Cabergoline list updated to 0.5 mg twice weekly.\n- Field testing at ophthalmology next week.\n- Folic acid: fine to continue.\nWill plan to see her for her physical in the fall."}
+          ]
+        },
+        {
+          "id": "2024-04-30a",
+          "kind": "pharmacy",
+          "start": "2024-04-30T09:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refills", "author": "MA", "date": "2024-04-30T09:40", "body": "Refill requests: drospirenone/ethinyl estradiol 3 packs and levothyroxine 75 mcg 90 days. Both sent per PCP protocol. Pt reports tolerating the pill, some spotting in March that settled."}
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "imaging",
+          "start": "2024-07-16T07:15",
+          "reports": [
+            {"study": "MR Pituitary and Sella turcica WO and W contrast IV", "loinc": "24879-9", "performed": "2024-07-16T07:15", "issued": "2024-07-16T16:30", "text": "Indication: macroprolactinoma on cabergoline. Comparison: 1/16/2024.\nTechnique: standard pituitary protocol before and after IV gadolinium.\nFindings: The pituitary adenoma has decreased in size, now measuring 8 mm in greatest dimension and confined to the sella. The optic chiasm is no longer contacted and is normal in position and signal. The stalk is midline. Cavernous sinuses are unremarkable. No hemorrhage.", "conclusion": "Marked interval decrease of the pituitary adenoma, now 8 mm, with no contact with the optic chiasm."}
+          ],
+          "documents": [
+            {"type": "Imaging Report", "title": "MRI pituitary", "author": "radiology", "date": "2024-07-17T08:30", "body": "Outside imaging center report, MRI pituitary 7/16/2024 ordered by endocrinology, copy to PCP. Impression: adenoma decreased to 8 mm, no contact with the optic chiasm."}
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "specialist_visit",
+          "start": "2024-07-23T14:20",
+          "service": "Endocrinology",
+          "reason": "Prolactinoma follow-up",
+          "labs": [
+            {"panel": null, "collected": "2024-07-23T14:45", "results": [{"test": "Prolactin", "value": 19, "unit": "ng/mL"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology follow-up", "author": "endocrinology", "date": "2024-08-06T11:00", "body": "Outside endocrinology group\nFollow-up 7/23/2024\n\nDoing well. Headaches resolved by spring. Says her side vision feels normal again.\nOphthalmology: perimetry in February confirmed bitemporal field loss; repeat perimetry in July is full in both eyes.\nMRI 7/16: adenoma 8 mm, away from the chiasm.\nProlactin today 19 ng/mL.\nMeds: cabergoline 0.5 mg twice weekly; drospirenone/ethinyl estradiol daily; levothyroxine 75 mcg.\n\nAssessment: macroprolactinoma responding well to cabergoline, fields recovered.\nPlan: continue cabergoline 0.5 mg twice weekly and the pill. Prolactin in 6 months, and then we can talk about timing for pregnancy.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2024-09-24a",
+          "kind": "annual_physical",
+          "start": "2024-09-24T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2024-09-24T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-24T09:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-24T09:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-09-24T09:10", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2024-09-24T08:55", "issued": "2024-09-27T14:00", "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; transformation zone component present. High-risk HPV: not detected.", "conclusion": "Negative for intraepithelial lesion or malignancy. High-risk HPV negative."}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-24T09:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-09-24T09:02"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-24T08:30"},
+            {"procedure": "Immunization administration", "performed": "2024-09-24T09:00"},
+            {"procedure": "Venipuncture", "performed": "2024-09-24T09:10"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-09-24T09:35", "body": "First full physical since 2022 (spring 2023 cancelled, and the winter was all about the pituitary).\n\nPituitary: endocrinology's July note in chart. Tumor down to 8 mm, off the chiasm, prolactin 19, perimetry normal. No headaches. Vision normal to her. Cabergoline 0.5 mg twice weekly.\nOn the pill since February, regular withdrawal bleeds, no side effects. Plans to revisit pregnancy with endocrinology in January.\nThyroid fine. Eating well, weight steady.\nMood: better than last year by a lot. PHQ-9 3.\n\nMeds: levothyroxine 75 mcg daily, cabergoline 0.5 mg twice weekly, drospirenone/EE daily, folic acid 0.4 mg daily. NKDA.\n\nExam: vitals as charted. HEENT normal. Thyroid normal. Breasts deferred to gyn. Heart RRR. Lungs clear. Abdomen soft. Pelvic: speculum exam, normal cervix, Pap with HPV collected. Skin normal. Neuro nonfocal.\n\nPlan:\n- Pap with HPV today (last 2018).\n- CBC, CMP, lipids, TSH.\n- Flu and 2024-25 COVID today.\n- Continue current meds.\nPhysical next fall."}
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "portal_message",
+          "start": "2024-09-27T16:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2024-09-27T16:20", "body": "Everything from Tuesday is normal: Pap and HPV negative, so the next one is in 5 years. Cholesterol, blood counts, kidney and liver tests and thyroid all fine."}
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "specialist_visit",
+          "start": "2025-01-21T13:00",
+          "service": "Endocrinology",
+          "reason": "Prolactinoma follow-up, pregnancy planning",
+          "labs": [
+            {"panel": null, "collected": "2025-01-21T13:25", "results": [{"test": "Prolactin", "value": 11, "unit": "ng/mL"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Endocrinology follow-up", "author": "endocrinology", "date": "2025-02-04T10:30", "body": "Outside endocrinology group\nFollow-up 1/21/2025\n\nWell, no headaches, no visual symptoms, no galactorrhea. On cabergoline 0.5 mg twice weekly, combined pill, levothyroxine.\nProlactin today 11 ng/mL.\n\nAssessment: macroprolactinoma, well controlled; 8 mm and clear of the chiasm on the July MRI.\n\nPlan: with good shrinkage and normal prolactin she may stop the combined pill and try to conceive. Continue cabergoline until a positive pregnancy test, then stop it and call us the same week; we'd follow symptoms and fields through any pregnancy. Prolactin and MRI in a year if not pregnant before then. Her ovarian insufficiency means conception may be difficult; she is aware and in touch with gynecology.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2025-01-27a",
+          "kind": "portal_message",
+          "start": "2025-01-27T19:30",
+          "medications": [
+            {"drug": "drospirenone 3 MG / ethinyl estradiol 0.02 MG Oral Tablet", "action": "stop", "reason": "Endocrinology cleared her to try to conceive"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Stopping the pill", "author": "patient", "date": "2025-01-27T19:30", "body": "Good news, the endocrinologist said my numbers are good enough to stop birth control and try again! I finished my last pack yesterday. Staying on cabergoline until I'm pregnant. Can you take the pill off my list and cancel the refills?"},
+            {"type": "Patient Message", "title": "RE: Stopping the pill", "author": "PCP", "date": "2025-01-28T08:05", "body": "That's great news, Wendy. Done: the pill is off your list and the pharmacy refills are cancelled. Keep the folic acid going. Remember to call as soon as you have a positive test so we can check your thyroid and you can let endocrinology know about the cabergoline."}
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "state": {"weight_kg": 55.4},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-04-08T15:55", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-04-08T15:20"},
+            {"procedure": "Venipuncture", "performed": "2025-04-08T15:55"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-04-08T15:50", "body": "Check-in. Off the pill since late January, trying to conceive. One light bleed in March, otherwise none. Not pregnant (home test last week negative). On cabergoline 0.5 twice weekly, levothyroxine 75, folic acid. Busy season at work. No headaches, vision fine.\nWt 55.4 kg.\nExam: vitals as charted. Thyroid normal. Heart, lungs normal.\nA/P: Hashimoto, TSH today; she wants it optimized while trying. Prolactinoma stable per endocrinology. Cycles: she has a gynecology appointment in July. Follow-up in two months."}
+          ]
+        },
+        {
+          "id": "2025-04-10a",
+          "kind": "portal_message",
+          "start": "2025-04-10T12:00",
+          "documents": [
+            {"type": "Patient Message", "title": "Thyroid level", "author": "PCP", "date": "2025-04-10T12:00", "body": "Your TSH is in a good place for someone trying to conceive. Same dose."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T16:40",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "No-show", "author": "front desk", "date": "2025-06-10T17:30", "body": "Pt did not arrive for 4:40 follow-up. Called, voicemail left to reschedule."}
+          ]
+        },
+        {
+          "id": "2025-07-25a",
+          "kind": "specialist_visit",
+          "start": "2025-07-25T11:00",
+          "service": "Gynecology",
+          "reason": "Irregular cycles, difficulty conceiving",
+          "state": {"weight_kg": 50.4},
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology follow-up", "author": "gynecology", "date": "2025-10-28T14:20", "body": "OUTSIDE GYNECOLOGY PRACTICE - PROGRESS NOTE (faxed on request)\nDate of service: 07/25/2025\nRe: Wendy Schmidt, DOB 12/16/1988\nDx: lactational amenorrhea\n\n36-year-old with Hashimoto thyroiditis on levothyroxine and anorexia nervosa in remission, previously treated for intrauterine adhesions, a prolactinoma and hypergonadotropic hypogonadism, back for menstrual irregularity. For 6 months, since coming off her oral contraceptive, cycles have been irregular and she has not conceived. Bleeding is coming less often and is lighter. No galactorrhea, no hirsutism. She describes more stress at work and has lost 5 kg over the last 3 months without trying. She says her eating disorder has been under better control over the past year.\n\nMeds: levothyroxine 75 mcg daily. Allergies: NKDA.\n\nExam: BMI 18.5. Appears cachectic. Pelvic exam without abnormality.\n\nLabs: FSH low, LH low, estradiol low. Prolactin normal. TSH normal, free T4 normal.\n\nAssessment: secondary amenorrhea with low gonadotropins and estradiol in the setting of weight loss and stress.\nPlan: weight restoration discussed; follow up with PCP regarding weight; return in 3 months.\n\ncc: PCP"}
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "portal_message",
+          "start": "2025-09-30T21:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical", "author": "patient", "date": "2025-09-30T21:10", "body": "Sorry I missed the June appointment, work has been crazy. I'd like to schedule my physical. Also my gyn in July said to check in with you about my weight, I've lost a few pounds."},
+            {"type": "Patient Message", "title": "RE: Physical", "author": "front desk", "date": "2025-10-01T09:15", "body": "Hi Wendy, you're booked for your physical on Friday, November 21 at 9:40. We'll request the July gynecology note so the doctor has it."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "telephone",
+          "start": "2025-10-14T10:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Records request", "author": "MA", "date": "2025-10-14T10:30", "body": "Second request faxed to gynecology for the 7/25/25 note (first sent 10/1). Their records line says it will go out this month."}
+          ]
+        },
+        {
+          "id": "2025-11-21a",
+          "kind": "annual_physical",
+          "start": "2025-11-21T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; weight loss",
+          "conditions": [
+            {"label": "Secondary amenorrhea", "icd10": "N91.1", "action": "diagnosed", "onset": "2025-07-25", "note": "Low gonadotropins and estradiol with weight loss (gynecology 7/2025)."},
+            {"label": "Unintentional weight loss", "action": "diagnosed", "onset": "2025-04-15"}
+          ],
+          "state": {"weight_kg": 50.9},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 6}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-11-21T10:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-21T10:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Total Protein"}]},
+            {"panel": null, "collected": "2025-11-21T10:25", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-11-21T10:15"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-11-21T09:40"},
+            {"procedure": "Immunization administration", "performed": "2025-11-21T10:15"},
+            {"procedure": "Venipuncture", "performed": "2025-11-21T10:25"}
+          ],
+          "orders": [
+            {"id": "nutrition-referral-2025", "action": "placed", "order": "Nutrition referral", "category": "referral", "to": "Nutrition", "reason": "Unintentional weight loss, history of anorexia nervosa"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-11-21T10:50", "body": "Annual exam, and to talk about weight.\n\nGynecology note from July finally arrived 10/28: cycles irregular since stopping the pill in January, low FSH, LH and estradiol with normal prolactin and thyroid, 5 kg weight loss over 3 months, BMI 18.5. (Their diagnosis line says \"lactational amenorrhea.\")\n\nWeight here: 56.2 at intake in 2019, steady for years, 55.4 in April, 50.4 at gyn in July, 50.9 today. She says the summer was the most stressful stretch of her career and she often skipped lunch and ate late. She knows that pattern from her teens and says she caught it. Over the past two months she has been eating three meals most days. Denies purging, laxatives or over-exercising. No fear of eating, she says, more no time and no appetite under stress. Still hoping for a pregnancy, still no positive tests.\n\nMood: stressed, tired, not hopeless. PHQ-9 6.\nMeds: levothyroxine 75 mcg, cabergoline 0.5 mg twice weekly, folic acid. NKDA.\n\nExam: vitals as charted. Thin. Thyroid normal. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin without lanugo; no parotid enlargement. Extremities warm.\n\nA/P\n1. Unintentional weight loss with her history of anorexia nervosa; weight up slightly from July. Referral to a dietitian with eating-disorder experience; she accepted. CBC, CMP, TSH today. Recheck weight at a nurse visit in January.\n2. Secondary amenorrhea with low gonadotropins, per gynecology; likely tied to the weight change. Gyn following.\n3. Prolactinoma: stable, endocrinology.\n4. Hashimoto: TSH.\n5. Flu vaccine today. She'll get her COVID dose at the pharmacy.\nPhysical next fall."}
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "portal_message",
+          "start": "2025-11-24T13:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2025-11-24T13:45", "body": "Your labs from Friday are all normal: blood count, chemistries, protein levels and thyroid. The nutrition referral has been sent; their office will call you to schedule."}
+          ]
+        },
+        {
+          "id": "2026-01-26a",
+          "kind": "ed_visit",
+          "start": "2026-01-26T05:40",
+          "end": "2026-01-26T12:15",
+          "service": "Emergency Medicine",
+          "reason": "Unable to urinate",
+          "vitals": [
+            {"time": "2026-01-26T05:50", "bp": [138, 86], "hr": 102, "rr": 18, "temp_c": 36.8, "spo2": 99},
+            {"time": "2026-01-26T11:50", "bp": [118, 74], "hr": 80, "rr": 16, "temp_c": 36.7, "spo2": 99}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2026-01-26T06:05", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": null, "collected": "2026-01-26T06:20", "results": [
+              {"test": "Choriogonadotropin", "loinc": "19080-1", "text": "<5", "unit": "m[IU]/mL"},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "Prolactin", "value": 14, "unit": "ng/mL"}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-26T06:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Urinalysis", "collected": "2026-01-26T06:30", "results": [{"test": "Urine Leukocyte Esterase", "text": "Negative"}, {"test": "Urine Nitrite", "text": "Negative"}, {"test": "Urine Blood", "text": "Negative"}]}
+          ],
+          "reports": [
+            {"study": "Pelvic ultrasound", "performed": "2026-01-26T07:40", "text": "Transabdominal and transvaginal imaging. Uterus anteverted and normal in size and contour; endometrium thin and uniform. No intrauterine gestational sac. Both ovaries visualized, normal in appearance. No adnexal mass. No free fluid.", "conclusion": "Normal empty uterus. No sonographic evidence of intrauterine or ectopic pregnancy."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2026-01-26T05:40"},
+            {"procedure": "Catheterization of urinary bladder", "snomed": "410024004", "performed": "2026-01-26T06:15"}
+          ],
+          "documents": [
+            {"type": "ED Note", "title": "Emergency department record", "author": "emergency medicine", "date": "2026-02-09T15:30", "body": "REGIONAL EMERGENCY DEPARTMENT - PHYSICIAN RECORD\nArrival: 01/26/2026 05:40\nPatient: Wendy Schmidt, 37F\nAllergies: NKDA\nHome meds (per patient list): levothyroxine 75 mcg daily\nPMH (from shared record): Asherman syndrome; prolactinoma; hypergonadotropic hypogonadism; lactational amenorrhea (07/2025); Hashimoto thyroiditis; anorexia nervosa, in remission\n\nHPI: has not been able to pass urine since last evening despite a strong urge; lower belly increasingly uncomfortable. She is convinced she is pregnant: several weeks of morning nausea, her abdomen getting bigger, sore breasts. Home pregnancy tests have been negative and she believes they are wrong. Has been trying to conceive for a year since stopping oral contraceptives. Infertility and prolactinoma history; seen for amenorrhea about six months ago. No fever, flank pain, back pain, leg weakness or numbness, no saddle numbness, no new medications.\n\nExam: anxious, tearful at times. Abdomen distended, with suprapubic fullness. Handheld fetal heart monitor: no fetal heart tones. Bimanual exam: uterus not enlarged, no adnexal mass. Breasts enlarged and tender to her, no galactorrhea. Back without tenderness. Lower extremity strength, sensation and reflexes normal; perineal sensation intact.\n\nED course: bedside bladder scan 850 mL. Straight catheterization drained 800 mL of clear urine with immediate relief. Urine hCG negative. Serum hCG <5 mIU/mL. TSH 2.5 uIU/mL (0.4-4.0). Prolactin 14 ng/mL (4-23). BMP normal. Urinalysis normal. Pelvic ultrasound: normal empty uterus, no intrauterine or ectopic pregnancy. Results reviewed with her at length; she was distressed but accepted them by the end of the visit. Voided on her own twice before discharge, comfortable.\n\nDiagnosis: psychogenic urinary retention due to acute stress reaction.\n\nDisposition: discharged home with her husband. Follow up with primary care this week and with outpatient behavioral health; resource list given. Return for inability to void, fever, back pain, or leg weakness.\n\ncc: primary care physician"},
+            {"type": "Outside Records", "title": "ED record received", "author": "front desk", "date": "2026-02-09T15:35", "body": "ED record from 1/26/26 received by fax and scanned. Routed to PCP."}
+          ]
+        },
+        {
+          "id": "2026-02-12a",
+          "kind": "portal_message",
+          "start": "2026-02-12T22:05",
+          "documents": [
+            {"type": "Patient Message", "title": "ER visit", "author": "patient", "date": "2026-02-12T22:05", "body": "You probably got the ER papers. I'm ok now. I'm honestly embarrassed about it. I really thought I was pregnant. Things are better, I'm peeing normally and I've talked a lot with my husband. I don't think I need to come in right now, I'll see you at my physical."},
+            {"type": "Patient Message", "title": "RE: ER visit", "author": "PCP", "date": "2026-02-13T08:00", "body": "Wendy, thank you for writing, and there is nothing to be embarrassed about. Your body and mind have been through a great deal with all of this. I did read the ER record. I'd still be glad to see you sooner than the fall, even just a short visit or a video call to talk about how you're doing and about a counselor; the ER suggested one, and I agree it could help. You can book anytime. If the trouble passing urine ever comes back, go back to the ER."}
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T09:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: levothyroxine", "author": "MA", "date": "2026-03-10T09:15", "body": "Pharmacy request, levothyroxine 75 mcg 90-day. TSH 11/2025 normal. Sent with 1 refill."}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "pharmacy",
+          "start": "2026-06-09T08:50",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: levothyroxine", "author": "MA", "date": "2026-06-09T08:50", "body": "Refill request for levothyroxine 75 mcg #90 approved per protocol. Physical due this fall; reminder sent."}
+          ]
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T12:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Scheduling", "author": "patient", "date": "2026-08-04T12:40", "body": "Got the reminder, can I book my physical for late September? Mornings are best."},
+            {"type": "Patient Message", "title": "RE: Scheduling", "author": "front desk", "date": "2026-08-04T14:10", "body": "You're booked Tuesday, September 22 at 8:40. Please come fasting for labs."}
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "annual_physical",
+          "start": "2026-09-22T08:40",
+          "reason": "Annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

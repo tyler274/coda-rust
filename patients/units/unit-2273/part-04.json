@@ -1,0 +1,404 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002273",
+   "events": [
+    {
+     "id": "2026-01-13a",
+     "kind": "specialist_visit",
+     "start": "2026-01-13T14:00",
+     "service": "Vascular Surgery",
+     "reason": "right carotid stenosis",
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Vascular surgery consultation",
+       "author": "vascular surgery",
+       "date": "2026-03-03T10:00",
+       "body": "Outside vascular surgery group. Consult 01/13/2026. Sent 03/03/2026 after second request.\n\nReason: symptomatic right ICA stenosis.\nHistory: 70-year-old man with a single 10-minute episode of right monocular vision loss on 12/1/2025, none since. Duplex at that visit: right ICA 50-69%, left without significant stenosis. HFpEF with admission 8/2025; lung adenocarcinoma treated with SBRT 2024; low-grade bladder cancer resected 2023. Former smoker, quit 2012.\nMeds: aspirin 81, atorvastatin 40, lisinopril 20, metoprolol 50 BID, HCTZ 25, furosemide 40; clopidogrel course completed. NKDA.\nExam: alert, neurologically intact. No cervical bruit.\nAssessment: symptomatic moderate right ICA stenosis.\nDiscussion: reviewed endarterectomy versus best medical therapy. Considering his heart failure, treated lung cancer and age, we and the patient chose medical management: aspirin, statin, blood pressure control.\nPlan: repeat carotid duplex in 6 months; return sooner for any new symptoms."
+      }
+     ]
+    },
+    {
+     "id": "2026-01-27a",
+     "kind": "telephone",
+     "start": "2026-01-27T15:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Records request",
+       "author": "front desk",
+       "date": "2026-01-27T15:25",
+       "body": "Pt says he saw vascular surgery on the 13th and they decided 'no surgery for now.' Requested the consult note from their office."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-03a",
+     "kind": "outside_records",
+     "start": "2026-03-03T10:00",
+     "orders": [
+      {
+       "id": "vasc-2025",
+       "action": "done",
+       "date": "2026-03-03T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Vascular letter reviewed",
+       "author": "PCP",
+       "date": "2026-03-03T16:00",
+       "body": "Vascular note from January (requested twice). Medical management of R ICA 50-69%, repeat duplex July. No changes to his list."
+      }
+     ]
+    },
+    {
+     "id": "2026-03-10a",
+     "kind": "imaging",
+     "start": "2026-03-10T12:30",
+     "reports": [
+      {
+       "study": "CT chest",
+       "performed": "2026-03-10T12:30",
+       "issued": "2026-03-11T08:45",
+       "text": "CT chest with contrast, 18 months after SBRT. Comparison 9/16/2025. Right upper lobe post-radiation fibrosis unchanged. No new pulmonary nodules. No hilar or mediastinal adenopathy. No effusion.",
+       "conclusion": "Stable treatment-related fibrosis. No evidence of recurrence."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "18-month CT",
+       "author": "PCP",
+       "date": "2026-03-12T07:55",
+       "body": "Rad onc surveillance CT: stable, no recurrence. Next in 6 months per their schedule."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-27a",
+     "kind": "office_visit",
+     "start": "2026-05-27T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine check-up",
+     "state": {
+      "weight_kg": 70.0
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 1
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Patient anger/acute situational irritability",
+       "icd10": "R45.4",
+       "action": "diagnosed",
+       "onset": "2026-05-27"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2026-05-27T10:50",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2026-05-27T10:50",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2026-05-27T10:50",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2026-05-27T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office Visit",
+       "author": "PCP",
+       "date": "2026-05-27T11:15",
+       "body": "Routine check. Roomed 35 min late - the clinic was running behind after an add-on.\nUsually easygoing and on time. Today short with the MA at intake, called the wait room 'a disaster.' When I came in he cut me off: said he's tired of waiting every single time and won't be treated like he doesn't matter. Arms crossed, not looking at me.\nI acknowledged the wait was long and that his time matters, and apologized. Asked if anything else was going on - says no, just fed up. Settled after a few minutes and we went on.\nInterval: no further vision episodes. No dyspnea beyond baseline, weights steady ~154. Legs fine on atorvastatin. No hematuria.\nPHQ-2 1. Denies feeling down most days.\nExam: lungs clear, RRR, no edema. Neuro nonfocal.\nA/P:\n1. Situational irritability over the wait - addressed; no mood disorder suspected. Will check in next visit.\n2. HTN/HFpEF - stable, continue all.\n3. R ICA stenosis, medical management - repeat duplex July per vascular.\n4. Lung adenoca s/p SBRT, bladder ca s/p TURBT - surveillance per specialists, both clear.\n5. Labs: CMP, CBC, lipids.\nFront desk asked to book him first slot of the day next time. RTC 2 months."
+      }
+     ]
+    },
+    {
+     "id": "2026-05-28a",
+     "kind": "portal_message",
+     "start": "2026-05-28T14:30",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Your labs",
+       "author": "PCP",
+       "date": "2026-05-28T14:30",
+       "body": "Mr. Talbot, your labs from yesterday are stable - kidneys, potassium, blood count all normal and cholesterol where it has been. No changes. Your July visit is booked for 8:00 am, first appointment of the day."
+      }
+     ]
+    },
+    {
+     "id": "2026-06-30a",
+     "kind": "telephone",
+     "start": "2026-06-30T10:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Appointment reminder",
+       "author": "MA",
+       "date": "2026-06-30T10:45",
+       "body": "Reminder call for 7/31 8:00 visit. Pt confirmed, also has the vascular ultrasound on 7/14. No concerns."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-14a",
+     "kind": "imaging",
+     "start": "2026-07-14T09:00",
+     "reports": [
+      {
+       "study": "Carotid duplex ultrasound",
+       "performed": "2026-07-14T09:00",
+       "text": "Bilateral carotid duplex, 6-month follow-up. Comparison 12/1/2025. Right ICA: plaque at origin, velocities in the 50-69% range, unchanged. Left ICA: no hemodynamically significant stenosis. Vertebral arteries antegrade.",
+       "conclusion": "Stable right ICA stenosis 50-69%."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Carotid duplex",
+       "author": "PCP",
+       "date": "2026-07-20T08:30",
+       "body": "Vascular's repeat duplex report received: R ICA 50-69% unchanged. Continue medical management."
+      }
+     ]
+    },
+    {
+     "id": "2026-07-31a",
+     "kind": "office_visit",
+     "start": "2026-07-31T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and heart failure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "conditions": [
+      {
+       "label": "Patient anger/acute situational irritability",
+       "icd10": "R45.4",
+       "action": "resolved"
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2026-07-31T08:40",
+       "resulted": "2026-07-31T15:00",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2026-07-31T08:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2026-07-31T08:45",
+       "body": "First slot, roomed on time. He opened by apologizing for May - 'I was a bear that day.' No hard feelings; irritability resolved.\nFeels well. Walking most mornings. Weights 153-155. No orthopnea, no swelling. No vision changes.\nCarotid duplex 7/14 stable.\nExam: lungs clear, heart regular, no edema.\nA/P: HTN/HFpEF stable - continue lisinopril, metoprolol, HCTZ, furosemide. Atorva 40 and ASA. BMP today. Urology scope in August, rad onc CT in September. RTC 3 months with flu shot."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-03a",
+     "kind": "portal_message",
+     "start": "2026-08-03T09:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab result",
+       "author": "PCP",
+       "date": "2026-08-03T09:15",
+       "body": "Your kidney function and potassium from Friday are normal. Keep everything the same."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lab result",
+       "author": "patient",
+       "date": "2026-08-03T12:02",
+       "body": "Thanks. see you in October"
+      }
+     ]
+    },
+    {
+     "id": "2026-08-11a",
+     "kind": "procedure_visit",
+     "start": "2026-08-11T10:30",
+     "service": "Urology",
+     "reason": "surveillance cystoscopy",
+     "procedures": [
+      {
+       "procedure": "Cystoscopy",
+       "snomed": "142505009",
+       "performed": "2026-08-11T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Procedure Note",
+       "title": "Surveillance cystoscopy",
+       "author": "urology",
+       "date": "2026-08-18T11:00",
+       "body": "Outside urology. Office cystoscopy 08/11/2026. Hx low-grade pTa urothelial carcinoma, TURBT 8/2023, three clear scopes since. Today: normal urethra, bladder mucosa without papillary or flat lesions, healed right lateral wall scar. No recurrence. Continue yearly cystoscopy."
+      }
+     ]
+    },
+    {
+     "id": "2026-08-20a",
+     "kind": "pharmacy",
+     "start": "2026-08-20T08:50",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "Refill request",
+       "author": "RN",
+       "date": "2026-08-20T09:10",
+       "body": "Electronic request: metoprolol tartrate 50 mg and hydrochlorothiazide 25 mg, 90 days. Seen 7/31, BMP normal. Approved, 1 refill each until next visit."
+      }
+     ]
+    },
+    {
+     "id": "2026-10-27a",
+     "kind": "office_visit",
+     "start": "2026-10-27T08:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and heart failure follow-up",
+     "appointment": "booked"
+    }
+   ]
+  }
+ ]
+}

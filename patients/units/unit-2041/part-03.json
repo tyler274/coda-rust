@@ -1,0 +1,344 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002041",
+      "events": [
+        {
+          "id": "2023-02-08a",
+          "kind": "pharmacy",
+          "start": "2023-02-08T09:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill", "author": "MA", "date": "2023-02-08T09:20", "body": "Electronic request, HCTZ 25 mg #90. Last seen November. Sent per protocol; front desk to book his physical."}
+          ]
+        },
+        {
+          "id": "2023-05-17a",
+          "kind": "annual_physical",
+          "start": "2023-05-17T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"bp": [132, 84], "weight_kg": 76.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-05-17T08:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-05-17T08:35", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-05-17T08:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-05-17T08:35", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 10},
+            {"survey": "AUDIT-C total score", "value": 10}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-05-17T08:45"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-05-17T08:00"},
+            {"procedure": "Immunization administration", "performed": "2023-05-17T08:45"},
+            {"procedure": "Venipuncture", "performed": "2023-05-17T08:35"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-05-17T08:00", "body": "Physical, first since 2019. ED record from November never came; we have the instruction sheet only.\n\nInterval: no hospital stays since November. No more hallucinations. Belly quiet except the odd ache after fried food. Working steady at the garage, says it keeps him busy.\nAlcohol: 'about the same.' AUDIT-C 10. No withdrawal symptoms he will admit to.\nMood: PHQ-9 10, best in a while. Denies thoughts of self-harm.\nMeds: HCTZ 25 daily. NKDA. Former smoker, quit 2015.\n\nROS: no chest pain, no dyspnea, no melena, no jaundice.\nExam: BP okay. Weight up a little. Alert, oriented. Skin: spider angiomas on the chest as before, no jaundice. Heart RRR. Lungs clear. Abdomen soft, nontender; liver edge just palpable. No ascites, no edema. Gait normal.\n\nA/P\n1. Severe AUD: unchanged. Brief counseling. Offered referral, declined.\n2. Alcoholic liver disease: CMP, GGT, CBC today.\n3. Chronic pancreatitis, malnutrition history: weight recovering slowly.\n4. Wernicke encephalopathy (2022), alcoholic hallucinosis (2022): no recurrence.\n5. HTN: fine on HCTZ.\n6. Depression: mild-moderate today.\n7. Prevention: PCV20 today given alcohol use and liver disease. FIT due again 2024. Lipids today.\nRTC 6 months."},
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2023-05-18T17:00", "body": "Hi Mark, kidney function, salts, blood counts and cholesterol are fine. Liver tests are still elevated in the same alcohol-related pattern, not worse. Your protein level is better than last year."}
+          ]
+        },
+        {
+          "id": "2023-10-24a",
+          "kind": "hospital_admission",
+          "start": "2023-10-24T21:10",
+          "end": "2023-10-29T14:00",
+          "service": "Regional hospital — Emergency Department and Medicine",
+          "reason": "Epigastric pain, nausea, vomiting",
+          "conditions": [
+            {"label": "Alcohol-induced acute pancreatitis", "icd10": "K85.20", "action": "diagnosed", "onset": "2023-10-23"}
+          ],
+          "medications": [
+            {"drug": "ondansetron 4 MG Disintegrating Oral Tablet", "action": "historical", "sig": "Dissolve 1 tablet on the tongue every 8 hours as needed for nausea", "dose": {"value": 4, "unit": "mg"}, "frequency": "Q8H PRN", "route": "Oral", "course": "short", "reason": "Nausea"}
+          ],
+          "vitals": [
+            {"time": "2023-10-24T21:18", "bp": [90, 60], "hr": 115, "temp_c": 38.2}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-10-24T21:40", "results": [{"test": "White Blood Cells", "value": 16.0}, {"test": "Hemoglobin", "value": 13.5}, {"test": "Platelets", "value": 250}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-10-24T21:40", "results": [{"test": "Blood Urea Nitrogen", "value": 25}, {"test": "Creatinine", "value": 1.2}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2023-10-24T21:40", "results": [{"test": "Aspartate Aminotransferase", "value": 120}, {"test": "Alanine Aminotransferase", "value": 90}]},
+            {"panel": null, "collected": "2023-10-24T21:40", "results": [{"test": "Lipase", "value": 850}]},
+            {"panel": null, "collected": "2023-10-24T21:40", "results": [{"test": "Amylase", "loinc": "1798-8", "unit": "U/L", "value": 900}]}
+          ],
+          "reports": [
+            {"study": "Abdominal ultrasound", "performed": "2023-10-25T08:30", "text": "Indication: pancreatitis.\nFindings: Gallbladder without stones, wall not thickened, no pericholecystic fluid. Common bile duct normal caliber; no intrahepatic biliary ductal dilatation. Liver normal in size. Pancreas partly obscured by bowel gas. Spleen and kidneys unremarkable. No ascites.", "conclusion": "No gallstones. No biliary ductal dilatation."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2023-10-24T21:10"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2023-10-25T02:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "hospital medicine", "date": "2023-12-06T11:30", "body": "Regional hospital. Admission 10/24/2023 to 10/29/2023.\n\nDiagnosis: acute alcohol-induced pancreatitis, recurrent, on chronic pancreatitis.\nHistory includes infected necrosis in 2021 managed with a percutaneous drain, Wernicke encephalopathy 2022, alcohol use disorder, hypertension, depression, malnutrition.\n\nPresented after a day of steady, severe upper abdominal pain going through to the back with nausea and vomiting. Eating made it worse; sitting forward eased it a little.\nED: BP 90/60, HR 115, temp 38.2 C. Appeared uncomfortable and distressed. Epigastric tenderness, bowel sounds diminished.\nLabs: WBC 16.0, Hgb 13.5, plt 250. Amylase 900, lipase 850. AST 120, ALT 90. BUN 25, creatinine 1.2.\nRUQ/abdominal ultrasound: no gallstones and no biliary duct dilation.\n\nCourse: IV fluids with prompt hemodynamic response, IV analgesia, antiemetics, withdrawal protocol. Diet advanced day 3. No imaging evidence of a new collection was sought; clinically improving.\nDischarge 10/29: home. Medications: hydrochlorothiazide 25 mg daily; ondansetron 4 mg ODT every 8 h as needed for nausea.\nAllergies: NKDA. Follow up with PCP. Abstinence advised.\n\nReceived 12/6/2023 after second request. Scanned, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2023-11-08a",
+          "kind": "pharmacy",
+          "start": "2023-11-08T14:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request, ondansetron", "author": "MA", "date": "2023-11-08T14:15", "body": "Pharmacy faxed a refill request for ondansetron 4 mg ODT, original prescriber is a hospitalist at the regional hospital, filled 10/29. Not on our med list. Called pt: he was admitted 10/24 to 10/29 with pancreatitis again. Booked hospital follow-up 11/14. Routed to PCP."},
+            {"type": "Telephone Encounter", "title": "PCP note", "author": "PCP", "date": "2023-11-08T16:40", "body": "Did not know about this admission. Will address refill at the visit. Please request the discharge summary."}
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, pancreatitis",
+          "conditions": [
+            {"label": "Alcohol-induced acute pancreatitis", "icd10": "K85.20", "action": "resolved"}
+          ],
+          "state": {"weight_kg": 72.0},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-11-14T11:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-11-14T11:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 13},
+            {"survey": "AUDIT-C total score", "value": 10}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-11-14T11:05"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, moderate complexity", "performed": "2023-11-14T10:20"},
+            {"procedure": "Immunization administration", "performed": "2023-11-14T11:05"},
+            {"procedure": "Venipuncture", "performed": "2023-11-14T11:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2023-11-14T10:20", "body": "Learned of the October admission from a pharmacy refill request. Summary not here; per him: pancreatitis again, five days, fluids and pain medicine, ultrasound showed no gallstones. Home 10/29 with nausea pills, used most of them the first week, now rarely needed.\n\nPain gone. Eating, though less than before. Lost weight again.\nAlcohol: resumed after discharge, 'less.' AUDIT-C 10. PHQ-9 13, no thoughts of self-harm.\n\nExam: afebrile, BP up a little today. Thinner. Abdomen soft, mild epigastric tenderness, no guarding. Skin no jaundice.\n\nA/P\n1. Recurrent acute alcohol pancreatitis: resolved clinically. Third hospital stay for the pancreas. Told him straight that each attack takes more of the gland.\n2. Ondansetron: he has enough left, no refill needed.\n3. Severe AUD: same. Program list, his choice.\n4. Malnutrition: weight down again, encourage supplements.\n5. Depression: moderate.\nCMP, CBC today. Flu shot today. Hospital records requested again. RTC 3-4 months."},
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2023-11-15T12:10", "body": "Mark, white count and kidney function are back to normal after the hospital. Liver tests are elevated as before."}
+          ]
+        },
+        {
+          "id": "2024-03-06a",
+          "kind": "portal_message",
+          "start": "2024-03-06T19:40",
+          "documents": [
+            {"type": "Patient Communication", "title": "Refill and appointment", "author": "patient", "date": "2024-03-06T19:40", "body": "need my blood pressure pill refilled, pharmacy said they need ok from you. sorry I missed scheduling, can I come in may sometime"},
+            {"type": "Patient Communication", "title": "Re: Refill and appointment", "author": "front desk", "date": "2024-03-07T09:05", "body": "Hi Mark, the refill was sent this morning. You're booked May 22 at 1:40 with your doctor."}
+          ]
+        },
+        {
+          "id": "2024-05-22a",
+          "kind": "office_visit",
+          "start": "2024-05-22T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Blood pressure, alcohol, mood follow-up",
+          "state": {"bp": [136, 86], "weight_kg": 74.0},
+          "measure": ["bp", "hr", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-05-22T14:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Albumin"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": null, "collected": "2024-05-22T14:20", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 12},
+            {"survey": "AUDIT-C total score", "value": 10}
+          ],
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-05-22T14:25"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-05-22T13:40"},
+            {"procedure": "Immunization administration", "performed": "2024-05-22T14:25"},
+            {"procedure": "Venipuncture", "performed": "2024-05-22T14:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-05-22T13:40", "body": "Six months since the last visit. No hospital visits. October discharge summary finally came in December, matches his account.\n\nFeeling okay. Belly fine. Drinking 'normal for me.' AUDIT-C 10. PHQ-9 12, denies thoughts of self-harm.\nMeds: HCTZ 25. NKDA.\n\nExam: BP a little higher than last year. Weight back up some. Alert, oriented. Spider angiomas unchanged. Liver edge just palpable. No edema.\n\nA/P\n1. HTN: borderline today, continue HCTZ 25, recheck next visit.\n2. Severe AUD, ALD: counseling; CMP and GGT today.\n3. Depression: moderate, stable.\n4. Chronic pancreatitis: quiet.\n5. Turned 50 next month: Shingrix #1 today, #2 in 2-6 months. FIT due; declined a kit today, will do it next time.\nRTC 6 months."}
+          ]
+        },
+        {
+          "id": "2024-11-01a",
+          "kind": "hospital_admission",
+          "start": "2024-11-01T02:40",
+          "end": "2024-11-08T13:00",
+          "service": "Regional hospital — Emergency Department and ICU",
+          "reason": "Acute confusion, dyspnea",
+          "conditions": [
+            {"label": "Ethylene glycol poisoning, undetermined intent", "icd10": "T52.3X4A", "action": "diagnosed", "onset": "2024-10-31"},
+            {"label": "Acute kidney injury", "icd10": "N17.9", "action": "diagnosed", "onset": "2024-11-01"}
+          ],
+          "vitals": [
+            {"time": "2024-11-01T02:48", "bp": [140, 90], "hr": 110, "rr": 28, "temp_c": 37.2}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-01T03:05", "results": [{"test": "Calcium", "value": 7.0}, {"test": "Creatinine", "value": 2.5}, {"test": "Anion Gap", "value": 24}]},
+            {"panel": null, "collected": "2024-11-01T03:05", "results": [{"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.25}]},
+            {"panel": null, "collected": "2024-11-01T03:20", "results": [{"test": "Calcium oxalate crystals in urine sediment", "loinc": "5774-5", "text": "Present"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-08T05:30", "results": [{"test": "Creatinine", "value": 1.6}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2024-11-01T02:40"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2024-11-01T06:00"},
+            {"procedure": "Hemodialysis", "snomed": "302497006", "performed": "2024-11-01T08:30"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "critical care", "date": "2024-11-20T10:15", "body": "Regional hospital. ED arrival 11/1/2024, ICU 11/1 to 11/5, medicine floor, discharged home 11/8/2024.\n\nDiagnoses: ethylene glycol poisoning, intent undetermined; acute kidney injury; high anion gap metabolic acidosis. Background: severe alcohol use disorder, chronic pancreatitis, prior Wernicke encephalopathy and alcoholic hallucinosis, depression, hypertension.\n\nPresentation: brought in by his wife for sudden confusion and labored breathing. She described him as low since losing his job over the summer and drinking more than usual; she did not know what he had been drinking.\nT 37.2 C, BP 140/90, HR 110, RR 28. Breathing fast, faintly sweet smell to the breath, disoriented to time and place, tender over both flanks.\nUrinalysis: calcium oxalate crystals. Calcium 7.0, creatinine 2.5, arterial pH 7.25, anion gap 24.\n\nCourse: fomepizole started in the ED. Nephrology placed a temporary dialysis catheter and he received hemodialysis in the ICU with clearing of the acidosis. Mental status returned to baseline by day 3. Creatinine improved to 1.6 by discharge. Psychiatry saw him on the floor; the question of intent was not settled in their note, and he was discharged home with his wife and outpatient follow-up.\n\nDischarge medications: hydrochlorothiazide 25 mg daily. Allergies: NKDA.\nFollow-up: PCP within 1-2 weeks with a BMP; outpatient mental health and substance use treatment strongly recommended.\n\nReceived 11/20/2024. Scanned, routed to PCP."}
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "telephone",
+          "start": "2024-11-12T15:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Call from wife", "author": "PCP", "date": "2024-11-12T15:30", "body": "Spoke with his wife. He was in the ICU 11/1 to 11/8, poisoned by antifreeze per the doctors, needed dialysis, home now. She doesn't know whether he meant to. He lost his job at the garage over the summer and has been down and drinking more. He is home with her, sleeping a lot, eating some. She has cleared the garage of the automotive fluids. I asked her to call 911 for any confusion or if he talks about hurting himself, and gave her the crisis line. Booked 11/19 with a BMP. Records requested."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T09:00",
+          "end": "2024-11-19T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, ethylene glycol poisoning",
+          "vitals": {"weight_kg": 71.0},
+          "measure": ["bp", "hr", "spo2", "rr"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-19T09:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Bicarbonate"}, {"test": "Creatinine", "value": 1.4}, {"test": "Calcium"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-11-19T09:40", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 17},
+            {"survey": "AUDIT-C total score", "value": 11}
+          ],
+          "social": [
+            {"item": "Occupation", "value": "Unemployed (former automotive mechanic)"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-11-19T09:45"}
+          ],
+          "orders": [
+            {"id": "psych-ref-2024", "action": "placed", "order": "Psychiatry referral", "category": "referral", "to": "Psychiatry", "reason": "Worsening recurrent depression after ethylene glycol ingestion"},
+            {"id": "addiction-ref-2024", "action": "placed", "order": "Addiction medicine referral", "category": "referral", "to": "Addiction Medicine", "reason": "Severe alcohol use disorder"}
+          ],
+          "procedures": [
+            {"procedure": "Transitional care management, high complexity", "performed": "2024-11-19T09:00"},
+            {"procedure": "Immunization administration", "performed": "2024-11-19T09:45"},
+            {"procedure": "Venipuncture", "performed": "2024-11-19T09:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Hospital Follow-up", "author": "PCP", "date": "2024-11-19T09:00", "body": "With wife. Discharge summary not yet received; history from both and his paperwork. ICU 11/1-11/8 for ethylene glycol (antifreeze) poisoning, fomepizole and dialysis, kidney function recovering at discharge. Saw psychiatry in the hospital.\n\nHe says he does not remember what he drank that night and gets quiet when asked if he meant to. Lost his job at the garage in the summer; money tight. Sleeping a lot, little interest in anything. PHQ-9 17. Asked directly: no current thoughts of killing himself, no plan; says he wants to be around for his wife. Wife has removed the fluids from the garage and there are no guns in the house.\nAlcohol: some beer since discharge. AUDIT-C 11.\nNo flank pain now, urinating normally.\n\nExam: Weight 71 kg. Tired, flat affect, makes eye contact, linear. Oriented x3. No nystagmus. Heart RRR. Lungs clear. No flank tenderness. Healing catheter site right neck. No edema.\n\nA/P\n1. Ethylene glycol poisoning, intent unclear, s/p fomepizole and dialysis. Safety plan reviewed with both; crisis line numbers given again.\n2. AKI: BMP today.\n3. Recurrent major depression, worse: PHQ-9 17. Placing psychiatry referral today; he agreed to be called.\n4. Severe AUD: addiction medicine referral placed as well. Wife supportive.\n5. HTN: BP up today, in pain and under stress; continue HCTZ, recheck next visit.\n6. Flu shot today.\nRTC 6-8 weeks, sooner as needed."},
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2024-11-20T08:45", "body": "Mark, your creatinine is 1.4, better than the 1.6 when you left the hospital. Salts and blood counts are fine. We'll recheck at your next visit. The psychiatry and addiction medicine offices should call you this week."}
+          ]
+        },
+        {
+          "id": "2024-12-04a",
+          "kind": "portal_message",
+          "start": "2024-12-04T11:15",
+          "documents": [
+            {"type": "Patient Communication", "title": "Referral phone numbers", "author": "patient", "date": "2024-12-04T11:15", "body": "This is his wife writing on his account. Nobody called him about the psychiatry or the addiction appointments. Can you send the numbers so we can call ourselves?"},
+            {"type": "Patient Communication", "title": "Re: Referral phone numbers", "author": "MA", "date": "2024-12-04T14:30", "body": "Hi, both referrals were sent on 11/19. Here are the intake lines: psychiatry 413-555-0161, addiction medicine 413-555-0174. Mention his name and date of birth and that his primary care doctor sent the referral."}
+          ]
+        },
+        {
+          "id": "2025-01-08a",
+          "kind": "office_visit",
+          "start": "2025-01-08T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up kidney function, mood, alcohol",
+          "conditions": [
+            {"label": "Acute kidney injury", "icd10": "N17.9", "action": "resolved"}
+          ],
+          "state": {"bp": [134, 86], "weight_kg": 71.5},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-01-08T15:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Bicarbonate"}, {"test": "Creatinine", "value": 1.1}, {"test": "Calcium"}]},
+            {"panel": null, "collected": "2025-01-08T15:00", "results": [{"test": "Gamma Glutamyl Transferase"}]}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 15},
+            {"survey": "AUDIT-C total score", "value": 11}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-08T14:20"},
+            {"procedure": "Venipuncture", "performed": "2025-01-08T15:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-01-08T14:20", "body": "Seven weeks after the ICU stay. Discharge summary reviewed since last visit: fomepizole, dialysis, psychiatry consult without a firm conclusion on intent, creatinine 1.6 at discharge.\n\nHe came alone. Has not called either referral; wife called psychiatry once and was put on a waitlist, he says. Looking for work, nothing yet. Mood low, PHQ-9 15. No thoughts of self-harm, no plan, safety plan still on the fridge. Drinking about the same as before the hospital. AUDIT-C 11.\nNo urinary symptoms. Appetite fair.\n\nExam: BP borderline. Weight steady. Flat but engaged, oriented. Heart and lungs normal. No edema.\n\nA/P\n1. AKI: creatinine today; if normal, resolved.\n2. Ethylene glycol poisoning 11/2024: no repeat, garage cleared.\n3. Recurrent major depression: still moderately severe. Encouraged him to call psychiatry himself; numbers given again.\n4. Severe AUD: addiction medicine referral still open, encouraged.\n5. HTN: continue HCTZ.\n6. Shingrix #2 overdue; he wants to wait.\nRTC 2-3 months."}
+          ]
+        },
+        {
+          "id": "2025-01-09a",
+          "kind": "portal_message",
+          "start": "2025-01-09T12:30",
+          "documents": [
+            {"type": "Result Note", "title": "Creatinine", "author": "PCP", "date": "2025-01-09T12:30", "body": "Creatinine 1.1, back to his usual. AKI resolved."},
+            {"type": "Patient Communication", "title": "Your labs", "author": "PCP", "date": "2025-01-09T12:35", "body": "Mark, your kidney test is back to normal at 1.1. Please call the psychiatry and addiction medicine numbers when you can, and book a visit for March."}
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "pharmacy",
+          "start": "2025-04-16T10:00",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill", "author": "MA", "date": "2025-04-16T10:00", "body": "E-refill request HCTZ 25 mg #90. Last visit 1/8, March follow-up never booked. Sent per protocol, left voicemail to schedule."}
+          ]
+        },
+        {
+          "id": "2025-07-09a",
+          "kind": "portal_message",
+          "start": "2025-07-09T09:10",
+          "documents": [
+            {"type": "Patient Communication", "title": "Time for a follow-up", "author": "front desk", "date": "2025-07-09T09:10", "body": "Hi Mark, our records show you're overdue for a follow-up visit with your doctor. Please call or reply here and we'll find a time that works."}
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "hospital_admission",
+          "start": "2025-10-27T20:30",
+          "end": "2025-11-04T12:00",
+          "service": "Regional hospital — Emergency Department and ICU",
+          "reason": "Confusion, respiratory distress",
+          "vitals": [
+            {"time": "2025-10-27T20:36", "bp": [130, 85], "hr": 110, "rr": 30, "temp_c": 37.2, "spo2": 94}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-27T20:55", "results": [{"test": "Sodium", "value": 140}, {"test": "Potassium", "value": 4.2}, {"test": "Chloride", "value": 98}, {"test": "Bicarbonate", "value": 12}, {"test": "Creatinine", "value": 1.8}, {"test": "Anion Gap", "value": 30}]},
+            {"panel": null, "collected": "2025-10-27T20:55", "results": [{"test": "Osmolality of Serum or Plasma", "loinc": "2692-2", "unit": "mOsm/kg", "value": 320}]},
+            {"panel": null, "collected": "2025-10-27T20:55", "results": [{"test": "Osmolality of Serum or Plasma, calculated", "loinc": "18182-6", "unit": "mOsm/kg", "value": 290}]},
+            {"panel": null, "collected": "2025-10-27T21:10", "results": [{"test": "Calcium oxalate crystals in urine sediment", "loinc": "5774-5", "text": "Present"}]}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-10-27T20:30"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-10-28T00:30"},
+            {"procedure": "Hemodialysis", "snomed": "302497006", "performed": "2025-10-28T03:00"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Hospital discharge summary", "author": "critical care", "date": "2025-12-03T13:45", "body": "Regional hospital. ED 10/27/2025, ICU 10/27 to 10/31, then medicine; discharged 11/4/2025.\n\nDiagnosis: ethylene glycol poisoning, second episode (first 11/2024). High anion gap metabolic acidosis with an osmolar gap.\nBackground per our records: severe alcohol use disorder, chronic pancreatitis, Wernicke encephalopathy, alcoholic hallucinosis, recurrent depression, hypertension, malnutrition.\n\nPresentation: wife found him confused and struggling to breathe in the garage, several empty containers of car products nearby. She reports he has been depressed and out of work since losing his job last year, with ongoing heavy drinking.\nBP 130/85, HR 110, RR 30, T 37.2 C, SpO2 94% on room air. Rapid breathing, faint sweet breath odor, myoclonic jerks, horizontal nystagmus.\nLabs: Na 140, K 4.2, Cl 98, HCO3 12, creatinine 1.8. Serum osmolality 320 measured vs 290 calculated. Anion gap 30. Urine microscopy: calcium oxalate crystals.\n\nCourse: fomepizole, hemodialysis via a temporary catheter, ICU monitoring; mentation cleared. Psychiatry consulted. Discharged home with his wife.\nDischarge medications: hydrochlorothiazide 25 mg daily. Allergies: NKDA.\nFollow-up: PCP; outpatient psychiatry and substance use treatment.\n\nReceived by fax 12/3/2025. Scanned to chart, routed to PCP.\n\nPCP: Reviewed. Second ingestion. He has not been seen here since January. Will reach out."}
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "portal_message",
+          "start": "2025-12-04T08:50",
+          "documents": [
+            {"type": "Patient Communication", "title": "Checking in", "author": "PCP", "date": "2025-12-04T08:50", "body": "Mark, I received the records from your hospital stay in October and November. I'd like to see you, and I can fit you in this week. Please call the office or reply here. If you're having thoughts of hurting yourself, call 988 or go to the emergency room."}
+          ]
+        },
+        {
+          "id": "2026-03-11a",
+          "kind": "pharmacy",
+          "start": "2026-03-11T09:40",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill", "author": "MA", "date": "2026-03-11T09:40", "body": "E-refill request HCTZ 25 mg. Last visit 1/8/2025, no reply to the December message. Per PCP, 30-day supply only, needs a visit and labs before more. Voicemail left."}
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "pharmacy",
+          "start": "2026-06-17T11:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill", "author": "MA", "date": "2026-06-17T11:20", "body": "Pharmacy requesting HCTZ again. Discussed with PCP: 30 days sent so he isn't without it. Called home number, spoke with wife, who will have him call to book. No appointment made yet."}
+          ]
+        }
+      ]
+    }
+  ]
+}

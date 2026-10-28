@@ -1,0 +1,2623 @@
+{
+  "unit": "unit-1874",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001874",
+      "given": "Erin",
+      "family": "Winslow",
+      "birth_date": "1995-05-19",
+      "address_line": "57 Jabish Brook Road, Belchertown, MA 01007",
+      "phone": "+1-774-555-0101",
+      "email": "erin.winslow@example.test",
+      "marital_status": "single",
+      "summary": "Teacher in her late twenties with a BRCA2 mutation and a childhood Wilms tumor treated with left nephrectomy and abdominopelvic radiation, followed with high-risk breast MRI. Crohn disease is found by GI in early 2025 and controlled on adalimumab; in August 2026, after her last practice visit, a breast surgeon sees her for a left breast mass with biopsy pending.",
+      "events": [
+        {
+          "id": "2021-07-26a",
+          "kind": "telephone",
+          "start": "2021-07-26T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2021-07-26T10:20",
+              "author": "front desk",
+              "body": "Caller is a 26 y/o teacher moving her primary care to us; prior PCP was across the river and she wants someone closer to Belchertown. Membership explained, she enrolled on the call. Mentions she carries a BRCA2 mutation and had a kidney tumor as a child, wants a doctor who will keep track of her screening. No current meds except a vitamin D supplement. Booked new patient physical 8/10, 1 hr slot, fasting labs same morning. Records release form emailed for her old office."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-10a",
+          "kind": "establish_care",
+          "start": "2021-08-10T08:30",
+          "end": "2021-08-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care, new patient physical",
+          "conditions": [
+            {
+              "label": "Hereditary breast and ovarian cancer syndrome (BRCA2 mutation carrier)",
+              "action": "history",
+              "onset": "2017-06-01",
+              "note": "germline BRCA2 pathogenic variant found on testing after her mother's breast cancer",
+              "icd10": "Z15.01"
+            },
+            {
+              "label": "History of kidney cancer",
+              "action": "history",
+              "onset": "2001-09-01",
+              "note": "stage II Wilms tumor at age 6 treated with left nephrectomy and abdominopelvic radiation, no evidence of disease since"
+            },
+            {
+              "label": "Acquired absence of kidney",
+              "action": "history",
+              "onset": "2001-09-01",
+              "note": "left nephrectomy for Wilms tumor"
+            },
+            {
+              "label": "Family history of breast cancer",
+              "action": "history",
+              "onset": "2015-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "cholecalciferol 0.05 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule (2000 units) by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "supplement"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              79
+            ],
+            "hr": 76,
+            "spo2": 97,
+            "weight_kg": 62.7,
+            "height_cm": 164.3
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-10T08:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 253
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-10T08:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-10T08:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2021-08-10T08:10",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-10T08:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Wine 1-2 glasses per month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2021-08-10T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-08-10T08:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical Note",
+              "title": "New Patient Visit",
+              "date": "2021-08-10T09:30",
+              "author": "PCP",
+              "body": "26 y/o woman, elementary school teacher, new to me. Feels well, no complaints, came mostly so someone is minding her cancer-risk screening.\n\nOncologic hx: Wilms tumor, stage II, at age 6 -> L nephrectomy plus abdominal/pelvic radiation at a children's hospital. Off surveillance for years, no recurrence. She does not have the treatment summary but thinks no further follow-up was set up after age 18. Single kidney.\nGenetics: BRCA2 pathogenic variant, tested ~2017 after mom's diagnosis. Has had breast MRI yearly; last one last year at her old office, she says normal. Not yet discussed ovarian risk management in any detail.\nFHx: mother breast ca at 45 (living). Maternal aunt ovarian ca at 52. Maternal grandmother breast ca at 68. Has an older sister.\nPSH: L nephrectomy (age 6). Radiation as above.\nMeds: vitamin D3 2000 units daily, OTC.\nAllergies: none to drugs.\nSocial: never smoked. Wine once or twice a month. Lives in Belchertown, walks and runs most days, eats a lot of produce.\nGyn: regular cycles, Pap last year at prior office, she believes normal.\nImm: thinks she is up to date, had both COVID shots this spring; records coming.\n\nROS negative x 12 systems.\n\nExam: NAD. HEENT clear. Neck supple, no thyroid enlargement or nodes. Heart RRR no murmur. Lungs clear. Abd soft, healed L flank/transverse scar, nontender, no masses or organomegaly. Breasts: deferred today, she prefers to defer, gets imaging. Skin no rashes. Ext no edema. Neuro nonfocal.\n\nA/P\n1. BRCA2 carrier - continue annual breast MRI; order placed for November so it lines up with her prior cycle. Mammography to start at 30. Will revisit ovarian planning in a few years, she is not ready to talk about it now.\n2. Hx Wilms tumor s/p L nephrectomy and abdominopelvic RT - solitary kidney: yearly creatinine and UA, avoid NSAIDs regularly. Will look up the long-term follow-up guidance for childhood radiation once old records arrive.\n3. Health maintenance - CBC, CMP, lipids, UA, HIV and hep C screen today. Flu shot in October. PHQ-2 0.\n4. Vitamin D - continue her supplement.\nRelease signed, request faxed to prior PCP. RTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-12a",
+          "kind": "portal_message",
+          "start": "2021-08-12T16:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2021-08-12T16:45",
+              "author": "PCP",
+              "body": "Hi Erin, all of your bloodwork came back fine. Kidney function is normal for one kidney, blood counts, liver tests and cholesterol are all where they should be, and the HIV and hepatitis C screens were negative. Urine was clean. Nothing to do until your MRI in November."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-31a",
+          "kind": "outside_records",
+          "start": "2021-08-31T11:00",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2020-03-04T10:00",
+              "text": "Specimen: ThinPrep liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation, transformation zone component present.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            },
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2020-11-05T15:30",
+              "text": "Indication: high-risk screening, BRCA2 mutation carrier. Technique: bilateral breast MRI with and without IV gadolinium. Breast composition: heterogeneous fibroglandular tissue. Background parenchymal enhancement: minimal, symmetric. No suspicious mass, non-mass enhancement or focus. No axillary adenopathy.",
+              "conclusion": "No MRI evidence of malignancy. BI-RADS 1, negative. Continue annual high-risk screening."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2008-09-10T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2019-08-20T09:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-27T11:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-17T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2021-08-31T11:00",
+              "author": "outside primary care",
+              "body": "Records received by fax from prior primary care office, 41 pages, covering 2014 to 2021.\n\nContents: office notes; problem list (BRCA2 carrier, history of Wilms tumor s/p left nephrectomy and radiation); genetic testing report dated 06/2017: heterozygous pathogenic variant in BRCA2 detected, BRCA1 negative, post-test counseling note attached; breast MRI reports 2018, 2019 and 11/2020, all BI-RADS 1; Pap 03/2020 negative; immunization history (childhood series complete, HPV series completed 2008, Tdap 08/2019, COVID-19 Pfizer x2 spring 2021). No pediatric oncology treatment summary in the packet.\n\nAbstracted to chart by MA. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2021-09-02T17:10",
+              "author": "PCP",
+              "body": "Reviewed old chart. Matches what she told me. BRCA2 report confirmed. Imaging cycle is November. No oncology treatment summary; she will ask her mother whether the family kept one. Nothing to act on."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-14a",
+          "kind": "nurse_visit",
+          "start": "2021-10-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-14T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-14T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2021-10-14T15:55",
+              "author": "RN",
+              "body": "In after school for flu vaccine. No fever today, no prior reactions. Quadrivalent flu 0.5 mL IM L deltoid, lot recorded. VIS given. Tolerated well, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "imaging",
+          "start": "2021-11-09T16:00",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2021-11-09T16:00",
+              "text": "Indication: annual high-risk screening, BRCA2 mutation carrier. Comparison: 11/05/2020. Technique: bilateral breast MRI before and after IV gadolinium, with subtraction and kinetic analysis. Breast composition: heterogeneous fibroglandular tissue. Background parenchymal enhancement: minimal, symmetric. No suspicious enhancing mass or non-mass enhancement in either breast. Skin and nipples normal. No axillary or internal mammary adenopathy. Incidental: none.",
+              "conclusion": "Negative bilateral breast MRI. BI-RADS 1. Recommend continued annual screening MRI."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-10a",
+          "kind": "portal_message",
+          "start": "2021-11-10T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI Result",
+              "date": "2021-11-10T12:05",
+              "author": "PCP",
+              "body": "Erin - breast MRI was negative, same as last year. I'll put the next one in for November 2022."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "portal_message",
+          "start": "2022-02-08T19:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School Health Form",
+              "date": "2022-02-08T19:30",
+              "author": "patient",
+              "body": "Hi, my district is asking every staff member to turn in a health and immunization form by March 1. Could someone fill out the immunization part? I'm uploading the PDF. Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: School Health Form",
+              "date": "2022-02-09T14:10",
+              "author": "MA",
+              "body": "Form completed from your immunization record and signed. It's attached here and a copy is in your chart."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-17a",
+          "kind": "annual_physical",
+          "start": "2022-05-17T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              74
+            ],
+            "hr": 76,
+            "spo2": 97,
+            "weight_kg": 63.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-17T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-05-17T15:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 118
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 16
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2022-05-17T15:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-05-17T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-17T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2022-05-17T16:15",
+              "author": "PCP",
+              "body": "Yearly visit. End of the school year crunch, otherwise good. No GI, GU or breast symptoms. Sleeping fine. Running 3x/wk.\n\nMeds: D3 2000 daily. NKDA. Never smoker, wine rarely.\nFHx unchanged from last year.\n\nExam: well appearing. Heart and lungs normal. Abdomen soft, old L flank scar, no mass, no tenderness. Breast exam: no masses, skin or nipple changes, no axillary nodes bilaterally. Thyroid normal. Skin clear.\n\nA/P\n- BRCA2: MRI 11/2021 negative; next due November, ordered. Mammo starts at 30.\n- Solitary kidney: Cr and UA today.\n- Pap due 2023.\n- PHQ-2 0.\n- Flu and COVID booster at a fall nurse visit.\nSee in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-05-19a",
+          "kind": "portal_message",
+          "start": "2022-05-19T08:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2022-05-19T08:40",
+              "author": "PCP",
+              "body": "Labs normal. Creatinine stable for a single kidney, urine without protein or blood. Message sent to patient."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "influenza and COVID-19 vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-20T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-20T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-20T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2022-10-20T15:55",
+              "author": "RN",
+              "body": "Flu (quadrivalent) R deltoid and Pfizer bivalent booster L deltoid. Screening questions negative. Observed 15 min, no reaction. Next flu due fall 2023."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "imaging",
+          "start": "2022-11-08T17:00",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2022-11-08T17:00",
+              "text": "Clinical history: BRCA2 carrier, annual screening. Prior exam 11/09/2021 available for comparison. Multiplanar pre- and post-contrast imaging of both breasts obtained. Heterogeneously dense fibroglandular tissue with minimal symmetric background enhancement, unchanged. No mass, no non-mass enhancement, no suspicious focus. Lymph nodes normal in size and morphology.",
+              "conclusion": "BI-RADS 1: negative. Return to annual MRI screening."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-10a",
+          "kind": "portal_message",
+          "start": "2022-11-10T07:55",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI Result",
+              "date": "2022-11-10T07:55",
+              "author": "PCP",
+              "body": "MRI negative again. Have a good Thanksgiving."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: MRI Result",
+              "date": "2022-11-10T20:12",
+              "author": "patient",
+              "body": "Thanks, always a relief. You too!"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "annual_physical",
+          "start": "2023-05-09T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2023-05-08T07:15",
+              "author": "front desk",
+              "body": "Pt left voicemail, has to stay late for a parent conference tomorrow. Cancelled 5/9 physical, rebooked 5/23 at 3:30. She will keep the Pap on that visit."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "annual_physical",
+          "start": "2023-05-23T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "vitals": {
+            "bp": [
+              119,
+              73
+            ],
+            "hr": 78,
+            "spo2": 96,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-23T15:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-05-23T15:25",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 103
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2023-05-23T15:25",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-05-23T15:50",
+              "text": "Specimen type: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. General categorization: negative.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy (NILM).",
+              "issued": "2023-05-30T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-05-23T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-05-23T15:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2023-05-23T16:20",
+              "author": "PCP",
+              "body": "Annual. Rebooked from 5/9. Doing well. Tired by June like every year, nothing beyond that. Bowels normal. No breast changes. Periods regular.\n\nMeds D3 only. NKDA.\nSH: no tobacco, occasional glass of wine.\n\nVitals per flowsheet.\nGen: well. CV: regular, no murmur. Resp: clear bilaterally. Abd: soft, nontender, scar well healed. Breasts: symmetric, no palpable mass, no skin or nipple change, axillae negative. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Ext: no edema.\n\nPlan\n1. Cervical screening - Pap today.\n2. BRCA2 - MRI 11/2022 negative. November MRI ordered. We talked briefly about what comes later (mammograms at 30, other options down the road); she would rather take it a year at a time.\n3. Single kidney - creatinine and UA.\n4. PHQ-2 1, mood fine.\n5. Vaccines in the fall.\nReturn 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-31a",
+          "kind": "portal_message",
+          "start": "2023-05-31T09:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and Labs",
+              "date": "2023-05-31T09:15",
+              "author": "PCP",
+              "body": "Hi Erin, Pap smear was normal, and the blood and urine tests from last week were all normal too. Next Pap is due in 3 years. Enjoy the last weeks of school."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-19T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-19T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-19T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-19T16:05",
+              "author": "RN",
+              "body": "Flu vaccine L arm, 2023-24 COVID vaccine R arm. Feeling well, no contraindications. Waited 15 min, fine."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "imaging",
+          "start": "2023-11-14T16:30",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2023-11-14T16:30",
+              "text": "Exam: bilateral breast MRI with and without contrast. History: high-risk screening (BRCA2). Comparison: 11/08/2022 and 11/09/2021. Fibroglandular tissue is heterogeneous. Background enhancement minimal and symmetric. No suspicious mass or non-mass enhancement. No new findings compared with prior studies. Axillae unremarkable.",
+              "conclusion": "Negative. BI-RADS 1. Annual screening MRI recommended."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-16a",
+          "kind": "portal_message",
+          "start": "2023-11-16T12:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "MRI Result",
+              "date": "2023-11-16T12:30",
+              "author": "PCP",
+              "body": "Breast MRI negative, stable. Pt notified through portal. Next MRI 11/2024."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "annual_physical",
+          "start": "2024-04-23T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              77
+            ],
+            "hr": 80,
+            "spo2": 97,
+            "weight_kg": 63.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-23T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-23T15:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.4
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2024-04-23T15:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-04-23T15:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-23T15:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2024",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "colorectal cancer screening plan after childhood abdominopelvic radiation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2024-04-23T16:25",
+              "author": "PCP",
+              "body": "Erin, 28. Here for yearly exam. Feels great. No abdominal pain, normal bowel habits, no bleeding, no weight change. No breast lumps.\n\nShe read a survivorship article over spring break and asked whether her childhood radiation changes what she needs for colon screening. It does: survivors who had abdominal or pelvic radiation are generally advised to start colonoscopy much earlier than the general population, often around 30. I don't want to guess the interval on my own, so GI referral placed to set a plan.\n\nMeds: D3. NKDA. SH unchanged, no tobacco, wine rarely.\n\nExam: Well. BP fine. Heart RRR. Lungs clear. Abdomen soft, nontender, no masses, no hepatosplenomegaly. Breast exam normal bilaterally. No lymphadenopathy. Skin normal.\n\nA/P\n1. Hx Wilms tumor with abdominopelvic RT - GI referral for screening plan.\n2. BRCA2 - MRI 11/2023 negative. Next 11/2024. Mammography starts next year at 30.\n3. Solitary kidney - labs today.\n4. Health maintenance - Pap 2023 normal; vaccines in fall. PHQ-2 0.\nRTC 1 year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-25a",
+          "kind": "portal_message",
+          "start": "2024-04-25T10:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results and Referral",
+              "date": "2024-04-25T10:10",
+              "author": "PCP",
+              "body": "Your labs were all normal. Kidney function unchanged. GI should call you within a couple of weeks to schedule; let us know if you haven't heard by mid-May."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-10a",
+          "kind": "specialist_visit",
+          "start": "2024-06-10T13:00",
+          "service": "Gastroenterology",
+          "reason": "cancer screening plan after childhood abdominopelvic radiation",
+          "conditions": [
+            {
+              "label": "History of childhood Wilms tumor with abdominopelvic radiation therapy (high risk for secondary colorectal cancer)",
+              "action": "diagnosed",
+              "onset": "2024-06-10",
+              "icd10": "Z92.3"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2024",
+              "action": "done",
+              "date": "2024-06-10T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Consultation",
+              "date": "2024-07-22T09:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP - CONSULTATION\nDate of service: 06/10/2024\nReferring: primary care\nReason: screening recommendations given childhood cancer treatment history\n\nThank you for asking us to see Ms. Winslow, a 29-year-old teacher. She comes in feeling well, with no GI complaints at all, wanting to know which extra cancer screening her history calls for. Her vaccinations are current per her report.\n\nHistory: stage II Wilms tumor at 6, managed by left nephrectomy followed by radiation to the abdomen and pelvis; no recurrence since. Known BRCA2 mutation carrier, followed with annual breast MRI through primary care.\nMedications: cholecalciferol 2000 units daily.\nAllergies: NKDA.\nFamily: mother with breast cancer diagnosed at 45.\nSocial: no tobacco, alcohol rare. Eats a produce-heavy diet and exercises on a regular basis.\n\nExam: vitals normal. Abdomen soft, nontender, nondistended, no mass, no organomegaly; healed left flank incision.\n\nImpression: History of childhood Wilms tumor with abdominopelvic radiation therapy, which places her at increased risk for a second colorectal cancer.\n\nRecommendations:\n1. Begin screening colonoscopy at age 30 (spring 2025), then every 5 years if normal. Our office will contact her next spring to schedule.\n2. No colon testing needed before then while asymptomatic.\n3. Breast and gynecologic risk management per PCP and her established screening.\n\nThank you for this referral."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2024-07-23T08:05",
+              "author": "PCP",
+              "body": "GI consult letter from 6/10 finally received (requested twice). Matches what she told us in June. Colonoscopy at 30, q5y. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "portal_message",
+          "start": "2024-06-12T20:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "GI Appointment",
+              "date": "2024-06-12T20:40",
+              "author": "patient",
+              "body": "Just wanted to let you know I saw the GI doctor Monday. She said because of the radiation I should start colonoscopies at 30 and then every 5 years, so next spring. Nothing needed before that. She said she'd send you a letter."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: GI Appointment",
+              "date": "2024-06-13T07:30",
+              "author": "PCP",
+              "body": "Thanks for the update, that's the plan I expected. I'll watch for the letter and note the colonoscopy for next year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-17a",
+          "kind": "nurse_visit",
+          "start": "2024-10-17T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-17T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-17T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-17T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-17T16:00",
+              "author": "RN",
+              "body": "Flu (trivalent) and 2024-25 COVID given, one in each deltoid. Afebrile, feels well. No issues after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "imaging",
+          "start": "2024-11-12T16:15",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2024-11-12T16:15",
+              "text": "Indication: BRCA2 mutation, annual high-risk screening. Comparison: 11/14/2023. Technique: dynamic contrast-enhanced bilateral breast MRI. Amount of fibroglandular tissue: heterogeneous. Background parenchymal enhancement: minimal. No enhancing mass, non-mass enhancement or suspicious focus in either breast. No skin thickening. Axillary nodes normal.",
+              "conclusion": "No evidence of malignancy. BI-RADS 1, negative. Continue annual MRI; begin annual mammography at age 30."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-14a",
+          "kind": "portal_message",
+          "start": "2024-11-14T11:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI Result",
+              "date": "2024-11-14T11:50",
+              "author": "PCP",
+              "body": "Your MRI was negative again. Next spring we'll add a mammogram once you turn 30, and GI will be in touch about the colonoscopy."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "diarrhea, fatigue, low-grade fevers",
+          "vitals": {
+            "bp": [
+              121,
+              75
+            ],
+            "hr": 76,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 59.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-01-14T16:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 273
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.51
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 58
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 5
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 4
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-01-14T16:40",
+              "results": [
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 17
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-01-15T08:30",
+              "resulted": "2025-01-17T14:00",
+              "results": [
+                {
+                  "test": "Bacteria identified in Stool by Culture",
+                  "loinc": "625-4",
+                  "text": "No enteric pathogens isolated."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-01-14T16:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-14T16:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2025",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "two months of diarrhea, fevers and weight loss; please see soon"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-01-14T17:05",
+              "author": "PCP",
+              "body": "S: Since around early-mid November, loose stools on and off, some days 4-5, some days formed. Tired, which she first blamed on report cards and the holidays. Evenings she sometimes feels warm, has seen 99s on her thermometer. Weight is down; she noticed clothes looser and our scale agrees (63 kg last spring). No blood that she has seen. No travel, no antibiotics this year, nobody at home sick. No joint pain, rash or eye symptoms. No urinary symptoms.\nMeds: D3. NKDA.\n\nO: Vitals as charted. Looks tired but not ill. Mucous membranes moist. Abdomen soft, mildly tender diffusely without guarding, active bowel sounds, no mass. Old L flank scar.\n\nA/P: 2 months of intermittent diarrhea with low-grade fever and weight loss in a 29 y/o. Infection less likely at this duration but will send stool culture. Inflammatory bowel disease is the main concern. Radiation-related bowel injury and, given her history, a neoplasm also need to be excluded, and she already has a GI relationship.\n- CBC w diff, CMP today; stool culture kit given.\n- GI referral, urgent; I also called the GI office and asked for an earlier slot than the spring colonoscopy plan.\n- Fluids, no NSAIDs (single kidney anyway).\n- Call or message if blood in stool, fever over 101, or worse pain."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-17a",
+          "kind": "portal_message",
+          "start": "2025-01-17T16:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Test Results",
+              "date": "2025-01-17T16:20",
+              "author": "PCP",
+              "body": "Erin, blood counts, kidney and liver tests are normal, and the stool culture did not grow any infection. GI has you on 2/10, which is the earliest they had. If things get worse before then, tell me and I'll push."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Test Results",
+              "date": "2025-01-17T19:02",
+              "author": "patient",
+              "body": "Ok thank you. Same as last week, not worse. I'll keep the 10th."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "portal_message",
+          "start": "2025-01-28T06:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood in Stool",
+              "date": "2025-01-28T06:50",
+              "author": "patient",
+              "body": "Sorry to bother you so early. Last night there was bright red blood mixed in once when I went. Hasn't happened again this morning. No dizziness. Should I go somewhere?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Blood in Stool",
+              "date": "2025-01-28T07:35",
+              "author": "PCP",
+              "body": "Not a bother. One episode without dizziness doesn't need the ER. If it happens repeatedly, if you feel lightheaded, or the pain picks up, go to the emergency department. I'm passing this along to GI so they know before your visit on the 10th."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-10a",
+          "kind": "specialist_visit",
+          "start": "2025-02-10T10:30",
+          "service": "Gastroenterology",
+          "reason": "diarrhea, low-grade fever, weight loss, hematochezia",
+          "conditions": [
+            {
+              "label": "Crohn disease",
+              "action": "diagnosed",
+              "onset": "2024-11-10"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              102,
+              60
+            ],
+            "hr": 88,
+            "rr": 20,
+            "temp_c": 37.3,
+            "weight_kg": 58.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-10T10:45",
+              "results": [
+                {
+                  "test": "Hemoglobin [Presence] in Stool from gastrointestinal",
+                  "loinc": "2335-8",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "History of alcohol use",
+              "value": "Wine 1-2 glasses per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Colonoscopy, diagnostic",
+              "performed": "2025-02-10T13:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2025",
+              "action": "done",
+              "date": "2025-02-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology Follow-up and Colonoscopy",
+              "date": "2025-02-26T10:00",
+              "author": "gastroenterology",
+              "body": "OUTSIDE GASTROENTEROLOGY GROUP - CLINIC NOTE AND PROCEDURE SUMMARY\nVisit and colonoscopy: 02/10/2025\n\nMs. Winslow is a 29-year-old we met last June for screening planning after childhood Wilms tumor treatment. She is back sooner than planned. For about three months she has had intermittent diarrhea, fatigue and low-grade temperatures, has lost 10 pounds (4.5 kg) without trying, and had a single episode of hematochezia. She has not traveled and has had no recent antibiotics. Stool culture through primary care was negative for pathogens.\n\nMedications: no prescription medications; vitamin D3 2000 units daily.\nAllergies: NKDA.\nFamily: older sister with hypertension and irritable bowel syndrome.\nSocial: wine one to two glasses a month; no smoking.\n\nExam: T 37.3 C (99.2 F), HR 88, BP 102/60, RR 20, weight 58.5 kg. Abdomen diffusely tender without rebound, hyperactive bowel sounds. Perianal inspection normal. Rectal: normal sphincter tone, stool guaiac positive.\n\nColonoscopy (same day, moderate sedation): patchy inflammation with intervening normal mucosa (skip lesions).\n\nAssessment: Crohn disease.\n\nPlan:\n1. Pre-biologic screening: TB and hepatitis B testing.\n2. If screening is negative, start adalimumab 40 mg subcutaneously every 2 weeks; our biologics coordinator will handle the prior authorization and specialty pharmacy.\n3. Avoid live vaccines once on therapy; inactivated vaccines encouraged.\n4. Follow up in clinic after induction.\n\nCopy to primary care."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Review",
+              "date": "2025-02-26T17:30",
+              "author": "PCP",
+              "body": "GI note from 2/10 received. Colonoscopy: skip lesions, Crohn disease. Adalimumab planned after TB/HBV screen. Problem list updated."
+            }
+          ],
+          "state": {
+            "weight_kg": 58.5
+          }
+        },
+        {
+          "id": "2025-03-12a",
+          "kind": "pharmacy",
+          "start": "2025-03-12T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Specialty Pharmacy Call",
+              "date": "2025-03-12T11:15",
+              "author": "RN",
+              "body": "Specialty pharmacy called asking whether we are the prescriber for her adalimumab pens. Told them no, prescriber is her GI. They are verifying insurance for first shipment and had our office listed as PCP only. No action needed from us."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-14a",
+          "kind": "portal_message",
+          "start": "2025-03-14T18:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Started Injections",
+              "date": "2025-03-14T18:25",
+              "author": "patient",
+              "body": "FYI - my TB and hepatitis tests at GI were fine and I did my first adalimumab shot this week with their nurse. It's every 2 weeks now. I've also given up wine for now, it doesn't seem worth it. Do I need anything from you for this?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Started Injections",
+              "date": "2025-03-17T08:10",
+              "author": "PCP",
+              "body": "Glad you're started. Nothing needed from me right now. GI manages the medication. At your physical in May we'll go over vaccines, since a few are recommended while you're on it."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "annual_physical",
+          "start": "2025-05-20T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "medications": [
+            {
+              "drug": "0.4 ML adalimumab 100 MG/ML Auto-Injector",
+              "action": "historical",
+              "sig": "Inject 40 mg subcutaneously every 2 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "Crohn disease"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              69
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 61.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-20T15:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-20T15:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 98
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-05-20T15:20",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.3
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "History of alcohol use",
+              "value": "None since February 2025"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-05-20T15:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-05-20T16:05"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-20T15:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-05-20T16:05"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "BRCA2 carrier, annual screening from age 30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-05-20T16:30",
+              "author": "PCP",
+              "body": "Turned 30 yesterday. Yearly exam, and first time I've seen her since the Crohn diagnosis.\n\nGI course: colonoscopy 2/10 showed skip lesions -> Crohn disease. Adalimumab 40 mg q2wk since mid-March, prescribed by GI. Within about a month the diarrhea settled; now 1-2 formed stools a day, no blood, no fevers. Energy better. Has regained some weight (58.5 at GI, about 61 today). Stopped alcohol in February.\n\nMeds reconciled: adalimumab 40 mg SC q2 weeks (GI), vitamin D3 2000 units daily. NKDA.\n\nExam: well. Heart regular. Lungs clear. Abdomen soft, nontender, normal bowel sounds. Breasts without mass, skin or nipple change; no axillary nodes. No rash, no joint swelling.\n\nA/P\n1. Crohn disease on adalimumab - responding per her report. GI follows. CBC, CMP today. No live vaccines.\n2. Immunizations on TNF inhibitor - PCV20 given today. Flu and COVID this fall.\n3. BRCA2 - now 30: screening mammogram ordered for June, MRI stays in November so they alternate roughly every 6 months.\n4. Hx Wilms/abdominopelvic RT - her colonoscopy this year counts for now; GI will set the interval going forward.\n5. Solitary kidney - Cr, UA.\n6. PHQ-2 1.\nRTC 1 yr, sooner prn."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-22a",
+          "kind": "portal_message",
+          "start": "2025-05-22T13:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab Results",
+              "date": "2025-05-22T13:40",
+              "author": "PCP",
+              "body": "CBC, CMP and UA normal. Albumin normal. Released to patient with comment."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "imaging",
+          "start": "2025-06-17T16:10",
+          "reports": [
+            {
+              "study": "Screening mammogram, bilateral",
+              "performed": "2025-06-17T16:10",
+              "text": "Indication: screening, BRCA2 carrier, baseline mammogram. Technique: bilateral digital mammography with tomosynthesis, CC and MLO views. Comparison: none (prior breast MRI 11/12/2024 reviewed). Breast composition: heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast.",
+              "conclusion": "Negative. BI-RADS 1. Continue annual mammography alternating with annual breast MRI."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2025",
+              "action": "done",
+              "date": "2025-06-17T16:10"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "portal_message",
+          "start": "2025-06-19T09:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mammogram Result",
+              "date": "2025-06-19T09:00",
+              "author": "PCP",
+              "body": "First mammogram was normal. Dense tissue, which is common and is one reason you also have the MRI. Next MRI in November."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-16a",
+          "kind": "nurse_visit",
+          "start": "2025-10-16T15:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-16T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-16T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-16T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-16T15:58",
+              "author": "RN",
+              "body": "On adalimumab - inactivated vaccines only, confirmed both are non-live. Injection timed off her pen day per her preference. Flu R deltoid, COVID L deltoid. No reaction during wait."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "imaging",
+          "start": "2025-11-18T16:20",
+          "reports": [
+            {
+              "study": "MRI breast, bilateral, with and without contrast",
+              "loinc": "30795-9",
+              "performed": "2025-11-18T16:20",
+              "text": "Indication: high-risk screening, BRCA2 carrier. Comparisons: MRI 11/12/2024; mammogram 06/17/2025. Technique: bilateral contrast-enhanced breast MRI. Heterogeneous fibroglandular tissue, minimal symmetric background enhancement. No suspicious mass, non-mass enhancement or focus. No adenopathy.",
+              "conclusion": "BI-RADS 1, negative. Continue alternating annual MRI and mammography."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "portal_message",
+          "start": "2025-11-20T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "MRI Result",
+              "date": "2025-11-20T12:15",
+              "author": "PCP",
+              "body": "MRI clear. Mammogram next June."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "portal_message",
+          "start": "2026-01-08T20:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization Record",
+              "date": "2026-01-08T20:05",
+              "author": "patient",
+              "body": "Hi - the district wants an updated vaccine record for a staff file. Could you send me a printout or post it here?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Immunization Record",
+              "date": "2026-01-09T10:20",
+              "author": "MA",
+              "body": "Your full immunization record is attached as a PDF."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-03a",
+          "kind": "annual_physical",
+          "start": "2026-04-03T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "vitals": {
+            "bp": [
+              127,
+              74
+            ],
+            "hr": 66,
+            "spo2": 98,
+            "weight_kg": 62.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-03T13:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.81
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-03T13:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.72
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-04-03T13:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 131
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 121
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-04-03T13:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.015
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.2
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-04-03T14:25",
+              "text": "Liquid-based cytology with reflex-independent high-risk HPV co-testing. Specimen satisfactory for evaluation; transformation zone present. High-risk HPV: not detected.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy. High-risk HPV negative.",
+              "issued": "2026-04-09T11:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-04-03T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-04-03T13:50"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mammo-2026",
+              "action": "placed",
+              "order": "Screening mammogram, bilateral",
+              "category": "imaging",
+              "reason": "BRCA2 carrier, annual screening due June"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2026-04-03T15:05",
+              "author": "PCP",
+              "body": "Annual visit, April vacation week. Feels well. Bowels normal, no bleeding or night sweats. Saw GI in September: on adalimumab, told to continue; she didn't get a note to us and I don't have one. Still not drinking.\n\nFamily update: her older sister was diagnosed last year with breast cancer in both breasts, at 35. Erin is understandably shaken; it has made her more attentive to her own screening, not less. She asked what more she should be doing, and we went over the current plan (MRI and mammogram alternating) and that ovarian planning can be a separate visit when she wants it.\n\nMeds: adalimumab 40 mg SC every 2 weeks (GI); vitamin D3 2000 units. NKDA.\n\nExam: well, weight up to 62 kg. Heart RRR. Lungs clear. Abdomen soft, nontender. Breast exam: no dominant mass, no skin or nipple changes, axillae clear, both sides. Pelvic: normal, Pap/HPV collected. Skin clear. No joint findings.\n\nA/P\n1. Crohn disease - quiescent on adalimumab per her. Labs today. GI letter requested again.\n2. BRCA2, strengthened family history - mammogram ordered for June; MRI November. Breast self-awareness reviewed.\n3. Hx Wilms tumor, solitary kidney - Cr, UA.\n4. Cervical screening - Pap with HPV today.\n5. Lipids today (due).\n6. PHQ-2 1. Support around sister's illness offered; she declined counseling referral for now.\nRTC 1 yr."
+            }
+          ],
+          "state": {
+            "weight_kg": 62.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "portal_message",
+          "start": "2026-04-06T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-04-06T08:45",
+              "author": "PCP",
+              "body": "Hi Erin, blood counts, kidney and liver tests, cholesterol and urine all came back normal. Pap result usually takes about a week."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-09a",
+          "kind": "portal_message",
+          "start": "2026-04-09T15:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap Result",
+              "date": "2026-04-09T15:30",
+              "author": "PCP",
+              "body": "Pap and HPV test both negative. With both negative, the next one is in 5 years."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "portal_message",
+          "start": "2026-07-31T21:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Breast Lump",
+              "date": "2026-07-31T21:10",
+              "author": "patient",
+              "body": "I found a lump in my left breast doing a self check this week. It's firm, doesn't hurt. Because of my sister I didn't want to wait, so I called the breast surgery office my sister used and they can see me Wednesday the 5th and do imaging there. My insurance doesn't need a referral. I wanted you to know. I never did schedule the June mammogram, I'm sorry."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Breast Lump",
+              "date": "2026-08-01T09:20",
+              "author": "PCP",
+              "body": "Erin, thank you for telling me, and seeing them Wednesday is the right move. Please ask them to send their note and any imaging or biopsy results to us, and message me afterward if you want to talk anything through. I'm here."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-05a",
+          "kind": "specialist_visit",
+          "start": "2026-08-05T09:40",
+          "service": "General Surgery",
+          "reason": "left breast mass",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Breast Surgery Consultation",
+              "date": "2026-08-21T14:00",
+              "author": "general surgery",
+              "body": "OUTSIDE SURGICAL GROUP - BREAST SURGERY CONSULTATION\nDate of service: 08/05/2026\n\n31-year-old elementary school teacher, self-referred for a firm, nontender mass she noticed on self-examination of the left breast.\n\nHistory: BRCA2 mutation carrier, followed with annual breast MRI and mammography. Crohn disease on adalimumab. Childhood Wilms tumor treated with left nephrectomy and abdominopelvic radiation at age 6, no recurrence.\nMedications: adalimumab 40 mg SC every 2 weeks; vitamin D3 2000 units daily.\nAllergies: NKDA.\nFamily history: older sister with bilateral breast cancer at 35; mother with breast cancer at 45; maternal aunt with ovarian cancer at 52; maternal grandmother with breast cancer at 68.\nSocial: never smoker; drank wine socially, one to two glasses a month, until her Crohn diagnosis and none since. Teaches elementary school.\n\nExam: Left breast, upper outer quadrant: 2.4 cm firm mass. No overlying skin changes. No nipple retraction.\n\nImaging: Diagnostic mammogram today demonstrates a suspicious irregular lesion corresponding to the palpable finding.\n\nPlan: Core needle biopsy has been arranged; result pending.\n\nDiscussion: She is worried about her chances of further cancers and asked about genetic testing for herself and her family. We discussed that inherited mutations in DNA-repair genes such as BRCA2 raise lifetime risk of both breast and ovarian cancer, that they are passed on in an autosomal dominant pattern, and that not every carrier develops cancer. We will see her again with the pathology."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Outside Records Received",
+              "date": "2026-08-21T15:10",
+              "author": "MA",
+              "body": "Breast surgery consult note from 8/5 received by fax, scanned and routed to PCP. Biopsy result not included."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "telephone",
+          "start": "2026-08-24T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Request",
+              "date": "2026-08-24T10:05",
+              "author": "front desk",
+              "body": "Pt called to set up a visit with PCP after the breast surgery appointments, wants to go over everything in person. Booked 9/29 at 3:30, first slot after school starts that fits her schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-29a",
+          "kind": "office_visit",
+          "start": "2026-09-29T15:30",
+          "reason": "follow-up after breast surgery consultation",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Hereditary breast and ovarian cancer syndrome (BRCA2 mutation carrier)|Z15.01": {
+        "code": "Z15.01",
+        "display": "Genetic susceptibility to malignant neoplasm of breast",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "History of childhood Wilms tumor with abdominopelvic radiation therapy (high risk for secondary colorectal cancer)|Z92.3": {
+        "code": "Z92.3",
+        "display": "Personal history of irradiation",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "labs": {
+      "Bacteria identified in Stool by Culture": {
+        "code": "625-4",
+        "display": "Bacteria identified in Stool by Culture",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin [Presence] in Stool from gastrointestinal": {
+        "code": "2335-8",
+        "display": "Hemoglobin [Presence] in Stool from gastrointestinal",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI breast, bilateral, with and without contrast": {
+        "code": "30795-9",
+        "display": "MR Breast - bilateral",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

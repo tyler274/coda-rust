@@ -1,0 +1,787 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002273",
+   "given": "Herbert",
+   "family": "Talbot",
+   "birth_date": "1955-07-28",
+   "address_line": "18 Cooke Avenue",
+   "phone": "+1-603-555-0154",
+   "email": "herbert.talbot@example.test",
+   "marital_status": "divorced",
+   "summary": "Retired construction worker with hypertension and HFpEF who joined in 2020; actinic keratoses, presbycusis with hearing aids, a low-grade bladder urothelial carcinoma resected in 2023, and a stage IB right upper lobe adenocarcinoma treated with SBRT in 2024. Statin-associated muscle symptoms on rechallenge, an ADHF admission in 2025, and amaurosis fugax from a 50-69% right ICA stenosis managed medically.",
+   "events": [
+    {
+     "id": "2020-08-27a",
+     "kind": "telephone",
+     "start": "2020-08-27T10:40",
+     "reason": "new patient inquiry",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "New patient call",
+       "author": "front desk",
+       "date": "2020-08-27T10:52",
+       "body": "Caller is Mr. Talbot, 65, on Medicare. Says his old office keeps cancelling on him and a neighbor recommended us. Explained membership and that insurance still covers labs and specialists. He wants to go ahead. Booked new patient visit 9/22 at 9:00. Asked him to bring all pill bottles and the name of the old office so we can request records. Release form mailed."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-22a",
+     "kind": "establish_care",
+     "start": "2020-09-22T09:00",
+     "end": "2020-09-22T10:05",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "establish care",
+     "state": {
+      "bp": [
+       132,
+       82
+      ],
+      "weight_kg": 74.0,
+      "height_cm": 175.0,
+      "labs": {
+       "Low Density Lipoprotein": 96,
+       "Creatinine": 1.0
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg",
+      "height_cm"
+     ],
+     "conditions": [
+      {
+       "label": "Essential hypertension",
+       "action": "diagnosed",
+       "onset": "2008-01-01"
+      },
+      {
+       "label": "Heart failure with preserved ejection fraction",
+       "action": "diagnosed",
+       "onset": "2017-01-01",
+       "note": "per patient and prior records; echo pending from prior office"
+      },
+      {
+       "label": "Hyperlipidemia",
+       "action": "diagnosed",
+       "onset": "2010-01-01"
+      },
+      {
+       "label": "Bilateral primary osteoarthritis of knee",
+       "action": "diagnosed",
+       "onset": "2012-01-01"
+      },
+      {
+       "label": "Personal history of tuberculosis",
+       "action": "history",
+       "onset": "2002-01-01",
+       "note": "pulmonary TB treated about 2002, completed therapy"
+      },
+      {
+       "label": "Community-acquired pneumonia",
+       "action": "diagnosed",
+       "onset": "2020-02-01",
+       "note": "treated by prior office, resolved"
+      }
+     ],
+     "medications": [
+      {
+       "drug": "lisinopril 20 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 20,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "metoprolol tartrate 50 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth twice daily",
+       "dose": {
+        "value": 50,
+        "unit": "mg"
+       },
+       "frequency": "BID",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension, heart failure"
+      },
+      {
+       "drug": "hydrochlorothiazide 25 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 25,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hypertension"
+      },
+      {
+       "drug": "furosemide 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth every morning",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "heart failure"
+      },
+      {
+       "drug": "atorvastatin 40 MG Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 40,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic",
+       "reason": "hyperlipidemia"
+      },
+      {
+       "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+       "action": "historical",
+       "sig": "Take 1 tablet by mouth daily",
+       "dose": {
+        "value": 81,
+        "unit": "mg"
+       },
+       "frequency": "DAILY",
+       "route": "Oral",
+       "course": "chronic"
+      }
+     ],
+     "allergies": [
+      {
+       "substance": "No known drug allergies"
+      }
+     ],
+     "social": [
+      {
+       "item": "Tobacco smoking status",
+       "value": "Former smoker"
+      },
+      {
+       "item": "History of alcohol use",
+       "value": "1-2 drinks per week"
+      },
+      {
+       "item": "Occupation",
+       "value": "Retired construction worker"
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-09-22T10:10",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-09-22T10:10",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Red Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        },
+        {
+         "test": "Mean Corpuscular Volume"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-09-22T10:10",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-09-22T10:10",
+       "results": [
+        {
+         "test": "Hepatitis C Antibody",
+         "text": "Nonreactive"
+        },
+        {
+         "test": "HIV-1/2 Antigen and Antibody",
+         "text": "Nonreactive"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, new patient, moderate MDM",
+       "performed": "2020-09-22T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "New Patient Visit",
+       "author": "PCP",
+       "date": "2020-09-22T11:30",
+       "body": "65 y/o retired construction worker transferring care; brought a bag of bottles.\n\nHPI: Long-standing high blood pressure and what his last doctor called heart failure, diagnosed a few years back after he got winded and puffy; he thinks he had an ultrasound of the heart then. Weighs himself 'when I remember.' No orthopnea or PND now, walks the block without stopping, ankles fine. Knees ache on stairs and after yard work, both sides, for years; doesn't take anything for it. Treated for TB about 18 years ago, finished the pills, no problems since. Had pneumonia this past February, treated with antibiotics at the old office, felt back to normal within a few weeks.\n\nMeds (verified from bottles): lisinopril 20 daily, metoprolol tartrate 50 BID, HCTZ 25 daily, furosemide 40 qAM, atorvastatin 40 daily, ASA 81 daily.\nAllergies: none to drugs.\nPSH: none.\nFHx: father MI at 62. Mother HTN and type 2 DM. Brother high cholesterol.\nSocial: divorced, lives alone, daughter nearby and checks on him. Smoked about a pack a day for 40 years, quit in 2012. 1-2 beers a week. Retired from construction.\n\nExam: well appearing. Lungs clear. Heart regular, no murmur. JVP not elevated. No peripheral edema. Knees with crepitus, no effusion, full ROM. Skin: weathered, sun-damaged face and forearms.\n\nA/P:\n1. HTN - at goal today on current regimen. BMP.\n2. Chronic heart failure, sounds like preserved EF - asked for the echo with old records. Euvolemic. Daily weights reviewed.\n3. Hyperlipidemia on atorva 40 - lipids today.\n4. Knee OA - activity as tolerated.\n5. Remote treated TB, recent pneumonia - records requested.\n6. HM: HCV/HIV once today. Colonoscopy he thinks 2017, will confirm. Lung cancer screening eligible (40 pk-yr, quit 8 yrs ago) - discuss next visit. Flu shot at nurse visit next month.\nRTC ~4 months."
+      }
+     ]
+    },
+    {
+     "id": "2020-09-23a",
+     "kind": "portal_message",
+     "start": "2020-09-23T16:20",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2020-09-23T16:20",
+       "body": "Hi Mr. Talbot, your bloodwork from yesterday looks good. Kidney function and potassium are normal on your water pills, blood counts are normal, and your cholesterol is in a reasonable range on the atorvastatin. Hepatitis C and HIV screens were negative. No changes. See you in January."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-06a",
+     "kind": "outside_records",
+     "start": "2020-10-06T14:00",
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2019-03-19T10:00",
+       "text": "Outside study, prior office. Left ventricle normal in size with normal wall thickness. LVEF estimated 55%. Impaired LV relaxation pattern on mitral inflow. Right ventricle normal size and function. No significant valvular disease. No pericardial effusion.",
+       "conclusion": "Preserved LV systolic function, LVEF 55%. Impaired relaxation. No significant valve disease."
+      },
+      {
+       "study": "Chest X-ray, 2 views",
+       "performed": "2020-03-24T11:00",
+       "text": "Outside study, prior office. Follow-up after pneumonia. Lungs clear. No consolidation or effusion. Heart size within normal limits.",
+       "conclusion": "Clear lungs."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Colonoscopy, screening, average risk",
+       "performed": "2017-06-13T08:00"
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2017-06-01T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Records from prior primary care office",
+       "author": "front desk",
+       "date": "2020-10-06T14:00",
+       "body": "38 pages received by fax from prior PCP office. Includes: problem list (HTN, heart failure, high cholesterol, knee arthritis, history of TB), med list matching ours, 2019 echocardiogram (EF 55%, impaired relaxation), February 2020 office notes for pneumonia treated with oral antibiotics, March 2020 follow-up chest x-ray clear, 2017 colonoscopy report (normal, repeat 10 years), Tdap 2017. Scanned. Flagged for PCP."
+      },
+      {
+       "type": "Progress Notes",
+       "title": "Records review",
+       "author": "PCP",
+       "date": "2020-10-07T07:50",
+       "body": "Old records reviewed. Echo 2019 EF 55% with impaired relaxation - fits HFpEF, problem list updated. Pneumonia Feb 2020 resolved, CXR clear 3/2020. Colonoscopy 2017 normal, next 2027. Tdap 2017."
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Community-acquired pneumonia",
+       "action": "resolved"
+      }
+     ]
+    },
+    {
+     "id": "2020-10-13a",
+     "kind": "nurse_visit",
+     "start": "2020-10-13T10:15",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu vaccine",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-13T10:20"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-13T10:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Influenza vaccine",
+       "author": "RN",
+       "date": "2020-10-13T10:30",
+       "body": "High-dose flu given L deltoid. VIS reviewed. Tolerated, waited 15 min, no reaction."
+      }
+     ]
+    },
+    {
+     "id": "2020-12-08a",
+     "kind": "pharmacy",
+     "start": "2020-12-08T09:05",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "90-day refills",
+       "author": "RN",
+       "date": "2020-12-08T09:20",
+       "body": "Pharmacy asking to switch all six of his maintenance meds to 90-day supplies under the PCP. Sent lisinopril, metoprolol tartrate, HCTZ, furosemide, atorvastatin x 90 days with 3 refills. Aspirin is OTC."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-14a",
+     "kind": "office_visit",
+     "start": "2021-01-14T14:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and heart failure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "40 pack-year former smoker, quit 2012"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-01-14T14:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-01-14T15:10",
+       "body": "Here for BP/HF check. Feels fine, shoveling with breaks. Weight steady on his bathroom scale. No SOB at night, no swelling.\nMeds unchanged, taking them.\nExam: lungs clear, RRR, no JVD, no edema.\nA/P: HTN controlled. HFpEF euvolemic. Continue all.\nLung cancer screening: 40 pack-years, quit 2012, age 65. Talked through what a yearly low-dose CT can find, false positives, radiation, and that a finding could mean more tests. He wants it. Ordered.\nRTC spring for wellness visit."
+      }
+     ]
+    },
+    {
+     "id": "2021-01-26a",
+     "kind": "imaging",
+     "start": "2021-01-26T13:30",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2021-01-26T13:30",
+       "text": "Indication: lung cancer screening, former smoker, 40 pack-years. Technique: low-dose noncontrast CT of the chest. Findings: No pulmonary nodules. No consolidation or effusion. Airways patent. Heart size normal. No mediastinal or hilar adenopathy. Visualized upper abdomen unremarkable.",
+       "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "done",
+       "date": "2021-01-26T13:30"
+      }
+     ]
+    },
+    {
+     "id": "2021-01-27a",
+     "kind": "portal_message",
+     "start": "2021-01-27T12:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lung CT result",
+       "author": "PCP",
+       "date": "2021-01-27T12:05",
+       "body": "Your screening CT of the lungs was clear, nothing concerning. We'll repeat it in a year."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Lung CT result",
+       "author": "patient",
+       "date": "2021-01-27T18:40",
+       "body": "good news thanks doc"
+      }
+     ]
+    },
+    {
+     "id": "2021-02-09a",
+     "kind": "outside_records",
+     "start": "2021-03-04T11:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-09T13:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-03-02T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "COVID vaccine card",
+       "author": "MA",
+       "date": "2021-03-04T11:00",
+       "body": "Patient dropped off a copy of his vaccine card from the county clinic: Pfizer doses 2/9/21 and 3/2/21. Entered into immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2021-04-21a",
+     "kind": "annual_physical",
+     "start": "2021-04-21T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      },
+      {
+       "survey": "AUDIT-C total score",
+       "value": 1
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-04-21T10:15",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        },
+        {
+         "test": "Albumin"
+        },
+        {
+         "test": "Total Protein"
+        },
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        },
+        {
+         "test": "Bilirubin, Total"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-04-21T10:15",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "placed",
+       "order": "Abdominal ultrasound",
+       "category": "imaging",
+       "reason": "one-time AAA screening, male former smoker 65-75"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, initial",
+       "performed": "2021-04-21T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Medicare Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-04-21T11:00",
+       "body": "Initial AWV.\nFunctional: independent in all ADLs/IADLs, drives, does his own shopping. No falls this year. Hearing: says it's 'fine.' Vision: readers only.\nMood: PHQ-2 0. Alcohol: AUDIT-C 1.\nCognition: Mini-Cog not needed, conversation intact, manages his own pills.\nAdvance directive: daughter is health care proxy, form given to complete.\nPrevention: colonoscopy 2017 normal (next 2027). LDCT 1/2021 negative, next 1/2022. Flu 10/2020. COVID x2 done. Tdap 2017. Pneumococcal and shingles vaccines this fall. AAA ultrasound ordered (one time, ex-smoker).\nFirst BP reading was up; better on repeat after sitting. No change. Lungs clear, no edema.\nLabs: CMP, lipids."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-04a",
+     "kind": "imaging",
+     "start": "2021-05-04T08:45",
+     "reports": [
+      {
+       "study": "Abdominal ultrasound",
+       "performed": "2021-05-04T08:45",
+       "text": "Limited aortic ultrasound for AAA screening. The abdominal aorta is visualized from the diaphragm to the bifurcation and is normal in caliber throughout, maximal diameter 2.0 cm. Common iliac arteries normal caliber.",
+       "conclusion": "No abdominal aortic aneurysm."
+      }
+     ],
+     "orders": [
+      {
+       "id": "aaa-us",
+       "action": "done",
+       "date": "2021-05-04T08:45"
+      }
+     ]
+    },
+    {
+     "id": "2021-06-24a",
+     "kind": "telephone",
+     "start": "2021-06-24T11:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Medication question",
+       "author": "RN",
+       "date": "2021-06-24T11:20",
+       "body": "Pt asked whether he should skip the furosemide on hot days when he's working in the garden. Advised to keep taking it, drink to thirst, weigh daily, call if dizzy or weight drops more than a few pounds. He's fine with that."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-20a",
+     "kind": "office_visit",
+     "start": "2021-09-20T10:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "blood pressure and heart failure follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-09-20T11:20",
+       "results": [
+        {
+         "test": "Sodium"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Chloride"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Glucose"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening, due January"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2021-09-20T10:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2021-09-20T11:35",
+       "body": "Doing well. Summer was busy with the garden. No dyspnea beyond baseline, no edema, weights 162-164 lb at home. Knees okay.\nExam: lungs clear, heart regular, no edema.\nA/P: HTN and HFpEF stable, continue meds. BMP. Repeat screening CT ordered for January. Vaccines at nurse visit in October: flu, PCV20, COVID booster, start Shingrix.\nRTC 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-05a",
+     "kind": "nurse_visit",
+     "start": "2021-10-05T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-10-05T09:05"
+      },
+      {
+       "vaccine": "Pneumococcal conjugate PCV20",
+       "date": "2021-10-05T09:06"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-05T09:07"
+      },
+      {
+       "vaccine": "Zoster recombinant (Shingrix)",
+       "date": "2021-10-05T09:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-10-05T09:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccines",
+       "author": "RN",
+       "date": "2021-10-05T09:30",
+       "body": "Four vaccines given today per PCP order: high-dose flu L deltoid, PCV20 R deltoid, COVID booster L deltoid (separated), Shingrix #1 R deltoid. Warned Shingrix can make him feel achy for a day or two. Observed 15 min. Shingrix #2 due in 2-6 months, booked 1/25."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-14a",
+     "kind": "office_visit",
+     "start": "2021-12-14T13:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "follow-up",
+     "appointment": "no-show",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2021-12-14T14:30",
+       "body": "Pt did not come in for 1:40. Called - said he got the dates mixed up and was at his daughter's. Since he was just seen in September, PCP fine to wait until spring wellness visit. Rebooked."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

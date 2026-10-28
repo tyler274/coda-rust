@@ -1,0 +1,462 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001702",
+      "given": "Riley",
+      "family": "Fenton",
+      "birth_date": "1989-11-21",
+      "address_line": "212 Montgomery Street, Apt 2",
+      "phone": "+1-347-555-0172",
+      "email": "riley.fenton@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with Addison disease who joins in 2022; Hashimoto hypothyroidism completes autoimmune polyendocrine syndrome type 2, then celiac disease, vitiligo, rheumatoid arthritis and alopecia areata follow. In 2025 she converts to Graves disease, has thyroid storm and a thyroidectomy, and in July 2026 an adrenal crisis on the morning of a planned cholecystectomy.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "author": "front desk",
+              "date": "2022-08-02T10:20",
+              "body": "Caller would like to transfer her primary care here; her old office is dropping her plan's network for membership and she'd rather have a doctor she can text. Teacher, so wants a summer slot. Booked new patient visit 8/16 at 9:00. Membership packet emailed. Records release sent for her prior primary-care office and she says her adrenal doctor is with an outside endocrinology group, she'll bring her med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T09:00",
+          "end": "2022-08-16T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; adrenal insufficiency",
+          "conditions": [
+            {"label": "Addison disease", "action": "history", "onset": "2015-06-01", "note": "Primary adrenal insufficiency, diagnosed elsewhere in her mid-twenties; followed by outside endocrinology."},
+            {"label": "Iron deficiency anemia", "action": "history", "onset": "2018-01-01", "note": "Past episode treated with oral iron by prior office; completed."}
+          ],
+          "medications": [
+            {"drug_text": "hydrocortisone 10 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (20 mg) by mouth every morning and 1 tablet (10 mg) every evening", "dose": {"value": 20, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Primary adrenal insufficiency"},
+            {"drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 0.1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Primary adrenal insufficiency"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [108, 68], "weight_kg": 65.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Never"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-16T10:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-16T10:10", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": null, "collected": "2022-08-16T10:10", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-08-16T10:10", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-08-16T09:50", "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.", "conclusion": "NILM, HPV negative. Routine co-testing interval."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2022-08-16T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-08-16T09:00"},
+            {"procedure": "Immunization administration", "performed": "2022-08-16T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-16T10:05",
+              "body": "32F teacher transferring care.\n\nAdrenal: primary adrenal insufficiency diagnosed in her mid-20s (per pt; records requested). Managed by an outside endocrinology group, seen about yearly. On hydrocortisone 20 mg on waking and 10 mg around 4 pm, fludrocortisone 0.1 mg daily. Knows to double hydrocortisone with fever; has never needed the ED for it.\n\nOther hx: iron deficiency anemia some years ago, took ferrous sulfate for several months at the old office, finished, no repeat that she knows of. No surgeries. No hospitalizations.\n\nMeds as above. NKDA.\n\nFamily: mother has type 1 diabetes and Hashimoto. Sister with vitiligo. Maternal aunt also has adrenal insufficiency.\n\nSocial: married, teaches second grade. Never smoked, doesn't drink. Walks most evenings.\n\nROS: energy so-so by late afternoon, which she puts down to the job. Otherwise negative.\n\nExam: well appearing. Vitals as charted, BMI ~24. Skin normal color, no hyperpigmentation of creases or gums. Thyroid not enlarged to my exam. Heart RRR, lungs clear, abdomen soft. No edema.\n\nA/P\n1. Primary adrenal insufficiency - stable on current replacement. CMP today for Na/K. Continue meds; refills here are fine, endo sets doses. Asked her to keep her endo visits.\n2. Hx iron deficiency anemia - CBC today.\n3. Health maintenance - Pap with HPV collected today. HIV and hep C screen once. Tdap given (last one she can't recall). Flu/COVID at a fall nurse visit.\nReturn for physical next summer or sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T16:40",
+          "conditions": [
+            {"label": "Iron deficiency anemia", "action": "resolved", "note": "Past episode; CBC normal 2022-08-16."}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your visit",
+              "author": "PCP",
+              "date": "2022-08-18T16:40",
+              "body": "Hi Riley - your sodium and potassium look right where they should on your fludrocortisone, kidney and liver numbers are normal, and your blood count is normal with no sign of the old anemia. HIV and hepatitis C screens were negative. The Pap and HPV test were both normal, so that's done for five years. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-07a",
+          "kind": "outside_records",
+          "start": "2022-09-07T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "medical records",
+              "date": "2022-09-07T11:15",
+              "body": "42 pages received by fax from the patient's previous primary-care office, covering about six years. Summary for the chart:\n- Primary adrenal insufficiency on hydrocortisone and fludrocortisone, managed by outside endocrinology; copies of two endocrine letters, both stable.\n- Iron deficiency anemia on an older CBC, treated with oral iron; follow-up CBC normal.\n- Annual exams with normal BMPs and CBCs. Prior cervical cytology normal.\n- Allergies: none known.\nFiled to media. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T15:45",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-12T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-12T15:52"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-12T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2022-10-12T16:10",
+              "body": "In after school for flu (L deltoid) and bivalent COVID booster (R deltoid). Reviewed: she knows to take her stress dose of hydrocortisone if she runs a fever afterward. Waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, hair changes",
+          "state": {"bp": [106, 68], "weight_kg": 65.6, "labs": {"Thyroid Stimulating Hormone": 16.8, "Free Thyroxine": 0.5}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2022-12-06T16:20", "resulted": "2022-12-07T09:30", "results": [{"test": "Thyroid Stimulating Hormone", "value": 16.8}, {"test": "Free Thyroxine", "value": 0.5}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2022-12-06T16:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-12-06T16:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-12-06T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2022-12-06T16:35",
+              "body": "S: Tired for most of the past year even with 8 hours of sleep; she had chalked it up to work but it's worse this fall. Hair feels coarse and is breaking. Husband says her eyes look puffy in the mornings. Constipated more days than not. No fever, no neck pain, has not lost weight. Taking hydrocortisone and fludrocortisone every day, no missed doses, no salt craving or dizziness.\n\nO: Vitals as charted. Skin dry, a little cool. Thyroid feels diffusely enlarged and firm, no discrete nodule, not tender. Heart regular. Reflexes slow to relax at the ankles.\n\nA/P: Fatigue with dry skin, hair change and a goiter. With her Addison disease and her mother's Hashimoto, autoimmune hypothyroidism is first on the list. TSH, free T4 today; BMP and CBC to make sure the adrenal side and the old anemia aren't part of it. Will message results. If the thyroid is off I'll ask her endocrinologist to see her sooner rather than at her spring visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "portal_message",
+          "start": "2022-12-07T12:10",
+          "orders": [
+            {"id": "endo-referral-2022", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "TSH 16.8, free T4 0.5, goiter; known Addison disease"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid results",
+              "author": "PCP",
+              "date": "2022-12-07T12:10",
+              "body": "Riley, your thyroid is underactive: TSH 16.8 (high) and free T4 0.5 (low). That fits how you've been feeling. Electrolytes and blood count were fine. I've sent a referral and called your endocrinology office; they can see you on the 21st instead of March. Because thyroid and adrenal treatment interact, I'd like them to start the thyroid medicine. Hang in there."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid results",
+              "author": "patient",
+              "date": "2022-12-07T19:02",
+              "body": "Thank you!! honestly relieved there's a reason. I'll be there on the 21st."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-21a",
+          "kind": "specialist_visit",
+          "start": "2022-12-21T10:30",
+          "service": "Endocrinology",
+          "reason": "Hypothyroidism; primary adrenal insufficiency",
+          "vitals": {"hr": 54, "bp": [110, 70], "weight_kg": 65.3},
+          "labs": [
+            {"panel": null, "collected": "2022-12-21T11:15", "results": [
+              {"test": "Thyroid Stimulating Hormone", "value": 18},
+              {"test": "Free Thyroxine", "value": 0.4},
+              {"test": "Total T3", "loinc": "3053-6", "unit": "ng/dL", "value": 60},
+              {"test": "Thyroglobulin antibody", "loinc": "15210-8", "text": "Positive"}
+            ]}
+          ],
+          "orders": [
+            {"id": "endo-referral-2022", "action": "done", "date": "2022-12-21T10:30"}
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "outside_records",
+          "start": "2023-01-05T09:40",
+          "conditions": [
+            {"label": "Hashimoto thyroiditis", "action": "diagnosed", "onset": "2022-12-21"},
+            {"label": "Hypothyroidism", "action": "diagnosed", "onset": "2022-12-21"},
+            {"label": "Autoimmune polyglandular failure", "icd10": "E31.0", "action": "diagnosed", "onset": "2022-12-21", "note": "Autoimmune polyendocrine syndrome type 2: Addison disease with Hashimoto thyroiditis."}
+          ],
+          "medications": [
+            {"drug": "levothyroxine sodium 0.112 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily on an empty stomach", "dose": {"value": 112, "unit": "ug"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hashimoto hypothyroidism"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "author": "endocrinology",
+              "date": "2023-01-05T09:40",
+              "body": "Outside endocrinology group\nDate of visit: 12/21/2022\nRe: Riley Fenton, DOB 11/21/1989\n\nThank you for moving Ms. Fenton up. She has been fatigued for roughly a year in spite of adequate sleep, and describes coarser, brittle hair, some puffiness around the eyes and constipation. She has had no fever, weight loss or anterior neck pain. Her adrenal replacement is unchanged: hydrocortisone 20 mg in the morning and 10 mg in the afternoon, fludrocortisone 0.1 mg daily. She takes nothing else. No drug allergies.\n\nFamily history is notable for type 1 diabetes and Hashimoto disease in her mother, vitiligo in a sister and primary adrenal insufficiency in a maternal aunt. Never smoker, no alcohol. Teaches elementary school.\n\nExam: pulse 54, BP 110/70, BMI 24. Skin dry and cool. The thyroid is diffusely enlarged and firm, nontender, with no nodules felt. Deep tendon reflexes show a delayed relaxation phase, clearest at the ankle.\n\nLabs today: TSH 18 uIU/mL, free T4 0.4 ng/dL, total T3 60 ng/dL. Anti-thyroglobulin antibody positive. Serum cholesterol elevated, as expected with this degree of hypothyroidism; we will not treat it until she is euthyroid.\n\nImpression: Hashimoto thyroiditis with overt hypothyroidism. Together with her Addison disease this is autoimmune polyendocrine syndrome type 2. Her adrenal replacement was already in place, which is the order we want before thyroid hormone.\n\nPlan: levothyroxine 112 mcg daily, on an empty stomach, apart from food and other pills. Continue current hydrocortisone and fludrocortisone. TSH in 6 to 8 weeks. Given the syndrome, we would screen periodically for other autoimmune conditions; she is aware her family history is relevant.\n\nAllergies: NKDA.\ncc: primary care"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "author": "PCP",
+              "date": "2023-01-05T13:00",
+              "body": "Endo letter reviewed. Hashimoto hypothyroidism, APS-2 with her Addison's. Levothyroxine 112 started by endo, added to our list. Endo following TSH."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "pharmacy",
+          "start": "2023-02-08T08:55",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Electronic refill request",
+              "author": "MA",
+              "date": "2023-02-08T08:55",
+              "body": "eRx renewal requests for hydrocortisone 10 mg tabs (#90, 2 qAM + 1 qPM) and fludrocortisone 0.1 mg (#90). Last BMP 12/6 normal. Sent to PCP queue.\n\nPCP: approved x 90 days with 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypothyroidism and adrenal insufficiency",
+          "state": {"bp": [110, 70], "weight_kg": 66.2},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2023-03-21T16:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-03-21T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-03-21T16:40",
+              "body": "Check-in 3 months after starting levothyroxine. Energy a little better. Honest that she forgets the levothyroxine a couple of mornings a week - the hydrocortisone is habit, the new pill isn't, and she takes it with coffee on the way out the door. Endo drew a TSH in February; she doesn't know the number and it isn't in our system.\n\nExam: vitals as charted. Thyroid still full. Heart regular.\n\nA/P: Hypothyroidism, partly treated, adherence the main issue. Talked through taking it at bedtime or keeping it next to the hydrocortisone, 30-60 min before coffee. Phone alarm set during the visit. BMP for the adrenal side today. Will ask endo for their February labs. Physical in August."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "office_visit",
+          "start": "2023-05-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2023-05-09T16:30",
+              "body": "No-show for 3:40 follow-up. Texted; she replied that a parent conference ran over and she forgot to call. Not rebooked at her request, will see us at the August physical."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-26a",
+          "kind": "specialist_visit",
+          "start": "2023-06-26T09:15",
+          "service": "Gynecology",
+          "reason": "Irregular menses, difficulty conceiving",
+          "vitals": {"weight_kg": 67.2},
+          "labs": [
+            {"panel": null, "collected": "2023-06-26T10:00", "results": [
+              {"test": "Thyroid Stimulating Hormone", "value": 12},
+              {"test": "Free Thyroxine", "value": 0.7},
+              {"test": "Prolactin", "value": 29}
+            ]}
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"bp": [108, 70], "weight_kg": 66.4, "labs": {"Thyroid Stimulating Hormone": 3.1, "Prolactin": 14}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2023-08-22T09:40", "results": [{"test": "Thyroid Stimulating Hormone", "value": 3.1}, {"test": "Prolactin", "value": 14}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T09:40", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "CBC with Differential", "collected": "2023-08-22T09:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T09:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-22T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-22T10:05",
+              "body": "Annual exam, 33F.\n\nInterval: saw a gynecologist in late June for cycles spacing out to every 2-3 months and a year of trying for a pregnancy. She says they found her thyroid way off again (TSH 12) and a mildly high prolactin they thought came from the thyroid, and asked that we recheck both in about two months. We don't have their letter yet - requested again today. Since then: levothyroxine every night at bedtime, pill organizer next to the hydrocortisone, hasn't missed since. Feels more like herself. Weight up a bit over the spring, holding now.\n\nAdrenal: no sick days this year. Endo visit due fall.\n\nMeds: levothyroxine 112 mcg qHS, hydrocortisone 20/10, fludrocortisone 0.1. NKDA.\nSocial unchanged. Never smoker, no alcohol.\nPHQ-2 0.\n\nExam: vitals as charted. Skin less dry than in the spring. Thyroid mildly enlarged, smooth. Heart, lungs normal. Abdomen benign. Reflexes normal today. No edema.\n\nA/P\n1. Hashimoto hypothyroidism / APS-2 - TSH and prolactin today at gyn's request. CMP for Na/K.\n2. Lipids today; endo noted cholesterol was up when she was hypothyroid.\n3. Irregular cycles / trying to conceive - per gyn, the plan hinges on the thyroid; they'll take it from here once they see the numbers.\n4. HM: Pap 2022 normal. Flu/COVID in October.\nReturn 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T13:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical labs",
+              "author": "PCP",
+              "date": "2023-08-24T13:25",
+              "body": "Good news: TSH is 3.1 now, in range, and prolactin came back at 14, which is normal - so the gynecologist's hunch that the thyroid was behind it looks right. Cholesterol is normal now that the thyroid is treated. Sodium/potassium, kidney, liver and blood count all normal. I'm faxing these to your gynecologist. Keep doing exactly what you're doing with the bedtime dose."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T14:05",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "author": "gynecology",
+              "date": "2023-09-12T14:05",
+              "body": "Outside gynecology practice\nDate of service: 06/26/2023\nPatient: Riley Fenton, 33 y.o.\n\nReason for visit: menstrual irregularity and difficulty conceiving.\n\nHPI: Ms. Fenton has APS type 2 with Hashimoto thyroiditis, diagnosed this past winter, and Addison disease. For about six months her periods have come only every two to three months. She and her husband have been trying to conceive for a year without success. She also notes tiredness, some weight gain and feeling cold. She acknowledges she has not been taking her levothyroxine reliably.\n\nMedications: levothyroxine 112 mcg daily (missed often), hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily. Allergies: NKDA.\nFamily: mother with T1DM and Hashimoto; sister vitiligo; maternal aunt adrenal insufficiency.\nSocial: teacher; never smoker; no alcohol.\n\nExam: vitals within normal limits. Weight 67 kg. Skin dry. Reflexes with a slowed relaxation phase.\n\nLabs: TSH 12 mIU/L (0.4-4.0), free T4 0.7 ng/dL (0.9-1.7), prolactin 29 ng/mL (4-23).\n\nAssessment: oligomenorrhea and subfertility in the setting of undertreated primary hypothyroidism. The mild prolactin elevation is most likely secondary to the hypothyroidism.\n\nPlan: daily levothyroxine adherence reviewed at length. Repeat TSH and prolactin in about 8 weeks through her primary care physician. We will reassess cycles and fertility once she is euthyroid; she will call us.\n\ncc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "author": "PCP",
+              "date": "2023-09-12T17:20",
+              "body": "Gyn letter from June finally here. Matches what pt told us. Our 8/22 recheck (TSH 3.1, PRL 14) already faxed to them. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:30",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-11T15:35"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2023-10-11T15:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-11T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-11T15:55",
+              "body": "Flu vaccine L arm, 2023-24 COVID R arm. Tolerated both. Stress-dose reminder given for any fever. Observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal pain and bloating",
+          "state": {"bp": [110, 68], "weight_kg": 65.8, "labs": {"Tissue Transglutaminase IgA": 86}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2023-11-14T16:35", "resulted": "2023-11-16T14:00", "results": [
+              {"test": "Tissue Transglutaminase IgA", "value": 86},
+              {"test": "Immunoglobulin A", "loinc": "2458-8", "unit": "mg/dL", "value": 210}
+            ]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2023-11-14T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-11-14T16:45",
+              "body": "CC: belly pain and bloating, on and off since late spring.\n\nCrampy lower belly pain and bloating, worse after eating, especially big meals. Some days loose stools. No blood, no black stools, no fever, weight steady. No travel, no new meds. Thyroid pills every night, adrenal meds as usual. She wondered about celiac herself because of all the autoimmune things.\n\nExam: well, vitals as charted. Abdomen soft, not distended, mildly tender low on both sides, no rebound, no guarding, no masses. \n\nA/P: Postprandial pain and bloating with loose stools in a woman with APS-2 - celiac disease is high on the list. tTG-IgA and total IgA today; she has NOT gone gluten-free yet, and I asked her not to until this is sorted. Will refer to GI if positive."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "portal_message",
+          "start": "2023-11-17T08:15",
+          "orders": [
+            {"id": "gi-referral-2023", "action": "placed", "order": "Gastroenterology referral", "category": "referral", "to": "Gastroenterology", "reason": "tTG IgA 86 U/mL with normal total IgA; bloating, postprandial pain"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Celiac blood test",
+              "author": "PCP",
+              "date": "2023-11-17T08:15",
+              "body": "Riley - the celiac antibody (tTG-IgA) is positive at 86; anything over 15 is positive, and your total IgA is normal so the test is reliable. This strongly points to celiac disease. The standard next step is an endoscopy with small bowel biopsies by GI, and it only works if you're still eating gluten, so please keep eating normally until then. Referral is in; they should call within the week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Celiac blood test",
+              "author": "patient",
+              "date": "2023-11-17T12:48",
+              "body": "Ugh, not surprised. Will keep eating bread for now lol. GI called already, Dec 18."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "specialist_visit",
+          "start": "2023-12-18T13:00",
+          "service": "Gastroenterology",
+          "reason": "Abdominal pain, bloating; positive tTG",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-18T13:45", "results": [
+              {"test": "Hemoglobin", "value": 13.2},
+              {"test": "White Blood Cells", "value": 7.0},
+              {"test": "Platelets", "value": 250}
+            ]},
+            {"panel": null, "collected": "2023-12-18T13:45", "results": [
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "C Reactive Protein", "value": 2}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-18T13:45", "results": [{"test": "Albumin", "value": 4.5}]}
+          ],
+          "orders": [
+            {"id": "gi-referral-2023", "action": "done", "date": "2023-12-18T13:00"}
+          ]
+        }
+      ]
+    }
+  ]
+}

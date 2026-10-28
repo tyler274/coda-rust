@@ -1,0 +1,1987 @@
+{
+  "unit": "unit-1800",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001800",
+      "given": "Paige",
+      "family": "Howland",
+      "birth_date": "1995-06-28",
+      "address_line": "29 Lyman Hill Road, Apt 3",
+      "phone": "+1-860-555-0177",
+      "email": "paige.howland@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student who joined the practice at 24 in 2019 with a past college depressive episode. Schizoaffective disorder, depressive type is diagnosed by psychiatry in 2022, then body dysmorphic disorder; sertraline from late 2022. Two ED visits for suicidal ideation (2025, 2026) each lead to an inpatient psychiatric stay; paliperidone is added in 2026.",
+      "events": [
+        {
+          "id": "2019-08-06a",
+          "kind": "telephone",
+          "start": "2019-08-06T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2019-08-06T10:12",
+              "author": "front desk",
+              "body": "Caller is moving here this month to start a graduate program and wants a primary care doctor nearby. Private insurance card info taken. No urgent issues. Booked new patient appt 8/20 at 9:00. Asked her to bring any old records or the name of her last office so we can request them."
+            }
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "establish_care",
+          "start": "2019-08-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Major depressive disorder, single episode, moderate",
+              "action": "history",
+              "onset": "2016-02-01",
+              "note": "college, counseling only, resolved"
+            },
+            {
+              "label": "Major depressive disorder, single episode, moderate",
+              "action": "resolved",
+              "note": "resolved by summer 2016"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              73
+            ],
+            "hr": 75,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 61.0,
+            "height_cm": 165.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2019-08-20T09:40",
+              "resulted": "2019-08-22T07:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2019-08-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-08-20T09:50",
+              "author": "PCP",
+              "body": "24-year-old woman, new to the area, here to set up primary care. Starting a graduate program this fall. Feels well, no complaints today.\n\nPMH: one episode of depression in college (2016). Saw the campus counselor weekly for most of a semester, never took medication, and says it lifted by that summer. No symptoms since. No hospitalizations.\nPSH: none.\nMeds: none. No supplements.\nAllergies: no known drug allergies.\nFamily: mother has major depression; one maternal aunt with bipolar disorder; one maternal uncle with schizophrenia. No early heart disease or cancers she knows of.\nSocial: grad student, lives with a roommate. Never smoked, does not drink, no drug use. Walks a lot.\nGYN: regular cycles. Last Pap 2017 at her old office, normal per pt.\n\nROS negative across systems. Mood good. Sleep fine.\n\nExam: well appearing, pleasant, good eye contact. HEENT normal, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Neuro grossly intact. Affect bright and appropriate.\n\nPHQ-9: 3.\n\nPlan:\n- Records release signed for her prior office.\n- One-time HIV and hep C screen drawn today.\n- Flu shot when it arrives in October, nurse visit.\n- Pap due next year; can do at a physical in the winter.\n- Talked through the family psych history; she knows to reach out early if her mood dips again.\nRTC for physical in about 6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "weight_kg": 61.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2019-08-22a",
+          "kind": "portal_message",
+          "start": "2019-08-22T12:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2019-08-22T12:05",
+              "author": "PCP",
+              "body": "Hi Paige, both screening tests (HIV and hepatitis C) came back negative. Nothing more needed. Nice meeting you this week."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-03a",
+          "kind": "outside_records",
+          "start": "2019-09-03T14:20",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2017-04-06T10:00",
+              "text": "Specimen adequate for evaluation. Endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-09-12T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2007-11-20T10:00"
+            },
+            {
+              "vaccine": "HPV, quadrivalent",
+              "date": "2008-03-18T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2015-08-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2019-09-03T14:20",
+              "author": "front desk",
+              "body": "Faxed records (14 pages) from patient's previous family medicine office, covering 2012 to 2018. Includes immunization record and 2017 Pap. Abstracted: HPV x3 2007-2008, Tdap 8/2015, Pap 4/2017 NILM. Office notes are routine well visits and a sprained wrist in 2013. Counseling for low mood in 2016 was through her college, not this office. Routed to PCP."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Records review",
+              "date": "2019-09-04T08:10",
+              "author": "PCP",
+              "body": "Reviewed old records. Immunizations entered. Pap 2017 normal, next due 2020. Nothing else to act on."
+            }
+          ]
+        },
+        {
+          "id": "2019-10-10a",
+          "kind": "nurse_visit",
+          "start": "2019-10-10T16:30",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-10-10T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-10-10T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2019-10-10T16:40",
+              "author": "RN",
+              "body": "Flu vaccine given L deltoid, lot recorded. No prior reactions. Tolerated well, waited in clinic a few minutes, no problems."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "annual_physical",
+          "start": "2020-02-11T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              115,
+              71
+            ],
+            "hr": 58,
+            "spo2": 96,
+            "weight_kg": 61.0
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2020-02-11T09:05",
+              "text": "Specimen adequate. Transformation zone component present. Negative for intraepithelial lesion or malignancy. No organisms identified.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2020-02-17T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-02-11T08:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-02-11T09:30",
+              "author": "PCP",
+              "body": "Yearly exam. First semester went well, a lot of reading, a lab job on campus. Sleeping 7 hours. Mood good, no recurrence of the college depression. No new meds. Still not smoking or drinking.\n\nExam: well, NAD. HEENT normal. Neck supple. Heart RRR without murmur. Lungs clear. Breasts without masses. Abdomen benign. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin normal. Mood and affect normal.\n\nPHQ-9 2.\n\nA/P: healthy 24F.\n- Pap today (last 2017).\n- Flu done this season. Immunizations otherwise current.\n- Next physical in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-02-18a",
+          "kind": "portal_message",
+          "start": "2020-02-18T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2020-02-18T11:40",
+              "author": "PCP",
+              "body": "Your Pap smear was normal. Next one in three years."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:10",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-10-06T15:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-10-06T15:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2020-10-06T15:20",
+              "author": "RN",
+              "body": "Masked, screened at door, no COVID symptoms or exposures. Flu vaccine R deltoid. Tolerated without issue."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "annual_physical",
+          "start": "2021-03-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              74
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 60.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-03-16T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-03-16T10:55",
+              "author": "PCP",
+              "body": "Here for yearly. Classes remote most of this year, which she finds isolating, but she says she is managing. Has a COVID vaccine appointment at a pharmacy next month. No health complaints.\n\nExam: unremarkable. Heart and lungs normal, abdomen soft, no thyroid enlargement, skin clear. Calm, organized, appropriate.\n\nPHQ-9 4, mostly tiredness and some trouble concentrating.\n\nPlan: routine. Encouraged getting outside and keeping a schedule while remote. Pap not due until 2023. COVID vaccine as planned. Physical again in about a year; she'd prefer December after the semester."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "outside_records",
+          "start": "2021-05-04T09:00",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-09T13:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-30T13:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pharmacy COVID vaccine record",
+              "date": "2021-05-04T09:00",
+              "author": "MA",
+              "body": "Pt sent a photo of her vaccine card through the portal. Pfizer dose 1 4/9/21, dose 2 4/30/21, both at a retail pharmacy. Entered into immunization history and state registry checked, matches."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T16:00",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-19T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Flu vaccine",
+              "date": "2021-10-19T16:10",
+              "author": "RN",
+              "body": "Flu vaccine L deltoid. Quiet today, said she was tired from the semester. Reminded her of the physical booked in December."
+            }
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "annual_physical",
+          "start": "2021-12-14T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "date": "2021-12-14T14:20",
+              "author": "front desk",
+              "body": "No show for 1:40 physical. Called cell, went to voicemail, left message to call back and reschedule."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Reschedule your physical",
+              "date": "2022-01-11T09:30",
+              "author": "front desk",
+              "body": "Hi Paige, we missed you in December. Please call or reply here to book your yearly physical when it works for you."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "telephone",
+          "start": "2022-05-10T11:15",
+          "reason": "family concern about behavior",
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "placed",
+              "order": "Psychiatry referral",
+              "category": "referral",
+              "to": "Psychiatry",
+              "reason": "two years of isolation, talking to herself, unusual beliefs; urgent new evaluation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from patient's mother",
+              "date": "2022-05-10T11:40",
+              "author": "PCP",
+              "body": "Mother called, patient on the line and gave verbal permission for me to talk with both of them. Mother reports Paige has been pulling away for about two years: stays in her room, has been heard talking to herself, and has said things the family finds strange about the TV news and about her professors. Paige was guarded on the phone, said she is \"just tired\" and that people at school are not being straight with her. Would not say more. Asked directly: she said she sometimes thinks about not being here but has no plan and has not done anything to hurt herself. Mother staying with her this week.\n\nThis needs a psychiatric evaluation soon. Paige agreed. Urgent referral to outpatient psychiatry placed; family will drive her. Gave both of them the crisis line and told them to go to the ED for any thoughts of acting on it. I'd like to see her in the office after she's been evaluated."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-27a",
+          "kind": "specialist_visit",
+          "start": "2022-05-27T13:00",
+          "service": "Psychiatry",
+          "reason": "initial psychiatric evaluation",
+          "conditions": [
+            {
+              "label": "Schizoaffective disorder, depressive type",
+              "action": "diagnosed",
+              "onset": "2021-04-01",
+              "icd10": "F25.1"
+            },
+            {
+              "label": "Major depressive disorder, recurrent, severe with psychotic symptoms",
+              "action": "history",
+              "onset": "2021-04-01",
+              "note": "2021 episode, superseded by schizoaffective disorder",
+              "icd10": "F33.3"
+            },
+            {
+              "label": "Major depressive disorder, recurrent, severe with psychotic symptoms",
+              "action": "resolved",
+              "note": "reclassified as schizoaffective disorder",
+              "icd10": "F33.3"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              70
+            ],
+            "hr": 72
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-05-27T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 190
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.61
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-05-27T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-05-27T14:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Psychiatric diagnostic evaluation with medical services",
+              "performed": "2022-05-27T13:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "psych-referral",
+              "action": "done",
+              "date": "2022-05-27T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Initial Evaluation",
+              "date": "2022-06-02T10:30",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nInitial psychiatric evaluation, 5/27/2022\nRe: Paige Howland, DOB 6/28/1995\nReferred by: primary care\n\nReason for evaluation: 26-year-old graduate student brought in by her parents, who describe roughly two years of withdrawal, talking under her breath when alone, and increasingly unusual beliefs.\n\nHistory: Per parents, she spends most of the day in her room. Paige herself describes a conviction that television news presenters are directing concealed messages at her, and that faculty in her department are taking her research ideas by way of \"electromagnetic readings.\" She reports voices that remark on what she is doing, heard when no one else is present. Mood: she describes stretches of feeling \"numb\" lasting weeks, with so little energy she skips showering and meals. Frequently hopeless. Has passing thoughts about death; no intent, plan or preparatory acts. Denies any period of elevated mood, decreased need for sleep or impulsive behavior.\n\nPast psychiatric history: a depressive episode in college (2016), counseling only. Last year, a depressive episode of about three months in which the same voices and suspiciousness were present. Records reviewed show an inpatient psychiatric stay approximately six months ago at another hospital for auditory hallucinations and delusional thinking; at that time she reported no depressive or manic symptoms. She cannot recall being sent home on any medication, and the discharge paperwork was not available to us.\n\nMedical: none. Surgical: none. Medications: none. Allergies: NKDA.\nFamily history: mother with major depression; maternal aunt with bipolar disorder; maternal uncle with schizophrenia.\nSocial: graduate student, lives with a roommate. No alcohol, tobacco or drugs.\n\nMental status: appropriately dressed, cooperative, eye contact minimal. Speech at times tangential and hard to follow. Mood \"flat.\" Affect constricted. Thought content with referential and persecutory delusions as above. Endorses auditory hallucinations. Passive death wish without intent or plan. Insight limited, judgment fair.\n\nPhysical exam: within normal limits. Screening labs today (CBC, BMP, TSH) unremarkable.\n\nFormulation: psychotic symptoms present for more than two weeks without mood symptoms (the inpatient episode), alongside recurrent major depressive episodes with psychosis, now again depressed with psychosis.\nDiagnosis: Schizoaffective disorder, depressive type.\n\nRisk: chronic elevated risk given diagnosis and hopelessness; acute risk judged low today (no intent or plan, family support, future oriented about her degree). Safety plan completed with her and parents.\n\nPlan:\n1. Weekly individual psychotherapy, referral given.\n2. Medication options discussed at length. She prefers to hold off for now and start with therapy; we will revisit at each visit.\n3. Return in 3 months, sooner as needed. Crisis numbers provided.\n\nCopy to primary care."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.7
+            }
+          },
+          "measure": [
+            "bp",
+            "hr"
+          ]
+        },
+        {
+          "id": "2022-06-21a",
+          "kind": "office_visit",
+          "start": "2022-06-21T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after psychiatry evaluation",
+          "vitals": {
+            "bp": [
+              98,
+              80
+            ],
+            "hr": 80,
+            "spo2": 96,
+            "weight_kg": 59.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 16
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-06-21T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-06-21T14:45",
+              "author": "PCP",
+              "body": "Seen after her psychiatry evaluation; their letter is in the chart. She came alone. She learned there that she was hospitalized last fall at another hospital; she had not told us and we never got records. Says she has been to two therapy sessions and likes the therapist. Not on medication, her choice for now, and psychiatry is following.\n\nShe describes low energy and not eating much. Down about 1.5 kg since 2019. Still hears a voice now and then, less when she's busy. Passive thoughts of death on bad days, no intent, no plan, no access to firearms. Parents check in daily.\n\nExam: thin, quiet, fair grooming. Vitals fine. Heart and lungs normal. Affect flat, answers brief but coherent today.\n\nPHQ-9: 16.\n\nA/P:\n1. Schizoaffective disorder, depressive type, per psychiatry. Agree with plan. Encouraged her to keep therapy weekly and to keep the medication conversation open with psychiatry. Safety plan reviewed, crisis line in her phone.\n2. Weight: small meals and a protein drink if she isn't eating; recheck at next visit.\nPhysical still owed; will fold it in next time. RTC 3 months or sooner."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "specialist_visit",
+          "start": "2022-08-23T10:00",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "conditions": [
+            {
+              "label": "Body dysmorphic disorder",
+              "action": "diagnosed",
+              "onset": "2022-02-01",
+              "icd10": "F45.22"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Follow-up",
+              "date": "2022-08-29T15:10",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up visit, 8/23/2022\nRe: Paige Howland\n\nSeen three months after her initial evaluation. The main concern today is new to us: for about half a year she has been preoccupied with her nose, which she believes is grotesquely oversized and misshapen. She spends several hours a day examining it in mirrors and applies heavy makeup to hide it. No injury to the nose, no prior nasal surgery.\n\nShe continues weekly therapy. Psychotic symptoms present at a lower level; mood remains low. No suicidal intent or plan.\n\nMeds: none. Allergies: NKDA.\nFamily history: unchanged (maternal depression, bipolar disorder and schizophrenia in maternal relatives).\nSocial: graduate student, never smoker, no alcohol.\n\nExam: nose of normal size and shape, no deformity. Breathing comfortably. Remainder of the exam normal.\n\nAssessment:\n1. Body dysmorphic disorder, new.\n2. Schizoaffective disorder, depressive type.\n\nPlan: She asked for a referral to a plastic surgeon for rhinoplasty. I explained that cosmetic surgery does not relieve body dysmorphic disorder and often leaves people more distressed, so I am not making that referral. Recommended her therapist address the appearance concerns directly. Raised medication again; she will think about it. Return in about 8 weeks.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-06a",
+          "kind": "portal_message",
+          "start": "2022-09-06T21:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Referral question",
+              "date": "2022-09-06T21:48",
+              "author": "patient",
+              "body": "Hi, could you send a referral to a plastic surgeon? My psychiatrist won't do it. It's about my nose. I've thought about it a lot and it's what I want."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Referral question",
+              "date": "2022-09-07T12:30",
+              "author": "PCP",
+              "body": "Hi Paige, thanks for asking me directly. I read your psychiatrist's letter, and I agree with them, so I'm not going to send that referral. Surgery doesn't usually take this kind of worry away, and it can make it worse. I know how much this weighs on you. Can you bring it to your therapist this week? I'm also glad to talk it over at your next visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "nurse_visit",
+          "start": "2022-10-04T15:40",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-04T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-04T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-04T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2022-10-04T15:55",
+              "author": "RN",
+              "body": "Flu L arm, Pfizer bivalent R arm. Pt quiet, wearing a mask and hood, kept her face turned away. Tolerated both. Physical not yet rescheduled; gave her the front desk number."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-21a",
+          "kind": "pharmacy",
+          "start": "2022-10-21T17:20",
+          "medications": [
+            {
+              "drug": "sertraline 50 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizoaffective disorder, depressive type; prescribed by psychiatry"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Fill notification",
+              "date": "2022-10-21T17:20",
+              "author": "MA",
+              "body": "Pharmacy fill history notice: sertraline 50 mg tablets #30, 1 daily, prescriber outside psychiatry, filled 10/21/22. Added to med list as outside prescription."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-11a",
+          "kind": "specialist_visit",
+          "start": "2022-11-11T11:00",
+          "service": "Psychiatry",
+          "reason": "sertraline follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Outpatient Psychiatry Follow-up",
+              "date": "2022-11-17T09:40",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 11/11/2022\nRe: Paige Howland\n\nCheck-in three weeks after starting sertraline 50 mg daily for her depressive symptoms. She notices a lift in mood, is eating normally again and sleeping better. No nausea, GI upset, headache or other side effects.\n\nContinues weekly therapy. Mirror checking about the same. No suicidal thoughts this month.\n\nMeds: sertraline 50 mg daily. Allergies: NKDA.\nFamily and social history unchanged.\n\nAssessment: schizoaffective disorder, depressive type, early response to sertraline. Body dysmorphic disorder.\nPlan: continue sertraline 50 mg daily. Therapy weekly. Return in 3 months.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "annual_physical",
+          "start": "2023-03-07T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              108,
+              68
+            ],
+            "hr": 76,
+            "spo2": 99,
+            "weight_kg": 61.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 7
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2023-03-07T09:45",
+              "text": "Specimen satisfactory for evaluation. Transformation zone present. Negative for intraepithelial lesion or malignancy.",
+              "conclusion": "NILM.",
+              "issued": "2023-03-13T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-03-07T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-03-07T10:10",
+              "author": "PCP",
+              "body": "Physical, last one 2021. Since the fall she has been on sertraline 50 from psychiatry and in weekly therapy. Mood is better, back to working on her thesis a few hours a day. Still worries about her nose but says she is \"trying not to look.\" Voices rare. No side effects from sertraline.\n\nWeight back up to 61.5.\n\nExam: well groomed, better eye contact than last summer. HEENT normal. Heart RRR. Lungs clear. Abdomen soft. Pelvic normal, Pap taken. Skin without lesions. Affect mildly constricted, thought process linear.\n\nPHQ-9 7.\n\nMeds: sertraline 50 mg daily (psychiatry). NKDA.\n\nA/P:\n- Schizoaffective disorder, depressive type, and BDD: improving on sertraline, followed by psychiatry and therapy.\n- Pap today.\n- Vaccines current.\n- Physical next year."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-03-14a",
+          "kind": "portal_message",
+          "start": "2023-03-14T08:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2023-03-14T08:50",
+              "author": "PCP",
+              "body": "Pap normal. Good to see you looking more like yourself."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "specialist_visit",
+          "start": "2023-06-13T10:30",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2023-06-19T13:00",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nMedication management, 6/13/2023\nRe: Paige Howland\n\nStable. Mood reasonably steady, attending therapy every week. Denies hearing voices since winter; no referential thinking described today. Appearance concerns persist but she spends less time at the mirror. No suicidal thoughts. Tolerating sertraline 50 mg daily without side effects.\n\nMSE: casually dressed, calm, cooperative, linear. Mood \"okay.\" No psychotic content elicited.\n\nPlan: continue sertraline 50 mg daily and weekly therapy. Follow up in 6 months.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T16:20",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T16:25"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T16:27"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2023-10-10T16:35",
+              "author": "RN",
+              "body": "Seasonal flu and 2023-24 COVID given, one each arm. No issues. Pt chatty today, talked about her teaching assistant job."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-23a",
+          "kind": "specialist_visit",
+          "start": "2024-01-23T09:30",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2024-01-29T11:20",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nMedication check, 1/23/2024\nRe: Paige Howland\n\nDoing well through the holidays, spent two weeks at her parents' home. Mood stable. Therapy continuing weekly. No hallucinations or paranoid ideas reported. Nose concerns \"in the background.\" No SI.\n\nSertraline 50 mg daily, adherent, no side effects. NKDA.\n\nMSE unremarkable apart from mildly restricted affect.\n\nPlan: no changes. Next visit in about 6 months.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "annual_physical",
+          "start": "2024-03-12T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              112,
+              78
+            ],
+            "hr": 55,
+            "spo2": 97,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-03-12T08:50",
+              "resulted": "2024-03-13T16:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 120
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 116
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-03-12T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-03-12T09:05",
+              "author": "PCP",
+              "body": "28F for her physical. Steady year. Defending her thesis proposal this spring. Sees psychiatry twice a year and her therapist weekly, takes sertraline 50 every day. No voices. Sleeping 7-8 hours. Eats regular meals.\n\nExam: NAD, weight stable. Heart regular, no murmur. Lungs clear. Abdomen soft. No thyroid enlargement. Skin fine. Mood euthymic per pt, affect slightly flat, logical.\n\nPHQ-9 6.\n\nPlan:\n- Fasting lipids today, one-time screen at this age.\n- Pap 2023 normal, next 2026.\n- Flu and COVID in the fall.\n- Continue psychiatry care as is.\nSee you in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-03-14a",
+          "kind": "portal_message",
+          "start": "2024-03-14T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Cholesterol results",
+              "date": "2024-03-14T10:05",
+              "author": "PCP",
+              "body": "Paige, your cholesterol panel looks great, all in the healthy range. No repeat needed for several years."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "telephone",
+          "start": "2024-06-04T13:30",
+          "reason": "refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request",
+              "date": "2024-06-04T13:30",
+              "author": "MA",
+              "body": "Pharmacy faxed refill request for sertraline 50 mg to our office. This is prescribed by her psychiatrist. Called pharmacy, redirected to the psychiatry office. Left pt a voicemail letting her know."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "specialist_visit",
+          "start": "2024-08-20T14:00",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2024-08-26T08:45",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 8/20/2024\nRe: Paige Howland\n\nSummer was quiet; working on data analysis for her dissertation. Mood fair, a few low days around deadlines. No perceptual disturbances. No suicidal thoughts. Therapy weekly. Body image worries ongoing, manageable.\n\nCurrent medication: sertraline 50 mg daily. No adverse effects.\n\nPlan: continue sertraline 50 mg daily, continue therapy, recheck in 6 months.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T15:50",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-08T15:55"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T15:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2024-10-08T16:05",
+              "author": "RN",
+              "body": "Flu (trivalent this year) and updated COVID vaccine given, arms split. Declined bandaids. No reaction observed."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "portal_message",
+          "start": "2025-01-14T19:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "date": "2025-01-14T19:22",
+              "author": "patient",
+              "body": "Hi, I'd like to book my yearly physical. Tuesdays work best for me. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "date": "2025-01-15T09:10",
+              "author": "front desk",
+              "body": "You're booked Tuesday March 11 at 9:40 with your doctor. Reply here if that doesn't work."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "annual_physical",
+          "start": "2025-03-11T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              116,
+              67
+            ],
+            "hr": 70,
+            "spo2": 95,
+            "weight_kg": 61.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 8
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-03-11T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-03-11T10:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2025-03-11T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-03-11T10:25",
+              "author": "PCP",
+              "body": "Yearly visit. Busy winter, dissertation writing. Feels more tired, mood \"so-so.\" Still on sertraline 50 from psychiatry; last saw them in August, next visit not yet scheduled. Says therapy has been hit or miss lately because of her schedule. No voices. No thoughts of self-harm when asked.\n\nExam: well appearing, weight steady. HEENT, neck, heart, lungs, abdomen normal. Skin clear. Affect a little flat, thought process organized.\n\nPHQ-9: 8 (up a bit from last year).\n\nA/P:\n- Mood: mildly worse with workload. Encouraged her to get the psychiatry follow-up on the calendar and protect her therapy hour. She will call them this week.\n- Tdap today, last 2015.\n- Pap next year.\nRTC 1 year, sooner if mood slides."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "ed_visit",
+          "start": "2025-05-28T16:45",
+          "end": "2025-05-28T21:20",
+          "service": "Emergency Medicine",
+          "reason": "suicidal statements, medication stockpiling",
+          "conditions": [
+            {
+              "label": "Suicidal ideation",
+              "action": "diagnosed",
+              "onset": "2025-05-01",
+              "icd10": "R45.851"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              114,
+              67
+            ],
+            "hr": 73,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-28T17:20",
+              "resulted": "2025-05-28T18:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-05-28T17:20",
+              "resulted": "2025-05-28T18:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Drugs identified in Urine by Screen method",
+                  "loinc": "12286-1",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-05-28T16:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-05-29T08:15",
+              "author": "emergency medicine",
+              "body": "REGIONAL MEDICAL CENTER EMERGENCY DEPARTMENT\nVisit 5/28/2025, 16:45\nPatient: Paige Howland, 29F\n\nCC: brought by roommate for suicidal statements.\n\nHPI: Roommate tells us that over the past month the patient has repeatedly talked about wanting to \"end it all,\" has stopped going to her therapy appointments, and has been saving up her pills. Patient has schizoaffective disorder and body dysmorphic disorder and has been on sertraline for several years, previously stable. She tells me she has been isolating more and more this month and feels hopeless. She admits to collecting her medication. Denies taking any of it or any other act toward suicide today, but repeats that life is not worth living.\n\nPMH: schizoaffective disorder, depressive type; body dysmorphic disorder; prior major depressive episodes. PSH: none.\nMeds: sertraline 50 mg daily. Allergies: NKDA.\nFamily: mother depression, maternal aunt bipolar, maternal uncle schizophrenia.\nSocial: graduate student, lives with roommate. Never smoker, no alcohol, no drugs.\n\nVitals stable throughout.\nExam: unkempt, avoids eye contact, speaks quietly in a flat monotone. Otherwise normal exam: heart regular, lungs clear, abdomen soft, no signs of ingestion or injury.\n\nLabs: Na 140, K 4.1, Cl 102, HCO3 24, BUN 18, Cr 0.9, glucose 98. TSH 2.5. Urine drug screen negative.\n\nMDM: medically clear. Active suicidal ideation with means gathered. Emergency psychiatry consulted; she agreed to voluntary admission.\n\nDisposition: admitted to inpatient psychiatry.\nCopy to PCP."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-28b",
+          "kind": "hospital_admission",
+          "start": "2025-05-28T21:30",
+          "end": "2025-06-04T11:00",
+          "service": "Inpatient Psychiatry",
+          "reason": "suicidal ideation",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Psychiatry Discharge Summary",
+              "date": "2025-06-05T10:40",
+              "author": "psychiatry",
+              "body": "INPATIENT PSYCHIATRIC UNIT, REGIONAL MEDICAL CENTER\nAdmitted 5/28/2025, discharged 6/4/2025\nPatient: Paige Howland\nLegal status: voluntary\n\nAdmitting diagnosis: suicidal ideation in the setting of schizoaffective disorder, depressive type.\nOther: body dysmorphic disorder.\n\nCourse: Admitted from the ED after the roommate reported suicidal talk and stockpiled medication. On the unit she was withdrawn for the first two days, then engaged in groups and individual sessions. No self-harm on the unit. Denied hallucinations during the stay. With her consent, her roommate brought in and turned over the saved tablets. A written safety plan was completed with her and her mother. Sertraline 50 mg daily continued unchanged. At discharge she denied suicidal intent, was future oriented, and had a therapy appointment booked for 6/6.\n\nDischarge medications: sertraline 50 mg daily, dispensed two weeks at a time for now.\nAllergies: NKDA.\n\nFollow-up: therapist 6/6; outpatient psychiatry within 2 weeks; primary care within 1 week.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-05a",
+          "kind": "telephone",
+          "start": "2025-06-05T14:10",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2025-06-05T14:10",
+              "author": "RN",
+              "body": "Called after discharge summary arrived. Pt home since yesterday, staying with her mother this week. Has her sertraline, has her safety plan, therapy tomorrow. Denies thoughts of harming herself today. Scheduled with PCP 6/10. Reviewed 988 and ED instructions."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              109,
+              70
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 60.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 13
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-06-10T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-06-10T11:50",
+              "author": "PCP",
+              "body": "Hospital follow-up. ED record and psychiatry discharge summary reviewed. Her mother sat in for part of the visit with Paige's okay.\n\nShe says the weeks before were \"a fog.\" She had let therapy lapse in the spring and stopped answering messages. She is embarrassed about it but glad the roommate called. Saw her therapist on 6/6 and has psychiatry next week. Taking sertraline 50 daily; pharmacy is giving two weeks at a time.\n\nAsked directly: no current thoughts of killing herself, no plan. No saved pills at home now; her mother checked. No firearms in the home.\n\nExam: tired appearing, eye contact fair, speech soft but coherent. Weight 60.8. Heart and lungs normal.\n\nPHQ-9: 13.\n\nA/P:\n1. Suicidal ideation, recent admission. Safety plan reviewed line by line; it's in her phone and on the fridge. Keep therapy weekly, psychiatry next week.\n2. Schizoaffective disorder, depressive type, and BDD: per psychiatry, sertraline unchanged.\n3. Nurse call in a month. Message me any time.\nRTC 3 months, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 60.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "telephone",
+          "start": "2025-06-17T10:25",
+          "reason": "pharmacy question",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2025-06-17T10:25",
+              "author": "MA",
+              "body": "Pharmacist called to confirm the sertraline is meant to be dispensed 14 days at a time. Confirmed per the psychiatry discharge plan; psychiatry is the prescriber and will decide when to lift it. Pharmacist will note it on the profile."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "telephone",
+          "start": "2025-07-08T15:00",
+          "reason": "nurse check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse check-in",
+              "date": "2025-07-08T15:00",
+              "author": "RN",
+              "body": "Monthly check-in call. Pt reports she is back to weekly therapy and saw psychiatry on schedule. Mood \"a bit better, up and down.\" Denies suicidal thoughts. Sleeping okay. Sertraline daily. No questions for PCP. Reminded her of her September follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "specialist_visit",
+          "start": "2025-08-19T13:30",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2025-08-25T16:00",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 8/19/2025\nRe: Paige Howland\n\nAbout 11 weeks out from her inpatient stay for suicidal ideation. Attending therapy weekly again. Mood improved but fragile. No suicidal thoughts in the past month. No hallucinations. Appearance preoccupation unchanged.\n\nMedication: sertraline 50 mg daily, taking consistently. Pharmacy back to 30-day fills from this visit.\n\nPlan: continue sertraline 50 mg daily, weekly therapy, safety plan in place. Follow up in 4 to 5 months.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2025-09-09a",
+          "kind": "office_visit",
+          "start": "2025-09-09T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled visit",
+              "date": "2025-09-08T16:40",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's follow-up, teaching a section at that time this semester. Says she is doing okay and is seeing psychiatry and therapy. Will book her physical in the winter instead. PCP aware."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T16:10",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T16:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-07T16:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T16:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2025-10-07T16:25",
+              "author": "RN",
+              "body": "2025-26 flu and COVID given. Asked how she is doing: \"better than spring.\" No thoughts of self-harm. Tolerated vaccines."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "specialist_visit",
+          "start": "2026-01-20T10:00",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2026-01-26T12:15",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 1/20/2026\nRe: Paige Howland\n\nFall semester went acceptably. Therapy weekly. Mood \"steady, not great.\" No voices or suspicious thoughts. Denies SI. Mirror checking less.\n\nSertraline 50 mg daily, no side effects.\n\nPlan: continue current regimen. Return in 4 to 6 months.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "annual_physical",
+          "start": "2026-02-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              113,
+              80
+            ],
+            "hr": 66,
+            "spo2": 97,
+            "weight_kg": 61.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 9
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2026-02-24T09:30",
+              "text": "Specimen satisfactory; transformation zone present. Cytology negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2026-03-02T13:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2026-02-24T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2026-02-24T09:50",
+              "author": "PCP",
+              "body": "Physical. Last full visit with me was the hospital follow-up in June; she cancelled September for teaching. Since then: weekly therapy, psychiatry every few months, sertraline 50 daily. Mood \"okay, a little gray this winter.\" No voices. No thoughts of self-harm. Sleeping fine. Eating regularly. Hopes to defend next year.\n\nWeight 61.2, same as usual for her.\n\nExam: well appearing. HEENT normal, thyroid normal size. Heart RRR. Lungs clear. Abdomen soft. Pelvic normal, cotest collected. Skin clear. Affect slightly restricted, linear thinking.\n\nPHQ-9 9.\n\nMeds: sertraline 50 mg daily (psychiatry). NKDA.\n\nA/P:\n- Mood: mild symptoms, followed by psychiatry and therapy. Safety plan still in her phone. Reach out early if things slide.\n- Pap with HPV today (age 30).\n- Vaccines current.\nRTC 6 months for a check-in."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "portal_message",
+          "start": "2026-03-03T08:35",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2026-03-03T08:35",
+              "author": "PCP",
+              "body": "Pap and HPV test both negative. With a normal cotest you're set for five years."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-21a",
+          "kind": "ed_visit",
+          "start": "2026-05-21T19:05",
+          "end": "2026-05-22T00:40",
+          "service": "Emergency Medicine",
+          "reason": "found on rooftop edge, suicidal thoughts",
+          "vitals": {
+            "bp": [
+              110,
+              64
+            ],
+            "hr": 74,
+            "rr": 15,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 55.6
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-05-21T19:40",
+              "resulted": "2026-05-21T20:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 229
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.74
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 57
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 33
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-21T19:40",
+              "resulted": "2026-05-21T20:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-21T19:40",
+              "resulted": "2026-05-21T21:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Drugs identified in Urine by Screen method",
+                  "loinc": "12286-1",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-05-21T19:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-05-22T09:20",
+              "author": "emergency medicine",
+              "body": "REGIONAL MEDICAL CENTER EMERGENCY DEPARTMENT\nVisit 5/21/2026, 19:05\nPatient: Paige Howland, 30F\n\nCC: brought in by roommate after being found at the edge of the building roof.\n\nHPI: Roommate came home and found her seated on the edge of their apartment building's roof, talking about feeling hopeless. Patient has schizoaffective disorder and body dysmorphic disorder and was admitted about a year ago for suicidal ideation. She describes repeated thoughts of harming herself recently and says she feels \"empty.\" Over roughly two months she has lost a lot of weight, pulled away from friends and slept poorly. Denies alcohol or drug use.\n\nMeds: sertraline 50 mg daily. Allergies: NKDA.\nPMH: as above. PSH: none.\n\nVitals within normal limits. Weight 55.6 kg.\nExam: restless and agitated at times, blunted affect. Neuro exam normal: alert, oriented, cranial nerves intact, strength and sensation symmetric, gait steady. No injuries. Heart and lungs normal.\n\nLabs: CBC, CMP, TSH and free T4 normal. Urine drug screen negative.\n\nMDM: medically cleared. High acute suicide risk. Psychiatry evaluated in the ED; admission recommended and accepted.\n\nDisposition: admitted to inpatient psychiatry.\nCopy to PCP."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-22a",
+          "kind": "hospital_admission",
+          "start": "2026-05-22T00:50",
+          "end": "2026-06-04T10:30",
+          "service": "Inpatient Psychiatry",
+          "reason": "suicidal ideation",
+          "medications": [
+            {
+              "drug_text": "24 HR paliperidone 6 MG Extended Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth every morning",
+              "dose": {
+                "value": 6,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizoaffective disorder; started inpatient by psychiatry"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Psychiatry Discharge Summary",
+              "date": "2026-06-05T11:30",
+              "author": "psychiatry",
+              "body": "INPATIENT PSYCHIATRIC UNIT, REGIONAL MEDICAL CENTER\nAdmitted 5/22/2026, discharged 6/4/2026\nPatient: Paige Howland\n\nPrincipal diagnosis: suicidal ideation; schizoaffective disorder, depressive type.\nOther: body dysmorphic disorder.\n\nCourse: Admitted from the ED after her roommate found her on the roof edge. Second admission for suicidal ideation in a year. For the first several days she was guarded and slept little. Given recurrent depressive episodes with psychosis, an antipsychotic was recommended; she agreed, and paliperidone ER 6 mg each morning was started, with sertraline 50 mg daily continued. She tolerated it without stiffness, restlessness or dizziness. Appetite and sleep gradually improved. No self-harm on the unit. By discharge she denied suicidal intent, could name reasons for living and her supports, and had updated her safety plan with her roommate and parents.\n\nDischarge medications:\n- paliperidone ER 6 mg by mouth every morning (new)\n- sertraline 50 mg by mouth daily (unchanged)\nAllergies: NKDA.\n\nFollow-up: outpatient psychiatry and therapy within one week (booked); primary care within 2 weeks. PCP asked to follow weight and metabolic labs on the new antipsychotic.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "telephone",
+          "start": "2026-06-08T10:40",
+          "reason": "post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-06-08T10:40",
+              "author": "RN",
+              "body": "Called pt, home since 6/4, parents staying with her. Has both medications and is taking them. Saw her therapist on Friday, psychiatry on the 10th. No thoughts of self-harm today. Sleeping better. Appt with PCP 6/17 confirmed. Crisis numbers reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-17a",
+          "kind": "office_visit",
+          "start": "2026-06-17T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "vitals": {
+            "bp": [
+              106,
+              74
+            ],
+            "hr": 74,
+            "spo2": 97,
+            "weight_kg": 56.4
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-06-17T14:00",
+              "resulted": "2026-06-18T07:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-06-17T14:00",
+              "resulted": "2026-06-18T07:45",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 113
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 181
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2026-06-17T13:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-06-17T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2026-06-17T14:20",
+              "author": "PCP",
+              "body": "Seen after her second psychiatric admission. ED record and discharge summary reviewed.\n\nShe says this spring \"crept up\": stopped eating much, slept 3-4 hours, stopped texting friends. Glad her roommate found her. On the unit she started paliperidone 6 mg each morning and stays on sertraline 50. She has seen psychiatry (6/10) and her therapist twice since discharge.\n\nSide effects: a little sleepy in the mornings, no stiffness or restlessness. Eating more again.\n\nSafety: denies current suicidal thoughts or plan. Parents have the medications and hand her a week at a time. No firearms.\n\nExam: thin, appropriately dressed, fair eye contact, speech slow but organized. Weight 56.4, up a little from the ED (55.6), still about 5 kg under her usual 61. BP and pulse normal. Heart and lungs normal. No tremor, no rigidity.\n\nPHQ-9: 12.\n\nMeds: paliperidone ER 6 mg every morning (psychiatry, new), sertraline 50 mg daily (psychiatry). NKDA.\n\nA/P:\n1. Suicidal ideation, recent admission: safety plan reviewed and updated; it's on her phone and the fridge. Psychiatry and therapy weekly.\n2. Schizoaffective disorder, depressive type, now on paliperidone: baseline A1c and fasting lipids today for antipsychotic monitoring; I'll follow weight here.\n3. Weight loss from the depressive episode: regular meals, add snacks. Recheck at next visit.\n4. BDD: unchanged, therapy.\nRTC in 3 months, sooner for anything. Nurse will check in by phone."
+            }
+          ],
+          "state": {
+            "weight_kg": 56.4,
+            "labs": {
+              "Hemoglobin A1c": 5.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-06-18T12:10",
+              "author": "PCP",
+              "body": "Paige, your A1c (blood sugar average) and cholesterol are both normal. These are a starting point now that you're on paliperidone; we'll repeat them in a few months."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lab results",
+              "date": "2026-06-18T19:44",
+              "author": "patient",
+              "body": "Thanks. Feeling a little more like a person this week."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "telephone",
+          "start": "2026-07-14T11:30",
+          "reason": "nurse check-in",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Nurse check-in",
+              "date": "2026-07-14T11:30",
+              "author": "RN",
+              "body": "Check-in call. Pt says mood slowly better, sleeping 7 hours, eating three meals. Taking both meds; morning grogginess less. No thoughts of self-harm. Therapy weekly. No needs for PCP right now."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14b",
+          "kind": "specialist_visit",
+          "start": "2026-07-14T15:00",
+          "service": "Psychiatry",
+          "reason": "psychiatry follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry Follow-up",
+              "date": "2026-07-21T09:05",
+              "author": "psychiatry",
+              "body": "OUTSIDE PSYCHIATRY GROUP\nFollow-up, 7/14/2026\nRe: Paige Howland\n\nSix weeks after discharge. Mood slowly improving. Sleep and appetite better. No hallucinations. No suicidal thoughts. Engaged in weekly therapy; parents remain involved.\n\nMedications: paliperidone ER 6 mg every morning, sertraline 50 mg daily. Mild morning sedation, fading. No extrapyramidal signs on exam.\n\nPlan: continue both at current doses. Return in 4 weeks.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "September appointment",
+              "date": "2026-08-11T17:05",
+              "author": "patient",
+              "body": "Just checking I'm still on for Sept 16? I have a new class schedule and want to make sure it fits."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: September appointment",
+              "date": "2026-08-12T08:55",
+              "author": "front desk",
+              "body": "Yes, Wednesday 9/16 at 1:20. See you then!"
+            }
+          ]
+        },
+        {
+          "id": "2026-09-16a",
+          "kind": "office_visit",
+          "start": "2026-09-16T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, weight and mood",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Body dysmorphic disorder|F45.22": {
+        "code": "F45.22",
+        "display": "Body dysmorphic disorder",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Major depressive disorder, recurrent, severe with psychotic symptoms|F33.3": {
+        "code": "F33.3",
+        "display": "Major depressive disorder, recurrent, severe with psychotic symptoms",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Schizoaffective disorder, depressive type|F25.1": {
+        "code": "F25.1",
+        "display": "Schizoaffective disorder, depressive type",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Suicidal ideation|R45.851": {
+        "code": "R45.851",
+        "display": "Suicidal ideations",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "24 HR paliperidone 6 MG Extended Release Oral Tablet": {
+        "code": "672569",
+        "display": "24 HR paliperidone 6 MG Extended Release Oral Tablet",
+        "ingredient": "hr",
+        "receipt": "NLM RxNav approximateTerm + properties"
+      }
+    },
+    "labs": {
+      "Drugs identified in Urine by Screen method": {
+        "code": "12286-1",
+        "display": "Drugs identified in Urine by Screen method Nominal",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

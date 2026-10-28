@@ -1,0 +1,1364 @@
+{
+  "unit": "unit-1766",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001766",
+      "given": "Yolanda",
+      "family": "Doyle",
+      "birth_date": "1999-06-18",
+      "address_line": "48 Prospect Court",
+      "phone": "+1-201-555-0126",
+      "email": "yolanda.doyle@example.test",
+      "marital_status": "partnered",
+      "summary": "Young administrative assistant with well-controlled type 2 diabetes on metformin who joins the practice in late 2022 and is last seen in November 2024. Her 2025 pregnancy, asymptomatic E. coli bacteriuria at 16 weeks and an ED visit for right pyelonephritis at about 37 weeks reach the chart only as late outside records and her messages; the practice lists never change.",
+      "events": [
+        {
+          "id": "2022-11-14a",
+          "kind": "telephone",
+          "start": "2022-11-14T10:18",
+          "reason": "New patient intake call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient intake",
+              "date": "2022-11-14T10:18",
+              "author": "front desk",
+              "body": "Caller: Yolanda (self). Looking for a new primary care doctor, her old office has a long wait for appointments. Commercial PPO, card info taken over the phone. Membership packet sent to yolanda.doyle@example.test.\n\nSays she has \"type 2, on metformin\" and nothing else. No allergies that she knows of.\n\nRelease of information form for her prior primary care office emailed with the packet; she'll sign and send it back and we'll fax the request.\n\nScheduled new patient appt Tue 11/29 at 8:40. Asked her to come fasting and bring her metformin bottle."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-29a",
+          "kind": "establish_care",
+          "start": "2022-11-29T08:40",
+          "end": "2022-11-29T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; type 2 diabetes",
+          "conditions": [
+            {
+              "label": "Type 2 diabetes mellitus without complications",
+              "action": "diagnosed",
+              "onset": "2021-03-01",
+              "note": "diagnosed by prior PCP 2021 per patient; on metformin since"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "metformin hydrochloride 500 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth twice daily with breakfast and dinner",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Type 2 diabetes"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              122,
+              77
+            ],
+            "hr": 59,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 70.9,
+            "height_cm": 157.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-11-29T09:25",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 121
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 126
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-29T09:25",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.6
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-11-29T09:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 168
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 130
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-29T09:25",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-11-29T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 309
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.46
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-29T09:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-29T09:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional, 1-2 drinks a month"
+            },
+            {
+              "item": "Occupation",
+              "value": "Administrative assistant"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-11-29T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-11-29T09:25"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-11-29T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-11-29T09:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "optom-referral",
+              "action": "placed",
+              "order": "Optometry referral",
+              "category": "referral",
+              "to": "Optometry",
+              "reason": "annual diabetic eye exam"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-11-29T09:35",
+              "author": "PCP",
+              "body": "23 y/o woman new to the practice. Main reason for coming: wants one doctor to keep an eye on her diabetes; prior office was hard to get into.\n\nDiabetes: told she had type 2 in 2021 at her old primary care office after routine bloodwork, started on metformin then and has stayed on 500 mg twice a day. Takes it with breakfast and dinner, rarely misses. Some loose stools the first few weeks, none now. Doesn't check sugars at home. No low-sugar spells. No thirst, urination or vision changes. Never had a diabetic eye exam that she remembers.\n\nPMH: type 2 diabetes. Nothing else.\nSurgeries: none.\nMeds: metformin 500 mg BID.\nAllergies: none to medications.\nFamily: mother has type 2 diabetes; father has high blood pressure.\nSocial: administrative assistant. Lives with her partner. Never smoked. A drink or two a month at most. No drug use.\n\nROS: negative except as above.\n\nExam: Vitals as recorded. Comfortable, well appearing. HEENT unremarkable. Neck supple, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Feet: skin intact, no calluses or ulcers, pulses 2+ DP/PT, monofilament intact bilaterally.\n\nA/P\n1. Type 2 diabetes, on metformin, by history well controlled. Continue metformin 500 mg BID. A1c, CMP, fasting lipids and urine albumin/creatinine today. No statin indicated at her age with no other risk factors; revisit lipids yearly. Referral to optometry for a dilated eye exam.\n2. Health maintenance: hep C and HIV screening today (one-time). CBC. Flu shot given. PHQ-2 negative. Records requested from her prior office to confirm Pap and vaccine history.\n\nFollow up in about 6 months for diabetes, sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              116,
+              74
+            ],
+            "weight_kg": 71.0,
+            "height_cm": 158.0,
+            "labs": {
+              "Creatinine": 0.66,
+              "Glucose": 118,
+              "Hemoglobin A1c": 6.6,
+              "High Density Lipoprotein": 49,
+              "Low Density Lipoprotein": 92,
+              "Microalbumin/Creatinine Ratio": 9,
+              "Triglycerides": 128
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-12-01a",
+          "kind": "portal_message",
+          "start": "2022-12-01T16:05",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your bloodwork from Tuesday",
+              "date": "2022-12-01T16:05",
+              "author": "PCP",
+              "body": "Hi Yolanda,\n\nAll of your labs from the visit look good. Your A1c is 6.6, which is right where we want it for you on the metformin. Kidney and liver tests are normal, no protein in the urine, cholesterol is fine, and your blood counts are normal. The hepatitis C and HIV screens were both negative.\n\nNo changes. Keep the metformin as you've been taking it, and watch for a call from the eye doctor's office to set up your exam.\n\nTalk soon."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "outside_records",
+          "start": "2023-01-10T13:40",
+          "reason": "Prior primary care records received",
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2021-09-14T10:00",
+              "text": "Specimen: cervical, liquid-based preparation. Specimen adequacy: satisfactory for evaluation; transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy."
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2020-08-11T10:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office (fax, 14 pages)",
+              "date": "2023-01-10T13:40",
+              "author": "front desk",
+              "body": "Fax in from her previous primary care office, 14 pages, about six weeks after the request went out. Placed in chart, routed to PCP.\n\nPCP review: Type 2 diabetes diagnosed there in spring 2021 on routine fasting labs, metformin 500 mg twice daily started at that time and unchanged since. No other problems listed. Pap 9/2021 negative. Tdap 8/2020. COVID vaccine primary series (Pfizer) April and May 2021. Immunization page from childhood shows a complete hepatitis B series and a complete HPV series in her teens. No allergies listed. Consistent with what she told me. Vaccine history entered."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-21a",
+          "kind": "outside_records",
+          "start": "2023-02-21T11:15",
+          "reason": "Diabetic eye exam report",
+          "orders": [
+            {
+              "id": "optom-referral",
+              "action": "done",
+              "date": "2023-02-21T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Optometry diabetic eye examination",
+              "date": "2023-02-21T11:15",
+              "author": "optometry",
+              "body": "Outside optometry practice\nDate of exam: 02/14/2023\nRe: Yolanda Doyle, DOB 06/18/1999\nReferred by: primary care, annual diabetic eye exam\n\nPatient with type 2 diabetes since 2021 on metformin. No visual complaints. No known drug allergies.\n\nVisual acuity 20/20 OD, 20/20 OS without correction. Pupils equal and reactive, no APD. IOP 15 OD, 16 OS. Anterior segments quiet.\nDilated fundus exam: clear media, cup-to-disc 0.3 both eyes, maculae flat, vessels normal caliber, no hemorrhages, exudates or neovascularization in either eye.\n\nImpression: no diabetic retinopathy either eye.\nPlan: repeat dilated exam in 12 months.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-23a",
+          "kind": "office_visit",
+          "start": "2023-05-23T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              112,
+              71
+            ],
+            "hr": 77,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-05-23T16:45",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.4
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-05-23T16:45",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 112
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 126
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-05-23T16:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-05-23T16:45"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-05-23T16:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-05-23T16:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes follow-up",
+              "date": "2023-05-23T17:05",
+              "author": "PCP",
+              "body": "S: Six-month check on her diabetes. Came after work. Taking metformin twice a day without trouble. Eye exam done in February, no retinopathy, letter on file. Has been walking at lunch most days. No hypoglycemia symptoms, no numbness in feet.\n\nO: Vitals as charted. Well appearing. Heart RRR. Lungs clear. Feet without lesions, sensation intact.\n\nA/P: Type 2 diabetes, controlled on metformin 500 BID. A1c and BMP today. Continue current dose. She has never had a pneumococcal vaccine; with diabetes she's due one, PCV20 given today, no further pneumococcal doses needed.\n\nPhysical in the fall with the yearly labs."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Glucose": 112,
+              "Hemoglobin A1c": 6.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-24a",
+          "kind": "portal_message",
+          "start": "2023-05-24T12:30",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c result",
+              "date": "2023-05-24T12:30",
+              "author": "PCP",
+              "body": "Yolanda, your A1c came back at 6.4, a touch better than in November. Kidney function and potassium are normal. Whatever you're doing with the lunchtime walks, keep it up. Same metformin dose."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: A1c result",
+              "date": "2023-05-24T19:02",
+              "author": "patient",
+              "body": "Thank you!! Was a little nervous about that one."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "pharmacy",
+          "start": "2023-08-08T09:10",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: metformin",
+              "date": "2023-08-08T09:10",
+              "author": "RN",
+              "body": "E-refill request from pharmacy for metformin 500 mg tabs, 1 BID. Last A1c 6.4 (5/23). Seen in May. Approved 90-day supply with 1 refill per standing protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-13a",
+          "kind": "nurse_visit",
+          "start": "2023-10-13T12:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-13T12:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-13T12:15"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-13T12:17"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse visit: vaccines",
+              "date": "2023-10-13T12:30",
+              "author": "RN",
+              "body": "In on her lunch break for this season's vaccines. Feeling well today, no fever. No prior reactions.\nInfluenza vaccine IM left deltoid. Updated COVID vaccine IM right deltoid. VIS given for both. Waited 15 min, no reaction. Out by 12:30."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "annual_physical",
+          "start": "2023-11-17T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; diabetes",
+          "vitals": {
+            "bp": [
+              119,
+              78
+            ],
+            "hr": 65,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 72.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-11-17T08:55",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 119
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 11
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 124
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 68
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-17T08:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-11-17T08:55",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 171
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 147
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 95
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-17T08:55",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-11-17T08:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-17T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-11-17T09:10",
+              "author": "PCP",
+              "body": "24 y/o F for her yearly visit and diabetes check.\n\nInterval: no illnesses since spring. Work busy with year-end scheduling. Still walking most days, less now that it's dark early. Metformin BID, no GI upset. No hypoglycemia. Flu and COVID shots done here in October.\n\nMeds: metformin 500 mg BID. Allergies: NKDA.\nSocial: unchanged; never smoker, rare alcohol.\nPHQ-9: 2.\n\nExam: Vitals as charted. Well appearing. Eyes: conjunctivae clear. Ears and throat normal. Neck without adenopathy or thyromegaly. Heart regular, no murmurs. Lungs clear throughout. Abdomen soft, no masses. Skin: no acanthosis, no rashes. Extremities without edema. Diabetic foot exam: normal inspection, DP/PT palpable both sides, monofilament 10/10 bilaterally.\n\nA/P\n1. Type 2 diabetes: doing well. A1c, CMP, lipids, urine albumin/creatinine today. Continue metformin 500 BID.\n2. Health maintenance: Pap was 9/2021 at her old office, normal, so next one is due next fall; will do it at next year's physical. Tdap 2020. PCV20 done in May. Flu/COVID done for the season. Eye exam due again around February, she'll call the optometrist.\n\nRTC May for diabetes."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Glucose": 124,
+              "Hemoglobin A1c": 6.7,
+              "High Density Lipoprotein": 47,
+              "Low Density Lipoprotein": 96,
+              "Microalbumin/Creatinine Ratio": 11,
+              "Triglycerides": 141
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-20a",
+          "kind": "portal_message",
+          "start": "2023-11-20T08:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "date": "2023-11-20T08:45",
+              "author": "PCP",
+              "body": "Hi Yolanda, results from Friday: A1c 6.7, up a little from 6.4 in May but still well within your goal (under 7). Kidneys, liver and urine protein all normal. Cholesterol numbers are good. Nothing to change. Have a good Thanksgiving."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "office_visit",
+          "start": "2024-05-14T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Diabetes follow-up",
+          "vitals": {
+            "bp": [
+              110,
+              80
+            ],
+            "hr": 71,
+            "weight_kg": 70.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-05-14T17:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2024-05-14T17:00",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 111
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.63
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 127
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-05-14T16:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-14T17:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Diabetes follow-up",
+              "date": "2024-05-14T17:15",
+              "author": "PCP",
+              "body": "Routine diabetes visit. Doing fine. Metformin twice daily, occasionally forgets the evening dose on weekends. No lows, no polyuria. Says she still hasn't booked this year's eye exam; gave her the optometry number again.\n\nExam: vitals as charted. Alert, well. Cardiac and lung exams normal. Feet: intact skin, normal sensation.\n\nAssessment/plan: T2DM, controlled. A1c and BMP today. Continue metformin 500 mg twice daily; talked about a pill box or phone alarm for the evening dose. Yearly physical with Pap and full labs in November."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Glucose": 115,
+              "Hemoglobin A1c": 6.5
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-15a",
+          "kind": "portal_message",
+          "start": "2024-05-15T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "A1c",
+              "date": "2024-05-15T13:20",
+              "author": "PCP",
+              "body": "A1c is 6.5 and kidney tests are normal. Steady. See you in November."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "pharmacy",
+          "start": "2024-08-20T08:55",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Metformin refill",
+              "date": "2024-08-20T08:55",
+              "author": "RN",
+              "body": "Pharmacy request: metformin 500 mg #180, 1 tab BID. Seen 5/14, A1c 6.5. Sent 90 days + 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-08a",
+          "kind": "annual_physical",
+          "start": "2024-11-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; diabetes; Pap",
+          "vitals": {
+            "bp": [
+              127,
+              75
+            ],
+            "hr": 73,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 71.8
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-08T09:40",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 112
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.65
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 125
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 61
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-08T09:40",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 6.4
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-11-08T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 161
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 119
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 89
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 113
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-08T09:40",
+              "results": [
+                {
+                  "test": "Microalbumin/Creatinine Ratio",
+                  "value": 8
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-11-08T09:25",
+              "text": "Specimen: cervical, liquid-based preparation, collected in office. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present.\nInterpretation: negative for intraepithelial lesion or malignancy.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-11-12T15:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-11-08T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-08T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-11-08T09:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-11-08T09:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-08T09:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-11-08T10:05",
+              "author": "PCP",
+              "body": "Yearly physical, 25 y/o. Feels well. No new concerns.\n\nDiabetes: on metformin 500 mg BID, using a phone alarm now and rarely misses. No lows. Had her eye exam over the summer at the same optometry office and was told everything looked fine; we don't have the report, front desk to request it.\n\nMeds: metformin 500 mg BID. NKDA.\nPSH: none.\nFHx: mother T2DM, father HTN.\nSocial: admin assistant, same job. Lives with partner. Never smoker. Alcohol only occasionally.\nPHQ-2: 0.\n\nExam: Vitals as charted. NAD. HEENT normal. Neck supple, no thyromegaly. RRR without murmur. Lungs CTA. Abdomen soft, nontender. Pelvic: normal external genitalia, vaginal mucosa normal, cervix without lesions; Pap collected. Skin without lesions of concern. No edema. Diabetic foot exam: skin and nails normal, pulses palpable, monofilament normal bilaterally.\n\nA/P\n1. T2DM, well controlled. A1c, CMP, lipid panel, urine albumin/creatinine. Continue metformin as is.\n2. Cervical screening: Pap today, cytology only at her age.\n3. Vaccines: flu and this season's COVID given today.\n4. Eye exam report requested from optometry.\n\nRTC 6 months for diabetes."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.0,
+            "labs": {
+              "Glucose": 113,
+              "Hemoglobin A1c": 6.4,
+              "High Density Lipoprotein": 50,
+              "Low Density Lipoprotein": 94,
+              "Microalbumin/Creatinine Ratio": 8,
+              "Triglycerides": 122
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-13a",
+          "kind": "portal_message",
+          "start": "2024-11-13T11:10",
+          "reason": "Results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap and bloodwork",
+              "date": "2024-11-13T11:10",
+              "author": "PCP",
+              "body": "Hi Yolanda, everything from Friday is back. Your Pap is normal; next one in three years. A1c 6.4, the best it's been since you started here. Kidney, liver, urine and cholesterol results are all normal.\n\nWe asked the eye doctor's office to send over the summer exam. Please book a diabetes check for around May."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "pharmacy",
+          "start": "2025-02-11T10:25",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: metformin 500 mg",
+              "date": "2025-02-11T10:25",
+              "author": "RN",
+              "body": "Electronic request, metformin 500 mg 1 tab twice a day. Last A1c 6.4 on 11/8/24. Approved x90 days with 1 refill. Diabetes f/u due in May; not yet scheduled."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "portal_message",
+          "start": "2025-05-12T07:52",
+          "reason": "Patient message: pregnancy and metformin",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about my metformin",
+              "date": "2025-05-12T07:52",
+              "author": "patient",
+              "body": "Hi, I took a home pregnancy test last week and it was positive! I already called an OB office and they're getting me in soon. Should I keep taking my metformin until then or stop? I haven't been drinking at all since I found out. Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Question about my metformin",
+              "date": "2025-05-12T12:40",
+              "author": "PCP",
+              "body": "Congratulations, Yolanda. Please keep taking the metformin twice a day for now, don't stop it on your own. Bring the bottle to your first OB visit and let them know you have type 2 diabetes; the obstetrics team will take over decisions about your diabetes medicine during the pregnancy. If they want labs or records from us, have them send a request and we'll get them out quickly."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-03a",
+          "kind": "portal_message",
+          "start": "2025-06-03T09:30",
+          "reason": "Recall: diabetes visit due",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Time for your diabetes check",
+              "date": "2025-06-03T09:30",
+              "author": "front desk",
+              "body": "Hello Yolanda, our records show you're due for your diabetes follow-up with the doctor. Reply here or call the office and we'll find a time that works. If you're being seen elsewhere for this, let us know so we can update your chart."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "pharmacy",
+          "start": "2025-08-26T14:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Metformin refill",
+              "date": "2025-08-26T14:05",
+              "author": "RN",
+              "body": "Refill request metformin 500 mg BID. Last visit here 11/2024. Pt messaged in May that she is pregnant and being followed by OB. Approved 90-day supply per PCP; recall already sent in June, no reply."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "outside_records",
+          "start": "2025-09-30T15:20",
+          "reason": "Obstetrics prenatal visit note received",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-07-18T10:20",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "1+"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-07-18T10:20",
+              "resulted": "2025-07-20T09:00",
+              "results": [
+                {
+                  "test": "Urine Culture",
+                  "text": ">100,000 CFU/mL E. coli"
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside obstetrics: prenatal visit 07/18/2025",
+              "date": "2025-09-30T15:20",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology group\nPrenatal visit, date of service 07/18/2025\nPatient: Yolanda Doyle, DOB 06/18/1999, age 26\n\nGestational age 16 weeks. Here for routine prenatal care. Feels well, no concerns today; pregnancy without problems to this point.\n\nMedical history: type 2 diabetes, good control on metformin.\nSurgical history: none.\nMedications: metformin; prenatal vitamin one tablet daily.\nAllergies: NKDA.\nFamily history: mother with type 2 diabetes; father with hypertension.\nSocial: never smoker. No alcohol since pregnancy was confirmed. Works as an administrative assistant.\n\nVitals: BP 120/78, HR 72, temp 37.0 C (98.6 F).\nExam: no abnormal findings. Fetal heart tones heard.\n\nUrine dipstick in clinic: leukocyte esterase 1+; nitrite, protein, glucose and ketones negative. Urine sent for culture.\nCulture (final 07/20/2025): greater than 100,000 CFU/mL E. coli.\n\nAssessment: intrauterine pregnancy at 16 weeks. Type 2 diabetes. Asymptomatic bacteriuria in pregnancy.\n\n---\nFax cover, 09/30/2025: records per request of primary care. Front desk: placed in chart for PCP review. Problem and medication lists not updated; no visit with us since 11/2024."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-19a",
+          "kind": "portal_message",
+          "start": "2025-12-19T18:14",
+          "reason": "Patient message: ED visit and admission",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "FYI I'm in the hospital",
+              "date": "2025-12-19T18:14",
+              "author": "patient",
+              "body": "Just letting you know I went to the ER on Tuesday with a fever and bad pain on my right side. They said it's a kidney infection and kept me in on the OB floor. I'm getting IV antibiotics and feeling a lot better than Tuesday. Baby is moving fine. I'll let you know when I'm home."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: FYI I'm in the hospital",
+              "date": "2025-12-20T09:05",
+              "author": "PCP",
+              "body": "Thanks for letting us know, Yolanda. Sorry you went through that, and glad you're improving. Follow the hospital team's instructions. Feel free to message any time."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "outside_records",
+          "start": "2026-01-27T11:45",
+          "reason": "Emergency department record received",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-16T21:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "text": "TNTC"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Renal ultrasound",
+              "performed": "2025-12-16T22:30",
+              "text": "Clinical history: pregnant at about 37 weeks, fever, right flank pain.\nTechnique: grayscale and color images of both kidneys and the bladder.\nRight kidney: hydronephrosis. No calculus. No mass. No perinephric fluid. Normal cortical echogenicity.\nLeft kidney: normal size and echogenicity. No hydronephrosis, calculus or mass.\nBladder: partially distended, unremarkable. Gravid uterus noted.",
+              "conclusion": "Right hydronephrosis. No calculi or structural abnormality."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Outside ED record: visit 12/16/2025",
+              "date": "2026-01-27T11:45",
+              "author": "emergency medicine",
+              "body": "Hospital emergency department\nED provider note, date of visit 12/16/2025\nPatient: Yolanda Doyle, 26 y/o F, pregnant at approximately 37 weeks\n\nCC: fever, nausea, right flank pain, dysuria.\n\nHPI: Partner brought her in. Three days ago she noticed urinary frequency and pressure above the pubic bone; since then it has progressed to burning with urination, pain in the right flank, nausea, chills and feeling feverish. Denies vaginal bleeding or discharge. Baby moving normally. No urinary infections before this pregnancy. No sick contacts. Had early prenatal care, missed the last two prenatal appointments. Bacteriuria was found on a urine culture at her prenatal visit in July 2025.\n\nPMH: type 2 diabetes; asymptomatic bacteriuria in pregnancy.\nPSH: none.\nHome meds: metformin 500 mg BID; prenatal vitamin 1 tab daily.\nAllergies: NKDA.\nFHx: T2DM (mother), HTN (father).\nSocial: never smoker, no alcohol in pregnancy, administrative assistant.\n\nVitals at triage: T 38.8 C (101.8 F), HR 110, BP 108/70.\n\nExam: flushed and mildly diaphoretic. Right costovertebral angle tenderness. Abdomen with mild suprapubic tenderness, no rebound, no guarding. Gravid.\n\nUA: leukocyte esterase positive, nitrite positive, WBCs too numerous to count. Urine culture sent.\nRenal ultrasound: right-sided hydronephrosis, no stones or structural abnormality.\n\nED course: IV fluid bolus started. Ceftriaxone 1 g IV given.\n\nImpression: acute right pyelonephritis in pregnancy, about 37 weeks.\nDisposition: admitted to the obstetric service for IV antibiotics and fetal monitoring.\n\n---\nReceived by fax 01/27/2026. Front desk: filed to chart, routed to PCP. No discharge summary included."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "pharmacy",
+          "start": "2026-03-10T09:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request metformin",
+              "date": "2026-03-10T09:40",
+              "author": "RN",
+              "body": "Pharmacy e-request for metformin 500 mg BID. Not seen here since 11/8/24; last A1c on file 6.4 from that visit. Per PCP, 90 days sent, no further refills until she is seen. Left VM asking her to call to schedule a diabetes visit."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T10:15",
+          "reason": "Recall: overdue diabetes visit",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Please schedule your visit",
+              "date": "2026-05-19T10:15",
+              "author": "front desk",
+              "body": "Hi Yolanda, we haven't seen you since November 2024 and you're overdue for your diabetes visit and labs. Please call or reply to set something up; morning and late-afternoon times are open next month."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {}
+}
