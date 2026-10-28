@@ -97,7 +97,8 @@ class StagingImages(unittest.TestCase):
 
     def test_packaging_rejects_duplicate_missing_or_wrong_revision_builds(self):
         original = self.paths.read_text()
-        examples = [original + original.splitlines()[0] + "\n",
+        duet = next(line for line in original.splitlines() if "duet-runtime" in line)
+        examples = [original + duet + "\n",
                     "\n".join(line for line in original.splitlines() if "duet-runtime" not in line),
                     original]
         for index, paths in enumerate(examples):
