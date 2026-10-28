@@ -298,17 +298,17 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
             }
         }
     }
-    // Labs and studies the catalog lacks, by their LOINC code; an order for one is
-    // coded as a study.
+    // Labs and studies by the LOINC code their author gives; an order for one the
+    // catalog lacks is coded as a study.
     let mut extra: Vec<(bool, &str, &str, Option<&LabResult>)> = Vec::new();
     for ev in patients.iter().flat_map(|p| &p.events) {
         for r in ev.labs.iter().flat_map(|l| &l.results) {
-            if let (false, Some(code)) = (catalog.labs.contains_key(&r.test), &r.loinc) {
+            if let Some(code) = &r.loinc {
                 extra.push((true, &r.test, code, Some(r)));
             }
         }
         for r in &ev.reports {
-            if let (false, Some(code)) = (catalog.reports.contains_key(&r.study), &r.loinc) {
+            if let Some(code) = &r.loinc {
                 extra.push((false, &r.study, code, None));
             }
         }
@@ -321,6 +321,22 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
     // a name's unit comes from a result that states one, and one name is one test
     extra.sort_by_key(|(_, _, _, r)| r.and_then(|r| r.unit.as_ref()).is_none());
     for (lab, label, code, result) in extra {
+        // one name is one code wherever the bank uses it: the catalog's, else the
+        // first a result, study or order gives
+        let listed = [&catalog.labs, &catalog.panels, &catalog.reports]
+            .into_iter()
+            .find_map(|s| s.get(label));
+        if let Some(e) = listed {
+            if e.code != code.trim() {
+                terms.rejected.push(format!(
+                    "{label:?} is in the catalog as {:?}, not {:?}; leave the code out, or \
+                     name a different test differently",
+                    e.code,
+                    code.trim()
+                ));
+            }
+            continue;
+        }
         let unit = result.and_then(|r| r.unit.as_deref());
         if let (true, Some(v), Some(u)) = (lab, terms.labs.get(label), unit)
             && v.unit.as_deref().is_some_and(|known| known != u)
@@ -342,18 +358,17 @@ pub fn resolve(patients: &[Patient], catalog: &Catalog, look: &mut Lookup) -> Re
                  name is one test"
             ));
         }
-        let known = if lab { &terms.labs } else { &terms.reports };
-        if let Some(v) = known.get(label)
+        if let Some(v) = terms.labs.get(label).or(terms.reports.get(label))
             && v.code != code.trim()
         {
             terms.rejected.push(format!(
-                "{} {label:?} is coded {:?} and {:?}; one name is one test",
-                if lab { "lab" } else { "study" },
+                "{label:?} is coded {:?} and {:?}; one name is one test",
                 v.code,
                 code.trim()
             ));
             continue;
         }
+        let known = if lab { &terms.labs } else { &terms.reports };
         if known.contains_key(label)
             || terms
                 .rejected

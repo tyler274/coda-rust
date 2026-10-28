@@ -196,6 +196,9 @@ pub struct Entry {
     /// A "no known" allergen: the allergen category it says the patient has none of.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub negates: Option<String>,
+    /// The ages a procedure's code is for (CPT's own band, both ends included).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ages: Option<[i64; 2]>,
     /// Panel members, in reporting order.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub members: Vec<String>,

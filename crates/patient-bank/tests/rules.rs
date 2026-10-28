@@ -806,29 +806,100 @@ fn a_draw_keeps_its_derived_members_and_set_levels_consistent() {
 }
 
 #[test]
-fn a_fasting_glucose_is_the_glucose_of_a_panel_drawn_with_it() {
-    let draw = patient(json!([visit(
-        "e1",
-        "2024-01-03T07:10",
-        json!({"labs": [
-            {"panel": null, "collected": "2024-01-03T07:10",
-                "results": [{"test": "Fasting Glucose", "value": 158}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T07:10",
-                "results": [{"test": "Creatinine"}]},
-            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T16:00",
-                "results": [{"test": "Creatinine"}]}
-        ]})
-    )]));
-    let (p, errors) = measure::apply(&seed(), &draw, &catalog());
-    assert!(errors.is_empty(), "{errors:?}");
-    let glucose = |k: usize| {
+fn a_procedure_code_for_an_age_band_fits_the_patient() {
+    // born 1976-03-02: a tonsillectomy in 1984 was at 8, one in 2006 at 30
+    let at = |label: &str, when: &str| {
+        let p = patient(json!([visit(
+            "e1",
+            "2024-01-03T09:00",
+            json!({"procedures": [{"procedure": label, "performed": when}],
+                "documents": [{"type": "Progress Notes", "author": "PCP", "body": "History."}]})
+        )]));
+        errors_for(seed(), p)
+            .into_iter()
+            .any(|e| e.contains("is coded for ages"))
+    };
+    assert!(!at("Tonsillectomy, under age 12", "1984-06-01T09:00"));
+    assert!(at("Tonsillectomy, under age 12", "2006-06-01T09:00"));
+    assert!(!at("Tonsillectomy, age 12 or over", "2006-06-01T09:00"));
+    assert!(at("Preventive visit, new patient, 65+", "2024-01-03T09:00"));
+}
+
+#[test]
+fn one_specimen_has_one_glucose() {
+    // entries collected together are one specimen: their fasting glucose and a
+    // panel's glucose are one reading, stated or read by code
+    let draw = |fasting: serde_json::Value, panel: serde_json::Value| {
+        patient(json!([visit(
+            "e1",
+            "2024-01-03T07:10",
+            json!({"labs": [
+                {"panel": null, "collected": "2024-01-03T07:10", "results": [fasting]},
+                {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T07:10",
+                    "results": panel},
+                {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T16:00",
+                    "results": [{"test": "Creatinine"}]}
+            ]})
+        )]))
+    };
+    let glucose = |p: &patient_bank::ledger::Patient, k: usize, test: &str| {
         (p.events[0].labs[k].results.iter())
-            .find(|r| r.test == "Glucose")
+            .find(|r| r.test == test)
             .and_then(|r| r.value.as_ref())
             .map(patient_bank::ledger::num)
     };
-    assert_eq!(glucose(1), Some(158.0), "one specimen has one glucose");
-    assert_ne!(glucose(2), Some(158.0), "a later draw reads its own");
+    let cases = [
+        // stated fasting, panel glucose left out or named without a value
+        (
+            json!({"test": "Fasting Glucose", "value": 158}),
+            json!([{"test": "Creatinine"}]),
+        ),
+        (
+            json!({"test": "Fasting Glucose", "value": 158}),
+            json!([{"test": "Glucose"}]),
+        ),
+        // stated panel glucose, fasting named without a value
+        (
+            json!({"test": "Fasting Glucose"}),
+            json!([{"test": "Glucose", "value": 158}]),
+        ),
+    ];
+    for (fasting, panel) in cases {
+        let (p, errors) = measure::apply(&seed(), &draw(fasting, panel), &catalog());
+        assert!(errors.is_empty(), "{errors:?}");
+        assert_eq!(glucose(&p, 0, "Fasting Glucose"), Some(158.0));
+        assert_eq!(glucose(&p, 1, "Glucose"), Some(158.0));
+        assert_ne!(
+            glucose(&p, 2, "Glucose"),
+            Some(158.0),
+            "a later draw reads its own"
+        );
+    }
+    // neither stated: code reads the level once for both
+    let mut leveled = draw(
+        json!({"test": "Fasting Glucose"}),
+        json!([{"test": "Glucose"}]),
+    );
+    leveled.events[0].state =
+        serde_json::from_value(json!({"labs": {"Fasting Glucose": 131}})).expect("state");
+    let (p, errors) = measure::apply(&seed(), &leveled, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    assert!(glucose(&p, 0, "Fasting Glucose").is_some());
+    assert_eq!(glucose(&p, 0, "Fasting Glucose"), glucose(&p, 1, "Glucose"));
+    // two stated values for one specimen is an error, not a choice
+    let (_, errors) = measure::apply(
+        &seed(),
+        &draw(
+            json!({"test": "Fasting Glucose", "value": 158}),
+            json!([{"test": "Glucose", "value": 140}]),
+        ),
+        &catalog(),
+    );
+    assert!(
+        errors
+            .iter()
+            .any(|e| e.contains("one specimen gives glucose"))
+    );
 }
 
 #[test]
