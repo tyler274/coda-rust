@@ -14,7 +14,7 @@ import { substitute } from "./chart-expand.mjs";
 const INITIAL_LABEL = "an initial arrow cannot have a guard or event label";
 
 export function flatten({ root, names, nevers, instances = [], ignored = [], catalog = new Map(),
-  events: declared = [], groups = new Map(), strict = false, problems = [] }) {
+  events: declared = [], groups = new Map(), strict = false, problems = [], keys = new Map() }) {
   const display = (id) => names.get(id) ?? id;
 
   // Build the region for one part. `scope` is null for an always-active region, else
@@ -339,7 +339,7 @@ export function flatten({ root, names, nevers, instances = [], ignored = [], cat
       ...(decl.label !== label ? { family: decl.label } : {}),
       ...(decl.accepts ? { accepts: decl.accepts } : {}),
     });
-  return { regions, nevers, owners, instances, ignored, events, declared, groups, strict, problems };
+  return { regions, nevers, owners, instances, ignored, events, declared, groups, strict, problems, keys };
 }
 
 // Words for a resolved guard, in the chart's captions.

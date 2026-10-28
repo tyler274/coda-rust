@@ -264,6 +264,9 @@ events unless shared: an unshared label another chart also uses gets ` (KEY)`.
 `%% outside F: by CAUSE` says events F declares with that cause happen in another chart, so
 each must be shared. Each chart's own `%% never` rules hold as `KEY.Name`, naming its states
 only; a composition's rules name a state as `KEY: caption`.
+`verus` compiles a composition to one model like a chart; its header hashes the
+composition with each composed chart's text, and its map lists each chart by its path
+as written with its own hash, so `check` reports drift when any of them changes.
 
 **Reasons.** Any limit can say what it protects with free text after `| reason:`,
 on `%% when Ids | reason: ...`, after a declaration's `needs Ids | reason: ...`, or
@@ -373,6 +376,15 @@ incomplete. HOLDS covers chart rules only, like an exhausted trace.
   section per region, in its caption, and one row per state with its status
   (built, partial, missing or not shown). It fails when the chart gains or drops
   a state the table doesn't match, so coverage can't silently fall behind.
+- `journey CHART JOURNEYS.md` replays constructive journeys: one `## NAME`
+  section per journey, numbered steps that are event labels, each optionally
+  followed by `→` and the states that must hold after it (a composite caption
+  covers its nested states; `Caption@KEY` names a template instance's state; in a
+  composition, `KEY: caption`). `From: NAME` continues where an earlier journey
+  ended. Each step keeps every state the event can lead to and then only those
+  where its states hold, using the same step semantics as `trace` and the Verus
+  model, so a journey shows a useful outcome is reachable, and fails at the first
+  step the chart no longer allows, naming the conditions that don't hold.
 - `flat` prints the expansion; without parallel parts it reads back to the same
   flat model, with rules as comments.
 

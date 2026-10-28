@@ -122,8 +122,8 @@ Linear wins.
   your account, not the device: signing out doesn't drop it, and it arrives
   and is answered (Dev 2026-10-25). Edit returns the words and quote,
   and the attached item at its current version. That the words
-  survive is a data promise about the message's identity, for a linked data
-  proof; the chart holds the states around it.
+  survive is a data promise about the message's identity, in
+  data-promises.md; the chart holds the states around it.
 - A reply that can't finish shows unfinished with Try again, never silence. A
   reply ended by withdrawn AI permission shows unfinished without Try again
   (D1; Oct 4 rule 7). Turning AI off or newer Terms pause the reply, which

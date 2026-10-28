@@ -1337,6 +1337,63 @@ test("coverage checks a table that accounts for every state of a chart, region b
   assert.match(extra.stdout, /the chart has no region "Garage"/);
 });
 
+test("journey replays useful outcomes from the start and fails at the step a chart no longer allows", () => {
+  const dir = fs.mkdtempSync(path.join(run, "journey-"));
+  const file = (name, body) => { const f = path.join(dir, name); fs.writeFileSync(f, body); return f; };
+  const door = file("door.mmd", here("door.mmd"));
+  const list = file("journeys.md", [
+    "# Door journeys", "", "Prose and numbered lines under a # heading are ignored:", "1. you lock and arm", "",
+    "## The alarm catches a forced door",
+    "1. you lock the door → Locked; Disarmed",
+    "2. you arm the alarm → Armed",
+    "3. someone forces the door → Ringing; Loud",
+    "4. someone opens the door → Open; Loud", "",
+    "## Back to quiet",
+    "From: The alarm catches a forced door",
+    "1. you lock the door",
+    "2. you reset the lock -> Quiet", "",
+  ].join("\n"));
+  const ok = cmd("journey", door, list);
+  assert.equal(ok.status, 0, ok.text);
+  assert.match(ok.stdout, /reaches The alarm catches a forced door \(4 steps\)/);
+  assert.match(ok.stdout, /reaches Back to quiet \(2 steps\)/);
+  assert.match(ok.stdout, /2 journeys: each reaches its outcome\./);
+  // A choice stays open until a step's states pick it: the timer may lock the door armed.
+  const choice = cmd("journey", door, file("choice.md", "## Timer\n1. the timer locks the door → Armed\n2. someone forces the door → Ringing\n"));
+  assert.equal(choice.status, 0, choice.text);
+  // Negative control: an alarm that no longer rings on a forced door strands the journey, which
+  // says where the chart went instead.
+  const broken = cmd("journey", file("broken.mmd", here("door.mmd").replace("Armed --> Ringing : someone forces the door", "Armed --> Ringing : someone cuts the wire")), list);
+  assert.equal(broken.status, 1);
+  assert.match(broken.stdout, /FAILS The alarm catches a forced door\nstep 3 \(line 9\): after "someone forces the door", Ringing; Loud never holds:\n  Door\/Locked\/Alarm reaches Armed\n  Siren reaches Loud/);
+  // A journey that continues from a failed one fails too, rather than starting afresh.
+  assert.match(broken.stdout, /FAILS Back to quiet\nline 12: "From:" names "The alarm catches a forced door", which isn't an earlier journey that reached its end/);
+  // A step the chart doesn't allow there names what it needs.
+  const early = cmd("journey", door, file("early.md", "## Early\n1. you arm the alarm\n"));
+  assert.equal(early.status, 1);
+  assert.match(early.stdout, /step 1 \(line 2\): "you arm the alarm" can't happen here\. In the first state reached so far:\n  Door\/Locked\/Alarm is \(not in Locked\); the event moves it only from Disarmed/);
+  const wrong = cmd("journey", door, file("wrong.md", "## Wrong\n1. you lock the door → Ringing\n"));
+  assert.equal(wrong.status, 1);
+  assert.match(wrong.stdout, /after "you lock the door", Ringing never holds:\n  Door\/Locked\/Alarm reaches Disarmed/);
+  const unknown = cmd("journey", door, file("unknown.md", "## Unknown\n1. you knock\n"));
+  assert.match(unknown.stdout, /the chart has no event "you knock"/);
+  const empty = cmd("journey", door, file("empty.md", "# Nothing\n"));
+  assert.equal(empty.status, 1);
+  assert.match(empty.stdout, /No journeys/);
+  // A composition names each state by its chart, as its rules do.
+  for (const name of ["compose-app.mmd", "compose-practice.mmd"]) file(name, here(name));
+  const both = file("both.mmd", ["stateDiagram-v2", "%% compose app: compose-app.mmd", "%% compose practice: compose-practice.mmd",
+    "%% shared app: you're invited = practice: invite the patient", "%% shared practice: the patient joins = app: join",
+    "%% shared practice: a record arrives = app: save a note", "%% outside practice: by the patient through the app"].join("\n"));
+  const across = cmd("journey", both, file("across.md", ["## Join and share",
+    "1. invite the patient → app: Invited; practice: Invited",
+    "2. join → app: Connected; practice: Connected",
+    "3. save a note → app: Note; practice: Owed", ""].join("\n")));
+  assert.equal(across.status, 0, across.text);
+  const unnamed = cmd("journey", both, file("unnamed.md", "## Join\n1. invite the patient → Invited\n"));
+  assert.match(unnamed.stdout, /"Invited" must identify one state or composite in one region/);
+});
+
 test("compose joins separate charts through shared events and checks rules across them", () => {
   const dir = fs.mkdtempSync(path.join(run, "compose-"));
   for (const name of ["compose-app.mmd", "compose-practice.mmd"]) fs.writeFileSync(path.join(dir, name), here(name));
@@ -1422,10 +1479,36 @@ test("compose joins separate charts through shared events and checks rules acros
   const missing = cmd("rules", write(base.join("\n").replace("app: save a note", "app: save a nate")));
   assert.equal(missing.status, 1);
   assert.match(missing.text, /%% shared names "save a nate", which app does not carry/);
-  // Verus judges drift on one chart's text, so it refuses a composition.
-  const model = cmd("verus", both, "--module", "Both");
-  assert.equal(model.status, 1);
-  assert.match(model.text, /verus and check take one chart/);
+  // Verus compiles the composition like one chart; check judges drift on it and on every
+  // chart it composes, by paths as written, so the model reads the same on every machine.
+  const out = path.join(dir, "verus");
+  const model = cmd("verus", both, "--module", "Both", "--dir", out);
+  assert.equal(model.status, 0, model.text);
+  const f = { dir: out, proof: path.join(out, "Both_proof.rs"), map: path.join(out, "Both.map.json") };
+  // Like any proof, a composition's may need a support fact: here, that the app shows an
+  // invitation only while the practice holds it open.
+  const strengthen = (proof) => fs.writeFileSync(proof, fs.readFileSync(proof, "utf8").replace(
+    "pub open spec fn inductive(s: State) -> bool { safety(s) }",
+    "pub open spec fn inductive(s: State) -> bool {\n    safety(s) && ((s.region_patient_app_your_practice == RegionPatientAppYourPractice::StateInvited)\n" +
+    "        ==> (s.region_practice_connection == RegionPracticeConnection::StateInvited))\n}"));
+  strengthen(f.proof);
+  assert.deepEqual(JSON.parse(fs.readFileSync(f.map, "utf8")).composes.map((c) => [c.key, c.file]),
+    [["app", "compose-app.mmd"], ["practice", "compose-practice.mmd"]]);
+  assert.match(fs.readFileSync(path.join(out, "Both.rs"), "utf8"), /rule_practice_owed_only_from_sharing[\s\S]*rule_same_status\(/);
+  verify(f);
+  assert.equal(cmd("check", both, "--module", "Both", "--dir", out).status, 0);
+  const practiceText = here("compose-practice.mmd");
+  fs.writeFileSync(path.join(dir, "compose-practice.mmd"), `${practiceText}%% A note changes the chart's text, so its model is redrawn.\n`);
+  const drift = cmd("check", both, "--module", "Both", "--dir", out);
+  assert.equal(drift.status, 1);
+  assert.match(drift.text, /diagram\/generated drift/);
+  fs.writeFileSync(path.join(dir, "compose-practice.mmd"), practiceText);
+  assert.equal(cmd("check", both, "--module", "Both", "--dir", out).status, 0);
+  // Negative control: joining on the wrong event fails the proof at that event's step.
+  const wrongOut = path.join(dir, "verus-wrong");
+  assert.equal(cmd("verus", wrong, "--module", "Both", "--dir", wrongOut).status, 0);
+  strengthen(path.join(wrongOut, "Both_proof.rs"));
+  verify({ dir: wrongOut, proof: path.join(wrongOut, "Both_proof.rs") }, false, "preserves_event_save_a_note");
   // A composition names chart: caption, and a rule's caption is looked up in that chart only.
   const loose = cmd("rules", write([...base.slice(0, 7), "%% never Loose: Connected & practice: Not connected -- x"].join("\n")));
   assert.equal(loose.status, 1);
