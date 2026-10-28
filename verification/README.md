@@ -57,6 +57,9 @@ flattened representation between Verus generation and finite reachability search
 `statechart.mjs trace` prints a shortest violating path and numbered Mermaid diagram. A completed
 search covers only the finite chart's rules; limits or interruption are incomplete.
 An inductive Verus obligation can fail without a reachable chart violation.
+Rules and proofs say what never happens; each graph's `journeys.md`, replayed by
+`statechart.mjs journey` on the same representation, shows its useful outcomes
+are reachable, and fails when a change strands one.
 
 ## Connect the harness through events
 
@@ -70,8 +73,10 @@ changes it, so a recorded run can be checked against the flat model, and `agains
 checks a more detailed model of the same behavior. The harness has no chart of
 its own; it is just the harness.
 
-Do not force every promise into finite states. Identity, revisions, collections,
-atomic batches and progress need linked data proofs and explicit assumptions.
+Do not force every promise into finite states. A promise about records (identity,
+revisions, collections, atomic batches) is written beside its chart in
+`data-promises.md`, naming the Rust owner that must prove it, and stays marked
+unproven until that proof exists. Progress needs explicit assumptions.
 Charts without safety rules establish transition correspondence only. Keep generated
 behavior separate from editable proofs; `statechart.mjs check` detects generated drift. Review
 manual data refinements and implementation connections separately.
@@ -81,8 +86,8 @@ manual data refinements and implementation connections separately.
 | Folder | Spec |
 | --- | --- |
 | [physician-experience](physician-experience/README.md) | The physician web app's ideal behavior as one statechart, with its Verus model and proof. |
-| [duet-experience](duet-experience/README.md) | The Duet app's ideal behavior as one statechart. |
-| [connected-care](connected-care/README.md) | How Duet and the physician web app meet: one composition of both graphs through shared events, with the rules that span them. |
+| [duet-experience](duet-experience/README.md) | The Duet app's ideal behavior as one statechart, with its Verus model and proof. |
+| [connected-care](connected-care/README.md) | How Duet and the physician web app meet: one composition of both graphs through shared events, with the rules that span them, and its Verus model and proof. |
 
 ## How the skills fit
 
@@ -141,7 +146,7 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
-| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against` and `coverage`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
+| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage` and `journey`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
 | Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model

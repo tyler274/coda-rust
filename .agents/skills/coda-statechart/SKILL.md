@@ -67,6 +67,8 @@ in both directions; name omitted behavior even when existing proofs pass.
 Build or audit the real Rust owner against that design when implementation exists.
 Keep what the app shows for each state in one coverage table beside the chart,
 checked with `coverage`, so built, partial and missing states stay explicit.
+Keep the useful outcomes a person reaches as constructive journeys beside it,
+replayed with `journey`, so a change that strands one fails.
 Use [app creation](../coda-create-verification/SKILL.md) for its driving/readback
 recipe. Investigate failures before claiming a bug: repair mistranslation while
 preserving the promise, and return proposed behavior changes to Dev.

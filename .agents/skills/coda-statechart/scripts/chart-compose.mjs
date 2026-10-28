@@ -35,6 +35,17 @@ export function resolveComposition(text, file) {
     (whole, head, target) => `${head}${path.resolve(path.dirname(file), target)}`);
 }
 
+// What a model generated from a composition derives from: the composition's own text and
+// each composed chart's text, in composition order. Paths stay as written, so the identity
+// is the same on every machine; each chart is also hashed alone for the map.
+export function compositionSources(text, file) {
+  return readComposition(text).charts.map(({ key, file: written }) => {
+    const target = path.resolve(path.dirname(file), written);
+    try { return { key, file: written, text: fs.readFileSync(target, "utf8") }; }
+    catch { throw new Error(`cannot read the composed chart ${key}: ${target}`); }
+  });
+}
+
 export function readComposition(text) {
   const charts = [], shared = [], outside = [], nevers = [];
   const keys = () => charts.map((c) => c.key);
@@ -217,5 +228,5 @@ export function compose(text, options = {}) {
   names.set("composition", "Composition");
   const root = { name: "", parts: [{ children: [{ name: "composition", parts }], transitions: [] }] };
   return { root, names, nevers, instances, ignored, catalog, events: declared, groups,
-    strict: expanded.every(({ x }) => x.strict), problems };
+    strict: expanded.every(({ x }) => x.strict), problems, keys: scopeOf };
 }
