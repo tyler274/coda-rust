@@ -211,8 +211,11 @@ pub fn apply(seed: &Seed, p: &Patient, catalog: &Catalog) -> (Patient, Vec<Strin
                     .filter_map(move |r| Some((k, r.value.clone()?)))
             })
             .collect();
-        // a glucose named without a value takes its specimen's stated one
+        // a glucose named without a value takes its specimen's stated one, once it is back
         for (k, lab) in ev.labs.iter_mut().enumerate() {
+            if lab.pending {
+                continue;
+            }
             let given = (stated.iter()).find(|(j, _)| collected[*j] == collected[k]);
             for r in (lab.results.iter_mut()).filter(|r| glucose(&r.test)) {
                 if let (None, None, Some((_, v))) = (&r.value, &r.text, given) {

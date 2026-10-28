@@ -294,13 +294,15 @@ fn one_fact(sh: &Shared, chart: &Chart, birth: &str, errors: &mut Vec<String>) {
     for (name, set) in codes.iter().filter(|(_, s)| s.len() > 1) {
         errors.push(format!("{name:?} is coded {set:?}; one name is one test"));
     }
+    // only results that are back carry a value; a registered one has none to compare
     let mut glucose: BTreeMap<&str, BTreeSet<String>> = BTreeMap::new();
     for r in &chart["Observation"] {
-        if matches!(loinc(r).as_deref(), Some("1558-6" | "2345-7")) {
+        let value = &r["valueQuantity"]["value"];
+        if value.is_number() && matches!(loinc(r).as_deref(), Some("1558-6" | "2345-7")) {
             glucose
                 .entry(str_of(r, "effectiveDateTime"))
                 .or_default()
-                .insert(r["valueQuantity"]["value"].to_string());
+                .insert(value.to_string());
         }
     }
     for (at, values) in glucose.iter().filter(|(_, v)| v.len() > 1) {

@@ -886,6 +886,15 @@ fn one_specimen_has_one_glucose() {
     assert!(errors.is_empty(), "{errors:?}");
     assert!(glucose(&p, 0, "Fasting Glucose").is_some());
     assert_eq!(glucose(&p, 0, "Fasting Glucose"), glucose(&p, 1, "Glucose"));
+    // a pending panel is not back yet: its glucose stays empty
+    let mut waiting = draw(
+        json!({"test": "Fasting Glucose", "value": 158}),
+        json!([{"test": "Glucose"}]),
+    );
+    waiting.events[0].labs[1].pending = true;
+    let (p, errors) = measure::apply(&seed(), &waiting, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    assert_eq!(glucose(&p, 1, "Glucose"), None);
     // two stated values for one specimen is an error, not a choice
     let (_, errors) = measure::apply(
         &seed(),
