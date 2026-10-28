@@ -4,7 +4,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Continuous integration
 
-- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. The `ci` job runs `cargo fmt --check`, clippy, the workspace tests (excluding the three browser packages), each full browser package (`physician-sample`, `public-site`, and `mobile`) once, then `mdbook build book` with the [book link check](/scripts/check-book-links.sh), and `cargo doc`. The workflow's comments are the maintained step list.
+- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. Routine CI runs formatting, Clippy, `cargo test --workspace` and documentation checks. Browser tests are ignored by the ordinary test harness; their explicit targets run on `workflow_dispatch`. A green routine CI run does not establish browser qualification. The workflow and its comments own the exact step list.
 - The other jobs are `foundations` (offline cloud foundation contracts and mocked release adapters), `images` (the locked Nix images, built and run but not pushed), `postgres` (fresh migrations and the Postgres proofs), `observability` (the collector config and its OpenTofu roots), and `cargo-deny` (which applies [`deny.toml`](/deny.toml)).
 - `deploy-public-site-staging` applies the public site's reviewed staging plan on pushes to `main` only when the repository variable `PUBLIC_SITE_STAGING_DEPLOY` is `enabled` ([public site](public-site.md)).
 - [`.github/workflows/doppler-watch.yml`](/.github/workflows/doppler-watch.yml) is a separate daily workflow that watches the pinned Doppler CLI for releases and advisories.
