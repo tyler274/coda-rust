@@ -8,7 +8,9 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use dioxus::dioxus_core::AttributeValue;
 use dioxus::prelude::*;
 
+mod charts;
 mod icons;
+pub use charts::{Comparison, ComparisonBars, MeasurementTile, Sparkline, TrendChart, Value};
 pub use icons::{Icon, IconName};
 
 /// The `STYLESHEET` constant.

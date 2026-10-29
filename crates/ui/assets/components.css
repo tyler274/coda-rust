@@ -225,3 +225,29 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   .state-pill { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
   :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
 }
+/* Measurements and charts, after the October 21 mockups. A value's units read in body text beside its figures. */
+.value { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .3em; color: var(--ink); font: var(--type-value-md); letter-spacing: var(--title-tracking); font-variant-numeric: tabular-nums; }
+.value-lg { font: var(--type-value-lg); }
+.value-unit { margin-inline-start: .15em; font: var(--type-body-md); letter-spacing: 0; }
+.value-lg .value-unit { font: var(--type-title-lg); font-weight: var(--weight-regular); }
+.chart-caption { display: flex; justify-content: space-between; gap: var(--space-3); margin: 0; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.comparison { display: grid; gap: var(--space-3); }
+.comparison-row { display: grid; gap: var(--space-2); }
+.comparison-track { display: block; height: 7px; }
+.comparison-bar { display: block; height: 100%; border-radius: var(--radius-pill); background: var(--data-track); transform-origin: left; animation: chart-grow var(--spring-step) both; }
+.is-observed .comparison-bar { background: var(--data); }
+.sparkline { position: relative; display: block; height: 40px; }
+.sparkline svg, .trend-chart svg { display: block; width: 100%; height: 100%; overflow: visible; animation: chart-reveal var(--motion-step) var(--ease-out) both; }
+.chart-line { fill: none; stroke: var(--data); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.chart-grid { fill: none; stroke: var(--outline-variant); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.chart-point { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--data); animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; }
+.chart-dot { fill: var(--data); animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; transform-box: fill-box; transform-origin: center; }
+.trend-chart { display: grid; gap: var(--space-2); margin: 0; }
+.trend-chart svg { height: auto; aspect-ratio: 320 / 130; }
+.measurement-tile { box-sizing: border-box; display: grid; gap: var(--space-1); align-content: start; min-width: 0; width: 100%; padding: var(--space-4) var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--data-container); color: var(--ink); text-align: left; }
+.measurement-tile-label { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-data-container); font: var(--type-label-md); }
+.measurement-tile-detail { color: var(--muted); font: var(--type-body-sm); }
+.measurement-tile .sparkline { margin-top: var(--space-3); }
+@keyframes chart-grow { from { transform: scaleX(0); } }
+@keyframes chart-reveal { from { clip-path: inset(-8px 100% -8px -8px); } to { clip-path: inset(-8px -8px -8px -8px); } }
+@keyframes chart-point { from { opacity: 0; transform: scale(.4); } }

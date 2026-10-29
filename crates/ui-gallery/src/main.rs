@@ -7,10 +7,11 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, CitationChip, CommandNotice, CommandStage, Composer,
-    Dialog, Disclosure, Icon, IconName, LiveDot, Message, NavigationControl, NavigationRow,
-    Overline, Placeholder, ReadNotice, ReadStage, SourceRow, SourcesButton, StatePill, StatusLine,
-    TabBar, Tone, WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, CitationChip, CommandNotice, CommandStage,
+    Comparison, ComparisonBars, Composer, Dialog, Disclosure, Icon, IconName, LiveDot,
+    MeasurementTile, Message, NavigationControl, NavigationRow, Overline, Placeholder, ReadNotice,
+    ReadStage, SourceRow, SourcesButton, Sparkline, StatePill, StatusLine, TabBar, Tone,
+    TrendChart, Value, WorkingMark,
 };
 
 fn main() {
@@ -73,6 +74,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Colour", note: "Roles in pairs, a fill and what reads on it. Hosts read roles, never tones; dark mode swaps the tones beneath.",
                     ColourDemo {}
+                }
+                Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
+                    ChartDemo {}
                 }
                 Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
                     ConversationDemo {}
@@ -190,6 +194,67 @@ fn ColourDemo() -> Element {
                     span { "on {on}" }
                 }
             }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const SLEEP_HOURS: [f64; 8] = [7.1, 7.4, 7.2, 6.9, 7.0, 7.3, 6.8, 6.3];
+
+#[cfg(feature = "web")]
+fn parts(parts: &[(&str, &str)]) -> Vec<(String, String)> {
+    parts
+        .iter()
+        .map(|(figure, unit)| (figure.to_string(), unit.to_string()))
+        .collect()
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ChartDemo() -> Element {
+    rsx! {
+        article { class: "card gallery-observation",
+            Overline { text: "What Duet noticed" }
+            h3 { class: "gallery-observation-title", "Sleep was shorter than your recent average" }
+            ComparisonBars {
+                rows: vec![
+                    Comparison { label: "Last night".into(), value: "6 hr 18 min".into(), fraction: 0.9 },
+                    Comparison { label: "Previous 7 nights".into(), value: "7 hr".into(), fraction: 1.0 },
+                ],
+            }
+            p { class: "gallery-observation-source", "October 14–21 · Apple Health" }
+        }
+        div { class: "gallery-tiles",
+            MeasurementTile {
+                icon: IconName::Moon,
+                label: "Sleep",
+                value: parts(&[("6", "hr"), ("18", "min")]),
+                detail: "Last night · Apple Health",
+                points: SLEEP_HOURS.to_vec(),
+                trend: "Sleep over the last eight nights, from 7.1 to 6.3 hours",
+                onclick: move |_| {},
+            }
+            MeasurementTile {
+                icon: IconName::Steps,
+                label: "Steps",
+                value: parts(&[("4,280", "")]),
+                detail: "Today · Apple Health",
+                points: vec![3100.0, 3600.0, 3300.0, 4000.0, 3800.0, 4300.0, 4100.0, 4280.0],
+                trend: "Steps over the last eight days, from 3,100 to 4,280",
+            }
+        }
+        div { class: "gallery-measure",
+            p { class: "gallery-note", "Sleep · Last night" }
+            Value { parts: parts(&[("6", "hr"), ("18", "min")]), large: true }
+            TrendChart {
+                points: SLEEP_HOURS.to_vec(),
+                label: "Sleep each night, October 14 to 21: from 7.1 hours to 6.3 last night",
+                labels: vec!["Oct 14".into(), "Oct 21".into()],
+            }
+        }
+        div { class: "gallery-row",
+            span { class: "gallery-label", "Sparkline alone" }
+            span { class: "gallery-spark", Sparkline { points: vec![2.0, 3.0, 2.5, 4.0, 3.5, 5.0], label: "Rising over six days" } }
         }
     }
 }

@@ -71,6 +71,12 @@
   --on-error-container: var(--ref-red-30);
   --error-outline: var(--ref-red-80);
   --tertiary: var(--ref-teal-45);
+  /* Data: measurements and their charts, a quieter green than the action, so a chart never reads as a control or a
+     verdict; the track holds what a value is compared with; a tile of data stands on its container. */
+  --data: color-mix(in srgb, var(--primary) 72%, var(--surface-lowest));
+  --data-track: var(--primary-container);
+  --data-container: color-mix(in srgb, var(--primary-container) 55%, var(--surface-lowest));
+  --on-data-container: var(--on-primary-container);
   /* Text on any surface: names and titles, running words, and details. */
   --ink: var(--ref-neutral-15);
   --body: var(--ref-neutral-25);
