@@ -147,6 +147,7 @@ Nothing open. O1–O7 were answered on Oct 28 (Decided by Dev).
   - Plans from several practices: each shows separately, labeled with its practice, and Duet's AI explains them together when asked. ENG-191 stays as history; Tyler's ENG-159 review carries parallel runs. Updated: duet Your doctor's plan, connected-care Your doctor's plan. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:11:14.276Z (chosen)]
   - Four connected-care gaps filled: an approved answer arrives in Duet's thread as practice news; Duet proposes plan Check-ins; no Send to my practice without a connection; the patient sees their own source problems and Coda ops sees pipeline problems. Updated: connected-care C1.3, C1.5, C1.6; physician P3. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
   - The approved answer goes into Duet's thread in the MVP: it is the one message Coda delivers, exactly as approved, and any edit needs approval again. Patient mail stays copy-and-send in Gmail or Spruce. Updated: physician principle 2, P3, Rules; connected-care C1.6; PRINCIPLES.md 5. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
+  - Reminders don't run while AI isn't allowed: with one AI permission there is no separate "AI off" in which they still post. Their times pass, and the next one after AI is allowed delivers. Updated: duet Reminder, D3.15, D3.19, Rules. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:34:28.152Z]
 
 ## Already settled (confirm)
 
