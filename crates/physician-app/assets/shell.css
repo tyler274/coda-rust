@@ -78,6 +78,8 @@ button.citation-chip {
 .sidebar-brand-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-1); min-height: var(--target); }
 .sidebar-brand { display: inline-flex; align-items: center; min-height: var(--target); padding: 0 var(--space-2); border: 0; background: transparent; cursor: pointer; }
 .coda-logo { display: block; width: auto; height: var(--logo-height); }
+/* The wordmark is dark ink; on the dark canvas it reads in the canvas's own light ink. */
+@media (prefers-color-scheme: dark) { .coda-logo { filter: brightness(0) invert(.96); } }
 button.sidebar-expand { display: none; }
 .glass-app.has-collapsed-sidebar button.sidebar-expand { display: inline-flex; }
 .sidebar-primary { display: grid; gap: var(--space-hair); margin-top: var(--space-4); }

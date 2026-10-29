@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light dark;
   color: var(--ink);
   background: var(--surface);
   font-family: var(--sans);
@@ -29,6 +30,30 @@
   --ref-neutral-97: #f6f7f5;
   --ref-neutral-100: #fff;
   --ref-shadow: 23 43 32;
+  /* Dark tones: the native dark neutrals (coda-app DuetColors: black base, charcoal layers) and the greens, ambers, reds
+     and teal at their light tones, each at least 4.5:1 on the charcoal card. */
+  --ref-night-0: #000;
+  --ref-night-11: #1c1c1e;
+  --ref-night-14: #232325;
+  --ref-night-17: #2c2c2e;
+  --ref-night-23: #3a3a3c;
+  --ref-night-66: #a3abb4;
+  --ref-night-89: #dfe3e7;
+  --ref-night-96: #f3f4f6;
+  --ref-green-20: #08362c;
+  --ref-green-dark-container: #1c3b34;
+  --ref-green-dark-highlight: #28534a;
+  --ref-green-80: #89d2c3;
+  --ref-green-92: #d3eee9;
+  --ref-amber-20: #3d290b;
+  --ref-amber-dark-container: #392c18;
+  --ref-amber-85: #dfbf90;
+  --ref-amber-93: #f5e9d6;
+  --ref-red-20: #3d110b;
+  --ref-red-dark-container: #391d18;
+  --ref-red-75: #df9b90;
+  --ref-red-92: #f5dad6;
+  --ref-teal-80: #90dfd8;
   /* Roles: colour in pairs, a fill and what reads on it. Primary is the one green: the filled action, ready and done. */
   --primary: var(--ref-green-40);
   --on-primary: var(--ref-neutral-100);
@@ -187,4 +212,42 @@
   --ease-out: cubic-bezier(.2,.7,.25,1);
   --ease-in-out: cubic-bezier(.45,0,.2,1);
   --ease-exit: cubic-bezier(.4,0,1,1);
+}
+/* Dark: the same roles on the native dark neutrals. The canvas is black; cards, dialogs and panels step up through the
+   charcoal layers, so each level still reads above the one it stands on. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ref-shadow: 0 0 0;
+    --primary: var(--ref-green-80);
+    --on-primary: var(--ref-green-20);
+    --primary-container: var(--ref-green-dark-container);
+    --on-primary-container: var(--ref-green-92);
+    --warning: var(--ref-amber-85);
+    --warning-container: var(--ref-amber-dark-container);
+    --on-warning-container: var(--ref-amber-93);
+    --warning-outline: var(--ref-amber-40);
+    --error: var(--ref-red-75);
+    --on-error: var(--ref-red-20);
+    --error-container: var(--ref-red-dark-container);
+    --on-error-container: var(--ref-red-92);
+    --error-outline: var(--ref-red-40);
+    --tertiary: var(--ref-teal-80);
+    --ink: var(--ref-night-96);
+    --body: var(--ref-night-89);
+    --muted: var(--ref-night-66);
+    --surface: var(--ref-night-0);
+    --surface-lowest: var(--ref-night-11);
+    --surface-low: var(--ref-night-14);
+    --surface-high: var(--ref-night-17);
+    --surface-highest: var(--ref-night-23);
+    --outline: rgb(243 244 246 / .22);
+    --outline-variant: rgb(243 244 246 / .12);
+    --highlight: var(--ref-green-dark-highlight);
+    --scrim: rgb(0 0 0 / .6);
+    --elevation-1: 0 1px 2px rgb(var(--ref-shadow) / .5);
+    --elevation-2: 0 1px 2px rgb(var(--ref-shadow) / .4), 0 4px 14px rgb(var(--ref-shadow) / .4);
+    --elevation-3: 0 2px 4px rgb(var(--ref-shadow) / .4), 0 10px 28px rgb(var(--ref-shadow) / .5);
+    --elevation-4: 0 4px 8px rgb(var(--ref-shadow) / .4), 0 18px 44px rgb(var(--ref-shadow) / .55);
+    --elevation-5: 0 8px 16px rgb(var(--ref-shadow) / .45), 0 26px 72px rgb(var(--ref-shadow) / .6);
+  }
 }
