@@ -169,6 +169,9 @@ jobs:
             status=$(curl -sS -o /dev/null -w '%{http_code}' "${pin[@]}" "https://${host}/physician/today")
             [ "$status" = 404 ] || { echo "::error::${host}/physician/today answered ${status}"; exit 1; }
             redirect=$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' "${pin[@]}" "http://${host}/duet?x=1")
-            [ "$redirect" = "308 https://${host}/duet?x=1" ] || { echo "::error::http://${host} answered ${redirect}"; exit 1; }
+            # Google's redirect names the default port (https://host:443/...),
+            # which browsers treat as the same URL; accept either form.
+            [ "$redirect" = "308 https://${host}/duet?x=1" ] || [ "$redirect" = "308 https://${host}:443/duet?x=1" ] \
+              || { echo "::error::http://${host} answered ${redirect}"; exit 1; }
             echo "${host}: release ${RELEASE_SHA}, HSTS, no sign-in, /physician 404, HTTP 308" >> "$GITHUB_STEP_SUMMARY"
           done
