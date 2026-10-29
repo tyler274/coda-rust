@@ -58,20 +58,25 @@ holds the rules that span them.
    inductive, strengthen `inductive()` in the proof file with a commented fact
    about reachable states. Run `check` to catch drift between the chart and the
    generated files.
-9. Break a copy of the chart to match a real failure, and confirm that `trace` and
-   Verus both fail on it.
-10. Render it with `png` and look at the image. Each label should read as the
+9. Generate the Stateright model with `stateright`, register the chart in
+   `verification/stateright/src/main.rs`, and run `verification/check.py stateright`.
+   It runs the Verus model's definitions and fails unless they reach exactly the graph
+   `trace` searched, and on any broken rule, with its shortest path. `stateright
+   --check` catches drift between the chart and the model.
+10. Break a copy of the chart to match a real failure, and confirm that `trace`,
+    Stateright and Verus all fail on it.
+11. Render it with `png` and look at the image. Each label should read as the
     screen, and each numbered path in order. If a label reads like code, fix it and
     render again.
-11. Replay each bug against the real code, as a test or a live repro, one step per
+12. Replay each bug against the real code, as a test or a live repro, one step per
     event. If a bug doesn't reproduce, assume the chart is wrong until you show
     otherwise.
 
 ## Hand off
 
-Give Dev the PNG and an explorer: `explore` writes one HTML page holding the chart's
-whole reachable graph, which you publish as a Claude artifact so Dev can click
-through each step, rule and journey. Include the Mermaid. Add one line per bug: the rule it breaks, its
+Give Dev the PNG and a way to click through it: Stateright's Explorer (`serve`), or
+the `explore` page published as a Claude artifact when Dev is away from this machine.
+Include the Mermaid. Add one line per bug: the rule it breaks, its
 steps as `trace` numbers them, and whether it reproduced. Say what the chart leaves
 out: data promises, GAPs, and anything not replayed against code. A checked draft is
 still a draft until Dev agrees with it.

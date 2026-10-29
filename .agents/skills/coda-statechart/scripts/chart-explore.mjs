@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { compile } from "./chart-verus.mjs";
-import { stepper } from "./chart-search.mjs";
+import { graph } from "./chart-search.mjs";
 import { readJourneys } from "./chart-journey.mjs";
 
 const LIMIT = 20000;
@@ -12,33 +12,11 @@ const TEMPLATE = path.join(path.dirname(fileURLToPath(import.meta.url)), "explor
 
 export function explore(chartText, { title, journeyText } = {}) {
   const { ir, parsed } = compile(chartText, "Chart");
-  const { regions, actions, rules } = ir;
-  const { post, starts } = stepper(ir);
-  const scope = regions.map((_, i) => i);
-  const states = [], index = new Map(), edges = [];
-  const add = (s) => {
-    const k = JSON.stringify(s);
-    if (!index.has(k)) {
-      if (states.length === LIMIT) throw new Error(`more than ${LIMIT} reachable states; the explorer needs a smaller chart`);
-      index.set(k, states.length);
-      states.push(s);
-    }
-    return index.get(k);
-  };
-  const start = [...starts(scope)].map(add);
-  for (let i = 0; i < states.length; i++) {
-    const s = states[i];
-    for (const action of actions) {
-      if (!action.label) continue;
-      const seen = new Set();
-      for (const t of post(action, scope, (ri) => s[ri])) {
-        const to = add(t);
-        if (seen.has(to)) continue;
-        seen.add(to);
-        edges.push({ from: i, to, event: action.label });
-      }
-    }
-  }
+  const { regions, rules } = ir;
+  let reachable;
+  try { reachable = graph(ir, LIMIT); }
+  catch (error) { throw new Error(`${error.message}; the explorer needs a smaller chart`); }
+  const { states, start, edges } = reachable;
   const events = Object.fromEntries((parsed.declared ?? []).map((d) => [d.label, { cause: d.cause ?? "", intent: d.intent ?? "" }]));
   const ruleList = rules.map((r) => ({
     name: r.name,

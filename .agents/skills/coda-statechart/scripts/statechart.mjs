@@ -7,7 +7,7 @@ import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { HELP, USAGE, more, usage } from "./statechart-help.mjs";
-import { compile, writeModel } from "./chart-verus.mjs";
+import { compile, writeModel, writeStateright } from "./chart-verus.mjs";
 import { printSearch, search } from "./chart-search.mjs";
 import { printFlat } from "./chart-flat.mjs";
 import { lint, queryEvent, queryRegion, queryState, summary } from "./chart-query.mjs";
@@ -65,6 +65,14 @@ export const COMMANDS = {
   check: {
     inputs: 1, values: ["--module", "--dir"],
     run: ([chart], flags) => { writeModel({ chart, module: moduleName(flags, true), dir: flags.dir, check: true }); return 0; },
+  },
+  stateright: {
+    inputs: 1, values: ["--out"], switches: ["--check"],
+    run: ([chart], flags) => {
+      if (flags.out === undefined) throw new Usage("provide --out FILE.rs");
+      writeStateright({ chart, out: flags.out, check: flags.check });
+      return 0;
+    },
   },
   trace: {
     inputs: 1, values: ["--module", "--max-states"],

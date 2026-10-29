@@ -64,6 +64,10 @@ flattened representation between Verus generation and finite reachability search
 `statechart.mjs trace` prints a shortest violating path and numbered Mermaid diagram. A completed
 search covers only the finite chart's rules; limits or interruption are incomplete.
 An inductive Verus obligation can fail without a reachable chart violation.
+[Stateright](stateright/src/main.rs), a Rust model checker, runs the Verus model's own
+definitions compiled as ordinary Rust: it confirms they reach exactly the graph the
+search reaches, finds a shortest path to any broken rule, and serves an Explorer for
+clicking through every state and step.
 Rules and proofs say what never happens; each graph's `journeys.md`, replayed by
 `statechart.mjs journey` on the same representation, shows its useful outcomes
 are reachable, and fails when a change strands one.
@@ -129,6 +133,15 @@ toolchain [verus.json](verus.json) names:
 ```sh
 python3 verification/install-verus.py
 python3 verification/check.py formal --spec path/to/the/feature-proof.rs
+python3 verification/check.py stateright --chart physician/sign-in
+```
+
+Each chart's `stateright.rs` comes from `statechart.mjs stateright` and is registered
+with one line in [stateright/src/main.rs](stateright/src/main.rs), a verification-only
+crate outside the product workspace. To click through a chart, serve its Explorer:
+
+```sh
+CARGO_TARGET_DIR=target/verification/stateright cargo run --release --manifest-path verification/stateright/Cargo.toml -- physician/sign-in serve localhost:3000
 ```
 
 There is no default proof for an unspecified feature. The extra toolchain does not
@@ -155,11 +168,11 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
 | Per-journey charts labeled as the screen, one `%% never` per agreed sentence, PNG review and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts cite intent spec IDs; `statechart.mjs png` renders through the pinned mermaid-cli with an installed Chrome in a throwaway profile; every chart also gets a Verus proof. |
-| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage`, `journey` and `png`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
+| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `stateright`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage`, `journey` and `png`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
 | Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
 
-Finite-chart search is not arbitrary Verus counterexample extraction, temporal model
-checking or reverse translation of arbitrary code. The
+Finite-chart search and Stateright check safety rules only: not arbitrary Verus
+counterexample extraction, liveness or reverse translation of arbitrary code. The
 [compiler reference](../.agents/skills/coda-statechart/references/compiler.md) defines
 the supported boundary. No TLC or PDD preview kit is installed.
 [Lauren's statechart post](https://x.com/poteto/status/2112736749281759566), the
