@@ -635,18 +635,19 @@ pub fn SourcesButton(
     }
 }
 
-/// One source in a Sources list, after the React app's sources index: its number when the
-/// message numbers its citations, its title, a quiet detail, and an arrow. The whole row is one
-/// navigation row that opens it.
+/// One row in a list of rows: an optional icon on its tile or a number, the row's name, an
+/// optional detail beneath it, and a chevron, with the whole row one button. Rows group once, a
+/// hairline between them, rather than a card around each (the October 21 mockups).
 #[component]
-pub fn SourceRow(
-    number: Option<usize>,
+pub fn ListRow(
+    #[props(default)] icon: Option<IconName>,
+    #[props(default)] number: Option<usize>,
     title: String,
     detail: Option<String>,
     onclick: EventHandler<MouseEvent>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
 ) -> Element {
-    let mut class = String::from("navigation-row source-entry");
+    let mut class = String::from("navigation-row list-row");
     let rest = host_attributes(&mut class, attributes);
     rsx! {
         button {
@@ -654,16 +655,41 @@ pub fn SourceRow(
             r#type: "button",
             onclick: move |event| onclick.call(event),
             ..rest,
-            if let Some(number) = number {
-                span { class: "source-entry-number", "{number}" }
+            if let Some(icon) = icon {
+                span { class: "list-row-icon", aria_hidden: "true", Icon { name: icon } }
+            } else if let Some(number) = number {
+                span { class: "list-row-number", "{number}" }
             }
-            span { class: "source-entry-text",
+            span { class: "list-row-text",
                 strong { "{title}" }
                 if let Some(detail) = detail {
                     small { "{detail}" }
                 }
             }
-            Icon { name: IconName::ArrowRight }
+            span { class: "list-row-chevron", aria_hidden: "true", Icon { name: IconName::ChevronDown } }
+        }
+    }
+}
+
+/// A group of rows on one white surface, a hairline between them. Its children are `li` rows.
+#[component]
+pub fn RowGroup(children: Element) -> Element {
+    rsx! { ul { class: "row-list row-group", {children} } }
+}
+
+/// A section's title, with the one action that belongs to the whole section beside it.
+#[component]
+pub fn SectionHeader(
+    title: String,
+    #[props(default)] action: Option<String>,
+    #[props(default)] on_action: Option<EventHandler<MouseEvent>>,
+) -> Element {
+    rsx! {
+        div { class: "section-header",
+            h2 { class: "section-title", "{title}" }
+            if let (Some(action), Some(on_action)) = (action, on_action) {
+                button { class: "section-action", r#type: "button", onclick: move |event| on_action.call(event), "{action}" }
+            }
         }
     }
 }
@@ -691,16 +717,27 @@ pub fn ActionRow(children: Element) -> Element {
     rsx! { div { class: "action-row", {children} } }
 }
 
+/// The app's sections, the current one marked. With `icons`, one per label, each section shows its
+/// icon above its label, as a phone's tab bar does.
 #[component]
-pub fn TabBar(labels: Vec<String>, selected: usize, on_select: EventHandler<usize>) -> Element {
+pub fn TabBar(
+    labels: Vec<String>,
+    selected: usize,
+    on_select: EventHandler<usize>,
+    #[props(default)] icons: Vec<IconName>,
+) -> Element {
+    let with_icons = icons.len() == labels.len();
     rsx! {
-        nav { class: "tabs", aria_label: "Sections",
+        nav { class: if with_icons { "tabs has-icons" } else { "tabs" }, aria_label: "Sections",
             for (index, label) in labels.iter().enumerate() {
                 button {
                     key: "{label}",
                     r#type: "button",
                     aria_current: if index == selected { "page" } else { "false" },
                     onclick: move |_| on_select.call(index),
+                    if with_icons {
+                        Icon { name: icons[index] }
+                    }
                     "{label}"
                 }
             }

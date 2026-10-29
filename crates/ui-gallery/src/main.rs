@@ -9,9 +9,9 @@ use std::time::Duration;
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CommandNotice, CommandStage,
     Comparison, ComparisonBars, Composer, Dialog, Disclosure, Icon, IconName, LaterContext,
-    LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Overline, Placeholder,
-    Quote, ReadNotice, ReadStage, SourceRow, SourcesButton, Sparkline, StatePill, StatusLine,
-    StepList, TabBar, Tone, TrendChart, Value, WorkingMark,
+    ListRow, LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Overline,
+    Placeholder, Quote, ReadNotice, ReadStage, RowGroup, SectionHeader, SourcesButton, Sparkline,
+    StatePill, StatusLine, StepList, TabBar, Tone, TrendChart, Value, WorkingMark,
 };
 
 fn main() {
@@ -92,6 +92,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Citations and sources", note: "A citation in prose opens its source; a static one stays a mark.",
                     CitationDemo {}
+                }
+                Section { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A section's one action sits beside its title.",
+                    RowsDemo {}
                 }
                 Section { title: "Buttons and navigation", note: "One shape in three variants, with the shared hover, press, focus and touch target.",
                     ButtonDemo {}
@@ -386,9 +389,9 @@ fn ConversationDemo() -> Element {
         }
         if sources_open() {
             Dialog { sheet: true, title: "Sources", on_close: move |_| sources_open.set(false),
-                ol { class: "sources-list",
-                    li { SourceRow { title: "Sleep note", detail: "Tuesday", onclick: move |_| source_open.set(true) } }
-                    li { SourceRow { title: "Sleep, Apple Health", detail: "Last 7 nights", onclick: move |_| source_open.set(true) } }
+                ol { class: "row-list",
+                    li { ListRow { title: "Sleep note", detail: "Tuesday", onclick: move |_| source_open.set(true) } }
+                    li { ListRow { title: "Sleep, Apple Health", detail: "Last 7 nights", onclick: move |_| source_open.set(true) } }
                 }
             }
         }
@@ -506,11 +509,44 @@ fn ButtonDemo() -> Element {
 #[component]
 fn TabsDemo() -> Element {
     let mut selected = use_signal(|| 0usize);
+    let mut phone = use_signal(|| 1usize);
     rsx! {
         TabBar {
             labels: vec!["Duet".into(), "Today".into(), "You".into()],
             selected: selected(),
             on_select: move |index| selected.set(index),
+        }
+        div { class: "gallery-phone-tabs",
+            TabBar {
+                labels: vec!["Duet".into(), "Today".into(), "You".into()],
+                icons: vec![IconName::Message, IconName::Sun, IconName::User],
+                selected: phone(),
+                on_select: move |index| phone.set(index),
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn RowsDemo() -> Element {
+    rsx! {
+        div { class: "gallery-rows",
+            SectionHeader { title: "For my doctor" }
+            RowGroup {
+                li { ListRow { icon: IconName::File, title: "My page for my doctor", detail: "An update is ready to review", onclick: move |_| {} } }
+            }
+            SectionHeader { title: "Records", action: "See all", on_action: move |_| {} }
+            RowGroup {
+                li { ListRow { icon: IconName::File, title: "Visit note", detail: "Northside Clinic · October 15", onclick: move |_| {} } }
+                li { ListRow { icon: IconName::Heart, title: "Blood pressure", detail: "Home cuff · October 20", onclick: move |_| {} } }
+                li { ListRow { icon: IconName::Book, title: "Questions for my visit", detail: "Your note · October 21", onclick: move |_| {} } }
+            }
+            SectionHeader { title: "Sources, numbered" }
+            ol { class: "row-list",
+                li { ListRow { number: 1, title: "Discharge summary", detail: "Read Today, 8:00 AM", onclick: move |_| {} } }
+                li { ListRow { number: 2, title: "Cardiology note", onclick: move |_| {} } }
+            }
         }
     }
 }

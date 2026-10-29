@@ -41,7 +41,7 @@ use roots::{
 };
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Composer, Dialog, Disclosure, Icon, IconName,
-    Message, NavigationControl, NavigationRow, SourceRow, SourcesButton, TabBar, TryAgain,
+    ListRow, Message, NavigationControl, NavigationRow, SourcesButton, TabBar, TryAgain,
     WorkingMark,
 };
 
@@ -167,6 +167,7 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
             if !needs_join {
                 TabBar {
                     labels: TABS.iter().map(|label| (*label).to_owned()).collect(),
+                    icons: vec![IconName::Message, IconName::Sun, IconName::User, IconName::Users],
                     selected: tab(),
                     on_select: move |index| {
                         tab.set(index);
@@ -1677,7 +1678,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             Some(ConversationRoot::Messages(lines)) => rsx! {
                 if let Some(sources) = message_sources() {
                     Dialog { sheet: true, title: "Sources", on_close: move |_| message_sources.set(None),
-                        ol { class: "sources-list",
+                        ol { class: "row-list",
                             for source in sources {
                                 li {
                                     SourceButton {
@@ -1823,7 +1824,7 @@ fn SourceButton(
     let label = format!("Open source {title}");
     let open = move |_| load_source(opened, base_url.clone(), bearer.clone(), chip.clone());
     rsx! {
-        SourceRow { title, aria_label: "{label}", onclick: open }
+        ListRow { title, aria_label: "{label}", onclick: open }
     }
 }
 
