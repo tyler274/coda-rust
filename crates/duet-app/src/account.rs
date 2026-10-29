@@ -6,6 +6,7 @@ use duet_client::{
     retention::{RetainedIdentity, RetentionOwner},
 };
 use std::sync::Arc;
+use ui::{ActionRow, Button, ButtonVariant};
 
 /// Account-scoped owner available to editor controls and delayed-response checks.
 #[derive(Clone)]
@@ -380,39 +381,41 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         if let Some(current) = active() {
             AccountRoutes { key: "{current.fence.generation()}", base_url, bearer: current.bearer, retention: retention.clone(), fence: current.fence }
             if cfg!(target_arch = "wasm32") { p { role: "status", "Browser sign-in, drafts and operation retry identities are memory-only. Keep this tab open while any write is uncertain. After a reload, sign in and use ‘Recover or resolve a previous operation’ to read current server state before a new approval; do not assume the previous operation succeeded or recreate it as a retry." } }
-            button { onclick: sign_out, "Sign out" }
+            Button { variant: ButtonVariant::Quiet, compact: true, onclick: sign_out, "Sign out" }
         } else {
             main { class: "duet",
                 h1 { "Duet" }
                 p { "Sign in to your Duet account. A practice invitation is not required." }
                 if !message().is_empty() { p { role: "alert", "{message}" } }
                 if busy() { p { "Checking sign-in…" } }
-                button { disabled: busy() || cleanup_pending(), onclick: login, "Sign in with Apple" }
-                button { disabled: busy() || cleanup_pending(), onclick: move |_| { signed_out.set(false); retry.set(retry() + 1); }, "Retry saved sign-in" }
-                if cleanup_pending() { button { onclick: sign_out, "Retry secure cleanup" } }
-                button { disabled: busy() || cleanup_pending() || signed_out(), onclick: move |_| {
-                    match offline_owner.recover_offline() {
-                        Ok(duet_client::retention::DraftRecovery::Draft(draft)) => {
-                            if let Some(owner) = offline_owner
-                                .retained_identity()
-                                .ok()
-                                .flatten()
-                                .map(|identity| identity.owner)
-                            {
-                                offline_draft.set(step_offline_draft(
-                                    offline_draft(),
-                                    DraftTransition::Recover {
-                                        owner,
-                                        draft: *draft,
-                                    },
-                                ));
+                ActionRow {
+                    Button { variant: ButtonVariant::Primary, disabled: busy() || cleanup_pending(), onclick: login, "Sign in with Apple" }
+                    Button { disabled: busy() || cleanup_pending(), onclick: move |_| { signed_out.set(false); retry.set(retry() + 1); }, "Retry saved sign-in" }
+                    if cleanup_pending() { Button { onclick: sign_out, "Retry secure cleanup" } }
+                    Button { disabled: busy() || cleanup_pending() || signed_out(), onclick: move |_| {
+                        match offline_owner.recover_offline() {
+                            Ok(duet_client::retention::DraftRecovery::Draft(draft)) => {
+                                if let Some(owner) = offline_owner
+                                    .retained_identity()
+                                    .ok()
+                                    .flatten()
+                                    .map(|identity| identity.owner)
+                                {
+                                    offline_draft.set(step_offline_draft(
+                                        offline_draft(),
+                                        DraftTransition::Recover {
+                                            owner,
+                                            draft: *draft,
+                                        },
+                                    ));
+                                }
                             }
+                            Ok(duet_client::retention::DraftRecovery::Damaged) => message.set("The protected draft is damaged; it has not been discarded.".into()),
+                            Ok(_) => message.set("No retained draft on this device.".into()),
+                            Err(error) => message.set(error),
                         }
-                        Ok(duet_client::retention::DraftRecovery::Damaged) => message.set("The protected draft is damaged; it has not been discarded.".into()),
-                        Ok(_) => message.set("No retained draft on this device.".into()),
-                        Err(error) => message.set(error),
-                    }
-                }, "View protected draft offline" }
+                    }, "View protected draft offline" }
+                }
                 if let Some(draft) = shown_offline_draft(offline_draft(), true, draft_viewer.as_deref()) {
                     section {
                         h2 { "Unsaved doctor draft — offline" }
@@ -421,7 +424,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         p { "{crate::field_text(&draft.save.note)}" }
                         for question in draft.save.page.questions.iter().flatten() { p { "{question}" } }
                         for item in draft.base.items.iter().flatten().filter(|item| draft.save.item_ids.contains(&item.id)) { p { "{item.title}" } }
-                        button { onclick: move |_| offline_draft.set(None), "Close protected draft" }
+                        Button { onclick: move |_| offline_draft.set(None), "Close protected draft" }
                     }
                 }
             }

@@ -2,6 +2,7 @@
 use crate::PatientSession;
 use dioxus::prelude::*;
 use duet_client::doctor::{DoctorError, PendingDoctorOperation};
+use ui::Button;
 
 #[component]
 pub(crate) fn OperationRecovery(base_url: String, on_released: EventHandler) -> Element {
@@ -93,13 +94,13 @@ pub(crate) fn OperationRecovery(base_url: String, on_released: EventHandler) -> 
                 p { role: "alert", "This browser keeps credentials, drafts and retry metadata in memory only. Reloading or closing loses the original request identity. After signing in again, read the server state below before making any new approval. Current state is not proof that a previous request succeeded. Do not recreate an uncertain operation as a retry." }
             }
             p { "Readback does not save, publish, revoke or delete anything." }
-            button { disabled: busy(), onclick: readback, "Read current page, publication and available receipt" }
+            Button { disabled: busy(), onclick: readback, "Read current page, publication and available receipt" }
             if !error().is_empty() { p { role: "alert", "{error}" } }
             if !review_text().is_empty() { pre { "{review_text}" } }
             if conflict.is_some() && reviewed() == conflict {
                 p { "The exact retained command was refused as stale/conflicting. Review the state and receipt above. Ending its retry intent does not undo a prior write or revoke any link. Its command metadata is archived under this account; your local draft and server receipts are preserved." }
                 label { input { r#type: "checkbox", checked: consent(), onchange: move |e| consent.set(e.checked()) } "I reviewed the current page and publication. End this conflicting retry intent; any replacement requires a new explicit approval." }
-                button { disabled: busy() || !consent(), onclick: release, "Archive conflicting intent and return to review" }
+                Button { disabled: busy() || !consent(), onclick: release, "Archive conflicting intent and return to review" }
             } else if reviewed().is_none() {
                 p { "Unknown or unsupported outcomes cannot be discarded here. Keep the original operation and retry/read back, or wait for server support. Unsaved drafts have a separate explicit discard control." }
             }

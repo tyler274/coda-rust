@@ -78,18 +78,6 @@ button.citation-chip {
 .sidebar-brand-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-1); min-height: var(--target); }
 .sidebar-brand { display: inline-flex; align-items: center; min-height: var(--target); padding: 0 var(--space-2); border: 0; background: transparent; cursor: pointer; }
 .coda-logo { display: block; width: auto; height: var(--logo-height); }
-.icon-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--target);
-  height: var(--target);
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-}
 button.sidebar-expand { display: none; }
 .glass-app.has-collapsed-sidebar button.sidebar-expand { display: inline-flex; }
 .sidebar-primary { display: grid; gap: var(--space-hair); margin-top: var(--space-4); }
@@ -153,32 +141,10 @@ button.sidebar-expand { display: none; }
   font: var(--type-title-sm);
 }
 .sidebar-footer { display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-2) 0; border-top: var(--hairline) solid var(--outline-variant); }
-.sidebar-footer button {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  width: 100%;
-  min-height: var(--target);
-  padding: var(--space-2);
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  font: var(--type-body-sm);
-  text-align: left;
-}
+.sidebar-footer .control { width: 100%; justify-content: flex-start; }
 
 .glass-stage { position: relative; height: 100dvh; min-width: 0; overflow: auto; background: var(--surface); }
-.stage-minimize {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-4);
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  font: var(--type-body-sm);
-}
+.stage-minimize { position: absolute; top: var(--space-3); right: var(--space-4); }
 .reading-workspace { box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; height: 100%; min-height: 0; padding: var(--space-3) var(--page-gutter) var(--space-4); }
 .today-heading { display: flex; align-items: center; gap: var(--space-2); padding-bottom: var(--space-section); }
 .today-heading h1 { margin: 0; color: var(--ink); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
@@ -228,17 +194,6 @@ button.sidebar-expand { display: none; }
 .state-pill .icon { width: 14px; height: 14px; }
 .urgency-now { color: var(--error); font: var(--type-label-md); font-weight: var(--weight-strong); }
 .today-row-action { display: flex; }
-.control-secondary {
-  min-height: var(--control-compact-height);
-  padding: var(--space-1) var(--space-3);
-  border: var(--hairline) solid var(--outline-variant);
-  border-radius: var(--radius-pill);
-  background: var(--surface-lowest);
-  color: var(--ink);
-  box-shadow: var(--elevation-1);
-  cursor: pointer;
-  font: var(--type-label-lg);
-}
 .today-quiet { display: grid; gap: var(--space-1); padding: var(--space-4); }
 .today-quiet strong { font: var(--type-title-sm); }
 .today-quiet span { color: var(--muted); font: var(--type-body-sm); }
@@ -508,11 +463,6 @@ button.sidebar-expand { display: none; }
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
-}
-.is-active-scenario {
-  border-color: var(--primary-outline);
-  background: var(--primary);
-  color: var(--on-primary);
 }
 .simulation-card {
   display: grid;

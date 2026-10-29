@@ -32,7 +32,7 @@ pub(crate) fn DeviceSources(
         details {
             summary { "Select device measurements for this page" }
             p { "Review the complete dated measurement, units and source coverage. Selection is not approval or publication. If the latest snapshot changes during selection, reload and review the actual saved selection before saving your page." }
-            button { disabled: busy(), onclick: move |_| reload.set(reload() + 1), "Refresh device snapshot" }
+            Button { disabled: busy(), onclick: move |_| reload.set(reload() + 1), "Refresh device snapshot" }
             if !error().is_empty() { p { role: "alert", "{error}" } }
             match snapshot() {
                 None => rsx! { p { "Loading device snapshot…" } },
@@ -49,7 +49,7 @@ pub(crate) fn DeviceSources(
                                 article {
                                     pre { "{serde_json::to_string_pretty(fact).unwrap_or_default()}" }
                                     if let Some(id) = id {
-                                        button { disabled: busy() || blocked, onclick: move |_| {
+                                        Button { compact: true, disabled: busy() || blocked, onclick: move |_| {
                                             if busy() || blocked { return; }
                                             if !matches!(patient.retention.pending_operation(&patient.fence), Ok(None)) { error.set("Resolve the pending operation before selecting measurements.".into()); return; }
                                             busy.set(true); error.set(String::new()); let patient = patient.clone(); let url = url.clone(); let id = id.clone(); let reviewed = reviewed.clone();
@@ -72,6 +72,7 @@ pub(crate) fn DeviceSources(
 }
 
 use dioxus::prelude::*;
+use ui::Button;
 #[component]
 pub(crate) fn DoctorSources(
     base_url: String,
@@ -103,7 +104,7 @@ pub(crate) fn DoctorSources(
             summary { "Select source records for this page" }
             p { "Selection is not publication. Review the full literal record and save your page before sharing. Source changes will require renewed review." }
             if blocked { p { "Finish or discard your draft, and resolve pending operations, before changing the source selection." } }
-            button { disabled: busy(), onclick: move |_| reload.set(reload() + 1), "Refresh source records" }
+            Button { disabled: busy(), onclick: move |_| reload.set(reload() + 1), "Refresh source records" }
             if !error().is_empty() { p { role: "alert", "{error}" } }
             match inventory() {
                 None => rsx! { p { "Loading canonical records…" } },
@@ -121,7 +122,7 @@ pub(crate) fn DoctorSources(
                                         p { "Record revision {address.revision}" }
                                         if let Some(payload) = payload {
                                             pre { "{serde_json::to_string_pretty(&payload).unwrap_or_default()}" }
-                                            button { disabled: blocked || busy(), onclick: move |_| {
+                                            Button { compact: true, disabled: blocked || busy(), onclick: move |_| {
                                                 if blocked || busy() { return; }
                                                 if !matches!(patient.retention.pending_operation(&patient.fence), Ok(None)) { error.set("Resolve the pending operation before selecting another source.".into()); return; }
                                                 busy.set(true); error.set(String::new());

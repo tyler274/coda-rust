@@ -8,8 +8,6 @@
 .row { display: flex; flex-direction: column; gap: var(--space-hair); padding: var(--space-3) 0; border-top: var(--hairline) solid var(--outline-variant); }
 .row-name { color: var(--ink); font: var(--type-title-sm); }
 .row-detail { color: var(--muted); font: var(--type-body-sm); }
-.text-button { min-height: var(--target); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary); font: var(--type-label-lg); }
-.text-button.quiet { background: transparent; color: var(--primary); }
 .tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
 .tabs button { flex: 1; min-height: var(--target); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--muted); font: var(--type-label-md); }
 .tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }
@@ -18,4 +16,47 @@
 }
 .quiet-line { margin: 0; color: var(--muted); font: var(--type-body-sm); }
 .inline-action { padding: 0; border: 0; background: transparent; color: var(--primary); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.inline-action:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* Buttons, after the React physician app's controls (Material's button family): the one filled action, a white one on a
+   hairline, and text alone. A host places a control through its own class; it never restyles one. A surface may set the
+   control's component tokens (width, height, shape, quiet colour) once at its root, as Duet does. */
+.control { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); width: var(--control-width, fit-content); min-width: var(--target); min-height: var(--control-min-height, var(--control-height)); padding: var(--space-1) var(--space-4); border: var(--hairline) solid transparent; border-radius: var(--control-radius, var(--radius-pill)); cursor: pointer; font: var(--type-label-lg); text-decoration: none; white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out), opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
+.control-primary { border-color: var(--primary); background: var(--primary); color: var(--on-primary); box-shadow: var(--elevation-1); }
+.control-secondary { border-color: var(--outline-variant); background: var(--surface-lowest); color: var(--ink); box-shadow: var(--elevation-1); }
+.control-quiet { padding: var(--space-2) var(--space-3); border-color: transparent; background: transparent; color: var(--control-quiet-color, var(--muted)); font-weight: var(--weight-regular); }
+/* Danger: what removes or disconnects what the person has. A shaped control asks for it, the filled one confirms it. */
+.control-danger.control-primary { border-color: var(--error); background: var(--error); color: var(--on-error); }
+.control-danger:is(.control-secondary, .control-quiet) { color: var(--error); }
+.control-danger.control-secondary { border-color: var(--error-outline); }
+/* A leading icon is quieter than its label, except where it is the label or on the filled action. */
+.control > .icon { color: var(--muted); }
+:is(.control-primary, .control-icon, .control-danger) > .icon { color: inherit; }
+.action-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.control-compact { width: fit-content; min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3); }
+.control-quiet { padding-inline: var(--control-quiet-padding-inline, var(--space-3)); }
+.control-icon { width: var(--control-height); height: var(--control-height); min-width: var(--control-height); min-height: var(--control-height); padding: var(--space-2); }
+.control-icon.control-compact { width: var(--control-compact-height); height: var(--control-compact-height); min-width: var(--control-compact-height); min-height: var(--control-compact-height); }
+.control:active:not(:disabled) { transform: scale(.98); }
+.control:disabled { cursor: default; opacity: .46; transform: none; }
+/* State layer: an overlay of the control's own text colour, so a filled control lightens and a quiet one greys, with no
+   hover colour of its own. */
+.control::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { .control:hover:not(:disabled)::before { opacity: var(--state-hover); } }
+.control:active:not(:disabled)::before { opacity: var(--state-pressed); }
+/* Touch target: where the pointer is coarse, a control reaches the target size while its visible size stays. */
+@media (pointer: coarse) {
+  .control::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--target)); height: max(100%, var(--target)); transform: translate(-50%, -50%); }
+}
+/* Focus ring: one ring for everything a person can reach, following its corners; it grows in, then settles. */
+:is(button, a, input, textarea, select, summary):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
+    focus-ring-settle calc(var(--motion-focus) * .75) var(--ease-emphasized) calc(var(--motion-focus) * .25);
+}
+@keyframes focus-ring-grow { from { outline-width: 0; } to { outline-width: var(--focus-ring-active-width); } }
+@keyframes focus-ring-settle { from { outline-width: var(--focus-ring-active-width); } }
+@media (forced-colors: active) {
+  .control::before { display: none; }
+  .control { border-color: ButtonText; }
+  :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
+}

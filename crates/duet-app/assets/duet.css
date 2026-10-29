@@ -13,6 +13,12 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; color:
   font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
   font-size: 17px;
   line-height: 1.35;
+  /* Controls after the October 21 design review: each action a full-width bar, and quiet actions in green text. */
+  --control-width: 100%;
+  --control-min-height: 50px;
+  --control-radius: var(--radius-lg);
+  --control-quiet-color: var(--primary);
+  --control-quiet-padding-inline: 0;
 }
 .duet::before {
   content: "";
@@ -121,17 +127,6 @@ button.thread-open > p.thread-card::after {
 }
 .source-name { font-weight: 600; }
 .source-detail { color: #505a63; text-align: right; }
-.duet-retry {
-  min-height: 44px;
-  margin-top: 12px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: #0e5237;
-  font-size: 17px;
-  font-weight: 600;
-}
 .duet .tabs {
   position: sticky;
   bottom: 0;
@@ -201,19 +196,8 @@ button.thread-open > p.thread-card::after {
   color: inherit;
   font: inherit;
 }
-.duet-send {
-  align-self: flex-end;
-  flex: 0 0 auto;
-  min-height: 44px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 999px;
-  background: #0e5237;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 600;
-}
-.duet-send:disabled { opacity: 0.6; }
+.duet-send { align-self: flex-end; flex: 0 0 auto; }
+.duet .action-row { margin-top: var(--space-3); }
 @media (prefers-color-scheme: dark) {
   html, body, .duet { background: #000; color: #f3f4f6; }
   .duet::before { background: linear-gradient(180deg, #191f1c 0%, #1d1c21 42%, rgba(0, 0, 0, 0) 100%); }
@@ -222,13 +206,10 @@ button.thread-open > p.thread-card::after {
   .number-card { background: #191f1c; }
   .user-bubble { background: #2a7254; }
   .thread-card { border-top-color: rgba(255, 255, 255, 0.16); }
-  .duet-retry { color: #8edab6; }
   .duet-composer-wrap, .duet-composer { background: #000; }
   .duet-composer { border-color: rgba(243, 244, 246, 0.16); }
   .duet-composer-field, .duet-field { color: #f3f4f6; }
   .duet-field { border-color: rgba(243, 244, 246, 0.16); }
-  .duet-send { background: #2a7254; }
-  .duet-send:disabled { opacity: 0.6; }
   .duet .tabs { background: #000; border-top-color: rgba(243, 244, 246, 0.1); }
   .duet .tabs button { color: #bdc3cc; }
   .duet .tabs button[aria-current="page"] { background: #20372c; color: #8edab6; }

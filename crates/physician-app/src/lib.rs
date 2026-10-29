@@ -37,7 +37,7 @@ use shell::{
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
-use ui::{CommandNotice, CommandStage, EmptyState, ErrorState, ReadNotice, TextButton};
+use ui::{Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, ReadNotice};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
 const UPDATES_LOADING: &str = "Loading updates…";
@@ -1433,16 +1433,18 @@ fn PhysicianShell(
                             onclick: move |_| place.set(Place::Today),
                             img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "Coda Health" }
                         }
-                        button {
-                            class: "icon-button sidebar-collapse",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            icon_only: true,
+                            class: "sidebar-collapse",
                             aria_label: "Collapse navigation",
                             onclick: move |_| remember(Panel::Sidebar, true),
                             Icon { name: IconName::SidebarCollapse }
                         }
-                        button {
-                            class: "icon-button sidebar-expand",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            icon_only: true,
+                            class: "sidebar-expand",
                             aria_label: "Expand navigation",
                             onclick: move |_| remember(Panel::Sidebar, false),
                             Icon { name: IconName::SidebarExpand }
@@ -1494,9 +1496,9 @@ fn PhysicianShell(
                                 p { class: "sidebar-empty", "Not on your panel" }
                             } else {
                                 if !matches!(chats, ChatView::Closed | ChatView::Pending | ChatView::Unavailable) {
-                                    button {
-                                        class: "control-secondary sidebar-new-conversation",
-                                        r#type: "button",
+                                    Button {
+                                        compact: true,
+                                        class: "sidebar-new-conversation",
                                         onclick: move |_| start_chat(),
                                         Icon { name: IconName::Plus }
                                         "{NEW_CONVERSATION}"
@@ -1545,21 +1547,21 @@ fn PhysicianShell(
                             span { class: "sidebar-physician", "{whoami_name}" }
                         }
                         if connection_accounts {
-                            button {
-                                r#type: "button",
+                            Button {
+                                variant: ButtonVariant::Quiet,
                                 onclick: move |_| connections_open.set(true),
                                 Icon { name: IconName::Users }
                                 "{CONNECTIONS}"
                             }
                         }
-                        button {
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
                             onclick: move |_| shortcuts_open.set(true),
                             Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
                         }
-                        button {
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
                             aria_label: "Sign out of Coda",
                             onclick: move |_| sign_out_everywhere(client.read().clone(), session),
                             Icon { name: IconName::Users }
@@ -1569,9 +1571,9 @@ fn PhysicianShell(
                 }
             }
             main { class: "glass-stage",
-                button {
+                Button {
+                    variant: ButtonVariant::Quiet,
                     class: "stage-minimize",
-                    r#type: "button",
                     onclick: move |_| app_collapsed.set(true),
                     "Collapse Coda"
                 }
@@ -2687,13 +2689,13 @@ fn SimulationPanel(
             }
             div { class: "simulation-scenarios", aria_label: "Simulation scenarios",
                 for scenario in sim.scenarios.iter() {
-                    button {
-                        class: if scenario.key == sim.active_scenario_key {
-                            "control-secondary is-active-scenario"
+                    Button {
+                        variant: if scenario.key == sim.active_scenario_key {
+                            ButtonVariant::Primary
                         } else {
-                            "control-secondary"
+                            ButtonVariant::Secondary
                         },
-                        r#type: "button",
+                        compact: true,
                         "data-scenario-key": "{scenario.key}",
                         onclick: {
                             let key = scenario.key.clone();
@@ -2705,9 +2707,8 @@ fn SimulationPanel(
             }
             div { class: "simulation-panel-patients", aria_label: "Synthetic panel patients",
                 for patient in sim.panel_patients.iter() {
-                    button {
-                        class: "control-secondary",
-                        r#type: "button",
+                    Button {
+                        compact: true,
                         "data-panel-patient": "{patient.patient_workspace_id}",
                         onclick: {
                             let id = patient.patient_workspace_id.clone();
@@ -2762,9 +2763,8 @@ fn TodayRows(
                     }
                     if row.resume_work_item_id.is_some() {
                         div { class: "today-row-action",
-                            button {
-                                class: "control-secondary",
-                                r#type: "button",
+                            Button {
+                                compact: true,
                                 onclick: {
                                     let row = row.clone();
                                     move |_| on_resume.call(row.clone())
@@ -2826,9 +2826,10 @@ fn ScheduleRail(
                         span { class: "count", span { class: "count-value", "{count}" } " left" }
                     }
                 }
-                button {
-                    class: "icon-button schedule-rail-collapse",
-                    r#type: "button",
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    icon_only: true,
+                    class: "schedule-rail-collapse",
                     aria_expanded: "true",
                     aria_label: "Collapse {title}",
                     onclick: move |_| on_collapsed.call(true),
@@ -3049,7 +3050,7 @@ fn PatientSurface(
         return rsx! {
             div { class: "reading-workspace patient-page",
                 ErrorState { message: PATIENT_GONE }
-                TextButton { label: GO_TO_TODAY, quiet: true, on_press: on_go_today }
+                Button { variant: ButtonVariant::Quiet, onclick: move |_| on_go_today.call(()), "{GO_TO_TODAY}" }
             }
         };
     }
@@ -3060,17 +3061,18 @@ fn PatientSurface(
                     h1 { class: "workspace-title", "{heading_name}" }
                     div { class: "patient-identity-actions",
                         if past_work && !clinic_demographic {
-                            button {
-                                class: "control-secondary past-work-button",
-                                r#type: "button",
+                            Button {
+                                compact: true,
+                                class: "past-work-button",
                                 onclick: move |_| on_open_past_work.call(()),
                                 "Past work"
                             }
                         }
                         if is_admin && workspace.is_some() && !clinic_demographic {
-                            button {
-                                class: "control-secondary remove-panel-button",
-                                r#type: "button",
+                            Button {
+                                compact: true,
+                                danger: true,
+                                class: "remove-panel-button",
                                 disabled: panel_busy,
                                 onclick: move |_| on_remove_panel.call(()),
                                 if panel_busy { "Updating…" } else { "Remove from panel" }
@@ -3174,9 +3176,9 @@ fn PatientSurface(
                                     }
                                 }
                             }
-                            button {
-                                class: "sign-in-primary assign-panel-button",
-                                r#type: "button",
+                            Button {
+                                variant: ButtonVariant::Primary,
+                                class: "assign-panel-button",
                                 disabled: panel_busy,
                                 onclick: move |_| on_assign_panel.call(()),
                                 if panel_busy { "Assigning…" } else { "Assign to panel" }
@@ -3196,9 +3198,8 @@ fn PatientSurface(
                         "Scenario: {sim.active_scenario_label} · {sim.investor_metric.physician_touched_items} touches across {sim.investor_metric.panel_size} patients"
                     }
                     if !replies.is_empty() {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-action": "admit-corrected-labs",
                             disabled: work_busy,
                             onclick: move |_| on_admit_corrected_labs.call(()),
@@ -3333,9 +3334,8 @@ fn PatientSurface(
                             "data-recommendation-id": "{rec.recommendation_id}",
                             div { class: "simulation-card-header",
                                 strong { "{rec.medication} — Held (undecided)" }
-                                button {
-                                    class: "control-secondary",
-                                    r#type: "button",
+                                Button {
+                                    compact: true,
                                     "data-decide-recommendation": "{rec.recommendation_id}",
                                     disabled: work_busy,
                                     onclick: {
@@ -3405,9 +3405,8 @@ fn PatientSurface(
                     ChatView::Unavailable => rsx! {},
                     ChatView::Empty => rsx! {
                         p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" }
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             onclick: move |_| on_new_chat.call(()),
                             Icon { name: IconName::Plus }
                             "{NEW_CONVERSATION}"
@@ -3443,9 +3442,8 @@ fn PatientSurface(
                             if let Some(target) = line.resume {
                                 div { class: "conversation-mechanical", role: "status",
                                     p { "{line.text}" }
-                                    button {
-                                        class: "control-secondary",
-                                        r#type: "button",
+                                    Button {
+                                        compact: true,
                                         disabled: conversation_resume_busy,
                                         onclick: move |_| on_conversation_resume.call(target.clone()),
                                         "{TRY_AGAIN}"
@@ -3469,8 +3467,8 @@ fn PatientSurface(
                             oninput: move |event| on_draft.call(event.value()),
                         }
                         div { class: "composer-actions",
-                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
-                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
+                            Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| on_send.call(()), "Send" }
+                            Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
                             if !notice.is_empty() {
                                 span { class: "composer-notice", role: "status", "{notice}" }
                             }
@@ -3483,8 +3481,8 @@ fn PatientSurface(
                                     if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
                                 }
                                 div { class: "composer-actions",
-                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
-                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
+                                    Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                    Button { compact: true, onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
                                 }
                             }
                         }
@@ -3607,7 +3605,7 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
                         p { class: "today-connection", "{line}" }
                     }
                 }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
+                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
             }
         }
     }
@@ -3715,7 +3713,7 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
                 if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
                     a { class: "citation-open", href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
                 }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
+                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
             }
         }
     }
@@ -3734,7 +3732,7 @@ fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
                     p { class: "patient-synopsis-meta", "{patient}" }
                 }
                 p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
+                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
             }
         }
     }
@@ -3844,9 +3842,8 @@ fn ReplyReviewCard(
             if can_copy || can_close {
                 div { class: "reply-review-actions",
                     if can_copy {
-                        button {
-                            class: "sign-in-primary",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Primary,
                             "data-reply-action": "copy",
                             disabled: busy,
                             onclick: move |_| {
@@ -3860,9 +3857,8 @@ fn ReplyReviewCard(
                         }
                     }
                     if can_close {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-reply-action": "no-reply-needed",
                             disabled: busy,
                             onclick: {
@@ -3901,9 +3897,8 @@ fn ReplyReviewCard(
                         },
                     }
                     if !instruction.read().trim().is_empty() && !busy {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-reply-action": "revise",
                             aria_label: "{REPLY_ASK}",
                             onclick: {
@@ -3968,7 +3963,7 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
                 div { class: "shortcut", span { "Close the current preview or dialog" } kbd { "Esc" } }
                 div { class: "shortcut", span { "Hold to record; release to transcribe" } kbd { "Ctrl+Shift+Space" } }
                 p { "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus. Esc cancels dictation." }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
+                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
             }
         }
     }

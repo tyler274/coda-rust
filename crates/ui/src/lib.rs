@@ -3,6 +3,7 @@
 //! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
 
+use dioxus::dioxus_core::AttributeValue;
 use dioxus::prelude::*;
 
 /// The `STYLESHEET` constant.
@@ -61,7 +62,7 @@ pub fn ReadNotice(
         },
         ReadStage::Unavailable => rsx! {
             ErrorState { message: unavailable }
-            TextButton { label: retry, quiet: true, on_press: on_retry }
+            Button { compact: true, onclick: move |_| on_retry.call(()), "{retry}" }
         },
     }
 }
@@ -120,16 +121,87 @@ pub fn Row(name: String, detail: String) -> Element {
     }
 }
 
+/// How much a button stands out.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum ButtonVariant {
+    /// The one filled green action on a surface.
+    Primary,
+    /// White on a hairline: every other command.
+    #[default]
+    Secondary,
+    /// Text alone, for the least emphasis.
+    Quiet,
+}
+
+/// A command, after the React physician app's `Control`: one shape, a variant, and the shared
+/// hover, press, focus and touch target. A host class places it; it never restyles it.
 #[component]
-pub fn TextButton(label: String, quiet: bool, on_press: EventHandler) -> Element {
-    rsx! {
-        button {
-            class: if quiet { "text-button quiet" } else { "text-button" },
-            r#type: "button",
-            onclick: move |_| on_press.call(()),
-            "{label}"
+pub fn Button(
+    #[props(default)] variant: ButtonVariant,
+    /// Removes or disconnects what the person has: red.
+    #[props(default)]
+    danger: bool,
+    /// The shorter control, for rows of actions.
+    #[props(default)]
+    compact: bool,
+    /// The icon is the whole label, so the caller names it with `aria_label`.
+    #[props(default)]
+    icon_only: bool,
+    #[props(default)] disabled: bool,
+    /// Submits its form instead of acting on its own.
+    #[props(default)]
+    submit: bool,
+    onclick: Option<EventHandler<MouseEvent>>,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
+    let mut class = String::from(match variant {
+        ButtonVariant::Primary => "control control-primary",
+        ButtonVariant::Secondary => "control control-secondary",
+        ButtonVariant::Quiet => "control control-quiet",
+    });
+    for (on, name) in [
+        (danger, " control-danger"),
+        (compact, " control-compact"),
+        (icon_only, " control-icon"),
+    ] {
+        if on {
+            class.push_str(name);
         }
     }
+    // A host's class joins the control's own; every other attribute passes through.
+    let mut rest = Vec::with_capacity(attributes.len());
+    for attribute in attributes {
+        match (&attribute.value, attribute.name) {
+            (AttributeValue::Text(host), "class") if !host.is_empty() => {
+                class.push(' ');
+                class.push_str(host);
+            }
+            (_, "class") => {}
+            _ => rest.push(attribute),
+        }
+    }
+    rsx! {
+        button {
+            class: "{class}",
+            r#type: if submit { "submit" } else { "button" },
+            disabled: disabled,
+            onclick: move |event| {
+                if let Some(handler) = &onclick {
+                    handler.call(event);
+                }
+            },
+            ..rest,
+            {children}
+        }
+    }
+}
+
+/// Actions that sit together: one row, one gap, one centre line, wrapping where the width runs out.
+/// A host places the row; it never sets the row's own layout.
+#[component]
+pub fn ActionRow(children: Element) -> Element {
+    rsx! { div { class: "action-row", {children} } }
 }
 
 #[component]

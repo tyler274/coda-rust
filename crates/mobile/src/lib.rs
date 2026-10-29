@@ -7,6 +7,7 @@
 use std::path::Path;
 
 use dioxus::prelude::*;
+use ui::{ActionRow, Button, ButtonVariant};
 
 #[cfg(target_arch = "wasm32")]
 const MODE_KEY: &str = "coda-mode";
@@ -64,28 +65,29 @@ pub fn ModeShell(physician_url: String, duet_url: String, duet_bearer: String) -
             None => rsx! {
                 main { class: "mode-chooser", aria_label: "Choose a mode",
                     h1 { "Coda" }
-                    button {
-                        r#type: "button",
-                        onclick: move |_| {
-                            persist(Mode::Physician);
-                            mode.set(Some(Mode::Physician));
-                        },
-                        "Physician"
-                    }
-                    button {
-                        r#type: "button",
-                        onclick: move |_| {
-                            persist(Mode::Client);
-                            mode.set(Some(Mode::Client));
-                        },
-                        "Client"
+                    ActionRow {
+                        Button {
+                            onclick: move |_| {
+                                persist(Mode::Physician);
+                                mode.set(Some(Mode::Physician));
+                            },
+                            "Physician"
+                        }
+                        Button {
+                            onclick: move |_| {
+                                persist(Mode::Client);
+                                mode.set(Some(Mode::Client));
+                            },
+                            "Client"
+                        }
                     }
                 }
             },
             Some(Mode::Physician) => rsx! {
-                button {
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    compact: true,
                     class: "mode-switch",
-                    r#type: "button",
                     onclick: move |_| {
                         clear_persisted();
                         mode.set(None);
@@ -98,9 +100,10 @@ pub fn ModeShell(physician_url: String, duet_url: String, duet_bearer: String) -
                 }
             },
             Some(Mode::Client) => rsx! {
-                button {
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    compact: true,
                     class: "mode-switch",
-                    r#type: "button",
                     onclick: move |_| {
                         clear_persisted();
                         mode.set(None);
