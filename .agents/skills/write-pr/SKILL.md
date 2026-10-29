@@ -106,6 +106,12 @@ relationships, supporting evidence, and consequential uncertainty where applicab
 Call out assumptions or decisions worth challenging without restricting independent
 review. These are writing criteria, not mandatory headings or a questionnaire.
 
+Recommend whether the initial review should be performed by a human or an agent,
+and briefly explain why. When human review is needed,
+identify the decision or judgment requiring it. Include this recommendation with
+the PR handoff. Choosing a reviewer does not itself authorize launching a review
+or assigning anyone.
+
 After material revisions, re-read the complete diff and reconsider both title and
 body. Update purpose, scope, dependencies, risks, and verification claims; remove
 superseded explanations. Describe the final coherent solution rather than narrating
