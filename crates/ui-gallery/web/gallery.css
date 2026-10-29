@@ -1,0 +1,16 @@
+/* The gallery's own layout only; every component keeps the shared stylesheet. */
+body { margin: 0; background: var(--surface); color: var(--ink); font: var(--type-body-md); -webkit-font-smoothing: antialiased; }
+.gallery { box-sizing: border-box; max-width: 760px; margin: 0 auto; padding: var(--space-6) var(--page-gutter) 30vh; }
+.gallery-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
+.gallery-lede, .gallery-note { margin: var(--space-1) 0 0; color: var(--muted); font: var(--type-body-sm); }
+.gallery-sections { display: grid; gap: var(--space-5); }
+.gallery-section { padding: var(--space-5); }
+.gallery-title { margin: 0; font: var(--type-title-md); }
+.gallery-stage { display: grid; gap: var(--space-4); margin-top: var(--space-4); }
+.gallery-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.gallery-label { display: inline-flex; align-items: center; gap: var(--space-2); font: var(--type-body-sm); }
+.gallery-copy { margin: 0; font: var(--type-body-md); }
+.gallery-placeholder { display: grid; gap: var(--space-2); max-width: 420px; }
+.gallery-thread { display: flex; flex-direction: column; gap: var(--space-6); }
+.gallery-nav-row { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: var(--space-row) var(--space-3); border-radius: var(--radius-md); }
+.gallery-nav-row strong { flex: 1; }

@@ -38,6 +38,23 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
 | [`duet-health`](/crates/duet-health/src/lib.rs), [`duet-notify`](/crates/duet-notify/src/lib.rs), [`duet-widget`](/crates/duet-widget/src/lib.rs) | Native health, notification and widget adapters; verify on installed clients under the owning outcomes |
 
+## Seeing the shared components
+
+[`ui-gallery`](/crates/ui-gallery/src/main.rs) renders every `ui` component with
+the shared stylesheet, apart from either app. Its conversation is scripted, and
+nothing in it is product behavior. Each app restyles some components, so check
+a change in the app it serves as well. To build and serve it:
+
+```sh
+cargo build -p ui-gallery --target wasm32-unknown-unknown --features web
+wasm-bindgen --target web --out-dir target/ui-gallery-web target/wasm32-unknown-unknown/debug/ui-gallery.wasm
+cp crates/ui-gallery/web/index.html target/ui-gallery-web/
+```
+
+Then serve `target/ui-gallery-web` with any static file server. **Slow
+motion** plays every animation at quarter speed, and **Replay entries**
+remounts the sections so their entry motion runs again.
+
 The assistant-ui study in the corpus is a conversation-pattern reference. No
 React library adoption is implied for the Rust/Dioxus client. Source snapshots
 and the October 21 review describe their stated revisions; verify the current
