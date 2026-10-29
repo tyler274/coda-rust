@@ -32,7 +32,7 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 
 | Owner | What to inspect |
 | --- | --- |
-| [`ui`](/crates/ui/src/lib.rs) | Shared tokens (light and dark), icons, buttons, navigation links and rows, the text field, the dialog and sheet, the disclosure, the composer, messages, the working mark, citations and the Sources control, cards, state pills, the status line, placeholder and Try again, read and command notices, and tabs; product-specific layout remains in each app |
+| [`ui`](/crates/ui/src/lib.rs) | Shared tokens (light and dark: one type scale, colour roles including data, space, shape and motion with springs), icons, buttons, navigation links, list rows and row groups, section headers, the top bar, the text field, selection and setting rows, the dialog and sheet, the disclosure, the composer with its context chip, messages, the date separator, suggestions, receipts, the working mark, citations and the Sources control, cards with overlines, plan steps, quotes and later context, measurement values, comparison bars, sparklines, trend charts and measurement tiles, the document page, notices, tags, footer actions, state pills, the status line, placeholder and Try again, read and command notices, and tabs; product-specific layout remains in each app |
 | [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs removal of person-to-person sharing |
 | [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens; the old join gate is disabled, while the retained sharing toggle still conflicts with fixed consent |
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
@@ -41,8 +41,11 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 ## Seeing the shared components
 
 [`ui-gallery`](/crates/ui-gallery/src/main.rs) renders every `ui` component with
-the shared stylesheet, apart from either app. Its conversation is scripted, and
-nothing in it is product behavior. Each app restyles some components, so check
+the shared stylesheet, apart from either app: the type and colour roles first, then
+each pattern from the October 21 mockups. The library is the ideal state the rebuilt
+physician web app and Duet on iOS and Android build from; a mockup's raw values are
+mapped onto the shared roles rather than added as another palette. Its examples are
+fictional and scripted, and nothing in it is product behavior. Each app restyles some components, so check
 a change in the app it serves as well. To build and serve it:
 
 ```sh
