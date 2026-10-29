@@ -14,6 +14,18 @@ from urllib.parse import unquote, urlsplit
 from urllib.request import Request, urlopen
 
 
+class GitHubRequestError(RuntimeError):
+    """Preserve whether GitHub conclusively refused a request."""
+
+    def __init__(self, message, status=None):
+        super().__init__(message)
+        self.status = status
+
+    @property
+    def definite_refusal(self):
+        return self.status is not None and 400 <= self.status < 500 and self.status != 408
+
+
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
@@ -35,12 +47,13 @@ def github(endpoint, method="GET", payload=None, token=None, hostname="github.co
             with urlopen(request, timeout=60) as response:
                 body = response.read()
         except HTTPError as error:
-            raise RuntimeError(
+            raise GitHubRequestError(
                 f"GitHub {method} failed for {endpoint.split('?')[0]} with HTTP {error.code}; "
-                "inspect access and current remote state before retrying"
+                "inspect access and current remote state before retrying",
+                status=error.code,
             ) from None
         except URLError:
-            raise RuntimeError(
+            raise GitHubRequestError(
                 f"GitHub {method} failed for {endpoint.split('?')[0]}; "
                 "inspect network access and current remote state before retrying"
             ) from None
@@ -113,7 +126,9 @@ class ReviewerTools:
         if (not endpoint.startswith(prefix) or not decoded.startswith(prefix)
                 or any(x in decoded.split('?')[0].split('/') for x in (".", ".."))
                 or "\\" in decoded or "#" in decoded):
-            raise ValueError("Use a repository-relative GitHub REST endpoint in the selected repository")
+            raise ValueError(
+                f"Endpoint must start exactly with repos/{repository}/ and stay within that target repository"
+            )
         value = github(endpoint, hostname=self.repositories[repository])
         self.record_access("github_read", {"repository": repository, "endpoint": endpoint})
         return value
@@ -159,6 +174,7 @@ class ReviewerTools:
             parent = github(f"repos/{repo}/pulls/comments/{reply_to}", hostname=host)
             if parent["pull_request_url"].rstrip('/').split('/')[-1] != number:
                 raise ValueError("Reply target belongs to another PR")
+            reply_to = parent.get("in_reply_to_id") or parent["id"]
         elif reply_to is not None:
             raise ValueError("reply_to applies only to replies")
         draft = {"pr_url": pr_url, "head_sha": target["head_sha"], "base_sha": target["base_sha"],
@@ -206,7 +222,12 @@ class ReviewerTools:
             endpoint = f"repos/{repo}/pulls/{number}/comments/{draft['reply_to']}/replies"
             payload = {"body": draft["body"]}
         attempt_path.write_text(json.dumps({"endpoint": endpoint, "draft_id": draft_id}) + "\n")
-        response = github(endpoint, "POST", payload, token)
+        try:
+            response = github(endpoint, "POST", payload, token)
+        except GitHubRequestError as error:
+            if error.definite_refusal:
+                attempt_path.unlink()
+            raise
         read_endpoint = (f"repos/{repo}/pulls/{number}/reviews/{response['id']}"
                          if draft["kind"] == "review"
                          else f"repos/{repo}/pulls/comments/{response['id']}")
@@ -258,7 +279,7 @@ def tool(name, description, properties, required, readonly):
 
 
 TOOLS = [
-    tool("github_read", "Read GitHub REST data directly: PRs, diffs via files, discussion, trees, commits, checks. Page lists explicitly using ?page= and per_page=. Only GET in target repositories.",
+    tool("github_read", "Read GitHub REST data directly: PRs, diffs via files, discussion, trees, commits, checks. The endpoint must start exactly with repos/OWNER/REPO/ for the selected target repository. Page lists explicitly using ?page= and per_page=. Only GET is supported.",
          {"repository": STRING, "endpoint": STRING}, ["repository", "endpoint"], True),
     tool("read_file", "Read a full repository file at an exact commit independently of the author. Optional line range for large files. Use github_read git/trees to discover paths.",
          {"repository": STRING, "path": STRING, "ref": STRING, "start_line": {"type": "integer"}, "end_line": {"type": "integer"}},
