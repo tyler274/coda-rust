@@ -105,6 +105,7 @@ Where Dev replaced an earlier call. The specs follow the newer position; each en
 
 ## Duet
 
+- A Check-in that fails several times pauses itself and only the person resumes it (10-26) → Duet tells the person and judges whether to keep trying, pause or ask (10-28). [claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-26T17:56:56.128Z; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
 - Duet's own work as a fixed routine (a daily look, a weekly recap, a new-records review) → a starting routine whose timing is Duet-owned runtime policy, matching section 7; Duet judges what else to take on (10-28, PRINCIPLES.md 4). [linear:Duet#How Duet's AI works]
 - Duet's AI "kept at max reasoning effort" (09-25) → its effort depends on the work; background runs will probably use GPT-6 Luna Max, flexible (10-28). [claude:04e60e17-14f8-420f-b5b5-c53f7e92e268.jsonl@2026-09-25T16:08:14.808Z; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:44:31.878Z]
 - **The AI's name:** "Luna" (Luna Max for all chats) → "Duet's AI" [codex:rollout-2026-09-09T17-33-57-01a08817-8449-7361-9edf-b221dec5@2026-09-10T03:24:27.122Z → claude:1832669a-01e1-4365-916f-ae03e08161f4.jsonl@2026-10-20T21:14:08.283Z].

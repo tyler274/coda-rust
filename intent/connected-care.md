@@ -93,7 +93,7 @@ Coda's principles (PRINCIPLES.md) govern this spec. These are the Connected care
 6. Copies of records the chart or Kno2 already holds arrive labelled and recognizable as duplicates. [linear:ENG-39#Done when]
 7. Branch, a record is corrected at its source: the new version arrives as its own event, not a new arrival. Unfinished work doesn't publish from the version it replaced. The practice keeps the earlier version it received, dated. [linear:ENG-39#Done when]
 8. The patient sees no "your care team looked" read receipt on shared items. [linear:ENG-45#Decided; claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-25T19:59:48.189Z]
-9. Branch, sharing is behind or failing: someone who can act sees it, with the reason. [linear:coda-rust platform#What went wrong before] GAP: who that is (patient, practice staff or Coda ops) and what each sees is not stated.
+9. Branch, sharing is behind or failing: someone who can act sees it, with the reason. [linear:coda-rust platform#What went wrong before] The patient sees problems with their own sources in Duet; Coda ops sees problems in the sharing pipeline. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
 
 ### C1.4 Documented care decisions reaching Duet
 
@@ -112,7 +112,7 @@ Coda's principles (PRINCIPLES.md) govern this spec. These are the Connected care
 ### C1.5 Plan Check-ins
 
 1. The patient uses Check-ins related to their doctor's plan. [linear:ENG-45#What the patient can do]
-2. A plan Check-in runs only once the patient has accepted it, and adapts only within the limits they accepted. [linear:Duet#How Duet's AI works; codex:rollout-2026-10-21T16-08-06-01a16014-0209-7d01-a2bd-e5b72d31@2026-10-23T00:25:21.679Z (chosen)] GAP: what proposes a Check-in from the doctor's plan, and its timing, is not stated.
+2. A plan Check-in runs only once the patient has accepted it, and adapts only within the limits they accepted. [linear:Duet#How Duet's AI works; codex:rollout-2026-10-21T16-08-06-01a16014-0209-7d01-a2bd-e5b72d31@2026-10-23T00:25:21.679Z (chosen)] Duet's AI proposes a Check-in from the doctor's plan when useful, and it runs only once the patient accepts. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
 3. The answers reach the practice's next Agents review. [linear:ENG-45#Done when; linear:ENG-14#Decided]
 4. They never become individual alerts for the physician. [linear:ENG-14#Decided; linear:ENG-45#Done when]
 5. The practice's agents decide whether a physician needs to see anything. [linear:ENG-45#Decided]
@@ -125,10 +125,10 @@ Coda's principles (PRINCIPLES.md) govern this spec. These are the Connected care
 4. It reaches the practice once, as the version sent, already linked to the patient like a message from a known patient, and flagged for the practice's agents. [linear:ENG-39#Done when; claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-26T02:18:05.292Z (chosen); claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-26T02:14:36.821Z (chosen)]
 5. Duet picks it up and hands it to Coda Agents: the patient's agent talks to the practice's AI care team agent. Dev: "You submit things and duet picks it up and transfers it over to CODA agents ... the patient agent communicates with the physician AI care team agent." This matches the Oct 26 choices above. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]
 6. The practice's agents read it and judge whether a physician needs to see it; if so, it goes on the physician's Today. [claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-26T02:18:05.292Z (chosen); linear:ENG-39#Done when; claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-25T20:00:37.921Z]
-7. Anything that goes back to the patient as a message, such as an answer to their question, needs the physician's approval (B1). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:11:28.018Z; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z] GAP: how an approved answer reaches the patient's Duet is not stated.
+7. Anything that goes back to the patient as a message, such as an answer to their question, needs the physician's approval (B1). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:11:28.018Z; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z] The approved answer reaches Duet as a message from the practice in the thread, like other practice news. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
 8. The patient sees no receipt that the care team looked, and Duet's wording doesn't claim a physician reviewed it. [linear:ENG-45#Decided]
 9. The patient later edits their For my doctor: the sent copy keeps its version and is marked when a newer one exists. [claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-26T21:32:53.088Z]
-10. Branch, not connected: GAP: what Duet offers when the patient tries to send without a live connection is not stated (outside-Coda sharing is post-MVP). [linear:ENG-169#What the patient can do in MVP]
+10. Branch, not connected: Without a live connection there is no Send to my practice; unsupported features are absent from the app (outside-Coda sharing is post-MVP). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)] [linear:ENG-169#What the patient can do in MVP]
 
 ### E1. Patient leaves
 
