@@ -117,14 +117,14 @@
 :is(.field, .field *)::placeholder { color: var(--muted); opacity: 1; }
 /* A thread's messages, after the React app's conversation and the October 21 design review: the person's words in a
    light bubble at the far edge, the assistant's as plain prose. A message rises in as it appears, the person's on the
-   longer send step from below, a reply on the shorter arrival, as Duet's native thread moves. */
+   send spring from below, a reply on the arrival spring, as Duet's native thread moves. */
 .message { box-sizing: border-box; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); overflow-wrap: anywhere;
-  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--spring-arrive); }
 .message > p { margin: 0; }
 .message > p + p { margin-top: var(--space-2); }
 .message-person { width: fit-content; max-width: 86%; margin-inline-start: auto; padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-lg); background: var(--surface-low);
-  transition-duration: var(--motion-step); transition-timing-function: var(--ease-emphasized); }
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--spring-send); }
 @starting-style {
   .message { opacity: 0; transform: translateY(var(--rise-small)); }
   .message-person { transform: translateY(var(--rise)); }
@@ -163,7 +163,7 @@
 .dialog { box-sizing: border-box; width: min(var(--dialog-width), calc(100% - 2 * var(--page-gutter))); max-width: none;
   max-height: var(--dialog-max-height); overflow: hidden; margin: var(--dialog-margin) auto auto; padding: 0; border: 0;
   border-radius: var(--radius-xl); background: var(--surface-lowest); color: var(--ink); box-shadow: var(--elevation-5);
-  transition: opacity var(--motion-step) var(--ease-out), transform var(--motion-step) var(--ease-out); }
+  transition: opacity var(--motion-step) var(--ease-out), transform var(--spring-step); }
 .dialog[open] { display: grid; grid-template-rows: minmax(0, 1fr); }
 .dialog::backdrop { background: var(--scrim); transition: opacity var(--motion-step) var(--ease-out); }
 .dialog-body { min-height: 0; overflow: auto; padding: var(--space-6); }
@@ -181,10 +181,10 @@
   to { opacity: var(--dialog-exit-opacity, 0); transform: var(--dialog-exit-transform, translateY(var(--rise)) scale(.99)); } }
 @keyframes backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
 /* A sheet, after the October 21 design review: the same dialog along the bottom edge, full width up to the dialog
-   width, its top corners rounded. It slides up from the edge with the step motion and back down, staying opaque. */
+   width, its top corners rounded. It slides up from the edge on the step spring and back down, staying opaque. */
 .dialog-sheet { --dialog-exit-opacity: 1; --dialog-exit-transform: translateY(100%); width: min(var(--dialog-width), 100%);
   max-height: calc(100dvh - var(--dialog-margin)); margin: auto auto 0; border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-  transition-duration: var(--motion-step); transition-timing-function: var(--ease-emphasized); }
+  transition: transform var(--spring-step); }
 .dialog-sheet .dialog-body { padding: var(--space-5) var(--space-5) max(var(--space-6), env(safe-area-inset-bottom)); }
 .dialog-sheet.is-closing { animation-duration: var(--motion-arrive); }
 @starting-style { .dialog-sheet[open] { opacity: 1; transform: translateY(100%); } }

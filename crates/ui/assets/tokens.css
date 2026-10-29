@@ -212,6 +212,22 @@
   --ease-out: cubic-bezier(.2,.7,.25,1);
   --ease-in-out: cubic-bezier(.45,0,.2,1);
   --ease-exit: cubic-bezier(.4,0,1,1);
+  /* Springs, after SwiftUI Duet's motion (DuetMotion): each a whole timing, its settle time and curve, sampled from the
+     spring SwiftUI runs (mass 1, stiffness (2pi / response)^2, damping 4pi x damping fraction / response) until it rests
+     within 0.05% of its travel. Send is the person's message rising from the composer (response .35, damping .8, a
+     slight overshoot); arrive is content arriving (smooth, .24); step is a pane or sheet taking its place (smooth, .35).
+     A host names one for a transform, as `transform var(--spring-step)`. Exits keep the shorter eases. */
+  --spring-send: 491ms linear(0, 0.022, 0.077, 0.153, 0.241, 0.334, 0.426, 0.515, 0.596, 0.67, 0.736, 0.793, 0.841, 0.881, 0.915, 0.942, 0.963, 0.979, 0.992, 1.001, 1.007, 1.011, 1.014, 1.015, 1.015, 1.015, 1.014, 1.013, 1.011, 1.01, 1.008, 1.007, 1.006, 1.005, 1.004, 1.003, 1.002, 1.002, 1.001, 1.001, 1);
+  --spring-arrive: 382ms linear(0, 0.026, 0.09, 0.173, 0.264, 0.355, 0.442, 0.522, 0.594, 0.657, 0.713, 0.76, 0.801, 0.835, 0.864, 0.888, 0.908, 0.925, 0.939, 0.95, 0.96, 0.967, 0.973, 0.978, 0.983, 0.986, 0.989, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.998, 0.999, 0.999, 0.999, 0.999, 1);
+  --spring-step: 557ms linear(0, 0.026, 0.09, 0.173, 0.264, 0.355, 0.442, 0.522, 0.594, 0.657, 0.713, 0.76, 0.801, 0.835, 0.864, 0.888, 0.908, 0.925, 0.939, 0.95, 0.96, 0.967, 0.973, 0.978, 0.983, 0.986, 0.989, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.998, 0.999, 0.999, 0.999, 0.999, 1);
+}
+/* Without linear() easing a spring falls back to the role it stands in for. */
+@supports not (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring-send: var(--motion-step) var(--ease-emphasized);
+    --spring-arrive: var(--motion-arrive) var(--ease-out);
+    --spring-step: var(--motion-step) var(--ease-out);
+  }
 }
 /* Dark: the same roles on the native dark neutrals. The canvas is black; cards, dialogs and panels step up through the
    charcoal layers, so each level still reads above the one it stands on. */
