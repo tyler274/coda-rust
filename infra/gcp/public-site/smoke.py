@@ -121,6 +121,7 @@ def main():
         base = await_ready(cid)
         status, headers, body = fetch(base, "/")
         assert status == 200 and "text/html" in headers["Content-Type"]
+        assert headers["Strict-Transport-Security"] == "max-age=63072000", headers
         html = body.decode()
         document = Document()
         document.feed(html)

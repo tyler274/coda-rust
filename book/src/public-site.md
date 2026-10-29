@@ -108,6 +108,8 @@ Startup builds the page/asset tables and their identity, gzip and Brotli
 representations once; requests do not render Dioxus or query a database. The server
 serves content-addressed immutable assets and HTML with bounded public/shared-cache
 lifetimes, encoding-specific ETags, conditional requests and bodyless HEAD responses.
+Every response carries production's HSTS policy,
+`Strict-Transport-Security: max-age=63072000`.
 Motion is the original kytos `public/homepage/site.js`, served byte-for-byte as
 `/homepage/site.js` on `/` and `/duet`, exactly as the Next site loads it. It also
 paints the landscapes. Parity therefore holds by construction: `tests/parity.rs`
@@ -304,9 +306,9 @@ rendered Rust output are imported.
 
 `crates/public-site/tests/fixtures/served/` records what production served at
 that same commit (its `/api/health` reports the release SHA, and the importer
-refuses any other): every page, the not-found page, the sitemap, `robots.txt`, the compiled utility
-stylesheet, the rendered social image, and the status and `Location` of each
-probe URL in `responses.json`. `provenance.json` records each file's URL and
+refuses any other): every page, the not-found page, the sitemap, `robots.txt`, the
+compiled utility stylesheet, the rendered social image, and the status, `Location`
+and `Strict-Transport-Security` of each probe URL in `responses.json`. `provenance.json` records each file's URL and
 SHA-256 under `served`. These are the outputs of Next, Tailwind and
 `ImageResponse`, which the port must not re-implement.
 

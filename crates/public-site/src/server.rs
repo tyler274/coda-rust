@@ -203,6 +203,10 @@ async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: N
     response
         .headers_mut()
         .insert("x-content-type-options", "nosniff".parse().unwrap());
+    response.headers_mut().insert(
+        header::STRICT_TRANSPORT_SECURITY,
+        crate::site::STRICT_TRANSPORT_SECURITY.parse().unwrap(),
+    );
     if state.runtime.staging {
         let headers = response.headers_mut();
         headers.insert("x-robots-tag", "noindex, nofollow".parse().unwrap());

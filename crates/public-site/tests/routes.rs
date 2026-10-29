@@ -189,7 +189,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
 /// Status and redirect target for every probe, as production served them (including
 /// Next's trailing-slash rule); see tests/fixtures/served/responses.json.
 #[tokio::test]
-async fn urls_resolve_and_redirect_as_production_serves_them() {
+async fn urls_resolve_redirect_and_set_hsts_as_production_serves_them() {
     let app = router_with_options(
         prerender(&Config::default()),
         RuntimeConfig::default(),
@@ -215,6 +215,14 @@ async fn urls_resolve_and_redirect_as_production_serves_them() {
                 .get("location")
                 .map(|value| value.to_str().unwrap()),
             expected["location"].as_str(),
+            "{path}"
+        );
+        assert_eq!(
+            response
+                .headers()
+                .get("strict-transport-security")
+                .map(|value| value.to_str().unwrap()),
+            expected["strictTransportSecurity"].as_str(),
             "{path}"
         );
     }
