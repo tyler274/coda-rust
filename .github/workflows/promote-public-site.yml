@@ -6,8 +6,8 @@ name: Promote public site to production
 # production root with it, allows only an in-place update of the Cloud Run
 # service, applies the saved plan and reads both hostnames back through the
 # load balancer. The first apply, certificate DNS and the DNS cutover are
-# operator steps, not this workflow. The production environment's required
-# reviewer approves each run.
+# operator steps, not this workflow. Starting a run is the approval; the
+# production environment only admits main and identifies this job to GCP.
 on:
   workflow_dispatch:
     inputs:

@@ -253,6 +253,6 @@ run "${G[@]}" iam service-accounts add-iam-policy-binding "$CI_SA" \
   --member="principal://iam.googleapis.com/${POOL_NAME}/subject/${WIF_SUBJECT}"
 note "Workflow auth: workload_identity_provider=${POOL_NAME}/providers/${WIF_PROVIDER}"
 note "             service_account=${CI_SA} (job must use environment: ${WIF_ENVIRONMENT} on ${WIF_REF})"
-note "In GitHub, give the ${WIF_ENVIRONMENT} environment Dev as a required reviewer."
+note "In GitHub, limit the ${WIF_ENVIRONMENT} environment to ${WIF_REF#refs/heads/}; it needs no reviewer."
 
 step "Done. Next: the first apply from a reviewed saved plan (book: Production state and deployment)."

@@ -985,14 +985,15 @@ for the bindings that need the service and runtime account to exist.
   load balancer, TLS or identities.
 - Creates the `github-actions` WIF pool and provider in `coda-health-prod`, accepting
   only `Coda-Health/coda-rust` on `refs/heads/main` in the `production` environment,
-  and lets only that subject impersonate the deployer. Give the GitHub `production`
-  environment Dev as a required reviewer.
+  and lets only that subject impersonate the deployer. The GitHub `production`
+  environment admits only `main` and has no required reviewer.
 
 ### Promotion
 
 [`promote-public-site.yml`](/.github/workflows/promote-public-site.yml) is manual
 (`workflow_dispatch` on `main`, input `release_sha`) and runs in the `production`
-environment, so its reviewer approves each run. It:
+environment. Starting a run is the approval: anyone with write access to the
+repository can promote a commit staging already built and tested. It:
 
 1. requires a full SHA that is on `main`;
 2. finds the image the staging deploy tagged with that commit (tags are pushed only
