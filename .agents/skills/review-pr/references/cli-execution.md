@@ -4,6 +4,58 @@ The launcher starts one non-interactive reviewer process for a PR or coherent
 batch. Either interactive host can select either CLI. The first conversation is
 fresh; follow-ups resume its exact reviewer, never the coding session.
 
+## Setup for Coda Health
+
+Use the repository's `.agents/skills/review-pr` directory. The `.claude/skills`
+entry links to that same skill; a separate personal copy may be older. Install
+Python 3.10+, GitHub CLI (`gh`), Doppler CLI, OpenSSL, and the reviewer CLI you
+intend to use (`codex` or `claude`), with their executables on PATH. The live
+workflow was verified with Codex CLI 0.163.0 and Claude Code 2.1.310; an older CLI
+must support the flags used by the launcher.
+
+Authenticate with your own accounts:
+
+```bash
+gh auth login
+doppler login
+```
+
+Sign in to the selected reviewer engine with `codex login` or `claude auth login`.
+Your GitHub account needs read access to `Coda-Health/coda-rust`. Your Doppler
+account needs access to `CODA_PR_REVIEWER_PRIVATE_KEY` in project `coda-rust`,
+config `dev`; request that access from a Doppler administrator if it is missing.
+Having repository access alone does not grant secret access.
+
+The shared [reviewer-app.json](../reviewer-app.json) contains the Coda PR Reviewer
+App ID, installation ID, and the command that retrieves its existing key from
+Doppler. These are non-secret settings. Use this file directly; do not create a
+personal copy or put a private key or token in the checkout. Publication uses
+`coda-pr-reviewer[bot]`, independently of the GitHub account used for reads. This
+installation is configured for `Coda-Health/coda-rust`.
+
+Verify key retrieval without displaying or saving the key. Replace the checkout
+path below with your own:
+
+```bash
+python3 - /absolute/path/to/coda-rust/.agents/skills/review-pr/reviewer-app.json <<'PYTHON'
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+config = json.loads(Path(sys.argv[1]).read_text())
+result = subprocess.run(config["private_key_command"], capture_output=True)
+if result.returncode or not result.stdout.strip():
+    raise SystemExit("Reviewer key unavailable; check Doppler login and access.")
+print("Reviewer key is accessible; no secret value was displayed or saved.")
+PYTHON
+```
+
+Then use the invocation below with `--dry-run` to check PR access and prepare the
+reviewer command without starting a model or posting anything. A dry-run does not
+verify model login or live publication. Omit `--dry-run` only when requesting an
+actual review, which includes reviewer-bot publication.
+
 ## Invoke
 
 Use absolute paths to this repository's script and a trusted workspace. Replace
@@ -13,7 +65,7 @@ Use absolute paths to this repository's script and a trusted workspace. Replace
 python3 /absolute/path/to/coda-rust/.agents/skills/review-pr/scripts/run_review.py \
   --pr https://github.com/OWNER/REPO/pull/123 \
   --workspace /absolute/path/to/trusted/workspace \
-  --github-app-config /absolute/path/to/reviewer-app.json \
+  --github-app-config /absolute/path/to/coda-rust/.agents/skills/review-pr/reviewer-app.json \
   --engine codex --model gpt-6-astra --effort xhigh
 ```
 

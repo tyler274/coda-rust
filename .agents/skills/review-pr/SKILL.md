@@ -44,9 +44,11 @@ retrieves requirements, source, and relevant surrounding PR discussions.
 
 ## Launch the independent reviewer
 
-Read [CLI execution](references/cli-execution.md), then use
-[scripts/run_review.py](scripts/run_review.py). Supply every review target with
-`--pr URL`; repeat the flag for a batch. PRs mentioned only as context are not
+Read [setup and CLI execution](references/cli-execution.md), then use
+[scripts/run_review.py](scripts/run_review.py). For Coda Health, pass this skill's
+shared [reviewer-app.json](reviewer-app.json) with `--github-app-config`; it retrieves
+the existing App key through the invoking developer's Doppler access. Supply every
+review target with `--pr URL`; repeat the flag for a batch. PRs mentioned only as context are not
 included in the launcher's revision checks. State the engine, model, and targets:
 
 - Default: Codex, `gpt-6-astra`, effort `xhigh`.
