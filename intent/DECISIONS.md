@@ -1,6 +1,6 @@
 # Decisions for Dev
 
-One place for every open question and every settled conflict across physician.md, duet.md, connected-care.md and harness.md. The specs carry no open questions or conflicts of their own. Every quote is verbatim from its source. Pointers follow the specs: `claude:<session>…@<UTC time>` and `codex:…<session>…@<UTC time>` are Dev's words, and `(chosen)` marks an option Dev clicked. `linear:` is Linear as read on 2026-10-28; a Linear line with no date of its own is marked "undated". `(doc)` and `(site)` are not Dev's words.
+One place for every open question and every settled conflict across physician.md, duet.md, connected-care.md and harness.md. The specs carry no open questions or conflicts of their own; a step no source states is marked `GAP:` where it occurs. Every quote is verbatim from its source. Pointers follow the specs: `claude:<session>…@<UTC time>` and `codex:…<session>…@<UTC time>` are Dev's words, and `(chosen)` marks an option Dev clicked. `linear:` is Linear as read on 2026-10-28; a Linear line with no date of its own is marked "undated". `(doc)` and `(site)` are not Dev's words.
 
 Answer by ID, for example "B1: A" or "S4: recommendation".
 
@@ -8,7 +8,7 @@ Answer by ID, for example "B1: A" or "S4: recommendation".
 
 ## Open for Dev
 
-All 28 contradictions from the sweep are settled, by your answers, your later words or the principles; they're listed under Decided by Dev and Already settled. The questions below aren't contradictions. They are things no source answers yet, gathered here from the four specs so there is one list. The specs no longer carry their own.
+All 28 contradictions from the sweep are settled, by your answers, your later words or the principles; they're listed under Decided by Dev and Already settled. The questions below aren't contradictions. They are things no source answers yet, gathered here from the four specs so there is one list. Steps no source states stay in the specs as `GAP:` lines; each is settled when that journey's chart is built, and one that needs a product choice comes here.
 
 ### For Dev, in the MVP
 
@@ -146,6 +146,7 @@ Nothing open. O1–O7 were answered on Oct 28 (Decided by Dev).
   - A practice invite keeps one reminder, then expires: a limit on contacting someone who hasn't joined. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
   - Plans from several practices: each shows separately, labeled with its practice, and Duet's AI explains them together when asked. ENG-191 stays as history; Tyler's ENG-159 review carries parallel runs. Updated: duet Your doctor's plan, connected-care Your doctor's plan. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:11:14.276Z (chosen)]
   - Four connected-care gaps filled: an approved answer arrives in Duet's thread as practice news; Duet proposes plan Check-ins; no Send to my practice without a connection; the patient sees their own source problems and Coda ops sees pipeline problems. Updated: connected-care C1.3, C1.5, C1.6; physician P3. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
+  - The approved answer goes into Duet's thread in the MVP: it is the one message Coda delivers, exactly as approved, and any edit needs approval again. Patient mail stays copy-and-send in Gmail or Spruce. Updated: physician principle 2, P3, Rules; connected-care C1.6; PRINCIPLES.md 5. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
 
 ## Already settled (confirm)
 

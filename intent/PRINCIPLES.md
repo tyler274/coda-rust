@@ -33,7 +33,7 @@ If a lower source adds machinery that a principle rules out, the principle wins 
 "code is never substituting for judgement. the model keeps clincial intelligence / opinions. code is just guardials this is a critical distinction I always say" [codex:rollout-2026-09-05T10-36-49-01a07200-2c17-78d0-aac6-b0f0cec0@2026-09-05T14:36:55.028Z]
 "Don't ever allow code to separate out meaning, no brittle parsers, lexical shit, etc., and no code making judgment." [codex:rollout-2026-09-08T12-36-08-01a081e0-7f90-79e0-bf5e-8fe5383d@2026-09-09T03:07:10.657Z]
 
-**5. Freedom within real bounds only.** The hard limits are access, consent, patient data, communication (including physician approval of anything sent to a patient), and the fixed safety lines. Everything else is the model's judgment.
+**5. Freedom within real bounds only.** The hard limits are access, consent, patient data, communication (including physician approval of any message the practice sends to a patient), and the fixed safety lines. Everything else is the model's judgment.
 "give the model full like empowerment and intelligence within bounds." [codex:rollout-2026-09-01T23-29-58-01a0602a-957f-75d0-88df-c2e7476e@2026-09-02T22:16:38.876Z]
 "We're giving him freedom to do stuff within the bounds of the actual task or goal, right?" [codex:rollout-2026-09-05T10-36-49-01a07200-2c17-78d0-aac6-b0f0cec0@2026-09-06T16:35:06.332Z]
 
