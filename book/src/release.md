@@ -17,7 +17,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Secrets: Doppler
 
-<a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code>: Dev shell</a> owns this policy. In short: Doppler project `coda-rust` holds every secret value in configs `dev`, `stg`, and `prd`. GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config. The process starts under `doppler run --`. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned CLI for images and runners, and [`doppler.yaml`](/doppler.yaml) selects `dev` locally. CI does not call Doppler.
+<a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code>: Dev shell</a> owns this policy. In short: Doppler project `coda-rust` holds every secret value in configs `dev`, `stg`, and `prd`. GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config. A process that reads secrets starts under `doppler run --`; the public marketing site reads none and runs without Doppler. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned CLI for images and runners, and [`doppler.yaml`](/doppler.yaml) selects `dev` locally. CI does not call Doppler.
 
 ## Retained physician infrastructure references
 

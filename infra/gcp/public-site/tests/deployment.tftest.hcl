@@ -1,13 +1,11 @@
 mock_provider "google" {}
 
 variables {
-  project_id                   = "coda-health-staging"
-  project_number               = "134570912572"
-  image                        = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  release_sha                  = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  physician_app_url            = "https://physician.example.test"
-  doppler_token_secret_id      = "public-site-stg-doppler-token"
-  doppler_token_secret_version = "1"
+  project_id        = "coda-health-staging"
+  project_number    = "134570912572"
+  image             = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  release_sha       = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  physician_app_url = "https://physician.example.test"
 }
 
 run "staging_proxy_uses_own_identity" {
@@ -21,8 +19,8 @@ run "staging_proxy_uses_own_identity" {
     error_message = "The proxy must use its own runtime identity and fixed physician upstream."
   }
   assert {
-    condition     = google_cloud_run_v2_service.site.template[0].timeout == "300s" && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE,PHYSICIAN_PROXY_SERVICE_ACCOUNT")
-    error_message = "SSE needs a bounded 300s service timeout and Doppler must preserve the proxy identity."
+    condition     = google_cloud_run_v2_service.site.template[0].timeout == "300s"
+    error_message = "SSE needs a bounded 300s service timeout."
   }
   assert {
     condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
@@ -34,7 +32,7 @@ run "no_upstream_means_no_physician_entry" {
   command = plan
   variables { physician_app_url = null }
   assert {
-    condition     = !contains(keys(local.runtime_env), "PHYSICIAN_APP_URL") && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE")
+    condition     = !contains(keys(local.runtime_env), "PHYSICIAN_APP_URL") && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT") && !contains([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : e.name], "PHYSICIAN_APP_URL")
     error_message = "Without a physician upstream the site gets neither the upstream nor a signing identity, so it offers no sign-in."
   }
 }
@@ -97,8 +95,8 @@ run "staging_origin_is_protected" {
     error_message = "The expected IAP assertion audience must reach the deployed container."
   }
   assert {
-    condition     = contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "stg") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE,PHYSICIAN_PROXY_SERVICE_ACCOUNT")
-    error_message = "Doppler must preserve the deployment-controlled IAP audience and environment."
+    condition     = google_cloud_run_v2_service.site.template[0].containers[0].command == null && google_cloud_run_v2_service.site.template[0].containers[0].args == null && alltrue([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : length(e.value_source) == 0])
+    error_message = "The site reads no secrets: Cloud Run runs the image entrypoint with plain settings only."
   }
   assert {
     condition     = google_cloud_run_v2_service.site.template[0].scaling[0].min_instance_count == 0 && google_cloud_run_v2_service.site.template[0].scaling[0].max_instance_count == 10 && google_cloud_run_v2_service.site.template[0].max_instance_request_concurrency == 1000
@@ -107,10 +105,6 @@ run "staging_origin_is_protected" {
   assert {
     condition     = google_cloud_run_v2_service.site.template[0].containers[0].startup_probe[0].tcp_socket[0].port == 8080 && length(google_cloud_run_v2_service.site.template[0].containers[0].startup_probe[0].http_get) == 0
     error_message = "Startup must retain the TCP 8080 probe, not an unauthenticated HTTP bypass."
-  }
-  assert {
-    condition     = one([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : e.value_source[0].secret_key_ref[0].version if e.name == "DOPPLER_TOKEN"]) == "1"
-    error_message = "Only the pinned Doppler service token is injected from Secret Manager."
   }
 }
 
@@ -167,8 +161,8 @@ run "production_respects_origin_cache_headers" {
     error_message = "Production HTTP must 308 to HTTPS on the same address, keeping the query, as Vercel does."
   }
   assert {
-    condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "prd") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,APP_ENV,RELEASE_SHA") && output.iap_audience == null && output.staging_url == null
-    error_message = "Production must retain its runtime and Doppler configuration without a staging IAP audience or preview URL."
+    condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && google_cloud_run_v2_service.site.template[0].containers[0].command == null && google_cloud_run_v2_service.site.template[0].containers[0].args == null && alltrue([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : length(e.value_source) == 0]) && output.iap_audience == null && output.staging_url == null
+    error_message = "Production runs the image entrypoint with plain settings, without a staging IAP audience or preview URL."
   }
 }
 
@@ -335,12 +329,4 @@ run "reject_inverted_scaling" {
     max_instances = 10
   }
   expect_failures = [google_cloud_run_v2_service.site]
-}
-
-run "reject_unpinned_secret" {
-  command = plan
-  variables {
-    doppler_token_secret_version = "latest"
-  }
-  expect_failures = [var.doppler_token_secret_version]
 }

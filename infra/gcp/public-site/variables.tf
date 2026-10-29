@@ -98,20 +98,6 @@ variable "domains" {
   }
 }
 
-variable "doppler_token_secret_id" {
-  description = "Existing Secret Manager secret containing only a read-only, environment-scoped DOPPLER_TOKEN; never its value."
-  type        = string
-}
-
-variable "doppler_token_secret_version" {
-  description = "Existing immutable numeric secret version. Rotation is an explicit revision change."
-  type        = string
-  validation {
-    condition     = can(regex("^[1-9][0-9]*$", var.doppler_token_secret_version))
-    error_message = "Pin a numeric DOPPLER_TOKEN secret version, not latest."
-  }
-}
-
 variable "min_instances" {
   type    = number
   default = 0

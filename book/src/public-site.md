@@ -290,9 +290,8 @@ Ordinary builds, tests, and CI do not fetch or access the old private repository
 The primary checkout explicitly disables submodules and credential persistence.
 No GitHub App, private-reference credential, Doppler CI config, or service token is
 needed. Fork and Dependabot changes run the same parity tests without application
-secrets; the workflow uses `pull_request`, not `pull_request_target`. Existing
-runtime/deployment secrets remain managed by Doppler; this removes no deployment
-protection and copies no `dev`, `stg`, or `prd` secrets into CI.
+secrets; the workflow uses `pull_request`, not `pull_request_target`. The site
+itself reads no secrets, and no `dev`, `stg`, or `prd` secrets are copied into CI.
 
 `crates/public-site/tests/fixtures/original/` contains 18 narrowly selected
 original-source snapshots from `Coda-Health/kytos` commit
@@ -357,9 +356,8 @@ initialized submodules.
 and copies it into distroless static Debian 12 as UID/GID 65532. Builder/runtime
 images are digest-pinned, Cargo uses `--locked`, and no mutable OS package
 installation occurs during the build. Only workspace manifests/crates are copied,
-not reference submodules, local credentials, or Terraform state. The Doppler CLI
-is pinned to the same version and checksum as `cargo run -p workspace-tools -- install-doppler`.
-Both executables are checked for a dynamic ELF interpreter during the build.
+not reference submodules, local credentials, or Terraform state. The binary is
+checked for a dynamic ELF interpreter during the build.
 Pinned inputs improve repeatability; bit-for-bit image reproducibility is not
 claimed without a repeated-build comparison.
 
@@ -448,15 +446,12 @@ is byte-identical to the image built from `b18760e`, which was pushed as
 `…@sha256:a179ab01…`. Only the registry path changed. The first build after the
 bootstrap must use the private defaults.
 
-The image defaults to `/public-site`, so local smoke tests need no Doppler account.
-Cloud Run overrides its command to `/doppler run ... -- /public-site`. Secrets
-remain in Doppler project `coda-rust`, config `stg` or `prd`. Secret Manager holds
-only a read-only, environment-scoped `DOPPLER_TOKEN`, with a numeric version
-pinned by the deployment root. The dedicated service account has access only to
-that named secret, not database or physician resources. No secret value is read
-by OpenTofu or placed in its variables/state. Doppler fallback files are disabled;
-the four deployment-controlled environment values above are explicitly preserved
-so Doppler cannot accidentally change the staging gate or listening address.
+The site reads no secrets, so it has no Doppler config, token or Secret Manager
+access. Cloud Run runs the image's own `/public-site` entrypoint, exactly as the
+local smoke tests do, with the deployment-controlled environment values above set
+directly. Staging's physician proxy signs its upstream identity token through its
+own service account with IAM `signJwt`; no key is stored. The dedicated service
+account has no database, physician or secret access.
 
 **Motion in the image:** the server embeds `assets/`, including the original
 `/homepage/site.js`, so `docker build` alone produces the complete site; there is no
@@ -493,7 +488,7 @@ no load balancer:
   authoritative binding on this service only, not a project or domain grant.
   `iap_group` validation rejects bare domains and IAM principal prefixes.
 - `PUBLIC_SITE_IAP_AUDIENCE` comes from `project_number`, `region` and the service
-  name, and it is passed through Doppler with `--preserve-env`. The output
+  name, and it is set directly on the container. The output
   `iap_audience` exposes the same value.
 - `staging_domain` optionally maps a verified hostname to this same service.
   `env/staging.tfvars` sets it to `staging.codahealth.ai`. Cloud Run manages TLS;
@@ -627,7 +622,7 @@ changes left both unchanged. Twenty-eight mocked test runs pass. They cover:
   as the only invoker, the engineering group as the only accessor, and both
   bindings scoped to this service.
 - No staging ALB, NEG, CDN, IP, TLS frontend or certificate, plus the audience
-  reaching the container through Doppler `--preserve-env`.
+  reaching the container, which runs the image entrypoint with no secret.
 - The TCP startup probe, an in-memory mocked apply of the `staging_url` output,
   and the audience, service agent and group following the inputs.
 - Production keeping ALB-only ingress, a disabled `run.app` URL, no IAP, the
@@ -672,8 +667,8 @@ keep their product-repository apply authority; this ownership covers only
   That image reference resolves only after the bootstrap copies it there.
 - **Doppler.** Config `coda-rust/stg` holds the same non-secret deploy values
   under `PUBLIC_SITE_DEPLOY_*` (project, number, region, service, image, release
-  SHA, IAP audience, state bucket and prefix). Secret Manager holds only the
-  `public-site-stg-doppler-token` secret (a read-only `stg` service token).
+  SHA, IAP audience, state bucket and prefix). The running site reads no Doppler
+  config and no secret.
 
 The first, abandoned initialization wrote an **empty** state object under
 `gs://coda-health-prod-terraform-state-us-east1/public-site/staging/`. Nothing was
@@ -685,15 +680,13 @@ delete it. This workspace does not delete anything in the production bucket.
 `infra/gcp/public-site/scripts/staging-admin-bootstrap.sh` is run once by an
 administrator of `coda-health-staging`, not by the deployer. It prepares only
 what the root deliberately does not own. Each create step checks first, so it is
-safe to rerun. It prints every command, never prints or stores a secret value,
-and never touches `coda-health-prod`. Review it with `--print` first; that mode
-makes no gcloud or Doppler calls.
+safe to rerun. It prints every command and never touches `coda-health-prod`.
+Review it with `--print` first; that mode makes no gcloud calls.
 
 ```bash
 # From the workspace root, inside the dev shell, as the staging admin:
 nix develop
 gcloud auth login                     # the admin's account
-doppler login                         # only needed for the token step
 bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh --print
 bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh   # needs docker (buildx)
 # OPTIONAL, only if Tyler should run the first apply himself (expires in 24 h):
@@ -725,24 +718,11 @@ In order, it:
    grants `gcp-engineering@codahealth.ai` reader on the two base-image
    repositories. It grants the Cloud Run service agent reader on `public-site`
    only if the agent lacks `roles/run.serviceAgent`.
-4. **Doppler token secret.** Creates `public-site-stg-doppler-token` with
-   `--replication-policy=user-managed --locations=us-east1`. The root only
-   references the secret by ID and numeric version, so either replication works;
-   user-managed keeps it in the service's region. If no enabled version exists it
-   runs
-   `doppler configs tokens create public-site-staging-runtime --project coda-rust --config stg --access read --plain | tr -d '\r\n' | gcloud secrets versions add public-site-stg-doppler-token --data-file=-`.
-   Line endings from Doppler's CLI are removed before storing the token; a
-   trailing newline makes the runtime Authorization header invalid. The token
-   stays in the pipe and is never echoed, assigned to a variable or written to
-   disk. The project and config are fixed in the script (the dev shell exports
-   `DOPPLER_CONFIG=dev`). Pin the resulting numeric version in
-   `env/staging.tfvars`; deployed staging uses version `2`.
-   `--rotate-doppler-token` adds another version; then update that pin.
-5. **CI deployer.** Creates `public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com`
+4. **CI deployer.** Creates `public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com`
    with no keys. Its roles follow what this root manages (see the table below).
    If a `roles/artifactregistry.writer` grant for it exists on `coda-agents`, it
    is removed. After the first apply the runtime SA gets reader on `public-site`.
-6. **GitHub Workload Identity Federation.** Creates pool `github-actions` and
+5. **GitHub Workload Identity Federation.** Creates pool `github-actions` and
    OIDC provider `github-oidc` (issuer `https://token.actions.githubusercontent.com`).
    The provider's attribute condition admits only repository
    `Coda-Health/coda-rust` (name, repository ID `1412706552` and owner ID
@@ -753,24 +733,24 @@ In order, it:
    owner and repository IDs; a `repo:Coda-Health/coda-rust:...` binding never
    matches and the token exchange fails with `iam.serviceAccounts.getAccessToken`
    denied. A rerun reasserts the condition.
-7. **Base images, by digest.** Runs `gcloud auth configure-docker us-east1-docker.pkg.dev`.
+6. **Base images, by digest.** Runs `gcloud auth configure-docker us-east1-docker.pkg.dev`.
    Copies `gcr.io/distroless/static-debian12@sha256:afa5c872…` into
    `public-site-base/distroless/static-debian12` (tag `nonroot-afa5c872c891`) and
    checks that the digest exists there. Resolves
    `public-site-dockerhub/library/rust@sha256:606fd313…` through the cache.
-8. **Site image migration.** Copies
+7. **Site image migration.** Copies
    `coda-agents/public-site@sha256:a179ab01…` (tag
    `b18760ef98a82e68aef29ac7a20bc48796794bf9`) into `public-site/public-site` by
    digest. Checks it with `gcloud artifacts docker images describe`, then repeats
    the public-access check on every repository. A copy that already exists is
    skipped, so reruns are safe. The copy needs read on `coda-agents` (the
    admin's) and writer on `public-site`.
-9. **Optional temporary grant** (`--temporary-deployer-grant`). Gives
+8. **Optional temporary grant** (`--temporary-deployer-grant`). Gives
    `tyler@codahealth.ai` the first-apply roles, each with an IAM condition
    `request.time < timestamp(NOW + 24h)`: project-level
    `roles/iam.serviceAccountCreator`, `roles/iam.serviceAccountUser`,
-   `roles/run.admin` and `roles/iap.admin`, plus `roles/secretmanager.admin` on
-   the one secret, `roles/storage.objectAdmin` on the state bucket and
+   `roles/run.admin` and `roles/iap.admin`, plus `roles/storage.objectAdmin` on
+   the state bucket and
    `roles/artifactregistry.reader` on `public-site`. The project-level roles are
    project-level because the service account and the service do not exist before
    the first apply. Expired bindings grant nothing; remove them afterwards with
@@ -778,7 +758,7 @@ In order, it:
    first apply.
 
 CI deployer roles, evaluated against the resources this root manages (runtime
-service account, its accessor on the secret, the Cloud Run service, its invoker
+service account, the Cloud Run service, its invoker
 policy and its IAP accessor policy):
 
 | Role | Scope | Why |
@@ -786,7 +766,6 @@ policy and its IAP accessor policy):
 | `roles/storage.objectAdmin` | the staging state bucket only | Read, write and lock state objects |
 | `roles/artifactregistry.writer` | repository `public-site` only | Publish digest-pinned site images (no grant on `coda-agents`) |
 | `roles/artifactregistry.reader` | repositories `public-site-dockerhub` and `public-site-base` only | Pull the two base images for the build |
-| `roles/secretmanager.admin` | secret `public-site-stg-doppler-token` only | Manage the runtime accessor binding (`setIamPolicy`); no narrower predefined role has it |
 | `roles/run.viewer` | project | Read-only; the provider polls location-scoped Cloud Run operations |
 | `roles/run.admin` | service `public-site-staging` only (after first apply) | Update the service and its invoker policy |
 | `roles/iap.admin` | IAP resource of `public-site-staging` only (after first apply) | Manage the authoritative IAP accessor binding |
@@ -877,7 +856,7 @@ and run the qualification checks below.
 
 **Post-bootstrap: Doppler image.** `coda-rust/stg` still holds
 `PUBLIC_SITE_DEPLOY_IMAGE` at the `coda-agents` digest. Change it only after
-step 8 has copied the image and
+step 7 has copied the image and
 `gcloud artifacts docker images describe us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140`
 succeeds:
 
@@ -895,19 +874,14 @@ Cloud Run reports revision `public-site-staging-00003-5mw` Ready at
 [protected Cloud Run URL](https://public-site-staging-5yiq4mt4lq-ue.a.run.app)
 available directly.
 
-- The dedicated versioned state bucket, three private image repositories,
-  read-only `coda-rust/stg` token, CI service account, and restricted GitHub WIF
-  provider exist. The CI account has the documented service-scoped post-apply
+- The dedicated versioned state bucket, three private image repositories, CI
+  service account, and restricted GitHub WIF provider exist. The CI account has the documented service-scoped post-apply
   grants. The CI deploy job is described in
   [CI deploy on push to main](#ci-deploy-on-push-to-main).
 - The site image and distroless base were copied with identical digests. The
   Docker Hub cache resolves the pinned Rust base. Repository IAM readback found
   no `allUsers` or `allAuthenticatedUsers` grants, including on `coda-agents`.
   Doppler's image setting now uses `public-site/public-site`.
-- The first revision failed because `doppler --plain` appended a newline to the
-  token. Version `2` contains the same token without that line ending; it was
-  authenticated against Doppler before deployment. The bootstrap now strips
-  line endings, and `env/staging.tfvars` pins version `2`.
 - Cloud Run's invoker binding contains only the IAP service agent. IAP website
   access is limited to `gcp-engineering@codahealth.ai`; Cloud Identity confirmed
   Dev and Tyler are members. An authenticated Chrome session as Dev rendered
@@ -994,8 +968,7 @@ retirement of the Vercel `kytos` project needs Dev's explicit authorization.
   `coda-rust/public-site/production`, beside `shared-mail`'s
   `coda-rust/shared-mail/production`. Nothing else in that bucket is read or written.
 - **Inputs.** `env/production.tfvars` holds the non-secret production inputs: the
-  project and number, `domains = ["codahealth.ai", "www.codahealth.ai"]`, and the
-  pinned `public-site-prd-doppler-token` version (a read-only `prd` service token).
+  project and number, and `domains = ["codahealth.ai", "www.codahealth.ai"]`.
   It sets no `physician_app_url`, so production has no Sign in link and no
   `/physician/` mount. `image` and `release_sha` are supplied per release: the
   digest staging tested and its commit.
@@ -1005,22 +978,19 @@ retirement of the Vercel `kytos` project needs Dev's explicit authorization.
 `scripts/production-admin-bootstrap.sh` prepares what the root does not own. An
 administrator of `coda-health-prod` runs it with Dev's authorization; one step needs
 an administrator of `coda-health-staging`. `--print` shows every command without
-calling gcloud or Doppler. It is safe to rerun, and it is rerun after the first apply
+calling gcloud. It is safe to rerun, and it is rerun after the first apply
 for the bindings that need the service and runtime account to exist.
 
-- Enables the Run, Compute, Certificate Manager, Artifact Registry, Secret Manager,
-  IAM and STS APIs. Certificate Manager was off in `coda-health-prod`.
+- Enables the Run, Compute, Certificate Manager, Artifact Registry, IAM and STS
+  APIs. Certificate Manager was off in `coda-health-prod`.
 - Creates the private `public-site` image repository (immutable tags, cleanup
   policy) and refuses to continue if it is public. Production builds nothing, so
   there are no base-image repositories.
-- Creates `public-site-prd-doppler-token` and adds a read-only Doppler `prd` token
-  as a version without echoing it.
 - Creates the keyless `public-site-prod-deployer` account with:
   - `roles/storage.objectAdmin` on the shared state bucket, conditioned to objects
     and list requests under `coda-rust/public-site/production/` only;
   - writer on the production image repository and reader on staging's, so promotion
     can copy the digest staging tested;
-  - admin on the one secret (the root manages its accessor binding);
   - project `run.viewer`, `compute.viewer` and `certificatemanager.viewer`, so a
     promotion plan can refresh what it may not change;
   - after the first apply, `iam.serviceAccountUser` on the runtime account and

@@ -1,8 +1,7 @@
 locals {
-  name           = "${var.name}-${var.environment}"
-  staging        = var.environment == "staging"
-  doppler_config = local.staging ? "stg" : "prd"
-  iap_audience   = "/projects/${var.project_number}/locations/${var.region}/services/${local.name}"
+  name         = "${var.name}-${var.environment}"
+  staging      = var.environment == "staging"
+  iap_audience = "/projects/${var.project_number}/locations/${var.region}/services/${local.name}"
   # API enablement and creation of this Google-managed identity belong to the
   # existing project's operator, not this service-only root.
   iap_service_agent = "service-${var.project_number}@gcp-sa-iap.iam.gserviceaccount.com"
@@ -27,14 +26,6 @@ resource "google_service_account" "site" {
   display_name = "Isolated public website (${var.environment})"
 }
 
-# No database, physician runtime, model, storage, or project-wide IAM grants.
-resource "google_secret_manager_secret_iam_member" "doppler" {
-  project   = var.project_id
-  secret_id = var.doppler_token_secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.site.email}"
-}
-
 resource "google_cloud_run_v2_service" "site" {
   name                 = local.name
   location             = var.region
@@ -56,13 +47,7 @@ resource "google_cloud_run_v2_service" "site" {
     }
 
     containers {
-      image   = var.image
-      command = ["/doppler"]
-      args = [
-        "run", "--no-fallback", "--no-check-version", "--config-dir=/tmp/doppler", "--project", "coda-rust", "--config", local.doppler_config,
-        "--preserve-env=PUBLIC_SITE_LISTEN_ADDR${local.physician ? ",PHYSICIAN_APP_URL" : ""},APP_ENV,RELEASE_SHA${local.staging ? ",PUBLIC_SITE_IAP_AUDIENCE" : ""}${local.physician ? ",PHYSICIAN_PROXY_SERVICE_ACCOUNT" : ""}",
-        "--", "/public-site"
-      ]
+      image = var.image
       ports {
         container_port = 8080
       }
@@ -79,15 +64,6 @@ resource "google_cloud_run_v2_service" "site" {
         content {
           name  = env.key
           value = env.value
-        }
-      }
-      env {
-        name = "DOPPLER_TOKEN"
-        value_source {
-          secret_key_ref {
-            secret  = var.doppler_token_secret_id
-            version = var.doppler_token_secret_version
-          }
         }
       }
       # TCP startup checks avoid unauthenticated HTTP exemptions for staging.
@@ -109,7 +85,6 @@ resource "google_cloud_run_v2_service" "site" {
       error_message = "min_instances cannot exceed max_instances."
     }
   }
-  depends_on = [google_secret_manager_secret_iam_member.doppler]
 }
 
 # Authoritative, service-scoped bindings: staging has no public invoker and no
