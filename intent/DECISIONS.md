@@ -144,6 +144,7 @@ Nothing open. O1–O7 were answered on Oct 28 (Decided by Dev).
 - **Duet and connected-care review (Oct 28, night).**
   - A failing Check-in: Duet tells the person and judges whether to keep trying, pause or ask. Updated: duet Check-in, D3.17, section 7. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
   - A practice invite keeps one reminder, then expires: a limit on contacting someone who hasn't joined. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
+  - Plans from several practices: each shows separately, labeled with its practice, and Duet's AI explains them together when asked. ENG-191 stays as history; Tyler's ENG-159 review carries parallel runs. Updated: duet Your doctor's plan, connected-care Your doctor's plan. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:11:14.276Z (chosen)]
   - Four connected-care gaps filled: an approved answer arrives in Duet's thread as practice news; Duet proposes plan Check-ins; no Send to my practice without a connection; the patient sees their own source problems and Coda ops sees pipeline problems. Updated: connected-care C1.3, C1.5, C1.6; physician P3. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)]
 
 ## Already settled (confirm)
