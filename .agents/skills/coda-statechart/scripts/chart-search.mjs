@@ -139,38 +139,6 @@ export function search(ir, limit) {
   return { status: "exhausted", visited: queue.length };
 }
 
-// Every reachable state and every step between them: one edge per event and post-state,
-// unlabeled transitions included. The explorer and the Stateright model share it.
-export function graph(ir, limit) {
-  const { regions, actions } = ir;
-  const { post, starts } = stepper(ir);
-  const scope = regions.map((_, i) => i);
-  const states = [], index = new Map(), edges = [];
-  const add = (s) => {
-    const k = JSON.stringify(s);
-    if (!index.has(k)) {
-      if (states.length === limit) throw new Error(`more than ${limit} reachable states`);
-      index.set(k, states.length);
-      states.push(s);
-    }
-    return index.get(k);
-  };
-  const start = [...starts(scope)].map(add);
-  for (let i = 0; i < states.length; i++) {
-    const s = states[i];
-    for (const action of actions) {
-      const seen = new Set();
-      for (const t of post(action, scope, (ri) => s[ri])) {
-        const to = add(t);
-        if (seen.has(to)) continue;
-        seen.add(to);
-        edges.push({ from: i, to, event: action.label || "unlabeled transition" });
-      }
-    }
-  }
-  return { states, start, edges };
-}
-
 // Print a search result; returns the process exit code.
 export function printSearch(result, ir) {
   if (result.status === "no-rules") {

@@ -1,13 +1,10 @@
 #!/usr/bin/env node
 // One entry for the chart tools: node statechart.mjs <command> ... (see --help).
 import fs from "node:fs";
-import { spawnSync } from "node:child_process";
-import os from "node:os";
-import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { HELP, USAGE, more, usage } from "./statechart-help.mjs";
-import { compile, writeModel, writeStateright } from "./chart-verus.mjs";
+import { compile, writeModel } from "./chart-verus.mjs";
 import { printSearch, search } from "./chart-search.mjs";
 import { printFlat } from "./chart-flat.mjs";
 import { lint, queryEvent, queryRegion, queryState, summary } from "./chart-query.mjs";
@@ -17,28 +14,8 @@ import { against, printAgainst, readMap } from "./chart-against.mjs";
 import { coverage, printCoverage } from "./chart-coverage.mjs";
 import { journeys, printJourneys } from "./chart-journey.mjs";
 import { COMPOSES, resolveComposition } from "./chart-compose.mjs";
-import { explore, writeExplorer } from "./chart-explore.mjs";
 
 class Usage extends Error {}
-
-// Pinned so a rendered chart reads the same on every machine.
-const MERMAID_CLI = "@mermaid-js/mermaid-cli@11.4.2";
-// An installed Chrome renders in its own throwaway profile, so no download is needed
-// and an open browser is never touched. Without one, Puppeteer uses its own download.
-const CHROMES = [
-  process.env.CHROME_PATH,
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  "/usr/bin/google-chrome",
-  "/usr/bin/chromium",
-];
-const browserConfig = () => {
-  const chrome = CHROMES.find((p) => p && fs.existsSync(p));
-  if (chrome === undefined) return [];
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "statechart-png-"));
-  const config = path.join(dir, "puppeteer.json");
-  fs.writeFileSync(config, JSON.stringify({ executablePath: chrome, headless: "new", args: [`--user-data-dir=${path.join(dir, "profile")}`] }));
-  return ["-p", config];
-};
 
 const positive = (name, value) => {
   if (!/^[1-9][0-9]*$/.test(value) || !Number.isSafeInteger(Number(value)))
@@ -65,14 +42,6 @@ export const COMMANDS = {
   check: {
     inputs: 1, values: ["--module", "--dir"],
     run: ([chart], flags) => { writeModel({ chart, module: moduleName(flags, true), dir: flags.dir, check: true }); return 0; },
-  },
-  stateright: {
-    inputs: 1, values: ["--out"], switches: ["--check"],
-    run: ([chart], flags) => {
-      if (flags.out === undefined) throw new Usage("provide --out FILE.rs");
-      writeStateright({ chart, out: flags.out, check: flags.check });
-      return 0;
-    },
   },
   trace: {
     inputs: 1, values: ["--module", "--max-states"],
@@ -134,34 +103,6 @@ export const COMMANDS = {
         : kind === "event" ? queryEvent(compiled, flags.event)
           : kind === "region" ? queryRegion(compiled, flags.region) : summary(compiled);
       console.log(answer);
-      return 0;
-    },
-  },
-  explore: {
-    inputs: 1, values: ["--journeys", "--title", "--out"],
-    run: ([chart], flags) => {
-      if (flags.out === undefined) throw new Usage("provide --out FILE.html");
-      const model = explore(read(chart), {
-        title: flags.title,
-        journeyText: flags.journeys === undefined ? undefined : read(flags.journeys),
-      });
-      const { states, edges } = writeExplorer(model, flags.out);
-      const stuck = model.journeys.filter((j) => j.broken);
-      console.log(`${flags.out}: ${states} reachable states, ${edges} steps, ${model.journeys.length - stuck.length} of ${model.journeys.length} journeys replayed.`);
-      for (const j of stuck) console.log(`  ${j.name} stops at "${j.broken}"`);
-      return stuck.length ? 1 : 0;
-    },
-  },
-  png: {
-    inputs: 1, values: ["--out"],
-    run: ([chart], flags) => {
-      const out = flags.out ?? chart.replace(/\.mmd$/, "") + ".png";
-      const r = spawnSync("npx", ["-y", MERMAID_CLI, ...browserConfig(), "-i", chart, "-o", out, "-s", "2"], { encoding: "utf8" });
-      if (r.status !== 0) {
-        console.error(`could not render ${chart}: ${(r.stderr || r.error?.message || "").trim()}`);
-        return 1;
-      }
-      console.log(out);
       return 0;
     },
   },

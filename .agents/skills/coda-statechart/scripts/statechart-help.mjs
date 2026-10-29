@@ -2,7 +2,6 @@
 export const USAGE = {
   verus: "node statechart.mjs verus CHART.mmd --module NAME [--dir OUT]",
   check: "node statechart.mjs check CHART.mmd --module NAME [--dir OUT]",
-  stateright: "node statechart.mjs stateright CHART.mmd --out FILE.rs [--check]",
   trace: "node statechart.mjs trace CHART.mmd [--max-states N]",
   rules: "node statechart.mjs rules CHART.mmd [--rule NAME] [--max-cone N] [--max-states N]",
   compare: "node statechart.mjs compare FIRST.mmd SECOND.mmd [--rename MAP.json]",
@@ -11,8 +10,6 @@ export const USAGE = {
   journey: "node statechart.mjs journey CHART.mmd JOURNEYS.md",
   flat: "node statechart.mjs flat CHART.mmd",
   query: "node statechart.mjs query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NAME]",
-  explore: "node statechart.mjs explore CHART.mmd --out FILE.html [--journeys JOURNEYS.md] [--title TEXT]",
-  png: "node statechart.mjs png CHART.mmd [--out FILE.png]",
   lint: "node statechart.mjs lint CHART.mmd [--cause TEXT] [--repeats] [--unread]",
 };
 export const usage = (lines) => `Usage: ${lines.join("\n       ")}`;
@@ -152,34 +149,6 @@ const QUERY = `query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NA
   Without a flag: chart size, largest regions, widest events, and edges that
   return a region to its start.`;
 
-const STATERIGHT = `stateright CHART.mmd --out FILE.rs [--check]
-  Write the chart's Stateright model: the Verus model's definitions as ordinary
-  Rust, each rule as an always property, and the graph the chart search reaches.
-  verification/stateright model-checks it, confirms the relation reaches exactly
-  that graph, and serves Stateright's Explorer for clicking through it.
-  --check writes nothing and fails if FILE.rs differs from the chart.
-  Exit: 0 written or current; 1 drift, invalid chart, or more than 20000
-  reachable states.`;
-
-const EXPLORE = `explore CHART.mmd --out FILE.html [--journeys JOURNEYS.md] [--title TEXT]
-  Write one self-contained HTML page for exploring the chart: where you are in each
-  region, the steps that can happen next and what each changes, the path so far,
-  every rule checked in the current state, and the journeys as playable paths. The
-  page holds the whole reachable graph, computed with the same steps as trace,
-  journey and the Verus model, so it can't drift from them. It renders the chart
-  with Mermaid. Publish it as a Claude artifact for Dev to explore.
-  Exit: 0 written and every journey replays; 1 a journey stops, or the chart has
-  more reachable states than the page holds.`;
-
-const PNG = `png CHART.mmd [--out FILE.png]
-  Render the chart as Dev reads it, with the pinned @mermaid-js/mermaid-cli
-  through npx, next to the chart unless --out names the file. An installed Chrome
-  (CHROME_PATH, or the usual install paths) renders in its own throwaway profile.
-  Look at every
-  PNG before handing a chart off: each label should read as the screen, and each
-  step as what the reader does or sees happen.
-  Exit: 0 rendered; 1 the chart did not render.`;
-
 const LINT = `lint CHART.mmd [--cause TEXT] [--repeats] [--unread]
   Static findings over the flat model (exit 1 when there are any):
   - states unreachable from a region's starts, ignoring guards and other regions;
@@ -210,7 +179,6 @@ export const HELP = {
 Commands:
   verus   compile the chart to a Verus model, map and proof starter
   check   detect drift between the chart and its generated files
-  stateright compile the chart to a Stateright model with its search graph
   trace   shortest reachable violation of the chart's rules
   rules   check each rule on a small cone of regions (large charts)
   compare differences between two charts' flat models
@@ -219,8 +187,6 @@ Commands:
   journey replay constructive journeys: useful outcomes are reachable
   flat    print the expanded chart as plain flat Mermaid
   query   ways in and out of a state, who reacts to an event, a region summary
-  explore write an interactive HTML explorer of the chart
-  png     render the chart to PNG for review
   lint    unreachable states, dead edges, and event-declaration problems
 
 CHART may be a composition: %% compose lines join separate charts through shared
@@ -233,7 +199,6 @@ Exit: 0 success, completed search or no findings; 1 violation, findings, invalid
 chart, drift or I/O error; 2 invalid arguments; 3 incomplete search.`,
   verus: VERUS,
   check: CHECK,
-  stateright: STATERIGHT,
   trace: TRACE,
   rules: RULES,
   compare: COMPARE,
@@ -242,7 +207,5 @@ chart, drift or I/O error; 2 invalid arguments; 3 incomplete search.`,
   journey: JOURNEY,
   flat: FLAT,
   query: QUERY,
-  explore: EXPLORE,
-  png: PNG,
   lint: LINT,
 };

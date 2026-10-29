@@ -4,7 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { parseMermaid } from "./mermaid.mjs";
-import { graph, sharedEffects } from "./chart-search.mjs";
+import { sharedEffects } from "./chart-search.mjs";
 import { COMPOSES, compositionSources, resolveComposition } from "./chart-compose.mjs";
 
 export const hash = (text) => createHash("sha256").update(text).digest("hex");
@@ -369,98 +369,15 @@ fn main() {}
 `;
 }
 
-// A chart file compiled; a composition holds no states of its own, so drift is judged on
-// it and every chart it composes.
-function compileFile(chart, module) {
-  const text = fs.readFileSync(chart, "utf8");
-  const sources = COMPOSES.test(text) ? compositionSources(text, chart) : null;
-  const compiled = sources
-    ? compile(resolveComposition(text, chart), module, { identity: [text, ...sources.map((c) => c.text)].join("\n%% composed chart\n") })
-    : compile(text, module);
-  if (sources) compiled.mapping.composes = sources.map(({ key, file, text }) => ({ key, file, sha256: hash(text) }));
-  return compiled;
-}
-
-// The Stateright model: the Verus model's own definitions compiled as ordinary Rust, so the
-// model checker and the proof read one relation. It carries the graph the chart search
-// reaches, and verification/stateright checks that the relation reaches exactly that graph.
-const STATERIGHT_LIMIT = 20000;
-export function stateright(compiled) {
-  const { source, ir: { regions, actions, rules } } = compiled;
-  const lines = source.split("\n");
-  const body = lines.slice(lines.indexOf("verus! {") + 1, lines.lastIndexOf("}"))
-    .map((line) => line.startsWith("pub enum ") ? `#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]\n${line}`
-      : line === "pub struct State {" ? `#[derive(Clone, Copy, PartialEq, Eq, Hash)]\n${line}`
-        : line.replace("pub open spec fn ", "pub fn ").replace(" <==> ", " == "));
-  const text = (s) => JSON.stringify(s);
-  const { states, edges } = graph(compiled.ir, STATERIGHT_LIMIT);
-  const variants = (r) => r.values.map((v) => `${r.type}::${r.variants.get(v)}`);
-  // Every combination of region values: the candidates for each event's post-state.
-  let product = "vec![State { " + regions.map((r) => `${r.field}: ${variants(r)[0]}`).join(", ") + " }]";
-  for (const r of regions)
-    product = `${product}.into_iter().flat_map(|s| [${variants(r).join(", ")}].map(|v| State { ${r.field}: v, ..s })).collect::<Vec<_>>()`;
-  const out = [
-    lines[0].replace("chart-to-verus.mjs", "statechart.mjs stateright"), lines[1],
-    "// The Verus model's definitions as ordinary Rust, for the Stateright model checker.",
-    "use stateright::{Model, Property};",
-    ...body,
-    "// Each region's caption in a state, in region order.",
-    `pub fn captions(s: State) -> Vec<&'static str> {\n    vec![${regions.map((r) => `match s.${r.field} { ${r.values.map((v) => `${r.type}::${r.variants.get(v)} => ${text(v)}`).join(", ")} }`).join(",\n        ")}]\n}`,
-    "impl std::fmt::Debug for State {",
-    "    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {",
-    "        f.write_str(&captions(*self).join(\" · \"))",
-    "    }",
-    "}",
-    `pub fn every_state() -> Vec<State> {\n    ${product}\n}`,
-    `pub const EVENTS: &[(&str, fn(State, State) -> bool)] = &[\n${actions.map((a) => `    (${text(a.label || "unlabeled transition")}, ${a.function}),`).join("\n")}\n];`,
-    "pub struct Chart;",
-    "impl Model for Chart {",
-    "    type State = State;",
-    "    type Action = (&'static str, State);",
-    "    fn init_states(&self) -> Vec<State> {",
-    "        every_state().into_iter().filter(|s| init(*s)).collect()",
-    "    }",
-    "    fn actions(&self, s: &State, actions: &mut Vec<Self::Action>) {",
-    "        for &(event, step) in EVENTS {",
-    "            actions.extend(every_state().into_iter().filter(|t| step(*s, *t)).map(|t| (event, t)));",
-    "        }",
-    "    }",
-    "    fn next_state(&self, _: &State, action: Self::Action) -> Option<State> {",
-    "        Some(action.1)",
-    "    }",
-    "    fn format_action(&self, action: &Self::Action) -> String {",
-    "        action.0.to_string()",
-    "    }",
-    "    fn properties(&self) -> Vec<Property<Self>> {",
-    `        vec![${rules.map((r) => `\n            Property::always(${text(r.sentence ? `${r.name}: ${r.sentence}` : r.name)}, |_, s| ${r.function}(*s)),`).join("")}\n        ]`,
-    "    }",
-    "}",
-    "// The graph the chart search reaches: each state's captions, and each step between them.",
-    `pub const SEARCH_STATES: &[&[&str]] = &[\n${states.map((s) => `    &[${s.map(text).join(", ")}],`).join("\n")}\n];`,
-    `pub const SEARCH_EDGES: &[(usize, &str, usize)] = &[\n${edges.map((e) => `    (${e.from}, ${text(e.event)}, ${e.to}),`).join("\n")}\n];`,
-    "",
-  ];
-  return out.join("\n");
-}
-
-// Write the Stateright model to `out`, or with check: true, fail if it differs from the chart.
-export function writeStateright({ chart, out, check }) {
-  const source = stateright(compileFile(chart, "Chart"));
-  if (check) {
-    if (!fs.existsSync(out) || fs.readFileSync(out, "utf8") !== source) throw new Error(`diagram/generated drift: ${out}`);
-    console.log(`Current: ${out} (correspondence only; run verification/check.py stateright)`);
-    return;
-  }
-  if (fs.existsSync(out) && !fs.readFileSync(out, "utf8").startsWith("// @generated by statechart.mjs stateright"))
-    throw new Error(`refusing to replace ${out}, which is not a generated Stateright model`);
-  fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, source);
-  console.log(`Generated ${out}`);
-}
-
 // Generate (or with check: true, compare without writing) NAME.rs, NAME_steps.rs, NAME.map.json and NAME_proof.rs.
 export function writeModel({ chart, module, dir, check }) {
-  const { source, steps, mapping } = compileFile(chart, module);
+  const text = fs.readFileSync(chart, "utf8");
+  // A composition holds no states of its own: drift is judged on it and every chart it composes.
+  const sources = COMPOSES.test(text) ? compositionSources(text, chart) : null;
+  const { source, steps, mapping } = sources
+    ? compile(resolveComposition(text, chart), module, { identity: [text, ...sources.map((c) => c.text)].join("\n%% composed chart\n") })
+    : compile(text, module);
+  if (sources) mapping.composes = sources.map(({ key, file, text }) => ({ key, file, sha256: hash(text) }));
   dir = dir ?? path.dirname(chart);
   const modelPath = path.join(dir, `${module}.rs`);
   const mapPath = path.join(dir, `${module}.map.json`);
