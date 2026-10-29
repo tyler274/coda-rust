@@ -1,6 +1,6 @@
 ---
 name: coda-statechart
-description: "Draw one Coda journey from the intent specs as a small Mermaid statechart, check its rules with search and Verus, and hand it to Dev. Invoke explicitly for journey design or diagram/model reconciliation."
+description: "Draw one Coda journey from the intent specs as a small XState machine, check its rules and journeys with XState's graph search, prove it with Verus, and show Dev in Stately Sketch. Invoke explicitly for journey design or chart/model reconciliation."
 disable-model-invocation: true
 ---
 
@@ -30,52 +30,64 @@ such as "open the email button". Keep code names out of labels.
 
 ## Draw it
 
-3. Start with few states. Split a state only when the split separates two broken
-   rules or the reader must see the step. Use one region for each thing that
-   changes independently, such as the page and the session. Draw "the app closes"
-   as an edge to what the reader sees next.
-4. Write one `%% never` line per rule, in the spec's own sentence, ending with its
-   ID. Never weaken a rule to make the chart pass. A promise about records
-   (identity, revisions, collections, single use) goes in the folder's
-   `data-promises.md` with the Rust owner that must prove it, marked unproven
-   until it is.
-5. Declare every event with `%% event`: who causes it, its `needs`, and the spec ID
-   it comes from. The chart holds states, events and rules, and nothing else;
-   explanation belongs in the spec.
-6. Write `journeys.md`: the useful outcomes the spec walks through, one numbered
-   step per event.
+The chart is an XState machine in `<journey>.mjs` that exports `machine`. The same
+file opens in [Stately Sketch](https://github.com/statelyai/sketch) and runs in
+[statechart.mjs](../../../verification/statechart.mjs).
 
-Keep each journey in its own folder under `verification/<product>/`. Charts
-compose through shared declared events, never copied states; a composition file
-holds the rules that span them.
+3. Start with few states. Split a state only when the split separates two broken
+   rules or the reader must see the step. Make the machine `type: 'parallel'`, with
+   one region for each thing that changes independently, such as the page and the
+   session, and flat states inside each region. Name regions, states and events in
+   the reader's words: the state is the screen, the event is what happens. Draw
+   "the app closes" as an event to what the reader sees next.
+4. Name every guard in `setup({ guards })` in plain words, such as `'signed in'`,
+   built only from `stateIn({ region: state })`, `not`, `and` and `or`. An event
+   that needs a state carries that guard on each of its transitions.
+5. In the machine's `meta.events`, give every event who causes it (`by`) and its
+   intent, ending with the spec ID it comes from.
+6. In `meta.never`, write one rule per spec sentence: the states that must never
+   hold together, by region, and the spec's own sentence ending with its ID. Never
+   weaken a rule to make the chart pass. A promise about records (identity,
+   revisions, collections, single use) goes in the folder's `data-promises.md` with
+   the Rust owner that must prove it, marked unproven until it is.
+7. Write `journeys.md`: the useful outcomes the spec walks through, one numbered
+   step per event, as `1. event → State; State`, with `From: Journey` to continue
+   another journey.
+
+Keep each journey in its own folder under `verification/<product>/`.
 
 ## Check it
 
-7. Run `lint`, then `trace` (`rules` when the chart is too large to exhaust), then
-   `journey`. A broken rule in a chart Dev agreed is a design bug: take it to Dev.
-8. Generate the model with `verus`, then run its proof with
-   `verification/check.py formal`. Every chart gets one. When safety alone isn't
-   inductive, strengthen `inductive()` in the proof file with a commented fact
-   about reachable states. Run `check` to catch drift between the chart and the
-   generated files.
-9. Break a copy of the chart to match a real failure, and confirm that `trace` and
-   Verus both fail on it.
-10. Replay each bug against the real code, as a test or a live repro, one step per
+From the repository root, after `npm install --prefix verification`:
+
+8. `node verification/statechart.mjs check CHART.mjs journeys.md`. XState's graph
+   search reaches every state, prints the shortest path to any broken rule, and
+   replays each journey on the machine. A broken rule in a chart Dev agreed is a
+   design bug: take it to Dev.
+9. `node verification/statechart.mjs verus CHART.mjs --module NAME` writes the
+   Verus model next to the chart, then `python3 verification/check.py formal
+   --spec .../NAME_proof.rs` proves it. When safety alone isn't inductive,
+   strengthen `inductive()` in the proof file with a commented fact about
+   reachable states. `verus ... --check` fails when the model no longer matches
+   the chart.
+10. Break a copy of the chart to match a real failure, and confirm that `check`
+    and Verus both fail on it.
+11. Replay each bug against the real code, as a test or a live repro, one step per
     event. If a bug doesn't reproduce, assume the chart is wrong until you show
     otherwise.
 
 ## Hand off
 
-Give Dev the Mermaid. Add one line per bug: the rule it breaks, its
-steps as `trace` numbers them, and whether it reproduced. Say what the chart leaves
-out: data promises, GAPs, and anything not replayed against code. A checked draft is
-still a draft until Dev agrees with it.
+Open the chart in Stately Sketch: clone it outside this repository, run
+`pnpm install && pnpm dev`, paste the chart into its Code panel and press Update.
+Its simulation outlines the current state in every region and lights only the steps
+allowed now. Send Dev screenshots of the journeys and of each bug as Sketch shows
+them. Add one line per bug: the rule it breaks, its steps as `check` numbers them,
+and whether it reproduced. Say what the chart leaves out: data promises, GAPs, and
+anything not replayed against code. A checked draft is still a draft until Dev
+agrees with it.
 
 When Dev agrees with a journey's chart, delete what it replaces in the older
 whole-app graph, with its coverage and journey rows, in the same change.
-
-The [compiler reference](references/compiler.md) covers the supported Mermaid subset,
-`%% when` guards, templates, commands and compositions, and what each command
-establishes.
 
 Adapted from [PStack statechart](https://github.com/cursor/plugins/blob/eb4db2b55b2b7dec3d9282754cddf0a56bf4ff10/pstack/skills/statechart/SKILL.md).

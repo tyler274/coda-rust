@@ -58,7 +58,11 @@ collections, preserve every accepted batch member, derive history from its owner
 and separate safety from conditional progress. A capability overview plus selected
 proofs is not full coverage.
 
-The [compiler](../.agents/skills/coda-statechart/references/compiler.md) shares one
+Each rebuilt journey's chart is an XState machine. [statechart.mjs](statechart.mjs)
+checks its rules on every state XState's graph search reaches, replays its
+`journeys.md` on the machine, and writes its Verus model; the same file opens in
+Stately Sketch for review. The lagging whole-app graphs below still use the Mermaid
+[compiler](../.agents/skills/coda-statechart/references/compiler.md), which shares one
 flattened representation between Verus generation and finite reachability search.
 `%% when` encodes state guards; `%% never` encodes actual forbidden combinations.
 `statechart.mjs trace` prints a shortest violating path and numbered Mermaid diagram. A completed
@@ -101,7 +105,7 @@ manual data refinements and implementation connections separately.
 
 | Skill | Use |
 | --- | --- |
-| [coda-statechart](../.agents/skills/coda-statechart/SKILL.md) | Draw one journey from the intent specs, check it with search and Verus, and hand it to Dev. |
+| [coda-statechart](../.agents/skills/coda-statechart/SKILL.md) | Draw one journey from the intent specs as an XState machine, check it and prove it with Verus, and show Dev in Stately Sketch. |
 | [coda-create-formal-verification](../.agents/skills/coda-create-formal-verification/SKILL.md) | Encode design in Verus and establish real Rust proof connections. |
 | [coda-create-verification](../.agents/skills/coda-create-verification/SKILL.md) | Create launch, doctor, drive, evidence and cleanup instructions. |
 | [coda-maintain-formal-verification](../.agents/skills/coda-maintain-formal-verification/SKILL.md) | Reconcile diagram, data model, proof and code drift. |
@@ -129,6 +133,8 @@ toolchain [verus.json](verus.json) names:
 ```sh
 python3 verification/install-verus.py
 python3 verification/check.py formal --spec path/to/the/feature-proof.rs
+npm install --prefix verification
+node verification/statechart.mjs check path/to/the/journey.mjs path/to/journeys.md
 ```
 
 There is no default proof for an unspecified feature. The extra toolchain does not
@@ -154,7 +160,7 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
-| Per-journey charts labeled as the screen, one `%% never` per agreed sentence and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts cite intent spec IDs; every chart also gets a Verus proof. |
+| Per-journey charts labeled as the screen, one `%% never` per agreed sentence and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts are XState machines that cite intent spec IDs, checked with XState's graph search and reviewed in Stately Sketch; every chart also gets a Verus proof. |
 | Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage`, and `journey`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
 | Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
 

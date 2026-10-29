@@ -1,11 +1,11 @@
 # Sign-in journeys
 
-What a physician can do in [the sign-in chart](sign-in.mmd), each step taken from
+What a physician can do in [the sign-in chart](sign-in.mjs), each step taken from
 [physician.md A1](../../../intent/physician.md#a1-sign-in-and-access). Replay them from the
 repository root:
 
 ```bash
-node .agents/skills/coda-statechart/scripts/statechart.mjs journey verification/physician/sign-in/sign-in.mmd verification/physician/sign-in/journeys.md
+node verification/statechart.mjs check verification/physician/sign-in/sign-in.mjs verification/physician/sign-in/journeys.md
 ```
 
 ## You sign in from the email and see Today

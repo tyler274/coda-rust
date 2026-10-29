@@ -7,19 +7,21 @@ journey.
 
 | File | Holds |
 | --- | --- |
-| [sign-in.mmd](sign-in.mmd) | The chart, its declared events and its four rules. |
+| [sign-in.mjs](sign-in.mjs) | The chart as an XState machine: its regions, events and four rules. |
 | [journeys.md](journeys.md) | What a physician can do, replayed against the chart. |
 | [data-promises.md](data-promises.md) | Promises about records, with their Rust owners. |
 | [verus/](verus/) | The generated Verus model and the editable proof. |
 
-Check it from the repository root:
+Check it from the repository root, after `npm install --prefix verification`:
 
 ```bash
-node .agents/skills/coda-statechart/scripts/statechart.mjs trace verification/physician/sign-in/sign-in.mmd
-node .agents/skills/coda-statechart/scripts/statechart.mjs journey verification/physician/sign-in/sign-in.mmd verification/physician/sign-in/journeys.md
-node .agents/skills/coda-statechart/scripts/statechart.mjs check verification/physician/sign-in/sign-in.mmd --module sign_in --dir verification/physician/sign-in/verus
+node verification/statechart.mjs check verification/physician/sign-in/sign-in.mjs verification/physician/sign-in/journeys.md
+node verification/statechart.mjs verus verification/physician/sign-in/sign-in.mjs --module sign_in --check
 python3 verification/check.py formal --spec verification/physician/sign-in/verus/sign_in_proof.rs
 ```
+
+To click through it, paste [sign-in.mjs](sign-in.mjs) into a local
+[Stately Sketch](https://github.com/statelyai/sketch).
 
 The chart, search and proof cover its finite states only. The data promises are
 unproven, and no code has been replayed against the chart yet.
