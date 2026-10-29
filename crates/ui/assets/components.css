@@ -5,9 +5,6 @@
 .card-body { padding: var(--space-4); }
 .empty, .error { margin: 0; color: var(--body); font: var(--type-body-lg); }
 .error { color: var(--on-error-container); background: var(--error-container); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
-.row { display: flex; flex-direction: column; gap: var(--space-hair); padding: var(--space-3) 0; border-top: var(--hairline) solid var(--outline-variant); }
-.row-name { color: var(--ink); font: var(--type-title-sm); }
-.row-detail { color: var(--muted); font: var(--type-body-sm); }
 .tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
 .tabs button { flex: 1; min-height: var(--target); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--muted); font: var(--type-label-md); }
 .tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }
@@ -41,11 +38,14 @@
 .control-icon.control-compact { width: var(--control-compact-height); height: var(--control-compact-height); min-width: var(--control-compact-height); min-height: var(--control-compact-height); }
 .control:active:not(:disabled) { transform: scale(.98); }
 .control:disabled { cursor: default; opacity: .46; transform: none; }
-/* State layer: an overlay of the control's own text colour, so a filled control lightens and a quiet one greys, with no
-   hover colour of its own. */
-.control::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; transition: opacity var(--motion-press) linear; }
-@media (hover: hover) { .control:hover:not(:disabled)::before { opacity: var(--state-hover); } }
-.control:active:not(:disabled)::before { opacity: var(--state-pressed); }
+/* A row that opens something, after the React app's NavigationRow: no chrome of its own, the shared state layer, and a
+   focus ring drawn inward, since the list or card that holds it clips what stands outside. Its host lays it out. */
+:where(.navigation-row) { position: relative; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; font: inherit; -webkit-tap-highlight-color: transparent; --focus-ring-offset: calc(-1 * var(--focus-ring-width)); }
+/* State layer: an overlay of the element's own text colour, so a filled control lightens, a quiet one greys and a row
+   tints, with no hover colour of its own. */
+:is(.control, .navigation-row)::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { :is(.control, .navigation-row):hover:not(:disabled)::before { opacity: var(--state-hover); } }
+:is(.control, .navigation-row):active:not(:disabled)::before { opacity: var(--state-pressed); }
 /* Touch target: where the pointer is coarse, a control reaches the target size while its visible size stays. */
 @media (pointer: coarse) {
   :is(.control, .navigation-control)::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--target)); height: max(100%, var(--target)); transform: translate(-50%, -50%); }
@@ -60,7 +60,7 @@
 @keyframes focus-ring-grow { from { outline-width: 0; } to { outline-width: var(--focus-ring-active-width); } }
 @keyframes focus-ring-settle { from { outline-width: var(--focus-ring-active-width); } }
 @media (forced-colors: active) {
-  .control::before { display: none; }
+  :is(.control, .navigation-row)::before { display: none; }
   .control { border-color: ButtonText; }
   :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
 }

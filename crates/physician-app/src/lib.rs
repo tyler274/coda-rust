@@ -37,7 +37,7 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use ui::{
     Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, Icon, IconName,
-    NavigationControl, ReadNotice,
+    NavigationControl, NavigationRow, ReadNotice,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -1452,9 +1452,8 @@ fn PhysicianShell(
                         }
                     }
                     nav { class: "sidebar-primary", aria_label: "Primary",
-                        button {
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
                             aria_label: "Open Today",
                             aria_current: if place() == Place::Today { "page" } else { "" },
                             onclick: move |_| {
@@ -1467,17 +1466,15 @@ fn PhysicianShell(
                             }
                             strong { class: "item-text", "Today" }
                         }
-                        button {
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
                             aria_current: if place() == Place::Updates { "page" } else { "" },
                             onclick: move |_| place.set(Place::Updates),
                             Icon { name: IconName::Message }
                             strong { class: "item-text", "Updates" }
                         }
-                        button {
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
                             aria_label: "Find patient",
                             onclick: move |_| search_open.set(true),
                             Icon { name: IconName::Search }
@@ -1513,9 +1510,8 @@ fn PhysicianShell(
                                     ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
                                     ChatView::Chats(lines) => rsx! {
                                         for line in lines {
-                                            button {
+                                            NavigationRow {
                                                 class: "sidebar-conversation-link",
-                                                r#type: "button",
                                                 onclick: {
                                                     let id = line.id.clone();
                                                     move |_| open_chat.set(Some(id.clone()))
@@ -2735,9 +2731,8 @@ fn TodayRows(
         div { class: "today-list",
             for (index, row) in rows.iter().enumerate() {
                 article { class: "today-row",
-                    button {
+                    NavigationRow {
                         class: if focused == Some(index) { "today-row-open is-keyboard-focus" } else { "today-row-open" },
-                        r#type: "button",
                         onclick: {
                             let row = row.clone();
                             move |_| on_open.call(row.clone())
@@ -2802,9 +2797,8 @@ fn ScheduleRail(
     rsx! {
         aside { class: "{rail_class}", aria_label: "{title}",
             if collapsed {
-                button {
+                NavigationRow {
                     class: "schedule-rail-expand",
-                    r#type: "button",
                     aria_expanded: "false",
                     aria_label: "Show {title}",
                     onclick: move |_| on_collapsed.call(false),
@@ -2849,7 +2843,7 @@ fn ScheduleRail(
                 p { class: "schedule-rail-empty", "{empty}" }
             }
             for (index, visit) in visits.iter().enumerate() {
-                button {
+                NavigationRow {
                     class: if focused == Some(index) {
                         "schedule-visit is-next is-keyboard-focus"
                     } else if index == 0 {
@@ -2857,7 +2851,6 @@ fn ScheduleRail(
                     } else {
                         "schedule-visit"
                     },
-                    r#type: "button",
                     onclick: {
                         let visit = visit.clone();
                         move |_| on_open.call(visit.clone())
@@ -3259,18 +3252,18 @@ fn PatientSurface(
                 if let Some(heading) = work_heading(&run) {
                     section { class: "patient-section", aria_label: "Current work",
                         h2 { "Current work" }
-                        button {
+                        NavigationRow {
                             class: "today-row-open",
-                            r#type: "button",
                             onclick: {
                                 let heading = heading.clone();
                                 let preparation = visits
                                     .first()
                                     .and_then(|visit| visit.preparation.clone());
+                                let ended_cause = run.ended_cause.clone();
                                 move |_| {
                                     let body = preparation
                                         .clone()
-                                        .or_else(|| work_end_reason(run.ended_cause.as_deref()).map(str::to_owned))
+                                        .or_else(|| work_end_reason(ended_cause.as_deref()).map(str::to_owned))
                                         .unwrap_or_default();
                                     on_read.call((heading.clone(), body));
                                 }
@@ -3415,9 +3408,8 @@ fn PatientSurface(
                     },
                     ChatView::Chats(lines) => rsx! {
                         for line in lines {
-                            button {
+                            NavigationRow {
                                 class: "sidebar-conversation-link",
-                                r#type: "button",
                                 onclick: {
                                     let id = line.id.clone();
                                     move |_| on_open_chat.call(id.clone())
@@ -3573,9 +3565,8 @@ fn SearchDialog(
                 ul { class: "dialog-results",
                     for (index, patient) in results.iter().enumerate() {
                         li {
-                            button {
+                            NavigationRow {
                                 class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
-                                r#type: "button",
                                 onclick: {
                                     let id = patient.patient_workspace_id.clone();
                                     move |_| on_open.call(id.clone())

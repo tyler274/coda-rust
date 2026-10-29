@@ -39,7 +39,9 @@ use roots::{
     draft_after_send, greeting, library_root, note_open, opens_doctor, page_with_accepted,
     plan_page, reminder_page, send_id, shared_root, sharing_root, today_root,
 };
-use ui::{ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, TabBar};
+use ui::{
+    ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, NavigationRow, TabBar,
+};
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
 
@@ -1799,9 +1801,8 @@ fn ThreadNote(
         };
         let body = note_body(note);
         rsx! {
-            button {
+            NavigationRow {
                 class: "thread-open",
-                r#type: "button",
                 aria_label: "{label}",
                 onclick: move |_| on_open.call(open),
                 {body}

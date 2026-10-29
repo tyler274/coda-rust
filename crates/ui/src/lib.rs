@@ -114,16 +114,6 @@ pub fn Card(children: Element) -> Element {
     rsx! { section { class: "card", div { class: "card-body", {children} } } }
 }
 
-#[component]
-pub fn Row(name: String, detail: String) -> Element {
-    rsx! {
-        div { class: "row",
-            div { class: "row-name", "{name}" }
-            div { class: "row-detail", "{detail}" }
-        }
-    }
-}
-
 /// How much a button stands out.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum ButtonVariant {
@@ -206,6 +196,31 @@ pub fn NavigationControl(
             class: "{class}",
             r#type: "button",
             disabled: disabled,
+            onclick: move |event| {
+                if let Some(handler) = &onclick {
+                    handler.call(event);
+                }
+            },
+            ..rest,
+            {children}
+        }
+    }
+}
+
+/// A row that opens something, after the React app's `NavigationRow`: the whole row is one button
+/// with the shared state layer and an inward focus ring. The host's class lays the row out.
+#[component]
+pub fn NavigationRow(
+    onclick: Option<EventHandler<MouseEvent>>,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
+    let mut class = String::from("navigation-row");
+    let rest = host_attributes(&mut class, attributes);
+    rsx! {
+        button {
+            class: "{class}",
+            r#type: "button",
             onclick: move |event| {
                 if let Some(handler) = &onclick {
                     handler.call(event);
