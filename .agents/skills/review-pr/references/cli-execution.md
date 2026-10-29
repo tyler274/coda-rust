@@ -59,8 +59,9 @@ Existing run files are never overwritten.
 Codex uses `exec` with a read-only shell sandbox, approval policy `never`, explicit
 model/effort, JSON events, and a final-message file. Follow-ups add
 `resume <saved-id>`. Claude loads only the supplied MCP config for this invocation,
-uses JSON output and disabled permission prompts, and exposes only Read/Glob/Grep
-plus the reviewer MCP tools; follow-ups add
+refreshes its system prompt/tool descriptions on each invocation while preserving
+the saved conversation, uses JSON output and disabled permission prompts, and exposes
+only Read/Glob/Grep plus the reviewer MCP tools; follow-ups add
 `--resume <saved-id>`. Source remains read-only. Within the scoped reviewer MCP
 server, `reviewer.publish` is its only write capability and refuses without
 launcher-bound approval for an exact saved draft. Codex retains its applicable

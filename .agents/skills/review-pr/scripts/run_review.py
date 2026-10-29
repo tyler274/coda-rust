@@ -82,7 +82,7 @@ def make_command(engine, model, effort, workspace, output, session_id=None):
         return command + ["-"]
     command = [
         "claude", "-p", "--model", model, "--output-format", "json",
-        "--strict-mcp-config",
+        "--strict-mcp-config", "--system-prompt-snapshot", "off",
         "--permission-mode", "dontAsk", "--permission-prompts", "none",
         "--tools", "Read,Glob,Grep",
         "--mcp-config", json.dumps({"mcpServers": {"reviewer": server}}),
