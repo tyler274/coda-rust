@@ -1018,8 +1018,11 @@ repository can promote a commit staging already built and tested. It:
 Why the CDN is cleared: HTML is cached with `max-age=300, s-maxage=3600,
 stale-while-revalidate=86400`, so without invalidation the edge could serve the
 previous release's HTML for up to a day. That HTML names hashed CSS and JS the new
-image no longer serves, which would load unstyled pages. Browsers may still hold
-the old HTML for up to five minutes (`max-age=300`); a reload fixes it.
+image no longer serves, which would load unstyled pages. Clearing the CDN does
+not clear browsers: one that loaded the page before the release can show its cached
+HTML once more (fresh for `max-age=300`, then reused while it revalidates in the
+background), so a returning visitor may see one unstyled load before the next
+load is current.
 
 ### First apply and cutover
 
