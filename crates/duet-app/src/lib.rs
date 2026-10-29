@@ -39,7 +39,7 @@ use roots::{
     draft_after_send, greeting, library_root, note_open, opens_doctor, page_with_accepted,
     plan_page, reminder_page, send_id, shared_root, sharing_root, today_root,
 };
-use ui::{ActionRow, Button, ButtonVariant, TabBar};
+use ui::{ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, TabBar};
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
 
@@ -1386,7 +1386,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         selection::DeviceSources { base_url: doctor_source_url.clone(), blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); open_item.set(Some(NoteOpen::Doctor)); }, on_recheck: move |_| attempt.set(attempt() + 1) }
         selection::DoctorSources { base_url: doctor_source_url, blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); open_item.set(Some(NoteOpen::Doctor)); } }
         if let Some(Err(error)) = workspace() { p { role: "alert", "For my doctor: {error}" } }
-        if doctor().is_some() && open_item().is_none() { Button { onclick: move |_| open_item.set(Some(NoteOpen::Doctor)), "Open For my doctor" } }
+        if doctor().is_some() && open_item().is_none() { NavigationControl { onclick: move |_| open_item.set(Some(NoteOpen::Doctor)), "Open For my doctor" } }
         if let Some(proposal) = doctor().and_then(|c| c.proposal.flatten()) {
             if proposal_review() != Some(proposal.id) {
                 Button { onclick: move |_| { proposal_review.set(Some(proposal.id)); confirmed_medications.set(Vec::new()); }, "Review proposed doctor page" }
@@ -1445,9 +1445,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         }
         if let Some(shown) = shown {
             TabHeading { name: shown.heading(), loading }
-            Button {
-                variant: ButtonVariant::Quiet,
-                compact: true,
+            NavigationControl {
                 aria_label: "Close page",
                 onclick: move |_| {
                     open_item.set(None);
@@ -1462,6 +1460,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     page_failed.set(false);
                     fresh_failed.set(false);
                 },
+                Icon { name: IconName::ArrowLeft }
                 "Close"
             }
             match shown {
@@ -1824,9 +1823,7 @@ fn SourceButton(
     let label = format!("Open source {title}");
     let open = move |_| load_source(opened, base_url.clone(), bearer.clone(), chip.clone());
     rsx! {
-        Button {
-            variant: ButtonVariant::Quiet,
-            compact: true,
+        NavigationControl {
             aria_label: "{label}",
             onclick: open,
             "{title}"

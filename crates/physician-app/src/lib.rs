@@ -37,7 +37,7 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use ui::{
     Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, Icon, IconName,
-    ReadNotice,
+    NavigationControl, ReadNotice,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -3051,7 +3051,7 @@ fn PatientSurface(
         return rsx! {
             div { class: "reading-workspace patient-page",
                 ErrorState { message: PATIENT_GONE }
-                Button { variant: ButtonVariant::Quiet, onclick: move |_| on_go_today.call(()), "{GO_TO_TODAY}" }
+                NavigationControl { onclick: move |_| on_go_today.call(()), "{GO_TO_TODAY}" }
             }
         };
     }

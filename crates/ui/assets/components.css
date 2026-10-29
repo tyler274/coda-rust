@@ -31,6 +31,9 @@
 .icon { display: block; width: var(--icon-size); height: var(--icon-size); flex: none; }
 .control > .icon { color: var(--muted); }
 :is(.control-primary, .control-icon, .control-danger) > .icon { color: inherit; }
+.navigation-control { position: relative; display: inline-flex; align-items: center; justify-content: flex-start; gap: var(--space-2); width: fit-content; max-width: 100%; min-height: var(--navigation-min-height, var(--control-height)); padding: var(--space-1) 0; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--navigation-color, var(--body)); cursor: pointer; text-align: left; text-decoration: none; font: var(--type-body-md); -webkit-tap-highlight-color: transparent; }
+@media (hover: hover) { .navigation-control:hover:not(:disabled) { color: var(--navigation-hover-color, var(--ink)); text-decoration: underline; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; } }
+.navigation-control:disabled { cursor: default; opacity: .46; }
 .action-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .control-compact { width: fit-content; min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3); }
 .control-quiet { padding-inline: var(--control-quiet-padding-inline, var(--space-3)); }
@@ -45,7 +48,7 @@
 .control:active:not(:disabled)::before { opacity: var(--state-pressed); }
 /* Touch target: where the pointer is coarse, a control reaches the target size while its visible size stays. */
 @media (pointer: coarse) {
-  .control::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--target)); height: max(100%, var(--target)); transform: translate(-50%, -50%); }
+  :is(.control, .navigation-control)::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--target)); height: max(100%, var(--target)); transform: translate(-50%, -50%); }
 }
 /* Focus ring: one ring for everything a person can reach, following its corners; it grows in, then settles. */
 :is(button, a, input, textarea, select, summary):focus-visible {

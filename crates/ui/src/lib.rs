@@ -172,18 +172,7 @@ pub fn Button(
             class.push_str(name);
         }
     }
-    // A host's class joins the control's own; every other attribute passes through.
-    let mut rest = Vec::with_capacity(attributes.len());
-    for attribute in attributes {
-        match (&attribute.value, attribute.name) {
-            (AttributeValue::Text(host), "class") if !host.is_empty() => {
-                class.push(' ');
-                class.push_str(host);
-            }
-            (_, "class") => {}
-            _ => rest.push(attribute),
-        }
-    }
+    let rest = host_attributes(&mut class, attributes);
     rsx! {
         button {
             class: "{class}",
@@ -198,6 +187,50 @@ pub fn Button(
             {children}
         }
     }
+}
+
+/// In-place navigation, after the React app's `NavigationControl`: a quiet link, separate from
+/// commands, that opens another place or goes back. It reads in body text and underlines on hover;
+/// a surface may colour it once at its root (`--navigation-color`), as Duet does.
+#[component]
+pub fn NavigationControl(
+    #[props(default)] disabled: bool,
+    onclick: Option<EventHandler<MouseEvent>>,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
+    let mut class = String::from("navigation-control");
+    let rest = host_attributes(&mut class, attributes);
+    rsx! {
+        button {
+            class: "{class}",
+            r#type: "button",
+            disabled: disabled,
+            onclick: move |event| {
+                if let Some(handler) = &onclick {
+                    handler.call(event);
+                }
+            },
+            ..rest,
+            {children}
+        }
+    }
+}
+
+/// A host's class joins the component's own; every other attribute passes through.
+fn host_attributes(class: &mut String, attributes: Vec<Attribute>) -> Vec<Attribute> {
+    let mut rest = Vec::with_capacity(attributes.len());
+    for attribute in attributes {
+        match (&attribute.value, attribute.name) {
+            (AttributeValue::Text(host), "class") if !host.is_empty() => {
+                class.push(' ');
+                class.push_str(host);
+            }
+            (_, "class") => {}
+            _ => rest.push(attribute),
+        }
+    }
+    rest
 }
 
 /// Actions that sit together: one row, one gap, one centre line, wrapping where the width runs out.
