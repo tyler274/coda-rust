@@ -3423,14 +3423,16 @@ fn PatientSurface(
                                         "{TRY_AGAIN}"
                                     }
                                 }
-                            } else if line.from_physician {
+                            } else if line.author == Some(Author::Person) {
                                 ui::Message { author: Author::Person, by: "You",
                                     FormattedMessage { text: line.text }
                                 }
-                            } else {
+                            } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
                                     FormattedMessage { text: line.text }
                                 }
+                            } else {
+                                FormattedMessage { text: line.text }
                             }
                         }
                         {conversation_resume_notice}
@@ -4228,8 +4230,9 @@ fn message_command(
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
-    /// The physician wrote it; otherwise Coda did, or an older server didn't say.
-    from_physician: bool,
+    /// Who wrote it, when the server says: the physician or Coda. A turn that
+    /// doesn't say shows without a speaker rather than as either.
+    author: Option<Author>,
     resume: Option<WorkResumeTarget>,
 }
 
@@ -4245,10 +4248,14 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 .resume_target
                 .clone()
                 .filter(|_| turn.kind.as_deref() == Some("mechanical"));
-            let from_physician = turn.kind.as_deref() == Some("physician");
+            let author = match turn.kind.as_deref() {
+                Some("physician") => Some(Author::Person),
+                Some("model") => Some(Author::Assistant),
+                _ => None,
+            };
             Some(ConversationLine {
                 text,
-                from_physician,
+                author,
                 resume,
             })
         })
@@ -4354,6 +4361,7 @@ fn now_millis() -> u128 {
 mod conversation_line_tests {
     use super::{ConversationLine, chat_resume_command, conversation_lines, new_chat_id};
     use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+    use ui::Author;
 
     #[test]
     fn new_conversation_ids_are_distinct_chat_ids() {
@@ -4390,15 +4398,35 @@ mod conversation_line_tests {
             vec![
                 ConversationLine {
                     text: "Hello".into(),
-                    from_physician: true,
+                    author: Some(Author::Person),
                     resume: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
-                    from_physician: false,
+                    author: None,
                     resume: Some(target()),
                 },
             ]
+        );
+    }
+
+    #[test]
+    fn only_a_turn_that_names_its_writer_gets_a_speaker() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "physician", "text": "Start metoprolol?" },
+                { "kind": "model", "text": "Her heart rate allows it." },
+                { "text": "Recorded in local simulation." },
+            ] }
+        }))
+        .unwrap();
+        let authors: Vec<_> = conversation_lines(&page.snapshot)
+            .into_iter()
+            .map(|line| line.author)
+            .collect();
+        assert_eq!(
+            authors,
+            vec![Some(Author::Person), Some(Author::Assistant), None]
         );
     }
 
