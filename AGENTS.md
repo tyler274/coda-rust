@@ -6,37 +6,24 @@ implementation, operations and proof. Start with the [canonical map](book/src/re
 Dev's latest explicit decisions take precedence and land in the specs; pinned submodules are historical
 reference, not a competing specification.
 
-Keep individual Linear ticket IDs, links and status mappings out of repository
-documentation. Linear owns that tracking; docs use source and document links to
-explain responsibilities, implemented behavior and operating procedures.
-
-## Where work goes
-
-| Work | Contract |
-| --- | --- |
-| Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
-| Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; production serves the same tested image without sign-in from the same root, and its applies, DNS changes and Vercel retirement need Dev's explicit authorization |
-| Physician product, clinical runtime, and the clinical skill catalog | [Physician spec](intent/physician.md), [Rust implementation](book/src/physician-site.md), and [operating invariants](book/src/agent-contracts.md) |
-| Clinical skill markdown | [skills](skills), the same catalog as coda-agents', read by `crates/agent-skills` for `crates/harness`; hosted physician chat (`physician-worker`) loads it at startup |
-| Engineering workflow | [Development workflow](#development-workflow) below routes shaping, implementation, local review, and PR work through the shared skills. [repo-graph-audit](.agents/skills/repo-graph-audit/SKILL.md) helps when repository ownership or handoffs need investigation. |
-| Product-flow design and verification workflows | [Coda verification](verification/README.md), then the adopted engineering skills in [.agents/skills](.agents/skills); load [coda-statechart](.agents/skills/coda-statechart/SKILL.md) in every session before editing any journey chart under `verification/`; discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
-| Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
-| Duet, the patient app | [Duet spec](intent/duet.md), [Rust backend](book/src/backend-architecture.md), [UI map](book/src/ui-surface-map.md), and [operating invariants](book/src/agent-contracts.md#duet-patient-app) |
-| Gym cases, promotion, and runs | [Gym invariants](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
-| Computer use | [Computer-use invariants](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
-| Synthetic patients: the patient bank tool and the patient set | [Synthetic patients](book/src/patient-bank.md), then [the patient-bank README](crates/patient-bank/README.md) |
-| Dev container setup, ports, and storage | [Dev container](README.md#dev-container) |
-
 ## Development workflow
 
-Use the relevant skills as the work calls for them; the user need not name each
-one. Scale the investigation and presentation to the task. Skills supply methods
-and judgment; these shared defaults apply across agent hosts and developer setups.
+Iterate locally: implement, exercise the real workflow, review, and correct
+before handing off a coherent change through a PR. Investigate failures and
+verify corrections before pushing another revision. An early draft can help
+when collaboration or remote evidence is needed; it should not replace the
+local feedback loop.
 
-Iterate locally: implement, exercise the real workflow, review, and correct while
-feedback is cheap. Use a PR to hand off a coherent, locally assessed change for
-shared review. An early draft can help when collaboration or remote evidence is
-needed; it should not replace the local feedback loop.
+Keep investigation and correction proportional to credible consequences.
+Distinguish serious rare failures from speculative possibilities, and weigh
+the complexity a proposed correction would introduce. Stop when the intended
+outcome and appropriate proof are complete. Further review rounds need a
+concrete change or unresolved concern, not a search for increasingly speculative
+edge cases or a desire to obtain a clean verdict.
+
+Use the relevant skills as the work calls for them; the user need not name
+each one. The links below identify when to use each skill. Skills supply
+methods and judgment within these shared development defaults.
 
 - [linear-github-issues](.agents/skills/linear-github-issues/SKILL.md) shapes work,
   checks its framing, and prepares a useful ticket or project handoff.
@@ -76,6 +63,27 @@ review before a PR exists remains internal.
 Resolve skill references from their real repository paths when using local
 symlinks. Report the actual revision or local change, evidence, and remaining
 limits; successful checks or a merge alone do not establish the intended outcome.
+
+Keep individual Linear ticket IDs, links and status mappings out of repository
+documentation. Linear owns that tracking; docs use source and document links to
+explain responsibilities, implemented behavior and operating procedures.
+
+## Where work goes
+
+| Work | Contract |
+| --- | --- |
+| Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
+| Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; production serves the same tested image without sign-in from the same root, and its applies, DNS changes and Vercel retirement need Dev's explicit authorization |
+| Physician product, clinical runtime, and the clinical skill catalog | [Physician spec](intent/physician.md), [Rust implementation](book/src/physician-site.md), and [operating invariants](book/src/agent-contracts.md) |
+| Clinical skill markdown | [skills](skills), the same catalog as coda-agents', read by `crates/agent-skills` for `crates/harness`; hosted physician chat (`physician-worker`) loads it at startup |
+| Engineering workflow | [Development workflow](#development-workflow) routes shaping, implementation, local review, and PR work through the shared skills. [repo-graph-audit](.agents/skills/repo-graph-audit/SKILL.md) helps when repository ownership or handoffs need investigation. |
+| Product-flow design and verification workflows | [Coda verification](verification/README.md), then the adopted engineering skills in [.agents/skills](.agents/skills); load [coda-statechart](.agents/skills/coda-statechart/SKILL.md) in every session before editing any journey chart under `verification/`; discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
+| Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
+| Duet, the patient app | [Duet spec](intent/duet.md), [Rust backend](book/src/backend-architecture.md), [UI map](book/src/ui-surface-map.md), and [operating invariants](book/src/agent-contracts.md#duet-patient-app) |
+| Gym cases, promotion, and runs | [Gym invariants](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
+| Computer use | [Computer-use invariants](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
+| Synthetic patients: the patient bank tool and the patient set | [Synthetic patients](book/src/patient-bank.md), then [the patient-bank README](crates/patient-bank/README.md) |
+| Dev container setup, ports, and storage | [Dev container](README.md#dev-container) |
 
 ## Product operating boundaries
 
@@ -135,10 +143,9 @@ Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`,
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 
-Prefer local iteration: exercise the affected behavior, investigate failures, and
-verify corrections before pushing another revision. Choose checks by affected
-contracts and dependencies; use hosted CI for shared integration and environment
-confirmation. Report missing local capabilities and remaining proof honestly.
+Choose checks by affected contracts and dependencies; use hosted CI for shared
+integration and environment confirmation. Report missing local capabilities
+and remaining proof honestly.
 
 CI uses [ci_scope.py](scripts/ci_scope.py) to select lightweight documentation and
 engineering-skill checks or the full workspace suite. Runtime clinical `skills/`
