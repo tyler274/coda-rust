@@ -1,5 +1,9 @@
 # Coda product verification
 
+> **The product graphs lag the [intent specs](../intent/README.md).** The physician, Duet and connected-care graphs
+> predate the specs; where they differ, the specs govern. They are being rebuilt from the specs as
+> per-journey charts.
+
 Coda ports [PStack](#provenance) to Verus and connects agreed product journeys to
 Rust owners and running-app evidence. The five general skills establish or repair
 verification workflows and are explicit-only. App-specific recipes own their

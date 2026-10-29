@@ -1,6 +1,7 @@
 # How to use this book
 
-Linear owns product intent, scope and acceptance. This book documents Rust
+The <a href="/intent/README%2Emd">intent specs</a> own product intent: principles, product specs and Dev's
+decisions. Linear tracks scope, work and acceptance. This book documents Rust
 owners, setup and proof. Code establishes what is implemented; it does not
 turn an old implementation into an approved product decision. Dev's latest
 explicit decisions take precedence. When an outcome and implementation disagree,
@@ -8,7 +9,7 @@ keep the gap visible and update the responsible owner as the work lands.
 
 | Question | Canonical owner |
 | --- | --- |
-| What are we building and why? | [Duet](https://linear.app/coda-health/project/duet-ed7c815ed39b), [Coda Agents](https://linear.app/coda-health/project/coda-agents-d7d16847168e), [Connected care](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874), and their outcome tickets; [engineering scope and proof](https://linear.app/coda-health/project/coda-rust-platform-6ca86460e169) |
+| What are we building and why? | <a href="/intent/README%2Emd">Intent specs</a>: principles, then the physician, Duet, connected-care and harness specs, then decisions; Linear tracks the work: [Duet](https://linear.app/coda-health/project/duet-ed7c815ed39b), [Coda Agents](https://linear.app/coda-health/project/coda-agents-d7d16847168e), [Connected care](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874), and their outcome tickets; [engineering scope and proof](https://linear.app/coda-health/project/coda-rust-platform-6ca86460e169) |
 | How should Duet look and read? | [Design language](https://linear.app/coda-health/document/duet-design-language-foundations-patterns-and-current-care-e3d0bc28fa6d) |
 | Where is it implemented? | [Crate map](crate-map.md), then the owning source file and tests |
 | How do I work here? | <a href="/AGENTS%2Emd">AGENTS.md</a>, [operating invariants](agent-contracts.md), and <a href="/README%2Emd">README setup</a> |

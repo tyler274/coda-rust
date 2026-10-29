@@ -1,12 +1,16 @@
 # Duet experience
 
+> **Lags the intent specs.** This graph predates [the intent specs](../../intent/README.md) and does not follow
+> them; where they differ, the specs govern. It is being rebuilt from the specs as smaller per-journey
+> charts, one at a time. Don't extend it or treat it as the product contract.
+
 The Duet app's behavior, written as one statechart. It follows the physician
 graph's method ([physician-experience](../physician-experience/README.md)).
 
 | File | Owns |
 | --- | --- |
 | [duet.mmd](duet.mmd) | The spec: the ideal behavior of the full product for every person. |
-| [decisions.md](decisions.md) | Why: Dev's dated decisions and the sources the graph cites. |
+| [Intent specs](../../intent/README.md) | Why: the product intent, Dev's decisions and their sources. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph assumes away and the runtime must still guarantee. |
 | [journeys.md](journeys.md) | Useful outcomes a person reaches, replayed from the graph's start by `statechart.mjs journey`; it fails when the graph stops allowing one. |
 | [verus/](verus/) | The Verus model derived from the graph, and the proof that its safety rules hold. |

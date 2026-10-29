@@ -1,11 +1,15 @@
 # Physician experience
 
+> **Lags the intent specs.** This graph predates [the intent specs](../../intent/README.md) and does not follow
+> them; where they differ, the specs govern. It is being rebuilt from the specs as smaller per-journey
+> charts, one at a time. Don't extend it or treat it as the product contract.
+
 The physician web app's behavior, written as one statechart.
 
 | File | Owns |
 | --- | --- |
 | [physician.mmd](physician.mmd) | The spec: the ideal behavior of the full product for every user. It covers what people see and how things act and work for them. |
-| [decisions.md](decisions.md) | Why: Dev's dated decisions and the audit findings the graph rests on. |
+| [Intent specs](../../intent/README.md) | Why: the product intent, Dev's decisions and their sources. |
 | [infrastructure-gaps.md](infrastructure-gaps.md) | What the graph leaves to the runtime, and what the runtime must still guarantee. |
 | [journeys.md](journeys.md) | Useful outcomes a physician reaches, replayed from the graph's start by `statechart.mjs journey`; it fails when the graph stops allowing one. |
 | [coverage.md](coverage.md) | What the Rust app shows today for each graph state: built, partial, missing or not shown, and whether the server data exists. `statechart.mjs coverage` checks it against the graph. |
@@ -41,8 +45,8 @@ behaves goes in the graph first, and sign-in.mmd and the map follow.
 The graph is the spec. It is written from Dev's intent and the settled sources,
 never from existing code. Verification models derive from it.
 
-Its hard limits are the four in decisions.md's Charter: access, communication
-standards, data and consent, and owner consistency. Each limit names the line it
+Its hard limits are the ones in [PRINCIPLES.md](../../intent/PRINCIPLES.md): access, communication,
+data and consent. Each limit names the line it
 protects, and everything Coda judges is a "may".
 
 It describes the ideal state. Runtime capacity, retries, timeouts, interruptions
@@ -51,8 +55,7 @@ outside world stay in the graph.
 
 ## Changing it
 
-Change the behavior in physician.mmd and record the reason in decisions.md in the
-same commit. When a source is silent or two sources conflict, ask Dev, one
+Change the intent in [the intent specs](../../intent/README.md) first, then the chart. When a source is silent or two sources conflict, ask Dev, one
 question at a time. The graph's syntax and the tool are described in
 [the statechart skill](../../.agents/skills/coda-statechart/SKILL.md) and its
 [compiler reference](../../.agents/skills/coda-statechart/references/compiler.md).
