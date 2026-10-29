@@ -17,7 +17,8 @@ def lightweight_path(path):
     return (
         path in {"README.md", "AGENTS.md", "CLAUDE.md"}
         or path.startswith((".agents/skills/", ".claude/skills/", "book/"))
-        or (path.startswith("intent/") and path.endswith(".md"))
+        or (path.startswith(("intent/", "verification/")) and path.endswith(".md"))
+        or (path.startswith("infra/") and path.endswith("/README.md"))
     )
 
 
