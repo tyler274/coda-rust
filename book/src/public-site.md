@@ -787,9 +787,9 @@ and `service_account: public-site-ci-deployer@coda-health-staging.iam.gserviceac
 ### CI deploy on push to main
 
 The `deploy-public-site-staging` job in
-[`.github/workflows/ci.yml`](/.github/workflows/ci.yml) redeploys staging from every
-push to `main`, after `ci` (unit, service, storage and HTTP checks) and
-`cargo-deny` pass. It runs only when the repository variable
+[`.github/workflows/ci.yml`](/.github/workflows/ci.yml) redeploys staging from
+pushes to `main` selected for full validation, after `CI result` passes.
+Engineering-skills/docs-only pushes skip deployment. It runs only when the repository variable
 `PUBLIC_SITE_STAGING_DEPLOY` is `enabled`; unset it to stop deploys without
 editing the workflow. The GitHub `staging` environment allows only the `main`
 branch to deploy, which matches the provider's attribute condition. The job:

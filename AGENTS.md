@@ -83,7 +83,17 @@ Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`,
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 
-Routine CI runs unit, service, storage and HTTP checks across the workspace. Browser qualification is explicit: run the ignored browser tests locally, or dispatch the CI workflow manually. A green routine CI run does not establish browser qualification.
+Prefer local iteration: exercise the affected behavior, investigate failures, and
+verify corrections before pushing another revision. Choose checks by affected
+contracts and dependencies; use hosted CI for shared integration and environment
+confirmation. Report missing local capabilities and remaining proof honestly.
+
+CI uses [ci_scope.py](scripts/ci_scope.py) to select lightweight documentation and
+engineering-skill checks or the full workspace suite. Runtime clinical `skills/`
+remain product inputs. The `CI result` check requires every selected job to pass;
+skills/docs-only main pushes do not deploy. Browser qualification remains explicit:
+run ignored browser tests locally or dispatch CI manually for full qualification.
+See [local CI checks](README.md#local-ci-checks).
 
 CI runs on Blacksmith runners, which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. The `ci` job uses `blacksmith-4vcpu-ubuntu-2404` and `cargo-deny` uses `blacksmith-2vcpu-ubuntu-2404`. `.actrc` maps both labels to the `act` image, and [`.github/actionlint.yaml`](.github/actionlint.yaml) declares them. To roll back, set `runs-on` to `ubuntu-latest`.
 

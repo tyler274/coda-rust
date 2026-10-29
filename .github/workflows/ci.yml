@@ -6,13 +6,100 @@ on:
   push:
     branches: [main]
 
+# Only a newer revision of the same PR cancels validation. Main pushes and
+# manual runs remain distinct; deployment concurrency stays with each deploy job.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 permissions:
   contents: read
   # Saving the Rust build cache needs this. The default token is contents-only.
   actions: write
 
 jobs:
+  scope:
+    name: Select CI scope
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+    outputs:
+      full: ${{ steps.select.outputs.full }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Classify the complete change
+        id: select
+        run: python3 scripts/ci_scope.py select
+
+  lightweight:
+    name: Documentation and engineering skills
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Install skill-validation dependency
+        run: python3 -m pip install -r scripts/ci-requirements.txt
+      - name: Test CI selection and skill validation
+        run: python3 -m unittest discover -s scripts -p 'test_ci_*.py' -v
+      - name: Validate engineering skills and script syntax
+        run: python3 scripts/check_engineering_skills.py
+      - name: Test PR review launcher without model calls
+        run: python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
+      - name: Install mdBook
+        run: |
+          version=0.4.52
+          archive="mdbook-v${version}-x86_64-unknown-linux-gnu.tar.gz"
+          url="https://github.com/rust-lang/mdBook/releases/download/v${version}/${archive}"
+          curl -fsSL "$url" -o "/tmp/${archive}"
+          echo "c0b903f01dd8f4edc644372ad2b80b1fdddd12552d37b6a098657cbd8eddd768  /tmp/${archive}" | sha256sum -c -
+          tar -xzf "/tmp/${archive}" -C /tmp
+          install -m 755 /tmp/mdbook "${CARGO_HOME:-$HOME/.cargo}/bin/mdbook"
+          mdbook --version
+      # lychee 0.24.2 matches flake `lychee`. Static musl build, so it does
+      # not depend on the runner's glibc.
+      - name: Install lychee
+        run: |
+          version=0.24.2
+          archive="lychee-x86_64-unknown-linux-musl.tar.gz"
+          url="https://github.com/lycheeverse/lychee/releases/download/lychee-v${version}/${archive}"
+          curl -fsSL "$url" -o "/tmp/${archive}"
+          echo "73657a111819a30c47c08352896796f23d64e4eb2b3ed39b6d32149241566fc5  /tmp/${archive}" | sha256sum -c -
+          tar -xzf "/tmp/${archive}" -C /tmp
+          install -m 755 /tmp/lychee-x86_64-unknown-linux-musl/lychee "${CARGO_HOME:-$HOME/.cargo}/bin/lychee"
+          lychee --version
+      - name: Check engineering-skill references
+        run: lychee --offline --no-progress --include-fragments --root-dir "$PWD" '.agents/skills/**/*.md'
+      - name: Build the book and check its links
+        run: scripts/check-book-links.sh
+
+  result:
+    name: CI result
+    if: always()
+    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny]
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Require every selected check to pass
+        env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+        run: python3 scripts/ci_scope.py result
+
   ci:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.full == 'true'
     # Blacksmith runner (ENG-76): same image as GitHub's ubuntu-24.04, and
     # actions/cache talks to Blacksmith's colocated cache with no change.
     # 4 vCPU because this job compiles the workspace; cargo-deny below stays
@@ -57,8 +144,6 @@ jobs:
           node-version: '22'
       - name: Test Doppler release and security watch
         run: node --test crates/workspace-tools/tests/doppler-watch.test.cjs
-      - name: Test PR review launcher without model calls
-        run: python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
       - name: Test staging image handoff
         run: python3 -m unittest discover -s scripts -p 'test_staging_images.py' -v
       # Preinstalled SDKs are unused here and leave no room to archive target
@@ -90,10 +175,7 @@ jobs:
         with:
           components: rustfmt, clippy
           targets: wasm32-unknown-unknown
-      # Release binaries, not `cargo install`. wasm-bindgen 0.2.129 matches
-      # flake `wasm-bindgen-cli_0_2_129`. mdbook 0.4.52 is the pin this job
-      # already compiled. The locked nixpkgs mdbook is newer; CI stays on
-      # the version the book build already runs.
+      # Release binary, not `cargo install`; matches the flake pin.
       - name: Install wasm-bindgen
         run: |
           version=0.2.129
@@ -104,28 +186,6 @@ jobs:
           tar -xzf "/tmp/${archive}" -C /tmp
           install -m 755 "/tmp/wasm-bindgen-${version}-x86_64-unknown-linux-musl/wasm-bindgen" "${CARGO_HOME:-$HOME/.cargo}/bin/wasm-bindgen"
           wasm-bindgen --version
-      - name: Install mdBook
-        run: |
-          version=0.4.52
-          archive="mdbook-v${version}-x86_64-unknown-linux-gnu.tar.gz"
-          url="https://github.com/rust-lang/mdBook/releases/download/v${version}/${archive}"
-          curl -fsSL "$url" -o "/tmp/${archive}"
-          echo "c0b903f01dd8f4edc644372ad2b80b1fdddd12552d37b6a098657cbd8eddd768  /tmp/${archive}" | sha256sum -c -
-          tar -xzf "/tmp/${archive}" -C /tmp
-          install -m 755 /tmp/mdbook "${CARGO_HOME:-$HOME/.cargo}/bin/mdbook"
-          mdbook --version
-      # lychee 0.24.2 matches flake `lychee`. Static musl build, so it does
-      # not depend on the runner's glibc.
-      - name: Install lychee
-        run: |
-          version=0.24.2
-          archive="lychee-x86_64-unknown-linux-musl.tar.gz"
-          url="https://github.com/lycheeverse/lychee/releases/download/lychee-v${version}/${archive}"
-          curl -fsSL "$url" -o "/tmp/${archive}"
-          echo "73657a111819a30c47c08352896796f23d64e4eb2b3ed39b6d32149241566fc5  /tmp/${archive}" | sha256sum -c -
-          tar -xzf "/tmp/${archive}" -C /tmp
-          install -m 755 /tmp/lychee-x86_64-unknown-linux-musl/lychee "${CARGO_HOME:-$HOME/.cargo}/bin/lychee"
-          lychee --version
       - name: Rustc version
         id: rustc
         run: |
@@ -312,9 +372,8 @@ jobs:
         if: steps.rust-cache.outputs.cache-hit != 'true' && steps.cache-payload.outputs.include_target != 'true'
         run: |
           echo "::warning::Compiled target was not cached. The next run may build cold; test results are unaffected."
-      # A full proof target once left no room to compile mdbook (run
-      # 38686057176, ENOSPC). mdbook is now a prebuilt binary. After the
-      # clean, cargo doc recompiled 215 crates (2.5 min, run 39452707783).
+      # After a clean, cargo doc recompiled 215 crates (2.5 min,
+      # run 39452707783).
       # With the cache saved, 30 GB was still free at this point on
       # ubuntu-latest. The clean runs only when free space drops under
       # 15 GiB, so docs can reuse the dependency metadata already built.
@@ -328,15 +387,12 @@ jobs:
           else
             echo "${avail_gib} GiB free; keeping target for cargo doc"
           fi
-      # Builds the book, then checks its links offline. Absolute /crates/,
-      # /infra/ and /scripts/ links resolve against the checkout. Submodules
-      # are not checked out here, so links into them are checked locally.
-      - name: Build the book and check its links
-        run: scripts/check-book-links.sh
       - name: Build the rustdoc
         run: cargo doc --no-deps --workspace
 
   foundations:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.full == 'true'
     name: Offline cloud foundation contracts
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
@@ -369,6 +425,8 @@ jobs:
   # runs them locally; this job pushes nothing. deploy-staging publishes them to
   # Artifact Registry on main (ENG-167).
   images:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.full == 'true'
     name: Locked Nix images (build, run, migrate; no push)
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 90
@@ -455,6 +513,8 @@ jobs:
           compression-level: 0
 
   postgres:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.full == 'true'
     name: Fresh Postgres migrations and tests
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
@@ -519,8 +579,8 @@ jobs:
   # variable PUBLIC_SITE_STAGING_DEPLOY is `enabled`.
   deploy-public-site-staging:
     name: Deploy public site to staging
-    needs: [ci, cargo-deny]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'
+    needs: [scope, result]
+    if: needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'
     runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 45
     concurrency:
@@ -642,11 +702,11 @@ jobs:
   # replaces these steps once its producers exist (book/src/gcp.md).
   deploy-staging:
     name: Deploy staging
-    needs: [ci, foundations, images, postgres, cargo-deny]
+    needs: [scope, result, images]
     # Off unless the repository variable RUST_STAGING_DEPLOY is `enabled`; the
     # GitHub `staging` environment holds the coda-rust-staging WIF provider,
     # deployer service account, project and region (book/src/gcp.md).
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'
+    if: needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 120
     concurrency:
@@ -762,6 +822,8 @@ jobs:
   # shell. Providers download, but no backend initializes and no plan
   # touches a real project: the tests run against mock providers.
   observability:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.full == 'true'
     name: Collector config and observability OpenTofu
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 20
@@ -799,6 +861,8 @@ jobs:
   # deny.toml is the single policy file; the nix dev shell carries the same
   # cargo-deny so `nix develop .#agent --command cargo deny check` matches this job.
   cargo-deny:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.full == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
       - name: Check out repository

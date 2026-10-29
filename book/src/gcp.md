@@ -451,13 +451,17 @@ Run everything below in `nix develop` from an up-to-date `main` checkout. That
 shell has `gcloud`, `tofu`, `doppler` and `jq`.
 
 1. **Confirm the code is live.** The site that queues turns and
-   `physician-worker` must be on `main`, and the latest `deploy-staging` run on
-   `main` must be green. Applying before that sets the topic on a site that does
-   not read it.
+   `physician-worker` must be on `main`, and a push run for the intended release
+   must have a successful `Deploy staging` job. Skills/docs-only pushes skip that
+   job, so overall CI success is not deployment evidence. Applying before the
+   required code is deployed sets the topic on a site that does not read it.
 
    ```bash
-   gh run list --workflow ci.yml --branch main --event push --limit 1 \
-     --json headSha,conclusion,url
+   gh run list --workflow ci.yml --branch main --event push --limit 10 \
+     --json databaseId,headSha,conclusion,url
+   # Select the run for the intended release SHA, then inspect its deploy job.
+   gh run view RUN_ID --json headSha,url,jobs \
+     --jq '{headSha,url,deployments:[.jobs[] | select(.name == "Deploy staging") | {conclusion,url}]}'
    ```
 
 2. **Raise the budget alert** (billing administrator). Expected fixed spend

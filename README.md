@@ -74,6 +74,27 @@ agent CLIs and sandbox lifecycle belong to
 [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/packages/sandbox-images).
 The hook prepares the store; subsequent commands still enter the Nix shell.
 
+### Local CI checks
+
+From the repository's agent dev shell, install the small validation dependency
+into a virtual environment and run the same lightweight checks as CI:
+
+```sh
+python3 -m venv /tmp/coda-ci-venv
+/tmp/coda-ci-venv/bin/pip install -r scripts/ci-requirements.txt
+/tmp/coda-ci-venv/bin/python -m unittest discover -s scripts -p 'test_ci_*.py' -v
+/tmp/coda-ci-venv/bin/python scripts/check_engineering_skills.py
+/tmp/coda-ci-venv/bin/python -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
+lychee --offline --no-progress --include-fragments --root-dir "$PWD" '.agents/skills/**/*.md'
+scripts/check-book-links.sh
+```
+
+[ci_scope.py](scripts/ci_scope.py) owns the lightweight path categories. Other or
+mixed changes keep the full suite; missing Git comparison data also selects it.
+PRs use their complete diff from the merge base, and main pushes use the full
+before/after range. Manual dispatch retains full browser qualification. New PR
+revisions cancel superseded CI runs, without cancelling main deployment runs.
+
 ### Dev container
 
 The same workspace runs in a VS Code Dev Container whose `dev` service executes
