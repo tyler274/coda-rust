@@ -232,7 +232,7 @@ Direction note, not a behavior: Dev wants an open-source, delightful chat implem
 - A background launch on a locked iPhone never erases data, and the app covers its screen whenever it is inactive, so the app switcher never shows health content [linear:ENG-23#Don't repeat; claude:f015cdb7-6ce6-4eab-b205-e57ef8748881.jsonl@2026-10-03T03:23:12.689Z; claude:ee8be406-5163-4a73-9bc3-963c74e8fad8.jsonl@2026-10-01T16:48:20.292Z].
 - Duet never writes back to sources (site) [website:duet].
 - Continuous sensor data never leaves the phone, but each reading the person takes, such as every blood-pressure reading, reaches the server as its own measurement [claude:f015cdb7-6ce6-4eab-b205-e57ef8748881.jsonl@2026-10-03T20:50:01.123Z; coda-app/docs/behaviour-contract.md:51 (doc)]. The phone calculates only what keeping raw samples on the phone requires; every other calculation runs on the server [codex:rollout-2026-09-09T17-33-57-01a08817-8449-7361-9edf-b221dec5@2026-09-14T15:37:21.086Z; codex:rollout-2026-09-09T17-33-57-01a08817-8449-7361-9edf-b221dec5@2026-09-17T14:13:36.661Z].
-- Duet uses no web search. It grounds in Coda's clinical library and the person's records [claude:3807bac9-d671-4fb1-a620-0fbc423d3e71.jsonl@2026-10-21T16:50:45.466Z; linear:Duet#Patient-facing help; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:31.977Z (chosen)]. Dev: "I think clinical library only because it would be very difficult to prove that it de-identified queries properly." Research on how other health AIs handle this backs it (DECISIONS.md Q12) [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:31.977Z (chosen)].
+- Duet uses no web search. It grounds in Coda's clinical library and the person's records [claude:3807bac9-d671-4fb1-a620-0fbc423d3e71.jsonl@2026-10-21T16:50:45.466Z; linear:Duet#Patient-facing help; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:31.977Z (chosen)]. Dev: "I think clinical library only because it would be very difficult to prove that it de-identified queries properly." Research on how other health AIs handle this backs it [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:31.977Z (chosen)].
 
 **Consent and data**
 - A model call requires accepted Terms, AI permission and the operator switch [linear:ENG-161#Done when].
@@ -274,13 +274,14 @@ Direction note, not a behavior: Dev wants an open-source, delightful chat implem
 This spec is MVP behavior. Later capabilities are added as connected specs once they are decided for release [claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-25T04:32:14.525Z].
 
 **In MVP**
-- Duet on iPhone and Android, running on coda-rust and connected to the first practice through Connected care [linear:coda-rust platform#The MVP].
+- Duet on iPhone and Android, running on coda-rust and connected through Connected care [linear:coda-rust platform#The MVP]. A person may connect to more than one practice, each separately: "No, the MVP should not just allow one connection." [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]
 - Sign-up, the AI notice, Terms, AI permission, preferences, export, deletion and sign-out [linear:ENG-161#What the person can do].
 - One continuous conversation with citations, corrections and reply feedback [linear:ENG-26#What the person can do; claude:04e60e17-14f8-420f-b5b5-c53f7e92e268.jsonl@2026-09-23T03:12:12.459Z].
 - Portal records (Epic/MyChart and Oracle Health first, plus athena once established, and healow), Apple HealthKit and Health Connect [linear:ENG-162#Priority and source scope; linear:Duet#The rulebook].
 - Notes and medications the person enters [claude:bbe5dff2-f358-4006-98a2-9930babf8314.jsonl@2026-10-26T18:58:16.345Z; linear:ENG-39#What the patient and physician can do].
 - Today with Duet's own work, insights, Plans, Reminders, Check-ins, the doctor's plan, and push [linear:coda-rust platform#Journeys; linear:ENG-34#What the person can do; linear:ENG-45#Decided].
 - The patient-owned For my doctor workspace, with patient-provided and connected-practice appointment context, sent to the connected practice by the patient [linear:ENG-169#Why it matters; linear:coda-rust platform#Scope; codex:rollout-2026-10-24T00-21-44-01a16c24-a7c6-7793-9396-92b1a41d@2026-10-24T04:50:29.373Z].
+- Before real patients, clinical and regulatory qualification of the patient-facing functions [linear:Duet#Patient-facing help].
 - Everything once planned as premium is built and free for everyone [linear:coda-rust platform#Scope; claude:1832669a-01e1-4365-916f-ae03e08161f4.jsonl@2026-10-20T20:42:55.700Z].
 
 **Out**
@@ -298,6 +299,11 @@ This spec is MVP behavior. Later capabilities are added as connected specs once 
 - A universal medical record [codex:rollout-2026-09-05T00-55-51-01a06fec-4b23-7ce1-bd52-d35ff259@2026-09-05T14:16:25.881Z].
 - Genome, with existing DNA data deleted [claude:f015cdb7-6ce6-4eab-b205-e57ef8748881.jsonl@2026-10-02T22:01:10.875Z].
 - Recording doctor visits [claude:f015cdb7-6ce6-4eab-b205-e57ef8748881.jsonl@2026-10-01T19:42:04.911Z].
+- MedDecider has no MVP role; the decisions-API idea waits with NPI matching [codex:rollout-2026-10-21T16-08-06-01a16014-0209-7d01-a2bd-e5b72d31@2026-10-22T19:46:29.608Z].
+
+**Removed** (an older source may still describe these)
+- Plans and Check-ins on the companion's card. Accepted care lives on Today, the care home [codex:rollout-2026-10-20T23-29-08-01a15c81-6d66-7c00-8ba7-351f7c7e@2026-10-21T13:55:59.428Z; linear:ENG-168#Direction Dev has agreed].
+- A fixed list of thumbs-down reasons. Dev's Sept 23 pick included one; PRINCIPLES.md 6 and 9 rule it out, so feedback is an optional note [claude:04e60e17-14f8-420f-b5b5-c53f7e92e268.jsonl@2026-09-23T20:18:07.838Z].
 
 **Later**
 - Sharing with physicians outside Coda through a reviewed link, chosen on Oct 13 for V1, the founding practices' day-90 horizon (about Q1 2027) [linear:ENG-169#Post-MVP sharing with physicians outside Coda; claude:07b69ca9-4860-49e2-b5ff-feea7e7e6130.jsonl@2026-10-13T14:59:24.011Z].
@@ -312,6 +318,7 @@ This spec is MVP behavior. Later capabilities are added as connected specs once 
 - Photo, PDF and recorded or live voice input, which need their own scope decision (doc) [coda-app/docs/north-star.md:335].
 - Per-user automations in production (the "heartbeat" idea), parked [codex:rollout-2026-09-18T12-25-14-01a0b556-1d40-70c3-bbcc-4bc49784@2026-09-18T17:37:42.803Z].
 - A measured capacity claim for 100, 1,000 or 10,000 users (doc) [coda-app/docs/personal-agent-program.md:118].
+- A search index covered by a BAA, as the way past the clinical library; until then Duet uses no web search [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:31.977Z].
 - A patient-state foundation model, trained on data collected over time [codex:rollout-2026-09-17T10-12-36-01a0afb6-513f-7f02-b349-2f830eb0@2026-09-17T16:32:08.799Z].
 
 ## 7. Harness boundary

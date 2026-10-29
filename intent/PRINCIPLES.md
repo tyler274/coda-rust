@@ -5,7 +5,7 @@ These govern everything below them: physician.md, duet.md, connected-care.md, ha
 ## Order of authority
 
 1. **These principles.**
-2. **Dev's later explicit decisions** (DECISIONS.md, "Decided by Dev").
+2. **Dev's later explicit decisions**, cited on the spec lines they changed.
 3. **Dev's feature choices and approvals** in sessions. These include multiple-choice picks and "I agree" replies to proposals.
 4. **Linear.**
 5. **Old docs and the website.**
