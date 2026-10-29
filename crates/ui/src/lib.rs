@@ -10,9 +10,11 @@ use dioxus::prelude::*;
 
 mod cards;
 mod charts;
+mod conversation;
 mod icons;
 pub use cards::{Card, LaterContext, Quote, StepList};
 pub use charts::{Comparison, ComparisonBars, MeasurementTile, Sparkline, TrendChart, Value};
+pub use conversation::{ChatHeader, ContextChip, DateSeparator, Receipt, Suggestion};
 pub use icons::{Icon, IconName};
 
 /// The `STYLESHEET` constant.
@@ -401,6 +403,9 @@ pub fn Composer(
     on_submit: EventHandler<String>,
     /// Whether the words have focus.
     on_editing: Option<EventHandler<bool>>,
+    /// What the person brought in, held above the words: a `ContextChip`.
+    #[props(default)]
+    context: Option<Element>,
     children: Element,
 ) -> Element {
     let held = value.clone();
@@ -415,6 +420,7 @@ pub fn Composer(
                 });
                 on_submit.call(submitted_text(typed.as_deref(), &held));
             },
+            {context}
             textarea {
                 class: "composer-input",
                 name: "draft",

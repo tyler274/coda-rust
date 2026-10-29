@@ -278,3 +278,24 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .quote::after { content: close-quote; }
 .later-context { display: grid; gap: var(--space-2); padding: var(--space-4); border-inline-start: var(--stroke) solid var(--outline); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--data-container); }
 .later-context .quote { font: var(--type-body-md); }
+/* The conversation's frame, after the October 21 mockups. */
+.chat-header { position: relative; display: flex; align-items: center; justify-content: center; min-height: 60px; padding: 0 var(--space-5);
+  border-bottom: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); }
+.chat-name { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--ink); font: var(--type-title-sm); }
+.chat-back { position: absolute; inset-inline-start: var(--space-3); display: inline-flex; align-items: center; gap: var(--space-hair); min-height: var(--target);
+  padding: 0 var(--space-2); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
+.chat-back-chevron .icon { transform: rotate(90deg); }
+.date-separator { margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); text-align: center; }
+.context-chip { display: flex; align-items: center; gap: var(--space-2); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0; padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
+  border-bottom: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-field) var(--radius-field) 0 0; background: var(--data-container); color: var(--on-data-container); font: var(--type-body-sm); }
+.context-chip-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.context-chip-remove { display: inline-grid; place-items: center; flex: none; width: var(--target); height: var(--target); margin-block: calc(-1 * var(--space-2)); border: 0; border-radius: var(--radius-pill); background: transparent; color: inherit; cursor: pointer; }
+.suggestion { align-self: flex-start; max-width: 94%; min-height: var(--target); padding: var(--space-3) var(--space-4); border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-lg); background: var(--surface-low); color: var(--body); font: var(--type-body-sm); }
+.receipt { display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%; padding: var(--space-4); border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-lg); background: var(--surface-lowest); box-shadow: var(--elevation-1); }
+.receipt-icon { display: inline-grid; place-items: center; flex: none; width: var(--avatar-lg); height: var(--avatar-lg); border-radius: var(--radius-md); background: var(--data-container); color: var(--on-data-container); }
+.receipt-text { flex: 1; min-width: 0; }
+.receipt-text strong { display: block; color: var(--ink); font: var(--type-title-md); }
+.receipt-text small { display: block; margin-top: var(--space-hair); color: var(--muted); font: var(--type-body-sm); }
+.message > .receipt { margin-top: var(--space-3); }

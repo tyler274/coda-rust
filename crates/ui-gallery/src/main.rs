@@ -7,11 +7,12 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CommandNotice, CommandStage,
-    Comparison, ComparisonBars, Composer, Dialog, Disclosure, Icon, IconName, LaterContext,
-    ListRow, LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Overline,
-    Placeholder, Quote, ReadNotice, ReadStage, RowGroup, SectionHeader, SourcesButton, Sparkline,
-    StatePill, StatusLine, StepList, TabBar, Tone, TrendChart, Value, WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, ChatHeader, CitationChip, CommandNotice,
+    CommandStage, Comparison, ComparisonBars, Composer, ContextChip, DateSeparator, Dialog,
+    Disclosure, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile, Message,
+    NavigationControl, NavigationRow, Overline, Placeholder, Quote, ReadNotice, ReadStage, Receipt,
+    RowGroup, SectionHeader, SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion,
+    TabBar, Tone, TrendChart, Value, WorkingMark,
 };
 
 fn main() {
@@ -80,6 +81,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
                     ChartDemo {}
+                }
+                Section { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads back to saved work, and what the person brought in, held above the words.",
+                    FrameDemo {}
                 }
                 Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
                     ConversationDemo {}
@@ -398,6 +402,50 @@ fn ConversationDemo() -> Element {
         if source_open() {
             Dialog { sheet: true, title: "Sleep note", on_close: move |_| source_open.set(false),
                 p { class: "gallery-copy", "About seven hours, from the sleep note." }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn FrameDemo() -> Element {
+    let mut attached = use_signal(|| true);
+    let mut draft = use_signal(String::new);
+    rsx! {
+        div { class: "gallery-phone",
+            ChatHeader {
+                name: "Sprout",
+                mark: rsx! { span { class: "gallery-companion", aria_hidden: "true" } },
+                back: "Back",
+                on_back: move |_| {},
+            }
+            div { class: "gallery-phone-thread",
+                DateSeparator { date: "Wednesday, October 21" }
+                Message { author: Author::Assistant, p { "What would you like to work through?" } }
+                Suggestion { text: "Help me keep a simple wind-down plan for this week.", onclick: move |_| {} }
+                Message { author: Author::Assistant,
+                    p { "Saved. You can change it any time from Today." }
+                    Receipt { icon: IconName::Check, title: "Evening wind-down", detail: "Plan saved · open the current version", onclick: move |_| {} }
+                }
+            }
+            Composer {
+                label: "Message Sprout",
+                placeholder: "Message Sprout",
+                value: draft(),
+                on_input: move |text| draft.set(text),
+                on_submit: move |_| draft.set(String::new()),
+                context: rsx! {
+                    if attached() {
+                        ContextChip {
+                            icon: IconName::File,
+                            text: "About: Sleep · October 14–21 · Apple Health",
+                            remove_label: "Remove Sleep from this message",
+                            on_remove: move |_| attached.set(false),
+                        }
+                    }
+                },
+                Button { variant: ButtonVariant::Primary, compact: true, icon_only: true, submit: true, aria_label: "Send", Icon { name: IconName::ArrowUp } }
             }
         }
     }
