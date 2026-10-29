@@ -2,8 +2,8 @@
 
 > **Charts are rebuilt one journey at a time from the [intent specs](../intent/README.md)**, under
 > `physician/`, `duet/` and `connected-care/`, starting with
-> [physician sign-in](physician/sign-in/README.md). The older whole-app graphs were removed on
-> 2026-10-29; the specs govern every journey not yet charted.
+> [physician sign-in](physician/sign-in/README.md). The specs govern every journey not yet
+> charted.
 
 Coda ports [PStack](#provenance) to Verus and connects agreed product journeys to
 Rust owners and running-app evidence. The five general skills establish or repair
@@ -69,8 +69,7 @@ fails when a change strands one. The same file opens in Stately Sketch for revie
 
 ## Connect the harness through events
 
-The harness stays out of the chart and meets it only at declared events (Dev
-2026-10-26). An agent's event is the harness's output, and each tool it admits is
+The harness stays out of the chart and meets it only at declared events. An agent's event is the harness's output, and each tool it admits is
 one such event: the product host checks that event's `needs` before the effect
 commits, and the model decides when to use it. Retries, timeouts, cadence, memory
 and prompts stay in the harness, whose guarantees the
@@ -150,7 +149,7 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Chart semantics, guards and user-facing traces | XState machines and its graph search instead of PStack's Mermaid parser; Verus generation with editable induction proofs. |
-| Per-journey charts labeled as the screen, one never-rule per agreed sentence and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts are XState machines that cite intent spec IDs, checked with XState's graph search and reviewed in Stately Sketch; every chart also gets a Verus proof. |
+| Per-journey charts labeled as the screen, one never-rule per agreed sentence and replaying bugs against code | Charts are XState machines that cite intent spec IDs, checked with XState's graph search and reviewed in Stately Sketch; every chart also gets a Verus proof. |
 | Top-level parallel regions only | Top-level parallel regions with flat states, as Verus can state them; events declared with cause and intent in `meta.events`. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model

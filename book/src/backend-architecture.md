@@ -113,5 +113,4 @@ Duet owner suites `conversation_proof`, `provisional_stream`, `skills_accounting
 Loop consolidation preserves the current admitted capabilities, not completion
 of the saved-routine journey or full D1 acceptance. These suites and image smoke tests establish their
 exercised persistence/startup paths, not sign-in, installed-client or clinical
-qualification. Historical dependency-upgrade proof remains in
-[PR #36](https://github.com/Coda-Health/coda-rust/pull/36).
+qualification.

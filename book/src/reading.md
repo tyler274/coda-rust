@@ -63,7 +63,6 @@ or porting a behavior. Do not recreate a chapter for every historical heading.
 
 - [Original Duet documentation](https://github.com/Coda-Health/coda-app/tree/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs): behavior, clinical catalogs and licenses, privacy, historical iOS/TestFlight release packets, scenario and insight research.
 - [Original physician documentation](https://github.com/Coda-Health/coda-agents/tree/5674d0f13895214e0a633fc81176107f2e28f79d/docs): architecture, runtime protocol, physician experience, care-team operations and readiness.
-- [October 21 Rust design review](https://linear.app/coda-health/document/duet-rust-review-input-for-tylers-design-pass-a6562ebd1c45): dated observations, not a current implementation inventory or acceptance contract.
 - <a href="/submodules/coda-gym/README%2Emd">Coda Gym</a> and <a href="/submodules/Coda-Computer-Use/README%2Emd">computer use</a> retain their own task packages, source evidence and operating instructions; neither has a Rust product crate here.
 
 Fixtures, generated API contracts, published legal text and active verification
