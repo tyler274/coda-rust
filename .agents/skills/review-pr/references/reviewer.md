@@ -116,12 +116,16 @@ Distinguish new findings from earlier ones. For a human decision, name the decis
 appropriate owner, options, recommendation, and what cannot proceed without an answer.
 Do not resolve threads; publication does not grant resolution or merge authority.
 
-Lead with the conclusion about the approach, then material findings, decisions,
-and evidence limits. Give exact inspected locations and revisions. Group
-common-cause symptoms into one finding with affected paths; do not force a
-cross-cutting concern onto an arbitrary diff line. For a batch, cover each target
-and the combined outcome in the same response. If a target advances, inspect
-the relevant delta or state that the new revision remains unreviewed.
+Lead with whether the change achieves its intended purpose and the most consequential
+finding or decision. Prioritize credible failures with meaningful consequences;
+distinguish serious rare risks from speculative low-impact possibilities. Group
+shared causes, keep optional polish out of blocking findings, and stop when the
+intended outcome and necessary proof are complete.
+
+Give exact inspected locations, revisions, affected paths, and evidence limits;
+do not force a cross-cutting concern onto an arbitrary diff line. For a batch,
+cover each target and the combined outcome in the same response. If a target
+advances, inspect the relevant delta or state that the new revision remains unreviewed.
 
 Allow a clean result without a finding quota. A favorable review does not
 establish deployed readiness or authorize merging. Suggested replacement code
