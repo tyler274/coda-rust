@@ -85,8 +85,8 @@ run "staging_origin_is_protected" {
     error_message = "Staging must not provision any ALB, NEG, CDN, IP or TLS frontend."
   }
   assert {
-    condition     = output.load_balancer_ip == null && !output.cdn_enabled && length(var.certificate_ids) == 0
-    error_message = "Staging must need no external certificate, reserved address or CDN."
+    condition     = output.load_balancer_ip == null && !output.cdn_enabled && length(var.domains) == 0 && length(google_certificate_manager_certificate.site) == 0 && length(google_certificate_manager_certificate_map_entry.site) == 0
+    error_message = "Staging must need no load-balancer certificate, reserved address or CDN."
   }
   assert {
     condition     = local.runtime_env.APP_ENV == "staging" && local.runtime_env.PUBLIC_SITE_LISTEN_ADDR == "0.0.0.0:8080" && local.runtime_env.PUBLIC_SITE_IAP_AUDIENCE == "/projects/134570912572/locations/us-east1/services/public-site-staging" && output.iap_audience == local.runtime_env.PUBLIC_SITE_IAP_AUDIENCE
@@ -135,7 +135,7 @@ run "production_respects_origin_cache_headers" {
   }
   variables {
     environment       = "production"
-    certificate_ids   = ["projects/public-site-test/global/sslCertificates/test"]
+    domains           = ["codahealth.ai", "www.codahealth.ai"]
     physician_app_url = null
   }
   assert {
@@ -155,8 +155,12 @@ run "production_respects_origin_cache_headers" {
     error_message = "Production Cloud Run requires a serverless NEG behind the global external ALB."
   }
   assert {
-    condition     = length(google_compute_url_map.site) == 1 && length(google_compute_global_address.site) == 1 && google_compute_global_forwarding_rule.https[0].port_range == "443" && google_compute_global_forwarding_rule.https[0].load_balancing_scheme == "EXTERNAL_MANAGED" && google_compute_global_forwarding_rule.https[0].network_tier == "PREMIUM" && google_compute_ssl_policy.site[0].min_tls_version == "TLS_1_2" && google_compute_ssl_policy.site[0].profile == "MODERN" && google_compute_target_https_proxy.site[0].ssl_certificates == tolist(var.certificate_ids)
+    condition     = length(google_compute_url_map.site) == 1 && length(google_compute_global_address.site) == 1 && google_compute_global_forwarding_rule.https[0].port_range == "443" && google_compute_global_forwarding_rule.https[0].load_balancing_scheme == "EXTERNAL_MANAGED" && google_compute_global_forwarding_rule.https[0].network_tier == "PREMIUM" && google_compute_ssl_policy.site[0].min_tls_version == "TLS_1_2" && google_compute_ssl_policy.site[0].profile == "MODERN" && google_compute_target_https_proxy.site[0].certificate_map == "//certificatemanager.googleapis.com/${google_certificate_manager_certificate_map.site[0].id}"
     error_message = "Production must retain its reserved IP and HTTPS/TLS frontend."
+  }
+  assert {
+    condition     = google_certificate_manager_certificate.site[0].managed[0].domains == tolist(["codahealth.ai", "www.codahealth.ai"]) && length(google_certificate_manager_certificate.site[0].managed[0].dns_authorizations) == 2 && google_certificate_manager_dns_authorization.site["www.codahealth.ai"].domain == "www.codahealth.ai" && google_certificate_manager_certificate_map_entry.site["codahealth.ai"].hostname == "codahealth.ai" && google_certificate_manager_certificate_map_entry.site["www.codahealth.ai"].hostname == "www.codahealth.ai"
+    error_message = "Apex and www must share one DNS-authorized managed certificate, each with its own map entry."
   }
   assert {
     condition     = google_compute_global_forwarding_rule.http[0].port_range == "80" && google_compute_global_forwarding_rule.http[0].ip_address == google_compute_global_forwarding_rule.https[0].ip_address && google_compute_url_map.http_redirect[0].default_url_redirect[0].https_redirect && google_compute_url_map.http_redirect[0].default_url_redirect[0].redirect_response_code == "PERMANENT_REDIRECT" && !google_compute_url_map.http_redirect[0].default_url_redirect[0].strip_query
@@ -184,12 +188,21 @@ run "audience_tracks_service_inputs" {
   }
 }
 
-run "reject_production_without_certificate" {
+run "reject_production_without_domains" {
   command = plan
   variables {
     environment = "production"
   }
-  expect_failures = [google_compute_target_https_proxy.site]
+  expect_failures = [google_certificate_manager_certificate.site]
+}
+
+run "reject_domain_with_scheme_or_wildcard" {
+  command = plan
+  variables {
+    environment = "production"
+    domains     = ["https://codahealth.ai", "*.codahealth.ai"]
+  }
+  expect_failures = [var.domains]
 }
 
 run "reject_project_id_as_project_number" {

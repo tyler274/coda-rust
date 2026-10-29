@@ -472,8 +472,9 @@ or replace the browser proof. No host tooling or flake changes are introduced by
 [Staging state and deployment](#staging-state-and-deployment)); production has
 no backend configuration here and is never initialized from this workspace.
 Both environments get a separate Cloud Run service and a dedicated service account.
-The root creates no DNS records, standalone certificates, project, API enablement, service
-identity, Google Group, database, or physician runtime dependency. Defaults are
+The root creates no DNS records, project, API enablement, service identity, Google
+Group, database, or physician runtime dependency. Production's one certificate is the
+Certificate Manager certificate described below. Defaults are
 min 0 / max 10 instances, concurrency 1000, one vCPU, and 512 MiB; these are bounded
 configuration defaults, not demonstrated load capacity. Startup uses a TCP probe
 on port 8080 rather than an unauthenticated HTTP health route.
@@ -507,8 +508,13 @@ no load balancer:
 `INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER` and the `run.app` URI is disabled. It
 uses a serverless NEG, a global external managed HTTPS load balancer, an HTTP
 frontend on the same address that answers every request with a 308 to HTTPS
-(host, path and query kept, as Vercel does), a MODERN / TLS 1.2 policy, the existing-certificate attachment (required, enforced by a
-precondition), Cloud CDN, and the `allUsers` invoker grant the ALB needs. IAP is
+(host, path and query kept, as Vercel does), a MODERN / TLS 1.2 policy, Cloud CDN,
+and the `allUsers` invoker grant the ALB needs. TLS comes from one Google-managed
+Certificate Manager certificate for `domains` (apex and www), attached through a
+certificate map with an entry per hostname. It is authorized by DNS records rather
+than by serving traffic, so it can be active before DNS moves: the
+`certificate_dns_records` output lists the CNAMEs the operator adds. Production
+without `domains` is rejected. IAP is
 off. `moved` blocks map the former unindexed load-balancer resources to `[0]`, so
 existing production state keeps its addresses. Existing staging load-balancer
 resources, if any, would be planned for destruction, not recreated. No Cloud Run
@@ -617,7 +623,7 @@ the smoke script.
 
 The provider is pinned to `hashicorp/google` 7.43.0, and its generated
 `.terraform.lock.hcl` belongs in version control. The IAP and private-registry
-changes left both unchanged. Twenty-two mocked test runs pass. They cover:
+changes left both unchanged. Twenty-eight mocked test runs pass. They cover:
 
 - Staging direct IAP, the `run.app` URL, invoker IAM checks, the IAP service agent
   as the only invoker, the engineering group as the only accessor, and both
@@ -627,8 +633,10 @@ changes left both unchanged. Twenty-two mocked test runs pass. They cover:
 - The TCP startup probe, an in-memory mocked apply of the `staging_url` output,
   and the audience, service agent and group following the inputs.
 - Production keeping ALB-only ingress, a disabled `run.app` URL, no IAP, the
-  public ALB invoker, origin-header CDN and its HTTPS/TLS frontend.
-- Rejection of production without a certificate, a project ID or `0` as the
+  public ALB invoker, origin-header CDN, its HTTPS/TLS frontend with one
+  DNS-authorized certificate and a map entry for apex and www, and the port-80
+  redirect to HTTPS.
+- Rejection of production without `domains`, a domain with a scheme or wildcard, a project ID or `0` as the
   project number, a domain or IAM-prefixed `iap_group`, a mutable image, an
   unknown environment, excessive concurrency, inverted scaling and an unpinned
   secret.

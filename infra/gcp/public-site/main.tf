@@ -207,19 +207,48 @@ resource "google_compute_ssl_policy" "site" {
   min_tls_version = "TLS_1_2"
 }
 
-resource "google_compute_target_https_proxy" "site" {
-  count            = local.staging ? 0 : 1
-  name             = local.name
-  url_map          = google_compute_url_map.site[0].id
-  ssl_certificates = var.certificate_ids
-  ssl_policy       = google_compute_ssl_policy.site[0].id
+# One Google-managed certificate for every production hostname, authorized by
+# DNS records rather than by serving traffic, so it is active before DNS moves.
+resource "google_certificate_manager_dns_authorization" "site" {
+  for_each = local.staging ? toset([]) : toset(var.domains)
+  name     = "${local.name}-${replace(each.key, ".", "-")}"
+  domain   = each.key
+}
 
+resource "google_certificate_manager_certificate" "site" {
+  count = local.staging ? 0 : 1
+  name  = local.name
+  managed {
+    domains            = var.domains
+    dns_authorizations = [for domain in var.domains : google_certificate_manager_dns_authorization.site[domain].id]
+  }
   lifecycle {
     precondition {
-      condition     = var.environment != "production" || length(var.certificate_ids) > 0
-      error_message = "Production requires an operator-provisioned TLS certificate."
+      condition     = length(var.domains) > 0
+      error_message = "Production requires its hostnames in domains."
     }
   }
+}
+
+resource "google_certificate_manager_certificate_map" "site" {
+  count = local.staging ? 0 : 1
+  name  = local.name
+}
+
+resource "google_certificate_manager_certificate_map_entry" "site" {
+  for_each     = local.staging ? toset([]) : toset(var.domains)
+  name         = "${local.name}-${replace(each.key, ".", "-")}"
+  map          = google_certificate_manager_certificate_map.site[0].name
+  certificates = [google_certificate_manager_certificate.site[0].id]
+  hostname     = each.key
+}
+
+resource "google_compute_target_https_proxy" "site" {
+  count           = local.staging ? 0 : 1
+  name            = local.name
+  url_map         = google_compute_url_map.site[0].id
+  certificate_map = "//certificatemanager.googleapis.com/${google_certificate_manager_certificate_map.site[0].id}"
+  ssl_policy      = google_compute_ssl_policy.site[0].id
 }
 
 resource "google_compute_global_address" "site" {

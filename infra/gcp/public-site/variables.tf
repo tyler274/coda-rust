@@ -87,11 +87,15 @@ variable "physician_app_url" {
   }
 }
 
-variable "certificate_ids" {
-  description = "Existing global Compute SSL certificate self-links, required only for production. Staging uses native IAP; its optional domain mapping manages TLS automatically."
+variable "domains" {
+  description = "Production hostnames the load balancer serves (apex first). Certificate Manager issues one Google-managed certificate for them through DNS authorization, so it can be active before traffic moves; the operator adds the certificate_dns_records CNAMEs. Staging uses its domain mapping instead and sets none."
   type        = list(string)
   default     = []
   nullable    = false
+  validation {
+    condition     = alltrue([for domain in var.domains : can(regex("^([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", domain))])
+    error_message = "domains must be lowercase hostnames without scheme, port, path or wildcard."
+  }
 }
 
 variable "doppler_token_secret_id" {
