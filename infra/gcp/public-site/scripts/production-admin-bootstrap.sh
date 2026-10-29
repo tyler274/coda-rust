@@ -4,14 +4,14 @@
 # Run by an administrator of coda-health-prod (and, for one cross-project grant,
 # of coda-health-staging), with Dev's authorization. It prepares only what
 # infra/gcp/public-site deliberately does not own: APIs, the private site image
-# repository, the Doppler prd token secret, a CI promotion service account with
-# resource-scoped roles, and GitHub Workload Identity Federation for the
-# `production` environment. Production builds nothing: promotion copies the
-# digest staging tested, so there are no base-image repositories here.
+# repository, a CI promotion service account with resource-scoped roles, and
+# GitHub Workload Identity Federation for the `production` environment. The site
+# reads no secrets, so there is no Secret Manager or Doppler step. Production
+# builds nothing: promotion copies the digest staging tested, so there are no
+# base-image repositories here.
 #
-# It never applies OpenTofu, never prints or stores a secret value, never
-# creates a bucket, and never reads or writes state outside
-# coda-rust/public-site/production. Every create step checks first and is safe
+# It never applies OpenTofu, never creates a bucket, and never reads or writes
+# state outside coda-rust/public-site/production. Every create step checks first and is safe
 # to rerun; rerun it after the first apply to add the bindings that need the
 # Cloud Run service and runtime service account to exist.
 #
@@ -19,10 +19,7 @@
 #   bash infra/gcp/public-site/scripts/production-admin-bootstrap.sh
 #
 # Flags:
-#   --print                 Print the commands without calling gcloud or Doppler.
-#   --skip-doppler-token    Create the secret but do not add a version (no Doppler login).
-#   --rotate-doppler-token  Add a new token version even if one is enabled; bump
-#                           doppler_token_secret_version in env/production.tfvars after.
+#   --print                 Print the commands without calling gcloud.
 #   -h, --help              Show this header.
 
 set -euo pipefail
@@ -45,12 +42,6 @@ SITE_KEEP_COUNT="${SITE_KEEP_COUNT:-10}"
 readonly STAGING_PROJECT_ID="coda-health-staging"
 readonly STAGING_REPOSITORY="public-site"
 
-readonly SECRET_ID="public-site-prd-doppler-token"
-# Fixed on purpose: this secret must only ever hold a read-only prd token.
-readonly TOKEN_DOPPLER_PROJECT="coda-rust"
-readonly TOKEN_DOPPLER_CONFIG="prd"
-readonly TOKEN_NAME="public-site-production-runtime"
-
 readonly CI_SA_ID="public-site-prod-deployer"
 readonly CI_SA="${CI_SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com"
 
@@ -72,18 +63,13 @@ APIS=(
   compute.googleapis.com
   certificatemanager.googleapis.com
   artifactregistry.googleapis.com
-  secretmanager.googleapis.com
 )
 
 # --- Flags --------------------------------------------------------------------
 PRINT=0
-SKIP_TOKEN=0
-ROTATE_TOKEN=0
 for arg in "$@"; do
   case "$arg" in
     --print | --dry-run) PRINT=1 ;;
-    --skip-doppler-token) SKIP_TOKEN=1 ;;
-    --rotate-doppler-token) ROTATE_TOKEN=1 ;;
     -h | --help)
       sed -n '2,/^set -euo/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'
       exit 0
@@ -149,7 +135,7 @@ if [[ $PRINT -eq 0 ]]; then
     exit 1
   fi
 else
-  note "--print: no gcloud or Doppler calls are made; every create step is shown."
+  note "--print: no gcloud calls are made; every create step is shown."
 fi
 
 # --- 1. APIs ------------------------------------------------------------------
@@ -182,43 +168,7 @@ run "${G[@]}" artifacts repositories set-cleanup-policies "$SITE_REPOSITORY" \
 assert_repo_private "$SITE_REPOSITORY"
 note "Same-project Cloud Run pulls use the Cloud Run service agent (roles/run.serviceAgent)."
 
-# --- 3. Doppler token secret --------------------------------------------------
-step "Create Secret Manager secret ${SECRET_ID} (user-managed, ${REGION})"
-if missing "${G[@]}" secrets describe "$SECRET_ID"; then
-  run "${G[@]}" secrets create "$SECRET_ID" \
-    --replication-policy=user-managed --locations="$REGION" \
-    --labels=app=public-site,env=production
-else
-  note "exists"
-fi
-
-step "Add a read-only Doppler ${TOKEN_DOPPLER_PROJECT}/${TOKEN_DOPPLER_CONFIG} service token as a version"
-enabled_version=""
-if [[ $PRINT -eq 0 && $SKIP_TOKEN -eq 0 && $ROTATE_TOKEN -eq 0 ]]; then
-  enabled_version="$("${G[@]}" secrets versions list "$SECRET_ID" \
-    --filter='state=ENABLED' --format='value(name)' --limit=1 2>/dev/null || true)"
-fi
-if [[ $SKIP_TOKEN -eq 1 ]]; then
-  note "skipped (--skip-doppler-token)"
-elif [[ -n "$enabled_version" ]]; then
-  note "enabled version ${enabled_version} already exists; pass --rotate-doppler-token to add another"
-else
-  # Strip the trailing newline Doppler prints; the token is never echoed,
-  # assigned to a variable, or written to disk.
-  printf '+ doppler configs tokens create %q --project %q --config %q --access read --plain \\\n' \
-    "$TOKEN_NAME" "$TOKEN_DOPPLER_PROJECT" "$TOKEN_DOPPLER_CONFIG"
-  printf '    | tr -d "\\r\\n" | gcloud --project=%q secrets versions add %q --data-file=-\n' "$PROJECT_ID" "$SECRET_ID"
-  if [[ $PRINT -eq 0 ]]; then
-    command -v doppler >/dev/null || { echo "doppler not on PATH; use nix develop" >&2; exit 1; }
-    doppler configs tokens create "$TOKEN_NAME" \
-      --project "$TOKEN_DOPPLER_PROJECT" --config "$TOKEN_DOPPLER_CONFIG" --access read --plain \
-      | tr -d '\r\n' \
-      | "${G[@]}" secrets versions add "$SECRET_ID" --data-file=- --format='value(name)'
-  fi
-  note "Pin doppler_token_secret_version in env/production.tfvars to the version printed above."
-fi
-
-# --- 4. CI promotion service account (no keys) --------------------------------
+# --- 3. CI promotion service account (no keys) --------------------------------
 step "Create CI promotion service account ${CI_SA}"
 if missing "${G[@]}" iam service-accounts describe "$CI_SA"; then
   run "${G[@]}" iam service-accounts create "$CI_SA_ID" \
@@ -242,9 +192,6 @@ run "${G[@]}" artifacts repositories add-iam-policy-binding "$SITE_REPOSITORY" \
 run gcloud --project="$STAGING_PROJECT_ID" artifacts repositories add-iam-policy-binding "$STAGING_REPOSITORY" \
   --location="$REGION" --member="serviceAccount:${CI_SA}" \
   --role=roles/artifactregistry.reader --condition=None
-# The root manages the runtime SA's accessor binding on this secret.
-run "${G[@]}" secrets add-iam-policy-binding "$SECRET_ID" \
-  --member="serviceAccount:${CI_SA}" --role=roles/secretmanager.admin --condition=None
 # Read-only project access so a promotion plan can refresh the Cloud Run
 # service, load balancer and certificate it may not change.
 for role in roles/run.viewer roles/compute.viewer roles/certificatemanager.viewer; do
@@ -272,7 +219,7 @@ else
 fi
 note "No compute, certificate or IAM admin roles: promotion cannot change the load balancer, TLS or identities."
 
-# --- 5. GitHub Actions Workload Identity Federation ---------------------------
+# --- 4. GitHub Actions Workload Identity Federation ---------------------------
 WIF_CONDITION="assertion.repository == '${WIF_REPOSITORY}' && assertion.repository_id == '${WIF_REPOSITORY_ID}' && assertion.repository_owner_id == '${WIF_OWNER_ID}' && assertion.ref == '${WIF_REF}' && assertion.environment == '${WIF_ENVIRONMENT}'"
 WIF_MAPPING="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.repository_id=assertion.repository_id,attribute.repository_owner_id=assertion.repository_owner_id,attribute.ref=assertion.ref,attribute.environment=assertion.environment"
 POOL_NAME="projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WIF_POOL}"
