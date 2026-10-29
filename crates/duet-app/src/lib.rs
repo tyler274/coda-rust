@@ -1688,7 +1688,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             },
             Some(ConversationRoot::Messages(lines)) => rsx! {
                 if let Some(open) = opened_source() {
-                    article { class: "voice-card",
+                    article { class: "card voice-card",
                         p { class: "card-title", "{open.title}" }
                         if let Some(text) = open.text {
                             p { class: "card-text", "{text}" }
@@ -1705,7 +1705,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
                 div { class: "duet-thread",
                     for line in lines {
-                        article { class: if line.from_duet { "voice-card" } else { "user-bubble" },
+                        article { class: if line.from_duet { "card voice-card" } else { "user-bubble" },
                             p { class: "card-title", "{line.role}" }
                             p { class: "card-text", "{line.text}" }
                             for source in line.sources {
@@ -1729,7 +1729,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         p { class: "status-detail", "Draft ended. Checking the saved response; unfinished work remains available for recovery." }
                     }
                     if !provisional().text.is_empty() {
-                        article { class: "voice-card", aria_label: "Provisional response",
+                        article { class: "card voice-card", aria_label: "Provisional response",
                             p { class: "card-title", "Luna — drafting, not yet saved" }
                             p { class: "card-text", "{provisional().text}" }
                         }
@@ -2119,7 +2119,7 @@ fn TodayTab(
             },
             Some(TodayRoot::Insights(cards)) => rsx! {
                 for card in cards {
-                    article { class: "voice-card",
+                    article { class: "card voice-card",
                         p { class: "card-title", "{card.title}" }
                         p { class: "card-text", "{card.sentence}" }
                     }
@@ -2433,7 +2433,7 @@ fn YouTab(
         }
         PhoneReadings { readings: phone.readings.clone(), connected: phone.state.connected() }
         if let Some(section) = plan_section {
-            article { class: "voice-card",
+            article { class: "card voice-card",
                 p { class: "card-title", "{section.heading}" }
                 p { class: "record-meta", "{section.attribution}" }
                 for item in section.items {
@@ -2476,7 +2476,7 @@ fn YouTab(
             Some(LibraryRoot::Empty) => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
             Some(LibraryRoot::Sections(sections)) => rsx! {
                 for section in sections {
-                    article { class: if section.measured { "number-card" } else { "voice-card" },
+                    article { class: if section.measured { "card number-card" } else { "card voice-card" },
                         p { class: "card-title", "{section.name}" }
                         for record in section.records {
                             EvidenceRow {
@@ -2746,7 +2746,7 @@ fn PhoneReadings(readings: Vec<PhoneReading>, connected: bool) -> Element {
             p { class: "empty", "{NO_READINGS}" }
         }
         for reading in readings {
-            article { class: "number-card",
+            article { class: "card number-card",
                 p { class: "card-title", "{reading.name}" }
                 p { class: "card-text", "{reading.value} {reading.unit}" }
                 if !reading.source.is_empty() {
@@ -2833,7 +2833,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
     rsx! {
         TabHeading { name: "Shared".to_owned(), loading }
         if let Some(status) = physician_status.filter(|status| status.linked) {
-            article { class: "voice-card",
+            article { class: "card voice-card",
                 p { class: "card-title", "{status.practice_name.as_deref().unwrap_or(\"Connected practice\")}" }
                 if status.sharing_consented {
                     p { class: "record-meta", "{SHARE_WITH_MY_PHYSICIAN} ({status.consent_version.as_deref().unwrap_or(\"v1\")})" }
@@ -2854,7 +2854,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
         if !people.is_empty() {
             p { class: "status-title", "People" }
             for person in people {
-                article { class: "voice-card",
+                article { class: "card voice-card",
                     p { class: "card-title", "{person}" }
                 }
             }

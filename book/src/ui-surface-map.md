@@ -32,7 +32,7 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 
 | Owner | What to inspect |
 | --- | --- |
-| [`ui`](/crates/ui/src/lib.rs) | Shared tokens (light and dark), icons, buttons, navigation links and rows, read and command notices, and tabs; product-specific layout remains in each app |
+| [`ui`](/crates/ui/src/lib.rs) | Shared tokens (light and dark), icons, buttons, navigation links and rows, cards, read and command notices, and tabs; product-specific layout remains in each app |
 | [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs removal of person-to-person sharing |
 | [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens; the old join gate is disabled, while the retained sharing toggle still conflicts with fixed consent |
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |

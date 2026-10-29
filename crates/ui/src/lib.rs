@@ -109,9 +109,12 @@ pub fn CommandNotice(
     }
 }
 
+/// A card header's leading icon on its neutral tile.
 #[component]
-pub fn Card(children: Element) -> Element {
-    rsx! { section { class: "card", div { class: "card-body", {children} } } }
+pub fn IconTile(name: IconName) -> Element {
+    rsx! {
+        span { class: "icon-tile", aria_hidden: "true", Icon { name } }
+    }
 }
 
 /// How much a button stands out.

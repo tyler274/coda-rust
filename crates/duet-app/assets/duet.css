@@ -23,6 +23,9 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surfac
   --navigation-color: var(--primary);
   --navigation-hover-color: var(--primary);
   --navigation-min-height: var(--target);
+  /* Cards stand on a hairline rather than a shadow, as the review's reading surfaces do. */
+  --card-elevation: none;
+  --card-outline: var(--hairline) solid var(--outline-variant);
 }
 .duet-page {
   position: relative;
@@ -68,10 +71,8 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surfac
 .voice-card, .number-card, .user-bubble {
   margin: 0 0 12px;
   padding: 16px;
-  border-radius: 16px;
 }
-.voice-card, .number-card { border: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); }
-.user-bubble { background: var(--primary-container); color: var(--ink); }
+.user-bubble { border-radius: 16px; background: var(--primary-container); color: var(--ink); }
 .thread-card { margin-top: 12px; padding-top: 8px; border-top: var(--hairline) solid var(--outline-variant); }
 button.thread-open {
   display: block;

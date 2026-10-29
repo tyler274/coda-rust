@@ -6,7 +6,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
-| `ui` | [`src/lib.rs`](/crates/ui/src/lib.rs) | Shared tokens (light and dark), icons, buttons, navigation links and rows, read and command notices, and the tab bar for both Dioxus apps | [UI surface map](ui-surface-map.md) |
+| `ui` | [`src/lib.rs`](/crates/ui/src/lib.rs) | Shared tokens (light and dark), icons, buttons, navigation links and rows, cards, read and command notices, and the tab bar for both Dioxus apps | [UI surface map](ui-surface-map.md) |
 | `http` | [`src/lib.rs`](/crates/http/src/lib.rs) | Request and stream mechanics with no schema knowledge | [Backend architecture](backend-architecture.md) |
 | `gmail` | [`src/lib.rs`](/crates/gmail/src/lib.rs) | Plain-text or HTML messages through the Gmail API or the Workspace SMTP relay, plus the intake primitives: push-wake routing ([`src/push.rs`](/crates/gmail/src/push.rs)) and the `history.list` cursor reader ([`src/history.rs`](/crates/gmail/src/history.rs)). Products own the copy, the links, the durable cursor and the effects | [GCP](gcp.md) |
 | `pubsub` | [`src/lib.rs`](/crates/pubsub/src/lib.rs) | Pub/Sub push-envelope decoding, the loopback-emulator check and the official publisher; the `test-util` feature is the disposable emulator for tests (dev-dependencies only, checked by `boundaries`) | [GCP](gcp.md) |

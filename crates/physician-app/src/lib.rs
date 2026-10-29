@@ -37,7 +37,7 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use ui::{
     Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, Icon, IconName,
-    NavigationControl, NavigationRow, ReadNotice,
+    IconTile, NavigationControl, NavigationRow, ReadNotice,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -2790,9 +2790,9 @@ fn ScheduleRail(
 ) -> Element {
     let count = visits.len();
     let rail_class = if collapsed {
-        "schedule-rail is-collapsed"
+        "schedule-rail card is-collapsed"
     } else {
-        "schedule-rail"
+        "schedule-rail card"
     };
     rsx! {
         aside { class: "{rail_class}", aria_label: "{title}",
@@ -2802,9 +2802,7 @@ fn ScheduleRail(
                     aria_expanded: "false",
                     aria_label: "Show {title}",
                     onclick: move |_| on_collapsed.call(false),
-                    span { class: "icon-tile", aria_hidden: "true",
-                        Icon { name: IconName::Calendar }
-                    }
+                    IconTile { name: IconName::Calendar }
                     if count > 0 {
                         span { class: "count", span { class: "count-value", "{count}" } }
                     }
@@ -2812,10 +2810,8 @@ fn ScheduleRail(
             }
             div { class: "schedule-rail-body",
             header { class: "card-header",
-                span { class: "icon-tile", aria_hidden: "true",
-                    Icon { name: IconName::Calendar }
-                }
-                div { class: "card-title",
+                IconTile { name: IconName::Calendar }
+                div { class: "card-title title-with-count",
                     h2 { "{title}" }
                     if count > 0 {
                         span { class: "count", span { class: "count-value", "{count}" } " left" }
