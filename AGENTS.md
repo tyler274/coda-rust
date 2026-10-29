@@ -28,8 +28,9 @@ explain responsibilities, implemented behavior and operating procedures.
 | Dev container setup, ports, and storage | [Dev container](README.md#dev-container) |
 
 [Operating invariants](book/src/agent-contracts.md) keeps the common authority,
-clinical-intelligence and recovery rules. Product outcomes and design live in
-Linear; the book maps them to actual Rust owners and names remaining gaps.
+clinical-intelligence and recovery rules. Product behavior lives in the intent
+specs, and Linear tracks the work against them; the book maps them to actual
+Rust owners and names remaining gaps.
 Submodules stay read-only reference. Do not restore retired behavior merely
 because it appears in an older contract or generated wire schema.
 
