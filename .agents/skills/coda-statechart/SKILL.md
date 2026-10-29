@@ -69,7 +69,9 @@ holds the rules that span them.
 
 ## Hand off
 
-Give Dev the PNG and the Mermaid. Add one line per bug: the rule it breaks, its
+Give Dev the PNG and an explorer: `explore` writes one HTML page holding the chart's
+whole reachable graph, which you publish as a Claude artifact so Dev can click
+through each step, rule and journey. Include the Mermaid. Add one line per bug: the rule it breaks, its
 steps as `trace` numbers them, and whether it reproduced. Say what the chart leaves
 out: data promises, GAPs, and anything not replayed against code. A checked draft is
 still a draft until Dev agrees with it.

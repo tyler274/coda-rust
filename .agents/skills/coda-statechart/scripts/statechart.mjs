@@ -17,6 +17,7 @@ import { against, printAgainst, readMap } from "./chart-against.mjs";
 import { coverage, printCoverage } from "./chart-coverage.mjs";
 import { journeys, printJourneys } from "./chart-journey.mjs";
 import { COMPOSES, resolveComposition } from "./chart-compose.mjs";
+import { explore, writeExplorer } from "./chart-explore.mjs";
 
 class Usage extends Error {}
 
@@ -126,6 +127,21 @@ export const COMMANDS = {
           : kind === "region" ? queryRegion(compiled, flags.region) : summary(compiled);
       console.log(answer);
       return 0;
+    },
+  },
+  explore: {
+    inputs: 1, values: ["--journeys", "--title", "--out"],
+    run: ([chart], flags) => {
+      if (flags.out === undefined) throw new Usage("provide --out FILE.html");
+      const model = explore(read(chart), {
+        title: flags.title,
+        journeyText: flags.journeys === undefined ? undefined : read(flags.journeys),
+      });
+      const { states, edges } = writeExplorer(model, flags.out);
+      const stuck = model.journeys.filter((j) => j.broken);
+      console.log(`${flags.out}: ${states} reachable states, ${edges} steps, ${model.journeys.length - stuck.length} of ${model.journeys.length} journeys replayed.`);
+      for (const j of stuck) console.log(`  ${j.name} stops at "${j.broken}"`);
+      return stuck.length ? 1 : 0;
     },
   },
   png: {

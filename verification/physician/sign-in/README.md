@@ -20,6 +20,7 @@ node .agents/skills/coda-statechart/scripts/statechart.mjs journey verification/
 node .agents/skills/coda-statechart/scripts/statechart.mjs check verification/physician/sign-in/sign-in.mmd --module sign_in --dir verification/physician/sign-in/verus
 python3 verification/check.py formal --spec verification/physician/sign-in/verus/sign_in_proof.rs
 node .agents/skills/coda-statechart/scripts/statechart.mjs png verification/physician/sign-in/sign-in.mmd --out target/verification/sign-in.png
+node .agents/skills/coda-statechart/scripts/statechart.mjs explore verification/physician/sign-in/sign-in.mmd --journeys verification/physician/sign-in/journeys.md --title "Physician Sign-in" --out target/verification/sign-in-explorer.html
 ```
 
 The chart, search and proof cover its finite states only. The data promises are

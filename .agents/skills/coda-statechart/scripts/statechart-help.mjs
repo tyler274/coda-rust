@@ -10,6 +10,7 @@ export const USAGE = {
   journey: "node statechart.mjs journey CHART.mmd JOURNEYS.md",
   flat: "node statechart.mjs flat CHART.mmd",
   query: "node statechart.mjs query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NAME]",
+  explore: "node statechart.mjs explore CHART.mmd --out FILE.html [--journeys JOURNEYS.md] [--title TEXT]",
   png: "node statechart.mjs png CHART.mmd [--out FILE.png]",
   lint: "node statechart.mjs lint CHART.mmd [--cause TEXT] [--repeats] [--unread]",
 };
@@ -150,6 +151,16 @@ const QUERY = `query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NA
   Without a flag: chart size, largest regions, widest events, and edges that
   return a region to its start.`;
 
+const EXPLORE = `explore CHART.mmd --out FILE.html [--journeys JOURNEYS.md] [--title TEXT]
+  Write one self-contained HTML page for exploring the chart: where you are in each
+  region, the steps that can happen next and what each changes, the path so far,
+  every rule checked in the current state, and the journeys as playable paths. The
+  page holds the whole reachable graph, computed with the same steps as trace,
+  journey and the Verus model, so it can't drift from them. It renders the chart
+  with Mermaid. Publish it as a Claude artifact for Dev to explore.
+  Exit: 0 written and every journey replays; 1 a journey stops, or the chart has
+  more reachable states than the page holds.`;
+
 const PNG = `png CHART.mmd [--out FILE.png]
   Render the chart as Dev reads it, with the pinned @mermaid-js/mermaid-cli
   through npx, next to the chart unless --out names the file. An installed Chrome
@@ -197,6 +208,7 @@ Commands:
   journey replay constructive journeys: useful outcomes are reachable
   flat    print the expanded chart as plain flat Mermaid
   query   ways in and out of a state, who reacts to an event, a region summary
+  explore write an interactive HTML explorer of the chart
   png     render the chart to PNG for review
   lint    unreachable states, dead edges, and event-declaration problems
 
@@ -218,6 +230,7 @@ chart, drift or I/O error; 2 invalid arguments; 3 incomplete search.`,
   journey: JOURNEY,
   flat: FLAT,
   query: QUERY,
+  explore: EXPLORE,
   png: PNG,
   lint: LINT,
 };
