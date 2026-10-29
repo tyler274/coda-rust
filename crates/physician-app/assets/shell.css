@@ -161,21 +161,8 @@ button.sidebar-expand { display: none; }
 .today-row-open { display: grid; gap: var(--space-2); width: 100%; margin: 0; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; }
 .today-row-line { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: var(--space-2); }
 .today-row-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-hair) var(--space-2); min-width: 0; }
-.live-dot { width: var(--unread-dot); height: var(--unread-dot); border-radius: 50%; background: var(--primary); }
 .today-row-who { color: var(--ink); font: var(--type-title-sm); font-weight: var(--weight-strong); }
 .today-row-waited { color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.state-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  max-width: 100%;
-  padding: var(--space-hair) .6em;
-  border-radius: var(--radius-pill);
-  background: var(--error-container);
-  color: var(--on-error-container);
-  font: var(--type-label-md);
-}
-.state-pill .icon { width: 14px; height: 14px; }
 .urgency-now { color: var(--error); font: var(--type-label-md); font-weight: var(--weight-strong); }
 .today-row-action { display: flex; }
 .today-quiet { display: grid; gap: var(--space-1); padding: var(--space-4); }

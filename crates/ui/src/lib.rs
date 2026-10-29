@@ -25,9 +25,110 @@ pub fn EmptyState(message: String) -> Element {
     rsx! { p { class: "empty", "{message}" } }
 }
 
+/// Something that failed and has no retry of its own: the one status line, announced.
 #[component]
 pub fn ErrorState(message: String) -> Element {
-    rsx! { p { class: "error", role: "alert", "{message}" } }
+    rsx! { StatusLine { message, alert: true } }
+}
+
+/// The one status line, after the React app's `StatusLine`: what failed or what is under way, in
+/// one muted line, with the one Try again under the words after a failure. While pending it draws
+/// the shape of what is coming, after the shared delay so a fast read never flashes, and keeps its
+/// words for assistive technology. A failure the person was waiting on announces itself.
+#[component]
+pub fn StatusLine(
+    message: String,
+    #[props(default)] alert: bool,
+    #[props(default)] pending: bool,
+    /// The retry's words; with `on_retry`, the line offers it.
+    #[props(default)]
+    retry: String,
+    on_retry: Option<EventHandler>,
+) -> Element {
+    let class = if pending {
+        "status-line pending-status"
+    } else {
+        "status-line"
+    };
+    rsx! {
+        div { class: "{class}", role: if alert { "alert" } else { "status" },
+            if pending {
+                p { class: "sr-only", "{message}" }
+                Placeholder {}
+            } else {
+                p { "{message}" }
+            }
+            if let Some(handler) = on_retry {
+                TryAgain { label: retry, on_retry: handler }
+            }
+        }
+    }
+}
+
+/// The one recovery action after a failure: one verb, one shape, one size, under the line that
+/// says what failed.
+#[component]
+pub fn TryAgain(
+    label: String,
+    #[props(default)] disabled: bool,
+    on_retry: EventHandler,
+) -> Element {
+    rsx! {
+        Button { compact: true, disabled, onclick: move |_| on_retry.call(()), "{label}" }
+    }
+}
+
+/// What is loading, drawn as its shape (Material's skeleton): a bar in the text's own measure with
+/// a slow sheen passing over it. Decoration only; the host's words stay with assistive technology.
+#[component]
+pub fn Placeholder() -> Element {
+    rsx! {
+        span { class: "placeholder", aria_hidden: "true", span { class: "placeholder-bar" } }
+    }
+}
+
+/// What a state chip's colour says: neutral, ready or done, flagged, or failed.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum Tone {
+    /// Nothing to call out.
+    #[default]
+    Neutral,
+    /// Ready or done.
+    Primary,
+    /// What Coda flags.
+    Warning,
+    /// What failed or conflicts.
+    Error,
+}
+
+/// What Coda did, or where a thing stands, on its tone, led by its kind's icon. The host names the
+/// tone and icon from structured state, never from the words.
+#[component]
+pub fn StatePill(
+    #[props(default)] tone: Tone,
+    icon: Option<IconName>,
+    children: Element,
+) -> Element {
+    let class = match tone {
+        Tone::Neutral => "state-pill tone-neutral",
+        Tone::Primary => "state-pill tone-primary",
+        Tone::Warning => "state-pill tone-warning",
+        Tone::Error => "state-pill tone-error",
+    };
+    rsx! {
+        span { class: "{class}",
+            if let Some(name) = icon {
+                Icon { name }
+            }
+            {children}
+        }
+    }
+}
+
+/// The one live mark: a pulsing dot for something live, new or needing the person now.
+#[component]
+pub fn LiveDot() -> Element {
+    rsx! { span { class: "live-dot", aria_hidden: "true" } }
 }
 
 /// Where one read stands, as the page shows it.
@@ -55,18 +156,12 @@ pub fn ReadNotice(
     on_retry: EventHandler,
 ) -> Element {
     match stage {
-        ReadStage::Loading => rsx! { p { class: "empty", role: "status", "{loading}" } },
+        ReadStage::Loading => rsx! { StatusLine { message: loading, pending: true } },
         ReadStage::Showing => rsx! {},
-        ReadStage::Stale => rsx! {
-            p { class: "quiet-line", role: "status",
-                "{stale} "
-                button { class: "inline-action", r#type: "button", onclick: move |_| on_retry.call(()), "{retry}" }
-            }
-        },
-        ReadStage::Unavailable => rsx! {
-            ErrorState { message: unavailable }
-            Button { compact: true, onclick: move |_| on_retry.call(()), "{retry}" }
-        },
+        ReadStage::Stale => rsx! { StatusLine { message: stale, retry, on_retry } },
+        ReadStage::Unavailable => {
+            rsx! { StatusLine { message: unavailable, alert: true, retry, on_retry } }
+        }
     }
 }
 
@@ -96,16 +191,11 @@ pub fn CommandNotice(
 ) -> Element {
     match stage {
         CommandStage::Idle => rsx! {},
-        CommandStage::Sending => rsx! { p { class: "quiet-line", role: "status", "{sending}" } },
+        CommandStage::Sending => rsx! { StatusLine { message: sending } },
         CommandStage::Unconfirmed => rsx! {
-            p { class: "quiet-line", role: "status",
-                "{unconfirmed} "
-                button { class: "inline-action", r#type: "button", onclick: move |_| on_check_again.call(()), "{check_again}" }
-            }
+            StatusLine { message: unconfirmed, retry: check_again, on_retry: on_check_again }
         },
-        CommandStage::Refused(reason) => {
-            rsx! { p { class: "quiet-line", role: "alert", "{reason}" } }
-        }
+        CommandStage::Refused(reason) => rsx! { StatusLine { message: reason, alert: true } },
     }
 }
 

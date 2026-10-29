@@ -41,6 +41,7 @@ use roots::{
 };
 use ui::{
     ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, NavigationRow, TabBar,
+    TryAgain,
 };
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
@@ -243,11 +244,7 @@ fn JoinScreen(
             TabHeading { name: "Duet".to_owned(), loading: use_signal(|| false) }
             if checking {
                 p { class: "status-detail", "{CONNECTING}" }
-                Button {
-                    compact: true,
-                    onclick: move |_| on_retry.call(()),
-                    "{TRY_AGAIN}"
-                }
+                TryAgain { label: TRY_AGAIN, on_retry }
             }
             p { class: "status-title", "{roots::JOIN_HEADING}" }
             p { class: "status-detail", "{roots::JOIN_DETAIL}" }
@@ -324,17 +321,6 @@ fn TabHeading(name: String, loading: Signal<bool>) -> Element {
         div { class: "duet-heading",
             h1 { "{name}" }
             p { class: "duet-status", if waiting { "{CONNECTING}" } }
-        }
-    }
-}
-
-#[component]
-fn TryAgain(on_retry: EventHandler) -> Element {
-    rsx! {
-        Button {
-            compact: true,
-            onclick: move |_| on_retry.call(()),
-            "{TRY_AGAIN}"
         }
     }
 }
@@ -1674,7 +1660,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             None => rsx! {
                 div { role: "alert",
                     p { class: "empty", "{CHAT_UNAVAILABLE}" }
-                    TryAgain { on_retry: retry }
+                    TryAgain { label: TRY_AGAIN, on_retry: retry }
                 }
             },
             Some(ConversationRoot::Empty { title, message }) => rsx! {
@@ -1682,7 +1668,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     p { class: "empty-title", "{title}" }
                     p { class: "empty", "{message}" }
                     if failed {
-                        TryAgain { on_retry: retry }
+                        TryAgain { label: TRY_AGAIN, on_retry: retry }
                     }
                 }
             },
@@ -1741,7 +1727,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     if failed {
                         div { role: "alert",
                             p { class: "empty", "{CHAT_UNAVAILABLE}" }
-                            TryAgain { on_retry: retry }
+                            TryAgain { label: TRY_AGAIN, on_retry: retry }
                         }
                     }
                 }
@@ -2131,7 +2117,7 @@ fn TodayTab(
             div { role: "alert",
                 p { class: "status-title", "{CHECK_UNAVAILABLE}" }
                 p { class: "status-detail", "{CHECK_UNAVAILABLE_DETAIL}" }
-                TryAgain { on_retry: retry }
+                TryAgain { label: TRY_AGAIN, on_retry: retry }
             }
         }
     }
@@ -2497,7 +2483,7 @@ fn YouTab(
         if failed && page.is_none() {
             div { role: "alert",
                 p { class: "empty", "{LIBRARY_UNAVAILABLE}" }
-                TryAgain { on_retry: retry }
+                TryAgain { label: TRY_AGAIN, on_retry: retry }
             }
         }
         Button {
@@ -2864,13 +2850,13 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             Some(SharedNotice::CouldNotCheck) => rsx! {
                 div { role: "alert",
                     p { class: "empty", "{SHARING_UNCHECKED}" }
-                    TryAgain { on_retry: retry }
+                    TryAgain { label: TRY_AGAIN, on_retry: retry }
                 }
             },
             Some(SharedNotice::SavedStayVisible) => rsx! {
                 div { role: "alert",
                     p { class: "empty", "{SHARING_SAVED}" }
-                    TryAgain { on_retry: retry }
+                    TryAgain { label: TRY_AGAIN, on_retry: retry }
                 }
             },
             Some(SharedNotice::AwaitingAcceptance) => rsx! { p { class: "status-title", "{AWAITING}" } },

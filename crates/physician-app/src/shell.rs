@@ -155,6 +155,26 @@ fn today_line(row: &TodayRow) -> TodayLine {
     }
 }
 
+/// The row's state as its pill's tone, after the React app's Today: a flagged concern is a warning,
+/// a drafted reply is ready, a review that couldn't finish failed, and anything else is neutral.
+pub fn row_tone(kind: &str) -> ui::Tone {
+    match kind {
+        "concern" => ui::Tone::Warning,
+        "reply" => ui::Tone::Primary,
+        "failed_review" => ui::Tone::Error,
+        _ => ui::Tone::Neutral,
+    }
+}
+
+/// The row's kind as its pill's leading icon.
+pub fn row_icon(kind: &str) -> Option<ui::IconName> {
+    Some(match kind {
+        "concern" => ui::IconName::Flag,
+        "reply" => ui::IconName::Reply,
+        _ => ui::IconName::Alert,
+    })
+}
+
 /// What the row's state pill says. A failed review uses the work kind's subject.
 pub fn row_did(row: &TodayRow) -> String {
     if row.kind == "failed_review" {

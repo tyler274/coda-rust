@@ -29,15 +29,15 @@ use shell::{
     chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
     format_calendar_date, format_clock, format_message, format_waited, keyboard_command,
     need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words,
-    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
-    today_view, upcoming_visits, work_end_reason, work_heading,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
+    row_tone, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
 use ui::{
     Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, Icon, IconName,
-    IconTile, NavigationControl, NavigationRow, ReadNotice,
+    IconTile, LiveDot, NavigationControl, NavigationRow, ReadNotice, StatePill, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -2739,15 +2739,12 @@ fn TodayRows(
                         },
                         span { class: "today-row-line",
                             span { class: "today-row-heading",
-                                span { class: "live-dot", aria_hidden: "true" }
+                                LiveDot {}
                                 strong { class: "today-row-who", "{row.patient}" }
                                 if row.now {
                                     span { class: "urgency-now", "{NEEDS_YOU_NOW}" }
                                 }
-                                span { class: "state-pill",
-                                    Icon { name: IconName::Alert }
-                                    "{row.did}"
-                                }
+                                StatePill { tone: row_tone(&row.kind), icon: row_icon(&row.kind), "{row.did}" }
                             }
                             if let Some(waited) = format_waited(&row.waiting_since, &server_now) {
                                 time { class: "today-row-waited", datetime: "{row.waiting_since}", "{waited}" }
@@ -3235,7 +3232,7 @@ fn PatientSurface(
                             "data-reply-state": "superseded_by_correction",
                             div { class: "simulation-card-header",
                                 strong { "{superseded.headline}" }
-                                span { class: "state-pill", "Superseded by corrected labs" }
+                                StatePill { "Superseded by corrected labs" }
                             }
                             if let Some(reason) = superseded.superseded_reason {
                                 p { class: "patient-synopsis-meta", "{reason}" }
@@ -3815,7 +3812,7 @@ fn ReplyReviewCard(
             aria_label: "{label}",
             div { class: "simulation-card-header",
                 strong { "{headline}" }
-                span { class: "state-pill", "{urgency}" }
+                StatePill { tone: Tone::Warning, "{urgency}" }
             }
             p { class: "patient-synopsis-meta", "{label}" }
             FormattedMessage { text: draft.clone() }
