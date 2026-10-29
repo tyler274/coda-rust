@@ -505,8 +505,9 @@ no load balancer:
 
 **Production** keeps its previous topology unchanged. Ingress is
 `INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER` and the `run.app` URI is disabled. It
-uses a serverless NEG, a global external managed HTTPS load balancer, a MODERN /
-TLS 1.2 policy, the existing-certificate attachment (required, enforced by a
+uses a serverless NEG, a global external managed HTTPS load balancer, an HTTP
+frontend on the same address that answers every request with a 308 to HTTPS
+(host, path and query kept, as Vercel does), a MODERN / TLS 1.2 policy, the existing-certificate attachment (required, enforced by a
 precondition), Cloud CDN, and the `allUsers` invoker grant the ALB needs. IAP is
 off. `moved` blocks map the former unindexed load-balancer resources to `[0]`, so
 existing production state keeps its addresses. Existing staging load-balancer

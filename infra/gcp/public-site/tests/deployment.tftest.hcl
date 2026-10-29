@@ -65,7 +65,7 @@ run "staging_origin_is_protected" {
     error_message = "Staging must expose run.app only behind native IAP with invoker IAM checks enabled."
   }
   assert {
-    condition     = length(google_cloud_run_v2_service_iam_member.load_balancer) == 0 && length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 1 && google_cloud_run_v2_service_iam_binding.iap_invoker[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.iap_invoker[0].members == toset(["serviceAccount:service-134570912572@gcp-sa-iap.iam.gserviceaccount.com"])
+    condition     = length(google_compute_global_forwarding_rule.http) == 0 && length(google_cloud_run_v2_service_iam_member.load_balancer) == 0 && length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 1 && google_cloud_run_v2_service_iam_binding.iap_invoker[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.iap_invoker[0].members == toset(["serviceAccount:service-134570912572@gcp-sa-iap.iam.gserviceaccount.com"])
     error_message = "Only the existing project's IAP service agent may invoke staging; never allUsers or CI."
   }
   assert {
@@ -157,6 +157,10 @@ run "production_respects_origin_cache_headers" {
   assert {
     condition     = length(google_compute_url_map.site) == 1 && length(google_compute_global_address.site) == 1 && google_compute_global_forwarding_rule.https[0].port_range == "443" && google_compute_global_forwarding_rule.https[0].load_balancing_scheme == "EXTERNAL_MANAGED" && google_compute_global_forwarding_rule.https[0].network_tier == "PREMIUM" && google_compute_ssl_policy.site[0].min_tls_version == "TLS_1_2" && google_compute_ssl_policy.site[0].profile == "MODERN" && google_compute_target_https_proxy.site[0].ssl_certificates == tolist(var.certificate_ids)
     error_message = "Production must retain its reserved IP and HTTPS/TLS frontend."
+  }
+  assert {
+    condition     = google_compute_global_forwarding_rule.http[0].port_range == "80" && google_compute_global_forwarding_rule.http[0].ip_address == google_compute_global_forwarding_rule.https[0].ip_address && google_compute_url_map.http_redirect[0].default_url_redirect[0].https_redirect && google_compute_url_map.http_redirect[0].default_url_redirect[0].redirect_response_code == "PERMANENT_REDIRECT" && !google_compute_url_map.http_redirect[0].default_url_redirect[0].strip_query
+    error_message = "Production HTTP must 308 to HTTPS on the same address, keeping the query, as Vercel does."
   }
   assert {
     condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "prd") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,APP_ENV,RELEASE_SHA") && output.iap_audience == null && output.staging_url == null

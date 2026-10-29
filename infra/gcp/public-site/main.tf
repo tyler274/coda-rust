@@ -237,6 +237,34 @@ resource "google_compute_global_forwarding_rule" "https" {
   network_tier          = "PREMIUM"
 }
 
+# Plain HTTP on the same address answers with a 308 to HTTPS, keeping host, path
+# and query, as production does today. It never reaches Cloud Run.
+resource "google_compute_url_map" "http_redirect" {
+  count = local.staging ? 0 : 1
+  name  = "${local.name}-http"
+  default_url_redirect {
+    https_redirect         = true
+    redirect_response_code = "PERMANENT_REDIRECT"
+    strip_query            = false
+  }
+}
+
+resource "google_compute_target_http_proxy" "http_redirect" {
+  count   = local.staging ? 0 : 1
+  name    = "${local.name}-http"
+  url_map = google_compute_url_map.http_redirect[0].id
+}
+
+resource "google_compute_global_forwarding_rule" "http" {
+  count                 = local.staging ? 0 : 1
+  name                  = "${local.name}-http"
+  ip_address            = google_compute_global_address.site[0].id
+  target                = google_compute_target_http_proxy.http_redirect[0].id
+  port_range            = "80"
+  load_balancing_scheme = "EXTERNAL_MANAGED"
+  network_tier          = "PREMIUM"
+}
+
 # Preserve existing production addresses when making the ALB production-only.
 # For staging, existing ALB resources are removed rather than recreated.
 moved {
