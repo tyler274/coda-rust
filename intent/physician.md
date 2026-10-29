@@ -1,477 +1,430 @@
-# Coda Agents (physician web app): intent spec
+# Coda Agents
 
-How to read this: Linear and Dev's own words state current intent. Lines marked `(doc)` come from the older coda-agents docs. Lines marked `(site)` come from codahealth.ai. Neither is Dev's word on its own. `GAP:` marks a step that no source states. Pointers in brackets: `codex:…<session>…@<time>` and `claude:<session>…@<time>` are Dev's messages or his recorded answers to an agent's multiple-choice question (a chosen answer is binding). Linear pointers name the ticket and section; the date in the text is the date of that decision. MVP and the ideal product are kept as separate layers where Dev separated them.
+This is what we're building for physicians: what Coda Agents is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
 
-## 1. Purpose
+## What Coda Agents is
 
-- Coda Agents is a team of health agents working for the physician, never a copilot. It should feel like a great resident team that keeps each patient's story current, carries bounded work between visits, and brings the physician in only where judgment, examination, procedures or the relationship need them. [linear:Coda Agents#What Coda Agents is]
-- The customer is the physician-owned membership practice (concierge or DPC). The wedge is tracking patients between visits and carrying follow-through to completion, with pre-visit preparation as a core promise; care-plan follow-through and patient inbox help are sold as one product. [linear:Coda Agents#What Coda Agents is; linear:ENG-14#Why it matters; claude:220b86fb…@2026-09-22T17:34:15]
-- The EHR stays the system of record and Coda is the system of action. Chat, background work and future clients reach the same team. [linear:Coda Agents#What Coda Agents is] In the MVP Coda keeps a dated working copy "with the EHR as the source of truth"; whether Coda later keeps its own clinical record stays open (DECISIONS.md, after the MVP). [claude:220b86fb…@2026-09-28T03:18:15; codex:…01a0f98d…@2026-10-09T20:21:01]
-- The goal is the website's: Coda handles what happens between visits, keeps the physician on what is salient, and connects the dots across every data point, not just the EHR: "being able to connect the dots across different data points, not just what's in the EHR. The EHR will just be one input." Records, results, messages, home and wearable data, a connected patient's Duet and the literature are all inputs. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:03:35.292Z; website:home]
-- Coda carries five jobs for the physician: prepare the encounter, review new information, carry follow-through, reconsider the broader trajectory, and investigate the physician's questions. These are a focus, not a limit on what the model may do. [linear:Coda Agents#The care loop; codex:…01a091f9…@2026-09-13T16:55:05]
-- Success means more patient relationship without more physician work: physician-touched items per 100 patients per week must fall. [linear:Coda Agents#Principles]
+Coda Agents is a team of health agents that works for a physician. It isn't a copilot that waits to be asked. It behaves like a great resident team: it keeps each patient's story current, carries the work that happens between visits, and brings the physician in only where their judgment, an exam, a procedure or the relationship actually needs them.
 
-## 2. Principles
+Our customer is the physician-owned membership practice, concierge or direct primary care. These physicians know their patients well and want to stay close to them, but the work between visits (new results, patient messages, follow-through on care plans, getting ready for the next visit) eats their time. The wedge is tracking patients between visits and carrying follow-through to completion, with visit preparation as a core promise. Follow-through and help with the patient inbox are sold as one product.
 
-Coda's principles (PRINCIPLES.md) govern this spec. These are the physician-specific ones.
+The EHR stays the system of record and Coda is the system of action. Coda reads the EHR, the practice's patient mail, outside records, a connected patient's Duet data and the clinical literature, and connects the dots across all of it. The EHR is one input among several. In the MVP Coda keeps a dated working copy of what it reads, with the EHR as the source of truth.
 
-1. **A team, not a copilot.** Coda reviews what changed, carries what is due, and brings the physician in only when their judgment is useful. It is extremely proactive within its authority. [linear:ENG-14#Why it matters; linear:Coda Agents#What Coda Agents is; codex:…01a091f9…@2026-09-14T01:48:36]
-2. **The physician holds clinical authority.** The physician decides diagnosis, treatment and medication. No message reaches a patient without the physician, even in an emergency. Coda never sends on its own, orders, or writes back to the EHR in the MVP. [linear:Coda Agents#Principles; linear:ENG-8#Decided; claude:220b86fb…@2026-09-22T17:44:56] The one message Coda delivers in the MVP is an answer the physician approved to a question a connected patient sent through Duet; it goes into Duet's thread. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)] Every message that goes to the patient needs the physician's approval; updates Coda notices, such as documented care decisions reaching the patient's Duet, need none. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:11:28.018Z; linear:ENG-45#Decided]
-3. **Every answer comes from evidence Coda actually read,** with a citation the physician can open. Missing or unreadable evidence is said plainly. Every claim the product makes ("read", "none", "current", "checked") traces to recorded evidence. [linear:Coda Agents#Principles; linear:ENG-160#Done when; claude:220b86fb…@2026-10-04T04:49:29]
-4. **Design for the patient who does nothing.** Coda notices what changed and carries each episode to the physician's decision and follow-through without the patient acting. [linear:Coda Agents#Principles; linear:ENG-43#Why it matters]
-5. **Relationship without the inbox.** The measure is physician-touched items per 100 patients per week, and it has to fall. Not everything becomes a concern; attention stays salient. [linear:Coda Agents#Principles; codex:…01a091f9…@2026-09-20T22:29:53; claude:bbe5dff2…@2026-10-23T19:24:16]
-6. **Quiet is a valid outcome.** Work that needs nothing from the physician completes without a routine receipt and stays inspectable from the patient's history; Updates logs it with its reason. [linear:Coda Agents#Principles; linear:ENG-14#Decided]
-7. **Ambient.** The physician does not have to ask or start ordinary work. Preparation, reviews and follow-ups start from the schedule, time, scheduled pulls of each source and arriving patient mail. [linear:ENG-31#Don't repeat; codex:…01a0602a…@2026-09-08T15:27:10; claude:220b86fb…@2026-10-01T22:36:11; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z (chosen)]
-8. **One fact, one owner.** Every screen and job reads the same owner; no parallel state for one journey. [linear:coda-rust platform#What went wrong before; linear:ENG-8#Don't repeat; claude:220b86fb…@2026-10-05T19:05:43]
-9. **Silence that looks like health is a failure.** If something is behind, stuck or degraded, someone who can act sees it, with the reason. Ordinary recovery never becomes the physician's infrastructure exercise, and retry layers never appear as user workflow (doc for the last clause). [linear:coda-rust platform#What went wrong before; claude:220b86fb…@2026-09-27T15:18:43; coda-agents/docs/ai-care-team-operating-contract.md:751]
-10. **Live where you work; history as it was.** What the physician is looking at updates live. What was already said or sent keeps the version it used and is marked when something newer exists. [claude:bbe5dff2…@2026-10-26T21:32:53; linear:ENG-160#Decided; claude:bbe5dff2…@2026-10-26T23:08:38]
-11. **The shared UI principles.** The physician app follows PRINCIPLES.md U1–U9. Labels and controls exist only because a real state or capability exists (U3). [codex:…01a081e0…@2026-09-10T19:21:59; codex:…01a0602a…@2026-09-04T03:42:43; claude:220b86fb…@2026-09-20T20:46:19]
-12. **Messages stay in the practice's channels.** Gmail and Spruce remain the inbox; Coda has no inbox of its own. [linear:ENG-8#Decided; claude:220b86fb…@2026-09-22T18:00:15]
-13. **Never anchor on FHIR or any one API.** [claude:220b86fb…@2026-09-26T21:15:12; codex:…01a0602a…@2026-09-04T16:24:12]
-14. **Fail closed on access, consent and patient data; fail gracefully, the same way everywhere, on the rest.** Access, consent and patient-data checks fail closed; availability problems and single bad items fail gracefully [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]. A small failure never closes a whole screen, and a list never reads as complete when something is missing. [linear:ENG-14#Decided; claude:220b86fb…@2026-09-24T23:19:33; claude:bbe5dff2…@2026-10-23T19:25:24]
+Coda carries five jobs for the physician: preparing for encounters, reviewing new information, carrying follow-through, reconsidering the broader trajectory, and investigating the physician's questions. Those jobs are where Coda focuses, and they never limit what the model may do.
 
-## 3. Mental models
+## The point
 
-- **Coda (the AI's role).** A team of health agents working for the physician. It investigates, synthesizes and recommends rather than pushing routine judgment back. It speaks like a trusted chief resident: current judgment first, only the evidence that changes the plan (doc for the voice). The physician controls clinical decisions. [linear:Coda Agents#What Coda Agents is; codex:…01a091f9…@2026-09-14T01:48:36; coda-agents/docs/architecture.md:543]
-- **Coda's model roles.** Two roles: the conversation has its own, and background work has its own. Sol, a model, runs the physician's conversation, including that conversation's own housekeeping; Luna, a model, does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Sol and Luna are the actual models, not configuration names: "they're not configuration names. They're models" [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z; claude:220b86fb-906c-44c1-a206-2c4016c51a61.jsonl@2026-09-23T23:20:07.680Z; claude:220b86fb-906c-44c1-a206-2c4016c51a61.jsonl@2026-09-23T01:15:25.107Z]. Which one leads does not matter. Background work is judged on completion, wasted calls and landing in time (doc); it will probably run at max effort (GPT-6 Luna Max), but that is flexible: "Background runs will probably run on Luna Max, like GPT-6 Luna Max. Same with Coda agents, but it's flexible." [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:44:31.878Z] The lead of a run authors anything the physician sees. [claude:220b86fb…@2026-09-23T19:12:08; claude:220b86fb…@2026-09-23T22:08:52; claude:220b86fb…@2026-09-23T20:49:33; coda-agents/docs/readiness.md:44; coda-agents/docs/architecture.md:376; linear:ENG-159#Workers and steering]
-- **Today.** The physician's to-do list: only the most salient things, what needs their attention, what's urgent and what's wrong: "today should show the most salient things. So things that need attention, things that are urgent, issues, etc." [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:03:35.292Z] Everything else Coda did goes to Updates, which they never maintain. It is one flat list across patients, one row per thing, each naming its patient, ordered by urgency (now, then today) and then longest waiting. Coda decides what goes where: on Today, in the day's Updates, or on the patient page (PRINCIPLES.md 4 and 5). Every placement in this spec (on Today, off Today, in Updates, on the patient page) describes what Coda would usually judge, never a fixed rule. Only three things are fixed: only people with access see a patient's item; nothing broken, behind or left unhandled is silent to someone who can act (principle 9); and nothing reaches a patient without the physician's approval. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:36:25.855Z] The earlier work put these on Today, as examples rather than a fixed list: a concern (Done); one row per patient message, carrying the drafted reply and any concern about that message (Review reply); a message waiting for a match, on the messaging manager's Today; an urgent-looking unmatched message, which leads as Now for everyone who sees it; a message Coda can't read (links to it in Gmail or Spruce until read or Done); a visit nudge when Coda judges something new before a visit; work Coda can't restart that left something unhandled (Done), one row per patient [claude:bbe5dff2…@2026-10-23T18:25:51]; running work the physician would recognize, from a patient's message or something they started; a managed messaging account that is disconnected, so Today never claims nothing needs you; a For my doctor a connected patient sent, when Coda judges a physician needs to see it [claude:bbe5dff2…@2026-10-26T02:18:05 (chosen); linear:ENG-39#Done when]; and one line for the practice when its whole records source is down. The day's schedule sits beside the list. Below the rows, one collapsed line summarizes the rest of the day's work, as on the website ("Coda also reviewed 9 patients today"); opening it shows that day's Updates, such as "Reviewed, nothing for you". [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:27:43.610Z; website:home] A "now" item stays at the top of every page until opened once. Opening a row records it seen and never removes it; a row leaves when the physician acts (Done, No reply needed, a native reply Coda sees) or Coda resolves it. A seen row that changes comes back as new and says what changed. [linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T19:24:16; claude:220b86fb…@2026-09-23T20:54:31; claude:220b86fb…@2026-09-23T21:00:36; claude:220b86fb…@2026-09-23T20:57:51; claude:220b86fb…@2026-09-23T20:58:41; claude:220b86fb…@2026-09-26T05:00:47; claude:bbe5dff2…@2026-10-23T18:54:18; linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T19:26:19; claude:220b86fb…@2026-10-04T14:52:12; claude:bbe5dff2…@2026-10-23T19:28:22; codex:…01a090f5…@2026-09-11T21:58:40; claude:220b86fb…@2026-09-30T22:58:15]
-- **Updates.** The day's log of everything Coda did across the physician's patients: what it wrote them, quiet reviews that needed nothing (grouped under a small heading such as "Reviewed, nothing for you"), concerns it closed with its one-line reason, follow-up changes made by quiet work, work that ended with nothing left to do (with its reason), and replies it drafted (Reply ready, opening the same card as Today). Today's part of it also appears as Today's collapsed line. Earlier days are one click back. Whether the full log keeps a page of its own, and where it opens from, is settled with a mockup during the port: "I think we should just mock it up and decide. And as we port over, we can decide what it looks like and what's better." [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:30:36.402Z] (DECISIONS.md UI7) The physician never maintains it: opening a row marks it seen and never removes it. A reply closed by the practice's own native reply gets no Updates row; History records it as answered by the practice. Opening an update lands on the exact work and evidence behind it. [linear:ENG-14#Decided; linear:ENG-14#What the physician can do; claude:220b86fb…@2026-10-01T21:00:12; claude:220b86fb…@2026-10-02T04:14:32; claude:220b86fb…@2026-10-02T05:28:52; claude:220b86fb…@2026-09-29T03:11:13; claude:220b86fb…@2026-10-01T03:45:01; claude:bbe5dff2…@2026-10-23T21:40:06]
-- **Concern.** One thing that needs the physician's judgment, authored by Coda for one patient, marked now or today. Two unrelated concerns are separate items the physician clears independently; Coda decides when concerns belong together. Any work may tie a concern to an upcoming visit, and that concern ends with the visit, except a now concern, which stays until someone opens it [claude:220b86fb…@2026-09-28T03:43:52]. Coda's own unprompted findings get the physician's attention only as a concern cleared with Done; rows from a patient's message or from a failure or system state are other kinds with their own actions [claude:bbe5dff2…@2026-10-23T16:39:58; claude:220b86fb…@2026-09-26T05:00:47]. A concern about a patient's message stays with that message's row. Done removes the concern for every physician sharing the patient; Coda may also retire a concern, with a one-line reason recorded in History and Updates. Done does not end a follow-up or say the issue is resolved (doc for the last clause). [linear:ENG-14#What the physician can do; linear:ENG-31#Decided; codex:…01a091f9…@2026-09-16T19:14:34; claude:220b86fb…@2026-09-23T20:57:51; codex:…01a16412…@2026-10-22T18:03:53; claude:220b86fb…@2026-09-29T03:11:13; coda-agents/docs/physician-experience.md:135]
-- **Patient page.** One persistent place per patient answering what is happening, what Coda is doing, what it is following up on and what needs the physician. Its top is that patient's Today rows, with the same states and actions. It holds the patient summary, follow-ups, conversations, messages and past work, and shows routine work Coda is doing for this patient. It says "Records as of {time}" from the last good pull, and says when records couldn't update. [linear:ENG-37#What the physician can do; codex:…01a0602a…@2026-09-02T20:01:40; claude:220b86fb…@2026-09-23T20:58:41; claude:220b86fb…@2026-09-29T21:03:27; claude:220b86fb…@2026-10-01T03:35:28; linear:ENG-14#Decided]
-- **Patient memory.** One current picture per patient from records, results, messages and the physician's conversations with Coda, updated as things change. Coda keeps a compact, revisable working understanding (the operating index), written in Markdown rather than a rigid schema, that is never shown to the physician and never the ground truth for medications; the physician sees the patient summary paired with it. A run orients from the index, its active follow-ups and what triggered it instead of rebuilding everything; it reads logs on purpose, with "no generic recent-log tail" [codex:…01a0602a…@2026-09-02T16:59:14]. What the physician says in chat is a dated memory source. Past work is searchable history, and patient-memory search is semantic, not keyword-only. [website:home; claude:220b86fb…@2026-09-26T04:07:22; codex:…01a0602a…@2026-09-08T15:27:10; claude:220b86fb…@2026-09-25T16:38:17; codex:…01a0602a…@2026-09-02T17:02:45; codex:…01a0602a…@2026-09-04T04:06:43; claude:220b86fb…@2026-09-25T16:42:47]
-  Memory records understanding, reasons and the physician's direction; it guides the model and is not a code gate. The index may hold medications only as dated, cited orientation, and is never quoted as the current list. [claude:220b86fb…@2026-09-26T04:05:44; claude:220b86fb…@2026-09-26T04:08:07] Coda edits the index by exact old-to-new replacements against the version it read, together with the summary; untouched text keeps its citations, and once a version exists every removal shows in the audit trail. [claude:220b86fb…@2026-09-28T03:02:24; claude:220b86fb…@2026-09-28T03:30:51; claude:220b86fb…@2026-09-28T03:33:55] The daily log is append-only; "the daily log is a log, not a document Coda rewrites". [claude:220b86fb…@2026-10-05T02:36:56] An index edit may leave the physician summary unchanged; Coda rewrites the summary when the change affects what the physician needs to know, and the periodic review rewrites it when any record it cites has changed. [claude:220b86fb…@2026-09-28T03:30:51; claude:220b86fb…@2026-09-28T03:33:55; linear:ENG-14#Decided]
-- **Memory evolves later.** In the MVP, patient memory is the operating index and its logs. It will likely become more knowledge- or graph-based over time, but not in the MVP: "it's all operating index focused, we'll have to evolve it over time to something probably more knowledge-based or graph-based over time. But probably not for the MVP." Tyler explores the approaches in ENG-166; nothing in the MVP waits on it, and any change to what is retained or shared is Dev's decision. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:52:26.501Z; linear:ENG-166#What to find out]
-- **Initial understanding (hydration).** The first time Coda sees a patient it does the work to understand them and builds the operating index. Later sources update that understanding rather than restarting it; a new EHR source appearing later does not create a second patient relationship (doc). Finding the patient's other health systems is part of this work: "Coda agent should own this during patient hydration" [codex:rollout-2026-09-02T23-10-23-01a0653f-0357-72a0-975d-7d195fe3@2026-09-03T03:19:22.542Z]. If the practice's only source for a patient is their Duet, Coda may build a deliberately limited first understanding from it (doc). If it can't finish, it shows Couldn't finish with Try again on the patient page and the work itself, not on Today [claude:bbe5dff2…@2026-10-23T19:24:16]; if Coda can't restart it, it waits on Today with Done, like the other can't-restart kinds: "we should have like a warning and then a retry option or something." [claude:220b86fb…@2026-09-24T16:04:41] [codex:…01a0602a…@2026-09-03T14:43:13; codex:…01a0602a…@2026-09-03T14:48:58; codex:…01a0602a…@2026-09-03T14:27:48; coda-agents/docs/ai-care-team-operating-contract.md:1203; coda-agents/docs/ai-care-team-operating-contract.md:1206; linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T19:26:19]
-- **Conversation.** The physician's conversation with Coda about one patient. It is not a patient's message to the physician. Away from a patient, the sidebar lists recent conversations; a patient's page keeps that patient's conversations. [codex:…01a091f9…@2026-09-21T21:26:33; claude:220b86fb…@2026-09-30T03:20:45; claude:220b86fb…@2026-09-29T02:48:39]
-- **Run steps.** While Coda works, the physician sees steps that come only from real tool calls. They stay in the workspace and chat, and replay later from the patient's history. They never become Today items or notifications. They are Agents-only. [linear:ENG-160#Decided; linear:ENG-160#Done when] Pulsing dots show running work; presentation details wait for the UI program. [claude:220b86fb…@2026-10-02T04:46:31] Steps are worded for the physician, never as tool names, technical statuses or internal vocabulary. [codex:…01a0602a…@2026-09-04T21:14:00; codex:…01a0602a…@2026-09-04T17:26:58]
-- **Source and citation.** A citation opens the exact source Coda read. Coda shows a short preview it authored, labeled as of when it read the source, and a live deep link into the EHR when one exists; there is no version machinery for citation previews. The records working copy still keeps an EHR record that changed silently as a new, logged version [claude:220b86fb…@2026-10-02T03:51:45]. One source can support several claims; each citation opens the passage for its own claim. Citations can come from records, literature, wearables, patient messages and other sources. Previews ship with the answer in one response, not as a separate step. [claude:220b86fb…@2026-09-27T22:46:28; linear:ENG-160#What the physician can do; claude:220b86fb…@2026-09-27T15:18:43; claude:220b86fb…@2026-09-27T18:52:27; codex:…01a091f9…@2026-09-17T20:05:19; claude:220b86fb…@2026-09-22T17:48:44] Every cited record Coda read gets its preview; "unavailable" applies only to a source Coda couldn't read at all. [claude:220b86fb…@2026-09-27T19:56:27; codex:…01a091f9…@2026-09-18T16:28:09]
-- **Basis and limitations.** Every Coda response carries a basis-and-limitations section, collapsed by default, authored separately from the response. It sits beside Sources as its own control. Important uncertainty still belongs in the main response. It stays on every response, collapsed, for regulatory (FDA) reasons: "I think we need to, honestly, as a collapsed section because of like FDA stuff." [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:03:35.292Z] [codex:…01a091f9…@2026-09-22T04:19:10; codex:…01a091f9…@2026-09-16T01:29:59; codex:…01a091f9…@2026-09-21T01:59:01]
-- **Patient review.** Coda's look at a patient when a scheduled pull finds something new, patient mail arrives, a follow-up comes due, a visit approaches, the periodic review is due or the physician directs it. One event starts one review. It looks again before finishing if records change. It may end quietly. Each connection fetches what changed at the configured cadence without model calls; a model review runs only when something new arrived or a follow-up came due, gathered per patient, and the periodic review stays the broad re-look. A connected patient's Duet data is evidence like any other, labelled with its origin and date (for example "from Epic, via the patient's Duet"); plan Check-in answers from Duet feed Coda's reviews and never become alerts. Every change notice says what kind of change it was, and review timing and preparation decide from it. [linear:ENG-14#Done when; linear:ENG-14#Decided; linear:ENG-39#What the patient and physician can do; claude:220b86fb…@2026-09-28T03:09:08; claude:220b86fb…@2026-09-28T03:10:16; claude:220b86fb…@2026-09-26T04:05:44; claude:220b86fb…@2026-10-04T02:53:12]
-- **Cadence.** How often Coda pulls each patient's sources and runs periodic reviews. It is a runtime budget (Tyler's), configurable by practice or patient through one existing owner; physicians don't change the cadence of the full background runs. The physician can ask Coda for specific scheduled jobs (cron jobs) for a patient, which should be straightforward and cheap. In the MVP there is no limit on background runs; a later limit, such as a cap on runs per patient by what the practice pays, is Dev's decision (DECISIONS.md A9). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:03:35.292Z] Care-team cadence in Agents is separate from patient automations in Duet. [linear:ENG-14#Decided; linear:ENG-14#Done when; claude:07b69ca9…@2026-10-13T17:43:05] A records source check is a full re-pull of each patient, compared with what Coda holds; its cadence is configurable, starting at daily. [codex:…01a175bc…@2026-10-26T18:28:44; claude:220b86fb…@2026-09-28T03:37:49] Proactive review of every source the agents watch (the EHR, Kno2, a connected patient's Duet data) runs on scheduled (cron) jobs that pull what's new; arrivals are not push hooks: "We'll have chron jobs that handle the proactive review. We don't need arrivals being like push hooks". Patient mail (Gmail and Spruce) is the exception and is handled as it arrives: "Scheduled, except patient mail". The agents judge what matters to the physician; how often each schedule runs and what it costs are runtime budget (Tyler's). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:31.977Z (chosen); claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:51.881Z; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z (chosen)]
-- **Follow-up.** A responsibility Coda carries for a patient: some time is meant to pass before a check-in. It has a due time and lives on the patient page; a due follow-up usually stays there, and Today gets what needs the physician. The physician creates, changes, stops, resumes, reviews now, completes and cancels it directly or in conversation; Coda's quiet work may also create, revise or complete it. It ends when completed or cancelled. [codex:…01a0602a…@2026-09-02T18:39:31; codex:…01a0602a…@2026-09-02T19:07:31; claude:220b86fb…@2026-09-23T21:01:19; claude:bbe5dff2…@2026-10-23T16:32:15; linear:ENG-14#What the physician can do; linear:ENG-14#Decided]
-- **Briefing (pre-visit preparation).** For a visit, Coda prepares the patient's meaningful trajectory, what's new, what's unresolved and the decisions the visit can settle, with every point opening its source. A preparation belongs to one visit time. A briefing reaches Today only as a visit nudge when Coda judges something is new before the visit. A finished briefing does not mean its recommendations were accepted. [linear:ENG-31#What the physician can do; linear:ENG-31#Decided; claude:220b86fb…@2026-09-23T20:54:31; claude:220b86fb…@2026-09-23T21:01:19]
-- **Patient message and reply.** A message arrives in Gmail or Spruce, is linked to one patient, and wakes that patient's review. If a reply is useful, Coda proposes one grounded in the chart and the whole conversation. The physician edits it and asks Coda to revise it. In the MVP the physician copies it and sends it themselves in Gmail or Spruce; in the ideal product a Send beside Copy has Coda send exactly the approved words for them. [linear:ENG-8#What the physician can do; codex:…01a091f9…@2026-09-16T16:49:59; claude:220b86fb…@2026-09-22T21:48:11; claude:220b86fb…@2026-09-26T20:51:09; claude:bbe5dff2…@2026-10-24T15:19:27; claude:bbe5dff2…@2026-10-24T19:02:06]
-- **Stop and Resume.** Stop holds exactly the work it names, across restarts, until Resume. Infrastructure interruptions are not Stops; they recover on their own. [linear:ENG-14#Decided; linear:ENG-159#Execution and completion acceptance]
+The measure of success is more patient relationship without more physician work. Concretely, physician-touched items per 100 patients per week has to fall, while the care patients need still happens. Every design choice should be read against that number. If a feature makes the physician touch more things, it needs a very good reason.
 
-## 4. Flows
+## Principles
+
+Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones specific to the physician product.
+
+1. **A team, not a copilot.** Coda reviews what changed, carries what is due, and brings the physician in only when their judgment helps. Within its authority it is extremely proactive.
+2. **The physician holds clinical authority.** The physician decides diagnosis, treatment and medication. Nothing reaches a patient without the physician, even in an emergency. Every message to a patient needs the physician's approval; updates Coda notices, such as a documented care decision reaching the patient's Duet, need none.
+3. **Every answer comes from evidence Coda actually read,** with a citation the physician can open. When evidence is missing or unreadable, Coda says so plainly. Every claim the product makes, such as "read", "none", "current" or "checked", traces to recorded evidence.
+4. **Design for the patient who does nothing.** Coda notices what changed and carries each episode to the physician's decision and through follow-through without the patient lifting a finger.
+5. **Attention stays salient.** Not everything becomes a concern. Quiet work that needs nothing from the physician finishes without a receipt and stays inspectable from the patient's history and the Updates log.
+6. **Ambient.** The physician doesn't have to ask Coda to start ordinary work. Preparation, reviews and follow-ups start from the schedule, the clock, scheduled pulls of each source and arriving patient mail.
+7. **One fact, one owner.** Every screen and job reads the same owner, and no journey keeps a parallel copy of state.
+8. **Silence that looks like health is a failure.** If something is behind, stuck or degraded, someone who can act on it sees it, with the reason. Recovery is the system's job, and retries never become the physician's workflow.
+9. **Live where you work; history as it was.** What the physician is looking at updates live. Anything already said or sent keeps the version it used and is marked when something newer exists.
+10. **Messages stay in the practice's channels.** Gmail and Spruce remain the inbox, and Coda has no inbox of its own.
+11. **Never anchor on FHIR or any one API.** Every source comes through its own adapter.
+12. **Fail closed on access, consent and patient data; fail gracefully everywhere else.** A small failure never closes a whole screen, and a list never reads as complete when something is missing.
+13. **The shared UI principles apply** (PRINCIPLES.md U1–U9). In particular, a label or control exists only because a real state or capability exists.
+
+## The concepts
+
+**Coda.** The team of agents, speaking like a trusted chief resident: current judgment first, then only the evidence that changes the plan. It investigates, synthesizes and recommends instead of pushing routine judgment back to the physician. The lead agent of a run writes anything the physician sees.
+
+**Today.** The physician's to-do list. It shows the most salient things: what needs their attention, what's urgent, what's wrong. It is one flat list across patients, one row per thing, each naming its patient, ordered by urgency (now, then today) and then by how long it has waited. Coda decides what goes on Today, what goes to Updates and what stays on the patient page. Three things are fixed regardless of that judgment: only people with access see a patient's item, nothing broken, behind or unhandled is silent to someone who can act, and nothing reaches a patient without the physician's approval.
+
+Things Coda typically puts on Today:
+
+- a concern, cleared with Done;
+- one row per patient message, carrying the drafted reply and any concern about that message (Review reply);
+- a message waiting to be matched to a patient, on the messaging manager's Today, and an urgent-looking unmatched message as Now for everyone who sees it;
+- a message Coda can't read, linking to it in Gmail or Spruce until it's read or marked Done;
+- a visit nudge, when Coda sees something new before a visit;
+- work Coda can't restart that left something unhandled, one row per patient, cleared with Done;
+- running work the physician would recognize, such as a reply to a patient's message or something they started;
+- a disconnected messaging account, so Today never claims nothing needs the physician;
+- a For my doctor summary a connected patient sent, when Coda judges a physician should see it;
+- one line for the practice when its whole records source is down.
+
+The day's schedule sits in a collapsible pane beside the list. Below the rows, one collapsed line summarizes everything else Coda did that day ("Coda also reviewed 9 patients today"), and opening it shows that day's Updates. A Now item stays at the top of every page until it has been opened once. Opening a row marks it seen and never removes it; a row leaves when the physician acts (Done, No reply needed, or a reply Coda sees them send) or Coda resolves it. A seen row that changes comes back as new and says what changed.
+
+**Updates.** The log of everything Coda did across the physician's patients, which the physician never has to maintain: what it wrote, quiet reviews that needed nothing (grouped under a heading like "Reviewed, nothing for you"), concerns it closed with a one-line reason, follow-up changes, work that ended with nothing to do and why, and replies it drafted. Earlier days are one click back. Opening an update lands on the exact work and evidence behind it. A reply the practice sent itself gets no Updates row; the patient's history records that the practice answered.
+
+**Concern.** One thing that needs the physician's judgment, written by Coda for one patient and marked now or today. Unrelated concerns are separate items the physician clears independently, and Coda decides when concerns belong together. A concern tied to an upcoming visit ends with the visit, except a Now concern, which stays until someone opens it. Coda's own unprompted findings reach the physician only as concerns cleared with Done. Done clears a concern for every physician sharing the patient; it doesn't end a follow-up or say the issue is resolved. Coda can also retire a concern, with a one-line reason in the patient's history and in Updates.
+
+**Patient page.** One place per patient that answers what's happening, what Coda is doing, what it's following up on and what needs the physician. Its top shows that patient's Today rows with the same actions. Below that are the patient summary (open by default), follow-ups, conversations, messages, past work and the routine work Coda is doing now. It says "Records as of {time}" from the last good pull, and says so when records couldn't update.
+
+**Patient memory.** One current picture of each patient, built from records, results, messages and the physician's conversations with Coda, and updated as things change. Coda keeps a compact, revisable working understanding of the patient, the operating index, which guides the model and is never shown to the physician or treated as ground truth for medications. The physician sees the patient summary instead. What the physician says in chat becomes a dated part of memory. Past work is searchable history, and memory search is semantic. Coda rewrites the summary when a change matters to the physician, and the periodic review rewrites it when anything it cites has changed.
+
+**Initial understanding.** The first time Coda sees a patient, it does the work to understand them and builds the operating index, including finding the patient's other health systems. Later sources update that understanding instead of restarting it, and a new EHR source never creates a second patient relationship. When a patient's only source is their Duet, Coda builds a deliberately limited first understanding from it.
+
+**Patient review.** Coda's look at a patient. A review starts when a scheduled pull finds something new, patient mail arrives, a follow-up comes due, a visit approaches, the periodic review comes around or the physician asks. One event starts one review, and a message and a result found together share a review. If records change before it finishes, it looks again. It may end quietly. A connected patient's Duet data is evidence like any other, labeled with where it came from ("from Epic, via the patient's Duet"), and plan Check-in answers from Duet feed reviews without ever becoming alerts.
+
+**Follow-up.** A responsibility Coda carries for a patient when some time should pass before checking in. It has a due time and lives on the patient page; Today only gets what needs the physician. The physician creates, changes, stops, resumes, reviews now, completes and cancels follow-ups directly or in conversation, and Coda's own work may create, revise or complete them too.
+
+**Briefing.** Coda's preparation for a visit: the patient's meaningful trajectory, what's new, what's unresolved and the decisions the visit can settle, every point opening its source. A briefing belongs to one visit time. A finished briefing doesn't mean its recommendations were accepted.
+
+**Patient message and reply.** A message arrives in Gmail or Spruce, is linked to one patient, and wakes that patient's review. If a reply would help, Coda proposes one grounded in the chart and the whole conversation. The physician edits it or asks Coda to revise it, then copies it and sends it themselves.
+
+**Conversation.** The physician's chat with Coda about one patient, distinct from a patient's message to the physician. Away from a patient, the sidebar lists recent conversations; a patient's page keeps that patient's conversations.
+
+**Run steps.** While Coda works, the physician sees steps that come only from real tool calls, worded for a physician and never as tool names or internal vocabulary. They replay later from the patient's history and never become Today items or notifications. Physicians see steps, not the model's reasoning. Pulsing dots show running work.
+
+**Citations.** A citation opens the exact source Coda read, with a short dated preview Coda wrote, the passage for that claim highlighted, and a live link into the EHR when one exists. One source can back several claims, and each citation opens its own passage. Citations can point to records, literature, wearables, patient messages and other sources. Every record Coda read gets its preview; "unavailable" only applies to a source Coda couldn't read at all.
+
+**Basis and limitations.** Every response carries a basis-and-limitations section, collapsed by default and written separately from the response, beside Sources. It's there on every response for regulatory reasons. Important uncertainty still belongs in the response itself.
+
+**Stop and Resume.** Stop holds exactly the work it names, across restarts, until Resume. Infrastructure interruptions aren't Stops; they recover on their own.
+
+## Journeys
 
 ### P1. Ask about a patient, with evidence
 
-1. The physician finds a patient with Find patient, one server-side roster search that respects access and is shared by every place that searches patients, and opens the patient page. [claude:220b86fb…@2026-09-26T03:45:32; linear:ENG-160#What the physician can do]
-2. If patient search falls back to keywords, someone is told. [linear:ENG-160#Don't repeat]
-3. The patient page shows identity with DOB and MRN labeled (each whenever the connector supplies it), the patient summary, which starts open, and when records were last refreshed. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:10:55.899Z (chosen); linear:ENG-37#What the physician can do; claude:220b86fb…@2026-09-22T17:53:11; coda-agents/docs/physician-experience.md:864; codex:…01a0602a…@2026-09-05T16:45:28; codex:…01a091f9…@2026-09-21T01:59:01]
-4. The physician writes a question. From the patient page this starts a new conversation about the patient. (doc) [coda-agents/docs/physician-experience.md:897]
-5. The physician may dictate instead of typing: hold the shortcut or click the mic, release to transcribe, and the text lands in the box for editing. Nothing sends on its own. [codex:…01a05e51…@2026-09-12T19:14:50; codex:…01a05e51…@2026-09-12T20:33:48; coda-agents/docs/physician-experience.md:349]
-6. Coda reads the chart, prior conversations, its understanding of the patient and, when useful, clinical literature. Chart answers work when the literature service is down; whether to consult literature is Coda's judgment, guided by skills that nudge it "to look for medical guidelines and look for the clinical corpus when responding in any case" [codex:…01a091f9…@2026-09-12T00:50:39]. Chat answers don't pull fresh records on their own; Coda sees the copy's age and fetches when it judges it needs to. [linear:ENG-160#What the physician can do; linear:ENG-159#Execution and completion acceptance; claude:220b86fb…@2026-09-28T03:18:15]
-7. While Coda works, the physician sees steps appear live from real tool calls. The finished answer then arrives whole; there is no live unfinished text. Physicians see steps, not the model's reasoning; reasoning summaries stay in the team inspector. [linear:ENG-160#Done when; codex:…01a0602a…@2026-09-04T22:18:43; linear:ENG-160#Discuss with Dev; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T21:06:11.518Z (chosen)]
-8. Coda searches the chart well enough that a reworded question still finds the evidence; search neither stops at the first match nor stops at "not found". One failed tool read does not fail the whole answer. [linear:ENG-160#Done when; linear:ENG-160#Don't repeat; claude:220b86fb…@2026-09-24T17:46:31]
-9. The answer cites the evidence beside each claim. It ends with one Sources control summarizing that answer's citations and a collapsed Basis and limitations. [linear:Coda Agents#Principles; codex:…01a091f9…@2026-09-18T01:29:56; codex:…01a091f9…@2026-09-16T01:29:59]
-10. Missing or unreadable evidence is said plainly, not treated as absent. Literature that is unavailable reads differently from literature that found nothing. [linear:ENG-160#Done when]
-11. The physician opens a citation. The source comes up in a side panel beside the answer with Coda's dated preview, the passage for that claim highlighted, and a link into the EHR when one exists. [codex:…01a091f9…@2026-09-19T22:11:04; claude:220b86fb…@2026-09-27T15:18:43; codex:…01a091f9…@2026-09-17T17:47:29]
-12. If the passage can't be recovered, the same source shows without highlighting and with a brief notice. [codex:…01a091f9…@2026-09-17T22:04:00]
-13. Later, the physician reopens the answer and its citation and finds them as they were. [linear:coda-rust platform#Journeys]
+1. The physician finds a patient with Find patient, a server-side roster search that respects access and is shared by everything that searches patients, and opens the patient page. If search ever falls back to keywords, someone is told.
+2. The patient page shows identity with DOB and MRN labeled (whenever the source supplies them), the patient summary and when records were last refreshed.
+3. The physician writes a question, or dictates it: hold the shortcut or click the mic, release to transcribe, and the text lands in the box for editing. Nothing sends on its own. Asking from the patient page starts a new conversation about that patient.
+4. Coda reads the chart, prior conversations, its understanding of the patient and, when useful, the clinical literature. Whether to consult literature is Coda's judgment, guided by skills that push it toward guidelines and the clinical library, and chart answers work when the literature service is down. Coda sees how old its copy of the records is and fetches fresh records when it judges it needs to.
+5. While Coda works, steps appear live. The finished answer arrives whole.
+6. Coda searches the chart well enough that a reworded question still finds the evidence, and it doesn't stop at the first match or at "not found". One failed read doesn't fail the whole answer.
+7. The answer cites evidence beside each claim and ends with one Sources control and a collapsed Basis and limitations. Missing or unreadable evidence is said plainly, and unavailable literature reads differently from literature that found nothing.
+8. The physician opens a citation and the source opens in a side panel beside the answer. If the passage can't be recovered, the same source shows without highlighting and with a short notice.
+9. Later, the physician reopens the answer and its citations and finds them as they were.
 
-Branches:
+Along the way:
 
-- **Steer.** The physician sends while Coda answers; the answer changes direction at once. Nothing typed is ever lost. [linear:ENG-160#Decided; claude:bbe5dff2…@2026-10-24T16:06:10; claude:bbe5dff2…@2026-10-23T19:32:44]
-- **Queue.** Send next queues the message. Queued messages stay visible, editable and deletable, and one can be sent at once while no answer is in progress. [linear:ENG-160#Decided]
-- **Stop.** "Stop really stops, and the queued text returns to the composer for editing or sending. The stopped answer keeps its Resume." A new message supersedes a stopped answer, which stays in the transcript marked stopped, and Resume lasts only until the physician sends something else. [claude:bbe5dff2…@2026-10-23T21:36:58; claude:bbe5dff2…@2026-10-23T19:32:57]
-- **News mid-answer.** New records or messages that arrive before the answer finishes are taken in. The run keeps the exact source versions it read. [linear:ENG-160#Decided]
-- **News after the answer.** A finished answer stays as said and is marked with Update when newer records arrive. [claude:bbe5dff2…@2026-10-26T23:10:44; claude:bbe5dff2…@2026-10-26T23:08:38]
-- **Send fails.** Send carries the draft's text itself, even when the draft couldn't be saved; a failed send keeps the text in the composer. [linear:ENG-160#Decided; claude:bbe5dff2…@2026-10-23T21:37:28]
-- **Draft can't be kept.** Drafts save quietly; only when one can't be kept does it say "Not saved" with Retry. [claude:bbe5dff2…@2026-10-26T23:16:03; claude:220b86fb…@2026-09-22T17:35:54]
-- **Lost receipt.** Every command changes its item only when accepted. A lost receipt shows as pending, Coda confirms it on its own and never sends twice; if it still can't be confirmed, the item says so with Check again. Other commands on that item wait meanwhile. [linear:ENG-160#Decided; claude:bbe5dff2…@2026-10-23T19:27:23; claude:bbe5dff2…@2026-10-24T04:04:53]
-- **Interrupted run.** An interrupted run recovers without duplicate effects. [linear:coda-rust platform#Journeys; linear:ENG-159#Execution and completion acceptance]
-- **Restart.** After a restart the physician finds the conversation, drafts, history and feedback exactly as left. [linear:ENG-160#What the physician can do]
-- **Archive.** The physician archives a conversation and a notice offers Undo. Archive is allowed only with no active or queued work and never clears attention or ends follow-ups. Send, Resume, Try again and Update each restore an archived conversation. [codex:…01a091f9…@2026-09-16T21:44:39; codex:…01a091f9…@2026-09-16T19:34:55; linear:ENG-160#Decided; claude:bbe5dff2…@2026-10-24T13:53:28]
-- **Delete.** Deleting a conversation removes clutter and keeps the care context learned from it (DECISIONS.md, UI program). [codex:…01a091f9…@2026-09-11T19:42:47]
-- **Correction.** See "Correcting Coda" below. [linear:ENG-160#What the physician can do]
+- **Steer.** Sending while Coda answers changes the answer's direction at once. Nothing typed is ever lost.
+- **Queue.** Send next queues a message. Queued messages stay visible, editable and deletable, and one can be sent right away while no answer is running.
+- **Stop.** Stop really stops, and queued text returns to the composer. The stopped answer stays in the transcript marked stopped and keeps its Resume until the physician sends something else.
+- **News mid-answer.** Records or messages that arrive before the answer finishes are taken in.
+- **News after the answer.** A finished answer stays as it was said and is marked with Update when newer records arrive.
+- **Saving.** Drafts save quietly. Only a draft that can't be kept says "Not saved" with Retry, and a failed send keeps its text in the composer.
+- **Lost receipt.** A command changes its item only once accepted. A lost receipt shows as pending, Coda confirms it on its own and never sends twice, and if it still can't confirm, the item says so with Check again.
+- **Restart.** After a restart the physician finds conversations, drafts, history and feedback exactly as they left them, and interrupted work recovers without duplicate effects.
+- **Archive.** Archiving a conversation offers Undo. It's allowed only with no running or queued work, and it never clears attention or ends follow-ups. Sending, Resume, Try again and Update each bring an archived conversation back.
+- **Correction.** See K1.
 
-### P2. A scheduled pull finds a new result, a review runs, Today and Updates change
+### P2. A scheduled pull finds a new result
 
-1. Coda pulls each connected patient's sources on scheduled jobs at the configured cadence; a new result is found by the next pull, never pushed (see Cadence). It starts a full review only when something changed, so a quiet day costs little. [linear:ENG-14#Done when; linear:ENG-14#Decided; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z (chosen)]
-2. A pull finds a new result. One event starts one review; a message and a result found together get one review. A patient's work runs side by side, ordered only by real dependencies. [linear:ENG-14#Don't repeat; claude:220b86fb…@2026-09-22T17:48:44; linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-24T15:24:25]
-3. Coda pulls up the patient, the last plan and what changed. (site) [website:home]
-4. Routine reviews stay off Today; the patient's page shows what Coda is doing. Stop on the review stops that review only; it waits on the patient page with Resume, and new results still get their own review. [claude:220b86fb…@2026-09-23T20:57:51; claude:220b86fb…@2026-09-29T21:03:27; linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T18:54:18]
-5. If records change before the review finishes, Coda looks again on its own before finishing. [linear:ENG-14#Decided]
-6. The review ends in one or more outcomes: [linear:ENG-14#Decided]
-   - a concern for the physician, marked now or today, which appears on Today; [linear:ENG-14#What the physician can do; claude:220b86fb…@2026-09-23T20:57:51]
-   - a proposed reply, if a message is involved (see P3); [linear:ENG-8#Decided]
-   - a follow-up created, revised or completed, logged in Updates; [linear:ENG-14#Decided]
-   - a concern retired, with a one-line reason in History and Updates; [claude:220b86fb…@2026-09-29T03:11:13]
-   - nothing left to do, logged in Updates with its reason and no Today row. [linear:ENG-14#Decided]
-7. The physician opens Today and sees what changed and what needs them, and nothing that doesn't. [linear:ENG-14#What the physician can do]
-8. The physician opens a row or an update and lands on the exact work and evidence behind it. [linear:ENG-14#What the physician can do]
-9. The physician clears one concern with Done and keeps the others. [linear:ENG-14#What the physician can do]
-10. Later, the physician trusts that new results, due follow-ups, source checks and scheduled reviews were handled, including when nothing needed them. [linear:ENG-14#What the physician can do]
+1. Coda pulls each patient's sources on a schedule. A new result is found by the next pull, and a full review starts only when something changed, so a quiet day costs little.
+2. A pull finds a new result and a review starts. A patient's work runs side by side, ordered only by real dependencies.
+3. Coda pulls up the patient, the last plan and what changed. Routine reviews stay off Today, and the patient page shows what Coda is doing. Stopping a review stops only that review, which waits on the patient page with Resume while new results still get their own reviews.
+4. The review ends in one or more outcomes: a concern on Today, a proposed reply when a message is involved, a follow-up created, revised or completed, a concern retired with its reason, or nothing to do, logged in Updates with its reason.
+5. The physician opens Today and sees what changed and what needs them, and nothing that doesn't. Opening a row or an update lands on the exact work and evidence behind it.
+6. The physician clears one concern with Done and keeps the others.
+7. Over time the physician trusts that new results, due follow-ups and scheduled reviews were handled, including when nothing needed them.
 
-Branches:
+Along the way:
 
-- **Opening is not acting.** Opening a row records it as seen; it never removes the row. A row that changes after it was seen comes back as new and says what changed. [claude:220b86fb…@2026-09-23T20:58:41; claude:220b86fb…@2026-09-30T22:58:15]
-- **Shared patient.** When two physicians share a patient, Done clears the concern for both; each keeps their own drafts and read status. [codex:…01a16412…@2026-10-22T18:03:53]
-- **Review can't finish.** Work that can't finish shows Couldn't finish with Try again on the patient page and the work itself, not on Today. Recovery is the runtime's and never alerts the physician. If Coda can't restart the review and something is left unhandled, it waits on Today with Done, and Done hands its unreviewed results to the next review. [linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T19:24:16; claude:bbe5dff2…@2026-10-23T19:26:19]
-- **Nothing left to review.** When a review is refused because nothing is left to review (the reply was handled, the message moved), Coda records why and shows no row. [claude:220b86fb…@2026-10-04T01:58:48]
-- **Records source can't update.** Coda keeps working from the last good records; the patient page and any briefing say "Records as of …, couldn't update". "As of" is when Coda last read the source successfully, never a claim about when the EHR refreshed. If the practice's whole source is down, Today carries one line for the practice, never a row per patient. [linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T19:28:22; codex:…01a0602a…@2026-09-07T20:52:48; claude:220b86fb…@2026-09-28T03:18:15]
-- **A connection stops refreshing.** That is never silent; the physician knows when a chart is overdue. Overdue means a missed scheduled fetch, shown as "couldn't update", not an age threshold on the stamp. [linear:ENG-37#Don't repeat; linear:ENG-37#What the physician can do; claude:220b86fb…@2026-10-01T03:35:28]
-- **Part of Today can't load.** Today shows what loaded plus one quiet line with Retry; an item that fails to open shows "Couldn't load this" with Retry and keeps older content. [claude:bbe5dff2…@2026-10-23T19:25:24; claude:bbe5dff2…@2026-10-23T19:25:48; linear:ENG-14#Decided]
-- **A lab is corrected while a reply waits.** The review updates, keeps the physician's edits and keeps unrelated history. A corrected lab retires a stale reply built on it. [linear:ENG-8#Done when; linear:ENG-43#Done when]
-- **Busy patient, restart or duplicate event.** No accepted work is lost and no review is duplicated. [linear:ENG-14#Done when]
-- **Finding needs prompt review.** Coda marks the concern now; it leads Today and stays at the top of every page until opened once. Coda takes no action beyond telling the physician. [claude:220b86fb…@2026-09-23T20:57:51; claude:220b86fb…@2026-09-23T20:58:41; codex:…01a091f9…@2026-09-14T15:21:02] There is no alarm: an urgent finding is a now concern on Today, possibly with "some banner at the top that we had played with previously". [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]
+- **Shared patient.** When two physicians share a patient, Done clears the concern for both, and each keeps their own drafts and read state.
+- **Review can't finish.** It shows Couldn't finish with Try again on the patient page and the work itself, never on Today. If Coda can't restart it and something is left unhandled, it waits on Today with Done, and Done hands its unreviewed results to the next review.
+- **Nothing left to review.** If a review has nothing left to do (the reply was handled, the message moved), Coda records why and shows no row.
+- **A source can't update.** Coda keeps working from the last good records, and the patient page and any briefing say "Records as of …, couldn't update". "As of" is when Coda last read the source successfully. A missed scheduled fetch shows as couldn't update; there's no age threshold. If the practice's whole source is down, Today carries one line for the practice instead of a row per patient.
+- **Part of Today can't load.** Today shows what loaded plus one quiet line with Retry, and an item that fails to open says "Couldn't load this" with Retry and keeps older content.
+- **A lab is corrected.** The review updates, keeps the physician's edits and unrelated history, and retires any reply built on the old value.
+- **Restarts and duplicates.** No accepted work is lost and no review runs twice.
+- **Urgent finding.** Coda marks the concern Now. It leads Today and stays at the top of every page until opened once, possibly with a banner. There's no alarm, and Coda takes no action beyond telling the physician.
 
 ### P3. A patient message is linked, a reply is proposed, revised and handed off
 
 Connecting a channel:
 
-1. A physician connects their own Gmail account; Spruce connects once per practice, and each physician sees only conversations for patients they may access. [codex:…01a091f9…@2026-09-16T16:39:01.326; codex:…01a091f9…@2026-09-21T17:59:21] Connect asks only for reading (section 7). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:08:20.139Z]
-2. Gmail watches the whole mailbox by default, Promotions included; labels are an optional restriction; Spam and Trash stay out unless included. [codex:…01a091f9…@2026-09-16T22:26:05; claude:220b86fb…@2026-10-02T04:41:21]
-3. Coda starts with new messages, with an explicit option to review a backlog. [codex:…01a091f9…@2026-09-16T16:52:12.481; claude:220b86fb…@2026-10-02T14:34:02]
-4. Catching up and temporary sync failures are never shown. Only a revoked grant or an administrator's block asks the physician to Reconnect, and says why. [linear:ENG-8#Decided; claude:220b86fb…@2026-10-03T06:04:30]
-5. The physician can disconnect and reconnect without losing or duplicating anything. When a disconnect completes, messages never accepted into a patient's record and reply drafts are deleted; accepted evidence stays under the record's policy. If Gmail's history cursor has expired, Coda notes the gap and restarts from Gmail's current point. [linear:ENG-8#What the physician can do; linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T18:54:18; claude:220b86fb…@2026-09-27T15:21:20]
+1. Each physician connects their own Gmail with read-only access; Spruce connects once per practice. Each physician sees only conversations for patients they may access.
+2. Gmail watches the whole mailbox by default, Promotions included. Labels are an optional restriction, and Spam and Trash stay out unless included.
+3. Coda starts with new messages and offers an explicit option to review a backlog.
+4. Catching up and temporary sync problems are never shown. Only a revoked grant or an administrator's block asks the physician to Reconnect, with the reason.
+5. Disconnecting and reconnecting loses and duplicates nothing. A completed disconnect deletes messages that were never accepted into a patient's record, and reply drafts; accepted evidence stays under the record's policy.
 
 A message arrives:
 
-6. A new message arrives from a patient. Patient mail is the MVP scope; mail from colleagues or insurers is outside the MVP. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:36:25.855Z] The reviewing model decides whether mail is patient mail; there are no brittle filters. [claude:220b86fb…@2026-09-23T15:51:49; claude:220b86fb…@2026-10-01T21:39:01]
-7. Known senders route without asking: a conversation already confirmed for a patient, or a sender confirmed for exactly one patient who starts a new thread. A Spruce conversation also routes without the model when it has exactly one outside participant whose saved contact is a patient with exactly one EHR link that matches exactly one Coda patient [claude:220b86fb…@2026-09-22T20:11:32]. Every other message gets Coda's suggestion and waits for a person to confirm. Matching always ends with a suggestion or a person deciding; it never hangs. [claude:220b86fb…@2026-09-22T17:35:54; claude:220b86fb…@2026-09-22T17:37:37; codex:…01a091f9…@2026-09-22T01:28:42; claude:220b86fb…@2026-09-23T05:05:46; claude:220b86fb…@2026-10-02T04:43:21; linear:ENG-8#Decided]
-8. One conversation belongs to one patient. [claude:220b86fb…@2026-09-22T17:37:37; claude:220b86fb…@2026-09-22T21:48:11]
-9. A message waiting for a match goes to the messaging manager and to a practice-wide Messages to match list that any signed-in physician can open and match from; Coda judges whose Today it reaches. It shows the suggested patient and alternatives; Confirm names the patient; model scores are never shown as confidence. The person confirms, picks another patient or leaves it unlinked. [claude:bbe5dff2…@2026-10-23T18:54:18; linear:ENG-8#Decided; codex:…01a091f9…@2026-09-22T17:19:03; claude:220b86fb…@2026-09-28T19:53:29]
-10. An unmatched message that looks urgent may be marked so, and its row leads Today as Now for everyone who sees it. [linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T21:40:47]
-11. Once linked, the message joins the patient's record and wakes the patient's review; what it reveals carries into preparation and later reviews. The whole conversation, including replies the practice sent natively, becomes evidence Coda can cite. Linked messages are an ordinary patient source, with no separate sharing step. [linear:ENG-8#Why it matters; claude:220b86fb…@2026-09-22T17:48:44; codex:…01a091f9…@2026-09-16T18:11:57]
+6. A message arrives. Coda handles mail from patients; mail from colleagues or insurers about a patient is outside the MVP. The model decides whether mail is patient mail, with no brittle filters.
+7. Known senders route on their own: a conversation already confirmed for a patient, a sender confirmed for exactly one patient, or a Spruce conversation whose one outside participant is saved as a contact that maps to exactly one patient. Every other message gets Coda's suggestion and waits for a person to confirm. Matching always ends with a suggestion or a person deciding, and it never hangs.
+8. One conversation belongs to one patient.
+9. A message waiting for a match goes to the messaging manager and to a practice-wide Messages to match list any physician can match from. It shows the suggested patient and alternatives, and Confirm names the patient. Model scores never appear as confidence. The person confirms, picks another patient or leaves it unlinked.
+10. An unmatched message that looks urgent can be marked so, and its row leads Today as Now for everyone who sees it.
+11. Once linked, the message joins the patient's record and wakes their review. The whole conversation, including replies the practice sent itself, becomes evidence Coda can cite.
 
 A reply is proposed:
 
-12. The review decides whether a reply is useful; acknowledgments and resolved conversations need no draft, and nothing then appears on Today. [codex:…01a091f9…@2026-09-16T16:49:59.874; claude:220b86fb…@2026-09-22T17:38:43]
-13. A proposed reply shows on Today as one row for that message: the start of the patient's own words, Drafted a reply (with Flagged when Coda also has a concern about the message), and Review reply. The row leaves when both are handled. [claude:220b86fb…@2026-09-26T05:00:47; claude:220b86fb…@2026-09-23T20:34:49; website:home]
-14. The physician opens the reply in place. They see the patient's unanswered messages with attachments, then what Coda flagged, then the proposed reply grounded in the chart and the whole conversation, with Basis and Sources describing Coda's work, not the outgoing text. [linear:ENG-8#What the physician can do; claude:220b86fb…@2026-10-03T19:52:34; claude:220b86fb…@2026-09-26T15:04:13; coda-agents/docs/patient-messaging.md:1040]
-15. The patient's words are never changed, only formatted; the physician sees the email's formatted copy with unsafe content stripped. [claude:220b86fb…@2026-10-02T14:29:24; claude:220b86fb…@2026-10-02T14:31:11]
-16. Readable attachments are used; unreadable ones are named rather than skipped. [linear:ENG-8#Done when; claude:220b86fb…@2026-09-22T17:40:09]
+12. The review decides whether a reply would help. Acknowledgments and resolved conversations get no draft and no Today row.
+13. A proposed reply shows on Today as one row for the message: the start of the patient's words, Drafted a reply (with Flagged when Coda also has a concern), and Review reply. The row leaves when both are handled.
+14. The physician opens the reply in place and sees the patient's unanswered messages with attachments, then what Coda flagged, then the proposed reply, with Basis and Sources describing Coda's work behind it.
+15. The patient's words are never changed, only formatted, with unsafe content stripped. Readable attachments are used, and unreadable ones are named.
 
 Revise:
 
-17. The physician edits the reply directly. [linear:ENG-8#What the physician can do]
-18. The physician asks Coda to revise it in place; Restore my version brings their text back. New records or messages that arrive before the draft is shown are taken in first, so the physician only sees a current draft. [linear:ENG-8#What the physician can do; claude:220b86fb…@2026-09-26T04:58:45; claude:220b86fb…@2026-09-26T21:36:13; linear:ENG-159#Execution and completion acceptance; claude:bbe5dff2…@2026-10-26T23:08:38]
-19. If the patient writes again, an untouched draft updates in place with one quiet line. If the physician edited the draft, the card says the patient sent another message and Coda's update replaces their text only if they choose it. [claude:220b86fb…@2026-09-26T04:58:45; claude:220b86fb…@2026-09-22T19:30:07]
+16. The physician edits the reply directly, or asks Coda to revise it in place, and Restore my version brings their own text back. Anything new that arrives before the draft is shown is taken in first, so the physician only ever sees a current draft.
+17. If the patient writes again, an untouched draft updates in place with one quiet line. If the physician already edited it, the card says the patient sent another message, and Coda's update replaces their text only if they choose it.
 
-Hand off (MVP):
+Hand off:
 
-20. The physician copies the reply and sends it themselves in Gmail or Spruce (Copy reply, Open in Gmail or Spruce). Coda keeps no approval state for patient mail and never sends it in the MVP. [claude:220b86fb…@2026-09-26T20:51:09; codex:…01a16412…@2026-10-23T14:46:24; claude:bbe5dff2…@2026-10-24T19:02:06; linear:ENG-8#Decided]
-21. The row stays until Coda sees the sent reply in the conversation. A practice reply sent outside Coda shows on the reply card at once as a fact and wakes the review, which decides whether the reply is handled, still useful, or leaves something to track. The native reply resolves the waiting item without duplicate work; History records that the practice answered, with no Updates row. [claude:220b86fb…@2026-09-23T20:57:51; claude:220b86fb…@2026-09-25T17:54:46; claude:220b86fb…@2026-09-25T17:59:09; linear:ENG-8#Done when; claude:220b86fb…@2026-10-01T03:45:01]
+18. The physician copies the reply and sends it themselves from Gmail or Spruce (Copy reply, Open in Gmail or Spruce). Coda keeps no approval state for patient mail and never sends it in the MVP.
+19. The row stays until Coda sees the sent reply. A reply the practice sent outside Coda shows on the card right away and wakes the review, which decides whether anything is left to track. The patient's history records that the practice answered.
+20. In the ideal product, after the MVP, the card offers Send beside Copy, and Coda sends exactly the words the physician approved, shown as sent by Coda for the physician, with accepted, sent and delivered kept distinct.
 
-Hand off (ideal product, not MVP):
+Along the way:
 
-22. The reply card offers Send beside Copy: Coda sends exactly the words the physician approved through the channel, shown as sent by Coda for the physician, with the lost-receipt rule; accepted, sent and delivered stay distinct. [claude:bbe5dff2…@2026-10-24T15:19:27; claude:bbe5dff2…@2026-10-24T19:02:06]
-
-Branches:
-
-- **No reply needed.** The physician closes the reply without a reason and gets a short Undo. A newer message's proposed reply replaces a pending No reply needed, and the old Undo ends quietly. [linear:ENG-8#Decided; claude:220b86fb…@2026-09-26T21:36:13]
-- **Ask Coda to reply.** If no reply is ready, the physician asks for one, and Coda always drafts one. The ask waits behind a review already running; a reply that review proposes answers it. [linear:ENG-8#Decided; claude:220b86fb…@2026-09-29T04:56:24; claude:bbe5dff2…@2026-10-24T15:03:14]
-- **Wrong patient.** The messaging manager uses Wrong patient? on a confirmed link (Another patient, Not a patient). The correction applies going forward only: the message stops affecting the wrong patient and moves to the right one, and one correction never starts two reviews. Undo within the few seconds restores the reply exactly as it was. [linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T22:52:54; claude:bbe5dff2…@2026-10-23T16:32:15; linear:ENG-8#Don't repeat]
-- **Wrong link after use.** Until the re-review decides, a concern or reply that relied on the moved message is withheld, never left wordless; Coda then redrafts or closes it. Everything Coda wrote while its memory held the moved message is marked and can't surface; the physician may need to re-ask a few same-day questions. The audit trail is kept. [claude:220b86fb…@2026-10-03T01:54:23; claude:220b86fb…@2026-10-03T03:18:36; claude:220b86fb…@2026-10-03T19:59:20; claude:220b86fb…@2026-10-02T03:16:11]
-- **Message Coda can't read.** The patient goes on Today with a link to the message in Gmail or Spruce until Coda reads it or the physician marks it Done. A message Coda is holding, can't fully read or is retrying is never invisible. [linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T19:25:06; linear:ENG-8#Don't repeat]
-- **Lab corrected or message moved while a reply waits.** The review updates and keeps the physician's edits. [linear:ENG-8#Done when]
-- **Urgent message.** Coda raises a now concern on the message's row, and the draft tells the patient to call 911 or seek emergency care, for the physician to send. Coda never sends on its own, even in an emergency. [claude:220b86fb…@2026-09-22T17:44:56; claude:220b86fb…@2026-09-23T20:57:51]
-- **For my doctor from a connected patient.** Duet picks up what the patient sent, including any question, and hands it to Coda Agents: the patient's agent talks to the practice's AI care team agent, which judges what the physician needs to see; if needed, it reaches Today. Anything that goes back to the patient as a message needs the physician's approval. The approved answer reaches the patient's Duet as a message from the practice in the thread. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:07:40.936Z (chosen)] Coda delivers it in the MVP, exactly as approved; any edit after approval needs the physician's approval again. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen); linear:ENG-8#Decided] [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:11:28.018Z; claude:bbe5dff2…@2026-10-26T02:18:05]
+- **No reply needed.** The physician closes the reply without giving a reason and gets a short Undo. A newer message's reply replaces a pending No reply needed.
+- **Ask Coda to reply.** If no reply is ready, the physician asks for one and Coda always drafts one. The ask waits behind a review that's already running, and a reply from that review answers it.
+- **Wrong patient.** The messaging manager uses Wrong patient? on a confirmed link (another patient, or not a patient). The fix applies going forward: the message stops affecting the wrong patient and moves to the right one, and one correction never starts two reviews. Undo within a few seconds restores the reply exactly.
+- **Wrong link after use.** Until the re-review decides, anything that relied on the moved message is withheld (never left blank), then redrafted or closed. Everything Coda wrote while its memory held the moved message is marked and can't surface. The audit trail stays.
+- **Message Coda can't read.** The patient goes on Today with a link to the message in Gmail or Spruce until Coda reads it or the physician marks it Done. A message Coda is holding or retrying is never invisible.
+- **Urgent message.** Coda raises a Now concern on the message's row, and the draft tells the patient to call 911 or seek emergency care, for the physician to send.
+- **A connected patient sends For my doctor.** Duet hands what the patient sent, including any question, to Coda Agents, where the patient's agent talks to the practice's care team agent and the practice's agents judge what the physician needs to see. If needed, it reaches Today. The physician's approved answer goes to the patient's Duet as a message from the practice in their thread, delivered by Coda exactly as approved. Any edit after approval needs approval again. This is the one message Coda delivers in the MVP.
 
 ### P4. Pre-visit preparation and briefings
 
-1. Coda reads the schedule from the first practice's EHR (section 7). [linear:ENG-31#Decided]
-2. Coda prepares visits on its own; preparation never waits for someone to start it by hand. Coda judges which visits to prepare and how far ahead (PRINCIPLES.md 4); how the production schedule is read is Tyler's (DECISIONS.md T1). [linear:ENG-31#Don't repeat; linear:ENG-31#Discuss with Dev]
-3. The physician sees tomorrow's visits on the practice day, each with its preparation status. [linear:ENG-31#What the physician can do]
-4. The schedule sits in a collapsible pane beside Today's list, not in the main list; finished visits drop off it. On a narrow screen only the next visit shows. [codex:…01a091f9…@2026-09-20T20:49:50; claude:220b86fb…@2026-09-30T00:20:25; claude:220b86fb…@2026-09-23T21:01:19; codex:…01a091f9…@2026-09-24T21:24:59]
-5. An appointment Coda can't match to a patient stays visible with its time and "Preparation unavailable". [codex:…01a081e0…@2026-09-08T16:50:28]
-6. Preparation checks that the patient's records are ready before it starts; a records source that can't update does not block it, and preparation works from the last good records, saying "Records as of …, couldn't update". If records change before preparation finishes, Coda looks again before finishing. [claude:220b86fb…@2026-10-04T02:53:12; linear:ENG-14#Decided]
-7. The physician opens a briefing: the meaningful trajectory, what's new, what's unresolved and the decisions the visit can settle, every point opening its source. Late, missing or unavailable sources are stated in it. [linear:ENG-31#What the physician can do; linear:ENG-31#Done when]
-8. The visit's card carries a short orientation Coda wrote with the briefing. [codex:…01a091f9…@2026-09-19T20:26:41]
-9. A finished briefing reaches Today only when Coda judges something is new before the visit: a visit nudge, a concern tied to that visit, which ends with the visit. Nothing opens on its own. [claude:220b86fb…@2026-09-23T20:54:31; linear:ENG-31#Decided; claude:bbe5dff2…@2026-10-23T21:54:57; codex:…01a081e0…@2026-09-08T17:30:33]
-10. After the visit, the briefing does not mean its recommendations were accepted or carried out. Briefings stay readable from the patient page and Updates. [linear:ENG-31#Decided; claude:220b86fb…@2026-09-23T21:01:19]
+1. Coda reads the schedule from the practice's EHR and prepares visits on its own; preparation never waits for someone to start it. Coda judges which visits to prepare and how far ahead.
+2. The physician sees tomorrow's visits, each with its preparation status, in the schedule pane beside Today. Finished visits drop off, and on a narrow screen only the next visit shows.
+3. An appointment Coda can't match to a patient stays visible with its time and "Preparation unavailable".
+4. Preparation checks that the patient's records are ready before it starts. A source that can't update doesn't block it; it works from the last good records and says so. If records change before it finishes, it looks again.
+5. The physician opens a briefing: trajectory, what's new, what's unresolved and the decisions the visit can settle, every point opening its source, with late or missing sources stated. The visit's card carries a short orientation Coda wrote with it.
+6. A briefing reaches Today only as a visit nudge, when Coda sees something new before the visit, and the nudge ends with the visit. Nothing opens on its own.
+7. Briefings stay readable from the patient page and Updates afterward.
 
-Branches:
+Along the way:
 
-- **Preparation fails.** It recovers on its own. If Coda can't restart it, it stays on Today with Done until the visit ends. [linear:ENG-31#Done when; linear:ENG-31#Decided; claude:bbe5dff2…@2026-10-23T19:26:19; claude:220b86fb…@2026-10-01T20:12:24]
-- **Visit cancelled or moved.** Unfinished preparation for that time ends at once. A finished briefing stays as history with a notice; a moved visit is prepared fresh when it becomes eligible again; no misleading work is left behind. Dev settled this "if we can figure it out". [linear:ENG-31#Decided; linear:ENG-31#What the physician can do; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]
-- **Visit in progress.** Preparation may still start until the appointment ends; ended visits leave the day list. [codex:…01a081e0…@2026-09-08T17:30:33; codex:…01a081e0…@2026-09-09T00:14:41]
-- **Urgent nudge.** An urgent briefing nudge stays after the visit ends until someone opens it; ordinary nudges leave with the visit. [claude:220b86fb…@2026-09-28T03:43:52]
-- **Later input.** A later message or result does not rewrite the finished briefing; a later review raises its own concern if needed. (doc) [coda-agents/docs/physician-experience.md:835]
+- **Preparation fails.** It recovers on its own. If Coda can't restart it, it stays on Today with Done until the visit ends.
+- **Visit cancelled or moved.** Unfinished preparation for that time ends at once. A finished briefing stays in history with a notice, and a moved visit is prepared fresh.
+- **Visit in progress.** Preparation can still start until the appointment ends.
+- **Urgent nudge.** An urgent nudge stays after the visit until someone opens it; ordinary nudges leave with the visit.
+- **Later input.** A message or result that arrives later doesn't rewrite the briefing; a later review raises its own concern if needed.
 
-### P5. A follow-up is created, comes due, survives an interruption and runs
+### P5. A follow-up is created, comes due and runs
 
-1. The physician asks for a follow-up in conversation or creates it directly. Coda's own work may also create one; every such change is logged in Updates. [linear:ENG-14#What the physician can do; linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T21:40:06]
-2. Coda writes the follow-up so a later run can act on it without replaying the conversation. A terse "yes, do that" is resolved into a full instruction, and "tell me either way" is kept. (doc) [coda-agents/docs/ai-care-team-operating-contract.md:540; coda-agents/docs/ai-care-team-operating-contract.md:641; coda-agents/docs/ai-care-team-operating-contract.md:646]
-3. The follow-up has a due time: a time period and an until or follow-up date. An event-based follow-up also carries a fallback date (doc). [codex:…01a0602a…@2026-09-02T19:07:31; coda-agents/docs/ai-care-team-operating-contract.md:116]
-4. The physician sees it among the patient's active follow-ups on the patient page. Coda judges whether a due follow-up needs Today; usually it doesn't. [claude:220b86fb…@2026-09-23T21:01:19; linear:ENG-14#Decided]
-5. The follow-up comes due on its own schedule, independent of the patient's cadence, and its review starts on its own. [linear:ENG-14#Decided; claude:220b86fb…@2026-10-01T22:36:11]
-6. An interruption (restart, crash) does not lose it; it runs once. [linear:ENG-14#Done when]
-7. It runs as a review of that patient. If the review finds something that needs the physician, a concern reaches Today; otherwise it ends quietly in Updates. The absence of expected evidence is itself worth telling the physician. [linear:ENG-14#Done when; claude:220b86fb…@2026-09-23T21:01:19; codex:…01a0602a…@2026-09-04T03:17:24]
-8. The run may complete, revise or keep the follow-up, logged in Updates. [linear:ENG-14#Decided]
+1. The physician asks for a follow-up in conversation or creates one directly, and Coda's own work may create one too. Every change is logged in Updates.
+2. Coda writes the follow-up so a later run can act on it without replaying the conversation: a terse "yes, do that" becomes a full instruction, and "tell me either way" is kept.
+3. A follow-up has a due time, a period and an until or follow-up date. One that waits on an event also carries a fallback date.
+4. The physician sees it among the patient's active follow-ups. Coda judges whether a due follow-up needs Today, and usually it doesn't.
+5. It comes due on its own schedule, survives restarts and runs once, as a review of that patient. If something needs the physician, a concern reaches Today; otherwise it ends quietly in Updates. Missing evidence that was expected is itself worth telling the physician.
+6. The run may complete, revise or keep the follow-up.
 
-Branches:
+Along the way:
 
-- **Evidence arrives by message.** A waiting follow-up whose evidence arrives in a patient message is handled by that message's review, which can complete, revise or keep it. [claude:220b86fb…@2026-09-22T17:48:44]
-- **Review now.** The physician asks for a review of the current follow-up now; it always starts and does not wait on unrelated work. [claude:220b86fb…@2026-10-06T22:31:41; claude:bbe5dff2…@2026-10-24T15:24:25; website:home]
-- **Physician stops it.** A follow-up has one Stop, which also holds its running review. A follow-up revised while stopped stays held; Resume releases both and reviews the current version. [linear:ENG-14#Decided; claude:220b86fb…@2026-10-06T17:00:33]
-- **Stop and discuss.** The physician stops the work and opens a conversation about it; the work stays held until Resume, as with Stop. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z; coda-agents/docs/ai-care-team-operating-contract.md:845; coda-agents/docs/ai-care-team-operating-contract.md:876]
-- **Physician changes it.** The physician changes it directly or in conversation; a change made in chat replaces the pending follow-up before that answer completes. [linear:ENG-14#What the physician can do; claude:bbe5dff2…@2026-10-23T16:32:15; claude:220b86fb…@2026-09-28T03:37:49]
-- **Physician cancels it.** Coda doesn't recreate it unless new information arrives. The control reads Cancel follow-up. [linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T21:40:06; codex:…01a091f9…@2026-09-20T18:17:46]
-- **Coda can't restart its review.** It waits on Today with Done, which offers the follow-up's own choices: complete, set a new date, or cancel. The row leaves Today and the follow-up always keeps a next step. [linear:ENG-14#Decided; claude:bbe5dff2…@2026-10-23T21:39:24]
-- **The physician doesn't answer a question it raised.** The next due review judges whether it still matters; it does not repeat the same message. (doc) [coda-agents/docs/ai-care-team-operating-contract.md:673]
-- **Time-critical need.** A follow-up is never time-critical monitoring. (doc) [coda-agents/docs/ai-care-team-operating-contract.md:697; website:clinical-transparency]
+- **Evidence arrives in a message.** That message's review handles the follow-up.
+- **Review now.** The physician asks for a review of the follow-up now, and it always starts without waiting on unrelated work.
+- **Stop.** A follow-up has one Stop, which also holds its running review. Resume releases both and reviews the current version.
+- **Stop and discuss.** The physician stops the work and opens a conversation about it; the work stays held until Resume.
+- **Change.** A change made in chat replaces the pending follow-up before the answer completes.
+- **Cancel.** The control reads Cancel follow-up. Coda doesn't recreate a cancelled follow-up unless new information arrives.
+- **Coda can't restart its review.** It waits on Today with Done, which offers complete, set a new date, or cancel, so the follow-up always keeps a next step.
+- **An unanswered question.** If the physician doesn't answer something Coda raised, the next due review judges whether it still matters instead of repeating itself.
+- A follow-up is never time-critical monitoring.
 
 ### L1. Patients who do nothing
 
-1. A multi-week world of synthetic patients and a practice runs on real coda-rust services; time advances, the app closes and services restart. [linear:coda-rust platform#Journeys; linear:ENG-98#What it does]
-2. Coda checks each connected patient at the configured cadence, reviews when something changed, and runs follow-ups on their own schedules. The simulation runs this locally on its own clock; outside the simulation, "Local stays manual; build scheduling once, for hosted." [linear:ENG-14#Done when; linear:ENG-14#Decided; linear:ENG-43#What Roger can do; claude:220b86fb…@2026-09-28T03:09:08]
-3. Patients never act. Coda notices what changed and carries each episode to the physician's decision and follow-through. [linear:Coda Agents#Principles]
-4. The physician sees only what needs them; everything else is logged in Updates. [linear:ENG-14#Decided]
-5. An undecided medication recommendation never becomes a plan. A corrected lab retires a stale reply. [linear:ENG-43#Done when]
-6. The run reports physician-touched items per 100 patients per week, read alongside whether necessary care happened. [linear:coda-rust platform#Journeys; linear:ENG-43#Done when]
-7. Roger starts it locally with one documented command, uses the physician UI himself, and reruns and shapes scenarios. [linear:ENG-43#What Roger can do; linear:ENG-43#Decided]
-8. The simulation supplies the world, events and actors, never the model's conclusions. Evals are the jobs the product must do, run as simulations across patient types and scenarios; local synthetic runs come first and production traces are added over time. [linear:ENG-43#Decided; claude:2f3e608d…@2026-10-18T18:13:18; claude:2f3e608d…@2026-10-18T18:05:32]
-9. The synthetic panel has a realistic spread of time since each patient was last seen; each chart stops at the patient's last contact and ends at the sim's today, with pending items and booked visits but no later content. [claude:9278ff48…@2026-10-26T17:31:10; claude:9278ff48…@2026-10-25T17:05:40]
-10. GAP: how "necessary care happened" is judged, and by whom. GAP: what the simulation's "today" means once its clock moves; Dev deferred it. [claude:9278ff48…@2026-10-26T17:43:45]
+This is how we prove principle 4.
+
+1. A multi-week world of synthetic patients and a practice runs on the real coda-rust services. Time advances, the app closes and services restart.
+2. Coda checks each patient on its schedule, reviews when something changed, and runs follow-ups on their own schedules. Locally the simulation drives this on its own clock.
+3. Patients never act. Coda notices what changed and carries each episode to the physician's decision and follow-through.
+4. The physician sees only what needs them, and everything else is logged in Updates.
+5. An undecided medication recommendation never becomes a plan, and a corrected lab retires a stale reply.
+6. The run reports physician-touched items per 100 patients per week, read alongside whether necessary care happened.
+7. A clinician on the team starts it locally with one command, uses the physician app, and reruns and shapes scenarios.
+8. The simulation supplies the world, the events and the actors, never the model's conclusions. Evals are the jobs the product must do, run as simulations across patient types and scenarios.
+9. The synthetic panel has a realistic spread of time since each patient was last seen. Each chart stops at the patient's last contact and ends at the simulation's today, with pending items and booked visits but nothing later.
 
 ### A1. Sign-in and access
 
-1. Physicians sign in only through Coda Agents. [linear:ENG-27#Decided (Dev, 2026-10-12)]
-2. The physician asks for a sign-in link and always sees "Check your email"; Coda never reveals whether an account exists, and an address with no account gets no email. Clicking the email button signs them in with no code screen. A link that no longer grants access shows "No access to this practice". [claude:bbe5dff2…@2026-10-24T20:52:14; codex:…01a16e33…@2026-10-24T18:52:03]
-3. If the session expires mid-work, a sign-in prompt covers the screen and can email a link; after signing in the physician is exactly where they were, drafts and open reader intact, and Coda's running work never notices. If Coda was closed meanwhile, signing in opens Today. A patient link opened while signed out lands that tab on the patient after sign-in; the email still carries no patient. [claude:bbe5dff2…@2026-10-23T19:33:38; claude:bbe5dff2…@2026-10-24T20:53:37; claude:bbe5dff2…@2026-10-25T00:10:22]
-4. Another physician's sign-in link opened while signed in signs the current physician out and opens Today for the new one; drafts and seen state stay per physician. One's own link changes nothing. [claude:bbe5dff2…@2026-10-24T20:54:15]
-5. Sign-out works, and a used or expired link is rejected. [linear:ENG-56#complete-when] Accounts are invite-only: Coda sets up each practice and invites its first physician by email, and any practice member can then invite colleagues by email. There is no public sign-up. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T21:06:11.518Z (chosen)]
-6. A physician sees same-clinic patients outside their panel as identity only (name, DOB, MRN, no clinical content). [claude:bbe5dff2…@2026-10-23T16:32:15]
-7. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started (an asked reply, a revision) stops; practice-owned work continues. [claude:bbe5dff2…@2026-10-23T18:54:18]
-8. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone. [coda-agents/docs/runtime-protocol.md:223; claude:220b86fb…@2026-10-03T02:02:34]
-9. Spruce conversations show only for patients the physician may access. [codex:…01a091f9…@2026-09-21T17:59:21]
-10. Correcting a confirmed message link stays with the messaging manager. [linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T22:52:54]
-11. Any practice member signed in to the practice can invite or discharge a roster patient from that patient's roster row; discharge asks for confirmation and takes effect at once. The connection itself is Connected care's. [claude:bbe5dff2…@2026-10-23T14:56:50; linear:Coda Agents#Duet–Agents connection]
-12. Authorized operators inspect and adjust cadence by practice or patient; physicians don't change it, but can ask Coda for specific scheduled jobs for a patient. [linear:ENG-14#Done when; linear:ENG-14#Decided; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T01:03:35.292Z]
-13. Authorized Coda users may inspect submitted feedback and the minimum linked evidence. [codex:…01a091f9…@2026-09-21T18:57:59]
-14. Drafts and opened state are kept by the signed-in server, not the browser. (doc) [coda-agents/docs/physician-experience.md:284]
-15. Until practice roles exist, the messaging manager is whoever connected the Gmail account or set up Spruce. GAP: real practice roles (who manages messaging, who may send). [claude:220b86fb…@2026-09-22T17:42:33; coda-agents/docs/patient-messaging.md:1146]
-16. UI beyond sign-in waits for the UI program. [linear:ENG-185#What the graphs cover]
+1. Physicians sign in only through Coda Agents.
+2. The physician asks for a sign-in link and always sees "Check your email". Coda never reveals whether an account exists, and an address with no account gets no email. Clicking the button in the email signs them in, with no code screen. A link that no longer grants access shows "No access to this practice".
+3. If the session expires mid-work, a sign-in prompt covers the screen and can email a link. After signing in, the physician is exactly where they were, drafts and open reader intact, and Coda's running work never notices. If Coda was closed in the meantime, signing in opens Today. A patient link opened while signed out lands that tab on the patient after sign-in; the email itself never carries a patient.
+4. Opening another physician's sign-in link while signed in signs the current physician out and opens Today for the new one. Drafts and seen state stay per physician. Opening your own link changes nothing.
+5. Sign-out works, and a used or expired link is rejected. Accounts are invite-only: Coda sets up each practice and invites its first physician by email, and any member can then invite colleagues. There's no public sign-up.
+6. A physician sees same-clinic patients outside their panel as identity only: name, DOB and MRN, no clinical content.
+7. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
+8. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
+9. Spruce conversations show only for patients the physician may access.
+10. Correcting a confirmed message link belongs to the messaging manager, who is whoever connected the Gmail account or set up Spruce.
+11. Any practice member can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once. The connection itself belongs to Connected care.
+12. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
+13. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
+14. Drafts and seen state live on the server, not in the browser.
 
 ### K1. Correcting Coda
 
-Wrong link: see P3, "Wrong patient". [linear:ENG-8#Decided]
+Feedback:
 
-Thumbs feedback:
-
-1. Hovering a completed response shows feedback controls beside Basis and Sources. [codex:…01a091f9…@2026-09-22T03:34:48]
-2. A thumb click saves the rating at once against that exact response. Optional details open with their own Save; closing them keeps the rating. [codex:…01a091f9…@2026-09-21T23:37:22; codex:…01a091f9…@2026-09-21T16:09:02]
-3. Feedback survives a restart. [linear:ENG-160#What the physician can do]
-4. A reply card has one feedback path, "Tell Coda what to change"; the physician's edits are the feedback. [claude:220b86fb…@2026-09-26T04:58:45; coda-agents/docs/patient-messaging.md:1086]
-5. Each Done on a concern is kept as feedback evidence for later learning. [codex:…01a0602a…@2026-09-04T13:25:17; coda-agents/docs/ai-care-team-operating-contract.md:1024]
-6. "Sol should always think about how to action physician feedback in chat or in the feedback modal". [codex:…01a091f9…@2026-09-14T02:20:32]
+1. Hovering a finished response shows feedback controls beside Basis and Sources.
+2. A thumb saves the rating at once against that exact response. Optional details open with their own Save, and closing them keeps the rating. Feedback survives restarts.
+3. A reply card has one feedback path, "Tell Coda what to change", and the physician's edits are feedback too.
+4. Each Done on a concern is kept as feedback for later learning.
+5. Coda always thinks about how to act on feedback the physician gives, in chat or in the feedback panel.
 
 Discuss:
 
-7. Discuss is a question to Coda about a response, separate from feedback. It opens a new chat on that topic, named like any other chat. [codex:…01a091f9…@2026-09-21T23:38:36; claude:220b86fb…@2026-10-01T19:36:55; claude:220b86fb…@2026-10-01T19:37:49]
-8. A repeat of the same Discuss click or a retry returns the same chat; each later deliberate Discuss opens a fresh one, so a long follow-up is not forced into one growing transcript. [codex:…01a0602a…@2026-09-04T13:48:07; codex:…01a0602a…@2026-09-02T20:10:08]
-9. Discuss holds work that is still running, the way Stop does, until Resume: "it's like stop". [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z; linear:ENG-14#Decided]
-10. A reply has no Discuss; the physician revises it in place. [claude:220b86fb…@2026-09-23T15:51:49; claude:220b86fb…@2026-09-26T04:58:45]
+6. Discuss is a question to Coda about a response, separate from feedback. It opens a new chat on that topic.
+7. Repeating the same Discuss click returns the same chat; a later deliberate Discuss opens a fresh one, so a long follow-up never gets crammed into one growing transcript.
+8. Discuss holds running work the way Stop does, until Resume.
+9. A reply has no Discuss; the physician revises it in place.
 
-Correct a fact or give direction:
+Correcting a fact or giving direction:
 
-11. The physician says it in chat, in plain words. Coda acts on what the physician says to do in chat, within its authority. [linear:ENG-160#What the physician can do; codex:…01a091f9…@2026-09-11T20:28:45; linear:Coda Agents#Principles]
-12. Later answers reflect the correction, unrelated history is kept, and the correction is cited to the dated message it came from. [linear:ENG-160#Done when]
-13. When challenged, Coda reassesses with the new information rather than agreeing by reflex, and says why its judgment changed or stands. (doc) [coda-agents/docs/architecture.md:558]
-14. The physician may accept, change, reject or ask Coda to reconsider; a correction becomes patient context, not approval of the earlier reading. (site) [website:clinical-transparency]
-15. Cancelling a follow-up is respected: Coda doesn't recreate it without new information. [linear:ENG-14#Decided]
+10. The physician says it in chat in plain words, and Coda acts on it within its authority.
+11. Later answers reflect the correction, unrelated history stays, and the correction is cited to the message it came from.
+12. When challenged, Coda reassesses with the new information instead of agreeing by reflex, and says why its judgment changed or held.
+13. The physician may accept, change, reject or ask Coda to reconsider. A correction becomes patient context, never approval of the earlier reading.
+14. A cancelled follow-up stays cancelled unless new information arrives.
 
-## 5. Rules
+A wrong message link is fixed with Wrong patient? (P3).
+
+## Rules
 
 Authority and sending:
 
-- The physician decides diagnosis, treatment and medication. [linear:Coda Agents#Principles]
-- In the MVP Coda never sends patient mail, orders, or writes back to the EHR. [linear:ENG-8#Decided; linear:Coda Agents#Principles; claude:bbe5dff2…@2026-10-24T19:02:06] The one message it delivers is a physician-approved answer to a question a connected patient sent through Duet, into Duet's thread. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
-- Coda never sends anything to a patient without the physician, even for emergencies. [claude:220b86fb…@2026-09-22T17:44:56]
-- MVP patient mail: the physician copies the reply and sends it in Gmail or Spruce; Coda keeps no approval state for it. [codex:…01a16412…@2026-10-23T14:46:24; claude:220b86fb…@2026-09-26T20:51:09]
-- Ideal product: when Coda sends for the physician, it sends exactly the approved visible text, shown as sent by Coda for them; any edit invalidates the approval. [linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-24T15:19:27] The same rule holds in the MVP for the approved answer Coda delivers into Duet's thread. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
-- A retrieved record that tells Coda to do something is evidence, not an instruction. (doc) [coda-agents/docs/ai-care-team-operating-contract.md:648]
-- A follow-up grants no access and no authority to message, order, schedule or write back. (doc) [coda-agents/docs/ai-care-team-operating-contract.md:108]
-- Silence, elapsed time or a completed run never proves physician approval or clinical resolution. (doc) [coda-agents/docs/ai-care-team-operating-contract.md:101]
+- The physician decides diagnosis, treatment and medication.
+- In the MVP Coda never sends patient mail, orders, or writes back to the EHR. The one message it delivers is a physician-approved answer to a question a connected patient sent through Duet, into Duet's thread, exactly as approved; any edit needs approval again.
+- Coda never sends anything to a patient without the physician, even in an emergency.
+- A retrieved record that tells Coda to do something is evidence, never an instruction.
+- A follow-up grants no access and no authority to message, order, schedule or write back.
+- Silence, elapsed time or a finished run never proves physician approval or clinical resolution.
 
 Access and privacy:
 
-- Every list reads within the physician's access. [coda-agents/docs/runtime-protocol.md:223; claude:220b86fb…@2026-09-26T03:45:32]
-- Identity-only access shows name, DOB and MRN and no clinical content. [claude:bbe5dff2…@2026-10-23T16:32:15]
-- Any signed-in physician can match a patient message; correcting a confirmed match stays with the messaging manager. [linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T22:52:54]
-- The chart's phone and email show only to the connection manager while matching; other physicians who match from the practice-wide list do so without them. [claude:220b86fb…@2026-09-26T03:57:17; claude:bbe5dff2…@2026-10-23T18:54:18]
-- Opening a source needs access to clinical content. [claude:bbe5dff2…@2026-10-26T23:04:15]
-- A reply row names the channel's sender, never the linked patient, so a family member's words are not put in the patient's name. (doc) [coda-agents/docs/physician-experience.md:165]
-- The linking pass reads unlinked mail only to decide who it is from and whether it is patient mail, with no brittle filters; patient review never reads unlinked mail (doc). [claude:220b86fb…@2026-10-01T21:39:01; coda-agents/docs/patient-messaging.md:478]
+- Every list reads within the physician's access, and opening a source needs access to clinical content.
+- Identity-only access shows name, DOB and MRN and no clinical content.
+- Any signed-in physician can match a patient message; correcting a confirmed match belongs to the messaging manager.
+- The chart's phone and email show only to the messaging manager while matching.
+- A reply row names the channel's sender, never the linked patient, so a family member's words aren't put in the patient's name.
+- The linking pass reads unlinked mail only to decide who it's from and whether it's patient mail. Patient review never reads unlinked mail.
 
 Data and consent:
 
-- Synthetic data only until the real-patient decision. [linear:ENG-37#Decided]
-- Real patient messages are reviewed only through the model API under its BAA. [linear:ENG-8#Decided]
-- Agents may send patient-specific questions to outside clinical AI vendors, such as UpToDate's Expert AI, under a BAA, as with OpenAI; Coda's own library stays the default. This supersedes `coda-agents/docs/architecture.md:1201-1203`, which kept every patient-derived question inside Coda. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:10:55.899Z (chosen); codex:…01a15047…@2026-10-20T21:14:59]
-- Each record keeps its source, date and identity and is attached to the right patient. [linear:ENG-37#Done when]
-- A record missing from a later pull is noticed, never deleted on absence alone (doc for the last clause). [claude:220b86fb…@2026-09-28T03:37:49; coda-app/docs/behaviour-contract.md:79]
-- A disconnect deletes messages never accepted into a record and reply drafts; accepted evidence stays under the record's policy. [linear:ENG-8#Decided; claude:bbe5dff2…@2026-10-23T18:54:18]
-- Calls are kept only as a record that a call happened; recordings are never fetched or kept. Spruce texts, voicemail transcripts and fax pages are evidence. [claude:220b86fb…@2026-10-02T04:41:21; coda-agents/docs/patient-messaging.md:1333]
-- Mail from colleagues or insurers about a patient is outside the MVP: "I think we should stick to patient messaging, messages from patients to start, not anyone, because I think that's how we get into trouble about like how to handle it." [claude:220b86fb…@2026-09-23T15:51:49]
-- A message moved off the wrong patient is marked entered in error and never deleted; nothing of its content stays in that patient's record on any store, and its flag, summary text, citations and follow-up there are retracted or re-reviewed through one owner. Coda reads only message text that passed this check. [claude:220b86fb…@2026-10-01T23:34:43; claude:220b86fb…@2026-10-01T22:51:13; claude:220b86fb…@2026-10-01T07:02:28; claude:220b86fb…@2026-10-01T19:34:22; claude:220b86fb…@2026-09-29T01:27:01; claude:220b86fb…@2026-09-29T01:27:37; claude:220b86fb…@2026-10-04T16:08:49]
+- Synthetic data only, until we decide to work with real patients.
+- Real patient messages are reviewed only through model APIs covered by a BAA.
+- Coda's agents may send patient-specific questions to outside clinical AI vendors, such as UpToDate's Expert AI, under a BAA. Coda's own library stays the default.
+- Each record keeps its source, date and identity and is attached to the right patient.
+- A record missing from a later pull is noticed and never deleted on absence alone.
+- Calls are kept only as a record that a call happened; recordings are never fetched or kept. Spruce texts, voicemail transcripts and fax pages are evidence.
+- A message moved off the wrong patient is marked entered in error and never deleted. None of its content stays in that patient's record anywhere, and the flags, summaries, citations and follow-ups it produced there are retracted or re-reviewed.
 
 Evidence and honesty:
 
-- Citations refer only to evidence actually delivered to the model that wrote the answer. If any action in a step cites a source it never read, every change in that step is refused and nothing half-applies; reads still go ahead. [linear:ENG-159#Execution and completion acceptance; claude:220b86fb…@2026-10-02T05:45:18]
-- A citation is never carried forward when its record has a newer version; Coda re-opens the changed record. [claude:220b86fb…@2026-09-28T03:33:55]
-- Any answer, reply or action about current medications or values re-reads the chart first; memory never stands in for live chart values. [claude:220b86fb…@2026-09-26T04:05:44; claude:220b86fb…@2026-09-26T04:08:07]
-- Missing or unreadable evidence is said plainly, never treated as absent. [linear:ENG-160#Done when]
-- Records are read without silent cuts: large documents in labelled, citable parts; faxes and scans OCR'd, labelled, with every citation pointing to the page; a batch review finishes only after every document is opened or skipped with a reason. "Coda still decides what matters; code only checks that nothing was silently skipped." An EHR record that changed without a new version is shown as the EHR shows it now, and the change is logged. [claude:220b86fb…@2026-10-02T03:51:45]
-- The run keeps the exact source versions it read; what was said or sent stays historical. [linear:ENG-160#Decided]
-- Literature "unavailable" and "found nothing" read differently. [linear:ENG-160#Done when]
-- The library's freshness is reported as it is; a cleared alert or a successful run is not proof it is current. [linear:ENG-160#Don't repeat]
-- A completed briefing never implies its recommendations were accepted. [linear:ENG-31#Decided]
-- Patient summary dates say when Coda wrote, reviewed and pulled; none says the patient is stable. (doc) [coda-agents/docs/physician-experience.md:146]
-- No "autosaved" or "saved" label ever shows; only "Not saved" does. [codex:…01a05e51…@2026-09-22T03:46:52; claude:bbe5dff2…@2026-10-26T23:16:03]
-- Run steps come only from real events; no invented progress. [linear:ENG-160#Decided]
+- Citations refer only to evidence the model that wrote the answer actually received. If any action in a step cites a source it never read, every change in that step is refused and nothing half-applies.
+- A citation is never carried forward when its record has a newer version; Coda reopens the changed record.
+- Any answer, reply or action about current medications or values re-reads the chart first. Memory never stands in for live chart values.
+- Records are read without silent cuts: large documents in labeled, citable parts, scans and faxes read through OCR with every citation pointing to the page, and a batch review finishes only after every document is opened or skipped with a reason. Coda decides what matters; code only checks that nothing was silently skipped.
+- The library's freshness is reported as it is.
+- Patient summary dates say when Coda wrote, reviewed and pulled. None of them says the patient is stable.
+- No "saved" label ever shows, only "Not saved".
 
-Safety wording:
+Safety:
 
-- Coda is not for emergencies, autonomous monitoring, alarms or time-critical directives. (site) [website:clinical-transparency]
-- Coda's clinical communication follows the non-device CDS guidelines kept in its skills. [codex:…01a0602a…@2026-09-02T19:16:25]
-- An urgent finding creates a prominent concern and only communicates; Coda takes no other action. [codex:…01a091f9…@2026-09-14T15:21:02; claude:220b86fb…@2026-09-22T17:44:56] It raises no alarm: it is a now concern on Today, possibly with a banner at the top. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]
+- Coda isn't for emergencies, autonomous monitoring, alarms or time-critical directives.
+- Coda's clinical communication follows the non-device CDS guidelines kept in its skills.
+- An urgent finding creates a prominent Now concern and only communicates. Coda takes no other action.
 
 Work integrity:
 
-- Answer-first chat: helpers can keep working after the answer, and the lead decides whether to tell the physician what they found. (doc) [coda-agents/docs/readiness.md:52; claude:220b86fb…@2026-09-28T02:45:22]
-- One event starts one review; no event is lost or reviewed twice. [linear:ENG-14#Don't repeat; linear:ENG-14#Done when]
-- A command changes its item only when accepted and never sends twice; rows and cards change when the server confirms, not optimistically. [linear:ENG-160#Decided; claude:220b86fb…@2026-09-29T19:12:46]
-- A Stop holds exactly what it names until Resume, across restarts. [linear:ENG-14#Decided; linear:ENG-159#Execution and completion acceptance]
-- Whether work can be interrupted comes from the same server rule that enforces cancel. (doc) [coda-agents/docs/physician-experience.md:366]
-- Reload, reconnect and another authorized client converge on the same server state. (doc) [coda-agents/docs/architecture.md:201]
-- A small failure never closes a whole screen; a partial list shows what loaded plus one quiet Retry line; an item that fails shows "Couldn't load this" with Retry and keeps older content. [linear:ENG-14#Decided]
-- One bad item never blocks the rest, in every connector (Gmail, Spruce, EHR, schedule): one patient's failed filing never holds up others' mail, and an EHR outage never holds up a new message's review. [claude:220b86fb…@2026-10-02T03:59:26; claude:220b86fb…@2026-10-02T22:01:01; claude:220b86fb…@2026-10-05T19:05:43]
-- A temporary read failure on released work stays pending and retries; only a lasting failure ends it as unavailable. [claude:220b86fb…@2026-10-05T03:38:35]
-- Background work never steals focus or opens a modal on its own. [coda-agents/docs/architecture.md:1748; codex:…01a081e0…@2026-09-08T17:30:33]
-- The physician's time zone comes from their browser, not the patient's settings. [codex:…01a091f9…@2026-09-11T22:00:11]
-- Panel choices are remembered for each physician, and cancelling dictation keeps the text. [claude:bbe5dff2…@2026-10-26T23:04:15]
+- Chat answers first; helpers can keep working afterward, and the lead decides whether to tell the physician what they found.
+- One event starts one review, and no event is lost or reviewed twice.
+- Rows and cards change when the server confirms, never optimistically.
+- One bad item never blocks the rest, in every connector: one patient's failed filing never holds up other mail, and an EHR outage never holds up a new message's review.
+- Background work never steals focus or opens anything on its own.
+- The physician's time zone comes from their browser.
+- Panel choices are remembered per physician, and cancelling dictation keeps the text.
 
-## 6. Scope
+## Where Coda's information comes from
 
-MVP in:
+Everything Coda reads in the MVP is read only.
 
-- A physician at the first practice uses Coda Agents on the web; patients use Duet; both connect through Connected care. [linear:coda-rust platform#The MVP]
-- Web only for the physician. [linear:Coda Agents#Scope (Dev); linear:ENG-160#Decided]
-- Journeys P1 to P5 and L1; P1 comes first. [linear:coda-rust platform#Journeys]
-- The first practice's EHRs, Elation and Hint (access in section 7). [linear:Coda Agents#Scope (Dev); linear:ENG-37#Decided]
-- Gmail and Spruce as the patient-message channels, both first-class. [linear:Coda Agents#Scope (Dev); codex:…01a091f9…@2026-09-21T17:41:32; claude:220b86fb…@2026-09-22T17:34:15]
-- Reading readable attachments, including scans and faxes through OCR. [linear:ENG-8#Done when; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)] Milestone one only listed attachments as not read [claude:220b86fb…@2026-09-29T04:33:35]; for V1 Dev widened reading to PDFs, "including OCR for scans and faxes" [linear:ENG-10#description]; on Oct 28 he put scans and faxes in the MVP [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)].
-- Patient mail: Copy reply and native send; Coda doesn't send it. [claude:bbe5dff2…@2026-10-24T19:02:06; codex:…01a16412…@2026-10-23T14:46:24]
-- Delivering the physician-approved answer to a connected patient's Duet question into Duet's thread, exactly as approved (P3, For my doctor branch). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
-- Dictation into the composer in the web app. [linear:ENG-17#description; codex:…01a05e51…@2026-09-12T19:14:50; claude:bbe5dff2…@2026-10-24T03:45:33]
-- No paid tier: what was planned as premium is free for everyone. [linear:coda-rust platform#Scope; linear:ENG-14#Decided]
-- The clinical library with semantic retrieval: "having the corpus and having semantic retrieval is critical" [codex:…01a0837f…@2026-09-09T14:52:49]. Dev counted "Clinical libraries needed" in V1 [claude:121aaddd…@2026-10-12T23:46:18] and on Oct 28 put the library in the MVP [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)]. How it is served is in section 7.
-- Outside records through Kno2 (access in section 7): "outside records are definitely needed". [claude:121aaddd…@2026-10-12T23:46:18; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)]
-- Restoring mail the linking pass judged not a patient, through Dev's "a 'Filtered' list with 'This is a patient' to restore" or by telling Coda in plain words that a message is from a patient: "It should work through natural language or through, yeah, that filtered list in like a nice, graceful UI, way it should be very straightforward, intuitive." [claude:220b86fb…@2026-09-22T17:54:39; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:31.977Z (chosen)]
-- Done only when every journey is walked on real services, hosting and real-patient readiness are in place, and Dev makes the go decision. [linear:coda-rust platform#Proof]
+- **Elation**, the first practice's EHR, through its API. Coda can pull it anytime, including overnight.
+- **Hint**, the first practice's other EHR, through computer use in the practice's own signed-in Chrome, because Hint's API misses much of the chart. Hint's API still covers notes and medications. Coda reads Hint's Export Patient preview and downloads nothing, so no PHI file lands in the clinic's Downloads folder, and because the export carries no Hint IDs, Coda confirms which patient it is. Hint refreshes only while that Chrome is open and signed in, so its records can be older than Elation's.
+- **The schedule**, from the practice's EHR.
+- **Patient mail** from each physician's own Gmail and the practice's Spruce.
+- **Attachments**, including scans and faxes read through OCR.
+- **Outside records** from other organizations through Kno2, with Coda acting as the physician's delegate. They complement the practice's chart and never replace it.
+- **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
+- **The clinical library**, Coda's own, searched semantically and served from the cloud, always on before launch.
+- **Outside clinical AI** under a BAA, such as UpToDate's Expert AI.
 
-Out:
+Every source shows when its records were last refreshed, and one source's failure never blocks the others.
 
-- A Coda inbox of its own. [linear:ENG-8#Decided]
-- Coda sending patient mail, ordering or writing back in the MVP; the approved Duet answer is the one message it delivers. [linear:Coda Agents#Principles; claude:bbe5dff2…@2026-10-24T19:02:06; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
-- Patient-facing voice AI. [linear:Coda Agents#Scope (Dev)]
-- The visit-note scribe: "Scribe is not going to be in the MVP". [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:08:20.139Z; linear:Coda Agents#Scope (Dev)]
-- Clinical trials data in the clinical library. [codex:…01a05df1…@2026-09-02T01:18:20]
-- A physician desktop app in the MVP; beyond the MVP, "Desktop is deferred and completely open." [codex:…01a0602a…@2026-09-04T03:40:52; claude:220b86fb…@2026-09-29T03:11:13; linear:ENG-38#comment-2026-10-20-dev-account]
+Computer use in the EHR works in a dedicated Coda tab in the practice's Chrome and never takes the physician's tab or focus. The model chooses each action and computer use does exactly that. Nothing repeats silently, and computer use has a Stop. If Hint signs the user out, it stops and asks; it never enters credentials. Skills are general across EHRs, never click scripts for one app.
 
-Removed (an older source may still describe these):
+## Scope
 
-- Alerts for a response already in chat; Updates stays, simplified. [codex:…01a091f9…@2026-09-16T22:19:41]
-- The "Coda is waiting" and "Coda is tracking" labels; follow-ups cover them. [codex:…01a0893e…@2026-09-11T05:13:41]
-- A knowledge-basis declaration on every response: models filled it in and nothing read it. Whether to retrieve is Coda's judgment, guided by skills; the collapsed basis-and-limitations section is a different thing and stays. [claude:220b86fb…@2026-09-27T15:31:45; coda-agents/docs/ai-care-team-operating-contract.md:144]
-- An Interrupted state in chat; a steer applies at once. [claude:bbe5dff2…@2026-10-24T16:06:10]
-- The computer-use click gate, where code refused a visual click unless the surface, page state and pixels were unchanged and the capture fresh. Dev asked to subtract the excess machinery. [codex:…01a0d4d2…@2026-09-28T21:07:44]
-- Limits on reply revision (no patient memory, no handing work on): the model judges what a revision needs (PRINCIPLES.md 1). [claude:220b86fb…@2026-09-26T04:58:45]
-- The rule that a Done is not fed back into Coda's decisions: how past Dones bear on later work is Coda's judgment (PRINCIPLES.md 1). [codex:…01a0602a…@2026-09-04T13:25:17]
+In the MVP:
 
-Later or open:
+- One practice using Coda Agents on the web, with patients on Duet, the two connected through Connected care.
+- Journeys P1 to P5 and L1, with P1 first.
+- Elation and Hint as EHRs, read only.
+- Gmail and Spruce as the patient-message channels, both first-class, with Copy reply and native send.
+- Delivering the physician-approved answer to a connected patient's Duet question.
+- Reading attachments, including scans and faxes through OCR.
+- Dictation into the composer.
+- The clinical library with semantic retrieval: a documented, tag-defined PMC set that includes reviews and case reports, plus outside clinical AI under a BAA.
+- Outside records through Kno2.
+- A Filtered list of mail the linking pass judged not to be from a patient, with "This is a patient" to restore it, and the same through plain words in chat.
+- No paid tier; everything is free.
+- Done when every journey is walked on real services, hosting and real-patient readiness are in place, and we decide to go.
 
-- Send beside Copy: Coda sends exactly the approved words for the physician (ideal product, not MVP). [claude:bbe5dff2…@2026-10-24T15:19:27; claude:bbe5dff2…@2026-10-24T19:02:06]
-- The full UI program; no more UI work now. [claude:bbe5dff2…@2026-10-25T00:05:27; linear:ENG-185#What the graphs cover]
-- A Chrome extension as the minimized ambient Coda, and as how a reply could reach the native composer. [claude:220b86fb…@2026-10-01T17:28:39; claude:220b86fb…@2026-09-26T15:04:13] Until then the web app's collapsed Coda is the orb: it carries the banner and Updates, and hovering its preview never navigates or clears attention. [claude:220b86fb…@2026-10-02T04:14:32; claude:bbe5dff2…@2026-10-26T23:04:15]
-- Coda reaching out from its own findings rather than answering a patient. [claude:220b86fb…@2026-09-22T18:00:15; coda-agents/docs/patient-messaging.md:31]
-- Learned standing physician preferences, from the physician's own words and reply edits only, with Undo. [claude:220b86fb…@2026-09-26T04:05:44; claude:220b86fb…@2026-09-29T03:11:13]
-- Practice-wide direction from Today (panel sweeps); conversations stay one patient each for now. [claude:220b86fb…@2026-09-29T02:48:39]
-- Rich results in chat (lab tables, trend charts), every value a cited record value. [claude:220b86fb…@2026-09-29T03:11:13]
-- The shared patient–physician space; background design only. [linear:ENG-27#header note]
-- Clinical-content vendors (DynaMed, Wiley, UpToDate) and the clinical corpus lab. [linear:ENG-160#Discuss with Dev; linear:ENG-160#Next investigation: clinical corpus lab]
-- The MVP library is the documented PMC set, plus outside clinical AI under a BAA. Licensed content (UpToDate, DynaMed, Wiley) joins when a contract lands, and nothing in the MVP waits on it. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T21:06:53.760Z (chosen); linear:ENG-160#Discuss with Dev]
-- The clinical library's current scope is a tag-defined PMC set, not every PMC article; it includes "narrative reviews and reviews and case reports". [codex:…01a0837f…@2026-09-13T17:18:26; codex:…01a0837f…@2026-09-13T16:33:25]
-- Patient-message channels beyond Gmail and Spruce: "native ehr messaging, as well as email and text". [codex:…01a091f9…@2026-09-16T15:17:58; linear:Coda Agents#Scope (Dev)]
-- EHR write-back, starting with the physician-approved unsigned draft note: see section 7, Write-back. [codex:…01a0d4d2…@2026-09-24T21:19:16; linear:ENG-37#Decided]
-- Per-practice database topology stays undecided until needed. [claude:220b86fb…@2026-09-24T02:19:27]
-- Coda-chosen visualizations of vitals that persist with the patient's understanding. [codex:…01a0602a…@2026-09-08T03:14:10]
-- Context management for physician chats as its own roadmap item. [codex:…01a0602a…@2026-09-07T04:20:50; linear:ENG-160#Decided]
-- Self-serve for hundreds of practices within about twelve months. [codex:…01a0afb6…@2026-09-17T16:32:08]
+Not in the MVP:
 
-## 7. EHR and data sources
+- A Coda inbox of its own.
+- Coda sending patient mail, ordering or writing to the EHR.
+- Patient-facing voice AI.
+- The visit-note scribe.
+- Mail from colleagues or insurers.
+- Clinical trials data in the library.
+- A desktop app.
 
-The one map of what Coda's agents can reach in the MVP: how each source is reached, whether Coda reads or writes, and how it refreshes. Other sections point here for access; what Coda does with the evidence stays with them.
+Later:
 
-Sources:
+- Send beside Copy, where Coda sends exactly the approved words for the physician.
+- EHR write-back, starting with a physician-approved unsigned draft note entered by computer use.
+- Licensed clinical content (UpToDate, DynaMed, Wiley) once a contract lands; nothing in the MVP waits on it.
+- A Chrome extension as the minimized, ambient Coda and a way for replies to reach the native composer. Until then the web app's collapsed Coda, the orb, carries the banner and Updates.
+- Coda reaching out to patients from its own findings.
+- Learned physician preferences, from the physician's own words and edits only, with Undo.
+- Practice-wide direction from Today, such as panel sweeps.
+- Rich results in chat, such as lab tables and trend charts, every value a cited record value.
+- Coda-chosen visualizations of vitals that stay with the patient's understanding.
+- More patient-message channels: native EHR messaging, email and text.
+- The shared patient–physician space.
+- Self-serve for hundreds of practices.
 
-- **Elation (first practice's EHR).** Read through Elation's API, read only. Coda's server can pull it at any time, including overnight. [linear:ENG-37#Decided; linear:Coda Agents#Scope (Dev); linear:ENG-64#open-brainstorm-with-dev-before-building]
-- **Hint (first practice's EHR).** Read through computer use in the practice's own logged-in Chrome, read only, because Hint's API misses much of the chart: "we'll have to do some computer use exports". Coda reads Hint's Export Patient preview and downloads nothing, since a download would leave a PHI file in the clinic's Downloads folder. The export carries no Hint IDs, so Coda confirms the patient. Hint's API still covers notes and medications. [linear:ENG-37#Decided; linear:ENG-64#description; linear:ENG-64#the-job-is-simpler-than-it-looks; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z]
-- **The schedule.** Read from the first practice's EHR, through Elation's API or through computer use in Hint, read only. GAP: how each EHR's schedule and encounters map to patients; ENG-37 asks for a written answer. [linear:ENG-31#Decided; linear:ENG-37#Done when]
-- **Patient mail: Gmail and Spruce.** Each physician connects their own Gmail; Spruce connects once per practice. Both are read only in the MVP. Gmail Connect asks only for read-only Google access and isn't gated on sending; compose is requested when Send ships: "Yeah, read only access for now." [codex:…01a091f9…@2026-09-16T16:39:01.326; codex:…01a091f9…@2026-09-21T17:59:21; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:08:20.139Z; linear:ENG-8#Decided]
-- **Attachments.** Files that come with a patient message or a record, including scans and faxes read through OCR. How they are read and cited is in section 5, Evidence and honesty. [linear:ENG-8#Done when; claude:220b86fb…@2026-10-02T03:51:45; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)]
-- **Outside records: Kno2.** Records from other organizations, queried through Kno2 with Coda acting as the physician's delegate, read only. They complement the practice's own chart and never replace it. [linear:ENG-32#approach; linear:ENG-32#goal; linear:ENG-32#decided; linear:ENG-37#Why it matters; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)]
-- **A connected patient's Duet data.** What the patient shares over the connection; Connected care owns what crosses. It lives in Coda's record for that patient, never in the EHR, and is read like any other evidence, labelled with its origin. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:12:44.566Z; linear:ENG-39#What the patient and physician can do]
-- **The clinical library.** Coda's own library, searched semantically and served from the cloud only; always-on search serving is needed before launch. [codex:…01a0837f…@2026-09-09T14:52:49; claude:d495729c…@2026-09-25T02:37:27; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)]
-- **Outside clinical AI.** Vendors such as UpToDate's Expert AI, which Coda's agents may ask patient-specific questions under a BAA. What may be sent is in section 5, Data and consent. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:10:55.899Z (chosen); codex:…01a15047…@2026-10-20T21:14:59]
+## Engineering decisions
 
-Refresh and freshness:
+These are how we build the product above. They matter to its behavior but are engineering's to change.
 
-- Every source except patient mail refreshes by scheduled pull; patient mail is handled as it arrives. Section 3, Cadence, owns the rule and its budget. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z (chosen); claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:51.881Z]
-- Every source shows when its records were last refreshed. This is global, not a Hint rule: "that's a global thing, right? It's not specific to hint anytime we'll show when the last records were recorded." [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z; linear:ENG-37#What the physician can do]
-- Hint refreshes only while the practice's Chrome is open and signed in to Hint, so its last refresh can be older than Elation's; it shows as it is, like every source's. How a missed or failed refresh shows is in P2's branches. [linear:ENG-64#open-brainstorm-with-dev-before-building; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z]
-- One source's failure never blocks the others (section 5, Work integrity). [claude:220b86fb…@2026-10-02T03:59:26; claude:220b86fb…@2026-10-05T19:05:43]
+**Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work is judged on completion, wasted calls and landing on time, and will probably run at max effort.
 
-Write-back:
+**Schedules and cadence.** Proactive review of every source (the EHR, Kno2, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push, such as a Gmail notification, only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
 
-- MVP EHR access is read only: "Reads only; no EHR write-back for now (Dev, 2026-10-13)", and both first-practice EHRs are read only (2026-10-20). [linear:ENG-37#Decided; linear:Coda Agents#Scope (Dev)]
-- Dev's Sep 24 goal is a Luna computer-use program "that just can operate in EHR for anything we need: pulling information, clicking something, right back" (read as write back). For the first connected demonstration he chose "Retrieve information, then enter an approved note", an unsigned draft: "coda drafts the content, or physician suppleis it. either way". The Coda-Computer-Use repo's first workflow is the same, retrieval followed by an exact physician-approved unsigned draft note, with signing outside it (doc). [codex:…01a0d4d2…@2026-09-24T19:09:12; codex:…01a0d4d2…@2026-09-24T21:19:16.559; codex:…01a0d4d2…@2026-09-24T21:26:27; Coda-Computer-Use/README.md:60 (doc); Coda-Computer-Use/AGENTS.md:36 (doc)]
-- Dev settled it on Oct 28: "Yes, read-only MVP". MVP EHR access is read only, and the physician-approved unsigned draft note is the first write after the MVP [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:51:25.837Z; linear:ENG-37#Decided; codex:…01a0d4d2…@2026-09-24T21:19:16.559].
+**Memory.** The operating index is Markdown, not a rigid schema. Coda edits it with exact old-to-new replacements against the version it read, untouched text keeps its citations, and every removal shows in the audit trail. The index may hold medications only as dated, cited orientation. The daily log is append-only. A run orients from the index, its active follow-ups and what triggered it, and reads logs on purpose instead of tailing them. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
 
-Computer use (doc where not Linear or Dev):
+**Runs.**
 
-- The model chooses each action; the runtime runs exactly that action and reports what happened. (doc) [Coda-Computer-Use/README.md:3 (doc); Coda-Computer-Use/AGENTS.md:6 (doc); Coda-Computer-Use/AGENTS.md:26 (doc)]
-- It never takes the physician's focus. It works in a designated Coda EHR tab in the practice's Chrome and never activates, resizes or replaces the physician's tab (doc for the last clause). [linear:ENG-64#constraints-that-will-bite; codex:…01a0d4d2…@2026-09-24T21:19:16.562; Coda-Computer-Use/README.md:65 (doc); Coda-Computer-Use/AGENTS.md:31 (doc)]
-- Nothing repeats silently: the runtime never repeats an action on its own or replays after reconnecting, and a retry after an uncertain write is the model's informed choice. (doc) [Coda-Computer-Use/README.md:21 (doc); Coda-Computer-Use/AGENTS.md:32 (doc); Coda-Computer-Use/AGENTS.md:40 (doc)]
-- Computer use has a Stop. (doc) [Coda-Computer-Use/README.md:66 (doc); Coda-Computer-Use/AGENTS.md:33 (doc)]
-- Skills are general across EHRs, never app-specific click scripts; what is known about one EHR lives in that app's notes, as how the app works, never task answers (doc). Dev: "don't tune on OpenEMR." [claude:8a4afb8a…@2026-09-28T21:14:54; Coda-Computer-Use/README.md:26 (doc); Coda-Computer-Use/README.md:38 (doc); Coda-Computer-Use/AGENTS.md:28 (doc)]
-- Reads happen automatically when needed for already-authorized patient work. A write needs the physician's approval of the exact text: computer use makes exactly that change and nothing else, then reopens the record and reports what the chart now shows; loading a skill is never approval (doc). [codex:…01a0d4d2…@2026-09-24T21:19:16.564; Coda-Computer-Use/AGENTS.md:10 (doc); Coda-Computer-Use/src/coda_computer_use/skills/ehr-save-unsigned-note/SKILL.md:8 (doc); Coda-Computer-Use/src/coda_computer_use/skills/ehr-save-unsigned-note/SKILL.md:22 (doc)]
-- When Hint signs the user out, computer use stops and asks, and never enters credentials. [linear:ENG-64#constraints-that-will-bite]
+- Interrupted work resumes without duplicating effects, and a retry reuses work that already finished.
+- A run ends exactly once, whether it completes, is cancelled, shuts down, crashes or gets no answer.
+- A failed preparation, review or initial understanding retries on its own before it counts as can't restart.
+- Recovery never alerts the physician. One retry owner covers asks, deferred work and end-of-review hand-offs, and the scheduling timer catches up once after recovery.
+- A refused review is recorded as a refusal with its reason, and Couldn't finish, Try again and the automatic retries read from it.
+- Records that change before a run finishes reach the run, and the run keeps the exact source versions it read.
+- Steering prevents stale results from being published.
+- Completion is accepted only after authority and currency are checked.
+- Each patient's work starts independently and runs side by side. How much runs at once is an engineering decision, and code never ranks clinical importance.
+- At the context-window limit the model writes its own working checkpoint.
+- Whether work can be interrupted comes from the same server rule that enforces cancel.
 
-Adapters:
+**Commands and state.** Commands are accepted or not. A lost receipt resolves without a second effect, and an ambiguous command retries only itself before reading authoritative state. Reload, reconnect and another client converge on the same server state.
 
-- Each source has its own adapter that translates its exact format into Coda's common evidence and one shared source view; format-specific decoding stays inside the adapter, and new sources come as new adapters: "over time as we integrate into more and more adapters to build it out". Nothing anchors on FHIR or any one API (principle 13): "not every ehr api is fhir". [codex:…01a0602a…@2026-09-04T16:40:39; codex:…01a091f9…@2026-09-18T17:54:43; codex:…01a0602a…@2026-09-04T16:24:12; codex:…01a091f9…@2026-09-14T15:21:02; codex:…01a091f9…@2026-09-18T17:50:51; codex:…01a091f9…@2026-09-16T17:20:18]
+**Live status.** Run steps are projected from structured tool calls and recorded facts, the same on CLI and API, and the run record stays inspectable by the team. Reasoning summaries stay in the team inspector.
 
-## 8. Harness boundary
+**Mail.** Each Gmail or Spruce mailbox has one lease, so no message is filed twice or lost. After a rollback, a mailbox a newer release has touched stops filing and shows on the health page until an operator acts.
 
-The physician product relies on these events and guarantees from the runtime:
+**Reliability.** If a startup piece can't start, the server still starts, the piece retries with backoff, and readiness reports it truthfully. Storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. The literature service is an optional gateway, and chart answers work without it.
 
-- Interrupted work resumes through successor attempts without duplicating effects; a retry reuses work that already finished (doc for reuse). [linear:ENG-159#Execution and completion acceptance; codex:…01a0602a…@2026-09-02T19:36:35; coda-agents/docs/ai-care-team-operating-contract.md:700]
-- A stopped run stays held across restart until Resume. [linear:ENG-159#Execution and completion acceptance]
-- Steering prevents stale results from being published. [linear:ENG-159#Execution and completion acceptance]
-- One source event produces one review; missed or duplicate events neither lose accepted work nor duplicate reviews. [linear:ENG-14#Done when; linear:ENG-14#Don't repeat]
-- Source checks run per patient at the effective cadence read from the existing owner. [linear:ENG-14#Decided]
-- Scheduled and resumed attempts pull sources first. [codex:…01a0893e…@2026-09-11T01:25:39; coda-agents/docs/ai-care-team-operating-contract.md:122]
-- A push, such as a Gmail notification, only wakes the work; the work always pulls current truth. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z; codex:…01a0893e…@2026-09-10T21:08:26] Only patient mail wakes work on arrival; every other source, a connected patient's Duet data included, wakes nothing and is pulled by scheduled reviews. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:51.881Z; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:34:59.355Z (chosen)]
-- Due follow-ups fire on their own schedule and run once. [linear:ENG-14#Decided; linear:ENG-14#Done when]
-- A failed visit preparation, review or initialization, or a temporary refusal to start, retries automatically within a runtime budget (Tyler's) before it counts as can't restart. [claude:220b86fb…@2026-10-06T22:17:57; codex:…01a16412…@2026-10-23T02:38:46; claude:220b86fb…@2026-10-03T23:08:03]
-- Records that change before a run finishes reach the run before it finishes; the run records the exact source versions read. [linear:ENG-14#Decided; linear:ENG-160#Decided]
-- Run steps come from real tool-call events, and the run record stays inspectable by the team. [linear:ENG-160#Done when]
-- Commands are accepted or not; a lost receipt resolves without a second effect; an ambiguous command retries only the same command, within a runtime budget (Tyler's), then reads authoritative state (doc). [linear:ENG-160#Decided; coda-agents/docs/physician-experience.md:991]
-- Completion is accepted only after authority and currency are checked; citations cover only evidence the model actually received. [linear:ENG-159#Execution and completion acceptance]
-- At the context-window limit the model writes its own working checkpoint; "the notes for actual context design are critical." [codex:…01a091f9…@2026-09-15T19:47:20; linear:ENG-159#Execution and completion acceptance; claude:220b86fb…@2026-09-24T18:19:01]
-- Recovery is the runtime's job and never alerts the physician; only work it can't restart reaches Today. One retry owner covers asks, deferred work and end-of-review hand-offs, and the shared scheduling timer catches up once after recovery. [linear:ENG-14#Decided; claude:220b86fb…@2026-10-01T01:54:01; claude:220b86fb…@2026-10-02T19:16:22; claude:220b86fb…@2026-10-02T16:33:13]
-- A run ends exactly once, whether it completes, is cancelled, shuts down, crashes or gets no answer. [claude:220b86fb…@2026-10-06T21:02:47]
-- Each patient's work starts independently and runs side by side, ordered only by real dependencies; how much runs at once is runtime budget (Tyler's), and code never ranks clinical importance. [claude:220b86fb…@2026-10-07T02:23:33; claude:bbe5dff2…@2026-10-24T15:24:25; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:11:28.018Z]
-- A refused review is recorded as a refusal with its reason, not a fake attempt; Couldn't finish, Try again and the automatic retries read from it. [claude:220b86fb…@2026-10-04T01:58:48]
-- Live status (current step, purpose, trail) is projected from structured tool calls and recorded facts, on CLI and API alike. Physicians see these steps, not the model's reasoning; reasoning summaries stay in the team inspector. [claude:220b86fb…@2026-09-29T19:12:46; claude:220b86fb…@2026-09-29T21:08:09; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T21:06:11.518Z (chosen)]
-- Each Gmail or Spruce mailbox has one lease, so no message is filed twice or lost; after a rollback, a mailbox a newer release has run stops filing and shows on the health page until an operator acts, with no compatibility code. [claude:220b86fb…@2026-10-03T04:38:13; claude:220b86fb…@2026-10-03T03:48:09]
-- If a startup piece can't start, the server still starts, the piece retries with backoff, and readiness shows it truthfully. [claude:220b86fb…@2026-10-02T16:33:13]
-- Storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields; no legacy compatibility is needed while this is a demo. [claude:220b86fb…@2026-10-02T21:38:03; claude:220b86fb…@2026-10-02T22:01:01; claude:220b86fb…@2026-10-02T20:53:42]
-- Literature is an optional gateway; chart answers work without it. [linear:ENG-159#Execution and completion acceptance]
-- The model owns judgment; the harness adds tools and guardrails without restricting it. [codex:…01a16014…@2026-10-23T03:20:02; codex:…01a08817…@2026-09-15T18:38:21]
+**Sources.** Each source has its own adapter that translates its format into Coda's common evidence and one shared source view, and new sources come as new adapters. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
+
+**Storage.** Per-practice database topology is decided when it's needed.
+
+**The harness.** The model owns judgment, and the harness adds tools and guardrails without restricting it.

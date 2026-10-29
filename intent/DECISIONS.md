@@ -10,14 +10,13 @@ Answer by ID, for example "O8: a join starts them" or "T6: recommendation".
 
 These are things no source answers yet, or places where two spec lines disagree, gathered here so there is one list. Steps no source states stay in the specs as `GAP:` lines; each is settled when that journey's chart is built, and one that needs a product choice comes here.
 
-### For Dev, in the MVP
+### Product decisions
 
-- **O8. Does a join start the practice's agents?** Connected care says a join or rejoin starts the practice's agents on the delivered records (C1.2, R1, Scope). Connected care's mental models and physician section 7 say arrivals wake nothing and scheduled reviews pull, except patient mail. Either a join is a second exception, or those lines change. [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:31:51.881Z]
 - **O9. Priority when the rate-limit gate reopens.** harness G15 calls it product policy (physician chat first). An earlier settlement called it a runtime budget and Tyler's call, not product intent.
-- **O10. Duet's library.** The physician's MVP library is the PMC set plus outside clinical AI under a BAA (physician Scope). Duet grounds in Coda's clinical library and the person's records, with no web search. Does Duet also use outside clinical AI? [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T21:06:53.760Z (chosen)]
-- **O11. Who sets Duet's cadence and retry budgets.** duet.md calls them Duet-owned runtime policy (Mental models, Harness boundary) and, in the same Harness boundary section, a runtime budget (Tyler's), as physician Cadence does.
+- **O12. Practice roles.** Who manages messaging and who may send, once practices have real roles. Until then the messaging manager is whoever connected Gmail or set up Spruce.
+- **O13. Judging necessary care in the simulation.** How L1 judges that necessary care happened, and who judges it.
 
-### For Tyler (runtime and architecture)
+### Engineering decisions
 
 - **T1. Production triggers and the schedule source.** How scheduled and pre-visit triggers run in production, and the real schedule source. The agents judge which visits to prepare and how far ahead (PRINCIPLES.md 4). [codex:…01a081e0…@2026-09-10T14:31:19; codex:…01a0602a…@2026-09-02T19:36:35] [linear:ENG-31#Discuss with Dev]
 - **T2. The patient roster.** How the active roster is kept, likely from the EHR's patient list (with ENG-57). [codex:…01a0602a…@2026-09-03T14:27:48; codex:…01a0602a…@2026-09-03T14:31:55]
@@ -28,6 +27,7 @@ These are things no source answers yet, or places where two spec lines disagree,
 - **T7. Browser work.** Luna's own browser loop as primary and native computer use as fallback; your Sept 30 leaning, not decided. [codex:…01a0efb2…@2026-09-30T02:23:52]
 - **T8. Anthropic BAA.** It exists, but no source uses it for product calls; Linear names the OpenAI API. [codex:rollout-2026-10-16T23-44…@2026-10-17T16:54:06; linear:ENG-160#Decided]
 - **T9. Prompt injection.** Named as a capability lane, with no design recorded. [codex:…@2026-09-19T00:52:39]
+- **T11. Schedule mapping.** How each EHR's schedule and encounters map to patients.
 - **T10. The simulation's clock.** What "today" means once it moves. [claude:9278ff48…@2026-10-26T17:43:45]
 
 ### Studies you asked for
