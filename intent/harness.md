@@ -1,133 +1,108 @@
-# Harness and runtime: intent spec
+# The harness
 
-The agent harness and runtime that Coda Agents (physician) and Duet both run on. The harness is not a product surface. It stays outside the product behavior charts and meets them only at events: tools are events, and needs are preconditions [claude:…@2026-10-26T21:27:19; linear:ENG-159#Approved boundary].
+The harness is the agent loop that Coda Agents and Duet both run on. It isn't a product surface, and it stays deliberately thin. The models are smart; the harness's job is to give them the right tools, the right context at the right moment, and skills they can find, then get out of the way. Open questions live in DECISIONS.md, and git keeps the history.
 
-Evidence: `bundle-harness.jsonl` (282 entries). Pointers are shortened: `codex:…@<timestamp>` and `claude:…@<timestamp>` are Dev's own words in that session message; `linear:` is Dev-owned Linear; lines marked `(doc)` come from the older coda-agents or coda-app docs and only fill gaps where Dev and Linear are silent. This spec holds runtime guarantees and events only. Product behavior (model roles, memory, retry policy, lifecycle, what a physician or patient sees) lives in the physician and Duet specs [linear:ENG-159#Approved boundary].
+## What it is for
 
-## 1. Purpose
+There is one product-neutral loop, in the shared `harness` crate beside the shared `ui` and `http` crates. It carries the provider and tool protocol, runs the model→tool→model cycle, handles scheduling and cancellation mechanics, measures context, and emits neutral, ordered events. There's no second engine and no shared runtime service.
 
-The harness is one product-neutral execution loop shared by both products. It carries the provider and tool protocol, bounded model→tool→model execution, execution scheduling and cancellation mechanics, context measurement and transition interfaces, and neutral ordered events. There is no second engine and no shared runtime service [linear:ENG-159#Approved boundary]. Its job is to give the model the right tools for each command and otherwise let the model decide [claude:…@2026-10-26T18:58:35]. In Dev's words, "a good harness is all about context management and, safety, and that's really it" [codex:…@2026-10-21T18:06:58]. "Harness" has two senses: in Dev's sense and in the graph test, it is everything outside the behavior graphs, each product's agent runtime (context policy, safety, tools, schedules, retry budgets) plus the shared loop [claude:…@2026-10-26T19:09:16]; in ENG-159 it is only the shared crate of mechanics underneath, and this spec covers that sense [linear:ENG-159#Approved boundary]. Managing context across long conversations and background work is a core capability [linear:ENG-160#Decided]. The harness stays out of the product graphs. It links to them only by events, and it gets its own formal model only when a promise is worth proving, such as steering, restarts or no duplicate effects [claude:…@2026-10-26T21:27:19]. Dev owns harness migration and unification within the approved boundary (2026-10-27) [linear:ENG-159#Approved boundary].
+A good harness is about context management and safety, and not much else. Everything that makes a product what it is stays with that product: clinical types, accounts, consent, evidence, context policy, model roles and instructions, which tools and skills are admitted, durable state, scheduling, effects, commit, recovery and how a run ends. The harness carries those through execution without owning them.
 
-## 2. Principles
+The harness stays out of the product behavior charts. It meets them only at events: a tool call is an event, and what a product must supply before a run is a precondition.
 
-Coda's principles (PRINCIPLES.md) govern this spec. These are the harness-specific ones.
+## Principles
 
-1. **Context is curated and discoverable, never stuffed.** Give the model salience on what exists, through clear tool and skill names, and let it discover the rest. Never resend the whole transcript each turn, and don't use subagents where progressive disclosure does the job. Keep the prompt cache intact. Dev: "The thing is about skill, disclose, like skills, system prompts, and progressive disclosure, not stuffing context, and not using subagents unnecessarily, but progressive disclosure, discoverability, sometimes will promote skills into main context as traces of all, et cetera." [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:46:26.476Z; codex:…@2026-09-14T21:53:59; codex:…@2026-09-15T03:54:09; linear:ENG-160#Don't repeat; claude:…@2026-09-23T22:08:52]
-2. **Handoffs are targeted.** Evidence handoffs and model-to-model handoffs are neither brittle nor stuffed. A receiving model does not redo the sender's work without a reason [codex:…@2026-09-14T02:53:49; codex:…@2026-09-02T15:47:23; codex:…@2026-09-02T15:50:33]
-3. **Product-neutral mechanics only.** The harness holds execution mechanics. Each product owns its clinical types, accounts, consent, evidence, context policy, model roles, instructions, admitted tools, durable state and scheduling, authorization, effect identities, commit, recovery and terminal state [linear:ENG-159#Approved boundary; linear:ENG-159#comments (Tyler Port, 2026-10-20)] One owner per fact: runs, schedules, wake-ups and follow-ups have one owner with one copy of the rules; separate owners connect by recorded facts, and no owner infers another's terminal state (doc) [linear:ENG-14#Don't repeat; coda-agents/docs/runtime-protocol.md:27]
-4. **Models are swappable; authority belongs to the role.** The harness is not hardened around model names. Which model fills which role is product configuration, never a harness contract change (doc) [linear:ENG-159#Approved boundary; coda-agents/docs/architecture.md:376; coda-agents/docs/architecture.md:391]
-5. **Fail closed on access, consent and patient data; fail gracefully on everything else.** Access, consent and patient-data checks fail closed [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]. Availability problems and single bad items fail gracefully: one failed tool read or bad item never takes down a whole run; bounded failures preserve independent successes, and one blocked or failed thing never stalls other work. Fix the shared cause once, as one rule every path must pass, never one patch per incident [linear:ENG-160#Don't repeat; linear:ENG-159#Complete when; claude:…@2026-10-02T04:00:21; claude:220b86fb…@2026-10-05T19:05:43; claude:220b86fb…@2026-10-02T03:59:26; claude:…@2026-10-07T15:10:56; claude:…@2026-10-07T18:09:57]
-6. **Pull, not push.** New information reaches a run because scheduled or resumed work pulls the latest sources, not because inputs are pushed [codex:…@2026-09-10T21:08:26; codex:…@2026-09-10T14:31:19]. A push, such as a mailbox notification, only wakes the work; the work always pulls current truth [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:24:59.542Z]
-7. **Production shapes the design; local only tests it.** Local and hosted are two composition roots over one engine (doc). Local limits such as CLI overhead or machine contention never drive production architecture. Nothing local is faked into a product rule, and work that is too locally optimized is subtracted. Staging mirrors production, including the model path [codex:…@2026-09-03T14:43:13; claude:…@2026-09-28T20:19:14; claude:220b86fb…@2026-09-28T20:11:58; claude:f015cdb7…@2026-10-01T18:28:00; codex:…@2026-09-06T14:58:40; coda-agents/docs/architecture.md:237]
+Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones specific to the harness.
 
-## 3. Mental models
+1. **Context is curated and discoverable, never stuffed.** The model gets salience on what exists, through clear tool and skill names, and discovers the rest. The harness never resends the whole transcript each turn, never breaks the prompt cache, and doesn't reach for subagents where progressive disclosure does the job.
+2. **The model owns judgment.** The harness adds tools and guardrails and never restricts what the model may think or do within the product's limits. No intent classifier, routing table or code-side judgment decides for it.
+3. **Product-neutral mechanics only.** Each fact has one owner. Separate owners connect through recorded facts, and none infers another's terminal state.
+4. **Models are swappable.** The harness isn't built around model names. Which model fills which role is product configuration.
+5. **Fail closed on access, consent and patient data; fail gracefully on everything else.** One failed tool read or bad item fails only itself, and independent successes are kept.
+6. **Pull, not push.** New information reaches a run because the work pulls current sources. A push only wakes the work.
+7. **Production shapes the design.** Local and hosted are two ways to run one engine. Local limits never drive production architecture, and nothing local becomes a product rule.
 
-- **The loop.** A stateless continuation loop. Its request, tool, byte and deadline limits are runtime budget (Tyler's). It owns no accepted input, schedule, conversation, memory or action result. Each durable caller publishes through its own transaction (doc) [linear:ENG-159#Approved boundary; coda-app/docs/backend-architecture.md:1673]
-- **A run.** A finite sequence of model requests through the loop for one admitted responsibility. A product starts a run when it admits a durable command or message, a scheduled occurrence or a resume. The caller supplies identity, permissions, evidence and remaining resources and rechecks them (doc) [coda-app/docs/north-star.md:1716; linear:ENG-159#Complete when]
-- **A run's baseline.** A run binds one coherent context baseline (source snapshots, index version, follow-up versions) and reuses it across turns and workers. Other baseline state is not silently replaced mid-run (doc). Both products take in news that arrives before a run finishes, explicitly, and the run records the exact source versions it read; that policy is product-owned [coda-agents/docs/ai-care-team-operating-contract.md:123; linear:ENG-160#Decided; linear:ENG-14#Decided]
-- **When a run ends.** A run is terminal once the finish call is made, with no extra call to return an empty response. The loop's result is a completion candidate. The product decides whether it becomes a saved reply [codex:…@2026-09-03T19:29:46; linear:ENG-159#Approved boundary]
-- **Recovery.** Recovery is product-owned, and the two products differ on purpose: physician interrupted work continues through successor attempts, and Duet recovery retries the same accepted run. The harness supplies restartable execution and cancellation mechanics. Delivery, provider and clinical-activation retries are separate layers (doc) [linear:ENG-159#Approved boundary; linear:ENG-159#Execution and completion acceptance; coda-agents/docs/ai-care-team-operating-contract.md:751]
-- **Trigger versus responsibility.** An automation or trigger is separate from the responsibility it carries [codex:…@2026-09-02T22:00:09]
-- **A lane.** Interactive work and background work run in different lanes with independent capacity. A burst of scheduled work waits and cannot block the conversation. Background work may be slower; latency matters mostly for chat [claude:…@2026-10-01T17:19:34; coda-app/docs/north-star.md:1601; claude:…@2026-09-25T16:38:17]
-- **Lead and workers.** The lead of a run decomposes the work and reconciles disagreement. Workers get their assignment and only the permitted context and tools. They do not see sibling results and cannot publish. Results return to the correct parent (doc) [linear:ENG-159#Workers and steering; coda-agents/docs/architecture.md:412; coda-agents/docs/ai-care-team-operating-contract.md:151]
-- **A tool.** The model's way to read and act. The harness enables the right tools for each command. A tool call is where the harness meets a product graph. Admitted tools belong to the product [claude:…@2026-10-26T18:58:35; claude:…@2026-10-26T21:27:19; linear:ENG-159#Approved boundary]. Tools go with the job, not the model: the History tools go to Luna for background work [claude:bbe5dff2…@2026-10-23T21:41:57]
-- **A skill.** A lazily loaded explanation of a capability. The model sees an index of skill names and opens what it needs. No intent classifier or routing table decides for it. Reading a skill adds no tools or permissions. The loader is shared; each product's catalog is not. Loading stays on demand; on the production path the skill tokens are mostly cached [claude:220b86fb…@2026-09-27T23:17:07; codex:…@2026-09-19T03:54:35; coda-app/docs/backend-architecture.md:1696; linear:ENG-159#Approved boundary]
-- **Memory.** Memory content and context policy are product-owned, and the products share no clinical memory [linear:ENG-159#Approved boundary; linear:ENG-159#Execution and completion acceptance]
-- **A context transition.** The harness supplies context measurement and transition interfaces. Physician model-written window checkpoints and Duet structural request checkpoints stay distinct product policies behind them, with no automatic move to one compaction policy [linear:ENG-159#Approved boundary; linear:ENG-159#Execution and completion acceptance]
-- **Context management (ported from the old runtimes).** Dev: "We even did context management in our old, harness runtimes that we'll bring over when we port, and it's based on the Codex C live" [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:46:26.476Z]. The design being ported:
-  - **Skills by progressive loading.** A compact resident catalog, list and view tools for skill bodies and linked files, and named skills preloaded into scheduled work (doc) [coda-agents/docs/reference-gates/harness-source-baseline.md:44].
-  - **Active context is a rebuildable view.** Patient records are read through source tools, never injected wholesale. Workers don't inherit the lead's whole conversation (doc) [coda-agents/docs/reference-gates/harness-source-baseline.md:199].
-  - **Codex-style preservation.** Before active context is released, the model writes a durable working note, with headroom kept for it. The note never replaces patient memory or source evidence (doc) [coda-agents/docs/reference-gates/harness-source-baseline.md:216; coda-agents/docs/runtime-protocol.md:1693; coda-agents/docs/runtime-protocol.md:1553].
-  - **Skills improve from traces.** Traces show which skills load, what they cost in context, and what goes wrong after a load. A skill gets slimmed, with detail moved to linked references. What nearly every run needs is promoted into the resident prompt, and a failing tool is fixed at the tool rather than in the skill. Dev pointed to Braintrust's trace-based skill audit (braintrust-skills PR 9) as the pattern [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:46:26.476Z].
-- **An effect.** One logical external change, such as a send or a saved routine, with one durable operation identity across retries. The product owns effect identities and commit fences; the harness carries them through execution (doc) [coda-agents/docs/patient-messaging.md:905; linear:ENG-159#Approved boundary]
-- **The run record.** Each run keeps its provider and tool occurrences, the exact evidence read, the recipe and model identity, and the outcome. It stays inspectable after restart. Coda's own run record is the source of truth; Langfuse is a workbench over it [linear:ENG-159#Execution and completion acceptance; linear:ENG-160#Decided]
-- **Simulated triggers.** The loop runs the same way under simulated triggers and events. A simulation supplies triggers, events and actors and never scripts model responses [codex:…@2026-09-07T20:25:01; linear:coda-rust platform#Proof]
-- **Model provider (current).** Production model calls go through the OpenAI API under its BAA, not Codex or ChatGPT. The subscription CLI is for local testing only (2026-10-13). Dev said the same on Sept 18 ("in reality, i would be API calls with our OAI BAA") [linear:ENG-160#Decided; linear:Coda Agents#Scope (Dev); codex:…@2026-09-18T17:37:42; claude:…@2026-09-23T19:12:08]. Staging gets a real model path through its own OpenAI project; its spend cap and when its model switch is on are runtime budget (Tyler's) [claude:f015cdb7…@2026-10-01T18:29:36]
+## How it works
 
-## 4. Guarantees
+**A run.** A finite sequence of model requests for one responsibility a product has accepted: a command, a message, a scheduled job or a resume. The product supplies identity, permissions, evidence and the tools for the job, and rechecks them. A run is over once the model makes its finish call. Its result is a completion candidate, and the product decides whether it becomes a saved reply.
 
-Each line is a testable promise of the shared loop. Retry windows, attempt counting, pause rules, quota policy and consent effects are product policy; the harness provides the mechanics [linear:ENG-159#Approved boundary].
+**Tools.** Tools are how the model reads and acts. The harness enables the right tools for each command, and tools go with the job, not the model. A malformed, unknown or refused tool call returns its reason in the result, and the run continues so the model can redo just that call.
 
-- **G1 Runtime budget.** Model calls, tool calls and recovery run within a configurable runtime budget (Tyler's) for every unit of work, adjusted as Coda learns (doc) [coda-app/docs/behaviour-contract.md:151; codex:…@2026-09-13T20:26:00]
-- **G2 Terminal finish.** After the finish call, the run is terminal and execution terminates truthfully with its outcome recorded [codex:…@2026-09-03T19:29:46; linear:ENG-159#Execution and completion acceptance]
-- **G3 Acknowledged events.** Required durable acknowledgments precede dependent execution. Events go into each product's existing durable owner and are not best-effort telemetry [linear:ENG-159#Approved boundary]
-- **G4 Control fencing.** Stop, queued input and steering each affect the intended work once. Late output never overwrites newer direction, and control state survives restart. The loop supports both products' semantics: physician Stop stays held; Duet has no Stop, and a newer message steers the reply in progress ; runs may be parallel within one account, and Tyler sets the limit [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T18:11:28.018Z] [linear:ENG-159#Workers and steering; linear:ENG-159#Execution and completion acceptance; linear:ENG-159#Complete when]
-- **G5 Workers.** A worker's result returns to its correct parent. One failed worker preserves its successful siblings [linear:ENG-159#Workers and steering]
-- **G6 Run record across restart.** Run records survive restart and stay inspectable. Replay rejects changed or foreign evidence. Permanent records are never rewritten to add a field: a new field is derived from what they hold when that is exact, else it reads "unknown", and old runs stay replayable [linear:ENG-159#Execution and completion acceptance; linear:platform#Journeys; claude:220b86fb…@2026-10-02T22:01:01]. This holds for permanent records and production storage; the local demo store needs no legacy compatibility [claude:220b86fb…@2026-10-02T20:53:42]
-- **G7 Tenant isolation.** One account's or workspace's execution never reaches another's context, tools or results [linear:ENG-159#Complete when]
-- **G8 Tool-call feedback.** A malformed, unknown or refused tool call returns its reason in the tool result, and the run continues so the model can redo just that call. A stale or mistyped edit is corrected in the same run instead of the whole run being thrown away [linear:ENG-159#Complete when; claude:220b86fb…@2026-09-29T04:53:15; claude:04e60e17…@2026-09-29T15:47:17]
-- **G9 Context pressure.** A context transition never replays an effect unsafely [linear:ENG-159#Complete when]
-- **G10 Bounded failures.** One failed tool read or item fails only itself; independent successes are preserved [linear:ENG-159#Complete when; linear:ENG-160#Don't repeat]
-- **G11 Lanes.** Interactive and background work run in separate lanes with independent capacity. A burst of scheduled work never blocks the interactive lane, and background work never uses up the model quota an interactive answer needs (doc) [linear:ENG-160#Don't repeat; claude:…@2026-10-01T17:19:34; coda-app/docs/backend-architecture.md:2759]
-- **G12 Concurrency.** Concurrent work across patients and accounts balances load and has no race conditions. Each patient's work starts independently within a runtime budget (Tyler's), so one stuck patient never blocks the rest [claude:…@2026-09-28T03:52:24; claude:220b86fb…@2026-10-07T02:23:33]
-- **G15 Provider rate limits.** One rate-limit gate per provider quota scope. A request the provider refuses with 429 before producing anything waits, honoring Retry-After, and retries within the run's existing deadline; it did no work, so it is not a paid retry. Which waiting work goes first when the gate reopens is product policy (physician chat first). The gate is built before hosted or paid runs [claude:220b86fb…@2026-09-28T03:53:59; claude:220b86fb…@2026-09-28T20:13:54; claude:04e60e17…@2026-09-29T20:05:51]
-- **G13 Hosted execution.** Scheduled and resumed runs execute in hosted infrastructure and never depend on a developer's machine [linear:ENG-14#Don't repeat]
-- **G14 Usage accounting.** Every model call is recorded against its person and purpose, including failed attempts and background work. Unknown usage is recorded as unknown, never as zero (doc) [linear:ENG-159#Execution and completion acceptance; coda-app/docs/behaviour-contract.md:175]
+**Skills.** A skill explains a capability and loads only when the model opens it. The model sees a compact index of skill names, lists and views what it needs, and products can preload the skills a scheduled job will want. Reading a skill never grants tools or permissions. The loader is shared; each product has its own catalog.
 
-Proven through the loop, owned by the products. ENG-159 accepts the loop only when these hold end to end, but the owners are ENG-80 (physician) and ENG-129 (Duet), not the harness [linear:ENG-159#Focused owners]:
+**Context.** Active context is a view the model can rebuild, never the store. Records come in through source tools, never injected wholesale, and workers don't inherit the lead's whole conversation. When context fills, the harness measures it and offers the transition. Each product owns how its context is preserved, the two products' policies stay separate, and neither moves to one shared compaction policy.
 
-- One accepted input: a duplicate command or send, before or after restart, yields one accepted input and one authoritative result; conflicting input under the same ID fails [linear:ENG-159#Complete when]
-- Recovery without duplicates: interrupted work reconciles effects already saved without recreating them, and does not wait for unrelated new input [linear:ENG-159#Complete when]
-- Idempotent effects: each logical change keeps one operation identity across retries (doc) [coda-agents/docs/patient-messaging.md:905; linear:ENG-159#Approved boundary]
-- Finished answers survive: a brief database hiccup never loses a finished, paid-for answer [linear:ENG-160#Don't repeat]
-- A run ends exactly once: one atomic end-if-open step is shared by complete, cancel, shutdown, crash and no-answer (physician, Oct 6) [claude:220b86fb…@2026-10-06T21:02:47]
+**Skills improve from traces.** Traces show which skills load, what they cost in context, and what goes wrong after a load. A skill that runs long gets slimmed, with detail moved into linked references. What nearly every run needs moves into the resident prompt, and a failing tool gets fixed at the tool instead of patched in a skill.
 
-## 5. Events the harness emits to the products
+**Workers.** The lead of a run can hand pieces of work to workers. A worker gets its assignment with only the context and tools it's allowed, and its result returns to the right parent. Whether and how deep to delegate is the model's judgment.
 
-The harness emits neutral ordered events into each product's existing durable owner. It is not a new shared journal, database, event service or best-effort telemetry, and required acknowledgments precede dependent execution [linear:ENG-159#Approved boundary].
+**Lanes.** Interactive and background work run in separate lanes with their own capacity, so a burst of scheduled work never blocks a conversation or eats the quota an answer needs.
 
-- **Model request occurrence**, with the recipe and model identity [linear:ENG-159#Execution and completion acceptance]
-- **Tool call occurrence**, with the exact evidence read. This is where a product graph meets the harness. Products build any live status (current step, purpose, trail) from these structured events, never by parsing text [linear:ENG-159#Execution and completion acceptance; claude:…@2026-10-26T21:27:19; claude:220b86fb…@2026-09-29T19:12:46; claude:220b86fb…@2026-09-29T21:08:09]
-- **Streamed reply output** while the reply is running; the product retains it at finalization [linear:ENG-159#Complete when; linear:ENG-159#Execution and completion acceptance]
-- **Worker result**, routed to its parent run [linear:ENG-159#Workers and steering]
-- **Completion candidate.** The product decides whether it becomes a saved reply [linear:ENG-159#Approved boundary]
-- **Run outcome**, retained with the run record [linear:ENG-159#Execution and completion acceptance]
-- **Usage per model call**, attributed to person and purpose (doc) [coda-app/docs/behaviour-contract.md:175]
-- GAP: no source names the outcome vocabulary (finished, interrupted, failed, cancelled), a run-started event or a checkpoint-written event [linear:ENG-159#Execution and completion acceptance]
+**The run record.** Each run keeps its model and tool calls, the exact evidence read, the recipe and model, and the outcome, and it stays inspectable after a restart. Coda's own run record is the source of truth for every tool built on top of it.
 
-Needs (preconditions) the products supply before and during a run [linear:ENG-159#comments (Tyler Port, 2026-10-20)]:
+**Simulation.** The loop runs the same way under simulated triggers. A simulation supplies triggers, events and actors and never scripts the model.
 
-- Admitted tools, authority and currentness checks, persistence, effects, commit and recovery policy [linear:ENG-159#comments (Tyler Port, 2026-10-20)]
-- Identity, permissions, evidence and remaining resources, rechecked by the durable caller (doc) [coda-app/docs/north-star.md:1716]
-- Duet: accepted terms, permission for Duet's AI and the operator switch, for every model call [linear:ENG-161#Done when]
-- GAP: no source states the physician product's per-run preconditions in harness terms [linear:ENG-159#Approved boundary]
+## Guarantees
 
-## 6. What the harness must never do
+These are the promises the products build on.
 
-- Depend on either product's domain, server, authentication, wire or database-store crates [linear:ENG-159#Approved boundary]
-- Become a second execution engine or a shared runtime service [linear:ENG-159#Approved boundary]
-- Own accepted input, schedules, conversations, memory or action results (doc) [coda-app/docs/backend-architecture.md:1673]
-- Share clinical memory between the products, or merge their context policies into one compaction policy on its own [linear:ENG-159#Execution and completion acceptance]
-- Impose a universal commit-at-end or rollback-on-cancel policy on both products [linear:ENG-159#Execution and completion acceptance]
-- Retry transparently once output is visible; visible output constrains transparent retry [linear:ENG-159#Execution and completion acceptance]
-- Treat a loop result as a saved reply. Only the responsible product owner publishes [linear:ENG-159#Approved boundary; coda-app/docs/north-star.md:1723]
-- Parse Markdown or model prose into clinical decisions, judge clinical reasoning or prescribe an investigation order (doc) [coda-app/docs/north-star.md:1723; coda-agents/docs/runtime-protocol.md:27]
-- Make citations depend on parsing model text. The model sees short labels that map back to the source [claude:220b86fb…@2026-09-24T20:32:31]
-- Decide in code that valid evidence is too sparse, unchanged, noisy or unimportant to reach the model (doc). A product's source check that starts a full review only when something changed is product cadence policy, not this [coda-app/docs/behaviour-contract.md:113; codex:…@2026-09-03T03:27:16; linear:ENG-14#Done when]
-- Infer another owner's terminal state (doc) [coda-agents/docs/runtime-protocol.md:27]
-- Create a second run or attempt ledger in cloud scheduling or delivery, or interpret clinical prose there (doc) [coda-agents/docs/architecture.md:283]
-- Resend the whole transcript every turn or break the prompt cache [linear:ENG-160#Don't repeat; claude:…@2026-09-23T22:08:52]
-- Let late output overwrite newer direction [linear:ENG-159#Workers and steering]
-- Let a skill read grant tools or permissions (doc) [coda-app/docs/backend-architecture.md:1696]
-- Appear in the product state diagrams. Harness internals and context management stay out because the harness keeps evolving [codex:…@2026-10-23T01:21:21; claude:…@2026-10-26T21:27:19]
-- Grow cost with the size of the roster instead of with what changed [linear:ENG-14#Don't repeat]
+- **Durable runs.** Run records and control state survive restarts. Scheduled and resumed work runs in hosted infrastructure and never depends on a developer's machine.
+- **No duplicate effects.** Each logical change, such as a send or a saved routine, keeps one identity across retries, so interrupted work can resume without doing anything twice. Nothing is retried transparently once its output is visible.
+- **Steering.** Stop, queued input and steering each affect the intended work once, and late output never overwrites newer direction. The loop supports both products: a physician's Stop stays held until Resume, and in Duet a new message steers the reply in progress. Runs can run in parallel within one account.
+- **Honest endings.** After the finish call the run is over, and its outcome is recorded truthfully.
+- **Isolation.** One account's or practice's work never reaches another's context, tools or results.
+- **Access and consent at the tools.** A tool refuses what the caller isn't allowed to read or do, and those checks fail closed.
+- **Rate limits.** Each provider quota has one rate-limit gate. A request refused before it produced anything waits, honors the provider's retry hint and retries within the run's deadline. The gate exists before any hosted or paid run.
+- **Context transitions.** A context transition never replays an effect.
+- **Accounting.** Every model call is recorded against its person and purpose, failed attempts and background work included, and unknown usage is recorded as unknown, never zero.
 
-## 7. Scope
+## Events to the products
 
-In now [linear:ENG-159#Approved boundary]:
-- One product-neutral loop in the shared `harness` crate, beside the shared `ui` and `http` crates, reusing existing provider adapters and the skills loader [linear:ENG-159#Approved boundary; linear:ENG-159#comments (Tyler Port, 2026-10-20)]
-- P1 proof: an authenticated synthetic physician workspace accepts a durable command, runs the shared loop, gets a real evidence-tool result and commits a grounded reply with readback [linear:ENG-159#Complete when]
-- D1 proof: a fictional consented Duet account accepts a durable message, uses the same loop for a source read or requested routine, and streams and retains the reply [linear:ENG-159#Complete when]
-- Then qualify every other active model-running journey through the loop, verifying that its intended instructions and admitted skills and tools reach the model, and rerun the original harness scenarios with coverage gaps stated [linear:ENG-159#Complete when]
-- Reconcile and retire Duet's unmounted front-door conversation and execution path once its owner covers the required behavior [linear:ENG-159#Execution and completion acceptance]
-- Report controlled or replay, real-provider, installed-client and hosted proof separately; a boundary approval establishes none of them [linear:ENG-159#Complete when]
-- Dev owns migration and unification within the approved boundary; the boundaries and acceptance requirements are unchanged [linear:ENG-159#comments (dev@codahealth.ai)]
-- Order, agreed Oct 22: "hosted access and durable conversations → walk P1/D1 together → build out the remaining care and connected-patient journeys → complete Rust cutover" [codex:…@2026-10-22T19:18:04; codex:…@2026-10-25T19:19:05]
+The harness writes neutral, ordered events into each product's own durable store. Required acknowledgments come before dependent work, and none of this is best-effort telemetry or a new shared journal.
 
-Out, product-owned [linear:ENG-159#Approved boundary]:
-- Clinical types, consent, evidence, context selection and preservation policy, model roles and instructions, admitted skills and tools, durable state and scheduling, effects, commit, recovery and terminal state [linear:ENG-159#Approved boundary]
+- **Model request**, with the recipe and model.
+- **Tool call**, with the exact evidence read. This is where a product's chart meets the harness, and products build live status (current step, purpose, trail) from these events, never from model text.
+- **Streamed reply output** while a reply runs; the product keeps it when the reply finishes.
+- **Worker result**, routed to its parent run.
+- **Completion candidate**, for the product to accept or not.
+- **Run outcome**, kept with the run record.
+- **Usage**, per model call, attributed to person and purpose.
 
-Parked or later [codex:…@2026-09-13T14:42:42; claude:…@2026-10-26T21:27:19]:
-- A formal harness model, only when a promise such as steering, restart or no duplicate effects is worth proving [claude:…@2026-10-26T21:27:19]
-- Programmatic tool calling and API qualification are parked [codex:…@2026-09-13T14:42:42]
-- Physician: an admission limit at the dispatch owner and priority classes are deferred until load measurement shows real numbers; only the rate-limit gate (G15) is planned [claude:220b86fb…@2026-09-28T20:13:54]. Duet chose "One capacity owner, separate queues for chat, Check-ins and reviews" [claude:04e60e17…@2026-09-29T20:05:51]
+Before and during a run, the product supplies its preconditions: admitted tools, authority and currency checks, identity, permissions, evidence, persistence, effects, commit and recovery policy. Duet also requires accepted Terms, AI permission and the operator switch for every model call.
+
+## What the harness never does
+
+- Depend on either product's domain, server, authentication, wire or storage crates.
+- Own accepted input, schedules, conversations, memory or action results, or share clinical memory between the products.
+- Impose one commit or rollback policy on both products.
+- Treat its result as a saved reply. Only the product publishes.
+- Read model prose as clinical decisions, judge clinical reasoning, or decide in code that valid evidence is too sparse, noisy or unimportant to reach the model.
+- Make citations depend on parsing model text. The model sees short labels that map back to the source.
+- Invent progress. Status comes only from real events.
+- Keep a second run ledger anywhere, including cloud scheduling or delivery.
+- Grow cost with the size of the roster instead of with what changed.
+- Appear in the product behavior charts.
+
+## Scope
+
+In the MVP:
+
+- One loop, reusing the existing provider adapters and the skills loader.
+- A physician proof: a synthetic physician workspace accepts a durable command, runs the loop, gets a real evidence-tool result and commits a grounded reply that reads back.
+- A Duet proof: a fictional, consented Duet account accepts a durable message, uses the same loop for a source read or a requested routine, and streams and keeps the reply.
+- Then every other model-running journey runs through the loop, with its instructions, skills and tools verified to reach the model.
+- Duet's unmounted conversation path is retired once the loop covers it.
+
+Later:
+
+- A formal model of the harness, only when a promise such as steering, restarts or no duplicate effects is worth proving.
+- Programmatic tool calling.
+
+## Engineering decisions
+
+- **Model provider.** Production model calls go through the OpenAI API under its BAA. Subscription CLIs are for local testing only. Staging has its own real model path with its own spend cap.
+- **Budgets.** The loop's request, tool, byte and deadline limits, retry budgets, cadence and how much work runs at once are engineering decisions, adjusted as we learn.
+- **Recovery.** The physician product continues interrupted work through successor attempts; Duet retries the same accepted run.
+- **Storage.** Permanent records are never rewritten to add a field. A new field is derived from what they hold when that's exact, or reads unknown, and old runs stay replayable.
+- **Build order.** Hosted access and durable conversations, then the physician and Duet proofs together, then the remaining care and connected-patient journeys, then the full Rust cutover.
+- **Capacity.** The physician product adds an admission limit and priority classes only once load measurements justify them. Duet has one capacity owner with separate queues for chat, Check-ins and reviews.

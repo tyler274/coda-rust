@@ -1,6 +1,6 @@
 # coda-rust
 
-This is the monorepo for Coda's Rust workspace. It holds the shared Duet client, the physician Dioxus client, and the crates they use. The product repositories are checked out here as submodules. Linear owns product intent and acceptance; this repository owns Rust implementation and proof. Start with the [documentation map](book/src/reading.md). Submodules are read-only historical references. React and SwiftUI remain the shipping clients until the Rust journeys are qualified.
+This is the monorepo for Coda's Rust workspace. It holds the shared Duet client, the physician Dioxus client, and the crates they use. The product repositories are checked out here as submodules. The [intent specs](intent/README.md) own product intent; Linear tracks scope, work and acceptance against them; this repository owns Rust implementation and proof. Start with the [documentation map](book/src/reading.md). Submodules are read-only historical references. React and SwiftUI remain the shipping clients until the Rust journeys are qualified.
 
 ## Layout
 
