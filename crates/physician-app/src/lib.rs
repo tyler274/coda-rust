@@ -98,58 +98,74 @@ enum Place {
 }
 
 /// The session belongs to this browser, so it lives in localStorage: a new tab,
-/// or Coda reopened, opens the workspace while the session lasts.
+/// or Coda reopened, opens the workspace while the session lasts. Beside it
+/// is the email it was signed in with, so a sign-in link can tell whether it
+/// is yours without asking the server.
 #[cfg(target_arch = "wasm32")]
 const SESSION_STORAGE_KEY: &str = "coda.physician.session";
-
 #[cfg(target_arch = "wasm32")]
-fn read_stored_session() -> Option<String> {
+const SESSION_OWNER_KEY: &str = "coda.physician.session.email";
+
+/// Calls `method` on this browser's localStorage. Denied or missing storage is `None`.
+#[cfg(target_arch = "wasm32")]
+fn local_storage(method: &str, args: &[&str]) -> Option<wasm_bindgen::JsValue> {
     use wasm_bindgen::JsCast;
     let window = web_sys::window()?;
     let storage = js_sys::Reflect::get(&window, &"localStorage".into()).ok()?;
     if storage.is_null() || storage.is_undefined() {
         return None;
     }
-    let get_item = js_sys::Reflect::get(&storage, &"getItem".into())
+    let function = js_sys::Reflect::get(&storage, &method.into())
         .ok()?
         .dyn_into::<js_sys::Function>()
         .ok()?;
-    get_item
-        .call1(&storage, &SESSION_STORAGE_KEY.into())
-        .ok()?
+    let args: js_sys::Array = args
+        .iter()
+        .map(|arg| wasm_bindgen::JsValue::from_str(arg))
+        .collect();
+    function.apply(&storage, &args).ok()
+}
+
+#[cfg(target_arch = "wasm32")]
+fn stored(key: &str) -> Option<String> {
+    local_storage("getItem", &[key])?
         .as_string()
         .filter(|value| !value.trim().is_empty())
 }
 
 #[cfg(target_arch = "wasm32")]
-fn write_stored_session(session: Option<&str>) {
-    use wasm_bindgen::JsCast;
-    let Some(window) = web_sys::window() else {
-        return;
-    };
-    let Ok(storage) = js_sys::Reflect::get(&window, &"localStorage".into()) else {
-        return;
-    };
-    if storage.is_null() || storage.is_undefined() {
-        return;
-    }
-    match session {
-        Some(token) if !token.trim().is_empty() => {
-            if let Ok(set_item) = js_sys::Reflect::get(&storage, &"setItem".into())
-                && let Ok(func) = set_item.dyn_into::<js_sys::Function>()
-            {
-                let _ = func.call2(&storage, &SESSION_STORAGE_KEY.into(), &token.into());
-            }
-        }
-        _ => {
-            if let Ok(remove_item) = js_sys::Reflect::get(&storage, &"removeItem".into())
-                && let Ok(func) = remove_item.dyn_into::<js_sys::Function>()
-            {
-                let _ = func.call1(&storage, &SESSION_STORAGE_KEY.into());
-            }
-        }
+fn read_stored_session() -> Option<String> {
+    stored(SESSION_STORAGE_KEY)
+}
+
+/// The email the stored session was signed in with.
+#[cfg(target_arch = "wasm32")]
+fn read_stored_owner() -> Option<String> {
+    stored(SESSION_OWNER_KEY)
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn read_stored_owner() -> Option<String> {
+    None
+}
+
+#[cfg(target_arch = "wasm32")]
+fn store_session(session: &str, email: &str) {
+    local_storage("setItem", &[SESSION_STORAGE_KEY, session]);
+    local_storage("setItem", &[SESSION_OWNER_KEY, email.trim()]);
+}
+
+/// Forgets `session` if this browser still stores it; a newer one stays.
+#[cfg(target_arch = "wasm32")]
+fn forget_stored_session(session: &str) {
+    if read_stored_session().as_deref() == Some(session) {
+        local_storage("removeItem", &[SESSION_STORAGE_KEY]);
+        local_storage("removeItem", &[SESSION_OWNER_KEY]);
     }
 }
+
+#[cfg(not(target_arch = "wasm32"))]
+fn forget_stored_session(_session: &str) {}
 
 // Count consecutive failed/short streams, not successful Cloud Run rotations.
 // A valid SSE response sustained for at least 30 seconds restores all five
@@ -441,11 +457,15 @@ fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
 }
 
 /// The tab's sign-in state, owned by [`PhysicianRoot`] and changed only here.
+/// Every change names the bearer it is about, because a request can finish
+/// after this browser has moved on to a newer session.
 #[derive(Clone, Copy, PartialEq)]
 struct SessionState {
+    /// Presents this tab's bearer on every read.
+    client: Signal<PhysicianClient>,
     signed_in: Signal<bool>,
-    /// The sign-in prompt covers the open page when the session expires
-    /// (physician A1.3). Nothing underneath changes.
+    /// The sign-in prompt covers the open page when the session expires.
+    /// Nothing underneath changes.
     expired: Signal<bool>,
     whoami_name: Signal<String>,
     whoami: Signal<Option<WhoamiResponse>>,
@@ -460,21 +480,29 @@ struct SessionState {
 }
 
 impl SessionState {
-    /// Back to the sign-in page, forgetting where this tab was.
-    fn sign_out(self) {
-        self.forget_place();
-        self.no_session();
+    /// The bearer this tab presents now.
+    fn bearer(self) -> Option<String> {
+        self.client.peek().session().get()
     }
 
-    /// Back to the sign-in page, still holding the link the page was opened at.
-    fn no_session(self) {
-        #[cfg(target_arch = "wasm32")]
-        write_stored_session(None);
+    /// Back to the sign-in page, forgetting where this tab was.
+    fn sign_out(self, ended: Option<&str>) {
+        self.forget_place();
+        self.no_session(ended);
+    }
+
+    /// Back to the sign-in page, still holding the link the page was opened
+    /// at. `ended` leaves this tab and the browser, unless a newer session
+    /// already replaced it.
+    fn no_session(self, ended: Option<&str>) {
+        if let Some(ended) = ended {
+            self.client.peek().session().clear_if(ended);
+            forget_stored_session(ended);
+        }
         self.no_session_here();
     }
 
-    /// Back to the sign-in page in this tab only. The browser's stored session
-    /// belongs to the tab that changed it.
+    /// Back to the sign-in page in this tab only.
     fn no_session_here(mut self) {
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
@@ -492,28 +520,36 @@ impl SessionState {
     }
 
     /// Ends this browser's session on the server and in every tab.
-    async fn end(self, client: PhysicianClient) {
+    async fn end(self) {
+        let client = self.client.peek().clone();
+        let ending = client.session().get();
         let _ = client.sign_out().await;
         #[cfg(target_arch = "wasm32")]
         tabs::announce(&tabs::TabNews::SignedOut);
-        self.sign_out();
+        self.sign_out(ending.as_deref());
     }
 
-    /// A refused read. An ended session covers a page this tab already showed
-    /// with the sign-in prompt; a tab that showed nothing yet was opened
-    /// without a session, so it shows the sign-in page and keeps the patient
-    /// link it was opened at. Removed access signs out and says "No access to
-    /// this practice".
-    fn refused(mut self, refusal: Refusal, shown: bool) {
+    /// A read made with `presented` was refused. A refusal of a session this
+    /// tab no longer holds is about the past and changes nothing. An ended
+    /// session covers a page this tab already showed with the sign-in prompt;
+    /// a tab that showed nothing yet was opened without a session, so it shows
+    /// the sign-in page and keeps the patient link it was opened at. Removed
+    /// access signs out and says "No access to this practice".
+    fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
+        if self.bearer() != presented {
+            return;
+        }
+        let presented = presented.as_deref();
         match refusal {
             Refusal::SessionEnded if shown => {
-                #[cfg(target_arch = "wasm32")]
-                write_stored_session(None);
+                if let Some(presented) = presented {
+                    forget_stored_session(presented);
+                }
                 self.expired.set(true);
             }
-            Refusal::SessionEnded => self.no_session(),
+            Refusal::SessionEnded => self.no_session(presented),
             Refusal::AccessRemoved => {
-                self.sign_out();
+                self.sign_out(presented);
                 self.removed.set(true);
             }
         }
@@ -523,7 +559,8 @@ impl SessionState {
     /// server session and the stored one, so this tab only follows, at once
     /// and in the order the news arrives.
     #[cfg(target_arch = "wasm32")]
-    fn hear(mut self, news: tabs::TabNews, client: PhysicianClient) {
+    fn hear(mut self, news: tabs::TabNews) {
+        let client = self.client.peek().clone();
         if !*self.signed_in.peek() {
             // A signed-out tab picks up this browser's sign-in, as sign-out
             // reaches every tab. It keeps what it was opening, so the tab
@@ -545,28 +582,22 @@ impl SessionState {
                 physician_id,
                 session,
             } => {
-                let mine = self
+                let yours = self
                     .whoami
                     .peek()
                     .as_ref()
-                    .map(|account| account.physician_id.clone());
-                if mine.as_deref() == Some(physician_id.as_str()) {
-                    // Your own link: a covered page picks up where it was;
-                    // an open one changes nothing.
-                    if *self.expired.peek() {
-                        client.session().set(session);
-                        self.expired.set(false);
-                    }
+                    .is_some_and(|account| account.physician_id == physician_id);
+                client.session().set(session);
+                if yours {
+                    // Your own sign-in: this tab takes the new session, and a
+                    // covered page picks up where it was.
+                    self.expired.set(false);
                     return;
                 }
-                if mine.is_none() {
-                    return;
-                }
-                // Another physician's sign-in: this tab becomes theirs and
-                // starts at Today; nothing of yours carries over.
+                // Someone this tab can't name as you: the tab becomes theirs
+                // and starts at Today; nothing of yours carries over.
                 local_draft::forget_everything();
                 self.forget_place();
-                client.session().set(session);
                 self.whoami_name.set(String::new());
                 self.whoami.set(None);
                 self.expired.set(false);
@@ -577,8 +608,8 @@ impl SessionState {
 }
 
 /// Signing out ends this session and reaches this browser's other Coda tabs.
-fn sign_out_everywhere(client: PhysicianClient, session: SessionState) {
-    spawn(session.end(client));
+fn sign_out_everywhere(session: SessionState) {
+    spawn(session.end());
 }
 
 #[component]
@@ -599,15 +630,6 @@ pub fn PhysicianRoot(
     let generation = use_signal(|| 0u32);
     let held_link = use_signal(|| (open_patient.clone(), open_chat.clone()));
     let mut removed = use_signal(|| false);
-    let session = SessionState {
-        signed_in,
-        expired,
-        whoami_name,
-        whoami,
-        generation,
-        held_link,
-        removed,
-    };
     let mut pending_sign_in = use_signal(|| sign_in);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| {
@@ -618,6 +640,16 @@ pub fn PhysicianRoot(
         }
         client
     });
+    let session = SessionState {
+        client,
+        signed_in,
+        expired,
+        whoami_name,
+        whoami,
+        generation,
+        held_link,
+        removed,
+    };
     // Other tabs' sign-in news arrives outside the Dioxus runtime, so it
     // re-enters this scope before touching the session.
     #[cfg(target_arch = "wasm32")]
@@ -625,7 +657,7 @@ pub fn PhysicianRoot(
         let runtime = dioxus::core::Runtime::current();
         let scope = dioxus::core::current_scope_id();
         std::rc::Rc::new(tabs::listen(move |news| {
-            runtime.in_scope(scope, || session.hear(news, client.peek().clone()));
+            runtime.in_scope(scope, || session.hear(news));
         }))
     });
     #[cfg(target_arch = "wasm32")]
@@ -634,11 +666,12 @@ pub fn PhysicianRoot(
             return;
         }
         let client = client.read().clone();
+        let presented = client.session().get();
         spawn(async move {
             if let Err(error) = client.today().await
                 && let Some(refused) = refusal(&error)
             {
-                session.refused(refused, false);
+                session.refused(refused, false, presented);
             }
         });
     });
@@ -820,6 +853,7 @@ fn PhysicianShell(
     let today = use_resource(move || {
         let _attempt = today_attempt();
         let client = client.read().clone();
+        let presented = client.session().get();
         async move {
             match client.today().await {
                 Ok(response) => {
@@ -828,7 +862,7 @@ fn PhysicianShell(
                 }
                 Err(error) => {
                     if let Some(refused) = refusal(&error) {
-                        session.refused(refused, *shown.peek());
+                        session.refused(refused, *shown.peek(), presented);
                     }
                     Err(())
                 }
@@ -889,6 +923,7 @@ fn PhysicianShell(
     let workspace = use_resource(move || {
         let _attempt = workspace_attempt();
         let client = client.read().clone();
+        let presented = client.session().get();
         let open_id = selected();
         async move {
             let answer = match open_id.clone() {
@@ -905,7 +940,7 @@ fn PhysicianShell(
                     // the shell, so nothing of it stays either way.
                     Err(error) => {
                         if let Some(refused) = refusal(&error) {
-                            session.refused(refused, *shown.peek());
+                            session.refused(refused, *shown.peek(), presented);
                         } else if matches!(
                             error,
                             physician_client::HttpError::Status { status: 404, .. }
@@ -1377,7 +1412,7 @@ fn PhysicianShell(
                         let mut expired = expired;
                         expired.set(false);
                     },
-                    on_sign_out: move |_| sign_out_everywhere(client.read().clone(), session),
+                    on_sign_out: move |_| sign_out_everywhere(session),
                 }
             }
         }
@@ -1602,7 +1637,7 @@ fn PhysicianShell(
                         button {
                             r#type: "button",
                             aria_label: "Sign out of Coda",
-                            onclick: move |_| sign_out_everywhere(client.read().clone(), session),
+                            onclick: move |_| sign_out_everywhere(session),
                             Icon { name: IconName::Users }
                             "Sign out"
                         }
@@ -2272,7 +2307,7 @@ fn SignInScreen(
                 Ok(verified) => {
                     #[cfg(target_arch = "wasm32")]
                     {
-                        write_stored_session(Some(&verified.session));
+                        store_session(&verified.session, &link.email);
                         tabs::announce(&tabs::TabNews::SignedIn {
                             physician_id: verified.physician_id.clone(),
                             session: verified.session.clone(),
@@ -2300,20 +2335,34 @@ fn SignInScreen(
     };
     // This effect has no reactive reads: one page load redeems its mailed link
     // once. Ordinary rerenders and request failures never retry the token.
-    // While this browser is signed in, your own link changes nothing. Any
-    // other link, including one whose owner Coda can't confirm, signs you out
-    // before it is redeemed, so the browser never holds two sessions.
+    // While this browser holds a session, another physician's link signs it
+    // out before it is redeemed. Your own link changes nothing while your
+    // session stands, and signs you back in once it has ended; when Coda
+    // can't say which, your session stays and the link is not used.
     use_effect(move || {
         if let Some(link) = link.clone() {
             let held = client.peek().clone();
+            let yours = read_stored_owner()
+                .is_some_and(|owner| owner.eq_ignore_ascii_case(link.email.trim()));
             spawn(async move {
                 if held.session().is_some() {
-                    match held.whoami().await {
-                        Ok(account) if account.email.eq_ignore_ascii_case(link.email.trim()) => {
-                            on_signed_in.call(Some(account));
-                            return;
+                    if !yours {
+                        session.end().await;
+                    } else {
+                        match held.whoami().await {
+                            Ok(account)
+                                if account.email.eq_ignore_ascii_case(link.email.trim()) =>
+                            {
+                                on_signed_in.call(Some(account));
+                                return;
+                            }
+                            Ok(_) => session.end().await,
+                            Err(failure) if refusal(&failure).is_some() => {}
+                            Err(_) => {
+                                on_signed_in.call(None);
+                                return;
+                            }
                         }
-                        _ => session.end(held).await,
                     }
                 }
                 verify_link(link);
