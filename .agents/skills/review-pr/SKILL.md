@@ -14,11 +14,16 @@ continuation.
 
 ## Establish scope
 
-A request to review a PR invokes this workflow and authorizes its CLI reviewer.
+A request to review a PR invokes this workflow and authorizes its CLI reviewer
+to publish its own review, inline findings, and
+follow-up replies on those PRs without per-comment approval. This is the standing
+exception to general exact-content approval requirements for external messages.
+It does not cover author responses, unrelated messages, thread resolution, or merges.
 Use `$review-pr` in Codex or `/review-pr` in Claude Code; natural-language PR
 review requests also apply. Discussing or editing the skill does not launch it.
 
-**Review-only requests stop at the assessment.** Fixes require an explicit,
+**Review-only requests include reviewer publication, but no code changes.**
+Fixes require an explicit,
 still-active implementation instruction. Earlier coding work or a review's
 completion notification does not override a later instruction or promise to
 review first or wait for the user.
@@ -62,9 +67,9 @@ Investigate launch failures; do not bypass restrictions or silently restart fres
 ## Reconcile before correcting
 
 Read `run.json` and the complete `review.md`. A completed process is not a
-favorable verdict; failed, stale, access-unverified, or freshness-unverified results
-cannot establish current readiness. Present the useful result and exact reviewer
-publication draft in chat.
+favorable verdict; failed, stale, or unverified results cannot establish current
+readiness. Present the useful result and verified publication links in chat; label any
+unpublished draft and publication failure clearly.
 Follow the publication procedure below; a local assessment is not a posted review.
 
 Judge the whole report against intent and source evidence. Accept findings or
@@ -100,10 +105,9 @@ proof are complete; state unresolved concerns and final changes left unreviewed.
 ## Publish the review and follow-up on GitHub
 
 The independent reviewer owns its GitHub review and follow-up. It prepares the exact
-publication through its scoped local tool during the assessment turn. The coordinating
-chat presents that draft without rewriting it and carries the user's approval back to
-the same reviewer session. The reviewer then invokes its publisher, authenticated only
-as the repository-scoped reviewer GitHub App. The coordinator never submits the
+publication through its scoped local tool during the assessment turn. The reviewer
+then invokes its publisher in the same turn, without asking for per-comment approval,
+authenticated only as the repository-scoped reviewer GitHub App. The coordinator never submits the
 reviewer's assessment through its own GitHub identity or tool.
 
 Prepare one coherent review per PR with the inspected commit, conclusion, material
@@ -114,17 +118,18 @@ disagreements separately, with evidence, rather than changing the reviewer draft
 Use inline threads for findings with verified diff locations. Keep cross-cutting
 findings in the review body rather than attaching them to arbitrary lines. A clean
 assessment still states its scope and limits. Default to a COMMENT review; approval
-or request-changes status must be explicitly included in the approved publication.
+or request-changes status may be chosen by the reviewer when warranted by its
+assessment. A GitHub approval is a review disposition, not permission to merge.
 If the reviewer App cannot submit the selected review, explain the limitation and keep
 the draft unpublished; do not switch identities or fall back to a personal account.
 
-Before posting, obtain the user's approval of the exact reviewer-authored content,
-destination, and review event. Resume the run with `--approve-publication` naming that
-saved draft. The launcher binds the approval to its digest, target, reviewed revision,
-and prior reviewer session. The publishing tool re-reads the PR before writing and
-reads back the saved author and body afterward. If the PR advanced, resume assessment
-and obtain approval for a new draft. An ambiguous write requires GitHub reconciliation
-before retrying. Pending approval or a failed write leaves the draft unpublished.
+The review request supplies publication authority for its selected PRs. The tool
+binds each saved draft to the current run, target, and reviewed revision. It re-reads
+the PR before writing and reads back the saved bot identity, body, event, and inline
+comments or reply target afterward. If the PR advanced, resume assessment and prepare
+a new publication. An ambiguous write requires GitHub reconciliation before retrying.
+Missing App configuration or a failed write leaves the draft unpublished; report it
+and resume the same reviewer after the cause is resolved. No personal-account fallback.
 
 For authorized corrections, the author or coordinating chat prepares replies to each
 material finding in its existing thread: corrected with commit and evidence, disagreed
@@ -141,7 +146,8 @@ claims, passing CI, or a merge alone do not establish that the concern was addre
 Leave unresolved decisions visible. A final review conclusion names the assessed head
 and any remaining limits; it never grants merge authority.
 
-A review does not authorize publication, commits, pushes, merges, deployment, or
-scheduling. External communication requires approval of the exact content and
-destination. Use `improve-review-pr` when the user requests a retrospective or
+A review request authorizes the reviewer-bot publications described above. It does
+not authorize commits, pushes, merges, deployment, scheduling, or other external
+communication. Those actions retain their existing authorization requirements.
+Use `improve-review-pr` when the user requests a retrospective or
 guidance update; it does not run automatically.

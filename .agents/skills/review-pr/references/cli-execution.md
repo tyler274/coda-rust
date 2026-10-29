@@ -43,7 +43,7 @@ workspace when needed; do not launch in a downloaded contributor-controlled
 folder merely to load its settings or hooks. Both engines retain their normal
 authentication and applicable configuration. CLI isolation and permissions are
 not identical. Both receive the same local reviewer MCP server for direct
-target-repository reads, publication drafting, and approved bot publication. The
+target-repository reads, publication drafting, and reviewer-owned bot publication. The
 config file contains App and installation IDs plus a command that retrieves the
 private key; it contains no private key or token. Its path is inherited by
 follow-ups. Do not put credential values in run artifacts or model prompts.
@@ -63,8 +63,9 @@ refreshes its system prompt/tool descriptions on each invocation while preservin
 the saved conversation, uses JSON output and disabled permission prompts, and exposes
 only Read/Glob/Grep plus the reviewer MCP tools; follow-ups add
 `--resume <saved-id>`. Source remains read-only. Within the scoped reviewer MCP
-server, `reviewer.publish` is its only write capability and refuses without
-launcher-bound approval for an exact saved draft. Codex retains its applicable
+server, `reviewer.publish` is its only remote write capability. It publishes the
+reviewer's own saved draft on a selected PR under the user's standing review
+authorization; there is no separate approval turn. Codex retains its applicable
 configuration and is instructed to use no other connector for publication; its
 read-only shell sandbox does not by itself establish global tool isolation.
 
@@ -88,7 +89,9 @@ automatic fresh-session fallback.
 - Exit 1: failed; inspect the recorded error and logs before retrying.
 - Exit 3: a report exists, but direct reviewer access was not demonstrated
   (`access_unverified`), a target changed (`stale`), or its current state could not
-  be established (`freshness_unverified`).
+  be established (`freshness_unverified`), or a target lacks a verified publication
+  (`publication_unverified`). These finished runs can be resumed after resolving
+  the reported gap.
 
 Launcher tests with CLI stand-ins verify transport, not model judgment or live
 session restoration. Keep those proof boundaries explicit.
@@ -99,22 +102,25 @@ session restoration. Keep those proof boundaries explicit.
 - [Claude programmatic execution](https://code.claude.com/docs/en/headless)
 - [Claude permissions](https://code.claude.com/docs/en/permissions)
 
-## Publish an approved reviewer draft
+## Reviewer-owned publication
 
-The assessment run records drafts under `publications/`. After the user approves the
-exact content, destination, and event, resume that run's reviewer:
+The user's PR review request authorizes the reviewer to publish its own reviews,
+inline findings, and follow-up replies on the selected PRs without per-comment
+approval. The reviewer calls `prepare_publication`, then `publish` in the same turn.
+The launcher supplies this standing exception on fresh and resumed turns; it does
+not authorize author responses, unrelated messages, thread resolution, or merges.
 
-```bash
-python3 /absolute/path/to/coda-rust/.agents/skills/review-pr/scripts/run_review.py \
-  --resume-from /absolute/path/to/assessment/run.json \
-  --approve-publication /absolute/path/to/assessment/publications/DIGEST.json
-```
+Drafts live under the current run's `publications/`. The publisher accepts only a
+saved draft from that run with a matching content digest. It refuses a changed or
+closed PR, a changed draft, an out-of-scope target, or missing App credentials.
+A verified readback is recorded in `github_publications`; a draft or attempted write
+is not a receipt. The receipt links to its owning `run.json`, which records the
+returned native session ID when the CLI finishes. On a resumed run, the receipt
+also includes the already-known reviewer session ID.
 
-The draft must belong to that assessment run and its filename must match its content
-digest. Publication refuses a changed or closed PR, a changed draft, a different
-target, missing App credentials, or a personal-account fallback. A verified readback
-is recorded in `github_publications`; a draft or attempted write is not a receipt.
 An uncertain attempt stops before another write so GitHub state can be reconciled.
-The publication turn resumes the same reviewer session, which invokes the tool and
-returns the receipt. Use that same session again for later code and discussion
-follow-ups.
+Do not start a new run or prepare a replacement to bypass that uncertainty. After
+resolving a publication failure, resume the same reviewer using `--resume-from` and
+supply the concrete reconciliation evidence. The reviewer re-reads the target and
+prepares any needed publication itself. Later code and discussion follow-ups use
+that same session as well.

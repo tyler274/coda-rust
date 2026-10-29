@@ -136,7 +136,7 @@ class ReviewerToolProtocol(unittest.TestCase):
         self.record = {
             "targets": [{"url": "https://github.com/example/project/pull/7",
                          "head_sha": "a" * 40, "base_sha": "c" * 40}],
-            "resume_session_id": "same-reviewer-session",
+            "github_app_config": str(self.config),
         }
         self.save_record()
 
@@ -196,10 +196,9 @@ class ReviewerToolProtocol(unittest.TestCase):
         self.assertEqual(file_value["content"], "1: first\n2: second")
         prepared = self.tool(process, 5, "prepare_publication", {
             "pr_url": "https://github.com/example/project/pull/7",
-            "body": "Reviewer-owned assessment", "kind": "review", "event": "COMMENT"})
+            "body": "Reviewer-owned assessment", "kind": "review", "event": "COMMENT",
+            "comments": [{"path": "owner.py", "line": 2, "side": "RIGHT", "body": "Finding"}]})
         value = json.loads(prepared["content"][0]["text"])
-        refused = self.tool(process, 6, "publish", {"draft_id": value["draft_id"]})
-        self.assertTrue(refused["isError"])
         self.stop(process)
         return value
 
@@ -212,19 +211,15 @@ class ReviewerToolProtocol(unittest.TestCase):
         self.stop(process)
         return json.loads(prepared["content"][0]["text"])
 
-    def approve(self, prepared):
-        self.record.update(github_app_config=str(self.config), approved_publication={
-            "draft_path": prepared["draft_path"], "draft_id": prepared["draft_id"]})
-        self.save_record()
-
-    def test_direct_reads_and_exact_approved_publication_round_trip(self):
+    def test_fresh_run_reads_and_publishes_its_own_review_without_an_approval_turn(self):
         prepared = self.prepare_draft()
-        self.approve(prepared)
         process = self.start()
         published = self.tool(process, 7, "publish", {"draft_id": prepared["draft_id"]})
+        self.assertNotIn("isError", published, published)
         receipt = json.loads(published["content"][0]["text"])
         self.assertEqual(receipt["author"], "coda-pr-reviewer[bot]")
-        self.assertEqual(receipt["reviewer_session_id"], "same-reviewer-session")
+        self.assertIsNone(receipt["reviewer_session_id"])
+        self.assertEqual(receipt["reviewer_run"], str(self.run_dir.resolve() / "run.json"))
         repeated = self.tool(process, 8, "publish", {"draft_id": prepared["draft_id"]})
         self.assertEqual(json.loads(repeated["content"][0]["text"]), receipt)
         calls = [json.loads(line) for line in (self.root / "github-calls.jsonl").read_text().splitlines()]
@@ -237,9 +232,37 @@ class ReviewerToolProtocol(unittest.TestCase):
         self.assertEqual([entry["tool"] for entry in logged],
                          ["github_read", "github_read", "read_file", "publish", "publish"])
 
+    def test_missing_app_or_changed_draft_never_writes(self):
+        prepared = self.prepare_draft()
+        self.record.pop("github_app_config")
+        self.save_record()
+        process = self.start()
+        missing = self.tool(process, 7, "publish", {"draft_id": prepared["draft_id"]})
+        self.assertTrue(missing["isError"])
+        self.assertIn("not configured", missing["content"][0]["text"])
+        self.stop(process)
+        self.record["github_app_config"] = str(self.config)
+        self.save_record()
+        path = Path(prepared["draft_path"])
+        draft = json.loads(path.read_text())
+        draft["body"] = "Changed since preparation"
+        path.write_text(json.dumps(draft))
+        process = self.start()
+        changed = self.tool(process, 8, "publish", {"draft_id": prepared["draft_id"]})
+        self.assertTrue(changed["isError"])
+        self.assertIn("Saved draft changed", changed["content"][0]["text"])
+        for draft_id in ("../outside", "0" * 64):
+            refused = self.tool(process, 9, "publish", {"draft_id": draft_id})
+            self.assertTrue(refused["isError"])
+        outside = self.tool(process, 10, "prepare_publication", {
+            "pr_url": "https://github.com/example/project/pull/8", "body": "Outside scope"})
+        self.assertTrue(outside["isError"])
+        self.assertIn("outside this review", outside["content"][0]["text"])
+        calls = [json.loads(line) for line in (self.root / "github-calls.jsonl").read_text().splitlines()]
+        self.assertFalse(any(call["method"] == "POST" for call in calls))
+
     def test_changed_pr_and_uncertain_prior_attempt_refuse_a_write(self):
         prepared = self.prepare_draft()
-        self.approve(prepared)
         self.env["REMOTE_HEAD"] = "b" * 40
         process = self.start()
         changed = self.tool(process, 7, "publish", {"draft_id": prepared["draft_id"]})
@@ -258,7 +281,6 @@ class ReviewerToolProtocol(unittest.TestCase):
 
     def test_mismatched_saved_event_is_not_accepted_as_a_receipt(self):
         prepared = self.prepare_draft()
-        self.approve(prepared)
         self.env["MISMATCH_STATE"] = "1"
         process = self.start()
         result = self.tool(process, 7, "publish", {"draft_id": prepared["draft_id"]})
@@ -267,14 +289,16 @@ class ReviewerToolProtocol(unittest.TestCase):
         self.assertFalse(Path(prepared["draft_path"]).with_suffix(".receipt.json").exists())
 
     def test_reply_to_author_child_is_canonicalized_and_published_on_root_thread(self):
+        self.record["resume_session_id"] = "same-reviewer-session"
+        self.save_record()
         prepared = self.prepare_reply(reply_to=201)
         draft = json.loads(Path(prepared["draft_path"]).read_text())
         self.assertEqual(draft["reply_to"], 200)
         self.assertEqual(prepared["publication"]["reply_to"], 200)
-        self.approve(prepared)
         process = self.start()
         result = self.tool(process, 2, "publish", {"draft_id": prepared["draft_id"]})
         receipt = json.loads(result["content"][0]["text"])
+        self.assertEqual(receipt["reviewer_session_id"], "same-reviewer-session")
         self.assertEqual(receipt["url"],
                          "https://github.com/example/project/pull/7#discussion_r300")
         calls = [json.loads(line) for line in
@@ -286,7 +310,6 @@ class ReviewerToolProtocol(unittest.TestCase):
 
     def test_definite_http_refusal_clears_attempt_and_allows_corrected_retry(self):
         prepared = self.prepare_draft()
-        self.approve(prepared)
         attempt = Path(prepared["draft_path"]).with_suffix(".attempt.json")
         self.env["POST_FAILURE"] = "422"
         process = self.start()
@@ -305,7 +328,6 @@ class ReviewerToolProtocol(unittest.TestCase):
         for failure in ("500", "408", "transport"):
             with self.subTest(failure=failure):
                 prepared = self.prepare_draft()
-                self.approve(prepared)
                 attempt = Path(prepared["draft_path"]).with_suffix(".attempt.json")
                 attempt.unlink(missing_ok=True)
                 self.env["POST_FAILURE"] = failure

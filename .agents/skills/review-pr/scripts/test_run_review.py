@@ -60,22 +60,13 @@ else:
 run = json.loads((run_dir / "run.json").read_text())
 if case != "missing_access":
     with (run_dir / "tool-calls.jsonl").open("a") as tools:
-        if "PUBLICATION TURN" in prompt:
-            draft = json.loads(Path(run["approved_publication"]["draft_path"]).read_text())
-            tools.write(json.dumps({"tool": "publish", "pr_url": draft["pr_url"],
-                "url": "https://github.com/example/project/pull/7#pullrequestreview-99",
-                "author": "coda-pr-reviewer[bot]", "reviewed_head_sha": draft["head_sha"],
-                "draft_id": run["approved_publication"]["draft_id"],
-                "reviewer_session_id": run["resume_session_id"]}) + "\n")
-        else:
-            for target in run["targets"]:
-                parts = target["url"].split("/")
-                repository = "/".join(parts[3:5])
-                tools.write(json.dumps({"tool": "github_read", "repository": repository,
-                    "endpoint": f"repos/{repository}/pulls/{parts[-1]}"}) + "\n")
-                tools.write(json.dumps({"tool": "read_file", "repository": repository,
-                    "path": "owner.py", "ref": target["head_sha"], "blob_sha": "e" * 40}) + "\n")
-            target = run["targets"][0]
+        for target in run["targets"]:
+            parts = target["url"].split("/")
+            repository = "/".join(parts[3:5])
+            tools.write(json.dumps({"tool": "github_read", "repository": repository,
+                "endpoint": f"repos/{repository}/pulls/{parts[-1]}"}) + "\n")
+            tools.write(json.dumps({"tool": "read_file", "repository": repository,
+                "path": "owner.py", "ref": target["head_sha"], "blob_sha": "e" * 40}) + "\n")
             draft = {"pr_url": target["url"], "head_sha": target["head_sha"],
                 "base_sha": target["base_sha"], "kind": "review", "body": report,
                 "comments": [], "reply_to": None, "event": "COMMENT"}
@@ -84,6 +75,14 @@ if case != "missing_access":
             folder = run_dir / "publications"
             folder.mkdir(exist_ok=True)
             (folder / f"{draft_id}.json").write_text(json.dumps(draft, indent=2) + "\n")
+            if case != "missing_publication" and not (case == "partial_publication" and target == run["targets"][-1]):
+                receipt = {"tool": "publish", "pr_url": target["url"],
+                    "url": target["url"] + "#pullrequestreview-99",
+                    "author": "coda-pr-reviewer[bot]", "reviewed_head_sha": target["head_sha"],
+                    "draft_id": draft_id, "reviewer_run": str(run_dir / "run.json"),
+                    "reviewer_session_id": run.get("resume_session_id")}
+                tools.write(json.dumps(receipt) + "\n")
+                (folder / f"{draft_id}.receipt.json").write_text(json.dumps(receipt))
 if name == "codex":
     print(json.dumps({"type": "thread.started", "thread_id": session}))
     if case == "native_failure":
@@ -363,38 +362,38 @@ class LauncherContract(unittest.TestCase):
         self.assertEqual(record["missing_direct_access"],
                          ["https://github.com/example/project/pull/7"])
 
-    def test_approved_exact_draft_is_published_by_the_same_reviewer_session(self):
+    def test_review_and_followup_publish_without_a_separate_approval_invocation(self):
         for engine in ("codex", "claude"):
             with self.subTest(engine=engine):
                 result, first, root = self.run_case(engine, app_config=True)
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(len(first["publication_drafts"]), 1)
-                draft = first["publication_drafts"][0]
-                result, published = self.resume_case(
-                    root, extra=("--approve-publication", draft), head="a" * 40)
+                self.assertEqual(len(first["github_publications"]), 1)
+                result, published = self.resume_case(root)
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(published["session_id"], first["session_id"])
                 self.assertEqual(published["resume_session_id"], first["session_id"])
+                self.assertEqual(published["github_app_config"], first["github_app_config"])
                 self.assertEqual(len(published["github_publications"]), 1)
+                self.assertEqual(len(published["publication_drafts"]), 1)
                 receipt = published["github_publications"][0]
                 self.assertEqual(receipt["author"], "coda-pr-reviewer[bot]")
                 self.assertEqual(receipt["reviewer_session_id"], first["session_id"])
-                call = json.loads((root / "calls.jsonl").read_text().splitlines()[-1])
-                self.assertIn("PUBLICATION TURN", call["prompt"])
-                self.assertIn(receipt["draft_id"], call["prompt"])
+                self.assertEqual(len((root / "calls.jsonl").read_text().splitlines()), 2)
 
-    def test_changed_draft_is_refused_before_the_reviewer_runs(self):
-        result, first, root = self.run_case("codex", app_config=True)
-        self.assertEqual(result.returncode, 0, result.stderr)
-        draft = Path(first["publication_drafts"][0])
-        value = json.loads(draft.read_text())
-        value["body"] = "Changed after approval"
-        draft.write_text(json.dumps(value))
-        result, record = self.resume_case(
-            root, extra=("--approve-publication", str(draft)))
-        self.assertNotEqual(result.returncode, 0)
-        self.assertIsNone(record)
-        self.assertEqual(len((root / "calls.jsonl").read_text().splitlines()), 1)
+    def test_missing_or_partial_publication_is_reported_and_can_resume(self):
+        for case in ("missing_publication", "partial_publication"):
+            with self.subTest(case=case):
+                second = "https://github.com/example/project/pull/8"
+                result, first, root = self.run_case("codex", case, extra=("--pr", second))
+                self.assertEqual(result.returncode, 3, result.stderr)
+                self.assertEqual(first["status"], "publication_unverified")
+                self.assertIn(second, first["missing_publications"])
+                self.assertEqual(len(first["publication_drafts"]), 2)
+                result, resumed = self.resume_case(root)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(resumed["session_id"], first["session_id"])
+                self.assertEqual(resumed["missing_publications"], [])
 
     def test_resume_dry_run_does_not_send_a_followup(self):
         result, first, root = self.run_case("claude")

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Scoped GitHub read and approved-publication tools for the independent reviewer."""
+"""Scoped GitHub read and reviewer-owned publication tools for the independent reviewer."""
 import argparse
 import base64
 import hashlib
 import json
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -186,20 +187,20 @@ class ReviewerTools:
         if not path.exists():
             path.write_text(json.dumps(draft, indent=2) + "\n")
         return {"draft_id": draft_id, "draft_path": str(path), "publication": draft,
-                "status": "awaiting_user_approval", "instruction": "Return this exact draft for user approval; do not publish yet."}
+                "status": "ready_to_publish", "instruction": "Publish this draft with reviewer.publish; the review request authorizes your reviewer-bot publication."}
 
     def publish(self, draft_id):
-        approval = self.run.get("approved_publication")
-        if not approval or approval["draft_id"] != draft_id:
-            raise ValueError("No user-approved publication for this draft in this turn")
-        draft = json.loads(Path(approval["draft_path"]).read_text())
+        if not re.fullmatch(r"[0-9a-f]{64}", draft_id):
+            raise ValueError("Supply a draft ID returned by prepare_publication in this run")
+        draft_path = self.run_dir / "publications" / f"{draft_id}.json"
+        draft = json.loads(draft_path.read_text())
         if digest(draft) != draft_id:
-            raise ValueError("Approved draft changed; obtain approval again")
+            raise ValueError("Saved draft changed; prepare it again before publication")
         target, host, repo, number = self.target(draft["pr_url"])
         if host != "github.com":
             raise ValueError("Reviewer App publisher currently supports github.com only")
-        receipt_path = Path(approval["draft_path"]).with_suffix(".receipt.json")
-        attempt_path = Path(approval["draft_path"]).with_suffix(".attempt.json")
+        receipt_path = draft_path.with_suffix(".receipt.json")
+        attempt_path = draft_path.with_suffix(".attempt.json")
         if receipt_path.exists():
             receipt = json.loads(receipt_path.read_text())
             self.record_access("publish", receipt)
@@ -209,7 +210,7 @@ class ReviewerTools:
         current = github(f"repos/{repo}/pulls/{number}", hostname=host)
         if (current["head"]["sha"] != draft["head_sha"] or current["base"]["sha"] != draft["base_sha"]
                 or current["state"] != "open"):
-            raise ValueError("PR changed since review; resume assessment and approve an updated draft")
+            raise ValueError("PR changed since review; resume assessment and prepare an updated draft")
         config = self.run.get("github_app_config")
         if not config:
             raise ValueError("Reviewer GitHub App is not configured; no personal-account fallback")
@@ -257,12 +258,13 @@ class ReviewerTools:
             matches = matches and saved.get("in_reply_to_id") == draft["reply_to"]
         if not matches:
             raise RuntimeError(
-                "Published review did not match the approved author, body, revision, event, "
+                "Published review did not match the expected author, body, revision, event, "
                 "inline comments, or reply target; inspect GitHub before proceeding"
             )
         receipt = {"pr_url": draft["pr_url"], "url": saved["html_url"], "author": bot,
                    "reviewed_head_sha": draft["head_sha"], "draft_id": draft_id,
-                   "reviewer_session_id": self.run["resume_session_id"]}
+                   "reviewer_run": str(self.run_dir / "run.json"),
+                   "reviewer_session_id": self.run.get("resume_session_id")}
         receipt_path.write_text(json.dumps(receipt, indent=2) + "\n")
         self.record_access("publish", receipt)
         return receipt
@@ -284,7 +286,7 @@ TOOLS = [
     tool("read_file", "Read a full repository file at an exact commit independently of the author. Optional line range for large files. Use github_read git/trees to discover paths.",
          {"repository": STRING, "path": STRING, "ref": STRING, "start_line": {"type": "integer"}, "end_line": {"type": "integer"}},
          ["repository", "path", "ref"], True),
-    tool("prepare_publication", "Save your own exact review or follow-up reply for human approval. This does not post to GitHub. Return the draft unchanged to the user.",
+    tool("prepare_publication", "Save your own exact review or follow-up reply for publication. Then call publish in this turn; the user's review request authorizes reviewer-bot posts on the selected PRs without per-comment approval.",
          {"pr_url": STRING, "body": STRING, "kind": {"enum": ["review", "reply"]},
           "event": {"enum": ["COMMENT", "APPROVE", "REQUEST_CHANGES"]},
           "comments": {"type": "array", "items": {"type": "object",
@@ -292,7 +294,7 @@ TOOLS = [
                              "side": {"enum": ["LEFT", "RIGHT"]}, "body": STRING},
               "required": ["path", "line", "side", "body"], "additionalProperties": False}},
           "reply_to": {"type": "integer"}}, ["pr_url", "body"], False),
-    tool("publish", "Publish your previously approved exact draft as the reviewer bot and read it back. Available approval is bound by launcher to this resumed reviewer and draft. Never posts as a personal user.",
+    tool("publish", "Publish your own saved draft from this run as the reviewer bot and read it back. The review request authorizes reviews and follow-up replies on the selected PRs. Never posts as a personal user.",
          {"draft_id": STRING}, ["draft_id"], False),
 ]
 
