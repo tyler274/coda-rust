@@ -505,7 +505,10 @@ balancer. Ingress is
 uses a serverless NEG, a global external managed HTTPS load balancer, an HTTP
 frontend on the same address that answers every request with a 308 to HTTPS
 (host, path and query kept, as Vercel does), a MODERN / TLS 1.2 policy, Cloud CDN,
-and the `allUsers` invoker grant the ALB needs. TLS comes from one Google-managed
+and the Cloud Run invoker check turned off (`invoker_iam_disabled`), because the
+ALB does not authenticate and the organization's domain restriction forbids an
+`allUsers` grant; ALB-only ingress and the disabled `run.app` URL remain the
+boundary. TLS comes from one Google-managed
 Certificate Manager certificate for `domains` (apex and www), attached through a
 certificate map with an entry per hostname. It is authorized by DNS records rather
 than by serving traffic, so it can be active before DNS moves: the
