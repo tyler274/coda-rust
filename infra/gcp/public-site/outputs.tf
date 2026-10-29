@@ -22,6 +22,14 @@ output "load_balancer_ip" {
   value       = local.staging ? null : google_compute_global_address.site[0].address
 }
 
+output "certificate_dns_records" {
+  description = "Production only: the CNAME records that authorize the managed certificate. The operator adds them in DNS before cutover; this root changes no DNS."
+  value = [
+    for record in flatten([for authorization in values(google_certificate_manager_dns_authorization.site) : authorization.dns_resource_record]) :
+    { name = record.name, type = record.type, data = record.data }
+  ]
+}
+
 output "cdn_enabled" {
   value = local.staging ? false : google_compute_backend_service.site[0].enable_cdn
 }

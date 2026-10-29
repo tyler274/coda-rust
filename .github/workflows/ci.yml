@@ -356,6 +356,12 @@ jobs:
           nix develop .#release --command tofu -chdir=infra/gcp/shared-mail init -backend=false -input=false
           nix develop .#release --command tofu -chdir=infra/gcp/shared-mail validate
           nix develop .#release --command tofu -chdir=infra/gcp/shared-mail test
+      - name: Validate public-site infrastructure without cloud access
+        run: |
+          nix develop .#release --command tofu fmt -check -recursive infra/gcp/public-site
+          nix develop .#release --command tofu -chdir=infra/gcp/public-site init -backend=false -input=false
+          nix develop .#release --command tofu -chdir=infra/gcp/public-site validate
+          nix develop .#release --command tofu -chdir=infra/gcp/public-site test
       # Adapter tests do not authorize deployment. The staging rollout is the
       # deploy-staging job below; hosted runtime qualification is separate.
 

@@ -25,22 +25,11 @@ RUN cargo build --locked --release -p public-site --bin public-site \
     && readelf -lW target/x86_64-unknown-linux-musl/release/public-site > /tmp/site-elf \
     && ! grep -q INTERP /tmp/site-elf
 
-# Same pinned release/checksum as `workspace-tools install-doppler`. No unpinned
-# package installation is required in either the builder or runtime image.
-RUN wget -O /tmp/doppler.tar.gz 'https://github.com/DopplerHQ/cli/releases/download/3.77.1/doppler_3.77.1_linux_amd64.tar.gz' \
-    && printf '%s  %s\n' '001f89a42629f9cb827cd86683c4c2dbf87c6299a8d6130643b98044bf5ed80a' /tmp/doppler.tar.gz | sha256sum -c - \
-    && tar -xzf /tmp/doppler.tar.gz -C /tmp doppler \
-    && chmod 0555 /tmp/doppler \
-    && readelf -lW /tmp/doppler > /tmp/doppler-elf \
-    && ! grep -q INTERP /tmp/doppler-elf
-
 # distroless/static-debian12:nonroot
 FROM ${RUNTIME_REPO}@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
 COPY --from=build --chown=65532:65532 /src/target/x86_64-unknown-linux-musl/release/public-site /public-site
-COPY --from=build --chown=65532:65532 /tmp/doppler /doppler
 ENV PUBLIC_SITE_LISTEN_ADDR=0.0.0.0:8080
 USER 65532:65532
 EXPOSE 8080
-# Local smoke tests need no Doppler account. Cloud Run explicitly overrides the
-# command to /doppler run ... -- /public-site (see infra/gcp/public-site).
+# The site reads no secrets: Cloud Run runs this entrypoint with plain settings.
 ENTRYPOINT ["/public-site"]

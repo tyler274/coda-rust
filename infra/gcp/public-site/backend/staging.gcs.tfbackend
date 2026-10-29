@@ -2,7 +2,6 @@
 # coda-health-staging (versioned, uniform access, public access prevention
 # enforced, us-east1, default soft delete), created by
 # scripts/staging-admin-bootstrap.sh. Staging never writes to a coda-health-prod
-# bucket. Production has no backend file here and is never initialized from
-# this repo.
+# bucket; production has its own backend file.
 bucket = "coda-health-staging-tofu-state-us-east1"
 prefix = "public-site/staging"

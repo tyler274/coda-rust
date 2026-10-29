@@ -8,7 +8,10 @@ pub struct RuntimeConfig {
     pub environment: String,
     pub staging: bool,
     pub access: AccessConfig,
-    pub physician_proxy: crate::proxy::ProxyConfig,
+    /// Present only when `PHYSICIAN_APP_URL` names a physician upstream. It alone
+    /// decides whether this deployment offers sign-in: the nav link and the
+    /// `/physician/` mount both follow it.
+    pub physician_proxy: Option<crate::proxy::ProxyConfig>,
     pub health_token: Option<String>,
     pub release_sha: Option<String>,
     pub max_concurrency: usize,
@@ -22,7 +25,7 @@ impl Default for RuntimeConfig {
             environment: "unknown".into(),
             staging: false,
             access: AccessConfig::default(),
-            physician_proxy: crate::proxy::ProxyConfig::default(),
+            physician_proxy: None,
             health_token: None,
             release_sha: None,
             max_concurrency: 1024,
@@ -52,33 +55,36 @@ impl RuntimeConfig {
             access.validate()?;
         }
         let deployed = staging || environment.eq_ignore_ascii_case("production");
-        let default_origin = if staging {
-            "https://staging.codahealth.ai".to_owned()
-        } else if deployed {
-            crate::site::SITE_ORIGIN.to_owned()
-        } else {
-            // Wildcard bind addresses are not browser destinations. Keep the
-            // image's bare local startup usable without relaxing URL validation.
-            let mut address: SocketAddr = nonempty("PUBLIC_SITE_LISTEN_ADDR")
-                .unwrap_or_else(|| crate::site::DEFAULT_LISTEN_ADDR.into())
-                .parse()?;
-            if address.ip().is_unspecified() {
-                address.set_ip(if address.is_ipv4() {
-                    std::net::Ipv4Addr::LOCALHOST.into()
+        let physician_proxy = nonempty("PHYSICIAN_APP_URL")
+            .map(|upstream| -> Result<_, Box<dyn std::error::Error>> {
+                let default_origin = if staging {
+                    "https://staging.codahealth.ai".to_owned()
+                } else if deployed {
+                    crate::site::SITE_ORIGIN.to_owned()
                 } else {
-                    std::net::Ipv6Addr::LOCALHOST.into()
-                });
-            }
-            format!("http://{address}")
-        };
-        let physician_proxy = crate::proxy::ProxyConfig::new(
-            &nonempty("PHYSICIAN_APP_URL")
-                .unwrap_or_else(|| crate::site::DEFAULT_PHYSICIAN_APP_URL.into()),
-            &nonempty("PUBLIC_SITE_ORIGIN").unwrap_or(default_origin),
-            nonempty("PHYSICIAN_PROXY_SERVICE_ACCOUNT"),
-            deployed,
-            staging,
-        )?;
+                    // Wildcard bind addresses are not browser destinations. Keep the
+                    // image's bare local startup usable without relaxing URL validation.
+                    let mut address: SocketAddr = nonempty("PUBLIC_SITE_LISTEN_ADDR")
+                        .unwrap_or_else(|| crate::site::DEFAULT_LISTEN_ADDR.into())
+                        .parse()?;
+                    if address.ip().is_unspecified() {
+                        address.set_ip(if address.is_ipv4() {
+                            std::net::Ipv4Addr::LOCALHOST.into()
+                        } else {
+                            std::net::Ipv6Addr::LOCALHOST.into()
+                        });
+                    }
+                    format!("http://{address}")
+                };
+                Ok(crate::proxy::ProxyConfig::new(
+                    &upstream,
+                    &nonempty("PUBLIC_SITE_ORIGIN").unwrap_or(default_origin),
+                    nonempty("PHYSICIAN_PROXY_SERVICE_ACCOUNT"),
+                    deployed,
+                    staging,
+                )?)
+            })
+            .transpose()?;
         let mut config = Self {
             physician_proxy,
             environment,
@@ -138,22 +144,26 @@ mod tests {
             ("0.0.0.0:8080", "http://127.0.0.1:8080"),
             ("[::]:8080", "http://[::1]:8080"),
         ] {
-            // Match the image defaults: no APP_ENV, upstream or credentials.
-            let config = RuntimeConfig::from_lookup(|name| {
-                (name == "PUBLIC_SITE_LISTEN_ADDR").then(|| bind.to_owned())
+            // Match the image defaults: no APP_ENV or credentials.
+            let config = RuntimeConfig::from_lookup(|name| match name {
+                "PUBLIC_SITE_LISTEN_ADDR" => Some(bind.to_owned()),
+                "PHYSICIAN_APP_URL" => Some("http://127.0.0.1:8790".into()),
+                _ => None,
             })
             .unwrap();
-            assert_eq!(config.physician_proxy.public_origin, origin);
-            assert!(config.physician_proxy.service_account.is_none());
+            let proxy = config.physician_proxy.unwrap();
+            assert_eq!(proxy.public_origin, origin);
+            assert!(proxy.service_account.is_none());
         }
         let config = RuntimeConfig::from_lookup(|name| match name {
             "PUBLIC_SITE_LISTEN_ADDR" => Some("0.0.0.0:8080".into()),
             "PUBLIC_SITE_ORIGIN" => Some("http://localhost:9090".into()),
+            "PHYSICIAN_APP_URL" => Some("http://127.0.0.1:8790".into()),
             _ => None,
         })
         .unwrap();
         assert_eq!(
-            config.physician_proxy.public_origin,
+            config.physician_proxy.unwrap().public_origin,
             "http://localhost:9090"
         );
     }
@@ -228,8 +238,31 @@ mod tests {
         )
         .unwrap();
         assert_eq!(
-            config.physician_proxy.public_origin,
+            config.physician_proxy.unwrap().public_origin,
             "https://staging.codahealth.ai"
+        );
+    }
+
+    #[test]
+    fn sign_in_exists_only_with_a_physician_upstream() {
+        for env in ["local", "production"] {
+            let config =
+                RuntimeConfig::from_lookup(|name| (name == "APP_ENV").then(|| env.to_owned()))
+                    .unwrap();
+            assert!(config.physician_proxy.is_none(), "{env}");
+        }
+        let staging = RuntimeConfig::from_lookup(|name| match name {
+            "APP_ENV" => Some("staging".into()),
+            "PUBLIC_SITE_IAP_AUDIENCE" => Some(crate::access::tests::AUDIENCE.into()),
+            _ => None,
+        })
+        .unwrap();
+        assert!(staging.physician_proxy.is_none());
+        assert!(
+            load(&[("APP_ENV", "production")])
+                .unwrap()
+                .physician_proxy
+                .is_some()
         );
     }
 

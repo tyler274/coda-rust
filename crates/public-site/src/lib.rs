@@ -15,4 +15,3 @@ pub mod site;
 pub use config::Config;
 pub use prerender::{Page, PageTable, prerender};
 pub use route::{PageMeta, Route};
-pub use server::router;

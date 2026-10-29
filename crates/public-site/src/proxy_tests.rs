@@ -190,7 +190,14 @@ async fn jwt_claims_cache_serialization_and_refresh_failure_are_closed() {
     assert!(credentials.cache.lock().await.is_none());
     // A physician request must not reach any target after signing fails.
     let proxy = PhysicianProxy {
-        config: ProxyConfig::default(),
+        config: ProxyConfig::new(
+            "http://127.0.0.1:8790",
+            "http://127.0.0.1:8791",
+            None,
+            false,
+            false,
+        )
+        .unwrap(),
         client: Client::new(),
         credentials: Some(credentials),
     };
