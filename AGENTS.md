@@ -1,13 +1,13 @@
 # Coda Rust operating contract
 
-This repository is the Rust workspace for Duet and the physician client. The [intent specs](intent/README.md) own product intent: Dev's principles, the
-product specs and his decisions, each line cited to its source. Linear tracks scope, work and acceptance; this workspace owns Rust
+This repository is the Rust workspace for Duet and the physician client. The [intent specs](intent/README.md) own product intent: the principles, the
+product specs and the open decisions, stated as current truth. Linear tracks scope, work and acceptance against them; this workspace owns Rust
 implementation, operations and proof. Start with the [canonical map](book/src/reading.md).
-Dev's latest explicit decisions take precedence; pinned submodules are historical
+Dev's latest explicit decisions take precedence and land in the specs; pinned submodules are historical
 reference, not a competing specification.
 
 Keep individual Linear ticket IDs, links and status mappings out of repository
-documentation; the source pointers in `intent/` are provenance, not tracking. Linear owns that tracking; docs use source and document links to
+documentation. Linear owns that tracking; docs use source and document links to
 explain responsibilities, implemented behavior and operating procedures.
 
 ## Where work goes
