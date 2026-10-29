@@ -1258,19 +1258,22 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
 fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) -> axum::Router {
     let runtime = public_site::runtime::RuntimeConfig {
         environment: "local".into(),
-        physician_proxy: public_site::proxy::ProxyConfig::new(
-            &format!("http://{upstream}"),
-            &format!("http://{public}"),
-            None,
-            false,
-            false,
-        )
-        .unwrap(),
+        physician_proxy: Some(
+            public_site::proxy::ProxyConfig::new(
+                &format!("http://{upstream}"),
+                &format!("http://{public}"),
+                None,
+                false,
+                false,
+            )
+            .unwrap(),
+        ),
         ..Default::default()
     };
     public_site::server::router_with_options(
         public_site::prerender(&public_site::Config {
             listen_addr: public,
+            physician_sign_in: true,
         }),
         runtime,
         [],

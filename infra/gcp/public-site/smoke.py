@@ -57,12 +57,15 @@ def fetch(base, path, headers=None):
         return response.status, response.headers, response.read()
 
 
-def container(image, environment):
-    staging_env = []
+def container(image, environment, physician_app_url=None):
+    extra_env = []
+    if physician_app_url:
+        # The physician upstream alone decides whether the site offers sign-in.
+        extra_env += ["-e", f"PHYSICIAN_APP_URL={physician_app_url}"]
     if environment == "staging":
         # Startup requires the direct Cloud Run signed-header audience. Local
         # image tests never substitute a trust endpoint or fetch cloud tokens.
-        staging_env = [
+        extra_env += [
             "-e", "PHYSICIAN_PROXY_SERVICE_ACCOUNT=public-site@fixture.iam.gserviceaccount.com",
             "-e", "PUBLIC_SITE_IAP_AUDIENCE=/projects/134570912572/locations/us-east1/services/public-site-staging",
         ]
@@ -70,8 +73,7 @@ def container(image, environment):
         "run", "-d", "--read-only", "--cap-drop=ALL",
         "--security-opt=no-new-privileges", "--memory=512m", "--cpus=1",
         "-p", "127.0.0.1::8080", "-e", f"APP_ENV={environment}",
-        "-e", "RELEASE_SHA=" + "a" * 40,
-        "-e", "PHYSICIAN_APP_URL=https://physician.example.test", *staging_env, image,
+        "-e", "RELEASE_SHA=" + "a" * 40, *extra_env, image,
     )
 
 
@@ -125,10 +127,11 @@ def main():
         assert re.search(r"<title>[^<]+</title>", html)
         assert document.canonical and document.description[0]
         assert "main" in document.tags and "footer" in document.tags
-        assert 'href="/physician/"' in html
-        assert "https://physician.example.test" not in html
+        assert 'href="/physician/"' not in html and "Sign in" not in html
         assert len(body) > 10000, len(body)
-        print(f"Homepage: 200, {len(body)} bytes, title/canonical/description/main/footer/sign-in valid")
+        for path in ["/physician", "/physician/today"]:
+            assert fetch(base, path)[0] == 404, path
+        print(f"Homepage: 200, {len(body)} bytes, title/canonical/description/main/footer valid; no physician upstream, so no Sign in and /physician 404")
         # The homepage system: original styles, frame reservation and the no-script reveal.
         assert [path.rsplit("/", 1)[1] for path in document.styles] == [
             "chrome.css", "site.css", "stage.css", "duet.css", "noscript.css"], document.styles
@@ -166,7 +169,20 @@ def main():
     finally:
         docker("rm", "-f", cid)
 
-    cid = container(image, "staging")
+    # With an upstream the same image offers sign-in, without exposing the upstream.
+    cid = container(image, "local", "http://127.0.0.1:8790")
+    try:
+        base = await_ready(cid)
+        status, _, body = fetch(base, "/")
+        html = body.decode()
+        assert status == 200 and 'href="/physician/">Sign in</a>' in html
+        assert "127.0.0.1:8790" not in html
+        print("Physician upstream configured: Sign in links to /physician/; upstream origin absent from HTML")
+        stop(cid)
+    finally:
+        docker("rm", "-f", cid)
+
+    cid = container(image, "staging", "https://physician.example.test")
     try:
         base = await_ready(cid)
         for path in ["/", "/physician", "/physician/", "/physician/today", chrome, motion, document.styles[0], "/api/health", "/healthz", "/does-not-exist"]:

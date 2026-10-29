@@ -28,15 +28,6 @@ pub struct ProxyConfig {
     pub public_origin: String,
     pub service_account: Option<String>,
 }
-impl Default for ProxyConfig {
-    fn default() -> Self {
-        Self {
-            upstream: Url::parse(crate::site::DEFAULT_PHYSICIAN_APP_URL).unwrap(),
-            public_origin: "http://127.0.0.1:8791".into(),
-            service_account: None,
-        }
-    }
-}
 impl ProxyConfig {
     pub fn new(
         upstream: &str,

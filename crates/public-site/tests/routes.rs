@@ -4,6 +4,7 @@ use axum::{
 };
 use public_site::{
     Config, Route, prerender,
+    proxy::ProxyConfig,
     runtime::RuntimeConfig,
     server::{Readiness, router_with_options},
 };
@@ -17,13 +18,25 @@ async fn staging_sign_in_reaches_the_physician_service() {
         .find(|line| line.starts_with("physician_app_url"))
         .and_then(|line| line.split('"').nth(1))
         .expect("staging must configure physician_app_url");
-    let config = Config::default();
-    let app = router_with_options(
-        prerender(&config),
-        RuntimeConfig::default(),
-        [],
-        Readiness::ready(),
-    );
+    // As the binary does: the configured upstream mounts /physician/ and offers Sign in.
+    let runtime = RuntimeConfig {
+        physician_proxy: Some(
+            ProxyConfig::new(
+                destination,
+                "https://staging.codahealth.ai",
+                None,
+                true,
+                false,
+            )
+            .unwrap(),
+        ),
+        ..RuntimeConfig::default()
+    };
+    let config = Config {
+        physician_sign_in: runtime.physician_proxy.is_some(),
+        ..Config::default()
+    };
+    let app = router_with_options(prerender(&config), runtime, [], Readiness::ready());
     let response = app
         .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
         .await

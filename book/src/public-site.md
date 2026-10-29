@@ -7,6 +7,9 @@ is `/physician/`; `PHYSICIAN_APP_URL` identifies the separately operated upstrea
 an external navigation destination. The site is a transport-only reverse proxy:
 it strips `/physician` and forwards requests, while physician authentication, clinical
 authorization, effects and persistence remain owned by the physician service.
+Sign-in exists only where `PHYSICIAN_APP_URL` is configured: that one setting mounts
+`/physician/` and renders the nav's Sign in link. Without it the site offers no
+sign-in and `/physician/` is an ordinary 404.
 `submodules/kytos` is an optional read-only developer reference, never a build,
 test, CI, or runtime dependency.
 
@@ -27,9 +30,11 @@ check uses a separate recorded fixture. Local tests and live staging evidence
 establish different parts of the flow.
 The same relative entry point is intended for both `staging.codahealth.ai` and
 `codahealth.ai`; this does not authorize production deployment or DNS changes.
-Production must not expose unconfigured proof-token delivery. A production
-launch still requires qualified production physician authentication and an
-explicit hosting approval.
+Production configures no physician upstream, so it shows no Sign in and has no
+`/physician/` mount. Configuring one there requires qualified production physician
+authentication first; production must not expose unconfigured proof-token
+delivery. Launching the marketing site itself requires an explicit hosting
+approval, not physician qualification.
 
 The proxy must preserve physician bearer authorization, query strings and streamed
 responses without forwarding browser cookies, caller-supplied service credentials
@@ -190,15 +195,17 @@ Runtime configuration:
 
 - `PUBLIC_SITE_LISTEN_ADDR`: local default `127.0.0.1:8791`; the image and Cloud
   Run root explicitly set `0.0.0.0:8080`.
-- `PHYSICIAN_APP_URL`: local default `http://127.0.0.1:8790`; fixed upstream
-  origin for `/physician/`, not the browser navigation link. Deployed values must use
+- `PHYSICIAN_APP_URL`: optional fixed upstream origin for `/physician/`, not the
+  browser navigation link. When set, the site mounts `/physician/` and the nav offers
+  Sign in; when unset, neither exists. There is no default: a local run against the
+  sample physician server sets `http://127.0.0.1:8790`. Deployed values must use
   HTTPS; credentials, non-root paths, queries and fragments are rejected.
 - `PHYSICIAN_PROXY_SERVICE_ACCOUNT`: service identity used for keyless upstream
-  IAP authentication. Required in staging; its signing permission and physician
-  IAP access must be provisioned before release. No browser credential supplies
-  this value.
-- `PUBLIC_SITE_ORIGIN`: optional exact browser origin for unsafe-method Origin
-  validation. Defaults to `https://staging.codahealth.ai` in staging,
+  IAP authentication. Required in staging whenever `PHYSICIAN_APP_URL` is set; its
+  signing permission and physician IAP access must be provisioned before release.
+  No browser credential supplies this value.
+- `PUBLIC_SITE_ORIGIN`: optional exact browser origin for the physician proxy's
+  unsafe-method Origin validation. Defaults to `https://staging.codahealth.ai` in staging,
   `https://codahealth.ai` in production, and the local listener origin otherwise.
   Unspecified local bind addresses (`0.0.0.0` or `::`) map to the corresponding
   loopback browser host. Alternate hosts or mapped container ports must set this
@@ -571,6 +578,9 @@ again before publishing a release image.
 dropped, no-new-privileges, one CPU, 512 MiB memory, and random host-loopback ports.
 It checks the image entrypoint/user/listen configuration and restricts image
 environment names to `PATH`, `SSL_CERT_FILE`, and `PUBLIC_SITE_LISTEN_ADDR`.
+It runs the image as production does, with no physician upstream (no Sign in,
+`/physician` 404); with an upstream (Sign in present, upstream origin absent from
+the HTML); and in staging mode (IAP denials).
 The successful repair-build run demonstrated:
 
 - Homepage HTTP 200, nonempty title/canonical/description, main and footer
@@ -646,10 +656,10 @@ keep their product-repository apply authority; this ownership covers only
   deployer needs no production-project IAM. Production has no backend file.
 - **Inputs.** `env/staging.tfvars` holds the non-secret staging inputs: the
   published image digest in the private `public-site` repository, release SHA,
-  secret ID and pinned version, and
-  `physician_app_url = "https://staging.codahealth.ai"`. That existing sign-in
-  value points back to the marketing site, not a physician application. It is an
-  unresolved product-staging destination, not proof of physician sign-in.
+  secret ID and pinned version, and `physician_app_url`, the physician preview
+  service in `coda-rust-staging` behind its own IAP. Setting it mounts `/physician/`,
+  renders Sign in and gives the runtime its proxy signing identity; leaving it
+  unset, as production does, offers no sign-in.
   That image reference resolves only after the bootstrap copies it there.
 - **Doppler.** Config `coda-rust/stg` holds the same non-secret deploy values
   under `PUBLIC_SITE_DEPLOY_*` (project, number, region, service, image, release

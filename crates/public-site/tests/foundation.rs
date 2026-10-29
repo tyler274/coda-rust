@@ -3,7 +3,11 @@ use axum::{
     body::{Body, to_bytes},
     http::{Method, Request, StatusCode},
 };
-use public_site::{Config, Route, prerender, server::router_with_pages};
+use public_site::{
+    Config, Route, prerender,
+    runtime::RuntimeConfig,
+    server::{Readiness, router_with_options},
+};
 use tower::ServiceExt;
 
 #[test]
@@ -24,7 +28,10 @@ fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
         assert!(html.contains(&page.meta.canonical_url));
         assert!(html.contains("Main navigation"));
         assert!(html.contains("Consumer Health Data Privacy Policy"));
-        assert!(html.contains("href=\"/physician/\""), "{html}");
+        assert!(
+            !html.contains("href=\"/physician/\""),
+            "{path}: sign-in without upstream"
+        );
         assert!(html.contains("<main"));
         if path != "/" {
             assert!(
@@ -45,12 +52,24 @@ fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
     );
 }
 
+#[test]
+fn sign_in_appears_on_every_page_only_when_offered() {
+    let table = prerender(&Config {
+        physician_sign_in: true,
+        ..Config::default()
+    });
+    for (path, page) in &table.pages {
+        let html = std::str::from_utf8(&page.html).unwrap();
+        assert!(html.contains("href=\"/physician/\">Sign in</a>"), "{path}");
+    }
+}
+
 #[tokio::test]
 async fn axum_serves_only_startup_bytes_and_preserves_404s() {
     let table = prerender(&Config::default());
     let asset_table = public_site::assets::AssetTable::embedded_with([]);
     let expected = asset_table.rewrite(std::str::from_utf8(&table.pages["/duet"].html).unwrap());
-    let app = router_with_pages(table);
+    let app = router_with_options(table, RuntimeConfig::default(), [], Readiness::ready());
     let response = app
         .clone()
         .oneshot(
@@ -73,6 +92,9 @@ async fn axum_serves_only_startup_bytes_and_preserves_404s() {
     for path in [
         "/physicians",
         "/api/physician-waitlist",
+        // No physician upstream configured, so there is no physician mount.
+        "/physician",
+        "/physician/today",
         "/missing",
         "/duet/privacy/unknown",
     ] {

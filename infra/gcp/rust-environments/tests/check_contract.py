@@ -65,9 +65,9 @@ class Contract(unittest.TestCase):
         main = (site / "main.tf").read_text()
         self.assertIn('timeout                          = "300s"', main)
         self.assertIn('PHYSICIAN_PROXY_SERVICE_ACCOUNT = google_service_account.site.email', main)
-        self.assertIn('${var.physician_proxy_enabled ? ",PHYSICIAN_PROXY_SERVICE_ACCOUNT" : ""}', main)
+        self.assertIn('${local.physician ? ",PHYSICIAN_PROXY_SERVICE_ACCOUNT" : ""}', main)
         self.assertIn('iap_enabled          = local.staging', main)
-        self.assertIn('physician_proxy_enabled      = true', (site / "env/staging.tfvars").read_text())
+        self.assertIn('physician_app_url            = "https://physician-836508863523.us-east1.run.app"', (site / "env/staging.tfvars").read_text())
         for forbidden in ['google_project_iam_member', 'google_project_service', 'google_iap_web_cloud_run_service_iam_member', 'google_service_account_iam_member']:
             self.assertNotIn(f'resource "{forbidden}"', main)
         bootstrap = (site / "scripts/staging-admin-bootstrap.sh").read_text()

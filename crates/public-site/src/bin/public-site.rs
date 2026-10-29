@@ -7,8 +7,11 @@ use std::time::Duration;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let config = Config::from_env()?;
     let runtime = RuntimeConfig::from_env()?;
+    let config = Config {
+        physician_sign_in: runtime.physician_proxy.is_some(),
+        ..Config::from_env()?
+    };
     let addr = config.listen_addr;
     let probe_addr = runtime.internal_probe_addr;
     let ready = Readiness::ready();

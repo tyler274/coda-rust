@@ -12,7 +12,6 @@ variables {
 
 run "staging_proxy_uses_own_identity" {
   command = plan
-  variables { physician_proxy_enabled = true }
   override_resource {
     target = google_service_account.site
     values = { email = "public-site-staging@coda-health-staging.iam.gserviceaccount.com" }
@@ -28,6 +27,15 @@ run "staging_proxy_uses_own_identity" {
   assert {
     condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
     error_message = "Proxying must not weaken the public staging IAP gate."
+  }
+}
+
+run "no_upstream_means_no_physician_entry" {
+  command = plan
+  variables { physician_app_url = null }
+  assert {
+    condition     = !contains(keys(local.runtime_env), "PHYSICIAN_APP_URL") && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE")
+    error_message = "Without a physician upstream the site gets neither the upstream nor a signing identity, so it offers no sign-in."
   }
 }
 
@@ -89,7 +97,7 @@ run "staging_origin_is_protected" {
     error_message = "The expected IAP assertion audience must reach the deployed container."
   }
   assert {
-    condition     = contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "stg") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE")
+    condition     = contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "stg") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE,PHYSICIAN_PROXY_SERVICE_ACCOUNT")
     error_message = "Doppler must preserve the deployment-controlled IAP audience and environment."
   }
   assert {
@@ -122,12 +130,13 @@ run "staging_url_is_protected_service_uri" {
 run "production_respects_origin_cache_headers" {
   command = plan
   assert {
-    condition     = !var.physician_proxy_enabled && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT")
-    error_message = "Production proxy signing requires separate explicit operator activation."
+    condition     = !contains(keys(local.runtime_env), "PHYSICIAN_APP_URL") && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT")
+    error_message = "Production offers no physician sign-in until a physician upstream is deliberately configured."
   }
   variables {
-    environment     = "production"
-    certificate_ids = ["projects/public-site-test/global/sslCertificates/test"]
+    environment       = "production"
+    certificate_ids   = ["projects/public-site-test/global/sslCertificates/test"]
+    physician_app_url = null
   }
   assert {
     condition     = google_cloud_run_v2_service.site.ingress == "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" && google_cloud_run_v2_service.site.default_uri_disabled && !google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled
@@ -150,7 +159,7 @@ run "production_respects_origin_cache_headers" {
     error_message = "Production must retain its reserved IP and HTTPS/TLS frontend."
   }
   assert {
-    condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "prd") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA") && output.iap_audience == null && output.staging_url == null
+    condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "prd") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,APP_ENV,RELEASE_SHA") && output.iap_audience == null && output.staging_url == null
     error_message = "Production must retain its runtime and Doppler configuration without a staging IAP audience or preview URL."
   }
 }
