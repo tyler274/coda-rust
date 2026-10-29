@@ -618,13 +618,13 @@ jobs:
         uses: cachix/install-nix-action@v31
       - name: Authenticate as the public-site CI deployer
         id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: projects/134570912572/locations/global/workloadIdentityPools/github-actions/providers/github-oidc
           service_account: public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com
           token_format: access_token
       - name: Set up gcloud
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
       - name: Build the image from the private base repositories
         run: |
           set -euo pipefail
@@ -752,13 +752,13 @@ jobs:
         run: python3 scripts/staging_images.py verify tested-images --revision "$GITHUB_SHA"
       - name: Authenticate as the staging deployer
         id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ vars.GCP_DEPLOYER_SERVICE_ACCOUNT }}
           token_format: access_token
       - name: Set up gcloud
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
       - name: Publish the tested images by digest
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
