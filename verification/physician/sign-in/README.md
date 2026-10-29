@@ -11,6 +11,7 @@ journey.
 | [journeys.md](journeys.md) | What a physician can do, replayed against the chart. |
 | [data-promises.md](data-promises.md) | Promises about records, with their Rust owners. |
 | [verus/](verus/) | The generated Verus model and the editable proof. |
+| [evidence-2026-10-24/](evidence-2026-10-24/) | Staging screenshots of sign-in from 2026-10-24, taken before this chart existed. |
 
 Check it from the repository root, after `npm install --prefix verification`:
 
@@ -24,4 +25,5 @@ To click through it, paste [sign-in.mjs](sign-in.mjs) into a local
 [Stately Sketch](https://github.com/statelyai/sketch).
 
 The chart, search and proof cover its finite states only. The data promises are
-unproven, and no code has been replayed against the chart yet.
+unproven, and no code has been replayed against the chart yet; the staging
+screenshots predate it.

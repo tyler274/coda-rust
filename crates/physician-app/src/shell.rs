@@ -78,8 +78,8 @@ pub struct VisitLine {
     pub cue: Option<String>,
 }
 
-/// One read the page shows (physician.mmd: Loading, Showing, Showing with one
-/// quiet line and Retry, Couldn't load with Retry).
+/// One read the page shows: loading, showing, showing with one quiet line and
+/// Retry, or couldn't load with Retry.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ReadView<T> {
     Loading,

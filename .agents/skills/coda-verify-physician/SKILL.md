@@ -182,6 +182,5 @@ mail is proof delivery. Those remain unverified here and are proved only in stag
 [book/src/gcp.md](../../../book/src/gcp.md). The inline fallback for a site without
 `PHYSICIAN_CHAT_TOPIC` is not on this stack; `crates/physician-sample` tests cover it.
 Gmail push wake is proved only as a controlled emulator test against a Gmail stand-in
-(`crates/gmail/tests/push_wake.rs`, recorded under Channel sync in
-[infrastructure-gaps.md](../../../verification/physician-experience/infrastructure-gaps.md)).
+(`crates/gmail/tests/push_wake.rs`).
 It has no feature file: nothing a physician sees changes until the product's Gmail intake exists.

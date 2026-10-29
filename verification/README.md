@@ -1,10 +1,9 @@
 # Coda product verification
 
-> **The whole-app graphs lag the [intent specs](../intent/README.md).** The physician, Duet and
-> connected-care graphs predate the specs; where they differ, the specs govern. They are being
-> rebuilt one journey at a time under `physician/`, `duet/` and `connected-care/`, starting with
-> [physician sign-in](physician/sign-in/README.md). Each rebuilt journey replaces its part of the
-> old graph.
+> **Charts are rebuilt one journey at a time from the [intent specs](../intent/README.md)**, under
+> `physician/`, `duet/` and `connected-care/`, starting with
+> [physician sign-in](physician/sign-in/README.md). The older whole-app graphs were removed on
+> 2026-10-29; the specs govern every journey not yet charted.
 
 Coda ports [PStack](#provenance) to Verus and connects agreed product journeys to
 Rust owners and running-app evidence. The five general skills establish or repair
@@ -58,19 +57,15 @@ collections, preserve every accepted batch member, derive history from its owner
 and separate safety from conditional progress. A capability overview plus selected
 proofs is not full coverage.
 
-Each rebuilt journey's chart is an XState machine. [statechart.mjs](statechart.mjs)
-checks its rules on every state XState's graph search reaches, replays its
-`journeys.md` on the machine, and writes its Verus model; the same file opens in
-Stately Sketch for review. The lagging whole-app graphs below still use the Mermaid
-[compiler](../.agents/skills/coda-statechart/references/compiler.md), which shares one
-flattened representation between Verus generation and finite reachability search.
-`%% when` encodes state guards; `%% never` encodes actual forbidden combinations.
-`statechart.mjs trace` prints a shortest violating path and numbered Mermaid diagram. A completed
-search covers only the finite chart's rules; limits or interruption are incomplete.
-An inductive Verus obligation can fail without a reachable chart violation.
-Rules and proofs say what never happens; each graph's `journeys.md`, replayed by
-`statechart.mjs journey` on the same representation, shows its useful outcomes
-are reachable, and fails when a change strands one.
+Each journey's chart is an XState machine. Guards built from `stateIn`, `not`, `and`
+and `or` encode what an event needs; `meta.never` encodes actual forbidden
+combinations. [statechart.mjs](statechart.mjs) `check` reaches every state with
+XState's graph search and prints the shortest path to any broken rule; a completed
+search covers only the finite chart's rules. `verus` writes the same behavior as a
+Verus model. An inductive Verus obligation can fail without a reachable chart
+violation. Rules and proofs say what never happens; each chart's `journeys.md`,
+replayed on the machine by `check`, shows its useful outcomes are reachable, and
+fails when a change strands one. The same file opens in Stately Sketch for review.
 
 ## Connect the harness through events
 
@@ -78,18 +73,17 @@ The harness stays out of the chart and meets it only at declared events (Dev
 2026-10-26). An agent's event is the harness's output, and each tool it admits is
 one such event: the product host checks that event's `needs` before the effect
 commits, and the model decides when to use it. Retries, timeouts, cadence, memory
-and prompts stay in the harness; `infrastructure-gaps.md` names the events each
-runtime guarantee backs. The runtime records chart events where each fact's owner
-changes it, so a recorded run can be checked against the flat model, and `against`
-checks a more detailed model of the same behavior. The harness has no chart of
-its own; it is just the harness.
+and prompts stay in the harness, whose guarantees the
+[harness spec](../intent/harness.md) states. The runtime records chart events where
+each fact's owner changes it, so a recorded run can be replayed on the chart. The
+harness has no chart of its own; it is just the harness.
 
 Do not force every promise into finite states. A promise about records (identity,
 revisions, collections, atomic batches) is written beside its chart in
 `data-promises.md`, naming the Rust owner that must prove it, and stays marked
 unproven until that proof exists. Progress needs explicit assumptions.
 Charts without safety rules establish transition correspondence only. Keep generated
-behavior separate from editable proofs; `statechart.mjs check` detects generated drift. Review
+behavior separate from editable proofs; `statechart.mjs verus --check` detects generated drift. Review
 manual data refinements and implementation connections separately.
 
 ## Feature specs
@@ -97,9 +91,6 @@ manual data refinements and implementation connections separately.
 | Folder | Spec |
 | --- | --- |
 | [physician/sign-in](physician/sign-in/README.md) | How a physician signs in (physician.md A1.1–A1.5): chart, journeys, data promises and Verus proof. |
-| [physician-experience](physician-experience/README.md) | Lagging: the physician web app as one whole-app statechart, until its journeys are rebuilt. |
-| [duet-experience](duet-experience/README.md) | Lagging: the Duet app as one whole-app statechart, until its journeys are rebuilt. |
-| [connected-care](connected-care/README.md) | Lagging: how Duet and the physician web app meet, as one composition, until its journeys are rebuilt. |
 
 ## How the skills fit
 
@@ -140,9 +131,7 @@ node verification/statechart.mjs check path/to/the/journey.mjs path/to/journeys.
 There is no default proof for an unspecified feature. The extra toolchain does not
 change the workspace default. See [verus.json](verus.json) and the
 [real-owner recipe](../.agents/skills/coda-create-formal-verification/references/verus.md#verify-a-real-rust-owner).
-The [compiler reference](../.agents/skills/coda-statechart/references/compiler.md)
-provides a product-neutral chart example and contract-test command. App recipes
-supply their own doctor, runtime, mutation and browser commands.
+App recipes supply their own doctor, runtime, mutation and browser commands.
 
 Checks print a new evidence directory under `target/verification/runs`; `--out`
 selects another new directory. Logs survive scratch cleanup.
@@ -159,15 +148,13 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | App interview, launch/doctor/drive/evidence/cleanup, feature maps and dogfooding | Actual Rust harnesses, explicit visual readback, Coda naming and shared intent links. |
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
-| Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
-| Per-journey charts labeled as the screen, one `%% never` per agreed sentence and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts are XState machines that cite intent spec IDs, checked with XState's graph search and reviewed in Stately Sketch; every chart also gets a Verus proof. |
-| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage`, and `journey`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
-| Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
+| Chart semantics, guards and user-facing traces | XState machines and its graph search instead of PStack's Mermaid parser; Verus generation with editable induction proofs. |
+| Per-journey charts labeled as the screen, one never-rule per agreed sentence and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts are XState machines that cite intent spec IDs, checked with XState's graph search and reviewed in Stately Sketch; every chart also gets a Verus proof. |
+| Top-level parallel regions only | Top-level parallel regions with flat states, as Verus can state them; events declared with cause and intent in `meta.events`. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model
-checking or reverse translation of arbitrary code. The
-[compiler reference](../.agents/skills/coda-statechart/references/compiler.md) defines
-the supported boundary. No TLC or PDD preview kit is installed.
+checking or reverse translation of arbitrary code. [statechart.mjs](statechart.mjs)
+refuses charts outside the supported boundary. No TLC or PDD preview kit is installed.
 [Lauren's statechart post](https://x.com/poteto/status/2112736749281759566), the
 [GitHub Next PDD announcement](https://x.com/GitHubNext/status/2112936525457740139)
 and [Alex's explanation](https://x.com/alexlavaee/status/2112938102591553636) inform

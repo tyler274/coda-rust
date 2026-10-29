@@ -87,7 +87,4 @@ and whether it reproduced. Say what the chart leaves out: data promises, GAPs, a
 anything not replayed against code. A checked draft is still a draft until Dev
 agrees with it.
 
-When Dev agrees with a journey's chart, delete what it replaces in the older
-whole-app graph, with its coverage and journey rows, in the same change.
-
 Adapted from [PStack statechart](https://github.com/cursor/plugins/blob/eb4db2b55b2b7dec3d9282754cddf0a56bf4ff10/pstack/skills/statechart/SKILL.md).

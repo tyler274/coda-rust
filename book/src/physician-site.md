@@ -6,10 +6,9 @@ The shipping physician client is the React site in `submodules/coda-agents/web`.
 
 The [Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d16847168e)
 owns current product intent. The
-<a href="/verification/physician-experience/README%2Emd">physician statechart</a>
-is the behavior spec, accompanied by its design decisions, its Verus proof and
-<a href="/verification/physician-experience/coverage%2Emd">coverage.md</a>, which says
-what the Rust app shows for each of its states. <a href="/verification/README%2Emd">Verification</a>
+<a href="/intent/physician%2Emd">physician spec</a> is the behavior spec; each
+journey's chart and Verus proof live under <a href="/verification/README%2Emd">verification</a>,
+starting with <a href="/verification/physician/sign-in/README%2Emd">sign-in</a>. Verification
 keeps design artifacts separate from runtime and clinical qualification. The
 original repository links below are comparison evidence, not a competing
 specification or a claim of current Rust completeness.
