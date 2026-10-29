@@ -10,7 +10,10 @@ production application or clinical-evidence roots.
 ## Public marketing site preparation
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root prepares the
-stateless Rust marketing server on Cloud Run. Staging runs in the existing
+stateless Rust marketing server on Cloud Run. The site belongs to the company,
+not to a product, so both environments live in the Coda Health projects
+(`coda-health-staging` and `coda-health-prod`), apart from the physician and
+Duet projects such as `coda-rust-staging`. Staging runs in the existing
 `coda-health-staging` project with direct Cloud Run IAP and no load balancer or
 CDN. Access is a service-scoped `roles/iap.httpsResourceAccessor` binding for
 `group:gcp-engineering@codahealth.ai`, and the IAP service agent is the only
