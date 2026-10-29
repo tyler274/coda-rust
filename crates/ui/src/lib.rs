@@ -22,6 +22,12 @@ pub fn PageTitle(text: String) -> Element {
     rsx! { h1 { class: "page-title", "{text}" } }
 }
 
+/// What a card holds, named above its title in small capitals: "What Duet noticed", "Original record".
+#[component]
+pub fn Overline(text: String) -> Element {
+    rsx! { p { class: "overline", "{text}" } }
+}
+
 #[component]
 pub fn EmptyState(message: String) -> Element {
     rsx! { p { class: "empty", "{message}" } }

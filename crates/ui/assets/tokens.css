@@ -109,7 +109,9 @@
      every host names one and composes none of its own. Colour stays the host's: ink heads, body words, muted details.
      Headline medium: a page's own title (Today, a patient's page). Title large: dialog and reader titles. Title medium: a card's or section's title. Title small: a row's or list's name.
      Body large: prose to read. Body medium: interface words and a row's text. Body small: times and supporting details.
-     Label large: every control. Label medium: state pills and small headings. */
+     Label large: every control. Label medium: state pills and small headings. Label small: a tab bar's labels under their icons.
+     Overline: label small in capitals, naming what a card holds ("What Duet noticed", "Original record").
+     Value: a measurement's figure, its unit in body text beside it; large on its own page, medium in a tile or card. */
   --weight-regular: 400;
   --weight-strong: 600;
   --type-headline-md: var(--weight-strong) 28px/36px var(--sans);
@@ -122,7 +124,11 @@
   --type-body-sm: var(--weight-regular) 13px/18px var(--sans);
   --type-label-lg: var(--weight-strong) 14px/20px var(--sans);
   --type-label-md: var(--weight-strong) 13px/18px var(--sans);
-  /* Only the headline and the large title tighten. */
+  --type-label-sm: var(--weight-strong) 11px/16px var(--sans);
+  --overline-tracking: .1em;
+  --type-value-lg: var(--weight-regular) 44px/48px var(--sans);
+  --type-value-md: var(--weight-regular) 28px/32px var(--sans);
+  /* Only the headline, the large title and values tighten. */
   --title-tracking: -.02em;
   /* Code in prose: monospace at the prose's own size. */
   --type-code: .9em/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;

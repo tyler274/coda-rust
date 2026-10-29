@@ -10,16 +10,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surfac
   flex-direction: column;
   color: var(--ink);
   background: var(--surface);
-  /* Duet's type scale is SwiftUI Duet's (DuetTypography.swift) at the default text size, on the shared roles:
-     the page title is the large title, sheet and status titles title 2, a card's title and words the subheadline,
-     every control the semibold body, and conversation and editors 17-point body text. */
-  --type-headline-md: 700 34px/41px var(--sans);
-  --title-lg-line: 28px;
-  --type-title-lg: 700 22px/var(--title-lg-line) var(--sans);
-  --type-title-md: var(--weight-strong) 15px/20px var(--sans);
-  --type-body-lg: var(--weight-regular) 17px/22px var(--sans);
-  --type-body-md: var(--weight-regular) 15px/20px var(--sans);
-  --type-label-lg: var(--weight-strong) 17px/22px var(--sans);
+  /* The shared type scale, as the October 21 mockups map it: prose and the conversation read at body large. */
   font: var(--type-body-lg);
   /* Controls after the October 21 design review: each action a full-width bar, and quiet actions in green text. */
   --control-width: 100%;
@@ -111,7 +102,7 @@ button.thread-open > p.thread-card::after {
 }
 .card-title { margin: 0 0 8px; }
 .card-text, .empty, .status-detail { margin: 0; font: var(--type-body-md); }
-.record-meta { margin: 4px 0 0; color: var(--muted); font: var(--type-body-md); }
+.record-meta { margin: 4px 0 0; color: var(--muted); font: var(--type-body-sm); }
 .card-text + .card-text, .record-meta + .card-text { margin-top: 12px; }
 .empty-title, .status-title { margin: 0 0 8px; font: var(--type-title-lg); }
 .source-row {

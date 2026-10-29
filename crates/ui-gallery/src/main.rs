@@ -9,8 +9,8 @@ use std::time::Duration;
 use ui::{
     ActionRow, Author, Button, ButtonVariant, CitationChip, CommandNotice, CommandStage, Composer,
     Dialog, Disclosure, Icon, IconName, LiveDot, Message, NavigationControl, NavigationRow,
-    Placeholder, ReadNotice, ReadStage, SourceRow, SourcesButton, StatePill, StatusLine, TabBar,
-    Tone, WorkingMark,
+    Overline, Placeholder, ReadNotice, ReadStage, SourceRow, SourcesButton, StatePill, StatusLine,
+    TabBar, Tone, WorkingMark,
 };
 
 fn main() {
@@ -68,6 +68,12 @@ fn Gallery() -> Element {
                 }
             }
             div { key: "{replay}", class: "gallery-sections",
+                Section { title: "Type", note: "One scale for every app, on the system sans. A role is a whole setting; hosts name one and compose none of their own.",
+                    TypeDemo {}
+                }
+                Section { title: "Colour", note: "Roles in pairs, a fill and what reads on it. Hosts read roles, never tones; dark mode swaps the tones beneath.",
+                    ColourDemo {}
+                }
                 Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
                     ConversationDemo {}
                 }
@@ -102,6 +108,86 @@ fn Gallery() -> Element {
                 Section { title: "Fields and tabs", note: "The text field carries focus on its outline.",
                     input { class: "field", aria_label: "Name", placeholder: "Name" }
                     TabsDemo {}
+                }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const TYPE_ROLES: [(&str, &str, &str); 14] = [
+    ("headline-md", "Headline", "Today"),
+    (
+        "title-lg",
+        "Title large",
+        "Sleep was shorter than your recent average",
+    ),
+    ("title-md", "Title medium", "Your measurements"),
+    ("title-sm", "Title small", "Visit note"),
+    (
+        "body-lg",
+        "Body large",
+        "A short walk after dinner keeps the evening steady.",
+    ),
+    ("body-md", "Body medium", "An update is ready to review."),
+    ("body-sm", "Body small", "Northside Clinic · October 15"),
+    ("label-lg", "Label large", "Save plan"),
+    ("label-md", "Label medium", "Needs you"),
+    ("label-sm", "Label small", "Today"),
+    ("value-lg", "Value large", "6 hr 18 min"),
+    ("value-md", "Value medium", "4,280"),
+    ("code", "Code", "PHYSICIAN_APP_URL"),
+    ("label-sm", "Overline", "What Duet noticed"),
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn TypeDemo() -> Element {
+    rsx! {
+        dl { class: "gallery-specimens",
+            for (role, name, sample) in TYPE_ROLES {
+                div { class: "gallery-specimen",
+                    dt { class: "gallery-note", "{name} · --type-{role}" }
+                    if name == "Overline" {
+                        dd { Overline { text: sample } }
+                    } else {
+                        dd { style: "font: var(--type-{role})", "{sample}" }
+                    }
+                }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const COLOUR_ROLES: [(&str, &str); 16] = [
+    ("surface", "ink"),
+    ("surface-lowest", "ink"),
+    ("surface-low", "ink"),
+    ("surface-high", "ink"),
+    ("surface-highest", "ink"),
+    ("primary", "on-primary"),
+    ("primary-container", "on-primary-container"),
+    ("highlight", "ink"),
+    ("warning-container", "on-warning-container"),
+    ("error-container", "on-error-container"),
+    ("error", "on-error"),
+    ("tertiary", "on-primary"),
+    ("ink", "surface-lowest"),
+    ("body", "surface-lowest"),
+    ("muted", "surface-lowest"),
+    ("outline", "ink"),
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn ColourDemo() -> Element {
+    rsx! {
+        div { class: "gallery-swatches",
+            for (fill, on) in COLOUR_ROLES {
+                div { class: "gallery-swatch", style: "background: var(--{fill}); color: var(--{on})",
+                    strong { "{fill}" }
+                    span { "on {on}" }
                 }
             }
         }
