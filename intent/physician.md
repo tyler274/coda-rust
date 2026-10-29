@@ -36,7 +36,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 ## The concepts
 
-**Coda.** The team of agents, speaking like a trusted chief resident: current judgment first, then only the evidence that changes the plan. It investigates, synthesizes and recommends instead of pushing routine judgment back to the physician. The lead agent of a run writes anything the physician sees.
+**Coda.** The team of agents. It investigates, synthesizes and recommends instead of pushing routine judgment back to the physician.
 
 **Today.** The physician's to-do list. It shows the most salient things: what needs their attention, what's urgent, what's wrong. It is one flat list across patients, one row per thing, each naming its patient, ordered by urgency (now, then today) and then by how long it has waited. Coda decides what goes on Today, what goes to Updates and what stays on the patient page. Three things are fixed regardless of that judgment: only people with access see a patient's item, nothing broken, behind or unhandled is silent to someone who can act, and nothing reaches a patient without the physician's approval.
 
@@ -61,7 +61,7 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 
 **Patient page.** One place per patient that answers what's happening, what Coda is doing, what it's following up on and what needs the physician. Its top shows that patient's Today rows with the same actions. Below that are the patient summary (open by default), follow-ups, conversations, messages, past work and the routine work Coda is doing now. It says "Records as of {time}" from the last good pull, and says so when records couldn't update.
 
-**Patient memory.** One current picture of each patient, built from records, results, messages and the physician's conversations with Coda, and updated as things change. Coda keeps a compact, revisable working understanding of the patient, the operating index, which guides the model and is never shown to the physician or treated as ground truth for medications. The physician sees the patient summary instead. What the physician says in chat becomes a dated part of memory. Past work is searchable history, and memory search is semantic. Coda rewrites the summary when a change matters to the physician, and the periodic review rewrites it when anything it cites has changed.
+**Patient memory.** One current picture of each patient, built from records, results, messages and the physician's conversations with Coda, and updated as things change. Coda keeps its own revisable working understanding of the patient, the operating index, which is never shown to the physician and never the source of truth for medications. The physician sees the patient summary instead. What the physician says in chat becomes a dated part of memory. Past work is searchable history, and memory search is semantic. Coda rewrites the summary when a change matters to the physician, and the periodic review rewrites it when anything it cites has changed.
 
 **Initial understanding.** The first time Coda sees a patient, it does the work to understand them and builds the operating index, including finding the patient's other health systems. Later sources update that understanding instead of restarting it, and a new EHR source never creates a second patient relationship. When a patient's only source is their Duet, Coda builds a deliberately limited first understanding from it.
 
@@ -90,9 +90,9 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 1. The physician finds a patient with Find patient, a server-side roster search that respects access and is shared by everything that searches patients, and opens the patient page. If search ever falls back to keywords, someone is told.
 2. The patient page shows identity with DOB and MRN labeled (whenever the source supplies them), the patient summary and when records were last refreshed.
 3. The physician writes a question, or dictates it: hold the shortcut or click the mic, release to transcribe, and the text lands in the box for editing. Nothing sends on its own. Asking from the patient page starts a new conversation about that patient.
-4. Coda reads the chart, prior conversations, its understanding of the patient and, when useful, the clinical literature. Whether to consult literature is Coda's judgment, guided by skills that push it toward guidelines and the clinical library, and chart answers work when the literature service is down. Coda sees how old its copy of the records is and fetches fresh records when it judges it needs to.
+4. Coda reads the chart, prior conversations, its understanding of the patient and, when useful, the clinical literature. Whether to consult literature is Coda's judgment, and chart answers work when the literature service is down. Coda sees how old its copy of the records is and fetches fresh records when it judges it needs to.
 5. While Coda works, steps appear live. The finished answer arrives whole.
-6. Coda searches the chart well enough that a reworded question still finds the evidence, and it doesn't stop at the first match or at "not found". One failed read doesn't fail the whole answer.
+6. A reworded question still finds the evidence, and one failed read doesn't fail the whole answer.
 7. The answer cites evidence beside each claim and ends with one Sources control and a collapsed Basis and limitations. Missing or unreadable evidence is said plainly, and unavailable literature reads differently from literature that found nothing.
 8. The physician opens a citation and the source opens in a side panel beside the answer. If the passage can't be recovered, the same source shows without highlighting and with a short notice.
 9. Later, the physician reopens the answer and its citations and finds them as they were.
@@ -144,7 +144,7 @@ Connecting a channel:
 A message arrives:
 
 6. A message arrives. Coda handles mail from patients; mail from colleagues or insurers about a patient is outside the MVP. The model decides whether mail is patient mail, with no brittle filters.
-7. Known senders route on their own: a conversation already confirmed for a patient, a sender confirmed for exactly one patient, or a Spruce conversation whose one outside participant is saved as a contact that maps to exactly one patient. Every other message gets Coda's suggestion and waits for a person to confirm. Matching always ends with a suggestion or a person deciding, and it never hangs.
+7. A conversation or sender already confirmed for one patient routes on its own. Every other message gets Coda's suggestion and waits for a person to confirm. Matching always ends with a suggestion or a person deciding, and it never hangs.
 8. One conversation belongs to one patient.
 9. A message waiting for a match goes to the messaging manager and to a practice-wide Messages to match list any physician can match from. It shows the suggested patient and alternatives, and Confirm names the patient. Model scores never appear as confidence. The person confirms, picks another patient or leaves it unlinked.
 10. An unmatched message that looks urgent can be marked so, and its row leads Today as Now for everyone who sees it.
@@ -199,11 +199,10 @@ Along the way:
 ### P5. A follow-up is created, comes due and runs
 
 1. The physician asks for a follow-up in conversation or creates one directly, and Coda's own work may create one too. Every change is logged in Updates.
-2. Coda writes the follow-up so a later run can act on it without replaying the conversation: a terse "yes, do that" becomes a full instruction, and "tell me either way" is kept.
-3. A follow-up has a due time, a period and an until or follow-up date. One that waits on an event also carries a fallback date.
-4. The physician sees it among the patient's active follow-ups. Coda judges whether a due follow-up needs Today, and usually it doesn't.
-5. It comes due on its own schedule, survives restarts and runs once, as a review of that patient. If something needs the physician, a concern reaches Today; otherwise it ends quietly in Updates. Missing evidence that was expected is itself worth telling the physician.
-6. The run may complete, revise or keep the follow-up.
+2. A follow-up has a due time.
+3. The physician sees it among the patient's active follow-ups. Coda judges whether a due follow-up needs Today, and usually it doesn't.
+4. It comes due on its own schedule, survives restarts and runs once, as a review of that patient. If something needs the physician, a concern reaches Today; otherwise it ends quietly in Updates.
+5. The run may complete, revise or keep the follow-up.
 
 Along the way:
 
@@ -214,7 +213,6 @@ Along the way:
 - **Change.** A change made in chat replaces the pending follow-up before the answer completes.
 - **Cancel.** The control reads Cancel follow-up. Coda doesn't recreate a cancelled follow-up unless new information arrives.
 - **Coda can't restart its review.** It waits on Today with Done, which offers complete, set a new date, or cancel, so the follow-up always keeps a next step.
-- **An unanswered question.** If the physician doesn't answer something Coda raised, the next due review judges whether it still matters instead of repeating itself.
 - A follow-up is never time-critical monitoring.
 
 ### L1. Patients who do nothing
@@ -256,7 +254,6 @@ Feedback:
 2. A thumb saves the rating at once against that exact response. Optional details open with their own Save, and closing them keeps the rating. Feedback survives restarts.
 3. A reply card has one feedback path, "Tell Coda what to change", and the physician's edits are feedback too.
 4. Each Done on a concern is kept as feedback for later learning.
-5. Coda always thinks about how to act on feedback the physician gives, in chat or in the feedback panel.
 
 Discuss:
 
@@ -269,9 +266,8 @@ Correcting a fact or giving direction:
 
 10. The physician says it in chat in plain words, and Coda acts on it within its authority.
 11. Later answers reflect the correction, unrelated history stays, and the correction is cited to the message it came from.
-12. When challenged, Coda reassesses with the new information instead of agreeing by reflex, and says why its judgment changed or held.
-13. The physician may accept, change, reject or ask Coda to reconsider. A correction becomes patient context, never approval of the earlier reading.
-14. A cancelled follow-up stays cancelled unless new information arrives.
+12. The physician may accept, change, reject or ask Coda to reconsider. A correction becomes patient context, never approval of the earlier reading.
+13. A cancelled follow-up stays cancelled unless new information arrives.
 
 A wrong message link is fixed with Wrong patient? (P3).
 
@@ -307,10 +303,9 @@ Data and consent:
 
 Evidence and honesty:
 
-- Citations refer only to evidence the model that wrote the answer actually received. If any action in a step cites a source it never read, every change in that step is refused and nothing half-applies.
-- A citation is never carried forward when its record has a newer version; Coda reopens the changed record.
+- Citations refer only to evidence the model that wrote the answer actually received.
 - Any answer, reply or action about current medications or values re-reads the chart first. Memory never stands in for live chart values.
-- Records are read without silent cuts: large documents in labeled, citable parts, scans and faxes read through OCR with every citation pointing to the page, and a batch review finishes only after every document is opened or skipped with a reason. Coda decides what matters; code only checks that nothing was silently skipped.
+- Nothing is silently skipped. What Coda didn't read, it says, and a citation into a scan or fax points to the page.
 - The library's freshness is reported as it is.
 - Patient summary dates say when Coda wrote, reviewed and pulled. None of them says the patient is stable.
 - No "saved" label ever shows, only "Not saved".
@@ -323,7 +318,6 @@ Safety:
 
 Work integrity:
 
-- Chat answers first; helpers can keep working afterward, and the lead decides whether to tell the physician what they found.
 - One event starts one review, and no event is lost or reviewed twice.
 - Rows and cards change when the server confirms, never optimistically.
 - One bad item never blocks the rest, in every connector: one patient's failed filing never holds up other mail, and an EHR outage never holds up a new message's review.
@@ -395,25 +389,24 @@ Later:
 
 These are how we build the product above. They matter to its behavior but are engineering's to change.
 
-**Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work is judged on completion, wasted calls and landing on time, and will probably run at max effort.
+**Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work will probably run at max effort.
 
 **Schedules and cadence.** Proactive review of every source (the EHR, Kno2, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push, such as a Gmail notification, only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
 
-**Memory.** The operating index is Markdown, not a rigid schema. Coda edits it with exact old-to-new replacements against the version it read, untouched text keeps its citations, and every removal shows in the audit trail. The index may hold medications only as dated, cited orientation. The daily log is append-only. A run orients from the index, its active follow-ups and what triggered it, and reads logs on purpose instead of tailing them. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
+**Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
 
 **Runs.**
 
 - Interrupted work resumes without duplicating effects, and a retry reuses work that already finished.
 - A run ends exactly once, whether it completes, is cancelled, shuts down, crashes or gets no answer.
 - A failed preparation, review or initial understanding retries on its own before it counts as can't restart.
-- Recovery never alerts the physician. One retry owner covers asks, deferred work and end-of-review hand-offs, and the scheduling timer catches up once after recovery.
+- Recovery never alerts the physician.
 - A refused review is recorded as a refusal with its reason, and Couldn't finish, Try again and the automatic retries read from it.
 - Records that change before a run finishes reach the run, and the run keeps the exact source versions it read.
 - Steering prevents stale results from being published.
 - Completion is accepted only after authority and currency are checked.
 - Each patient's work starts independently and runs side by side. How much runs at once is an engineering decision, and code never ranks clinical importance.
 - At the context-window limit the model writes its own working checkpoint.
-- Whether work can be interrupted comes from the same server rule that enforces cancel.
 
 **Commands and state.** Commands are accepted or not. A lost receipt resolves without a second effect, and an ambiguous command retries only itself before reading authoritative state. Reload, reconnect and another client converge on the same server state.
 
