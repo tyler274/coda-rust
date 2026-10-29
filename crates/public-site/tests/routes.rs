@@ -142,6 +142,21 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
         locations(&sitemap),
         locations(include_str!("fixtures/served/sitemap.xml"))
     );
+    let response = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri("/robots.txt")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        to_bytes(response.into_body(), usize::MAX).await.unwrap(),
+        include_str!("fixtures/served/robots.txt").as_bytes(),
+        "robots.txt is what production serves"
+    );
     for path in [
         "/physicians",
         "/api/physician-waitlist",

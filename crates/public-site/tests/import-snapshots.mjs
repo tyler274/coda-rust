@@ -2,7 +2,7 @@
 // Normal tests use --check, which needs neither Git, the optional submodule, nor network.
 //   --import         original source files, from Git blobs at the reviewed commit
 //   --import-served  what production serves at that same commit: every page, the sitemap,
-//                    the compiled utility stylesheet, the rendered social image and
+//                    robots.txt, the compiled utility stylesheet, the rendered social image and
 //                    redirect behavior.
 //                    These are the outputs of Next, Tailwind and ImageResponse, which the
 //                    port consumes or is checked against instead of re-implementing.
@@ -43,7 +43,7 @@ const probes = [
   '/duet//', '/duet/?a=1', notFound, notFound + '/', '/brand/duet/mark.svg/', '/api/health/',
 ];
 const served = [
-  ...pages.map(pageFile), 'pages/not-found.html', 'sitemap.xml',
+  ...pages.map(pageFile), 'pages/not-found.html', 'sitemap.xml', 'robots.txt',
   'utility.css', 'scheduling/dev/opengraph-image.png', 'responses.json',
 ];
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -87,6 +87,7 @@ if (process.argv[2] === '--import') {
   if (missing.response.status !== 404) throw new Error(`${notFound} returned ${missing.response.status}`);
   keep('pages/not-found.html', origin + notFound, missing.bytes);
   keep('sitemap.xml', origin + '/sitemap.xml', (await get('/sitemap.xml')).bytes);
+  keep('robots.txt', origin + '/robots.txt', (await get('/robots.txt')).bytes);
   // Every page outside the homepage system links this one compiled stylesheet.
   const stylesheet = html => [...html.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map(match => match[1]);
   const [utility] = stylesheet(readFileSync(new URL(pageFile('/privacy'), servedRoot), 'utf8'));

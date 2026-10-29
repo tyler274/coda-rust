@@ -103,12 +103,11 @@ fn router_with_gate(
         .expect("site origin")
         .origin()
         .ascii_serialization();
+    // The original's app/robots.ts as Next serializes it: allow all, with host and sitemap.
     let robots = if runtime.staging {
         "User-agent: *\nDisallow: /\n".to_owned()
     } else {
-        format!(
-            "User-agent: *\nAllow: /\nDisallow: /scheduling/dev\nSitemap: {origin}/sitemap.xml\n"
-        )
+        format!("User-Agent: *\nAllow: /\n\nHost: {origin}\nSitemap: {origin}/sitemap.xml\n")
     };
     let health = serde_json::to_vec(&serde_json::json!({"ok": true, "app": "coda-health-public", "env": runtime.environment, "release_sha": runtime.release_sha})).unwrap();
     let state = Arc::new(SiteState {

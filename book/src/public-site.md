@@ -304,7 +304,7 @@ rendered Rust output are imported.
 
 `crates/public-site/tests/fixtures/served/` records what production served at
 that same commit (its `/api/health` reports the release SHA, and the importer
-refuses any other): every page, the not-found page, the sitemap, the compiled utility
+refuses any other): every page, the not-found page, the sitemap, `robots.txt`, the compiled utility
 stylesheet, the rendered social image, and the status and `Location` of each
 probe URL in `responses.json`. `provenance.json` records each file's URL and
 SHA-256 under `served`. These are the outputs of Next, Tailwind and
