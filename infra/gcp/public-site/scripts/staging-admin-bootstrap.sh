@@ -475,8 +475,6 @@ else
 fi
 run "${G[@]}" artifacts docker images describe "${SITE_DEST}@${MIGRATE_DIGEST}" \
   --format='value(image_summary.digest)'
-note "After this succeeds (post-bootstrap, by a Doppler stg writer):"
-note "  doppler secrets set PUBLIC_SITE_DEPLOY_IMAGE=${SITE_DEST}@${MIGRATE_DIGEST} --project coda-rust --config stg"
 note "env/staging.tfvars already references that digest in ${SITE_REPOSITORY}."
 
 step "Re-check that no repository is public"

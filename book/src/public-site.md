@@ -660,15 +660,13 @@ keep their product-repository apply authority; this ownership covers only
   deployer needs no production-project IAM. Production has its own backend file.
 - **Inputs.** `env/staging.tfvars` holds the non-secret staging inputs: the
   published image digest in the private `public-site` repository, release SHA,
-  secret ID and pinned version, and `physician_app_url`, the physician preview
+  and `physician_app_url`, the physician preview
   service in `coda-rust-staging` behind its own IAP. Setting it mounts `/physician/`,
   renders Sign in and gives the runtime its proxy signing identity; leaving it
   unset, as production does, offers no sign-in.
   That image reference resolves only after the bootstrap copies it there.
-- **Doppler.** Config `coda-rust/stg` holds the same non-secret deploy values
-  under `PUBLIC_SITE_DEPLOY_*` (project, number, region, service, image, release
-  SHA, IAP audience, state bucket and prefix). The running site reads no Doppler
-  config and no secret.
+- **No Doppler.** The running site and its deploy read no Doppler config and no
+  secret; these files and the CI inputs are the only deploy values.
 
 The first, abandoned initialization wrote an **empty** state object under
 `gs://coda-health-prod-terraform-state-us-east1/public-site/staging/`. Nothing was
@@ -854,18 +852,6 @@ tofu -chdir=infra/gcp/public-site output staging_url
 Then have the admin rerun the bootstrap once so CI gets its service-scoped roles,
 and run the qualification checks below.
 
-**Post-bootstrap: Doppler image.** `coda-rust/stg` still holds
-`PUBLIC_SITE_DEPLOY_IMAGE` at the `coda-agents` digest. Change it only after
-step 7 has copied the image and
-`gcloud artifacts docker images describe us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140`
-succeeds:
-
-```bash
-doppler secrets set \
-  PUBLIC_SITE_DEPLOY_IMAGE=us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140 \
-  --project coda-rust --config stg
-```
-
 ### Staging deployment status (2026-10-21)
 
 The admin bootstrap and first deployment are applied in `coda-health-staging`.
@@ -922,8 +908,7 @@ available directly.
   Revision `public-site-staging-00003-5mw` is Ready, serves 100% of traffic, and
   reports that digest. Anonymous requests to the homepage and `/health` on
   `staging.codahealth.ai`, and to the run.app URL, still redirect to Google
-  sign-in. Doppler `coda-rust/stg` `PUBLIC_SITE_DEPLOY_IMAGE` and
-  `PUBLIC_SITE_DEPLOY_RELEASE_SHA` match the new digest and SHA. No authenticated
+  sign-in. No authenticated
   browser render of this revision has been recorded yet: the automation browser
   was signed in with a non-member account, and IAP correctly denied it.
 
