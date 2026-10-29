@@ -3150,7 +3150,7 @@ fn PatientSurface(
                                 label { class: "panel-physician-label",
                                     "Physician panel"
                                     select {
-                                        class: "panel-physician-select",
+                                        class: "panel-physician-select field",
                                         aria_label: "Physician panel",
                                         value: "{target_physician_id}",
                                         onchange: move |event| on_select_physician.call(event.value()),
@@ -3441,7 +3441,7 @@ fn PatientSurface(
                         }
                         {conversation_resume_notice}
                         textarea {
-                            class: "composer",
+                            class: "composer field",
                             placeholder: "Write a message",
                             value: "{draft}",
                             aria_label: "Message",
@@ -3527,7 +3527,7 @@ fn SearchDialog(
             section { class: "dialog", aria_label: "Find patient", onclick: move |event| event.stop_propagation(),
                 h2 { "Find patient" }
                 input {
-                    class: "dialog-search",
+                    class: "dialog-search field",
                     r#type: "search",
                     placeholder: "Name, DOB or phone",
                     value: "{query}",
@@ -3861,7 +3861,7 @@ fn ReplyReviewCard(
             if can_revise {
                 div { class: "reply-review-ask",
                     input {
-                        class: "reply-review-instruction",
+                        class: "reply-review-instruction field",
                         r#type: "text",
                         placeholder: "{REPLY_TELL_CODA}",
                         aria_label: "{REPLY_TELL_CODA}",

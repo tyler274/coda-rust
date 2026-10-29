@@ -93,7 +93,26 @@
 }
 @keyframes focus-ring-grow { from { outline-width: 0; } to { outline-width: var(--focus-ring-active-width); } }
 @keyframes focus-ring-settle { from { outline-width: var(--focus-ring-active-width); } }
+/* The one text field, after the React app's (text-field/outlined): its outline carries focus, turning primary and
+   doubling; the words inside draw no ring of their own. The class goes on the input itself, or on the box that holds one,
+   as a composer does; its host gives it its shape and place. A field may rest raised (--field-elevation), as a composer
+   does, or on a quieter outline (--field-outline). */
+.field {
+  box-sizing: border-box;
+  min-height: var(--target);
+  border: var(--hairline) solid var(--field-outline, var(--outline));
+  border-radius: var(--radius-md);
+  background: var(--surface-lowest);
+  color: var(--ink);
+  box-shadow: var(--field-elevation, 0 0 transparent);
+  transition: border-color var(--motion-control) var(--ease-out), box-shadow var(--motion-control) var(--ease-out);
+}
+:where(input, textarea, select).field { padding: var(--space-2) var(--space-3); font: inherit; }
+.field:focus-within { border-color: var(--primary); box-shadow: inset 0 0 0 var(--hairline) var(--primary), var(--field-elevation, 0 0 transparent); }
+:is(.field input, .field textarea, :is(input, textarea, select).field):focus-visible { outline: 0; animation: none; }
+:is(.field, .field *)::placeholder { color: var(--muted); opacity: 1; }
 @media (forced-colors: active) {
+  .field:focus-within { outline: var(--focus-ring-width) solid Highlight; }
   :is(.control, .navigation-row)::before { display: none; }
   .control { border-color: ButtonText; }
   .state-pill { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }

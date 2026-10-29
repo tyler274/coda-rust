@@ -183,7 +183,7 @@ pub(crate) fn PublicationControls(base_url: String, generation: i32) -> Element 
                     }
                 } else { p { "No publication is active." } }
                 label { "Link lifetime"
-                    select { disabled: busy(), value: "{lifetime}", onchange: move |e| { if let Ok(seconds) = e.value().parse::<i64>() { lifetime.set(seconds); } },
+                    select { class: "field duet-field", disabled: busy(), value: "{lifetime}", onchange: move |e| { if let Ok(seconds) = e.value().parse::<i64>() { lifetime.set(seconds); } },
                         option { value: "3600", "1 hour" }
                         option { value: "86400", "1 day" }
                         option { value: "604800", "7 days" }
@@ -214,7 +214,7 @@ fn LinkCopy(label: String, value: String) -> Element {
     let mut message = use_signal(String::new);
     let copy = value.clone();
     rsx! {
-        label { "{label}" input { readonly: true, r#type: "text", value: "{value}", aria_label: "{label}" } }
+        label { "{label}" input { class: "field duet-field", readonly: true, r#type: "text", value: "{value}", aria_label: "{label}" } }
         Button { onclick: move |_| {
             let text = copy.clone();
             spawn(async move { message.set(match copy_link(&text).await { Ok(()) => "Copied. Anyone with this link can read the approved page.".into(), Err(e) => e }); });

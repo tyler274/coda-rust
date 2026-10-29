@@ -256,7 +256,7 @@ fn JoinScreen(
                 },
                 p { class: "status-detail", "{roots::JOIN_EMAIL_LABEL}" }
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "email",
                     name: "email",
                     value: "{email}",
@@ -264,7 +264,7 @@ fn JoinScreen(
                 }
                 p { class: "status-detail", "{roots::JOIN_TOKEN_LABEL}" }
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "text",
                     name: "token",
                     value: "{token}",
@@ -1739,7 +1739,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     p { class: "empty", role: "alert", "{CHAT_UNAVAILABLE}" }
                 }
                 form {
-                    class: "duet-composer",
+                    class: "duet-composer field",
                     onsubmit: move |event| {
                         event.prevent_default();
                         let typed = event.get_first("draft").and_then(|value| match value {
@@ -2430,7 +2430,7 @@ fn YouTab(
         }
         if let Some(edit) = editing() {
             input {
-                class: "duet-field",
+                class: "field duet-field",
                 r#type: "text",
                 aria_label: "Corrected value",
                 value: "{edit.title}",
@@ -2505,13 +2505,13 @@ fn PlanEditor(
     let ready = !title().trim().is_empty() && !body().trim().is_empty();
     rsx! {
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             value: "{title}",
             oninput: move |event| title.set(event.value()),
         }
         textarea {
-            class: "duet-field",
+            class: "field duet-field",
             value: "{body}",
             oninput: move |event| body.set(event.value()),
         }
@@ -2545,7 +2545,7 @@ fn DoctorEditor(
     rsx! {
         p { class: "status-detail", "Name" }
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             aria_label: "Name",
             value: "{name}",
@@ -2553,7 +2553,7 @@ fn DoctorEditor(
         }
         p { class: "status-detail", "Date of birth" }
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             aria_label: "Date of birth",
             value: "{birth}",
@@ -2561,7 +2561,7 @@ fn DoctorEditor(
         }
         p { class: "status-detail", "What I want to discuss" }
         textarea {
-            class: "duet-field",
+            class: "field duet-field",
             value: "{note}",
             oninput: move |event| note.set(event.value()),
         }
@@ -2581,7 +2581,7 @@ fn DoctorEditor(
         }
         p { class: "status-detail", "Cover note" }
         textarea {
-            class: "duet-field",
+            class: "field duet-field",
             value: "{cover}",
             oninput: move |event| cover.set(event.value()),
         }
@@ -2606,7 +2606,7 @@ fn QuestionField(index: usize, questions: Signal<Vec<String>>) -> Element {
     let value = questions().get(index).cloned().unwrap_or_default();
     rsx! {
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             aria_label: "Question",
             value: "{value}",
@@ -2682,7 +2682,7 @@ fn HealthDraft(
             YouEditor::Medication => rsx! {
                 p { class: "status-detail", "Enter the medication as one descriptive line, including dose when you know it." }
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "text",
                     value: "{medication}",
                     placeholder: "Atorvastatin 20 mg",
@@ -2700,14 +2700,14 @@ fn HealthDraft(
             },
             YouEditor::Note => rsx! {
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "text",
                     value: "{note_title}",
                     placeholder: "What is this note about?",
                     oninput: move |event| note_title.set(event.value()),
                 }
                 textarea {
-                    class: "duet-field",
+                    class: "field duet-field",
                     value: "{note_body}",
                     oninput: move |event| note_body.set(event.value()),
                 }

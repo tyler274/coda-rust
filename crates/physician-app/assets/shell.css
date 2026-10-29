@@ -227,7 +227,7 @@ button.sidebar-expand { display: none; }
   box-shadow: var(--elevation-2);
 }
 .dialog h2 { margin: 0 0 var(--space-3); font: var(--type-title-lg); }
-.dialog-search { width: 100%; min-height: var(--target); margin-bottom: var(--space-3); padding: 0 var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-pill); background: var(--surface); color: var(--ink); }
+.dialog-search { width: 100%; margin-bottom: var(--space-3); padding: 0 var(--space-3); border-radius: var(--radius-pill); }
 .dialog-results { display: grid; gap: var(--space-hair); margin: 0; padding: 0; list-style: none; }
 .dialog-results button { width: 100%; min-height: var(--target); padding: var(--space-2) var(--space-3); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--ink); cursor: pointer; text-align: left; }
 .shortcut { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) 0; border-top: var(--hairline) solid var(--outline-variant); }
@@ -243,14 +243,13 @@ button.sidebar-expand { display: none; }
 .schedule-visit-preparation { display: block; color: var(--muted); font: var(--type-body-sm); }
 .schedule-visit.is-next .schedule-visit-preparation { color: inherit; }
 .synopsis { margin: 0; white-space: pre-wrap; font: var(--type-body-md); }
+/* The composer is the one raised text field (.field). */
 .composer {
+  --field-elevation: var(--elevation-2);
   width: 100%;
   min-height: 6rem;
   padding: var(--space-3);
-  border: var(--hairline) solid var(--outline-variant);
-  border-radius: var(--radius-md);
-  background: var(--surface-lowest);
-  color: var(--ink);
+  border-radius: var(--radius-field);
   font: var(--type-body-md);
 }
 .composer-actions { display: flex; align-items: center; gap: var(--space-2); }
@@ -386,10 +385,6 @@ button.sidebar-expand { display: none; }
 .panel-physician-select {
   min-height: var(--control-compact-height);
   padding: 0 var(--space-3);
-  border: var(--hairline) solid var(--outline-variant);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  color: var(--ink);
   font: var(--type-body-sm);
 }
 
@@ -471,10 +466,7 @@ button.sidebar-expand { display: none; }
   min-width: 0;
   min-height: var(--control-compact-height);
   padding: 0 var(--space-3);
-  border: var(--hairline) solid var(--outline-variant);
   border-radius: var(--radius-pill);
-  background: var(--surface);
-  color: var(--ink);
 }
 @media (max-width: 720px) {
   .today-layout.has-schedule,
