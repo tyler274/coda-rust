@@ -1,32 +1,10 @@
-//! The conversation's frame, after the October 21 Duet mockups: who the conversation is with, the
-//! day it is on, what the person brought into it, a way to begin, and a receipt for saved work
-//! that leads back to the same object.
+//! The conversation's frame, after the October 21 Duet mockups: the day it is on, what the person
+//! brought into it, a way to begin, and a receipt for saved work that leads back to the same
+//! object. Who the conversation is with is the `TopBar`'s title.
 
 use dioxus::prelude::*;
 
 use crate::{Icon, IconName};
-
-/// The conversation's header: an optional way back on the leading edge, then a mark and the name
-/// of who the conversation is with, centred.
-#[component]
-pub fn ChatHeader(
-    name: String,
-    #[props(default)] mark: Option<Element>,
-    #[props(default)] back: Option<String>,
-    #[props(default)] on_back: Option<EventHandler<MouseEvent>>,
-) -> Element {
-    rsx! {
-        header { class: "chat-header",
-            if let (Some(back), Some(on_back)) = (back, on_back) {
-                button { class: "chat-back", r#type: "button", onclick: move |event| on_back.call(event),
-                    span { class: "chat-back-chevron", aria_hidden: "true", Icon { name: IconName::ChevronDown } }
-                    "{back}"
-                }
-            }
-            h1 { class: "chat-name", {mark} "{name}" }
-        }
-    }
-}
 
 /// The day the messages beneath were written, centred in the thread.
 #[component]

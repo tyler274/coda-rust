@@ -279,12 +279,6 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .later-context { display: grid; gap: var(--space-2); padding: var(--space-4); border-inline-start: var(--stroke) solid var(--outline); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--data-container); }
 .later-context .quote { font: var(--type-body-md); }
 /* The conversation's frame, after the October 21 mockups. */
-.chat-header { position: relative; display: flex; align-items: center; justify-content: center; min-height: 60px; padding: 0 var(--space-5);
-  border-bottom: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); }
-.chat-name { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--ink); font: var(--type-title-sm); }
-.chat-back { position: absolute; inset-inline-start: var(--space-3); display: inline-flex; align-items: center; gap: var(--space-hair); min-height: var(--target);
-  padding: 0 var(--space-2); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
-.chat-back-chevron .icon { transform: rotate(90deg); }
 .date-separator { margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); text-align: center; }
 .context-chip { display: flex; align-items: center; gap: var(--space-2); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0; padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
   border-bottom: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-field) var(--radius-field) 0 0; background: var(--data-container); color: var(--on-data-container); font: var(--type-body-sm); }
@@ -299,3 +293,40 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .receipt-text strong { display: block; color: var(--ink); font: var(--type-title-md); }
 .receipt-text small { display: block; margin-top: var(--space-hair); color: var(--muted); font: var(--type-body-sm); }
 .message > .receipt { margin-top: var(--space-3); }
+/* Pages, forms and their frame, after the October 21 mockups. */
+.top-bar { position: relative; display: flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 calc(var(--target) + var(--space-5));
+  border-bottom: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); }
+.top-bar-title { display: flex; align-items: center; gap: var(--space-2); min-width: 0; margin: 0; color: var(--ink); font: var(--type-title-sm); text-align: center; }
+.top-bar-back, .top-bar-action { position: absolute; display: inline-flex; align-items: center; gap: var(--space-hair); min-height: var(--target); padding: 0 var(--space-2);
+  border: 0; background: transparent; color: var(--primary); font: var(--type-body-md); cursor: pointer; }
+.top-bar-back { inset-inline-start: var(--space-3); }
+.top-bar-action { inset-inline-end: var(--space-3); }
+.top-bar-back-chevron .icon { transform: rotate(90deg); }
+.paper { display: grid; gap: var(--space-5); padding: var(--space-6) var(--space-5); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg);
+  background: var(--surface-lowest); box-shadow: var(--elevation-1); }
+.paper-title { margin: 0; color: var(--ink); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
+.paper-title + .card-detail { margin-top: calc(-1 * var(--space-4)); }
+.paper-section { display: grid; gap: var(--space-2); }
+.paper-section > p { margin: 0; color: var(--ink); font: var(--type-body-lg); }
+.selection-row, .setting-row { display: flex; align-items: center; gap: var(--space-3); min-height: var(--target); padding: var(--space-row) 0; cursor: pointer; }
+.selection-row input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--primary); }
+.row-list > li + li > :is(.selection-row, .setting-row) { border-top: 0; }
+.switch { flex: none; appearance: none; position: relative; width: 51px; height: 31px; margin: 0; border-radius: var(--radius-pill); background: var(--surface-highest);
+  cursor: pointer; transition: background-color var(--motion-control) var(--ease-out); }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: var(--surface-lowest); box-shadow: var(--elevation-2);
+  transition: transform var(--spring-send); }
+.switch:checked { background: var(--primary); }
+.switch:checked::after { transform: translateX(20px); }
+.switch:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.notice { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--tone-container); color: var(--tone-on); }
+.notice > .icon { margin-top: .15em; }
+.notice-text { display: grid; gap: var(--space-hair); min-width: 0; font: var(--type-body-sm); }
+.notice-text strong { font: var(--type-title-sm); }
+.notice-text > .control { justify-self: start; margin-top: var(--space-2); }
+.tag { display: inline-flex; align-items: center; padding: var(--space-hair) var(--space-2); border: var(--hairline) solid var(--outline); border-radius: var(--radius-sm);
+  color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); }
+.footer-actions { --control-width: 100%; display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-5) max(var(--space-5), env(safe-area-inset-bottom)); border-top: var(--hairline) solid var(--outline-variant);
+  background: var(--surface-lowest); }
+.footer-note { margin: 0; color: var(--muted); font: var(--type-body-sm); text-align: center; }
+/* A sheet's handle: where it can be held. */
+.dialog-sheet::before { content: ""; display: block; width: 38px; height: 4px; margin: var(--space-2) auto 0; border-radius: var(--radius-pill); background: var(--outline); }

@@ -11,10 +11,14 @@ use dioxus::prelude::*;
 mod cards;
 mod charts;
 mod conversation;
+mod documents;
 mod icons;
 pub use cards::{Card, LaterContext, Quote, StepList};
 pub use charts::{Comparison, ComparisonBars, MeasurementTile, Sparkline, TrendChart, Value};
-pub use conversation::{ChatHeader, ContextChip, DateSeparator, Receipt, Suggestion};
+pub use conversation::{ContextChip, DateSeparator, Receipt, Suggestion};
+pub use documents::{
+    FooterActions, Notice, Paper, PaperSection, SelectionRow, SettingRow, Tag, TopBar,
+};
 pub use icons::{Icon, IconName};
 
 /// The `STYLESHEET` constant.

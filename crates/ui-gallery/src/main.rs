@@ -7,12 +7,13 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, ChatHeader, CitationChip, CommandNotice,
-    CommandStage, Comparison, ComparisonBars, Composer, ContextChip, DateSeparator, Dialog,
-    Disclosure, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile, Message,
-    NavigationControl, NavigationRow, Overline, Placeholder, Quote, ReadNotice, ReadStage, Receipt,
-    RowGroup, SectionHeader, SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion,
-    TabBar, Tone, TrendChart, Value, WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CommandNotice, CommandStage,
+    Comparison, ComparisonBars, Composer, ContextChip, DateSeparator, Dialog, Disclosure,
+    FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile, Message,
+    NavigationControl, NavigationRow, Notice, Overline, Paper, PaperSection, Placeholder, Quote,
+    ReadNotice, ReadStage, Receipt, RowGroup, SectionHeader, SelectionRow, SettingRow,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, Tone,
+    TopBar, TrendChart, Value, WorkingMark,
 };
 
 fn main() {
@@ -81,6 +82,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
                     ChartDemo {}
+                }
+                Section { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document for a clinician, choices and settings as rows, and actions pinned to the foot.",
+                    PagesDemo {}
                 }
                 Section { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads back to saved work, and what the person brought in, held above the words.",
                     FrameDemo {}
@@ -409,13 +413,54 @@ fn ConversationDemo() -> Element {
 
 #[cfg(feature = "web")]
 #[component]
+fn PagesDemo() -> Element {
+    let mut sleep = use_signal(|| true);
+    let mut visit = use_signal(|| false);
+    let mut reminder = use_signal(|| true);
+    rsx! {
+        div { class: "gallery-phone",
+            TopBar { title: "Review update", back: "Back", on_back: move |_| {}, action: "Edit", on_action: move |_| {} }
+            div { class: "gallery-phone-thread",
+                Notice { tone: Tone::Primary, icon: IconName::Check, title: "Page saved", detail: "This update has not been shared." }
+                div { class: "gallery-row",
+                    Tag { text: "Updated" }
+                    Tag { text: "Through Oct 21" }
+                }
+                Paper { title: "For my doctor", detail: "Your continuing page · saved October 21",
+                    PaperSection { heading: "What I want to discuss",
+                        p { "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work." }
+                    }
+                    PaperSection { heading: "What I’ve tried",
+                        p { "Since October 16 I’ve stopped drinking coffee after noon." }
+                    }
+                }
+                ul { class: "row-list",
+                    li { SelectionRow { title: "Recorded sleep", detail: "Apple Health · October 14–21", checked: sleep(), on_change: move |on| sleep.set(on) } }
+                    li { SelectionRow { title: "Visit note", detail: "Northside Clinic · October 15", checked: visit(), on_change: move |on| visit.set(on) } }
+                    li { SettingRow { title: "Remind me", detail: "Daily · 10:30 pm", on: reminder(), on_change: move |on| reminder.set(on) } }
+                }
+                Notice { tone: Tone::Error, icon: IconName::Alert, title: "Your changes weren’t saved", detail: "Your draft is still here.",
+                    Button { compact: true, "Try saving again" }
+                }
+                Notice { tone: Tone::Warning, title: "Only three nights recorded", detail: "These records don’t cover the whole week." }
+                Notice { title: "Existing care stays useful", detail: "Your saved plan and upcoming check-in are here when you need them." }
+            }
+            FooterActions { note: "Saving does not share this page.",
+                Button { variant: ButtonVariant::Primary, "Save updated page" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
 fn FrameDemo() -> Element {
     let mut attached = use_signal(|| true);
     let mut draft = use_signal(String::new);
     rsx! {
         div { class: "gallery-phone",
-            ChatHeader {
-                name: "Sprout",
+            TopBar {
+                title: "Sprout",
                 mark: rsx! { span { class: "gallery-companion", aria_hidden: "true" } },
                 back: "Back",
                 on_back: move |_| {},
