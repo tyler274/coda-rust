@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 // One entry for the chart tools: node statechart.mjs <command> ... (see --help).
 import fs from "node:fs";
+import { spawnSync } from "node:child_process";
+import os from "node:os";
+import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 import { HELP, USAGE, more, usage } from "./statechart-help.mjs";
@@ -16,6 +19,25 @@ import { journeys, printJourneys } from "./chart-journey.mjs";
 import { COMPOSES, resolveComposition } from "./chart-compose.mjs";
 
 class Usage extends Error {}
+
+// Pinned so a rendered chart reads the same on every machine.
+const MERMAID_CLI = "@mermaid-js/mermaid-cli@11.4.2";
+// An installed Chrome renders in its own throwaway profile, so no download is needed
+// and an open browser is never touched. Without one, Puppeteer uses its own download.
+const CHROMES = [
+  process.env.CHROME_PATH,
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "/usr/bin/google-chrome",
+  "/usr/bin/chromium",
+];
+const browserConfig = () => {
+  const chrome = CHROMES.find((p) => p && fs.existsSync(p));
+  if (chrome === undefined) return [];
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "statechart-png-"));
+  const config = path.join(dir, "puppeteer.json");
+  fs.writeFileSync(config, JSON.stringify({ executablePath: chrome, headless: "new", args: [`--user-data-dir=${path.join(dir, "profile")}`] }));
+  return ["-p", config];
+};
 
 const positive = (name, value) => {
   if (!/^[1-9][0-9]*$/.test(value) || !Number.isSafeInteger(Number(value)))
@@ -103,6 +125,19 @@ export const COMMANDS = {
         : kind === "event" ? queryEvent(compiled, flags.event)
           : kind === "region" ? queryRegion(compiled, flags.region) : summary(compiled);
       console.log(answer);
+      return 0;
+    },
+  },
+  png: {
+    inputs: 1, values: ["--out"],
+    run: ([chart], flags) => {
+      const out = flags.out ?? chart.replace(/\.mmd$/, "") + ".png";
+      const r = spawnSync("npx", ["-y", MERMAID_CLI, ...browserConfig(), "-i", chart, "-o", out, "-s", "2"], { encoding: "utf8" });
+      if (r.status !== 0) {
+        console.error(`could not render ${chart}: ${(r.stderr || r.error?.message || "").trim()}`);
+        return 1;
+      }
+      console.log(out);
       return 0;
     },
   },

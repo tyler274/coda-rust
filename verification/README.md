@@ -1,8 +1,10 @@
 # Coda product verification
 
-> **The product graphs lag the [intent specs](../intent/README.md).** The physician, Duet and connected-care graphs
-> predate the specs; where they differ, the specs govern. They are being rebuilt from the specs as
-> per-journey charts.
+> **The whole-app graphs lag the [intent specs](../intent/README.md).** The physician, Duet and
+> connected-care graphs predate the specs; where they differ, the specs govern. They are being
+> rebuilt one journey at a time under `physician/`, `duet/` and `connected-care/`, starting with
+> [physician sign-in](physician/sign-in/README.md). Each rebuilt journey replaces its part of the
+> old graph.
 
 Coda ports [PStack](#provenance) to Verus and connects agreed product journeys to
 Rust owners and running-app evidence. The five general skills establish or repair
@@ -12,8 +14,9 @@ the full workflow.
 
 ## Principles
 
-1. **Start from agreed intent.** Carry Dev's decisions forward. Design the complete
-   journey before choosing proof cases. The chart is the product's contract and the
+1. **Start from the intent specs.** They hold Dev's decisions; charts cite their lines
+   and nothing else. One chart answers one journey question, in what the reader sees.
+   Design the complete journey before choosing proof cases. The chart is the product's contract and the
    harness serves it; never encode how the harness works in the chart. Existing code and historical failures can
    challenge it; missing code cannot limit it. A checked draft is still a draft.
 2. **Keep one owner.** Journey, charts and formal specification express one behavior.
@@ -89,15 +92,16 @@ manual data refinements and implementation connections separately.
 
 | Folder | Spec |
 | --- | --- |
-| [physician-experience](physician-experience/README.md) | The physician web app's ideal behavior as one statechart, with its Verus model and proof. |
-| [duet-experience](duet-experience/README.md) | The Duet app's ideal behavior as one statechart, with its Verus model and proof. |
-| [connected-care](connected-care/README.md) | How Duet and the physician web app meet: one composition of both graphs through shared events, with the rules that span them, and its Verus model and proof. |
+| [physician/sign-in](physician/sign-in/README.md) | How a physician signs in (physician.md A1.1–A1.5): chart, journeys, data promises and Verus proof. |
+| [physician-experience](physician-experience/README.md) | Lagging: the physician web app as one whole-app statechart, until its journeys are rebuilt. |
+| [duet-experience](duet-experience/README.md) | Lagging: the Duet app as one whole-app statechart, until its journeys are rebuilt. |
+| [connected-care](connected-care/README.md) | Lagging: how Duet and the physician web app meet, as one composition, until its journeys are rebuilt. |
 
 ## How the skills fit
 
 | Skill | Use |
 | --- | --- |
-| [coda-statechart](../.agents/skills/coda-statechart/SKILL.md) | Discuss or revise meaningful states, transitions and promises. |
+| [coda-statechart](../.agents/skills/coda-statechart/SKILL.md) | Draw one journey from the intent specs, check it with search and Verus, and hand Dev the PNG. |
 | [coda-create-formal-verification](../.agents/skills/coda-create-formal-verification/SKILL.md) | Encode design in Verus and establish real Rust proof connections. |
 | [coda-create-verification](../.agents/skills/coda-create-verification/SKILL.md) | Create launch, doctor, drive, evidence and cleanup instructions. |
 | [coda-maintain-formal-verification](../.agents/skills/coda-maintain-formal-verification/SKILL.md) | Reconcile diagram, data model, proof and code drift. |
@@ -150,7 +154,8 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
 | Mermaid parser, hierarchy flattening, event/guard semantics and user-facing traces | Verus generation with editable induction proofs; shortest finite-chart search over the same representation. |
-| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage` and `journey`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
+| Per-journey charts labeled as the screen, one `%% never` per agreed sentence, PNG review and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts cite intent spec IDs; `statechart.mjs png` renders through the pinned mermaid-cli with an installed Chrome in a throwaway profile; every chart also gets a Verus proof. |
+| Subcommand CLI with per-command help, ways-in, chart comparison and graph analysis (compared with upstream 00d5dec on 2026-10-23; through e73df47 on 2026-10-26, upstream changed no statechart or verification skill) | `statechart.mjs` with `verus`, `check`, `trace`, `rules`, `compare`, `flat`, `query`, `lint`, `against`, `coverage`, `journey` and `png`; `rules` checks each rule on a sound cone of regions for charts too large to exhaust. |
 | Top-level parallel regions only; upstream 00d5dec still refuses nested regions | Nested parallel regions with Harel entry, exit-wins and scope rules; templates with instances; declared events with cause, needs, families and groups; UML `/ effect` and optional `may` reactions; optional reasons on limits; compositions that join separate charts through shared events, with rules across them. All expand to the same flat model before any backend. |
 
 Finite-chart search is not arbitrary Verus counterexample extraction, temporal model

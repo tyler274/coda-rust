@@ -1,76 +1,84 @@
 ---
 name: coda-statechart
-description: "Design or revise an agreed Coda journey in Mermaid and connect its promises to Verus. Invoke explicitly for journey design or diagram/model reconciliation."
+description: "Draw one Coda journey from the intent specs as a small Mermaid statechart, check its rules with search and Verus, and hand Dev the PNG. Invoke explicitly for journey design or diagram/model reconciliation."
 disable-model-invocation: true
 ---
 
-# Design the intended journey
+# Draw one journey
 
 Follow the [shared principles](../../../verification/README.md#principles).
 
-## Discuss the experience
+The chart shows what the person using Coda sees, so Dev can read it and decide
+whether that behavior is right. One chart answers one journey question, such as
+"how does a physician sign in?". Label each state with what is on the screen, such
+as "Check your email", and each step with what the person does or sees happen,
+such as "open the email button". Keep code names out of labels.
 
-1. Read Dev's decisions and the responsible product contract. Identify actors,
-   goals, responsibilities and open questions. Existing code supplies evidence
-   about implementation; missing code does not narrow the design.
-2. Draw meaningful states, actions, external events, guards and effects in Mermaid.
-   Use user-facing labels and independent regions for cooperating responsibilities.
-   Start with few states. Split a state only when the split separates two broken
-   rules or the reader must see the step; include hidden distinctions only when
-   they change a promised outcome. When revising, remove what no promise needs
-   before adding anything.
-3. Walk ordinary continuation, alternatives, completion and recovery from each
-   state, including cross-feature interactions and reopening where relevant.
-   Challenge the complete journey first; known failures add further challenges.
-4. Draw what an observer sees happen; guidance and taste belong in prompts, skills
-   and evals. The chart is the product's contract and the harness serves it: a state
-   or event belongs only when it is something the reader sees or controls, a limit
-   on access, communication, data or consent, a fact another party depends on, or a
-   guarantee about what happens in what order. Model judgment, memory, prompts,
-   schedules, retry budgets, queues and navigation mechanics are harness; a feature
-   with no region is not a gap until it passes this test. `lint --unread` lists
-   states nothing else reads: keep each only when the reader sees it. Actors choose
-   nondeterministically (`may`); keep hard limits few, each with a reason naming
-   what it protects. Every event declares its cause; an
-   agent's event is an output of the system running it. Charts compose through
-   shared declared events, not copied states: a composition file pairs them and
-   holds the rules that span charts. A chart that details part of
-   another is connected to it by one map and checked with `against`.
-5. State each promise and its decision source beside the diagram. Revise words
-   and diagrams together. Resolve new product meaning with Dev; checking a draft
-   does not approve it. Save beside existing verification when edits are authorized.
+## Start from the spec
 
-## Check the agreed design
+1. Read the journey's section of the [intent specs](../../../intent/README.md) and
+   [PRINCIPLES.md](../../../intent/PRINCIPLES.md). They are the only source. A chart
+   cites spec lines by ID, such as `physician A1.3`, never transcripts, dates,
+   Linear or other charts. A step the spec doesn't state, or marks `GAP:`, stays
+   out of the chart and is named in the hand-off; a product choice goes to
+   DECISIONS.md and Dev. Existing code is evidence about the implementation;
+   missing code never narrows the chart.
+2. A state or event belongs only when the reader sees or controls it, it is a
+   limit on access, consent, data or communication, another party depends on it,
+   or it orders what happens. Judgment, memory, prompts, schedules, retries and
+   queues are harness, and stay out.
 
-Use the [compiler](references/compiler.md) for its supported `stateDiagram-v2`
-subset: nested parallel regions, templates, shapes, declared events, commands and
-`/ effect` labels expand into one flat model. Write shared behavior once (a template,
-a shape, an event group or a cause's standing needs) instead of copying it. Encode real finite-state exclusions with `%% never` and
-state guards with `%% when`. Link identity, revision, collection and progress promises to named data
-proofs; do not invent artificial states to make every chart have a safety rule.
-A chart without rules establishes transition correspondence only.
+## Draw it
 
-Generate the model with `statechart.mjs verus`, run its Verus proof and `check`,
-and use `trace` to find shortest reachable chart violations (`rules` when the chart
-is too large to exhaust). Use `lint`, `query`, `flat` and `compare` to read a chart: `lint --cause` lists
-limits that state no reason, `lint --repeats` lists events written together that no
-group names, `lint --unread` lists states nothing outside their region reads, and `compare` proves a rewrite keeps the flat model. Show an established violation as numbered
-user steps and its generated path diagram. Search exhaustion is limited to the
-finite chart; an interrupted or bounded search is incomplete. A failed Verus data
-obligation need not have a reachable counterexample.
+3. Start with few states. Split a state only when the split separates two broken
+   rules or the reader must see the step. Use one region for each thing that
+   changes independently, such as the page and the session. Draw "the app closes"
+   as an edge to what the reader sees next.
+4. Write one `%% never` line per rule, in the spec's own sentence, ending with its
+   ID. Never weaken a rule to make the chart pass. A promise about records
+   (identity, revisions, collections, single use) goes in the folder's
+   `data-promises.md` with the Rust owner that must prove it, marked unproven
+   until it is.
+5. Declare every event with `%% event`: who causes it, its `needs`, and the spec ID
+   it comes from. The chart holds states, events and rules, and nothing else;
+   explanation belongs in the spec.
+6. Write `journeys.md`: the useful outcomes the spec walks through, one numbered
+   step per event.
 
-Use [formal creation](../coda-create-formal-verification/SKILL.md) to encode linked
-data and composition promises. Keep generated behavior separate from editable
-proof reasoning. Follow [correspondence](../../../verification/README.md#keep-the-diagram-and-model-in-lockstep)
-in both directions; name omitted behavior even when existing proofs pass.
+Keep each journey in its own folder under `verification/<product>/`. Charts
+compose through shared declared events, never copied states; a composition file
+holds the rules that span them.
 
-Build or audit the real Rust owner against that design when implementation exists.
-Keep what the app shows for each state in one coverage table beside the chart,
-checked with `coverage`, so built, partial and missing states stay explicit.
-Keep the useful outcomes a person reaches as constructive journeys beside it,
-replayed with `journey`, so a change that strands one fails.
-Use [app creation](../coda-create-verification/SKILL.md) for its driving/readback
-recipe. Investigate failures before claiming a bug: repair mistranslation while
-preserving the promise, and return proposed behavior changes to Dev.
+## Check it
+
+7. Run `lint`, then `trace` (`rules` when the chart is too large to exhaust), then
+   `journey`. A broken rule in a chart Dev agreed is a design bug: take it to Dev.
+8. Generate the model with `verus`, then run its proof with
+   `verification/check.py formal`. Every chart gets one. When safety alone isn't
+   inductive, strengthen `inductive()` in the proof file with a commented fact
+   about reachable states. Run `check` to catch drift between the chart and the
+   generated files.
+9. Break a copy of the chart to match a real failure, and confirm that `trace` and
+   Verus both fail on it.
+10. Render it with `png` and look at the image. Each label should read as the
+    screen, and each numbered path in order. If a label reads like code, fix it and
+    render again.
+11. Replay each bug against the real code, as a test or a live repro, one step per
+    event. If a bug doesn't reproduce, assume the chart is wrong until you show
+    otherwise.
+
+## Hand off
+
+Give Dev the PNG and the Mermaid. Add one line per bug: the rule it breaks, its
+steps as `trace` numbers them, and whether it reproduced. Say what the chart leaves
+out: data promises, GAPs, and anything not replayed against code. A checked draft is
+still a draft until Dev agrees with it.
+
+When Dev agrees with a journey's chart, delete what it replaces in the older
+whole-app graph, with its coverage and journey rows, in the same change.
+
+The [compiler reference](references/compiler.md) covers the supported Mermaid subset,
+`%% when` guards, templates, commands and compositions, and what each command
+establishes.
 
 Adapted from [PStack statechart](https://github.com/cursor/plugins/blob/eb4db2b55b2b7dec3d9282754cddf0a56bf4ff10/pstack/skills/statechart/SKILL.md).

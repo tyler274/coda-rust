@@ -10,6 +10,7 @@ export const USAGE = {
   journey: "node statechart.mjs journey CHART.mmd JOURNEYS.md",
   flat: "node statechart.mjs flat CHART.mmd",
   query: "node statechart.mjs query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NAME]",
+  png: "node statechart.mjs png CHART.mmd [--out FILE.png]",
   lint: "node statechart.mjs lint CHART.mmd [--cause TEXT] [--repeats] [--unread]",
 };
 export const usage = (lines) => `Usage: ${lines.join("\n       ")}`;
@@ -149,6 +150,15 @@ const QUERY = `query CHART.mmd [--state ID|CAPTION | --event LABEL | --region NA
   Without a flag: chart size, largest regions, widest events, and edges that
   return a region to its start.`;
 
+const PNG = `png CHART.mmd [--out FILE.png]
+  Render the chart as Dev reads it, with the pinned @mermaid-js/mermaid-cli
+  through npx, next to the chart unless --out names the file. An installed Chrome
+  (CHROME_PATH, or the usual install paths) renders in its own throwaway profile.
+  Look at every
+  PNG before handing a chart off: each label should read as the screen, and each
+  step as what the reader does or sees happen.
+  Exit: 0 rendered; 1 the chart did not render.`;
+
 const LINT = `lint CHART.mmd [--cause TEXT] [--repeats] [--unread]
   Static findings over the flat model (exit 1 when there are any):
   - states unreachable from a region's starts, ignoring guards and other regions;
@@ -187,6 +197,7 @@ Commands:
   journey replay constructive journeys: useful outcomes are reachable
   flat    print the expanded chart as plain flat Mermaid
   query   ways in and out of a state, who reacts to an event, a region summary
+  png     render the chart to PNG for review
   lint    unreachable states, dead edges, and event-declaration problems
 
 CHART may be a composition: %% compose lines join separate charts through shared
@@ -207,5 +218,6 @@ chart, drift or I/O error; 2 invalid arguments; 3 incomplete search.`,
   journey: JOURNEY,
   flat: FLAT,
   query: QUERY,
+  png: PNG,
   lint: LINT,
 };
