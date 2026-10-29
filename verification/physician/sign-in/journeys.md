@@ -63,11 +63,11 @@ From: You sign in from the email and see Today
 4. the link was used or has expired → This link no longer works
 5. you sign in in another tab → Your workspace; Signed in; Today
 
-## Your own link changes nothing
+## Your own link keeps your session
 
-From: You sign in from the email and see Today
-
-1. open your own sign-in link → Your workspace; Signed in
+1. open a patient link while signed out → Enter your work email; Holding a patient link
+2. you sign in in another tab → Your workspace; Signed in; The linked patient
+3. open your own sign-in link → Your workspace; Signed in; Today
 
 ## Closing Coda while signed out asks you to sign in again
 
@@ -110,7 +110,13 @@ From: You sign in from the email and see Today
 ## Another physician signs in elsewhere, and this tab opens Today for them
 
 1. open a patient link while signed out → Enter your work email; Holding a patient link
-2. another physician signs in in another tab → Your workspace; Signed in; No patient link; Today
+2. you sign in in another tab → Your workspace; Signed in; The linked patient
+3. another physician signs in in another tab → Your workspace; Signed in; Today
+
+## A signed-out tab opens its patient link for whoever signs in
+
+1. open a patient link while signed out → Enter your work email; Holding a patient link
+2. another physician signs in in another tab → Your workspace; Signed in; No patient link; The linked patient
 
 ## Sign-out forgets the patient you were on
 

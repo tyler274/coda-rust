@@ -83,6 +83,7 @@ const SIGN_IN_UNAVAILABLE: &str =
     "Coda couldn’t confirm the request. Check your inbox before trying again.";
 const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a new one.";
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
+const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
 const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
@@ -96,6 +97,8 @@ enum Place {
     Workspace,
 }
 
+/// The session belongs to this browser, so it lives in localStorage: a new tab,
+/// or Coda reopened, opens the workspace while the session lasts.
 #[cfg(target_arch = "wasm32")]
 const SESSION_STORAGE_KEY: &str = "coda.physician.session";
 
@@ -103,7 +106,7 @@ const SESSION_STORAGE_KEY: &str = "coda.physician.session";
 fn read_stored_session() -> Option<String> {
     use wasm_bindgen::JsCast;
     let window = web_sys::window()?;
-    let storage = js_sys::Reflect::get(&window, &"sessionStorage".into()).ok()?;
+    let storage = js_sys::Reflect::get(&window, &"localStorage".into()).ok()?;
     if storage.is_null() || storage.is_undefined() {
         return None;
     }
@@ -124,7 +127,7 @@ fn write_stored_session(session: Option<&str>) {
     let Some(window) = web_sys::window() else {
         return;
     };
-    let Ok(storage) = js_sys::Reflect::get(&window, &"sessionStorage".into()) else {
+    let Ok(storage) = js_sys::Reflect::get(&window, &"localStorage".into()) else {
         return;
     };
     if storage.is_null() || storage.is_undefined() {
@@ -448,24 +451,53 @@ struct SessionState {
     whoami: Signal<Option<WhoamiResponse>>,
     /// Bumped when another physician signs in here: the shell starts over at Today.
     generation: Signal<u32>,
+    /// The patient and conversation the page was opened at. The shell opens
+    /// there once someone signs in; sign-out and another physician's sign-in
+    /// forget them.
+    held_link: Signal<(String, String)>,
+    /// The practice removed this physician's access; the sign-in page says so.
+    removed: Signal<bool>,
 }
 
 impl SessionState {
-    /// Back to the sign-in page.
-    fn sign_out(mut self) {
+    /// Back to the sign-in page, forgetting where this tab was.
+    fn sign_out(self) {
+        self.forget_place();
+        self.no_session();
+    }
+
+    /// Back to the sign-in page, still holding the link the page was opened at.
+    fn no_session(mut self) {
         #[cfg(target_arch = "wasm32")]
         write_stored_session(None);
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
         self.expired.set(false);
+        self.removed.set(false);
         self.signed_in.set(false);
         self.whoami_name.set(String::new());
         self.whoami.set(None);
     }
 
+    /// Drops the held patient link, from this tab and its address.
+    fn forget_place(mut self) {
+        self.held_link.set(Default::default());
+        write_address(None, None);
+    }
+
+    /// Ends this browser's session on the server and in every tab.
+    async fn end(self, client: PhysicianClient) {
+        let _ = client.sign_out().await;
+        #[cfg(target_arch = "wasm32")]
+        tabs::announce(&tabs::TabNews::SignedOut);
+        self.sign_out();
+    }
+
     /// A refused read. An ended session covers a page this tab already showed
-    /// with the sign-in prompt; a tab that showed nothing yet was reopened after
-    /// the session ended, so it shows the sign-in page, as removed access does.
+    /// with the sign-in prompt; a tab that showed nothing yet was opened
+    /// without a session, so it shows the sign-in page and keeps the patient
+    /// link it was opened at. Removed access signs out and says "No access to
+    /// this practice".
     fn refused(mut self, refusal: Refusal, shown: bool) {
         match refusal {
             Refusal::SessionEnded if shown => {
@@ -473,7 +505,11 @@ impl SessionState {
                 write_stored_session(None);
                 self.expired.set(true);
             }
-            _ => self.sign_out(),
+            Refusal::SessionEnded => self.no_session(),
+            Refusal::AccessRemoved => {
+                self.sign_out();
+                self.removed.set(true);
+            }
         }
     }
 
@@ -526,6 +562,7 @@ impl SessionState {
                 spawn(async move {
                     let _ = client.sign_out().await;
                     local_draft::forget_everything();
+                    self.forget_place();
                     client.session().set(session.clone());
                     write_stored_session(Some(&session));
                     self.whoami_name.set(String::new());
@@ -540,12 +577,7 @@ impl SessionState {
 
 /// Signing out ends this session and reaches this browser's other Coda tabs.
 fn sign_out_everywhere(client: PhysicianClient, session: SessionState) {
-    spawn(async move {
-        let _ = client.sign_out().await;
-        #[cfg(target_arch = "wasm32")]
-        tabs::announce(&tabs::TabNews::SignedOut);
-        session.sign_out();
-    });
+    spawn(session.end(client));
 }
 
 #[component]
@@ -557,19 +589,23 @@ pub fn PhysicianRoot(
     open_chat: String,
     sign_in: Option<SignInLink>,
 ) -> Element {
-    // A mailed link is redeemed even when this browser already has a session.
-    // Otherwise the first `/today` read handles the auth gate.
+    // A mailed link goes through the sign-in screen even when this browser
+    // already has a session. Otherwise the first `/today` read handles the auth gate.
     let mut signed_in = use_signal(|| sign_in.is_none());
     let mut whoami_name = use_signal(String::new);
     let mut whoami = use_signal(|| None::<WhoamiResponse>);
     let expired = use_signal(|| false);
     let generation = use_signal(|| 0u32);
+    let held_link = use_signal(|| (open_patient.clone(), open_chat.clone()));
+    let mut removed = use_signal(|| false);
     let session = SessionState {
         signed_in,
         expired,
         whoami_name,
         whoami,
         generation,
+        held_link,
+        removed,
     };
     let mut pending_sign_in = use_signal(|| sign_in);
     // The bearer session rides the client, so one client is built once.
@@ -599,9 +635,9 @@ pub fn PhysicianRoot(
         let client = client.read().clone();
         spawn(async move {
             if let Err(error) = client.today().await
-                && refusal(&error).is_some()
+                && let Some(refused) = refusal(&error)
             {
-                session.sign_out();
+                session.refused(refused, false);
             }
         });
     });
@@ -610,9 +646,11 @@ pub fn PhysicianRoot(
             style { "{ui::STYLESHEET}{SHELL_STYLES}" }
             SignInScreen {
                 client,
+                session,
                 link: pending_sign_in(),
                 on_signed_in: move |who: Option<WhoamiResponse>| {
                     pending_sign_in.set(None);
+                    removed.set(false);
                     let name = who
                         .as_ref()
                         .map(|account| account.display_name.clone())
@@ -628,13 +666,14 @@ pub fn PhysicianRoot(
         // keyed list replaces the shell when the key changes; a lone keyed
         // component is diffed in place and keeps its state.
         let shell = generation();
+        let (open_patient, open_chat) = held_link();
         rsx! {
             for shell in std::iter::once(shell) {
                 PhysicianShell {
                     key: "{shell}",
                     base_url: base_url.clone(),
-                    open_patient: if shell == 0 { open_patient.clone() } else { String::new() },
-                    open_chat: if shell == 0 { open_chat.clone() } else { String::new() },
+                    open_patient: open_patient.clone(),
+                    open_chat: open_chat.clone(),
                     client,
                     session,
                 }
@@ -1330,6 +1369,7 @@ fn PhysicianShell(
                 aria_label: "Sign in to continue",
                 SignInScreen {
                     client,
+                    session,
                     link: None,
                     resume_email: whoami.read().as_ref().map(|account| account.email.clone()),
                     on_signed_in: move |_| {
@@ -2197,12 +2237,14 @@ mod command_answer_tests {
 #[component]
 fn SignInScreen(
     client: Signal<PhysicianClient>,
+    session: SessionState,
     link: Option<SignInLink>,
     on_signed_in: EventHandler<Option<WhoamiResponse>>,
     resume_email: Option<String>,
     on_sign_out: Option<EventHandler<()>>,
 ) -> Element {
     let resuming = resume_email.is_some();
+    let mut removed = session.removed;
     let mut email = use_signal(|| {
         link.as_ref()
             .map(|link| link.email.clone())
@@ -2212,6 +2254,8 @@ fn SignInScreen(
     let mut stage = use_signal(|| {
         if link.is_some() {
             SignInStage::SigningIn
+        } else if *removed.peek() {
+            SignInStage::NoAccess
         } else {
             SignInStage::Email
         }
@@ -2255,9 +2299,23 @@ fn SignInScreen(
     };
     // This effect has no reactive reads: one page load redeems its mailed link
     // once. Ordinary rerenders and request failures never retry the token.
+    // While this browser is signed in, your own link changes nothing, and
+    // another physician's link signs you out before it is redeemed.
     use_effect(move || {
         if let Some(link) = link.clone() {
-            verify_link(link);
+            let held = client.peek().clone();
+            spawn(async move {
+                if held.session().is_some()
+                    && let Ok(account) = held.whoami().await
+                {
+                    if account.email.eq_ignore_ascii_case(link.email.trim()) {
+                        on_signed_in.call(Some(account));
+                        return;
+                    }
+                    session.end(held).await;
+                }
+                verify_link(link);
+            });
         }
     });
 
@@ -2340,12 +2398,15 @@ fn SignInScreen(
                             }
                         },
                         SignInStage::NoAccess => rsx! {
-                            p { class: "sign-in-sub", "{NO_ACCESS}" }
+                            p { class: "sign-in-sub",
+                                if removed() { "{ACCESS_REMOVED}" } else { "{NO_ACCESS}" }
+                            }
                             div { class: "sign-in-actions",
                                 button {
                                     class: "sign-in-text-action",
                                     r#type: "button",
                                     onclick: move |_| {
+                                        removed.set(false);
                                         email.set(String::new());
                                         stage.set(SignInStage::Email);
                                     },

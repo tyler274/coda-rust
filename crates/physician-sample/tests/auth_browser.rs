@@ -117,7 +117,7 @@ fn wait_until(browser: &mut Browser, condition: &str, what: &str) {
 
 /// Ends the page's session on the server, as expiry does; the page is not told.
 const END_THE_SESSION: &str = "fetch('/auth/sign-out', { method: 'POST', headers: { \
-     Authorization: 'Bearer ' + sessionStorage.getItem('coda.physician.session') } }); 'sent'";
+     Authorization: 'Bearer ' + localStorage.getItem('coda.physician.session') } }); 'sent'";
 
 /// The prompt covers the page, hides it from assistive technology, and takes
 /// it out of the tab order.
@@ -284,6 +284,113 @@ async fn a_link_that_no_longer_grants_access_opens_no_access() {
     );
     browser.click(".sign-in-text-action");
     browser.wait_for("Work email");
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn another_physicians_link_ends_your_session_before_it_is_redeemed() {
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    sign_in(&mut browser, &base);
+    let yours = stored_session(&mut browser).expect("signed in");
+    // Someone else's link, which turns out to be used: you are signed out
+    // first, whatever the link then says.
+    browser.text_until(
+        &format!("{base}/?email=someone-else%40codahealth.test&code=codas-used"),
+        "no longer valid",
+    );
+    assert_eq!(stored_session(&mut browser), None);
+    assert_eq!(whoami_status(&mut browser, &yours), 401);
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn your_own_link_keeps_your_session() {
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    sign_in(&mut browser, &base);
+    let yours = stored_session(&mut browser).expect("signed in");
+    browser.page().evaluate(&format!(
+        "fetch('/auth/sign-in', {{ method: 'POST', headers: {{ 'content-type': 'application/json' }}, \
+           body: JSON.stringify({{ email: '{STAGING_EMAIL}' }}) }}) \
+           .then(r => r.json()).then(j => {{ window.__token = j.token; }}); 'sent'"
+    ));
+    wait_until(&mut browser, "!!window.__token", "a fresh link for you");
+    let token = browser.page().evaluate("window.__token");
+    let token = token.as_str().expect("token");
+    browser.text_until(
+        &format!("{base}/?email={STAGING_EMAIL}&code={token}"),
+        "Mary Louis",
+    );
+    assert_eq!(
+        stored_session(&mut browser).as_deref(),
+        Some(yours.as_str())
+    );
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn sign_out_forgets_the_patient_link_and_the_next_sign_in_opens_today() {
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    // A Coda link to Mary Louis (local-product's MARY_WORKSPACE_ID) opened while signed out.
+    browser.text_until(
+        &format!("{base}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"),
+        "Sign in to Coda",
+    );
+    browser.type_into(".sign-in-input", STAGING_EMAIL);
+    browser.click(".sign-in-primary");
+    browser.wait_for("Patient summary");
+    browser.click(r#"button[aria-label="Sign out of Coda"]"#);
+    browser.wait_for("Sign in to Coda");
+    assert_eq!(
+        browser.page().evaluate("location.search").as_str(),
+        Some("")
+    );
+    browser.type_into(".sign-in-input", STAGING_EMAIL);
+    browser.click(".sign-in-primary");
+    wait_until(
+        &mut browser,
+        "!!document.querySelector('button[aria-label=\"Open Mary Louis\"]') \
+         && !document.body.innerText.includes('Patient summary')",
+        "opening Today",
+    );
+}
+
+fn sign_in(browser: &mut Browser, base: &str) {
+    browser.text_until(base, "Sign in to Coda");
+    browser.type_into(".sign-in-input", STAGING_EMAIL);
+    browser.click(".sign-in-primary");
+    browser.wait_for("Mary Louis");
+}
+
+/// The session this browser holds.
+fn stored_session(browser: &mut Browser) -> Option<String> {
+    browser
+        .page()
+        .evaluate("localStorage.getItem('coda.physician.session')")
+        .as_str()
+        .map(str::to_owned)
+}
+
+/// What the server answers `session` now.
+fn whoami_status(browser: &mut Browser, session: &str) -> u64 {
+    browser.page().evaluate(&format!(
+        "window.__whoami = 0; fetch('/auth/whoami', {{ headers: {{ Authorization: 'Bearer {session}' }} }}) \
+           .then(r => {{ window.__whoami = r.status; }}); 'sent'"
+    ));
+    wait_until(browser, "window.__whoami > 0", "the server's answer");
+    browser
+        .page()
+        .evaluate("window.__whoami")
+        .as_u64()
+        .expect("status")
 }
 
 /// Answers `/auth/verify` the way the server answers a held link whose account

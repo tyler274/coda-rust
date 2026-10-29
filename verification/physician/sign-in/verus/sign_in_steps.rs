@@ -10,6 +10,9 @@ pub proof fn preserves_event_request_a_sign_in_link(s: State, t: State)
 pub proof fn preserves_event_open_the_email_button(s: State, t: State)
     requires inductive(s), ensures event_open_the_email_button(s, t) ==> inductive(t),
 {}
+pub proof fn preserves_event_coda_can_t_reach_sign_in(s: State, t: State)
+    requires inductive(s), ensures event_coda_can_t_reach_sign_in(s, t) ==> inductive(t),
+{}
 pub proof fn preserves_event_you_sign_in_in_another_tab(s: State, t: State)
     requires inductive(s), ensures event_you_sign_in_in_another_tab(s, t) ==> inductive(t),
 {}
@@ -21,9 +24,6 @@ pub proof fn preserves_event_close_and_reopen_coda(s: State, t: State)
 {}
 pub proof fn preserves_event_use_another_email(s: State, t: State)
     requires inductive(s), ensures event_use_another_email(s, t) ==> inductive(t),
-{}
-pub proof fn preserves_event_coda_can_t_reach_sign_in(s: State, t: State)
-    requires inductive(s), ensures event_coda_can_t_reach_sign_in(s, t) ==> inductive(t),
 {}
 pub proof fn preserves_event_open_a_patient_link_while_signed_out(s: State, t: State)
     requires inductive(s), ensures event_open_a_patient_link_while_signed_out(s, t) ==> inductive(t),
@@ -57,11 +57,11 @@ pub proof fn every_event_preserves_inductive(s: State, t: State)
 {
     preserves_event_request_a_sign_in_link(s, t);
     preserves_event_open_the_email_button(s, t);
+    preserves_event_coda_can_t_reach_sign_in(s, t);
     preserves_event_you_sign_in_in_another_tab(s, t);
     preserves_event_another_physician_signs_in_in_another_tab(s, t);
     preserves_event_close_and_reopen_coda(s, t);
     preserves_event_use_another_email(s, t);
-    preserves_event_coda_can_t_reach_sign_in(s, t);
     preserves_event_open_a_patient_link_while_signed_out(s, t);
     preserves_event_verification_succeeds(s, t);
     preserves_event_the_link_was_used_or_has_expired(s, t);
