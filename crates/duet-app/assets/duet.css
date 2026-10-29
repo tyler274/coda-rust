@@ -141,38 +141,26 @@ button.thread-open > p.thread-card::after {
   font-weight: 600;
 }
 .duet .tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }
+/* The composer stands over the page's bottom gutter too, so nothing in the thread shows beneath it. */
 .duet-composer-wrap {
   position: sticky;
-  bottom: 0;
+  bottom: -16px;
   z-index: 1;
   margin-top: auto;
-  padding-top: 8px;
+  padding: 8px 0 16px;
   background: var(--surface);
 }
-/* The composer is a text field (.field) holding its words and Send. */
-.duet-composer {
+/* After the October 21 design review: the words and Send share one row on a hairline, Send at the words' last line. */
+.duet .composer {
+  --field-elevation: 0 0 transparent;
   display: flex;
-  flex-direction: row;
   align-items: flex-end;
   gap: 8px;
-  margin: 0;
   padding: 6px 6px 6px 12px;
   border-radius: 16px;
 }
-.duet-composer-field {
-  flex: 1 1 auto;
-  width: auto;
-  min-height: 44px;
-  max-height: 132px;
-  box-sizing: border-box;
-  padding: 10px 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  resize: none;
-}
+.duet .composer-input { flex: 1 1 auto; width: auto; padding: 10px 0; font: inherit; }
+.duet .composer-toolbar { flex: none; min-height: 0; }
 .duet-field {
   display: block;
   width: 100%;

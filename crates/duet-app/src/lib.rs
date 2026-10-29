@@ -35,13 +35,13 @@ use roots::{
     SHARE_WITH_MY_PHYSICIAN, SHARING_ERROR, SHARING_HEADING, SHARING_OFF_DETAIL, SHARING_ON_DETAIL,
     SHARING_SAVED, SHARING_UNAVAILABLE, SHARING_UNCHECKED, STOP_SHARING, SavedItemPage,
     SharedNotice, SharedRoot, SharingRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open,
-    composer_text, conversation_root, date_line, doctor_page, doctor_plan_section,
-    draft_after_send, greeting, library_root, note_open, opens_doctor, page_with_accepted,
-    plan_page, reminder_page, send_id, shared_root, sharing_root, today_root,
+    conversation_root, date_line, doctor_page, doctor_plan_section, draft_after_send, greeting,
+    library_root, note_open, opens_doctor, page_with_accepted, plan_page, reminder_page, send_id,
+    shared_root, sharing_root, today_root,
 };
 use ui::{
-    ActionRow, Button, ButtonVariant, Disclosure, Icon, IconName, NavigationControl, NavigationRow,
-    TabBar, TryAgain,
+    ActionRow, Button, ButtonVariant, Composer, Disclosure, Icon, IconName, NavigationControl,
+    NavigationRow, TabBar, TryAgain,
 };
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
@@ -818,7 +818,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let closed = page.as_ref().and_then(closed_send);
     let page_url = send_url.clone();
     let page_bearer = send_bearer.clone();
-    let mut submit = move |text: String| {
+    let submit = move |text: String| {
         if sending() {
             return;
         }
@@ -1738,24 +1738,11 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 if send_failed() {
                     p { class: "empty", role: "alert", "{CHAT_UNAVAILABLE}" }
                 }
-                form {
-                    class: "duet-composer field",
-                    onsubmit: move |event| {
-                        event.prevent_default();
-                        let typed = event.get_first("draft").and_then(|value| match value {
-                            dioxus::events::FormValue::Text(text) => Some(text),
-                            dioxus::events::FormValue::File(_) => None,
-                        });
-                        submit(composer_text(typed.as_deref(), &draft()));
-                    },
-                    textarea {
-                        class: "duet-composer-field",
-                        name: "draft",
-                        aria_label: "{CHAT_EMPTY_MESSAGE}",
-                        rows: "1",
-                        value: "{draft}",
-                        oninput: move |event| draft.set(event.value()),
-                    }
+                Composer {
+                    label: CHAT_EMPTY_MESSAGE,
+                    value: draft(),
+                    on_input: move |text| draft.set(text),
+                    on_submit: submit,
                     Button {
                         variant: ButtonVariant::Primary,
                         compact: true,

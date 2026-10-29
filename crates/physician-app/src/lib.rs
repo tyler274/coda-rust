@@ -3427,24 +3427,23 @@ fn PatientSurface(
                             }
                         }
                         {conversation_resume_notice}
-                        textarea {
-                            class: "composer field",
+                        ui::Composer {
+                            label: "Message",
                             placeholder: "Write a message",
-                            value: "{draft}",
-                            aria_label: "Message",
-                            onfocus: move |_| on_editing.call(true),
-                            onblur: move |_| {
-                                on_editing.call(false);
-                                on_draft_blur.call(());
+                            value: draft.clone(),
+                            on_input: move |text| on_draft.call(text),
+                            on_submit: move |_| on_send.call(()),
+                            on_editing: move |editing| {
+                                on_editing.call(editing);
+                                if !editing {
+                                    on_draft_blur.call(());
+                                }
                             },
-                            oninput: move |event| on_draft.call(event.value()),
-                        }
-                        div { class: "composer-actions",
-                            Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| on_send.call(()), "Send" }
-                            Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
                             if !notice.is_empty() {
                                 span { class: "composer-notice", role: "status", "{notice}" }
                             }
+                            Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
+                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
                         }
                         if let Some(newer) = conflict {
                             div { class: "composer-conflict", role: "alert", "data-revision": "{newer.revision}",

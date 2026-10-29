@@ -327,6 +327,67 @@ pub fn NavigationRow(
     }
 }
 
+/// The composer, after the React app's: the one raised text field, holding the words and, under
+/// them, a toolbar of the host's context and actions; a host's submit control sends. The words
+/// grow with what is written, up to seven lines. Keys stay the host's.
+#[component]
+pub fn Composer(
+    /// The words' accessible name.
+    label: String,
+    #[props(default)] placeholder: String,
+    value: String,
+    on_input: EventHandler<String>,
+    /// The words as written, when the host's submit control is pressed.
+    on_submit: EventHandler<String>,
+    /// Whether the words have focus.
+    on_editing: Option<EventHandler<bool>>,
+    children: Element,
+) -> Element {
+    let held = value.clone();
+    rsx! {
+        form {
+            class: "composer field",
+            onsubmit: move |event| {
+                event.prevent_default();
+                let typed = event.get_first("draft").and_then(|value| match value {
+                    FormValue::Text(text) => Some(text),
+                    FormValue::File(_) => None,
+                });
+                on_submit.call(submitted_text(typed.as_deref(), &held));
+            },
+            textarea {
+                class: "composer-input",
+                name: "draft",
+                rows: "1",
+                aria_label: "{label}",
+                placeholder: "{placeholder}",
+                value: "{value}",
+                oninput: move |event| on_input.call(event.value()),
+                onfocus: move |_| {
+                    if let Some(handler) = &on_editing {
+                        handler.call(true);
+                    }
+                },
+                onblur: move |_| {
+                    if let Some(handler) = &on_editing {
+                        handler.call(false);
+                    }
+                },
+            }
+            div { class: "composer-toolbar", {children} }
+        }
+    }
+}
+
+/// The words a send uses. The field wins when it has something in it: on Android the controlled
+/// value can drop keystrokes while the person still sees them.
+fn submitted_text(field: Option<&str>, value: &str) -> String {
+    match field {
+        Some(text) if !text.trim().is_empty() => text.to_owned(),
+        _ => value.to_owned(),
+    }
+}
+
 static DISCLOSURES: AtomicUsize = AtomicUsize::new(0);
 
 /// A section that opens in place, after the React app's `ProductDisclosure`: its title is one
@@ -497,5 +558,18 @@ pub fn TabBar(labels: Vec<String>, selected: usize, on_select: EventHandler<usiz
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::submitted_text;
+
+    #[test]
+    fn a_send_uses_the_words_the_person_sees() {
+        let draft = "How did I sleep?";
+        assert_eq!(submitted_text(Some("Hello"), ""), "Hello");
+        assert_eq!(submitted_text(Some("  "), draft), draft);
+        assert_eq!(submitted_text(None, draft), draft);
     }
 }

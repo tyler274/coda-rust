@@ -109,7 +109,7 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.wait_for("About seven hours.");
 
     // A send is accepted by the stub and the user line lands on the page.
-    browser.type_into(".duet-composer-field", SEND_TEXT);
+    browser.type_into(".composer-input", SEND_TEXT);
     browser.click(".duet-send");
     let text = browser.wait_for(SEND_TEXT);
     assert!(
