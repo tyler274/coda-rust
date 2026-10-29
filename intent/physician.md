@@ -406,7 +406,6 @@ These are how we build the product above. They matter to its behavior but are en
 - Steering prevents stale results from being published.
 - Completion is accepted only after authority and currency are checked.
 - Each patient's work starts independently and runs side by side. How much runs at once is an engineering decision, and code never ranks clinical importance.
-- At the context-window limit the model writes its own working checkpoint.
 
 **Commands and state.** Commands are accepted or not. A lost receipt resolves without a second effect, and an ambiguous command retries only itself before reading authoritative state. Reload, reconnect and another client converge on the same server state.
 
