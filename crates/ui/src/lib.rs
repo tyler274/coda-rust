@@ -133,6 +133,20 @@ pub fn LiveDot() -> Element {
     rsx! { span { class: "live-dot", aria_hidden: "true" } }
 }
 
+/// The one working mark, after the React app's `WorkingMark`: three live dots lighting in turn,
+/// shown only while work actually runs. Duet's typing indicator is this mark in a reply's place.
+/// The words beside it, or the host's status, say what runs.
+#[component]
+pub fn WorkingMark() -> Element {
+    rsx! {
+        span { class: "working-dots", aria_hidden: "true",
+            LiveDot {}
+            LiveDot {}
+            LiveDot {}
+        }
+    }
+}
+
 /// Where one read stands, as the page shows it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ReadStage {

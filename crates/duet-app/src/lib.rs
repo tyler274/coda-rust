@@ -42,6 +42,7 @@ use roots::{
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Composer, Dialog, Disclosure, Icon, IconName,
     Message, NavigationControl, NavigationRow, SourceRow, SourcesButton, TabBar, TryAgain,
+    WorkingMark,
 };
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
@@ -1721,10 +1722,16 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     if provisional().stopped {
                         p { class: "status-detail", "Draft ended. Checking the saved response; unfinished work remains available for recovery." }
                     }
-                    if !provisional().text.is_empty() {
-                        Message { author: Author::Assistant, aria_label: "Provisional response",
-                            p { class: "status-detail", "Luna — drafting, not yet saved" }
-                            p { "{provisional().text}" }
+                    // While a reply runs it holds its place in the thread: the typing indicator
+                    // until its first words, then the words as they stream.
+                    if provisional().command.is_some() && !provisional().stopped {
+                        Message { author: Author::Assistant, class: "is-replying", aria_label: "Duet's reply",
+                            if provisional().text.is_empty() {
+                                span { class: "sr-only", role: "status", "Duet is responding" }
+                                WorkingMark {}
+                            } else {
+                                p { "{provisional().text}" }
+                            }
                         }
                     }
                     if let Some(closed) = closed {
