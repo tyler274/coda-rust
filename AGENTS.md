@@ -52,6 +52,8 @@ needed; it should not replace the local feedback loop.
   evidence forward; opening a PR does not by itself require a second review.
 - [improve-review-pr](.agents/skills/improve-review-pr/SKILL.md) helps turn observed
   review failures and user feedback into improvements at the responsible owner.
+- [coda-engineering-log](.agents/skills/coda-engineering-log/SKILL.md) drafts a
+  requested daily update from the developer's available work and verified status.
 
 Continue implementation, verification, review, and accepted corrections within
 the agreed task. Resolve routine choices; bring genuinely open product,
