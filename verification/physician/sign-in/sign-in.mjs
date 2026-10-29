@@ -46,6 +46,7 @@ export const machine = setup({
       { name: 'WorkspaceAfterSignOut', states: { [tab]: 'Your workspace', [session]: 'Signed out' }, sentence: 'Sign-out works. (physician A1.5)' },
       { name: 'WorkspaceAfterExpiry', states: { [tab]: 'Your workspace', [session]: 'Session expired' }, sentence: 'If the session expires mid-work, a sign-in prompt covers the screen. (physician A1.3)' },
       { name: 'AskedToSignInWhileSignedIn', states: { [tab]: ['Enter your work email', 'Check your email', 'This link no longer works', 'No access to this practice', 'Sign-in prompt over your work'], [session]: 'Signed in' }, sentence: 'After signing in the physician is exactly where they were. (physician A1.3)' },
+      { name: 'NewSignInOpensToday', states: { [tab]: 'Signing you in', [opens]: 'The linked patient' }, sentence: "Another physician's sign-in link opened while signed in signs the current physician out and opens Today for the new one. (physician A1.4)" },
       { name: 'HeldLinkLands', states: { [tab]: 'Your workspace', [link]: 'Holding a patient link' }, sentence: 'A patient link opened while signed out lands that tab on the patient after sign-in. (physician A1.3)' },
     ],
   },
@@ -159,7 +160,7 @@ export const machine = setup({
         },
         'The linked patient': {
           on: {
-            'verification succeeds': { target: 'Today', guard: 'signing in' },
+            "open another physician's sign-in link": { target: 'Today', guard: 'signed in' },
             'sign out': { target: 'Today', guard: 'not signed out' },
             'close and reopen Coda': 'Today',
           },

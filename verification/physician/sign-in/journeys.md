@@ -56,6 +56,14 @@ From: You sign in from the email and see Today
 1. open another physician's sign-in link → Signing you in; Signed out
 2. verification succeeds → Your workspace; Signed in; Today
 
+## Another physician's link opens Today, even after a link held earlier
+
+1. open a patient link while signed out → Enter your work email; Holding a patient link
+2. you sign in in another tab → Your workspace; Signed in; The linked patient
+3. open another physician's sign-in link → Signing you in; Signed out; Today
+4. the link was used or has expired → This link no longer works
+5. you sign in in another tab → Your workspace; Signed in; Today
+
 ## Your own link changes nothing
 
 From: You sign in from the email and see Today

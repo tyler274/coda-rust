@@ -48,8 +48,8 @@ file opens in [Stately Sketch](https://github.com/statelyai/sketch) and runs in
 6. In `meta.never`, write one rule per spec sentence: the states that must never
    hold together, by region (a list where any of several states breaks it), and the
    spec's own sentence ending with its ID. Anything outside steps 3–6 (`always`,
-   `after`, `entry`, actions, context, region-level or cross-region transitions) is
-   refused, because Verus would not see it. Never weaken a rule to make the chart
+   `after`, `entry`, actions, context, a root that is not parallel, region-level or
+   cross-region transitions) is refused, because Verus would not see it. Never weaken a rule to make the chart
    pass. A promise about records (identity, revisions, collections, single use) goes
    in the folder's `data-promises.md` with the Rust owner that must prove it, marked
    unproven until it is.

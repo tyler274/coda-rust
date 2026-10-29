@@ -21,7 +21,7 @@ const CHECKS = { stateIn: stateIn({}).check, not: not(() => true).check, and: an
 // The keys a chart may use at each level; any other key (always, after, entry, exit,
 // invoke, context, history...) is behavior Verus would not see.
 const ALLOWED = {
-  root: ["id", "type", "initial", "states", "meta", "description", "schemas"],
+  root: ["id", "type", "states", "meta", "description", "schemas"],
   region: ["initial", "states", "meta", "description"],
   state: ["on", "meta", "description", "tags"],
 };
@@ -31,21 +31,23 @@ async function load(file) {
   const { machine } = await import(pathToFileURL(path.resolve(file)).href);
   if (!machine) throw new Error(`${file} exports no machine`);
   const root = machine.root;
-  const parallel = root.type === "parallel";
   const refuse = (where, why) => { throw new Error(`${where}: ${why}; charts are flat parallel regions with stateIn, not, and or or guards`); };
   const only = (node, level, where) => {
     for (const key of Object.keys(node.config)) if (!ALLOWED[level].includes(key)) refuse(where, `"${key}" is not supported`);
   };
   only(root, "root", root.id);
-  const regions = (parallel ? Object.values(root.states) : [root]).map((r) => {
-    const caption = parallel ? r.key : root.id;
-    if (parallel) only(r, "region", caption);
-    if (!r.states || !Object.keys(r.states).length) refuse(caption, "a region needs states");
+  if (root.type !== "parallel") refuse(root.id, "the machine must be type: 'parallel', even with one region");
+  const regions = Object.values(root.states).map((r) => {
+    const caption = r.key;
+    only(r, "region", caption);
+    if (r.type !== "compound") refuse(caption, "a region holds one state at a time; draw parallel behavior as more regions");
     for (const s of Object.values(r.states)) {
       if (s.type !== "atomic") refuse(`${caption} / ${s.key}`, "a state has states of its own; draw them as another region");
       only(s, "state", `${caption} / ${s.key}`);
     }
-    return { node: r, caption, states: Object.keys(r.states), initial: r.initial.target[0].key };
+    const start = r.initial;
+    if (start.actions.length || start.target.length !== 1 || start.target[0].parent !== r) refuse(caption, "initial must name one of the region's states, with no actions");
+    return { node: r, caption, states: Object.keys(r.states), initial: start.target[0].key };
   });
   const regionOf = (caption) => regions.find((r) => r.caption === caption);
   // A guard as data: { in: [region, state] }, { not: g }, { and: [g] } or { or: [g] }.
@@ -95,8 +97,7 @@ async function load(file) {
 }
 
 // Where a snapshot is: one state caption per region.
-const where = (chart, snapshot) => chart.regions.map((r) =>
-  chart.regions.length === 1 && typeof snapshot.value === "string" ? snapshot.value : snapshot.value[r.caption]);
+const where = (chart, snapshot) => chart.regions.map((r) => snapshot.value[r.caption]);
 const words = (chart, at) => at.map((s, i) => `${chart.regions[i].caption}: ${s}`).join("; ");
 const breaks = (chart, rule, at) => Object.entries(rule.states).every(([region, states]) =>
   states.includes(at[chart.regions.findIndex((r) => r.caption === region)]));
