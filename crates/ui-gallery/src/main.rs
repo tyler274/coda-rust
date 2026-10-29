@@ -99,7 +99,7 @@ fn Gallery() -> Element {
                 Section { title: "Feedback and undo", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. Undo floats at the window's foot and pauses while pointed at.",
                     FeedbackDemo {}
                 }
-                Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one.",
+                Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
                     OverlayDemo {}
                 }
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, the placeholder sheen while content loads, and notices for reads and commands.",

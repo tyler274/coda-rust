@@ -195,6 +195,11 @@
   transition: transform var(--spring-step); }
 .dialog-sheet .dialog-body { padding: var(--space-5) var(--space-5) max(var(--space-6), env(safe-area-inset-bottom)); }
 .dialog-sheet.is-closing { animation-duration: var(--motion-arrive); }
+/* Held and dragged, the sheet follows the hand and the scrim thins as it goes; the gesture itself moves it, so nothing
+   transitions until it rests. Its header never scrolls the page, so a drag begun there is always the sheet's. */
+.dialog-sheet[data-dragging], .dialog-sheet[data-dragging]::backdrop { transition: none; }
+.dialog-sheet::backdrop { opacity: var(--sheet-shown, 1); }
+.dialog-sheet .dialog-header { touch-action: none; }
 @starting-style { .dialog-sheet[open] { opacity: 1; transform: translateY(100%); } }
 /* Without motion a dialog still runs its exit, in a millisecond, since that exit's end is what closes it; a
    zero-length animation never ends. */
