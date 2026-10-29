@@ -12,14 +12,18 @@ mod cards;
 mod charts;
 mod conversation;
 mod documents;
+mod feedback;
 mod icons;
+mod undo;
 pub use cards::{Card, LaterContext, Quote, StepList};
 pub use charts::{Comparison, ComparisonBars, MeasurementTile, Sparkline, TrendChart, Value};
-pub use conversation::{ContextChip, DateSeparator, Receipt, Suggestion};
+pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Receipt, Suggestion};
 pub use documents::{
     FooterActions, Notice, Paper, PaperSection, SelectionRow, SettingRow, Tag, TopBar,
 };
+pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
+pub use undo::{UNDO_MS, UndoNotice};
 
 /// The `STYLESHEET` constant.
 pub const STYLESHEET: &str = concat!(
@@ -163,6 +167,26 @@ pub fn WorkingMark() -> Element {
     }
 }
 
+/// Waiting on an action the person took, after the React app's `Spinner`: a turning ring where the
+/// control's icon was, at icon size. Running work keeps the working mark; content still loading
+/// keeps its placeholder.
+#[component]
+pub fn Spinner() -> Element {
+    rsx! {
+        svg {
+            class: "icon spinner",
+            view_box: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            stroke_width: "2.2",
+            stroke_linecap: "round",
+            "aria-hidden": "true",
+            circle { class: "spinner-track", cx: "12", cy: "12", r: "9" }
+            path { d: "M21 12a9 9 0 0 0-9-9" }
+        }
+    }
+}
+
 /// Where one read stands, as the page shows it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ReadStage {
@@ -266,6 +290,12 @@ pub fn Button(
     #[props(default)]
     icon_only: bool,
     #[props(default)] disabled: bool,
+    /// Waiting on the action it took: the spinner turns where its icon was, and it takes no input.
+    #[props(default)]
+    busy: bool,
+    /// What it is called while busy, so the wait is announced.
+    #[props(default)]
+    pending_label: Option<String>,
     /// Submits its form instead of acting on its own.
     #[props(default)]
     submit: bool,
@@ -288,17 +318,23 @@ pub fn Button(
         }
     }
     let rest = host_attributes(&mut class, attributes);
+    let pending = pending_label.filter(|_| busy);
     rsx! {
         button {
             class: "{class}",
             r#type: if submit { "submit" } else { "button" },
-            disabled: disabled,
+            disabled: disabled || busy,
+            aria_busy: if busy { "true" },
+            aria_label: pending,
             onclick: move |event| {
                 if let Some(handler) = &onclick {
                     handler.call(event);
                 }
             },
             ..rest,
+            if busy {
+                Spinner {}
+            }
             {children}
         }
     }

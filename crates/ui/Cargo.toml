@@ -6,4 +6,8 @@ publish.workspace = true
 version.workspace = true
 
 [dependencies]
-dioxus = { version = "0.7.10", default-features = false, features = ["macro", "html", "signals", "hooks", "document"] }
+dioxus = { version = "0.7.10", default-features = false, features = ["macro", "html", "signals", "hooks", "document", "mounted"] }
+futures-timer = "3"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+futures-timer = { version = "3", features = ["wasm-bindgen"] }

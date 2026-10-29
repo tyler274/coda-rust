@@ -8,12 +8,13 @@ use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CommandNotice, CommandStage,
-    Comparison, ComparisonBars, Composer, ContextChip, DateSeparator, Dialog, Disclosure,
-    FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile, Message,
-    NavigationControl, NavigationRow, Notice, Overline, Paper, PaperSection, Placeholder, Quote,
-    ReadNotice, ReadStage, Receipt, RowGroup, SectionHeader, SelectionRow, SettingRow,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, Tone,
-    TopBar, TrendChart, Value, WorkingMark,
+    Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog,
+    Disclosure, FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot,
+    MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline, Paper,
+    PaperSection, Placeholder, Quote, Rating, ReadNotice, ReadStage, Receipt, RowGroup,
+    SectionHeader, SelectionRow, SettingRow, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepList, Suggestion, TabBar, Tag, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
+    WorkingMark,
 };
 
 fn main() {
@@ -91,6 +92,12 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
                     ConversationDemo {}
+                }
+                Section { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
+                    ViewportDemo {}
+                }
+                Section { title: "Feedback and undo", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. Undo floats at the window's foot and pauses while pointed at.",
+                    FeedbackDemo {}
                 }
                 Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one.",
                     OverlayDemo {}
@@ -585,6 +592,7 @@ fn ButtonDemo() -> Element {
             Button { danger: true, "Remove" }
             Button { disabled: true, "Disabled" }
             Button { compact: true, "Compact" }
+            BusyDemo {}
             Button { variant: ButtonVariant::Quiet, icon_only: true, aria_label: "Close", Icon { name: IconName::X } }
         }
         div { class: "gallery-row",
@@ -639,6 +647,193 @@ fn RowsDemo() -> Element {
             ol { class: "row-list",
                 li { ListRow { number: 1, title: "Discharge summary", detail: "Read Today, 8:00 AM", onclick: move |_| {} } }
                 li { ListRow { number: 2, title: "Cardiology note", onclick: move |_| {} } }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn BusyDemo() -> Element {
+    let mut busy = use_signal(|| false);
+    rsx! {
+        Button {
+            busy: busy(),
+            pending_label: "Saving plan",
+            onclick: move |_| {
+                busy.set(true);
+                spawn(async move {
+                    futures_timer::Delay::new(Duration::from_millis(1600)).await;
+                    busy.set(false);
+                });
+            },
+            Icon { name: IconName::Check }
+            "Save plan"
+        }
+        Button { variant: ButtonVariant::Primary, busy: true, pending_label: "Sending", Icon { name: IconName::ArrowUp } "Send" }
+    }
+}
+
+#[cfg(feature = "web")]
+const REPLIES: [&str; 4] = [
+    "Her potassium was 5.4 on Tuesday, up from 4.9 in September.",
+    "The cardiology note from October 2 kept spironolactone at 25 mg daily.",
+    "No repeat level is on file since the dose change.",
+    "Her creatinine held at 1.3 across the same draws.",
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn ViewportDemo() -> Element {
+    let mut lines = use_signal(|| {
+        (0..6)
+            .map(|index| Line {
+                person: index % 2 == 0,
+                text: if index % 2 == 0 {
+                    "What changed since her last visit?".to_owned()
+                } else {
+                    REPLIES[index / 2 % REPLIES.len()].to_owned()
+                },
+                sources: false,
+            })
+            .collect::<Vec<_>>()
+    });
+    let replies = lines.read().iter().filter(|line| !line.person).count();
+    let sent = lines.read().iter().filter(|line| line.person).count();
+    rsx! {
+        div { class: "gallery-viewport",
+            ConversationViewport { replies, sent,
+                div { class: "gallery-thread",
+                    for (index, line) in lines().into_iter().enumerate() {
+                        Message {
+                            key: "{index}",
+                            author: if line.person { Author::Person } else { Author::Assistant },
+                            by: if line.person { "You" } else { "Coda" },
+                            p { "{line.text}" }
+                        }
+                    }
+                }
+            }
+        }
+        ActionRow {
+            Button {
+                onclick: move |_| {
+                    let text = REPLIES[replies % REPLIES.len()].to_owned();
+                    lines.write().push(Line { person: false, text, sources: false });
+                },
+                "A reply arrives"
+            }
+            Button {
+                variant: ButtonVariant::Primary,
+                onclick: move |_| {
+                    lines.write().push(Line { person: true, text: "And her blood pressure?".into(), sources: false });
+                },
+                "Send a message"
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const REASONS: [&str; 4] = [
+    "Not accurate",
+    "Missing information",
+    "Wrong source",
+    "Hard to follow",
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn FeedbackDemo() -> Element {
+    let mut rating = use_signal(|| None::<Rating>);
+    let mut saving = use_signal(|| false);
+    let mut asking = use_signal(|| false);
+    let mut reasons = use_signal(Vec::<usize>::new);
+    let mut sending = use_signal(|| false);
+    let mut undo = use_signal(|| None::<u32>);
+    let mut archived = use_signal(|| 0u32);
+    let mut restored = use_signal(|| false);
+    rsx! {
+        Message { author: Author::Assistant, by: "Coda",
+            p { "Her potassium was 5.4 on Tuesday, up from 4.9 in September." }
+            FeedbackRating {
+                selected: rating(),
+                busy: saving(),
+                on_rate: move |choice| {
+                    rating.set(Some(choice));
+                    saving.set(true);
+                    spawn(async move {
+                        futures_timer::Delay::new(Duration::from_millis(900)).await;
+                        saving.set(false);
+                        if choice == Rating::Down {
+                            asking.set(true);
+                        }
+                    });
+                },
+            }
+        }
+        div { class: "gallery-row",
+            Button {
+                onclick: move |_| {
+                    restored.set(false);
+                    archived.set(archived() + 1);
+                    undo.set(Some(archived()));
+                },
+                "Archive conversation"
+            }
+            if restored() {
+                span { class: "gallery-note", "Restored." }
+            }
+        }
+        if let Some(key) = undo() {
+            UndoNotice {
+                key: "{key}",
+                words: "Conversation archived.",
+                on_undo: move |_| restored.set(true),
+                on_gone: move |_| {
+                    if undo() == Some(key) {
+                        undo.set(None);
+                    }
+                },
+            }
+        }
+        if asking() {
+            Dialog { title: "Share feedback", subtitle: "What was wrong with this response?", on_close: move |_| asking.set(false),
+                div { class: "gallery-row",
+                    for (index, reason) in REASONS.into_iter().enumerate() {
+                        ToggleChip {
+                            key: "{reason}",
+                            pressed: reasons.read().contains(&index),
+                            disabled: sending(),
+                            onclick: move |_| {
+                                let mut chosen = reasons.write();
+                                if let Some(at) = chosen.iter().position(|&held| held == index) {
+                                    chosen.remove(at);
+                                } else {
+                                    chosen.push(index);
+                                }
+                            },
+                            "{reason}"
+                        }
+                    }
+                }
+                ActionRow {
+                    Button { variant: ButtonVariant::Quiet, disabled: sending(), onclick: move |_| asking.set(false), "Skip" }
+                    Button {
+                        variant: ButtonVariant::Primary,
+                        busy: sending(),
+                        pending_label: "Sending feedback",
+                        onclick: move |_| {
+                            sending.set(true);
+                            spawn(async move {
+                                futures_timer::Delay::new(Duration::from_millis(1200)).await;
+                                sending.set(false);
+                                asking.set(false);
+                            });
+                        },
+                        "Send feedback"
+                    }
+                }
             }
         }
     }
