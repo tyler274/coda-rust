@@ -142,6 +142,7 @@ fn another_tab_signs_in(physician: &str) -> String {
            const issued = await post('/auth/sign-in', {{ email: '{STAGING_EMAIL}' }}); \
            const verified = await post('/auth/verify', \
              {{ email: '{STAGING_EMAIL}', token: issued.token }}); \
+           localStorage.setItem('coda.physician.session', verified.session); \
            new BroadcastChannel('coda.physician.session').postMessage(JSON.stringify({{ \
              from: 'another-tab', kind: 'signed_in', \
              physician_id: {physician}, session: verified.session }})); }})(); 'sent'"
@@ -208,7 +209,8 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     // Another tab's sign-out reaches this one.
     browser.page().evaluate(
         "new BroadcastChannel('coda.physician.session').postMessage(JSON.stringify(\
-         { from: 'another-tab', kind: 'signed_out' })); 'sent'",
+         { from: 'another-tab', kind: 'signed_out', \
+           session: localStorage.getItem('coda.physician.session') })); 'sent'",
     );
     let text = browser.wait_for("Sign in to Coda");
     assert!(
@@ -264,9 +266,11 @@ async fn a_tab_follows_another_tabs_account_switch_without_undoing_it() {
            const verified = await post('/auth/verify', \
              {{ email: '{STAGING_EMAIL}', token: issued.token }}); \
            window.__switched = verified.session; \
+           const ended = localStorage.getItem('coda.physician.session'); \
            localStorage.setItem('coda.physician.session', verified.session); \
            const channel = new BroadcastChannel('coda.physician.session'); \
-           channel.postMessage(JSON.stringify({{ from: 'another-tab', kind: 'signed_out' }})); \
+           channel.postMessage(JSON.stringify({{ from: 'another-tab', kind: 'signed_out', \
+             session: ended }})); \
            channel.postMessage(JSON.stringify({{ from: 'another-tab', kind: 'signed_in', \
              physician_id: 'another-physician', session: verified.session }})); }})(); 'sent'"
     ));
@@ -288,6 +292,59 @@ async fn a_tab_follows_another_tabs_account_switch_without_undoing_it() {
             .body_text()
             .is_some_and(|text| !text.contains("Sign in to Coda")),
         "the tab undid the switch"
+    );
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_sign_out_answered_after_you_signed_in_again_elsewhere_keeps_the_new_session() {
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    sign_in(&mut browser, &base);
+    browser.wait_for("Staging Physician");
+    let first = stored_session(&mut browser).expect("signed in");
+    // Hear what this tab tells the others, and hold its sign-out request.
+    browser.page().evaluate(
+        "window.__news = []; new BroadcastChannel('coda.physician.session').onmessage = \
+           (event) => window.__news.push(JSON.parse(event.data).kind); \
+         const send = window.fetch.bind(window); \
+         window.fetch = (input, init) => \
+           String(input.url || input).includes('/auth/sign-out') \
+             ? new Promise((resolve) => { window.__release = () => resolve(send(input, init)); }) \
+             : send(input, init); 'held'",
+    );
+    browser.click(r#"button[aria-label="Sign out of Coda"]"#);
+    wait_until(&mut browser, "!!window.__release", "the sign-out request");
+    // Meanwhile you sign in again in another tab.
+    browser
+        .page()
+        .evaluate(&another_tab_signs_in("'staging-physician'"));
+    wait_until(
+        &mut browser,
+        &format!("localStorage.getItem('coda.physician.session') !== '{first}'"),
+        "the new sign-in",
+    );
+    let renewed = stored_session(&mut browser).expect("renewed session");
+    std::thread::sleep(Duration::from_millis(500));
+    browser.page().evaluate("window.__release(); 'released'");
+    std::thread::sleep(Duration::from_secs(1));
+    assert_eq!(stored_session(&mut browser), Some(renewed.clone()));
+    assert_eq!(whoami_status(&mut browser, &renewed), 200);
+    assert_eq!(
+        browser
+            .page()
+            .evaluate("window.__news.filter((kind) => kind === 'signed_out').length")
+            .as_u64(),
+        Some(0),
+        "the late sign-out told the other tabs to sign out"
+    );
+    assert!(
+        browser
+            .body_text()
+            .is_some_and(|text| !text.contains("Sign in to Coda") && text.contains("Mary Louis")),
+        "the late sign-out undid the new sign-in"
     );
 }
 

@@ -519,13 +519,24 @@ impl SessionState {
         write_address(None, None);
     }
 
-    /// Ends this browser's session on the server and in every tab.
+    /// Ends this browser's session on the server and in every tab. A newer
+    /// session this tab took while the server answered wins over the sign-out.
     async fn end(self) {
         let client = self.client.peek().clone();
         let ending = client.session().get();
         let _ = client.sign_out().await;
+        if self
+            .bearer()
+            .is_some_and(|held| Some(&held) != ending.as_ref())
+        {
+            return;
+        }
         #[cfg(target_arch = "wasm32")]
-        tabs::announce(&tabs::TabNews::SignedOut);
+        if let Some(ending) = &ending {
+            tabs::announce(&tabs::TabNews::SignedOut {
+                session: ending.clone(),
+            });
+        }
         self.sign_out(ending.as_deref());
     }
 
@@ -573,7 +584,10 @@ impl SessionState {
             return;
         }
         match news {
-            tabs::TabNews::SignedOut => {
+            tabs::TabNews::SignedOut { session } => {
+                if client.session().get().as_deref() != Some(session.as_str()) {
+                    return;
+                }
                 client.session().clear();
                 self.forget_place();
                 self.no_session_here();
