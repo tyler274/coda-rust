@@ -356,7 +356,8 @@ MVP in:
 - The first practice's EHRs, Elation and Hint (access in section 7). [linear:Coda Agents#Scope (Dev); linear:ENG-37#Decided]
 - Gmail and Spruce as the patient-message channels, both first-class. [linear:Coda Agents#Scope (Dev); codex:…01a091f9…@2026-09-21T17:41:32; claude:220b86fb…@2026-09-22T17:34:15]
 - Reading readable attachments, including scans and faxes through OCR. [linear:ENG-8#Done when; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)] Milestone one only listed attachments as not read [claude:220b86fb…@2026-09-29T04:33:35]; for V1 Dev widened reading to PDFs, "including OCR for scans and faxes" [linear:ENG-10#description]; on Oct 28 he put scans and faxes in the MVP [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)].
-- Copy reply and native send; no Coda sending. [claude:bbe5dff2…@2026-10-24T19:02:06; codex:…01a16412…@2026-10-23T14:46:24]
+- Patient mail: Copy reply and native send; Coda doesn't send it. [claude:bbe5dff2…@2026-10-24T19:02:06; codex:…01a16412…@2026-10-23T14:46:24]
+- Delivering the physician-approved answer to a connected patient's Duet question into Duet's thread, exactly as approved (P3, For my doctor branch). [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
 - Dictation into the composer in the web app. [linear:ENG-17#description; codex:…01a05e51…@2026-09-12T19:14:50; claude:bbe5dff2…@2026-10-24T03:45:33]
 - No paid tier: what was planned as premium is free for everyone. [linear:coda-rust platform#Scope; linear:ENG-14#Decided]
 - The clinical library with semantic retrieval: "having the corpus and having semantic retrieval is critical" [codex:…01a0837f…@2026-09-09T14:52:49]. Dev counted "Clinical libraries needed" in V1 [claude:121aaddd…@2026-10-12T23:46:18] and on Oct 28 put the library in the MVP [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:29:06.679Z (chosen)]. How it is served is in section 7.
@@ -367,7 +368,7 @@ MVP in:
 Out:
 
 - A Coda inbox of its own. [linear:ENG-8#Decided]
-- Coda sending, ordering or writing back in the MVP. [linear:Coda Agents#Principles; claude:bbe5dff2…@2026-10-24T19:02:06]
+- Coda sending patient mail, ordering or writing back in the MVP; the approved Duet answer is the one message it delivers. [linear:Coda Agents#Principles; claude:bbe5dff2…@2026-10-24T19:02:06; claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-29T02:31:35.503Z (chosen)]
 - Patient-facing voice AI. [linear:Coda Agents#Scope (Dev)]
 - The visit-note scribe: "Scribe is not going to be in the MVP". [claude:6035d74e-78c3-41fc-bc5f-5ec2c0d6a5c1.jsonl@2026-10-28T20:08:20.139Z; linear:Coda Agents#Scope (Dev)]
 - Clinical trials data in the clinical library. [codex:…01a05df1…@2026-09-02T01:18:20]
