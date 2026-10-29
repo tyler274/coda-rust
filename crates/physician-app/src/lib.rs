@@ -467,9 +467,15 @@ impl SessionState {
     }
 
     /// Back to the sign-in page, still holding the link the page was opened at.
-    fn no_session(mut self) {
+    fn no_session(self) {
         #[cfg(target_arch = "wasm32")]
         write_stored_session(None);
+        self.no_session_here();
+    }
+
+    /// Back to the sign-in page in this tab only. The browser's stored session
+    /// belongs to the tab that changed it.
+    fn no_session_here(mut self) {
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
         self.expired.set(false);
@@ -513,27 +519,27 @@ impl SessionState {
         }
     }
 
-    /// Another tab's sign-in news.
+    /// Another tab's sign-in news. The tab that sent it already changed the
+    /// server session and the stored one, so this tab only follows, at once
+    /// and in the order the news arrives.
     #[cfg(target_arch = "wasm32")]
     fn hear(mut self, news: tabs::TabNews, client: PhysicianClient) {
         if !*self.signed_in.peek() {
             // A signed-out tab picks up this browser's sign-in, as sign-out
             // reaches every tab. It keeps what it was opening, so the tab
             // that opened a Coda link lands on its patient when the emailed
-            // link is opened elsewhere (physician A1.3).
+            // link is opened elsewhere.
             if let tabs::TabNews::SignedIn { session, .. } = news {
-                client.session().set(session.clone());
-                write_stored_session(Some(&session));
+                client.session().set(session);
                 self.signed_in.set(true);
             }
             return;
         }
         match news {
             tabs::TabNews::SignedOut => {
-                spawn(async move {
-                    let _ = client.sign_out().await;
-                    self.sign_out();
-                });
+                client.session().clear();
+                self.forget_place();
+                self.no_session_here();
             }
             tabs::TabNews::SignedIn {
                 physician_id,
@@ -548,8 +554,7 @@ impl SessionState {
                     // Your own link: a covered page picks up where it was;
                     // an open one changes nothing.
                     if *self.expired.peek() {
-                        client.session().set(session.clone());
-                        write_stored_session(Some(&session));
+                        client.session().set(session);
                         self.expired.set(false);
                     }
                     return;
@@ -557,19 +562,15 @@ impl SessionState {
                 if mine.is_none() {
                     return;
                 }
-                // Another physician's link: this session ends and theirs
+                // Another physician's sign-in: this tab becomes theirs and
                 // starts at Today; nothing of yours carries over.
-                spawn(async move {
-                    let _ = client.sign_out().await;
-                    local_draft::forget_everything();
-                    self.forget_place();
-                    client.session().set(session.clone());
-                    write_stored_session(Some(&session));
-                    self.whoami_name.set(String::new());
-                    self.whoami.set(None);
-                    self.expired.set(false);
-                    *self.generation.write() += 1;
-                });
+                local_draft::forget_everything();
+                self.forget_place();
+                client.session().set(session);
+                self.whoami_name.set(String::new());
+                self.whoami.set(None);
+                self.expired.set(false);
+                *self.generation.write() += 1;
             }
         }
     }
@@ -2299,20 +2300,21 @@ fn SignInScreen(
     };
     // This effect has no reactive reads: one page load redeems its mailed link
     // once. Ordinary rerenders and request failures never retry the token.
-    // While this browser is signed in, your own link changes nothing, and
-    // another physician's link signs you out before it is redeemed.
+    // While this browser is signed in, your own link changes nothing. Any
+    // other link, including one whose owner Coda can't confirm, signs you out
+    // before it is redeemed, so the browser never holds two sessions.
     use_effect(move || {
         if let Some(link) = link.clone() {
             let held = client.peek().clone();
             spawn(async move {
-                if held.session().is_some()
-                    && let Ok(account) = held.whoami().await
-                {
-                    if account.email.eq_ignore_ascii_case(link.email.trim()) {
-                        on_signed_in.call(Some(account));
-                        return;
+                if held.session().is_some() {
+                    match held.whoami().await {
+                        Ok(account) if account.email.eq_ignore_ascii_case(link.email.trim()) => {
+                            on_signed_in.call(Some(account));
+                            return;
+                        }
+                        _ => session.end(held).await,
                     }
-                    session.end(held).await;
                 }
                 verify_link(link);
             });

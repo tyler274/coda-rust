@@ -245,6 +245,54 @@ async fn another_physicians_sign_in_starts_this_tab_over_at_today() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_tab_follows_another_tabs_account_switch_without_undoing_it() {
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    sign_in(&mut browser, &base);
+    browser.click(r#"button[aria-label="Open Mary Louis"]"#);
+    browser.wait_for("Patient summary");
+    // What the switching tab does: it stores the new session, then tells the
+    // other tabs it signed out and who signed in, back to back.
+    browser.page().evaluate(&format!(
+        "(async () => {{ \
+           const post = (path, body) => fetch(path, {{ method: 'POST', \
+             headers: {{ 'content-type': 'application/json' }}, body: JSON.stringify(body) }}) \
+             .then(r => r.json()); \
+           const issued = await post('/auth/sign-in', {{ email: '{STAGING_EMAIL}' }}); \
+           const verified = await post('/auth/verify', \
+             {{ email: '{STAGING_EMAIL}', token: issued.token }}); \
+           window.__switched = verified.session; \
+           localStorage.setItem('coda.physician.session', verified.session); \
+           const channel = new BroadcastChannel('coda.physician.session'); \
+           channel.postMessage(JSON.stringify({{ from: 'another-tab', kind: 'signed_out' }})); \
+           channel.postMessage(JSON.stringify({{ from: 'another-tab', kind: 'signed_in', \
+             physician_id: 'another-physician', session: verified.session }})); }})(); 'sent'"
+    ));
+    wait_until(
+        &mut browser,
+        "!!window.__switched \
+         && !!document.querySelector('button[aria-label=\"Open Mary Louis\"]') \
+         && !document.body.innerText.includes('Patient summary')",
+        "following the switch to Today",
+    );
+    let switched = browser.page().evaluate("window.__switched");
+    let switched = switched.as_str().expect("switched session").to_owned();
+    // Give any late cleanup the time a sign-out request takes.
+    std::thread::sleep(Duration::from_secs(1));
+    assert_eq!(stored_session(&mut browser), Some(switched.clone()));
+    assert_eq!(whoami_status(&mut browser, &switched), 200);
+    assert!(
+        browser
+            .body_text()
+            .is_some_and(|text| !text.contains("Sign in to Coda")),
+        "the tab undid the switch"
+    );
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_signed_out_tab_holding_a_patient_link_lands_on_it_when_another_tab_signs_in() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
