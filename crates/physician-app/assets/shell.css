@@ -54,7 +54,7 @@ button, input { font: inherit; }
 .sidebar-brand { display: inline-flex; align-items: center; min-height: var(--target); padding: 0 var(--space-2); border: 0; background: transparent; cursor: pointer; }
 .coda-logo { display: block; width: auto; height: var(--logo-height); }
 /* The wordmark is dark ink; on the dark canvas it reads in the canvas's own light ink. */
-@media (prefers-color-scheme: dark) { .coda-logo { filter: brightness(0) invert(.96); } }
+@media (prefers-color-scheme: dark) { :is(.coda-logo, .sign-in-logo) { filter: brightness(0) invert(.96); } }
 button.sidebar-expand { display: none; }
 .glass-app.has-collapsed-sidebar button.sidebar-expand { display: inline-flex; }
 .sidebar-primary { display: grid; gap: var(--space-hair); margin-top: var(--space-4); }
@@ -223,14 +223,14 @@ button.sidebar-expand { display: none; }
 .composer { margin-bottom: max(var(--space-3), env(safe-area-inset-bottom)); }
 /* The composer's own notice leads its toolbar; its actions keep the far edge. */
 .composer-toolbar > .composer-notice { margin-right: auto; }
-.reader-body { margin: 0 0 var(--space-4); color: var(--body); white-space: pre-wrap; font: var(--type-body-md); }/* The public entry uses Coda’s website palette; the workspace keeps its tokens. */
+.reader-body { margin: 0 0 var(--space-4); color: var(--body); white-space: pre-wrap; font: var(--type-body-md); }/* The public entry, on the shared colour roles like the rest of the app. */
 .sign-in-screen {
   display: grid;
   place-items: center;
   min-height: 100dvh;
   padding: 48px 24px;
-  background: #f8f7f4;
-  color: #17211b;
+  background: var(--surface);
+  color: var(--ink);
 }
 .sign-in-screen, .sign-in-screen * { box-sizing: border-box; }
 .sign-in-card {
@@ -240,24 +240,24 @@ button.sidebar-expand { display: none; }
 }
 .sign-in-logo { display: block; width: 152px; height: auto; margin: 0 0 48px; }
 .sign-in-content { display: grid; gap: 16px; }
-.sign-in-card h1 { margin: 0; color: #17211b; font-size: 30px; font-weight: 500; line-height: 1.25; letter-spacing: -0.7px; }
-.sign-in-card .sign-in-sub { margin: 0; color: #5e6963; font-size: 15px; line-height: 1.65; }
+.sign-in-card h1 { margin: 0; color: var(--ink); font-size: 30px; font-weight: 500; line-height: 1.25; letter-spacing: -0.7px; }
+.sign-in-card .sign-in-sub { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
 .sign-in-form { display: grid; gap: 16px; margin-top: 20px; }
-.sign-in-card label { display: grid; gap: 8px; color: #3a4540; font-size: 13px; font-weight: 500; }
+.sign-in-card label { display: grid; gap: 8px; color: var(--body); font-size: 13px; font-weight: 500; }
 .sign-in-input {
   width: 100%;
   height: 46px;
   padding: 0 14px;
-  border: 1px solid #d9ddd6;
+  border: 1px solid var(--outline);
   border-radius: 10px;
-  background: #fff;
-  color: #17211b;
+  background: var(--surface-lowest);
+  color: var(--ink);
   font-size: 16px;
 }
-.sign-in-input::placeholder { color: #7c857f; }
-.sign-in-input:focus-visible { outline: 2px solid #0e5237; outline-offset: 3px; }
-.sign-in-email { margin: -4px 0 8px; color: #17211b; font-size: 15px; font-weight: 500; overflow-wrap: anywhere; }
-.sign-in-hint { margin: 0; color: #5e6963; font-size: 13px; line-height: 1.6; }
+.sign-in-input::placeholder { color: var(--muted); }
+.sign-in-input:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.sign-in-email { margin: -4px 0 8px; color: var(--ink); font-size: 15px; font-weight: 500; overflow-wrap: anywhere; }
+.sign-in-hint { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .sign-in-actions { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 20px; }
 .sign-in-text-action {
   min-height: 36px;
@@ -265,15 +265,15 @@ button.sidebar-expand { display: none; }
   border: 0;
   border-radius: 2px;
   background: transparent;
-  color: #0e5237;
+  color: var(--primary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   text-align: left;
 }
 .sign-in-text-action:hover { text-decoration: underline; text-underline-offset: 4px; }
-.sign-in-text-action:focus-visible { outline: 2px solid #0e5237; outline-offset: 4px; }
-.sign-in-change { color: #5e6963; font-weight: 400; }
+.sign-in-text-action:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+.sign-in-change { color: var(--muted); font-weight: 400; }
 .sign-in-primary {
   min-height: var(--control-height);
   padding: 0 var(--space-4);
@@ -289,17 +289,17 @@ button.sidebar-expand { display: none; }
   min-height: 44px;
   border: 0;
   border-radius: 10px;
-  background: #0e5237;
-  color: #fff;
+  background: var(--primary);
+  color: var(--on-primary);
   font-size: 14px;
   font-weight: 500;
   transition: background 150ms ease;
 }
-.sign-in-card .sign-in-primary:hover:enabled { background: #0b4430; }
-.sign-in-card .sign-in-primary:focus-visible { outline: 2px solid #0e5237; outline-offset: 3px; }
-.sign-in-error { margin: 0; color: #8c352d; font-size: 15px; line-height: 1.65; }
-.sign-in-progress { width: 64px; height: 2px; margin-top: 16px; overflow: hidden; background: #e6e7e2; }
-.sign-in-progress span { display: block; width: 28px; height: 100%; background: #0e5237; animation: sign-in-working 1.3s ease-in-out infinite; }
+.sign-in-card .sign-in-primary:hover:enabled { background: color-mix(in srgb, var(--primary), var(--ink) 18%); }
+.sign-in-card .sign-in-primary:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.sign-in-error { margin: 0; color: var(--error); font-size: 15px; line-height: 1.65; }
+.sign-in-progress { width: 64px; height: 2px; margin-top: 16px; overflow: hidden; background: var(--surface-highest); }
+.sign-in-progress span { display: block; width: 28px; height: 100%; background: var(--primary); animation: sign-in-working 1.3s ease-in-out infinite; }
 @keyframes sign-in-arrive { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes sign-in-working { 0% { transform: translateX(-28px); } 100% { transform: translateX(64px); } }
 @media (max-width: 480px) {
