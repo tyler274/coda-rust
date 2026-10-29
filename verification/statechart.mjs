@@ -2,18 +2,21 @@
 // Check a journey chart, an XState machine, and compile it to Verus.
 //
 //   node verification/statechart.mjs check CHART.mjs [JOURNEYS.md]
+//   node verification/statechart.mjs compare AGREED.mjs CODE.mjs
 //   node verification/statechart.mjs verus CHART.mjs --module NAME [--check]
 //
 // XState's own graph search finds every reachable state; the chart's meta.never rules
 // are checked on each, and journeys replay on the machine itself. `verus` writes the same
-// behavior as a Verus model for the chart's proof. Charts are flat parallel regions whose
+// behavior as a Verus model for the chart's proof. `compare` sets a chart of what the code
+// does beside the agreed chart, as PStack's from-chart --against does, and prints every
+// difference for Dev to settle: the code is wrong, or the chart needs a correction. Charts are flat parallel regions whose
 // guards are stateIn, not, and or or: what Sketch shows and Verus can state. load()
 // refuses anything else, so both commands read exactly the behavior XState runs.
 import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { pathToFileURL } from "node:url";
-import { and, createActor, not, or, stateIn } from "xstate";
+import { and, createActor, getNextSnapshot, not, or, stateIn } from "xstate";
 import { getShortestPaths } from "@xstate/graph";
 
 const CHECKS = { stateIn: stateIn({}).check, not: not(() => true).check, and: and([]).check, or: or([]).check };
@@ -115,6 +118,49 @@ function check(chart) {
   }
   console.log(failed ? "" : `Every rule holds in all ${paths.length} reachable states. Data, progress and implementation remain separate.`);
   return !failed;
+}
+
+// The code chart may add regions and events of its own; the comparison sees it through
+// the agreed chart's regions. A step that leaves those regions unchanged is not compared.
+function compare(agreed, code) {
+  const missing = agreed.regions.filter((r) => !code.regions.some((c) => c.caption === r.caption));
+  if (missing.length) throw new Error(`the code chart has no region ${missing.map((r) => r.caption).join(", ")}`);
+  const seen = (snapshot) => agreed.regions.map((r) => snapshot.value[r.caption]);
+  const reach = (chart) => {
+    const paths = getShortestPaths(chart.machine, { events: chart.events.map((type) => ({ type })) });
+    const states = new Set(), edges = new Set();
+    for (const p of paths) {
+      const at = seen(p.state).join(" | ");
+      states.add(at);
+      for (const type of chart.events) {
+        const to = seen(getNextSnapshot(chart.machine, p.state, { type })).join(" | ");
+        if (to !== at) edges.add(`${at}  --${type}-->  ${to}`);
+      }
+    }
+    return { paths, states, edges, start: seen(createActor(chart.machine).getSnapshot()).join(" | ") };
+  };
+  const a = reach(agreed), c = reach(code);
+  const minus = (x, y) => [...x].filter((v) => !y.has(v)).sort();
+  const rows = [
+    ["start state differs", a.start === c.start ? [] : [`agreed: ${a.start}`, `code:   ${c.start}`]],
+    ["states the agreed chart reaches and the code does not", minus(a.states, c.states)],
+    ["states the code reaches and the agreed chart does not", minus(c.states, a.states)],
+    ["steps only in the agreed chart", minus(a.edges, c.edges)],
+    ["steps only in the code", minus(c.edges, a.edges)],
+  ].filter(([, xs]) => xs.length);
+  console.log(`Regions, in order: ${agreed.regions.map((r) => r.caption).join(" | ")}`);
+  for (const [title, xs] of rows) console.log(`\n${title}:\n${xs.map((x) => `  ${x}`).join("\n")}`);
+  let broken = 0;
+  for (const rule of agreed.rules) {
+    const path = c.paths.filter((p) => breaks(agreed, rule, seen(p.state))).sort((x, y) => x.steps.length - y.steps.length)[0];
+    if (!path) continue;
+    broken++;
+    console.log(`\nThe code breaks ${rule.name}: ${rule.sentence}`);
+    path.steps.forEach((step, i) => console.log(`  ${i + 1}. ${i ? step.event.type : "Start"} → ${words(code, where(code, step.state))}`));
+  }
+  const differences = rows.reduce((n, [, xs]) => n + xs.length, 0) + broken;
+  console.log(differences ? `\n${differences} difference(s)` : "same");
+  return differences === 0;
 }
 
 // Journeys: "## Name", an optional "From: Name", then "1. event → State; State".
@@ -278,10 +324,12 @@ try {
     const ok = check(chart);
     const journeyFile = rest.find((a) => !a.startsWith("--"));
     process.exitCode = ok && (!journeyFile || journeys(chart, fs.readFileSync(journeyFile, "utf8"))) ? 0 : 1;
+  } else if (command === "compare" && file && rest[0]) {
+    process.exitCode = compare(await load(file), await load(rest[0])) ? 0 : 1;
   } else if (command === "verus" && file && /^[A-Za-z]\w*$/.test(flag("--module") ?? "")) {
     writeVerus(await load(file), flag("--module"), flag("--dir") ?? path.join(path.dirname(file), "verus"), rest.includes("--check"));
   } else {
-    console.error("Usage: node verification/statechart.mjs check CHART.mjs [JOURNEYS.md]\n       node verification/statechart.mjs verus CHART.mjs --module NAME [--dir OUT] [--check]");
+    console.error("Usage: node verification/statechart.mjs check CHART.mjs [JOURNEYS.md]\n       node verification/statechart.mjs compare AGREED.mjs CODE.mjs\n       node verification/statechart.mjs verus CHART.mjs --module NAME [--dir OUT] [--check]");
     process.exitCode = 2;
   }
 } catch (error) {

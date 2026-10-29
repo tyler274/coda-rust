@@ -75,7 +75,16 @@ From the repository root, after `npm install --prefix verification`:
    the chart.
 10. Break a copy of the chart to match a real failure, and confirm that `check`
     and Verus both fail on it.
-11. Replay each bug against the real code, as a test or a live repro, one step per
+11. Draw what the code does as `code.mjs` beside the chart: the same regions and
+    the chart's words, with the code's own guards, plus any steps and screens only
+    the code has. Give each event a `code` note naming where the code does it, and
+    name the commit it reads in the file's header. Make each step one indivisible
+    step in the code, with every region's part of it guarded by the screen the code
+    needs. Then `node verification/statechart.mjs compare CHART.mjs code.mjs`
+    prints the states and steps only one of them has, and every agreed rule the
+    code breaks with its shortest path. For each difference, ask Dev whether the
+    code is wrong or the chart needs a correction.
+12. Replay each bug against the real code, as a test or a live repro, one step per
     event. If a bug doesn't reproduce, assume the chart is wrong until you show
     otherwise.
 

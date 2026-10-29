@@ -126,6 +126,7 @@ python3 verification/install-verus.py
 python3 verification/check.py formal --spec path/to/the/feature-proof.rs
 npm install --prefix verification
 node verification/statechart.mjs check path/to/the/journey.mjs path/to/journeys.md
+node verification/statechart.mjs compare path/to/the/journey.mjs path/to/code.mjs
 ```
 
 There is no default proof for an unspecified feature. The extra toolchain does not
