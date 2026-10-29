@@ -1,10 +1,13 @@
 //! Shared presentation for the Duet and physician Dioxus apps.
-//! Tokens come from the physician stylesheet; product screens stay in each app.
+//! The tokens here own the product's colour, type, space, shape and motion roles; product screens stay in each app.
 //! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
 
 use dioxus::dioxus_core::AttributeValue;
 use dioxus::prelude::*;
+
+mod icons;
+pub use icons::{Icon, IconName};
 
 /// The `STYLESHEET` constant.
 pub const STYLESHEET: &str = concat!(

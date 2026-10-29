@@ -1,10 +1,12 @@
-//! The physician shell's icons. The paths are the React `Icon` component.
+//! The shared icons, for the physician app and Duet alike. The paths are the React `Icon` component.
 
 use dioxus::prelude::*;
 
+/// The stroke width every icon draws with.
 pub const STROKE: &str = "1.8";
 
-#[allow(dead_code)]
+/// The icons in the shared set, each named as the React app names it.
+#[allow(dead_code, missing_docs)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum IconName {
     Alert,
@@ -47,6 +49,7 @@ pub enum IconName {
 }
 
 impl IconName {
+    /// Every icon, for the parity test.
     #[cfg(test)]
     pub const ALL: [IconName; 37] = [
         IconName::Alert,
@@ -88,6 +91,7 @@ impl IconName {
         IconName::X,
     ];
 
+    /// The React app's name for this icon.
     #[cfg(test)]
     pub fn react_name(self) -> &'static str {
         match self {
@@ -385,6 +389,7 @@ fn marks(name: IconName) -> &'static [Mark] {
     }
 }
 
+/// One icon, drawn in the current text colour at the surrounding text's icon size.
 #[component]
 pub fn Icon(name: IconName) -> Element {
     rsx! {

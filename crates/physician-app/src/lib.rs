@@ -4,7 +4,6 @@
 #![deny(missing_docs)]
 
 mod composer;
-mod icons;
 mod local_draft;
 mod panels;
 mod shell;
@@ -14,7 +13,6 @@ use std::sync::atomic::{AtomicU64, Ordering};
 
 use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAnswer};
 use dioxus::prelude::*;
-use icons::{Icon, IconName};
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
@@ -37,7 +35,10 @@ use shell::{
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
-use ui::{Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, ReadNotice};
+use ui::{
+    Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, Icon, IconName,
+    ReadNotice,
+};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
 const UPDATES_LOADING: &str = "Loading updates…";

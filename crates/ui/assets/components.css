@@ -28,6 +28,7 @@
 .control-danger:is(.control-secondary, .control-quiet) { color: var(--error); }
 .control-danger.control-secondary { border-color: var(--error-outline); }
 /* A leading icon is quieter than its label, except where it is the label or on the filled action. */
+.icon { display: block; width: var(--icon-size); height: var(--icon-size); flex: none; }
 .control > .icon { color: var(--muted); }
 :is(.control-primary, .control-icon, .control-danger) > .icon { color: inherit; }
 .action-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
