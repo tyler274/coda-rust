@@ -16,12 +16,12 @@ explain responsibilities, implemented behavior and operating procedures.
 | --- | --- |
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
 | Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; production serves the same tested image without sign-in from the same root, and its applies, DNS changes and Vercel retirement need Dev's explicit authorization |
-| Physician product, clinical runtime, and the clinical skill catalog | [Operating invariants](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
+| Physician product, clinical runtime, and the clinical skill catalog | [Physician spec](intent/physician.md), [Rust implementation](book/src/physician-site.md), and [operating invariants](book/src/agent-contracts.md) |
 | Clinical skill markdown | [skills](skills), the same catalog as coda-agents', read by `crates/agent-skills` for `crates/harness`; hosted physician chat (`physician-worker`) loads it at startup |
 | Engineering workflow | [Development workflow](#development-workflow) below routes shaping, implementation, local review, and PR work through the shared skills. [repo-graph-audit](.agents/skills/repo-graph-audit/SKILL.md) helps when repository ownership or handoffs need investigation. |
 | Product-flow design and verification workflows | [Coda verification](verification/README.md), then the adopted engineering skills in [.agents/skills](.agents/skills); load [coda-statechart](.agents/skills/coda-statechart/SKILL.md) in every session before editing any journey chart under `verification/`; discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
-| Duet, the patient app | [Duet invariants](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
+| Duet, the patient app | [Duet spec](intent/duet.md), [Rust backend](book/src/backend-architecture.md), [UI map](book/src/ui-surface-map.md), and [operating invariants](book/src/agent-contracts.md#duet-patient-app) |
 | Gym cases, promotion, and runs | [Gym invariants](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |
 | Computer use | [Computer-use invariants](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
 | Synthetic patients: the patient bank tool and the patient set | [Synthetic patients](book/src/patient-bank.md), then [the patient-bank README](crates/patient-bank/README.md) |
@@ -146,5 +146,3 @@ run ignored browser tests locally or dispatch CI manually for full qualification
 See [local CI checks](README.md#local-ci-checks).
 
 CI runs on Blacksmith runners, which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. The `ci` job uses `blacksmith-4vcpu-ubuntu-2404` and `cargo-deny` uses `blacksmith-2vcpu-ubuntu-2404`. `.actrc` maps both labels to the `act` image, and [`.github/actionlint.yaml`](.github/actionlint.yaml) declares them. To roll back, set `runs-on` to `ubuntu-latest`.
-
-React and SwiftUI remain the shipping clients until a journey matches them. Do not claim a production cutover, a TestFlight release, or a physician production deploy from this repository.

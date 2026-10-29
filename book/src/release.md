@@ -1,6 +1,6 @@
 # Build, CI, and release
 
-This page links the owners of each release path. Each owner keeps its own procedure. The rule in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a> still applies: this repository does not claim a production cutover, a TestFlight release, or a physician production deploy.
+This page links the owners of each release path. Each owner keeps its own procedure.
 
 ## Continuous integration
 
