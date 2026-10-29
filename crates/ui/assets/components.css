@@ -362,3 +362,55 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   color: var(--body); font: var(--type-body-md); transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .undo-notice { opacity: 0; transform: translateY(var(--rise)); } }
 .undo-notice.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
+/* Reading a cited source (React's citation preview and source reading layout). The preview sits at the overlay's
+   depth beside its citation, below it when there is room and above it when not, and never covers it. */
+.anchored-popover { display: inline; }
+.citation-chip[aria-expanded="true"] { border-color: var(--primary); background: var(--highlight); }
+.citation-preview { position: fixed; z-index: 20; top: anchor(bottom); left: anchor(left); position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; position-visibility: anchors-visible;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; row-gap: var(--space-3); box-sizing: border-box;
+  width: min(var(--popover-width), calc(100vw - 2 * var(--space-3))); max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3)));
+  margin: 6px 0; padding: var(--space-4); overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg);
+  background: var(--surface-lowest); color: var(--body); box-shadow: var(--elevation-4); font: var(--type-body-md); text-align: left; white-space: normal;
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .citation-preview { opacity: 0; transform: translateY(var(--rise-small)); } }
+.citation-preview-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.citation-preview-heading > span { display: grid; gap: var(--space-hair); min-width: 0; }
+.citation-preview-heading small, .source-pane-heading small { color: var(--muted); font: var(--type-body-sm); }
+.citation-preview-heading strong { color: var(--ink); font: var(--type-title-sm); }
+.citation-preview-body { display: block; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.citation-preview-actions { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
+.citation-preview-actions .navigation-control { min-height: var(--control-height); padding: var(--space-1) 0; font: var(--type-body-sm); overflow-wrap: anywhere; }
+/* What a source says: its own metadata in a quiet line, quoted passages set off, then its content. */
+.citation-source-details { display: grid; gap: var(--space-3); }
+.citation-source-metadata { display: flex; flex-wrap: wrap; gap: var(--space-hair) var(--space-2); color: var(--muted); font: var(--type-body-sm); }
+.citation-source-metadata > span + span::before { content: "·"; margin-inline-end: var(--space-2); }
+.citation-selected-passages { display: grid; gap: var(--space-2); }
+.citation-selected-passages blockquote { margin: 0; padding: var(--space-2) var(--space-3); border-left: 3px solid var(--primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--highlight); color: var(--ink); }
+.citation-unavailable-view { color: var(--muted); font: var(--type-body-sm); }
+/* One source beside the reader when both have room (a content fit in font-relative units), over it with Back when
+   not. The pane enters from its own edge and leaves the same way, shorter than it came. */
+.source-reading-layout { container: source-reading / inline-size; min-width: 0; min-height: 0; height: 100%; overflow: hidden; }
+.source-reading-frame { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); height: 100%; }
+.source-reading-main { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; }
+.source-reading-pane { grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface-lowest);
+  animation: source-enter var(--motion-arrive) var(--ease-out) both; }
+.source-reading-layout.is-source-closing .source-reading-pane { pointer-events: none; animation: source-exit var(--motion-control) var(--ease-exit) both; }
+.source-reading-layout.has-source .source-reading-main { visibility: hidden; }
+/* Leaving, the source uncovers the reader beneath it, so focus can return to the citation that opened it. */
+.source-reading-layout.is-source-closing .source-reading-main { visibility: visible; }
+.source-pane-close { display: none; }
+@container source-reading (min-width: 60rem) {
+  .source-reading-layout.has-source > .source-reading-frame { grid-template-columns: var(--source-reading-ratio); }
+  .source-reading-layout.has-source .source-reading-main { visibility: visible; }
+  .source-reading-pane { grid-column: 2; border-left: var(--hairline) solid var(--outline-variant); }
+  .source-pane-back { display: none; }
+  .source-pane-close { display: inline-flex; }
+}
+.source-pane-content { display: grid; grid-template-rows: auto minmax(0, 1fr); row-gap: var(--space-3); box-sizing: border-box; height: 100%; padding: var(--space-4); }
+.source-pane-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--space-2); }
+.source-pane-back { grid-column: 1 / -1; justify-self: start; }
+.source-pane-heading h2 { margin: var(--space-2) 0 0; color: var(--ink); font: var(--type-title-lg); }
+.source-pane-heading h2:focus { outline: none; }
+.source-pane-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+@keyframes source-enter { from { opacity: 0; transform: translateX(var(--rise)); } }
+@keyframes source-exit { to { opacity: 0; transform: translateX(var(--rise)); } }

@@ -7,14 +7,14 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CommandNotice, CommandStage,
-    Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog,
-    Disclosure, FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot,
-    MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline, Paper,
-    PaperSection, Placeholder, Quote, Rating, ReadNotice, ReadStage, Receipt, RowGroup,
-    SectionHeader, SelectionRow, SettingRow, SourcesButton, Sparkline, StatePill, StatusLine,
-    StepList, Suggestion, TabBar, Tag, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
-    WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CitationPreview, CommandNotice,
+    CommandStage, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
+    DateSeparator, Dialog, Disclosure, FeedbackRating, FooterActions, Icon, IconName, LaterContext,
+    ListRow, LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline,
+    Paper, PaperSection, Placeholder, Quote, Rating, ReadNotice, ReadStage, Receipt, RowGroup,
+    SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, ToggleChip,
+    Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
 };
 
 fn main() {
@@ -105,7 +105,7 @@ fn Gallery() -> Element {
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, the placeholder sheen while content loads, and notices for reads and commands.",
                     LoadingDemo {}
                 }
-                Section { title: "Citations and sources", note: "A citation in prose opens its source; a static one stays a mark.",
+                Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark.",
                     CitationDemo {}
                 }
                 Section { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A section's one action sits beside its title.",
@@ -562,20 +562,78 @@ fn LoadingDemo() -> Element {
 }
 
 #[cfg(feature = "web")]
+#[derive(Clone, Copy, PartialEq)]
+struct Cited {
+    index: usize,
+    title: &'static str,
+    metadata: [&'static str; 3],
+    passage: &'static str,
+    content: &'static str,
+}
+
+#[cfg(feature = "web")]
+const CITED: [Cited; 2] = [
+    Cited {
+        index: 1,
+        title: "Discharge summary",
+        metadata: ["Hospital course", "April 18", "Final"],
+        passage: "Admitted with decompensated heart failure; diuresed 6 kg.",
+        content: "Discharged on furosemide 40 mg daily with follow-up in cardiology clinic within two weeks.",
+    },
+    Cited {
+        index: 2,
+        title: "Cardiology note",
+        metadata: ["Assessment", "October 2", "Signed"],
+        passage: "NYHA II–III, mild congestion on exam.",
+        content: "Continue spironolactone 25 mg daily. Repeat potassium in one week.",
+    },
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn CitedDetails(cited: Cited) -> Element {
+    rsx! {
+        SourceDetails {
+            metadata: cited.metadata.iter().map(|value| value.to_string()).collect::<Vec<_>>(),
+            passages: vec![cited.passage.to_owned()],
+            p { class: "gallery-copy", "{cited.content}" }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
 #[component]
 fn CitationDemo() -> Element {
-    let mut open = use_signal(|| None::<usize>);
+    let mut open = use_signal(|| None::<Cited>);
+    let source = open().map(|cited| SourcePane {
+        eyebrow: format!("Source {}", cited.index),
+        title: cited.title.to_owned(),
+        content: rsx! { CitedDetails { cited } },
+    });
     rsx! {
-        p { class: "gallery-copy",
-            "Following an April admission with decompensated heart failure, she remained NYHA II–III with mild congestion."
-            CitationChip { index: 1, label: "Source 1: Discharge summary", onclick: move |_| open.set(Some(1)) }
-            CitationChip { index: 2, label: "Source 2: Cardiology note", onclick: move |_| open.set(Some(2)) }
-            " Genetic testing was not yet back."
-            CitationChip { index: 3, label: "Source 3: unavailable" }
-        }
-        if let Some(index) = open() {
-            Dialog { title: if index == 1 { "Discharge summary" } else { "Cardiology note" }, subtitle: "Read Today, 8:00 AM", on_close: move |_| open.set(None),
-                p { class: "gallery-copy", "The passage Coda cited for this claim." }
+        div { class: "gallery-reading",
+            SourceReading { source, on_close: move |_| open.set(None),
+                div { class: "gallery-reader",
+                    p { class: "gallery-copy",
+                        "Following an April admission with decompensated heart failure, she remained NYHA II–III with mild congestion."
+                        CitationPreview {
+                            index: 1,
+                            label: CITED[0].title,
+                            on_expand: move |_| open.set(Some(CITED[0])),
+                            original: "https://example.org/records/discharge",
+                            original_label: "Epic",
+                            CitedDetails { cited: CITED[0] }
+                        }
+                        CitationPreview {
+                            index: 2,
+                            label: CITED[1].title,
+                            on_expand: move |_| open.set(Some(CITED[1])),
+                            CitedDetails { cited: CITED[1] }
+                        }
+                        " Genetic testing was not yet back."
+                        CitationChip { index: 3, label: "Source 3: unavailable" }
+                    }
+                }
             }
         }
     }

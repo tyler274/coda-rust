@@ -14,6 +14,7 @@ mod conversation;
 mod documents;
 mod feedback;
 mod icons;
+mod sources;
 mod undo;
 pub use cards::{Card, LaterContext, Quote, StepList};
 pub use charts::{Comparison, ComparisonBars, MeasurementTile, Sparkline, TrendChart, Value};
@@ -23,6 +24,7 @@ pub use documents::{
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
+pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading};
 pub use undo::{UNDO_MS, UndoNotice};
 
 /// The `STYLESHEET` constant.
