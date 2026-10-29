@@ -246,7 +246,10 @@ class ReviewerTools:
                     f"repos/{repo}/pulls/{number}/reviews/{response['id']}/comments?per_page=100&page={page}",
                     token=token,
                 )
-                comments.extend(batch)
+                # Review-comment listings omit modern line/side fields. Fetch each
+                # listed comment's full representation, preserving review membership.
+                comments.extend(github(f"repos/{repo}/pulls/comments/{comment['id']}",
+                                       token=token) for comment in batch)
                 if len(batch) < 100:
                     break
                 page += 1

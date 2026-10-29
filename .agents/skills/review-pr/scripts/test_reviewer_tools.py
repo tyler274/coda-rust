@@ -89,7 +89,15 @@ def fake_urlopen(request, timeout=0):
                  "commit_id": published["commit_id"],
                  "state": "APPROVED" if os.environ.get("MISMATCH_STATE") else "COMMENTED"}
     elif endpoint.startswith("repos/example/project/pulls/7/reviews/99/comments?"):
-        value = json.loads((root / "published.json").read_text())["comments"]
+        # This endpoint returns legacy review-comment summaries, without line/side.
+        value = [{"id": 100 + i, "path": c["path"], "body": c["body"]}
+                 for i, c in enumerate(json.loads((root / "published.json").read_text())["comments"])]
+    elif endpoint.startswith("repos/example/project/pulls/comments/10"):
+        index = int(endpoint.rsplit("/", 1)[1]) - 100
+        value = dict(json.loads((root / "published.json").read_text())["comments"][index],
+                     id=100 + index, pull_request_review_id=99)
+        if os.environ.get("MISMATCH_COMMENT"):
+            value["line"] = 999
     elif endpoint == "repos/example/project/pulls/7/comments/200/replies" and method == "POST":
         (root / "published-reply.json").write_text(json.dumps(payload))
         value = {"id": 300}
@@ -282,6 +290,15 @@ class ReviewerToolProtocol(unittest.TestCase):
     def test_mismatched_saved_event_is_not_accepted_as_a_receipt(self):
         prepared = self.prepare_draft()
         self.env["MISMATCH_STATE"] = "1"
+        process = self.start()
+        result = self.tool(process, 7, "publish", {"draft_id": prepared["draft_id"]})
+        self.assertTrue(result["isError"])
+        self.assertIn("did not match", result["content"][0]["text"])
+        self.assertFalse(Path(prepared["draft_path"]).with_suffix(".receipt.json").exists())
+
+    def test_wrong_inline_location_is_not_accepted_as_a_receipt(self):
+        prepared = self.prepare_draft()
+        self.env["MISMATCH_COMMENT"] = "1"
         process = self.start()
         result = self.tool(process, 7, "publish", {"draft_id": prepared["draft_id"]})
         self.assertTrue(result["isError"])
