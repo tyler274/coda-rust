@@ -48,6 +48,10 @@ unavailable, use other authoritative evidence, state any material limit, and dra
 the supported parts. Do not invent rationale or present an assumption as approval.
 Writing a PR does not authorize redesigning or repairing the implementation.
 
+Make GitHub the shared record of reviewable intent: preserve the relevant user
+decisions, corrections, constraints, and unresolved questions in the PR explanation
+or linked repository sources. Distinguish approved decisions from author assumptions;
+do not require access to a private coding session to understand a material promise.
 Preserve the useful rationale in an explanation that stands on its own. Link to
 reviewer-accessible sources when helpful; do not dump the transcript or expose
 private conversation, customer data, or credentials. Include a rejected approach
@@ -115,7 +119,9 @@ or assigning anyone.
 After material revisions, re-read the complete diff and reconsider both title and
 body. Update purpose, scope, dependencies, risks, and verification claims; remove
 superseded explanations. Describe the final coherent solution rather than narrating
-patches or review rounds. Keep unresolved concerns visible.
+patches or review rounds. Keep unresolved concerns visible. Preserve the history of
+findings, responses, and verification in GitHub review threads; updating the PR body
+does not replace replying to those findings through review-pr.
 
 ## Deliver within the task's authority
 
