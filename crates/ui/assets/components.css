@@ -363,16 +363,18 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 @starting-style { .undo-notice { opacity: 0; transform: translateY(var(--rise)); } }
 .undo-notice.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
 /* Reading a cited source (React's citation preview and source reading layout). The preview sits at the overlay's
-   depth beside its citation, below it when there is room and above it when not, and never covers it. */
+   depth beside its citation, on the side with more room, and never covers it; the component places it. */
 .anchored-popover { display: inline; }
 .citation-chip[aria-expanded="true"] { border-color: var(--primary); background: var(--highlight); }
-.citation-preview { position: fixed; z-index: 20; top: anchor(bottom); left: anchor(left); position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; position-visibility: anchors-visible;
+.citation-preview { position: fixed; z-index: 20;
   display: grid; grid-template-rows: auto minmax(0, 1fr) auto; row-gap: var(--space-3); box-sizing: border-box;
-  width: min(var(--popover-width), calc(100vw - 2 * var(--space-3))); max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3)));
-  margin: 6px 0; padding: var(--space-4); overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg);
-  background: var(--surface-lowest); color: var(--body); box-shadow: var(--elevation-4); font: var(--type-body-md); text-align: left; white-space: normal;
-  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
-@starting-style { .citation-preview { opacity: 0; transform: translateY(var(--rise-small)); } }
+  width: min(var(--popover-width), calc(100vw - 2 * var(--space-3))); max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3)), var(--popover-available-height, var(--popover-max-height)));
+  margin: 0; padding: var(--space-4); overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg);
+  background: var(--surface-lowest); color: var(--body); box-shadow: var(--elevation-4); font: var(--type-body-md); text-align: left; white-space: normal; }
+/* It enters once placed, from its citation's side. */
+.citation-preview[data-side] { animation: preview-enter var(--motion-arrive) var(--ease-out) both; }
+.citation-preview[data-side="above"] { --preview-from: calc(-1 * var(--rise-small)); }
+@keyframes preview-enter { from { opacity: 0; transform: translateY(calc(-1 * var(--preview-from, var(--rise-small)))); } }
 .citation-preview-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
 .citation-preview-heading > span { display: grid; gap: var(--space-hair); min-width: 0; }
 .citation-preview-heading small, .source-pane-heading small { color: var(--muted); font: var(--type-body-sm); }
