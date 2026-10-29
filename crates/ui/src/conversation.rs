@@ -78,7 +78,17 @@ pub fn ConversationViewport(
                     class: "jump-to-latest",
                     onclick: move |_| {
                         has_new.set(false);
-                        reveal(ScrollBehavior::Smooth);
+                        // Scrolling asked for in code ignores the stylesheet's reduced-motion rule,
+                        // so the preference is read here, as the React app does.
+                        spawn(async move {
+                            let reduced = document::eval(
+                                "return matchMedia('(prefers-reduced-motion: reduce)').matches",
+                            )
+                            .join::<bool>()
+                            .await
+                            .unwrap_or(false);
+                            reveal(if reduced { ScrollBehavior::Instant } else { ScrollBehavior::Smooth });
+                        });
                     },
                     "{jump_label}"
                 }

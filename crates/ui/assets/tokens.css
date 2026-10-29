@@ -208,7 +208,7 @@
   /* Motion roles, one duration each (coda-app DuetMotion): press; control change, which every exit uses so exits are
      always shorter than entries; arrival; step (panes, sheets, layout). Every host names a role, as with type. */
   --motion-press: 120ms;
-  --motion-control: 140ms;
+  --motion-control: 140ms; /* ui::EXIT_MS removes a settling surface after this; change both together. */
   --motion-arrive: 260ms;
   --motion-step: 340ms;
   /* The focus ring's grow and settle, together. */

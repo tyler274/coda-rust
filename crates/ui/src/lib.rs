@@ -27,6 +27,11 @@ pub use icons::{Icon, IconName};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading};
 pub use undo::{UNDO_MS, UndoNotice};
 
+/// How long a surface takes to settle away before it is removed: `--motion-control` in
+/// `tokens.css`, which owns it. Removal waits on a timer rather than the animation's end because
+/// reduced motion turns the animation off.
+pub(crate) const EXIT_MS: u64 = 140;
+
 /// The `STYLESHEET` constant.
 pub const STYLESHEET: &str = concat!(
     include_str!("../assets/tokens.css"),

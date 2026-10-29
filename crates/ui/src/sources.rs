@@ -9,7 +9,7 @@ use std::time::Duration;
 use dioxus::html::geometry::PixelsRect;
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName};
+use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName};
 
 static PREVIEWS: AtomicUsize = AtomicUsize::new(0);
 
@@ -17,27 +17,62 @@ static PREVIEWS: AtomicUsize = AtomicUsize::new(0);
 /// keeps it open.
 const CLOSE_DELAY_MS: u64 = 160;
 
-/// How long the source pane takes to settle away: the control motion.
-const EXIT_MS: u64 = 140;
-
 /// The room a preview keeps from the window's edges.
 const EDGE_PX: f64 = 12.0;
 
 /// The room between a preview and its citation.
 const GAP_PX: f64 = 6.0;
 
-/// Reports the window's size now and on every scroll or resize, until told to stop. Every Dioxus
-/// renderer runs it the same way, so placement depends on no one browser engine's CSS.
-const WATCH_WINDOW: &str = "
+/// What the open preview hears from the page while it is open, until told to stop: the window's
+/// size now and on every scroll or resize; Escape, taken first so a surrounding dialog keeps it,
+/// with whether focus was inside the preview; and the citation going out of sight, scroll areas
+/// included. Every Dioxus renderer runs it the same way, so the preview depends on no one engine's
+/// CSS. `{citation}` and `{preview}` are the two elements' ids.
+const WATCH_PAGE: &str = "
 const root = document.documentElement;
-const report = () => dioxus.send([root.clientWidth, root.clientHeight]);
+const citation = document.getElementById('{citation}');
+const preview = document.getElementById('{preview}');
+const report = () => dioxus.send([0, root.clientWidth, root.clientHeight]);
+const escape = (event) => {
+  if (event.key !== 'Escape') return;
+  event.preventDefault();
+  event.stopPropagation();
+  dioxus.send([1, preview !== null && preview.contains(document.activeElement) ? 1 : 0, 0]);
+};
+const sight = new IntersectionObserver(([entry]) => { if (entry !== undefined && !entry.isIntersecting) dioxus.send([2, 0, 0]); });
+if (citation !== null) sight.observe(citation);
 addEventListener('scroll', report, true);
 addEventListener('resize', report);
+document.addEventListener('keydown', escape, true);
 report();
 await dioxus.recv();
+sight.disconnect();
 removeEventListener('scroll', report, true);
 removeEventListener('resize', report);
+document.removeEventListener('keydown', escape, true);
 ";
+
+/// One thing `WATCH_PAGE` heard.
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum Heard {
+    /// The window, as wide and tall as this.
+    Window(f64, f64),
+    /// Escape, and whether focus was inside the preview.
+    Escape(bool),
+    /// The citation is out of sight.
+    Away,
+}
+
+impl Heard {
+    fn read([kind, a, b]: [f64; 3]) -> Option<Self> {
+        match kind as u8 {
+            0 => Some(Self::Window(a, b)),
+            1 => Some(Self::Escape(a != 0.0)),
+            2 => Some(Self::Away),
+            _ => None,
+        }
+    }
+}
 
 /// Where a preview sits: its left edge, the edge nearest its citation, and the height it has.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -52,22 +87,13 @@ struct Placement {
 /// Places a preview of `width` beside `citation` in a window of `window` size, after the React
 /// app's anchored popover. It goes on the side with more room, chosen once per opening (`side`)
 /// so content that loads later never flips it, and never covers the citation: its height is
-/// held to that side instead. Above, it grows away from the citation. `None` once the citation
-/// has left the window.
-fn place(
-    citation: PixelsRect,
-    width: f64,
-    window: (f64, f64),
-    side: Option<bool>,
-) -> Option<Placement> {
+/// held to that side instead. Above, it grows away from the citation.
+fn place(citation: PixelsRect, width: f64, window: (f64, f64), side: Option<bool>) -> Placement {
     let (window_width, window_height) = window;
-    if citation.max_y() < 0.0 || citation.min_y() > window_height {
-        return None;
-    }
     let below_room = (window_height - EDGE_PX - citation.max_y() - GAP_PX).max(0.0);
     let above_room = (citation.min_y() - GAP_PX - EDGE_PX).max(0.0);
     let below = side.unwrap_or(below_room >= above_room);
-    Some(Placement {
+    Placement {
         left: citation
             .min_x()
             .min(window_width - width - EDGE_PX)
@@ -79,7 +105,7 @@ fn place(
         },
         below,
         room: if below { below_room } else { above_room },
-    })
+    }
 }
 
 /// Where the reading layout returns focus once its source closes: the citation that opened it.
@@ -143,6 +169,7 @@ pub fn CitationPreview(
         }
         expand.call(());
     };
+    let citation_id = format!("citation-{id}");
     let preview_id = format!("citation-preview-{id}");
     let original_text = match &original_label {
         Some(name) if !name.trim().is_empty() => format!("Open in {}", name.trim()),
@@ -161,14 +188,8 @@ pub fn CitationPreview(
                 focused.set(false);
                 leave();
             },
-            onkeydown: move |event| {
-                if event.key() == Key::Escape && open() {
-                    event.stop_propagation();
-                    event.prevent_default();
-                    close(true);
-                }
-            },
             button {
+                id: "{citation_id}",
                 class: "source-trigger citation-chip",
                 r#type: "button",
                 aria_label: "Source {index}: {label}. Preview source.",
@@ -193,11 +214,13 @@ pub fn CitationPreview(
                     id: "{preview_id}",
                     label: "Source {index}: {label}",
                     citation: trigger,
+                    citation_id: "{citation_id}",
                     on_enter: move |_| {
                         hovering.set(true);
                         pending += 1;
                     },
                     on_away: move |_| close(false),
+                    on_escape: close,
                     span { class: "citation-preview-heading",
                         span {
                             small { "Source {index}" }
@@ -245,18 +268,28 @@ pub fn CitationPreview(
 }
 
 /// The preview's surface, placed beside its citation while it is open and following it as the
-/// page scrolls. It stays unseen until first placed, so it enters already on its side.
+/// page scrolls. It stays unseen until first placed, so it enters already on its side. Escape
+/// closes it wherever focus is, returning focus to the citation only from inside the preview;
+/// the citation going out of sight closes it too.
 #[component]
 fn PreviewSurface(
     id: String,
     label: String,
     citation: Signal<Option<Rc<MountedData>>>,
+    citation_id: String,
     on_enter: EventHandler,
     on_away: EventHandler,
+    on_escape: EventHandler<bool>,
     children: Element,
 ) -> Element {
     let mut placement = use_signal(|| None::<Placement>);
-    let watch = use_hook(|| document::eval(WATCH_WINDOW));
+    let watch = use_hook(|| {
+        document::eval(
+            &WATCH_PAGE
+                .replace("{citation}", &citation_id)
+                .replace("{preview}", &id),
+        )
+    });
     use_drop(move || {
         let _ = watch.send(());
     });
@@ -288,18 +321,25 @@ fn PreviewSurface(
                 let surface = event.data();
                 let mut watch = watch;
                 spawn(async move {
-                    while let Ok([width, height]) = watch.recv::<[f64; 2]>().await {
-                        let Some(trigger) = citation.peek().clone() else { break };
-                        let (Ok(at), Ok(own)) = (trigger.get_client_rect().await, surface.get_client_rect().await) else {
-                            continue;
-                        };
-                        let side = (*placement.peek()).map(|at| at.below);
-                        match place(at, own.width(), (width, height), side) {
-                            Some(next) => placement.set(Some(next)),
-                            None => {
+                    while let Ok(message) = watch.recv::<[f64; 3]>().await {
+                        match Heard::read(message) {
+                            Some(Heard::Window(width, height)) => {
+                                let Some(trigger) = citation.peek().clone() else { break };
+                                let (Ok(at), Ok(own)) = (trigger.get_client_rect().await, surface.get_client_rect().await) else {
+                                    continue;
+                                };
+                                let side = (*placement.peek()).map(|at| at.below);
+                                placement.set(Some(place(at, own.width(), (width, height), side)));
+                            }
+                            Some(Heard::Escape(inside)) => {
+                                on_escape.call(inside);
+                                break;
+                            }
+                            Some(Heard::Away) => {
                                 on_away.call(());
                                 break;
                             }
+                            None => {}
                         }
                     }
                 });
@@ -454,11 +494,11 @@ mod tests {
 
     #[test]
     fn opens_on_the_roomier_side_without_covering_the_citation() {
-        let high = place(citation(100.0, 100.0), 360.0, (1000.0, 800.0), None).unwrap();
+        let high = place(citation(100.0, 100.0), 360.0, (1000.0, 800.0), None);
         assert!(high.below);
         assert_eq!(high.edge, 126.0);
         assert_eq!(high.room, 800.0 - 12.0 - 120.0 - 6.0);
-        let low = place(citation(100.0, 700.0), 360.0, (1000.0, 800.0), None).unwrap();
+        let low = place(citation(100.0, 700.0), 360.0, (1000.0, 800.0), None);
         assert!(!low.below);
         assert_eq!(low.edge, 800.0 - 700.0 + 6.0);
         assert_eq!(low.room, 700.0 - 6.0 - 12.0);
@@ -466,22 +506,22 @@ mod tests {
 
     #[test]
     fn keeps_its_side_once_chosen_and_stays_inside_the_window() {
-        let kept = place(citation(900.0, 700.0), 360.0, (1000.0, 800.0), Some(true)).unwrap();
+        let kept = place(citation(900.0, 700.0), 360.0, (1000.0, 800.0), Some(true));
         assert!(kept.below);
         assert_eq!(kept.left, 1000.0 - 360.0 - 12.0);
-        let narrow = place(citation(4.0, 100.0), 360.0, (300.0, 800.0), None).unwrap();
+        let narrow = place(citation(4.0, 100.0), 360.0, (300.0, 800.0), None);
         assert_eq!(narrow.left, 12.0);
     }
 
     #[test]
-    fn lets_go_once_the_citation_leaves_the_window() {
+    fn reads_what_the_page_reports() {
         assert_eq!(
-            place(citation(100.0, -40.0), 360.0, (1000.0, 800.0), None),
-            None
+            Heard::read([0.0, 1280.0, 800.0]),
+            Some(Heard::Window(1280.0, 800.0))
         );
-        assert_eq!(
-            place(citation(100.0, 820.0), 360.0, (1000.0, 800.0), None),
-            None
-        );
+        assert_eq!(Heard::read([1.0, 1.0, 0.0]), Some(Heard::Escape(true)));
+        assert_eq!(Heard::read([1.0, 0.0, 0.0]), Some(Heard::Escape(false)));
+        assert_eq!(Heard::read([2.0, 0.0, 0.0]), Some(Heard::Away));
+        assert_eq!(Heard::read([9.0, 0.0, 0.0]), None);
     }
 }
