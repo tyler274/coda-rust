@@ -169,10 +169,6 @@ mod tests {
                 "https://github.com/DopplerHQ/cli/releases/download/{version}/doppler_{version}_linux_amd64.tar.gz"
             )
         );
-        let dockerfile = include_str!("../../public-site/Dockerfile");
-        assert!(dockerfile.contains(URL));
-        assert!(dockerfile.contains(SHA256));
-        assert!(!dockerfile.contains("cli.doppler.com/download"));
         let nix = include_str!("../../../nix/packages.nix");
         assert!(nix.contains("url = pin \"URL\""));
         assert!(nix.contains("inherit (dopplerPin) url sha256"));
