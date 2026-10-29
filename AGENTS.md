@@ -18,7 +18,7 @@ explain responsibilities, implemented behavior and operating procedures.
 | Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; production serves the same tested image without sign-in from the same root, and its applies, DNS changes and Vercel retirement need Dev's explicit authorization |
 | Physician product, clinical runtime, and the clinical skill catalog | [Operating invariants](book/src/agent-contracts.md) and [coda-agents AGENTS.md](submodules/coda-agents/AGENTS.md) |
 | Clinical skill markdown | [skills](skills), the same catalog as coda-agents', read by `crates/agent-skills` for `crates/harness`; hosted physician chat (`physician-worker`) loads it at startup |
-| PR authoring, review and repository audits | [write-pr](.agents/skills/write-pr/SKILL.md) before creating or materially rewriting a PR; [review-pr](.agents/skills/review-pr/SKILL.md) for independent PR or coherent-batch assessment; [improve-review-pr](.agents/skills/improve-review-pr/SKILL.md) for requested retrospectives and guidance updates; [independent-review](.agents/skills/independent-review/SKILL.md) for local artifacts or combined outcomes; [repo-graph-audit](.agents/skills/repo-graph-audit/SKILL.md) for optional repository ownership and handoff audits. `.agents/skills` owns every repository skill; `.claude/skills` links to each one. Ordinary changes do not require a full graph audit. |
+| Engineering workflow | [Development workflow](#development-workflow) below routes shaping, implementation, local review, and PR work through the shared skills. [repo-graph-audit](.agents/skills/repo-graph-audit/SKILL.md) helps when repository ownership or handoffs need investigation. |
 | Product-flow design and verification workflows | [Coda verification](verification/README.md), then the adopted engineering skills in [.agents/skills](.agents/skills); load [coda-statechart](.agents/skills/coda-statechart/SKILL.md) in every session before editing any journey chart under `verification/`; discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
 | Duet, the patient app | [Duet invariants](book/src/agent-contracts.md#duet-patient-app), [coda-app AGENTS.md](submodules/coda-app/AGENTS.md) and [Duet UI](submodules/coda-app/.agents/skills/duet-ui-ux/SKILL.md) |
@@ -26,6 +26,56 @@ explain responsibilities, implemented behavior and operating procedures.
 | Computer use | [Computer-use invariants](book/src/agent-contracts.md#computer-use) and [Coda-Computer-Use AGENTS.md](submodules/Coda-Computer-Use/AGENTS.md) |
 | Synthetic patients: the patient bank tool and the patient set | [Synthetic patients](book/src/patient-bank.md), then [the patient-bank README](crates/patient-bank/README.md) |
 | Dev container setup, ports, and storage | [Dev container](README.md#dev-container) |
+
+## Development workflow
+
+Use the relevant skills as the work calls for them; the user need not name each
+one. Scale the investigation and presentation to the task. Skills supply methods
+and judgment; these shared defaults apply across agent hosts and developer setups.
+
+Iterate locally: implement, exercise the real workflow, review, and correct while
+feedback is cheap. Use a PR to hand off a coherent, locally assessed change for
+shared review. An early draft can help when collaboration or remote evidence is
+needed; it should not replace the local feedback loop.
+
+- [linear-github-issues](.agents/skills/linear-github-issues/SKILL.md) shapes work,
+  checks its framing, and prepares a useful ticket or project handoff.
+- [implement-ticket](.agents/skills/implement-ticket/SKILL.md) carries an agreed
+  ticket through implementation, verification, local review, and PR preparation.
+- [local-review](.agents/skills/local-review/SKILL.md) is part of local development,
+  including work started without a ticket. After implementing and verifying a
+  coherent change, obtain independent review, reconcile findings, and verify
+  corrections before reporting it ready. No separate review request is needed.
+- [write-pr](.agents/skills/write-pr/SKILL.md) prepares the PR explanation and
+  refreshes it after material changes. [review-pr](.agents/skills/review-pr/SKILL.md)
+  assesses existing PRs and handles review follow-ups. Carry prior findings and
+  evidence forward; opening a PR does not by itself require a second review.
+- [improve-review-pr](.agents/skills/improve-review-pr/SKILL.md) helps turn observed
+  review failures and user feedback into improvements at the responsible owner.
+
+Continue implementation, verification, review, and accepted corrections within
+the agreed task. Resolve routine choices; bring genuinely open product,
+architecture, or scope decisions to the user. A request only to discuss, draft,
+or review stays within that scope. Reviewers keep source code read-only; the
+implementing agent owns corrections. Findings are evidence, not new requirements.
+Follow the latest task scope: a later request to review first or wait suspends
+earlier implementation authority.
+
+Use the developer's configured connections and repository setup. Preserve
+unrelated work and report access or proof gaps honestly. External publication,
+messages, merges, deployment, and destructive actions retain the user's approval
+requirements. A PR review request authorizes the independent reviewer's own
+assessment and follow-up publications through the reviewer GitHub App on the
+selected PRs, without per-comment approval, as defined by `review-pr`. This
+exception does not cover author responses, other messages, or merges. Local
+review before a PR exists remains internal.
+
+`.agents/skills` owns the repository skills; `.claude/skills` links to them.
+Resolve skill references from their real repository paths when using local
+symlinks. Report the actual revision or local change, evidence, and remaining
+limits; successful checks or a merge alone do not establish the intended outcome.
+
+## Product operating boundaries
 
 [Operating invariants](book/src/agent-contracts.md) keeps the common authority,
 clinical-intelligence and recovery rules. Product behavior lives in the intent

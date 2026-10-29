@@ -1,13 +1,16 @@
-# Codex reviewer execution from Claude Code
+# Codex reviewer execution
 
 Use a fresh, non-interactive Codex CLI session with `gpt-6-astra` and `xhigh`
 effort unless the user explicitly selects another configuration. The reviewer
-stays read-only. Dispatch requires the independent-review request described in the
-shared method; this reference does not add automatic pre-commit review.
+stays read-only. Follow the shared local-review method and repository development
+defaults.
 
 Prepare the shared [review method](../SKILL.md) and sourced context as a task-local
-request file. Run from a trusted workspace through the parent's Bash tool with
-`run_in_background: true`, never in a subagent or blocking foreground call:
+request file. The `codex` CLI must be installed, authenticated, and available on
+PATH. Replace the example paths with this developer's workspace and scratch
+files. Run through the host's background process facility; in Claude Code, use
+the parent's Bash tool with `run_in_background: true`. In a terminal, run directly
+and collect the result when the process exits:
 
 ```bash
 codex exec -C /absolute/trusted/workspace --skip-git-repo-check \
@@ -23,13 +26,14 @@ the model, read-only permissions, and output settings. Use a new output director
 and the updated request; never overwrite the initial receipt. Do not use `--last`,
 the coding session, or a fresh reviewer as a substitute for that exact session.
 
-For explicitly selected PR targets, use the existing
-[PR launcher](../../review-pr/scripts/run_review.py) with `--engine codex`,
-`--model gpt-6-astra`, `--effort xhigh`, and `--context-file`; resume with
-`--resume-from`. Its [execution reference](../../review-pr/references/cli-execution.md)
-owns the flags and PR freshness checks. Leave the launcher unchanged.
+For explicitly selected PR targets, switch to the
+[PR workflow](../../review-pr/SKILL.md), including its shared App configuration
+and reviewer-owned publication. Its
+[execution reference](../../review-pr/references/cli-execution.md) owns the
+launcher flags, exact-session resume, and publication receipts.
 
-Use background completion delivery. Do not add active polling, log-tail loops,
+Use completion delivery or a wait on the launched process. Do not add active
+polling, log-tail loops,
 or a scheduled monitor to this route. Preserve the command, target fingerprints,
 output paths, and process identity in task-local scratch. When completion arrives,
 inspect all JSON events: require `turn.completed`, no failed turn, a `thread_id`

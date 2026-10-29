@@ -1,7 +1,8 @@
 # CLI execution
 
 The launcher starts one non-interactive reviewer process for a PR or coherent
-batch. Either interactive host can select either CLI. The first conversation is
+batch. Any editor, terminal, or agent host can select either installed CLI.
+The first conversation is
 fresh; follow-ups resume its exact reviewer, never the coding session.
 
 ## Setup for Coda Health
@@ -122,6 +123,7 @@ configuration and is instructed to use no other connector for publication; its
 read-only shell sandbox does not by itself establish global tool isolation.
 
 Run through the host's background execution and consume completion delivery.
+A terminal user can run directly and collect the result when the process exits.
 In Claude Code, use the parent's Bash tool with `run_in_background: true`, not
 a subagent or `claude --bg`. The launcher does not daemonize or impose a model
 timeout. Do not add polling, sleep loops, or scheduling.
