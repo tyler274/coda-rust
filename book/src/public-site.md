@@ -244,8 +244,8 @@ nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
 
 The importer reads Git blobs at the explicit reviewed commit, checks that the
 optional checkout is clean and pinned, and writes only allowlisted fixture paths.
-`--import-served` reads `https://codahealth.ai` only while it reports the snapshot
-commit; `codahealth.ai` now serves this site, so the served fixtures are frozen.
+The served fixtures are a frozen record; the kytos deployment that produced them no
+longer exists.
 Builds and tests never run `--import`. To adopt a new publication, review the
 original changes first, explicitly update the importer's commit and optional
 gitlink, then import and review the fixture/provenance diff. Do not regenerate
@@ -732,8 +732,8 @@ content served from a cache, on both `staging.codahealth.ai` and the `run.app` U
 ## Production state and deployment
 
 Production serves the image staging tested, without sign-in, at `codahealth.ai`
-and `www.codahealth.ai` from `coda-health-prod`. Operator applies, DNS changes and
-the retirement of the Vercel `kytos` project need Dev's explicit authorization.
+and `www.codahealth.ai` from `coda-health-prod`. Operator applies and DNS changes
+need Dev's explicit authorization.
 
 - **State.** `backend/production.gcs.tfbackend` selects the dedicated
   `coda-health-prod-public-site-tofu-state-us-east1` bucket, prefix
@@ -819,24 +819,12 @@ HTML once more (fresh for `max-age=300`, then reused while it revalidates in the
 background), so a returning visitor may see one unstyled load before the next
 load is current.
 
-### Rollback and Vercel retirement
+### Recovery
 
-While the Vercel `kytos` project still serves `codahealth.ai`, rollback is DNS
-only: point `codahealth.ai` and `www.codahealth.ai` back at DNS-only CNAMEs to
-`aed33597e007abe5.vercel-dns-016.com`. The A records keep a 60-second TTL while
-that rollback exists, so either direction takes effect quickly.
-
-Retirement ends that option:
-
-1. Set the two A records' TTL back to auto.
-2. Dev removes `codahealth.ai` and `www.codahealth.ai` from the `kytos` project in
-   the `simplestudios-projects` Vercel team and deletes the project. Do not remove
-   the `codahealth.ai` domain from the team: `work`, `work-staging`, `app` and
-   `app-staging` are served from it.
-3. Remove the kytos-only code paths: the `VERCEL_GIT_COMMIT_SHA` fallback in
-   `crates/public-site/src/runtime.rs` and the importer's `--import-served` mode.
-
-After retirement, recovery is a promotion of an earlier staging-tested commit.
+Recovery is a promotion of an earlier staging-tested commit: run the promotion
+workflow with that commit's SHA. There is no Vercel fallback: the `kytos` project
+no longer holds `codahealth.ai` or `www`, and the `codahealth.ai` domain stays on the
+Vercel team only for `work`, `work-staging`, `app` and `app-staging`.
 
 ### Rebuilding production
 

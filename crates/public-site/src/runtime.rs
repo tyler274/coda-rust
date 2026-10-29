@@ -91,7 +91,7 @@ impl RuntimeConfig {
             staging,
             access,
             health_token: nonempty("STAGING_HEALTH_TOKEN"),
-            release_sha: nonempty("RELEASE_SHA").or_else(|| nonempty("VERCEL_GIT_COMMIT_SHA")),
+            release_sha: nonempty("RELEASE_SHA"),
             ..Default::default()
         };
         if let Some(value) = nonempty("PUBLIC_SITE_MAX_CONCURRENCY") {
