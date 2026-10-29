@@ -17,12 +17,13 @@ such as "open the email button". Keep code names out of labels.
 ## Start from the spec
 
 1. Read the journey's section of the [intent specs](../../../intent/README.md) and
-   [PRINCIPLES.md](../../../intent/PRINCIPLES.md). They are the only source. A chart
-   cites spec lines by ID, such as `physician A1.3`, never transcripts, dates,
-   Linear or other charts. A step the spec doesn't state, or marks `GAP:`, stays
-   out of the chart and is named in the hand-off; a product choice goes to
-   DECISIONS.md and Dev. Existing code is evidence about the implementation;
-   missing code never narrows the chart.
+   [PRINCIPLES.md](../../../intent/PRINCIPLES.md), and agree the behavior with Dev.
+   A step nobody has decided stays out of the chart and is named in the hand-off;
+   a product choice goes to DECISIONS.md and Dev. Existing code is evidence about
+   the implementation; missing code never narrows the chart. Once Dev agrees the
+   chart, its folder is the journey's spec: the folder's README says the behavior
+   in plain words, the chart carries its rules, and the product spec keeps a short
+   summary that links to the folder.
 2. A state or event belongs only when the reader sees or controls it, it is a
    limit on access, consent, data or communication, another party depends on it,
    or it orders what happens. Judgment, memory, prompts, schedules, retries and
@@ -44,10 +45,10 @@ file opens in [Stately Sketch](https://github.com/statelyai/sketch) and runs in
    built only from `stateIn({ region: state })`, `not`, `and` and `or`. An event
    that needs a state carries that guard on each of its transitions.
 5. In the machine's `meta.events`, give every event who causes it (`by`) and its
-   intent, ending with the spec ID it comes from.
-6. In `meta.never`, write one rule per spec sentence: the states that must never
+   intent in plain words.
+6. In `meta.never`, write one rule per agreed sentence: the states that must never
    hold together, by region (a list where any of several states breaks it), and the
-   spec's own sentence ending with its ID. Anything outside steps 3–6 (`always`,
+   sentence itself in plain words. Anything outside steps 3–6 (`always`,
    `after`, `entry`, actions, context, a root that is not parallel, region-level or
    cross-region transitions) is refused, because Verus would not see it. Never weaken a rule to make the chart
    pass. A promise about records (identity, revisions, collections, single use) goes

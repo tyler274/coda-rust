@@ -231,20 +231,19 @@ This is how we prove principle 4.
 
 ### A1. Sign-in and access
 
-1. Physicians sign in only through Coda Agents.
-2. The physician asks for a sign-in link and always sees "Check your email". Coda never reveals whether an account exists, and an address with no account gets no email. Clicking the button in the email signs them in, with no code screen. A link that no longer grants access shows "No access to this practice".
-3. If the session expires mid-work, a sign-in prompt covers the screen and can email a link. After signing in, the physician is exactly where they were, drafts and open reader intact, and Coda's running work never notices. If Coda was closed in the meantime, signing in opens Today. A patient link opened while signed out lands that tab on the patient after sign-in; the email itself never carries a patient.
-4. Opening another physician's sign-in link while signed in signs the current physician out and opens Today for the new one. Drafts and seen state stay per physician. Opening your own link changes nothing.
-5. Sign-out works, and a used or expired link is rejected. Accounts are invite-only: Coda sets up each practice and invites its first physician by email, and any member can then invite colleagues. There's no public sign-up.
-6. A physician sees same-clinic patients outside their panel as identity only: name, DOB and MRN, no clinical content.
-7. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
-8. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
-9. Spruce conversations show only for patients the physician may access.
-10. Correcting a confirmed message link belongs to the messaging manager, who is whoever connected the Gmail account or set up Spruce.
-11. Any practice member can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once. The connection itself belongs to Connected care.
-12. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
-13. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
-14. Drafts and seen state live on the server, not in the browser.
+Physicians sign in only through Coda Agents, with an emailed link and no password or code. Accounts are invite-only. The session is shared across the browser's tabs, signing out signs out everywhere, and another physician's link signs the current physician out first. The full sign-in behavior, with its chart and proof, lives in [sign-in](../verification/physician/sign-in/README.md).
+
+Inside the workspace:
+
+1. A physician sees same-clinic patients outside their panel as identity only: name, DOB and MRN, no clinical content.
+2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
+3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
+4. Spruce conversations show only for patients the physician may access.
+5. Correcting a confirmed message link belongs to the messaging manager, who is whoever connected the Gmail account or set up Spruce.
+6. Any practice member can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once. The connection itself belongs to Connected care.
+7. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
+8. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
+9. Drafts and seen state live on the server, not in the browser.
 
 ### K1. Correcting Coda
 
