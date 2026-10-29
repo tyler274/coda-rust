@@ -43,6 +43,15 @@ impl Session {
         *self.0.write().expect("session lock") = None;
     }
 
+    /// Ends `session` locally if it is still the one held; a newer session
+    /// set meanwhile stays.
+    pub fn clear_if(&self, session: &str) {
+        let mut held = self.0.write().expect("session lock");
+        if held.as_deref() == Some(session) {
+            *held = None;
+        }
+    }
+
     /// Whether a session is held.
     pub fn is_some(&self) -> bool {
         self.0.read().expect("session lock").is_some()
@@ -173,11 +182,15 @@ impl PhysicianClient {
         Ok(verified)
     }
 
-    /// Ends the held session on the server and drops it locally.
+    /// Ends the held session on the server and drops it locally, unless a
+    /// newer session replaced it while the request was out.
     pub async fn sign_out(&self) -> Result<(), http::HttpError> {
+        let ending = self.session.get();
         let result: Result<serde_json::Value, http::HttpError> =
             self.post("/auth/sign-out", &serde_json::json!({})).await;
-        self.session.clear();
+        if let Some(ending) = ending {
+            self.session.clear_if(&ending);
+        }
         result.map(|_| ())
     }
 
@@ -624,6 +637,17 @@ mod tests {
         client.session().set("second".into());
         assert_eq!(pinned.session().get().as_deref(), Some("first"));
         assert_eq!(pinned.base(), "http://example.test");
+    }
+
+    #[test]
+    fn ending_an_old_session_keeps_the_one_that_replaced_it() {
+        let session = Session::new();
+        session.set("old".into());
+        session.set("new".into());
+        session.clear_if("old");
+        assert_eq!(session.get().as_deref(), Some("new"));
+        session.clear_if("new");
+        assert_eq!(session.get(), None);
     }
 
     #[tokio::test]

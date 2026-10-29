@@ -1,8 +1,8 @@
-//! Sign-in news between this browser's Coda tabs. Each tab keeps its own
-//! session in sessionStorage. When one tab redeems a link or signs out, the
-//! others hear it here: a tab covered by the sign-in prompt picks up the new
-//! session where it was, and a different physician's sign-in or a sign-out
-//! reaches every tab (physician A1.3–A1.4).
+//! Sign-in news between this browser's Coda tabs. The session belongs to the
+//! browser, but a tab that is already open learns of a change here: when one
+//! tab redeems a link or signs out, a tab covered by the sign-in prompt picks
+//! up the new session where it was, and a different physician's sign-in or a
+//! sign-out reaches every tab (verification/physician/sign-in).
 // The channel is browser-only; native builds keep the news type for its tests.
 #![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 
@@ -18,8 +18,11 @@ pub(crate) enum TabNews {
         /// The bearer session their link minted.
         session: String,
     },
-    /// A tab signed out.
-    SignedOut,
+    /// A tab ended this session; a tab holding a newer one keeps it.
+    SignedOut {
+        /// The bearer session that ended.
+        session: String,
+    },
 }
 
 impl TabNews {
@@ -34,7 +37,11 @@ impl TabNews {
                 "physician_id": physician_id,
                 "session": session,
             }),
-            Self::SignedOut => json!({ "from": from, "kind": "signed_out" }),
+            Self::SignedOut { session } => json!({
+                "from": from,
+                "kind": "signed_out",
+                "session": session,
+            }),
         }
         .to_string()
     }
@@ -58,7 +65,9 @@ impl TabNews {
                 physician_id: field("physician_id")?,
                 session: field("session")?,
             }),
-            "signed_out" => Some(Self::SignedOut),
+            "signed_out" => Some(Self::SignedOut {
+                session: field("session")?,
+            }),
             _ => None,
         }
     }
@@ -132,7 +141,9 @@ mod tests {
                 physician_id: "doc".into(),
                 session: "codas-1".into(),
             },
-            TabNews::SignedOut,
+            TabNews::SignedOut {
+                session: "codas-1".into(),
+            },
         ] {
             let sent = news.to_json("tab-a");
             assert_eq!(TabNews::from_json(&sent, "tab-b"), Some(news));
@@ -146,6 +157,7 @@ mod tests {
             "not json",
             r#"{"kind":"signed_in","physician_id":"doc"}"#,
             r#"{"kind":"signed_in","physician_id":"","session":"codas-1"}"#,
+            r#"{"kind":"signed_out"}"#,
             r#"{"kind":"something_else"}"#,
         ] {
             assert_eq!(TabNews::from_json(text, "tab-b"), None, "{text}");

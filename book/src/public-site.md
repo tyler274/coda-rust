@@ -63,7 +63,7 @@ Duet unchanged. These grants have not been applied by this change. Release must
 wait for them; application unit tests cannot prove deployed IAM access.
 
 `/physician/` is not a browser security boundary: marketing scripts on the same origin
-can access the physician session stored in session storage. The entire origin
+can access the physician session stored in local storage. The entire origin
 must therefore be treated as trusted physician-session code. Proxy responses
 must never enter public or CDN caches, including in production. Browser proof
 must cover prefix-relative assets and API requests, sign-in, session restoration,

@@ -13,8 +13,8 @@ the full workflow.
 
 ## Principles
 
-1. **Start from the intent specs.** They hold Dev's decisions; charts cite their lines
-   and nothing else. One chart answers one journey question, in what the reader sees.
+1. **Start from the intent specs.** They hold Dev's decisions. Once Dev agrees a
+   journey's chart, its folder is that journey's spec and the product spec links to it. One chart answers one journey question, in what the reader sees.
    Design the complete journey before choosing proof cases. The chart is the product's contract and the
    harness serves it; never encode how the harness works in the chart. Existing code and historical failures can
    challenge it; missing code cannot limit it. A checked draft is still a draft.
@@ -90,7 +90,7 @@ manual data refinements and implementation connections separately.
 
 | Folder | Spec |
 | --- | --- |
-| [physician/sign-in](physician/sign-in/README.md) | How a physician signs in (physician.md A1.1–A1.5): chart, journeys, data promises and Verus proof. |
+| [physician/sign-in](physician/sign-in/README.md) | How a physician signs in: the spec in words, chart, journeys, data promises and Verus proof. |
 
 ## How the skills fit
 
@@ -126,6 +126,7 @@ python3 verification/install-verus.py
 python3 verification/check.py formal --spec path/to/the/feature-proof.rs
 npm install --prefix verification
 node verification/statechart.mjs check path/to/the/journey.mjs path/to/journeys.md
+node verification/statechart.mjs compare path/to/the/journey.mjs path/to/code.mjs
 ```
 
 There is no default proof for an unspecified feature. The extra toolchain does not
