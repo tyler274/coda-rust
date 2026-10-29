@@ -1,11 +1,11 @@
 name: Promote public site to production
 
-# Manual only. Promotes the image the staging deploy built, smoke-tested and
-# published for one main commit (book/src/public-site.md, Production state and
+# Manual only. Promotes the image the staging deploy built, smoke-tested,
+# published and successfully deployed for one main commit (book/src/public-site.md, Production state and
 # deployment). It copies that digest into the production repository, plans the
 # production root with it, allows only an in-place update of the Cloud Run
-# service, applies the saved plan and reads both hostnames back through the
-# load balancer. The first apply, certificate DNS and the DNS cutover are
+# service, applies the saved plan, clears the CDN and reads both hostnames back
+# through the load balancer. The first apply, certificate DNS and the DNS cutover are
 # operator steps, not this workflow. Starting a run is the approval; the
 # production environment only admits main and identifies this job to GCP.
 on:
@@ -23,7 +23,7 @@ jobs:
     name: Promote public site to production
     if: github.ref == 'refs/heads/main'
     runs-on: blacksmith-4vcpu-ubuntu-2404
-    timeout-minutes: 30
+    timeout-minutes: 45
     concurrency:
       group: public-site-production-release
       cancel-in-progress: false
@@ -31,6 +31,7 @@ jobs:
       name: production
       url: https://codahealth.ai
     permissions:
+      actions: read
       contents: read
       id-token: write
     env:
@@ -55,6 +56,23 @@ jobs:
         run: |
           git merge-base --is-ancestor "$RELEASE_SHA" HEAD \
             || { echo "::error::${RELEASE_SHA} is not on main"; exit 1; }
+      - name: Require that staging deployed this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # The staging job publishes the image before it plans, applies and
+          # verifies the revision, so the image alone is not proof. Require
+          # its latest attempt for this push to main to have succeeded.
+          deployed=0
+          for run in $(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/ci.yml/runs?head_sha=${RELEASE_SHA}&event=push&branch=main" --jq '.workflow_runs[].id'); do
+            if gh api --paginate "repos/${GITHUB_REPOSITORY}/actions/runs/${run}/jobs" \
+              --jq '.jobs[] | select(.name == "Deploy public site to staging" and .conclusion == "success") | .id' | grep -q .; then
+              deployed=1
+              break
+            fi
+          done
+          [ "$deployed" = 1 ] || { echo "::error::staging never deployed ${RELEASE_SHA} successfully"; exit 1; }
       - name: Install Nix
         uses: cachix/install-nix-action@v31
       - name: Authenticate as the public-site production deployer
@@ -123,6 +141,12 @@ jobs:
           [ "$served" = "$IMAGE" ] || { echo "::error::service image $served, expected $IMAGE"; exit 1; }
           jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
             || { echo "::error::the latest revision does not serve all traffic"; exit 1; }
+      - name: Clear the CDN
+        run: |
+          set -euo pipefail
+          # Cached HTML would otherwise name hashed CSS and JS the new image no
+          # longer serves. Waits until the invalidation completes.
+          gcloud compute url-maps invalidate-cdn-cache "$SERVICE" --path='/*' --global --project "$PROJECT"
       - name: Read back both hostnames through the load balancer
         env:
           GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}

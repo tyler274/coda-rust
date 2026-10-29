@@ -21,8 +21,8 @@ invoker. The origin also verifies the signed IAP assertion. Production stays beh
 a global external HTTPS load balancer with Cloud CDN. There is no Cloudflare
 dependency. Unlike the physician roots, this root owns its **staging** state
 (GCS prefix `public-site/staging` in the existing state bucket) and may be planned
-and applied for staging from this workspace. Production (prefix
-`coda-rust/public-site/production` in the `coda-health-prod` state bucket) serves the
+and applied for staging from this workspace. Production (its own
+`coda-health-prod-public-site-tofu-state-us-east1` bucket) serves the
 same image without sign-in and is applied only from a reviewed saved plan with Dev's
 explicit authorization; see
 [production state and deployment](public-site.md#production-state-and-deployment). Staging is deployed at `staging.codahealth.ai` behind IAP (see

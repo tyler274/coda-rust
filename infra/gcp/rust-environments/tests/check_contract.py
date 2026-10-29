@@ -71,7 +71,9 @@ class Contract(unittest.TestCase):
         self.assertRegex(production, r'(?m)^environment\s*= "production"$')
         self.assertRegex(production, r'(?m)^project_id\s*= "coda-health-prod"$')
         self.assertNotRegex(production, r'(?m)^physician_app_url\s*=')
-        self.assertIn('prefix = "coda-rust/public-site/production"', (site / "backend/production.gcs.tfbackend").read_text())
+        backend = (site / "backend/production.gcs.tfbackend").read_text()
+        self.assertIn('bucket = "coda-health-prod-public-site-tofu-state-us-east1"', backend)
+        self.assertIn('prefix = "public-site/production"', backend)
         for forbidden in ['google_project_iam_member', 'google_project_service', 'google_secret_manager_secret_iam_member', 'google_iap_web_cloud_run_service_iam_member', 'google_service_account_iam_member']:
             self.assertNotIn(f'resource "{forbidden}"', main)
         bootstrap = (site / "scripts/staging-admin-bootstrap.sh").read_text()

@@ -948,10 +948,11 @@ Production serves the image staging tested, without sign-in, at `codahealth.ai`
 and `www.codahealth.ai` from `coda-health-prod`. Every apply, DNS change and the
 retirement of the Vercel `kytos` project needs Dev's explicit authorization.
 
-- **State.** `backend/production.gcs.tfbackend` selects the existing
-  `coda-health-prod-terraform-state-us-east1` bucket with prefix
-  `coda-rust/public-site/production`, beside `shared-mail`'s
-  `coda-rust/shared-mail/production`. Nothing else in that bucket is read or written.
+- **State.** `backend/production.gcs.tfbackend` selects the dedicated
+  `coda-health-prod-public-site-tofu-state-us-east1` bucket, prefix
+  `public-site/production`, as staging has its own bucket. The deployer has no
+  access to the shared production state bucket: Cloud Storage cannot narrow
+  object listing to a prefix with an IAM condition.
 - **Inputs.** `env/production.tfvars` holds the non-secret production inputs: the
   project and number, and `domains = ["codahealth.ai", "www.codahealth.ai"]`.
   It sets no `physician_app_url`, so production has no Sign in link and no
@@ -968,21 +969,24 @@ for the bindings that need the service and runtime account to exist.
 
 - Enables the Run, Compute, Certificate Manager, Artifact Registry, IAM and STS
   APIs. Certificate Manager was off in `coda-health-prod`.
+- Creates the dedicated state bucket (versioned, uniform access, public access
+  prevented).
 - Creates the private `public-site` image repository (immutable tags, cleanup
   policy) and refuses to continue if it is public. Production builds nothing, so
   there are no base-image repositories.
 - Creates the keyless `public-site-prod-deployer` account with:
-  - `roles/storage.objectAdmin` on the shared state bucket, conditioned to objects
-    and list requests under `coda-rust/public-site/production/` only;
+  - `roles/storage.objectAdmin` on the dedicated state bucket only;
   - writer on the production image repository and reader on staging's, so promotion
     can copy the digest staging tested;
   - project `run.viewer`, `compute.viewer` and `certificatemanager.viewer`, so a
     promotion plan can refresh what it may not change;
+  - the custom role `publicSiteCdnInvalidator`, holding only
+    `compute.urlMaps.invalidateCache`, so promotion can clear the CDN;
   - after the first apply, `iam.serviceAccountUser` on the runtime account and
     `run.admin` on the service only.
 
   It gets no compute, certificate or IAM admin role: promotion cannot change the
-  load balancer, TLS or identities.
+  load balancer, TLS or identities, only clear the CDN.
 - Creates the `github-actions` WIF pool and provider in `coda-health-prod`, accepting
   only `Coda-Health/coda-rust` on `refs/heads/main` in the `production` environment,
   and lets only that subject impersonate the deployer. The GitHub `production`
@@ -995,24 +999,27 @@ for the bindings that need the service and runtime account to exist.
 environment. Starting a run is the approval: anyone with write access to the
 repository can promote a commit staging already built and tested. It:
 
-1. requires a full SHA that is on `main`;
-2. finds the image the staging deploy tagged with that commit (tags are pushed only
-   after the image smoke passes, and are immutable) and copies that digest into the
-   production repository unchanged;
+1. requires a full SHA that is on `main` and a successful "Deploy public site to
+   staging" job for that push, so the image was deployed and verified on staging,
+   not only built;
+2. finds the image the staging deploy tagged with that commit (tags are immutable)
+   and copies that digest into the production repository unchanged;
 3. plans the production root with `env/production.tfvars`, that image and that SHA,
    and fails if the plan changes anything but an in-place update of the Cloud Run
    service. Load balancer, certificate, IAM and identity changes are operator applies;
 4. applies the saved plan and checks the Ready revision serves the digest with all
    traffic;
-5. pins `codahealth.ai` and `www.codahealth.ai` to the load balancer IP with
+5. clears the CDN (`invalidate-cdn-cache --path='/*'`) and waits for it to finish;
+6. pins `codahealth.ai` and `www.codahealth.ai` to the load balancer IP with
    `curl --resolve` and checks each: `/api/health` reports production and the SHA,
    the homepage sends production's HSTS and offers no Sign in, `/physician/today` is
    404, and plain HTTP answers 308 to the same HTTPS URL.
 
-Known limit: Cloud CDN may serve the previous release's HTML for up to an hour
-(`s-maxage=3600`, then `stale-while-revalidate`). Its content-addressed assets keep
-working while the edge still caches them. A cache miss for an asset the new image no
-longer has returns 404 until the HTML refreshes. This is not mitigated yet.
+Why the CDN is cleared: HTML is cached with `max-age=300, s-maxage=3600,
+stale-while-revalidate=86400`, so without invalidation the edge could serve the
+previous release's HTML for up to a day. That HTML names hashed CSS and JS the new
+image no longer serves, which would load unstyled pages. Browsers may still hold
+the old HTML for up to five minutes (`max-age=300`); a reload fixes it.
 
 ### First apply and cutover
 

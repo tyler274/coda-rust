@@ -3,15 +3,16 @@
 #
 # Run by an administrator of coda-health-prod (and, for one cross-project grant,
 # of coda-health-staging), with Dev's authorization. It prepares only what
-# infra/gcp/public-site deliberately does not own: APIs, the private site image
-# repository, a CI promotion service account with resource-scoped roles, and
+# infra/gcp/public-site deliberately does not own: APIs, the dedicated state
+# bucket, the private site image repository, a CI promotion service account with
+# resource-scoped roles, a CDN invalidation role, and
 # GitHub Workload Identity Federation for the `production` environment. The site
 # reads no secrets, so there is no Secret Manager or Doppler step. Production
 # builds nothing: promotion copies the digest staging tested, so there are no
 # base-image repositories here.
 #
-# It never applies OpenTofu, never creates a bucket, and never reads or writes
-# state outside coda-rust/public-site/production. Every create step checks first and is safe
+# It never applies OpenTofu and never touches the shared production state
+# bucket. Every create step checks first and is safe
 # to rerun; rerun it after the first apply to add the bindings that need the
 # Cloud Run service and runtime service account to exist.
 #
@@ -29,9 +30,8 @@ readonly PROJECT_ID="coda-health-prod"
 readonly PROJECT_NUMBER="720954567292"
 readonly REGION="us-east1"
 
-# Existing shared state bucket; this root writes only under its own prefix.
-readonly STATE_BUCKET="coda-health-prod-terraform-state-us-east1"
-readonly STATE_PREFIX="coda-rust/public-site/production"
+# Dedicated state bucket (backend/production.gcs.tfbackend); nothing else uses it.
+readonly STATE_BUCKET="coda-health-prod-public-site-tofu-state-us-east1"
 
 readonly SERVICE_NAME="public-site-production"
 readonly RUNTIME_SA="${SERVICE_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
@@ -43,6 +43,8 @@ readonly STAGING_PROJECT_ID="coda-health-staging"
 readonly STAGING_REPOSITORY="public-site"
 
 readonly CI_SA_ID="public-site-prod-deployer"
+# Custom role holding only the CDN cache invalidation permission.
+readonly CDN_ROLE_ID="publicSiteCdnInvalidator"
 readonly CI_SA="${CI_SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com"
 
 readonly WIF_POOL="github-actions"
@@ -129,11 +131,6 @@ if [[ $PRINT -eq 0 ]]; then
     echo "project number mismatch: expected ${PROJECT_NUMBER}, got ${actual_number}" >&2
     exit 1
   fi
-  ubla="$("${G[@]}" storage buckets describe "gs://${STATE_BUCKET}" --format='value(uniform_bucket_level_access)')"
-  if [[ ! "$ubla" =~ ^[Tt]rue$ ]]; then
-    echo "gs://${STATE_BUCKET} must use uniform bucket-level access for prefix-scoped grants" >&2
-    exit 1
-  fi
 else
   note "--print: no gcloud calls are made; every create step is shown."
 fi
@@ -142,7 +139,20 @@ fi
 step "Enable required APIs (idempotent)"
 run "${G[@]}" services enable "${APIS[@]}"
 
-# --- 2. Private site image repository -----------------------------------------
+# --- 2. Dedicated production state bucket ------------------------------------
+step "Create the production OpenTofu state bucket gs://${STATE_BUCKET}"
+if missing "${G[@]}" storage buckets describe "gs://${STATE_BUCKET}"; then
+  run "${G[@]}" storage buckets create "gs://${STATE_BUCKET}" \
+    --location="$REGION" --default-storage-class=STANDARD \
+    --uniform-bucket-level-access --public-access-prevention
+else
+  note "exists"
+fi
+# Default soft-delete policy is kept. Versioning, UBLA and PAP are (re)asserted.
+run "${G[@]}" storage buckets update "gs://${STATE_BUCKET}" \
+  --versioning --uniform-bucket-level-access --public-access-prevention
+
+# --- 3. Private site image repository -----------------------------------------
 step "Create the private ${SITE_REPOSITORY} repository in ${REGION}"
 if missing "${G[@]}" artifacts repositories describe "$SITE_REPOSITORY" --location="$REGION"; then
   run "${G[@]}" artifacts repositories create "$SITE_REPOSITORY" --location="$REGION" \
@@ -168,7 +178,7 @@ run "${G[@]}" artifacts repositories set-cleanup-policies "$SITE_REPOSITORY" \
 assert_repo_private "$SITE_REPOSITORY"
 note "Same-project Cloud Run pulls use the Cloud Run service agent (roles/run.serviceAgent)."
 
-# --- 3. CI promotion service account (no keys) --------------------------------
+# --- 4. CI promotion service account (no keys) --------------------------------
 step "Create CI promotion service account ${CI_SA}"
 if missing "${G[@]}" iam service-accounts describe "$CI_SA"; then
   run "${G[@]}" iam service-accounts create "$CI_SA_ID" \
@@ -179,11 +189,9 @@ else
 fi
 
 step "Resource-scoped roles for the CI promotion account (before first apply)"
-# State: objects under this root's prefix only. Listing is a bucket-level call,
-# so it is allowed only for list requests restricted to the same prefix.
-STATE_CONDITION="^;^title=public-site-production-state;description=Only ${STATE_PREFIX}/ in ${STATE_BUCKET};expression=resource.name.startsWith('projects/_/buckets/${STATE_BUCKET}/objects/${STATE_PREFIX}/') || api.getAttribute('storage.googleapis.com/objectListPrefix', '').startsWith('${STATE_PREFIX}/')"
+# Read, write and lock state in the dedicated bucket only.
 run "${G[@]}" storage buckets add-iam-policy-binding "gs://${STATE_BUCKET}" \
-  --member="serviceAccount:${CI_SA}" --role=roles/storage.objectAdmin --condition="$STATE_CONDITION"
+  --member="serviceAccount:${CI_SA}" --role=roles/storage.objectAdmin --condition=None
 # Publish promoted images to the production site repository only.
 run "${G[@]}" artifacts repositories add-iam-policy-binding "$SITE_REPOSITORY" \
   --location="$REGION" --member="serviceAccount:${CI_SA}" \
@@ -198,6 +206,19 @@ for role in roles/run.viewer roles/compute.viewer roles/certificatemanager.viewe
   run "${G[@]}" projects add-iam-policy-binding "$PROJECT_ID" \
     --member="serviceAccount:${CI_SA}" --role="$role" --condition=None
 done
+
+step "CDN cache invalidation for the CI promotion account"
+# Cached HTML can name hashed assets a new image no longer serves, so promotion
+# clears the CDN after each release. This is the only compute write it gets.
+if missing "${G[@]}" iam roles describe "$CDN_ROLE_ID"; then
+  run "${G[@]}" iam roles create "$CDN_ROLE_ID" --title="public-site CDN invalidation" \
+    --description="Invalidate Cloud CDN caches only." \
+    --permissions=compute.urlMaps.invalidateCache --stage=GA
+else
+  run "${G[@]}" iam roles update "$CDN_ROLE_ID" --permissions=compute.urlMaps.invalidateCache
+fi
+run "${G[@]}" projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="serviceAccount:${CI_SA}" --role="projects/${PROJECT_ID}/roles/${CDN_ROLE_ID}" --condition=None
 
 step "Service-scoped roles for the CI promotion account (need the first apply)"
 # The first apply is an administrator's, from a reviewed saved plan. Afterwards
@@ -217,9 +238,9 @@ if [[ $PRINT -eq 1 ]] || exists "${G[@]}" run services describe "$SERVICE_NAME" 
 else
   note "Cloud Run service ${SERVICE_NAME} does not exist yet; rerun this script after the first apply"
 fi
-note "No compute, certificate or IAM admin roles: promotion cannot change the load balancer, TLS or identities."
+note "No compute, certificate or IAM admin roles: promotion cannot change the load balancer, TLS or identities; it can only clear the CDN."
 
-# --- 4. GitHub Actions Workload Identity Federation ---------------------------
+# --- 5. GitHub Actions Workload Identity Federation ---------------------------
 WIF_CONDITION="assertion.repository == '${WIF_REPOSITORY}' && assertion.repository_id == '${WIF_REPOSITORY_ID}' && assertion.repository_owner_id == '${WIF_OWNER_ID}' && assertion.ref == '${WIF_REF}' && assertion.environment == '${WIF_ENVIRONMENT}'"
 WIF_MAPPING="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.repository_id=assertion.repository_id,attribute.repository_owner_id=assertion.repository_owner_id,attribute.ref=assertion.ref,attribute.environment=assertion.environment"
 POOL_NAME="projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WIF_POOL}"
