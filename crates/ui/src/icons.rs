@@ -5,7 +5,8 @@ use dioxus::prelude::*;
 /// The stroke width every icon draws with.
 pub const STROKE: &str = "1.8";
 
-/// The icons in the shared set, each named as the React app names it.
+/// The icons in the shared set: the React app's, each named as it names them, and Duet's own from the October 21
+/// mockups (arrow up through sun below), which the React app doesn't draw.
 #[allow(dead_code, missing_docs)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum IconName {
@@ -46,10 +47,20 @@ pub enum IconName {
     User,
     Users,
     X,
+    ArrowUp,
+    Book,
+    Clock,
+    File,
+    Heart,
+    Moon,
+    Settings,
+    Share,
+    Steps,
+    Sun,
 }
 
 impl IconName {
-    /// Every icon, for the parity test.
+    /// Every icon the React app draws, for the parity test.
     #[cfg(test)]
     pub const ALL: [IconName; 37] = [
         IconName::Alert,
@@ -91,7 +102,7 @@ impl IconName {
         IconName::X,
     ];
 
-    /// The React app's name for this icon.
+    /// The React app's name for this icon, or the mockups' for Duet's own.
     #[cfg(test)]
     pub fn react_name(self) -> &'static str {
         match self {
@@ -132,6 +143,16 @@ impl IconName {
             IconName::User => "user",
             IconName::Users => "users",
             IconName::X => "x",
+            IconName::ArrowUp => "arrow-up",
+            IconName::Book => "book",
+            IconName::Clock => "clock",
+            IconName::File => "file",
+            IconName::Heart => "heart",
+            IconName::Moon => "moon",
+            IconName::Settings => "settings",
+            IconName::Share => "share",
+            IconName::Steps => "steps",
+            IconName::Sun => "sun",
         }
     }
 }
@@ -253,6 +274,16 @@ pub fn icon_paths(name: IconName) -> &'static [&'static str] {
         IconName::User => USER,
         IconName::Users => USERS,
         IconName::X => X,
+        IconName::ArrowUp
+        | IconName::Book
+        | IconName::Clock
+        | IconName::File
+        | IconName::Heart
+        | IconName::Moon
+        | IconName::Settings
+        | IconName::Share
+        | IconName::Steps
+        | IconName::Sun => &[],
     }
 }
 
@@ -386,6 +417,26 @@ fn marks(name: IconName) -> &'static [Mark] {
             Mark::Path("M16 3.13a4 4 0 0 1 0 7.75"),
         ],
         IconName::X => &[Mark::Path("m6 6 12 12"), Mark::Path("m18 6-12 12")],
+        IconName::ArrowUp => &[Mark::Path("M12 19V5"), Mark::Path("m5 12 7-7 7 7")],
+        IconName::Book => &[Mark::Path("M4 3h13l3 3v15H4V3Zm4 5h8M8 12h8M8 16h6")],
+        IconName::Clock => &[Mark::Path(
+            "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-5v6l4 2",
+        )],
+        IconName::File => &[Mark::Path("M5 3h10l4 4v14H5V3Zm10 0v5h4M8 12h8m-8 4h6")],
+        IconName::Heart => &[Mark::Path(
+            "M20 5c-3-3-6-1-8 1-2-2-5-4-8-1-5 5 4 11 8 15 4-4 13-10 8-15Z",
+        )],
+        IconName::Moon => &[Mark::Path("M20 15A9 9 0 0 1 9 3a9 9 0 1 0 11 12Z")],
+        IconName::Settings => &[Mark::Path(
+            "M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8Zm-2-6h4l1 3 3 1 3 2-1 4 1 4-3 2-3 1-1 3h-4l-1-3-3-1-3-2 1-4-1-4 3-2 3-1 1-3Z",
+        )],
+        IconName::Share => &[Mark::Path("M12 15V2m-5 5 5-5 5 5M5 11v10h14V11")],
+        IconName::Steps => &[Mark::Path(
+            "M7 3c3 0 3 6 1 8H5c-1-3-1-8 2-8Zm9 6c3 0 3 6 1 8h-3c-1-3-1-8 2-8ZM5 14h3v5H5v-5Zm9 6h3v3h-3v-3",
+        )],
+        IconName::Sun => &[Mark::Path(
+            "M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M5.6 18.4 7 17m10-10 1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
+        )],
     }
 }
 
