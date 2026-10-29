@@ -31,12 +31,13 @@ const GAP_PX: f64 = 6.0;
 const WATCH_PAGE: &str = "
 const root = document.documentElement;
 const citation = document.getElementById('{citation}');
-const preview = document.getElementById('{preview}');
 const report = () => dioxus.send([0, root.clientWidth, root.clientHeight]);
 const escape = (event) => {
   if (event.key !== 'Escape') return;
   event.preventDefault();
   event.stopPropagation();
+  // Looked up now: this script starts before the preview is in the page.
+  const preview = document.getElementById('{preview}');
   dioxus.send([1, preview !== null && preview.contains(document.activeElement) ? 1 : 0, 0]);
 };
 const sight = new IntersectionObserver(([entry]) => { if (entry !== undefined && !entry.isIntersecting) dioxus.send([2, 0, 0]); });
