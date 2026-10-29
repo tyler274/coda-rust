@@ -7,7 +7,8 @@
 // XState's own graph search finds every reachable state; the chart's meta.never rules
 // are checked on each, and journeys replay on the machine itself. `verus` writes the same
 // behavior as a Verus model for the chart's proof. Charts are flat parallel regions whose
-// guards are stateIn, not, and or or: what Sketch shows and Verus can state.
+// guards are stateIn, not, and or or: what Sketch shows and Verus can state. load()
+// refuses anything else, so both commands read exactly the behavior XState runs.
 import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
@@ -17,23 +18,78 @@ import { getShortestPaths } from "@xstate/graph";
 
 const CHECKS = { stateIn: stateIn({}).check, not: not(() => true).check, and: and([]).check, or: or([]).check };
 
+// The keys a chart may use at each level; any other key (always, after, entry, exit,
+// invoke, context, history...) is behavior Verus would not see.
+const ALLOWED = {
+  root: ["id", "type", "initial", "states", "meta", "description", "schemas"],
+  region: ["initial", "states", "meta", "description"],
+  state: ["on", "meta", "description", "tags"],
+};
+
 async function load(file) {
   const text = fs.readFileSync(file, "utf8");
   const { machine } = await import(pathToFileURL(path.resolve(file)).href);
   if (!machine) throw new Error(`${file} exports no machine`);
   const root = machine.root;
   const parallel = root.type === "parallel";
+  const refuse = (where, why) => { throw new Error(`${where}: ${why}; charts are flat parallel regions with stateIn, not, and or or guards`); };
+  const only = (node, level, where) => {
+    for (const key of Object.keys(node.config)) if (!ALLOWED[level].includes(key)) refuse(where, `"${key}" is not supported`);
+  };
+  only(root, "root", root.id);
   const regions = (parallel ? Object.values(root.states) : [root]).map((r) => {
-    const states = Object.values(r.states);
-    for (const s of states) if (s.type !== "atomic") throw new Error(`${s.key} in ${r.key} has states of its own; draw nested behavior as another region`);
-    return { node: r, caption: parallel ? r.key : root.id, states: states.map((s) => s.key), initial: r.initial.target[0].key };
+    const caption = parallel ? r.key : root.id;
+    if (parallel) only(r, "region", caption);
+    if (!r.states || !Object.keys(r.states).length) refuse(caption, "a region needs states");
+    for (const s of Object.values(r.states)) {
+      if (s.type !== "atomic") refuse(`${caption} / ${s.key}`, "a state has states of its own; draw them as another region");
+      only(s, "state", `${caption} / ${s.key}`);
+    }
+    return { node: r, caption, states: Object.keys(r.states), initial: r.initial.target[0].key };
   });
+  const regionOf = (caption) => regions.find((r) => r.caption === caption);
+  // A guard as data: { in: [region, state] }, { not: g }, { and: [g] } or { or: [g] }.
+  const guard = (g, where) => {
+    if (g === undefined) return undefined;
+    if (typeof g === "string") g = machine.implementations.guards[g];
+    else if (g.type && !g.check) g = machine.implementations.guards[g.type];
+    if (g?.check === CHECKS.stateIn && g.stateValue && typeof g.stateValue === "object") {
+      const pairs = Object.entries(g.stateValue).map(([region, state]) => {
+        if (typeof state !== "string" || !regionOf(region)?.states.includes(state)) refuse(where, `stateIn names ${region}: ${JSON.stringify(state)}, which the chart does not have`);
+        return { in: [region, state] };
+      });
+      return pairs.length === 1 ? pairs[0] : { and: pairs };
+    }
+    if (g?.check === CHECKS.not) return { not: guard(g.guards[0], where) };
+    if (g?.check === CHECKS.and) return { and: g.guards.map((x) => guard(x, where)) };
+    if (g?.check === CHECKS.or) return { or: g.guards.map((x) => guard(x, where)) };
+    refuse(where, "a guard is not stateIn({ region: state }), not, and or or");
+  };
+  // Each state's transitions, in the order XState tries them.
+  for (const r of regions)
+    r.moves = Object.fromEntries(r.states.map((from) => {
+      const moves = [];
+      for (const [event, list] of r.node.states[from].transitions) {
+        const where = `${r.caption} / ${from} / ${event}`;
+        if (event.includes("*")) refuse(where, "wildcard events are not supported");
+        for (const t of list) {
+          if (t.actions.length) refuse(where, "a transition has actions");
+          if (t.target && (t.target.length !== 1 || t.target[0].parent !== r.node)) refuse(where, "a transition leaves its region");
+          moves.push({ event, to: t.target?.[0].key ?? from, guard: guard(t.guard, where) });
+        }
+      }
+      return [from, moves];
+    }));
   const meta = root.meta ?? {};
+  // A rule names, per region, the state or states that must never hold together.
   const rules = (meta.never ?? []).map((rule) => {
-    for (const [region, state] of Object.entries(rule.states))
-      if (!regions.some((r) => r.caption === region && r.states.includes(state)))
-        throw new Error(`rule ${rule.name} names ${region}: ${state}, which the chart does not have`);
-    return rule;
+    const states = Object.fromEntries(Object.entries(rule.states).map(([region, list]) => {
+      list = [list].flat();
+      for (const state of list)
+        if (!regionOf(region)?.states.includes(state)) refuse(`rule ${rule.name}`, `${region}: ${state} is not in the chart`);
+      return [region, list];
+    }));
+    return { ...rule, states };
   });
   return { text, machine, regions, events: root.events, rules, meta };
 }
@@ -42,8 +98,8 @@ async function load(file) {
 const where = (chart, snapshot) => chart.regions.map((r) =>
   chart.regions.length === 1 && typeof snapshot.value === "string" ? snapshot.value : snapshot.value[r.caption]);
 const words = (chart, at) => at.map((s, i) => `${chart.regions[i].caption}: ${s}`).join("; ");
-const breaks = (chart, rule, at) => Object.entries(rule.states).every(([region, state]) =>
-  at[chart.regions.findIndex((r) => r.caption === region)] === state);
+const breaks = (chart, rule, at) => Object.entries(rule.states).every(([region, states]) =>
+  states.includes(at[chart.regions.findIndex((r) => r.caption === region)]));
 
 function check(chart) {
   const paths = getShortestPaths(chart.machine, { events: chart.events.map((type) => ({ type })) });
@@ -121,23 +177,15 @@ function verus(chart, module) {
   });
   const at = (r, state, v = "s") => `${v}.${r.field} == ${r.type}::${r.variants.get(state)}`;
   const region = (caption) => regions.find((r) => r.caption === caption) ?? (() => { throw new Error(`no region ${caption}`); })();
-  const guard = (g) => {
-    if (g === undefined) return "true";
-    if (typeof g === "string") g = chart.machine.implementations.guards[g];
-    else if (g.type && !g.check) g = chart.machine.implementations.guards[g.type];
-    if (g?.check === CHECKS.stateIn && typeof g.stateValue === "object")
-      return all(Object.entries(g.stateValue).map(([r, s]) => at(region(r), s)));
-    if (g?.check === CHECKS.not) return `!(${guard(g.guards[0])})`;
-    if (g?.check === CHECKS.and) return all(g.guards.map(guard));
-    if (g?.check === CHECKS.or) return any(g.guards.map(guard));
-    throw new Error("guards must be stateIn({ region: state }), not, and or or, so Verus can state them");
-  };
+  const guard = (g) => g === undefined ? "true"
+    : g.in ? at(region(g.in[0]), g.in[1])
+      : g.not ? `!(${guard(g.not)})` : g.and ? all(g.and.map(guard)) : any(g.or.map(guard));
   const events = chart.events.map((label) => {
     // In each region, the first enabled transition from the current state is taken.
     const moves = regions.map((r) => r.states.flatMap((from) =>
-      (r.node.states[from].on[label] ?? []).map((t, i, list) => ({
-        when: all([at(r, from), ...list.slice(0, i).map((p) => `!(${guard(p.guard)})`), guard(t.guard)]),
-        to: t.target?.[0].key ?? from,
+      r.moves[from].filter((m) => m.event === label).map((m, i, list) => ({
+        when: all([at(r, from), ...list.slice(0, i).map((p) => `!(${guard(p.guard)})`), guard(m.guard)]),
+        to: m.to,
       }))));
     const constraint = regions.map((r, ri) => moves[ri].length
       ? any([...moves[ri].map((m) => `${m.when} && ${at(r, m.to, "t")}`), `!(${any(moves[ri].map((m) => m.when))}) && t.${r.field} == s.${r.field}`])
@@ -159,7 +207,7 @@ function verus(chart, module) {
     spec("next", "s: State, t: State", any(events.map((e) => `${e.function}(s, t)`))),
     spec("step", "s: State, t: State", "next(s, t) || s == t"),
     ...rules.flatMap((r) => [`// ${r.name}: ${r.sentence}`,
-      spec(r.function, "s: State", `!(${all(Object.entries(r.states).map(([rg, st]) => at(region(rg), st)))})`)]),
+      spec(r.function, "s: State", `!(${all(Object.entries(r.states).map(([rg, sts]) => any(sts.map((st) => at(region(rg), st)))))})`)]),
     spec("safety", "s: State", all(rules.map((r) => `${r.function}(s)`))),
     "}", "",
   ].join("\n");

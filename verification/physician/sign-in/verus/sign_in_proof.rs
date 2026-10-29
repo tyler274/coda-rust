@@ -8,11 +8,13 @@ mod steps;
 use chart::*;
 use vstd::prelude::*;
 verus! {
-// The tab that is signing in has navigated away from any patient link it held.
+// The tab that is signing in has navigated away from any patient link it held, and is not
+// yet signed in: a sign-in from another tab moves it on.
 pub open spec fn inductive(s: State) -> bool {
     safety(s)
     && (s.region_this_tab_shows == RegionThisTabShows::StateSigningYouIn
-        ==> s.region_a_patient_link_this_tab_holds == RegionAPatientLinkThisTabHolds::StateNoPatientLink)
+        ==> s.region_a_patient_link_this_tab_holds == RegionAPatientLinkThisTabHolds::StateNoPatientLink
+            && s.region_your_session != RegionYourSession::StateSignedIn)
 }
 
 pub proof fn initial_is_inductive(s: State)

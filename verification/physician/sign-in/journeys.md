@@ -35,6 +35,13 @@ From: You sign in from the email and see Today
 3. the link was used or has expired → This link no longer works
 4. request a sign-in link → Check your email
 
+## A sign-in from the new link's tab moves a rejected tab on
+
+1. request a sign-in link → Check your email
+2. open the email button → Signing you in
+3. the link was used or has expired → This link no longer works
+4. you sign in in another tab → Your workspace; Signed in; Today
+
 ## A link that no longer grants access says so
 
 1. request a sign-in link → Check your email

@@ -34,7 +34,7 @@ export const machine = setup({
       'verification succeeds': { by: "Coda's sign-in service", intent: 'This tab opens Today; the email carries no patient (physician A1.3).' },
       'the link was used or has expired': { by: "Coda's sign-in service", intent: 'The link is rejected (physician A1.5).' },
       'the link no longer grants access': { by: "Coda's sign-in service", intent: 'Shows "No access to this practice" (physician A1.2).' },
-      'you sign in in another tab': { by: 'you', intent: 'Signing in anywhere in this browser signs this tab in too (physician A1.3).' },
+      'you sign in in another tab': { by: 'you', intent: 'The emailed link signs you in from the tab it opens; this tab then goes on to where you were, or to the patient link it held (physician A1.3).' },
       'the session expires': { by: "Coda's sign-in service", intent: 'A prompt covers your work (physician A1.3).' },
       'sign out': { by: 'you', intent: 'Sign-out works (physician A1.5).' },
       'open a patient link while signed out': { by: 'you', intent: 'This tab holds the link while you sign in (physician A1.3).' },
@@ -45,7 +45,7 @@ export const machine = setup({
     never: [
       { name: 'WorkspaceAfterSignOut', states: { [tab]: 'Your workspace', [session]: 'Signed out' }, sentence: 'Sign-out works. (physician A1.5)' },
       { name: 'WorkspaceAfterExpiry', states: { [tab]: 'Your workspace', [session]: 'Session expired' }, sentence: 'If the session expires mid-work, a sign-in prompt covers the screen. (physician A1.3)' },
-      { name: 'PromptWhileSignedIn', states: { [tab]: 'Sign-in prompt over your work', [session]: 'Signed in' }, sentence: 'After signing in the physician is exactly where they were. (physician A1.3)' },
+      { name: 'AskedToSignInWhileSignedIn', states: { [tab]: ['Enter your work email', 'Check your email', 'This link no longer works', 'No access to this practice', 'Sign-in prompt over your work'], [session]: 'Signed in' }, sentence: 'After signing in the physician is exactly where they were. (physician A1.3)' },
       { name: 'HeldLinkLands', states: { [tab]: 'Your workspace', [link]: 'Holding a patient link' }, sentence: 'A patient link opened while signed out lands that tab on the patient after sign-in. (physician A1.3)' },
     ],
   },
@@ -73,17 +73,20 @@ export const machine = setup({
             'verification succeeds': { target: 'Your workspace', guard: 'signing in' },
             'the link was used or has expired': { target: 'This link no longer works', guard: 'signing in' },
             'the link no longer grants access': { target: 'No access to this practice', guard: 'signing in' },
+            'you sign in in another tab': { target: 'Your workspace', guard: 'not signed in' },
           },
         },
         'This link no longer works': {
           on: {
             'request a sign-in link': 'Check your email',
+            'you sign in in another tab': { target: 'Your workspace', guard: 'not signed in' },
             'open a patient link while signed out': { target: 'Enter your work email', guard: 'not signed in, and not signing in or prompted' },
           },
         },
         'No access to this practice': {
           on: {
             'use another email': 'Enter your work email',
+            'you sign in in another tab': { target: 'Your workspace', guard: 'not signed in' },
             'open a patient link while signed out': { target: 'Enter your work email', guard: 'not signed in, and not signing in or prompted' },
           },
         },
