@@ -327,6 +327,42 @@ pub fn NavigationRow(
     }
 }
 
+/// Who wrote a message in a thread.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Author {
+    /// The person using the app: their words stand in a bubble at the far edge.
+    Person,
+    /// Coda or Duet: its words read as plain prose.
+    Assistant,
+}
+
+/// One message in a thread, after the React app's conversation and the October 21 design review:
+/// the person's words in a light bubble at the far edge, the assistant's as plain prose. Who
+/// wrote it stays with assistive technology. A message rises in as it appears.
+#[component]
+pub fn Message(
+    author: Author,
+    /// Who wrote it, for assistive technology.
+    #[props(default)]
+    by: String,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
+    let mut class = String::from(match author {
+        Author::Person => "message message-person",
+        Author::Assistant => "message message-assistant",
+    });
+    let rest = host_attributes(&mut class, attributes);
+    rsx! {
+        article { class: "{class}", ..rest,
+            if !by.is_empty() {
+                span { class: "sr-only", "{by}" }
+            }
+            {children}
+        }
+    }
+}
+
 /// The composer, after the React app's: the one raised text field, holding the words and, under
 /// them, a toolbar of the host's context and actions; a host's submit control sends. The words
 /// grow with what is written, up to seven lines. Keys stay the host's.

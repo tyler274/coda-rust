@@ -40,8 +40,8 @@ use roots::{
     shared_root, sharing_root, today_root,
 };
 use ui::{
-    ActionRow, Button, ButtonVariant, Composer, Disclosure, Icon, IconName, NavigationControl,
-    NavigationRow, TabBar, TryAgain,
+    ActionRow, Author, Button, ButtonVariant, Composer, Disclosure, Icon, IconName, Message,
+    NavigationControl, NavigationRow, TabBar, TryAgain,
 };
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
@@ -1691,9 +1691,10 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
                 div { class: "duet-thread",
                     for line in lines {
-                        article { class: if line.from_duet { "card voice-card" } else { "user-bubble" },
-                            p { class: "card-title", "{line.role}" }
-                            p { class: "card-text", "{line.text}" }
+                        Message {
+                            author: if line.from_duet { Author::Assistant } else { Author::Person },
+                            by: line.role.clone(),
+                            p { "{line.text}" }
                             for source in line.sources {
                                 SourceButton {
                                     chip: source.clone(),
@@ -1715,9 +1716,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                         p { class: "status-detail", "Draft ended. Checking the saved response; unfinished work remains available for recovery." }
                     }
                     if !provisional().text.is_empty() {
-                        article { class: "card voice-card", aria_label: "Provisional response",
-                            p { class: "card-title", "Luna — drafting, not yet saved" }
-                            p { class: "card-text", "{provisional().text}" }
+                        Message { author: Author::Assistant, aria_label: "Provisional response",
+                            p { class: "status-detail", "Luna — drafting, not yet saved" }
+                            p { "{provisional().text}" }
                         }
                     }
                     if let Some(closed) = closed {

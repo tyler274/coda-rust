@@ -36,8 +36,9 @@ use shell::{
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
 use ui::{
-    Button, ButtonVariant, CommandNotice, CommandStage, Dialog, EmptyState, ErrorState, Icon,
-    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, ReadNotice, StatePill, Tone,
+    Author, Button, ButtonVariant, CommandNotice, CommandStage, Dialog, EmptyState, ErrorState,
+    Icon, IconName, IconTile, LiveDot, NavigationControl, NavigationRow, ReadNotice, StatePill,
+    Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -3422,8 +3423,14 @@ fn PatientSurface(
                                         "{TRY_AGAIN}"
                                     }
                                 }
+                            } else if line.from_physician {
+                                ui::Message { author: Author::Person, by: "You",
+                                    FormattedMessage { text: line.text }
+                                }
                             } else {
-                                FormattedMessage { text: line.text }
+                                ui::Message { author: Author::Assistant, by: "Coda",
+                                    FormattedMessage { text: line.text }
+                                }
                             }
                         }
                         {conversation_resume_notice}
@@ -4227,6 +4234,8 @@ fn message_command(
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
+    /// The physician wrote it; otherwise Coda did, or an older server didn't say.
+    from_physician: bool,
     resume: Option<WorkResumeTarget>,
 }
 
@@ -4242,7 +4251,12 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 .resume_target
                 .clone()
                 .filter(|_| turn.kind.as_deref() == Some("mechanical"));
-            Some(ConversationLine { text, resume })
+            let from_physician = turn.kind.as_deref() == Some("physician");
+            Some(ConversationLine {
+                text,
+                from_physician,
+                resume,
+            })
         })
         .collect()
 }
@@ -4382,10 +4396,12 @@ mod conversation_line_tests {
             vec![
                 ConversationLine {
                     text: "Hello".into(),
+                    from_physician: true,
                     resume: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    from_physician: false,
                     resume: Some(target()),
                 },
             ]

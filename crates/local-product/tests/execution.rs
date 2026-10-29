@@ -168,7 +168,12 @@ fn durable_admission_restart_and_late_completion_use_one_owner() {
             workspace: "workspace",
             chat: "chat"
         }),
-        ["original", "new input", "current reply", "unfinished"]
+        said(&[
+            ("user", "original"),
+            ("user", "new input"),
+            ("assistant", "current reply"),
+            ("user", "unfinished"),
+        ])
     );
     for (identity, question) in [
         (&physician, "private question"),
@@ -180,7 +185,7 @@ fn durable_admission_restart_and_late_completion_use_one_owner() {
                 workspace: "workspace",
                 chat: "chat",
             }),
-            [question, "scoped reply"]
+            said(&[("user", question), ("assistant", "scoped reply")])
         );
         assert_eq!(owner.chats(Some(identity), "workspace")[0].1, question);
     }
@@ -368,7 +373,7 @@ async fn shared_loop_commits_persistent_physician_work_and_keeps_provider_eviden
             workspace: "w",
             chat: "c"
         }),
-        ["hello", "authored reply"]
+        said(&[("user", "hello"), ("assistant", "authored reply")])
     );
     drop(session);
     cleanup(&path);
@@ -464,4 +469,12 @@ fn chats_list_conversations_newest_first_and_skip_reply_drafts() {
     );
     assert!(chats.iter().all(|(_, _, opened_at)| *opened_at > 0));
     assert!(session.chats(None, "missing").is_empty());
+}
+
+/// A conversation as the session returns it: who wrote each turn, and its words.
+fn said(turns: &[(&str, &str)]) -> Vec<(String, String)> {
+    turns
+        .iter()
+        .map(|(role, text)| ((*role).to_owned(), (*text).to_owned()))
+        .collect()
 }

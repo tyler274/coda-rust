@@ -68,11 +68,13 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surfac
   font-size: 17px;
 }
 .duet-greeting { font-weight: 700; font-size: 22px; }
-.voice-card, .number-card, .user-bubble {
+.voice-card, .number-card {
   margin: 0 0 12px;
   padding: 16px;
 }
-.user-bubble { border-radius: 16px; background: var(--primary-container); color: var(--ink); }
+/* The thread after the October 21 design review: messages a clear step apart, the person's bubble tailed toward them. */
+.duet-thread { display: flex; flex-direction: column; gap: 24px; }
+.duet .message-person { border-bottom-right-radius: 5px; }
 .thread-card { margin-top: 12px; padding-top: 8px; border-top: var(--hairline) solid var(--outline-variant); }
 button.thread-open {
   display: block;
