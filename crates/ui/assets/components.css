@@ -251,3 +251,21 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 @keyframes chart-grow { from { transform: scaleX(0); } }
 @keyframes chart-reveal { from { clip-path: inset(-8px 100% -8px -8px); } to { clip-path: inset(-8px -8px -8px -8px); } }
 @keyframes chart-point { from { opacity: 0; transform: scale(.4); } }
+/* A card holding one object, after the October 21 mockups: what it holds, its title, its content and its source. */
+.card-object { display: grid; gap: var(--space-4); padding: var(--space-5); border: var(--hairline) solid var(--outline-variant); box-shadow: none; }
+.card-object.is-tinted { background: var(--data-container); }
+.card-lead { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.card-object-title { margin: 0; color: var(--ink); font: var(--type-title-lg); letter-spacing: var(--title-tracking); }
+.card-lead + .card-object-title { margin-top: calc(-1 * var(--space-1)); }
+.card-object-title + .card-detail { margin-top: calc(-1 * var(--space-3)); }
+.card-detail { margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.card-footer { margin: 0; padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); color: var(--muted); font: var(--type-body-sm); }
+.is-tinted .card-footer { padding-top: 0; border-top: 0; }
+.step-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--outline-variant); }
+.step-list li { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--outline-variant); color: var(--ink); font: var(--type-body-md); }
+.step-number { flex: none; min-width: 2ch; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.quote { margin: 0; color: var(--ink); font: var(--type-body-lg); quotes: "\201C" "\201D"; }
+.quote::before { content: open-quote; }
+.quote::after { content: close-quote; }
+.later-context { display: grid; gap: var(--space-2); padding: var(--space-4); border-inline-start: var(--stroke) solid var(--outline); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--data-container); }
+.later-context .quote { font: var(--type-body-md); }

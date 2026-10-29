@@ -7,11 +7,11 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, CitationChip, CommandNotice, CommandStage,
-    Comparison, ComparisonBars, Composer, Dialog, Disclosure, Icon, IconName, LiveDot,
-    MeasurementTile, Message, NavigationControl, NavigationRow, Overline, Placeholder, ReadNotice,
-    ReadStage, SourceRow, SourcesButton, Sparkline, StatePill, StatusLine, TabBar, Tone,
-    TrendChart, Value, WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CommandNotice, CommandStage,
+    Comparison, ComparisonBars, Composer, Dialog, Disclosure, Icon, IconName, LaterContext,
+    LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Overline, Placeholder,
+    Quote, ReadNotice, ReadStage, SourceRow, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepList, TabBar, Tone, TrendChart, Value, WorkingMark,
 };
 
 fn main() {
@@ -74,6 +74,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Colour", note: "Roles in pairs, a fill and what reads on it. Hosts read roles, never tones; dark mode swaps the tones beneath.",
                     ColourDemo {}
+                }
+                Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context.",
+                    CardDemo {}
                 }
                 Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
                     ChartDemo {}
@@ -199,6 +202,46 @@ fn ColourDemo() -> Element {
 }
 
 #[cfg(feature = "web")]
+#[component]
+fn CardDemo() -> Element {
+    rsx! {
+        div { class: "gallery-cards",
+            Card {
+                overline: "What Duet noticed",
+                title: "Sleep was shorter than your recent average",
+                footer: "October 14–21 · Apple Health",
+                ComparisonBars {
+                    rows: vec![
+                        Comparison { label: "Last night".into(), value: "6 hr 18 min".into(), fraction: 0.9 },
+                        Comparison { label: "Previous 7 nights".into(), value: "7 hr".into(), fraction: 1.0 },
+                    ],
+                }
+            }
+            Card {
+                tinted: true,
+                overline: "Your saved plan",
+                title: "Evening wind-down",
+                footer: "Saved in chat · October 21",
+                StepList {
+                    steps: vec![
+                        "Put my phone away at 10:30 pm.".into(),
+                        "Keep my usual wake-up time.".into(),
+                        "Try this through Sunday.".into(),
+                    ],
+                }
+            }
+            Card {
+                overline: "Original record",
+                title: "Visit note",
+                detail: "Northside Clinic · October 15",
+                Quote { text: "Walks twice a week." }
+                LaterContext { overline: "Your later context", text: "I now walk four mornings a week.", added: "Added October 21" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
 const SLEEP_HOURS: [f64; 8] = [7.1, 7.4, 7.2, 6.9, 7.0, 7.3, 6.8, 6.3];
 
 #[cfg(feature = "web")]
@@ -213,17 +256,6 @@ fn parts(parts: &[(&str, &str)]) -> Vec<(String, String)> {
 #[component]
 fn ChartDemo() -> Element {
     rsx! {
-        article { class: "card gallery-observation",
-            Overline { text: "What Duet noticed" }
-            h3 { class: "gallery-observation-title", "Sleep was shorter than your recent average" }
-            ComparisonBars {
-                rows: vec![
-                    Comparison { label: "Last night".into(), value: "6 hr 18 min".into(), fraction: 0.9 },
-                    Comparison { label: "Previous 7 nights".into(), value: "7 hr".into(), fraction: 1.0 },
-                ],
-            }
-            p { class: "gallery-observation-source", "October 14–21 · Apple Health" }
-        }
         div { class: "gallery-tiles",
             MeasurementTile {
                 icon: IconName::Moon,
