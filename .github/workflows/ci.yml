@@ -496,7 +496,7 @@ jobs:
           restore-keys: |
             postgres-${{ runner.os }}-
       - name: Check authored SQL formatting
-        run: nix develop --command python scripts/check-sql.py
+        run: nix develop .#agent --command python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:
           MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/postgres
@@ -505,9 +505,9 @@ jobs:
           DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
           PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
         run: |
-          nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
-          nix develop --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
-          nix develop --command bash scripts/check-postgres.sh
+          nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+          nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+          nix develop .#agent --command bash scripts/check-postgres.sh
 
   # Rebuilds the public marketing site from this main commit, pushes it by
   # digest to the private public-site repository and applies the staging
@@ -779,9 +779,9 @@ jobs:
         uses: cachix/install-nix-action@v31
       - name: Validate the collector config
         run: |
-          nix develop --command otelcol-contrib validate --config dev/observability/collector.yaml
-          nix develop --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
-          nix develop --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.datadog.yaml
+          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml
+          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
+          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.datadog.yaml
       - name: Check the local stack
         run: |
           docker compose -f dev/observability/compose.yaml config -q
@@ -789,15 +789,15 @@ jobs:
       - name: Validate and test the OpenTofu roots
         run: |
           for root in infra/gcp/observability infra/gcp/physician-runtime; do
-            nix develop --command tofu fmt -check -recursive "$root"
-            nix develop --command tofu -chdir="$root" init -backend=false -input=false
-            nix develop --command tofu -chdir="$root" validate
-            nix develop --command tofu -chdir="$root" test
+            nix develop .#agent --command tofu fmt -check -recursive "$root"
+            nix develop .#agent --command tofu -chdir="$root" init -backend=false -input=false
+            nix develop .#agent --command tofu -chdir="$root" validate
+            nix develop .#agent --command tofu -chdir="$root" test
           done
 
   # RustSec advisories, license allow-list, bans, and source checks.
   # deny.toml is the single policy file; the nix dev shell carries the same
-  # cargo-deny so `nix develop --command cargo deny check` matches this job.
+  # cargo-deny so `nix develop .#agent --command cargo deny check` matches this job.
   cargo-deny:
     runs-on: blacksmith-2vcpu-ubuntu-2404
     steps:
