@@ -40,8 +40,8 @@ use roots::{
     plan_page, reminder_page, send_id, shared_root, sharing_root, today_root,
 };
 use ui::{
-    ActionRow, Button, ButtonVariant, Icon, IconName, NavigationControl, NavigationRow, TabBar,
-    TryAgain,
+    ActionRow, Button, ButtonVariant, Disclosure, Icon, IconName, NavigationControl, NavigationRow,
+    TabBar, TryAgain,
 };
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
@@ -2019,7 +2019,7 @@ fn DoctorLetter(
         if !export_error().is_empty() { p { role: "alert", "{export_error}" } }
         // Only our glyph-path renderer supplies this markup; patient text never becomes raw HTML.
         div { class: "doctor-preview", dangerous_inner_html: "{svg}" }
-        details { summary { "Read complete page text" } pre { style: "white-space: pre-wrap", "{full_text}" } }
+        Disclosure { title: "Read complete page text", detail: true, pre { style: "white-space: pre-wrap", "{full_text}" } }
         if !preview.layout.fits() { p { role: "alert", "The complete page cannot be exported faithfully on one page. Your saved words remain unchanged; shorten the page before exporting." } }
         if preview.incomplete { p { role: "alert", "Some selected information needs exact-source review. Export is blocked until it is checked." } }
     }

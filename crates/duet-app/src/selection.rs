@@ -29,8 +29,7 @@ pub(crate) fn DeviceSources(
         }
     });
     rsx! {
-        details {
-            summary { "Select device measurements for this page" }
+        Disclosure { title: "Select device measurements for this page",
             p { "Review the complete dated measurement, units and source coverage. Selection is not approval or publication. If the latest snapshot changes during selection, reload and review the actual saved selection before saving your page." }
             Button { disabled: busy(), onclick: move |_| reload.set(reload() + 1), "Refresh device snapshot" }
             if !error().is_empty() { p { role: "alert", "{error}" } }
@@ -72,7 +71,7 @@ pub(crate) fn DeviceSources(
 }
 
 use dioxus::prelude::*;
-use ui::Button;
+use ui::{Button, Disclosure};
 #[component]
 pub(crate) fn DoctorSources(
     base_url: String,
@@ -100,8 +99,7 @@ pub(crate) fn DoctorSources(
         }
     });
     rsx! {
-        details {
-            summary { "Select source records for this page" }
+        Disclosure { title: "Select source records for this page",
             p { "Selection is not publication. Review the full literal record and save your page before sharing. Source changes will require renewed review." }
             if blocked { p { "Finish or discard your draft, and resolve pending operations, before changing the source selection." } }
             Button { disabled: busy(), onclick: move |_| reload.set(reload() + 1), "Refresh source records" }

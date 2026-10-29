@@ -327,6 +327,51 @@ pub fn NavigationRow(
     }
 }
 
+static DISCLOSURES: AtomicUsize = AtomicUsize::new(0);
+
+/// A section that opens in place, after the React app's `ProductDisclosure`: its title is one
+/// toggle with a chevron, and its content stays mounted, out of reach while closed, growing open
+/// and shut. A detail reads as a quiet line rather than a section's title.
+#[component]
+pub fn Disclosure(
+    title: String,
+    #[props(default)] detail: bool,
+    #[props(default)] default_open: bool,
+    children: Element,
+) -> Element {
+    let id = use_hook(|| format!("disclosure-{}", DISCLOSURES.fetch_add(1, Ordering::Relaxed)));
+    let mut open = use_signal(|| default_open);
+    let class = if detail {
+        "disclosure is-detail"
+    } else {
+        "disclosure"
+    };
+    rsx! {
+        section { class: "{class}", "data-state": if open() { "open" } else { "closed" },
+            h2 { class: "disclosure-heading",
+                button {
+                    class: "disclosure-toggle",
+                    r#type: "button",
+                    aria_expanded: "{open}",
+                    aria_controls: "{id}",
+                    onclick: move |_| open.toggle(),
+                    strong { "{title}" }
+                    Icon { name: IconName::ChevronDown }
+                }
+            }
+            div {
+                id: "{id}",
+                class: if open() { "disclosure-region is-open" } else { "disclosure-region" },
+                aria_hidden: if open() { "false" } else { "true" },
+                "inert": (!open()).then_some("true"),
+                div { class: "disclosure-clip",
+                    div { class: "disclosure-body", {children} }
+                }
+            }
+        }
+    }
+}
+
 static DIALOGS: AtomicUsize = AtomicUsize::new(0);
 
 /// A modal dialog, after the React app's `TransientDialog` and `DialogHeader`: it opens over the

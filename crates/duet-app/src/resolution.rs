@@ -2,7 +2,7 @@
 use crate::PatientSession;
 use dioxus::prelude::*;
 use duet_client::doctor::{DoctorError, PendingDoctorOperation};
-use ui::Button;
+use ui::{Button, Disclosure};
 
 #[component]
 pub(crate) fn OperationRecovery(base_url: String, on_released: EventHandler) -> Element {
@@ -88,8 +88,7 @@ pub(crate) fn OperationRecovery(base_url: String, on_released: EventHandler) -> 
         }
     };
     rsx! {
-        details {
-            summary { "Recover or resolve a previous operation" }
+        Disclosure { title: "Recover or resolve a previous operation",
             if cfg!(target_arch = "wasm32") {
                 p { role: "alert", "This browser keeps credentials, drafts and retry metadata in memory only. Reloading or closing loses the original request identity. After signing in again, read the server state below before making any new approval. Current state is not proof that a previous request succeeded. Do not recreate an uncertain operation as a retry." }
             }
