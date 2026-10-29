@@ -173,8 +173,8 @@ client removes both from the address bar, redeems the single-use token
 automatically, and opens Today after the server verifies it. The email contains
 one Sign in button and an equivalent plain-text link; there is no code field or
 second confirmation. Used or expired links offer a new link. The
-[sign-in graph](/verification/physician-experience/sign-in.mmd) maps entry and
-recovery; in-workspace session expiry remains a separate behavior.
+<a href="/verification/physician/sign-in/README%2Emd">sign-in chart</a> maps entry, recovery
+and session expiry.
 
 Local browser tests exercise the actual HTML email button through the
 public-site proxy using a stand-in mail service. Live staging qualification

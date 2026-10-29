@@ -2,7 +2,7 @@
 //! session in sessionStorage. When one tab redeems a link or signs out, the
 //! others hear it here: a tab covered by the sign-in prompt picks up the new
 //! session where it was, and a different physician's sign-in or a sign-out
-//! reaches every tab (physician.mmd, Physician session).
+//! reaches every tab (physician A1.3–A1.4).
 // The channel is browser-only; native builds keep the news type for its tests.
 #![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 

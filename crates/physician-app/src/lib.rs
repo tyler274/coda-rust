@@ -441,8 +441,8 @@ fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
 #[derive(Clone, Copy, PartialEq)]
 struct SessionState {
     signed_in: Signal<bool>,
-    /// The sign-in prompt covers the open page (physician.mmd: Session expired,
-    /// sign in to continue). Nothing underneath changes.
+    /// The sign-in prompt covers the open page when the session expires
+    /// (physician A1.3). Nothing underneath changes.
     expired: Signal<bool>,
     whoami_name: Signal<String>,
     whoami: Signal<Option<WhoamiResponse>>,
@@ -484,7 +484,7 @@ impl SessionState {
             // A signed-out tab picks up this browser's sign-in, as sign-out
             // reaches every tab. It keeps what it was opening, so the tab
             // that opened a Coda link lands on its patient when the emailed
-            // link is opened elsewhere (sign-in.mmd, Patient link).
+            // link is opened elsewhere (physician A1.3).
             if let tabs::TabNews::SignedIn { session, .. } = news {
                 client.session().set(session.clone());
                 write_stored_session(Some(&session));

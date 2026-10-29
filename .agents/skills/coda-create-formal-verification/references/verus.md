@@ -38,8 +38,8 @@ transaction boundaries or publication, nor complete refinement of the design mod
 ## Diagnose a failed check
 
 Distinguish an unsatisfied obligation, a reachable model violation and a runtime
-bug. The [chart search](../../coda-statechart/references/compiler.md#read-a-concrete-chart-failure)
-can explain finite-state violations but cannot extract arbitrary Verus traces.
+bug. `node verification/statechart.mjs check` prints the shortest path to a broken
+chart rule, so it can explain finite-state violations but cannot extract arbitrary Verus traces.
 Strengthen induction when an unreachable state breaks preservation; never weaken
 agreed safety merely to obtain a pass.
 

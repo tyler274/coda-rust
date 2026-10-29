@@ -24,7 +24,7 @@ keep the gap visible and update the responsible owner as the work lands.
 | Invitations, consent and practice connections | [Accounts and practice connection](front-door.md) |
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
 | Shared execution and product boundaries | [Operating invariants](agent-contracts.md), [crate map](crate-map.md) |
-| Statecharts, design decisions and formal proof | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician-experience/README%2Emd">physician experience</a> |
+| Statecharts, design decisions and formal proof | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
 | Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |
 
@@ -40,21 +40,19 @@ the app and its runtime. These documents answer different questions:
 
 | Read in order | What it establishes |
 | --- | --- |
-| <a href="/verification/physician-experience/README%2Emd">Physician experience</a> and its graph and decisions | The agreed behavior: Today, the patient page, conversations, readings, work and communication. The graph describes the intended product, including capabilities not built yet. |
-| <a href="/verification/physician-experience/coverage%2Emd">Physician app coverage</a> | The state-by-state implementation map: what is built, partial, missing or correctly not shown, and which states still need server data. A mapped state is not a running-app proof. |
-| <a href="/verification/physician-experience/infrastructure-gaps%2Emd">Runtime guarantees</a> and [physician site](physician-site.md) | The guarantees the graph leaves to execution, then the Rust owners and execution paths that implement parts of them. Recovery and scaling support the experience; they do not establish coverage of every product workflow. |
+| <a href="/intent/physician%2Emd">Physician spec</a> and its decisions | The agreed behavior: Today, the patient page, conversations, readings, work and communication, including capabilities not built yet. |
+| <a href="/intent/harness%2Emd">Harness spec</a> and [physician site](physician-site.md) | The guarantees left to execution, then the Rust owners and execution paths that implement parts of them. Recovery and scaling support the experience; they do not establish coverage of every product workflow. |
 | <a href="/verification/README%2Emd">Verification</a> and the <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">physician verification recipe</a> | The boundary between graph/model checks, implementation checks and running-app readback. The current physician recipe exercises chat across a local scale stack with a fixed provider. |
 | [GCP staging](gcp.md#rust-staging-bootstrap-and-deployment-gate) and [release](release.md) | Deployment and the hosted checks still needed for real identity, delivery, providers and recovery. A deployed revision is not itself an accepted physician journey. |
 
-For the next implementation slice, use Linear's current outcome and the coverage
-rows together: choose a complete physician journey, identify missing server data
-and runtime guarantees, then verify the result through the app. Update affected
-coverage rows with the implementation. Do not infer the next product priority
-from the latest infrastructure merge or treat the counts as a completion score.
+For the next implementation slice, use Linear's current outcome and the physician
+spec together: choose a complete physician journey, identify missing server data
+and runtime guarantees, then verify the result through the app. Do not infer the
+next product priority from the latest infrastructure merge.
 
 Connected-care behavior belongs to the
-<a href="/verification/connected-care/README%2Emd">composition of the physician and
-Duet graphs</a>. It does not merge their accounts, clinical state or runtime owners.
+<a href="/intent/connected-care%2Emd">connected-care spec</a>. It does not merge the
+physician's and Duet's accounts, clinical state or runtime owners.
 
 ## Retained references
 

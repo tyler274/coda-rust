@@ -14,8 +14,8 @@ Follow the [shared principles](../../../verification/README.md#principles) and
 1. Read the agreed journey, statecharts, promises and decision sources. Identify
    a consequential coherent scope, its neighboring owners and omitted behavior.
    Use [statechart design](../coda-statechart/SKILL.md) for unsettled product meaning.
-2. Translate states, transitions, guards, effects and interactions. Use the
-   [compiler](../coda-statechart/references/compiler.md) where supported; connect
+2. Translate states, transitions, guards, effects and interactions. Generate the
+   chart's model with `node verification/statechart.mjs verus`; connect
    extra data and progress properties to named diagram promises. Review
    [correspondence](../../../verification/README.md#keep-the-diagram-and-model-in-lockstep)
    in both directions. A green selected subset does not formalize the whole journey.
