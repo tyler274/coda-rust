@@ -1,5 +1,9 @@
 # Physician experience
 
+> **Lags the intent specs.** This graph predates [the intent specs](../../intent/README.md) and does not follow
+> them; where they differ, the specs govern. It is being rebuilt from the specs as smaller per-journey
+> charts, one at a time. Don't extend it or treat it as the product contract.
+
 The physician web app's behavior, written as one statechart.
 
 | File | Owns |

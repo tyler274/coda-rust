@@ -1,5 +1,9 @@
 # Duet experience
 
+> **Lags the intent specs.** This graph predates [the intent specs](../../intent/README.md) and does not follow
+> them; where they differ, the specs govern. It is being rebuilt from the specs as smaller per-journey
+> charts, one at a time. Don't extend it or treat it as the product contract.
+
 The Duet app's behavior, written as one statechart. It follows the physician
 graph's method ([physician-experience](../physician-experience/README.md)).
 

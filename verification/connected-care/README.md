@@ -1,5 +1,9 @@
 # Connected care
 
+> **Lags the intent specs.** This graph predates [the intent specs](../../intent/README.md) and does not follow
+> them; where they differ, the specs govern. It is being rebuilt from the specs as smaller per-journey
+> charts, one at a time. Don't extend it or treat it as the product contract.
+
 How Duet and the physician web app meet. Each graph owns its side of one patient's
 connection to one practice; [connection.mmd](connection.mmd) composes them through
 shared events, never shared states, and holds the rules that span both.
