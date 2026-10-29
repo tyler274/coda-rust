@@ -1,0 +1,150 @@
+name: Promote public site to production
+
+# Manual only. Promotes the image the staging deploy built, smoke-tested and
+# published for one main commit (book/src/public-site.md, Production state and
+# deployment). It copies that digest into the production repository, plans the
+# production root with it, allows only an in-place update of the Cloud Run
+# service, applies the saved plan and reads both hostnames back through the
+# load balancer. The first apply, certificate DNS and the DNS cutover are
+# operator steps, not this workflow. The production environment's required
+# reviewer approves each run.
+on:
+  workflow_dispatch:
+    inputs:
+      release_sha:
+        description: Full main commit SHA whose staging image to promote
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  promote:
+    name: Promote public site to production
+    if: github.ref == 'refs/heads/main'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 30
+    concurrency:
+      group: public-site-production-release
+      cancel-in-progress: false
+    environment:
+      name: production
+      url: https://codahealth.ai
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      REGION: us-east1
+      PROJECT: coda-health-prod
+      SERVICE: public-site-production
+      SOURCE: us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site
+      REPOSITORY: us-east1-docker.pkg.dev/coda-health-prod/public-site/public-site
+      ROOT: infra/gcp/public-site
+      RELEASE_SHA: ${{ inputs.release_sha }}
+    steps:
+      - name: Check the release input
+        run: |
+          [[ "$RELEASE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::release_sha must be a full 40-character commit SHA"; exit 1; }
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          submodules: false
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Require a commit on main
+        run: |
+          git merge-base --is-ancestor "$RELEASE_SHA" HEAD \
+            || { echo "::error::${RELEASE_SHA} is not on main"; exit 1; }
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Authenticate as the public-site production deployer
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/720954567292/locations/global/workloadIdentityPools/github-actions/providers/github-oidc
+          service_account: public-site-prod-deployer@coda-health-prod.iam.gserviceaccount.com
+          token_format: access_token
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+      - name: Copy the digest staging tested
+        id: copy
+        run: |
+          set -euo pipefail
+          gcloud auth configure-docker "${REGION}-docker.pkg.dev" --quiet
+          # The staging deploy tags each image with its commit only after the
+          # image smoke passed; tags are immutable.
+          digest=$(gcloud artifacts docker images describe "${SOURCE}:${RELEASE_SHA}" --format='value(image_summary.digest)')
+          [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "::error::staging has no image for ${RELEASE_SHA}"; exit 1; }
+          if ! gcloud artifacts docker images describe "${REPOSITORY}@${digest}" >/dev/null 2>&1; then
+            # A single-source carbon copy keeps the manifest, so the digest is unchanged.
+            docker buildx imagetools create --prefer-index=false \
+              --tag "${REPOSITORY}:${RELEASE_SHA}" "${SOURCE}@${digest}"
+          fi
+          copied=$(gcloud artifacts docker images describe "${REPOSITORY}@${digest}" --format='value(image_summary.digest)')
+          [ "$copied" = "$digest" ] || { echo "::error::copied digest ${copied} differs from ${digest}"; exit 1; }
+          echo "image=${REPOSITORY}@${digest}" >> "$GITHUB_OUTPUT"
+          echo "Promoting ${SOURCE}@${digest} (${RELEASE_SHA})" >> "$GITHUB_STEP_SUMMARY"
+      - name: Plan the production root
+        env:
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          IMAGE: ${{ steps.copy.outputs.image }}
+        run: |
+          set -euo pipefail
+          tofu() { nix develop .#release --command tofu -chdir="$ROOT" "$@"; }
+          tofu init -input=false -backend-config=backend/production.gcs.tfbackend
+          tofu plan -input=false -lock-timeout=5m -var-file=env/production.tfvars \
+            -var "image=${IMAGE}" -var "release_sha=${RELEASE_SHA}" -out=production.tfplan
+          tofu show -json production.tfplan > plan.json
+          # Allow only an in-place update of the Cloud Run service (or nothing).
+          # Load balancer, certificate, IAM and identity changes are operator applies.
+          unexpected=$(jq -r '[.resource_changes[]
+            | select(.change.actions != ["no-op"] and .change.actions != ["read"])
+            | select(.address != "google_cloud_run_v2_service.site" or .change.actions != ["update"])
+            | "\(.address): \(.change.actions | join(","))"] | .[]' plan.json)
+          if [ -n "$unexpected" ]; then
+            echo "::error::The plan changes more than the site service:"
+            echo "$unexpected"
+            exit 1
+          fi
+      - name: Apply the saved plan
+        env:
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: nix develop .#release --command tofu -chdir="$ROOT" apply -input=false -lock-timeout=5m production.tfplan
+      - name: Verify the revision
+        env:
+          IMAGE: ${{ steps.copy.outputs.image }}
+        run: |
+          set -euo pipefail
+          service=$(gcloud run services describe "$SERVICE" --region "$REGION" --project "$PROJECT" --format=json)
+          ready=$(jq -r '.status.latestReadyRevisionName' <<<"$service")
+          created=$(jq -r '.status.latestCreatedRevisionName' <<<"$service")
+          served=$(jq -r '.spec.template.spec.containers[0].image' <<<"$service")
+          [ "$ready" = "$created" ] || { echo "::error::latest revision $created is not Ready ($ready is)"; exit 1; }
+          [ "$served" = "$IMAGE" ] || { echo "::error::service image $served, expected $IMAGE"; exit 1; }
+          jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
+            || { echo "::error::the latest revision does not serve all traffic"; exit 1; }
+      - name: Read back both hostnames through the load balancer
+        env:
+          GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+        run: |
+          set -euo pipefail
+          ip=$(nix develop .#release --command tofu -chdir="$ROOT" output -raw load_balancer_ip)
+          # --resolve pins each hostname to this load balancer with normal SNI and
+          # certificate checks, before or after the DNS cutover.
+          for host in codahealth.ai www.codahealth.ai; do
+            pin=(--resolve "${host}:443:${ip}" --resolve "${host}:80:${ip}")
+            health=$(curl -sS --fail "${pin[@]}" "https://${host}/api/health")
+            jq -e --arg sha "$RELEASE_SHA" '.env == "production" and .release_sha == $sha' <<<"$health" >/dev/null \
+              || { echo "::error::${host} health: ${health}"; exit 1; }
+            headers=$(curl -sS --fail -D - -o page.html "${pin[@]}" "https://${host}/")
+            grep -qi '^strict-transport-security: max-age=63072000' <<<"$headers" \
+              || { echo "::error::${host} sends no production HSTS"; exit 1; }
+            if grep -q 'href="/physician/"' page.html; then
+              echo "::error::${host} offers physician sign-in"; exit 1
+            fi
+            status=$(curl -sS -o /dev/null -w '%{http_code}' "${pin[@]}" "https://${host}/physician/today")
+            [ "$status" = 404 ] || { echo "::error::${host}/physician/today answered ${status}"; exit 1; }
+            redirect=$(curl -sS -o /dev/null -w '%{http_code} %{redirect_url}' "${pin[@]}" "http://${host}/duet?x=1")
+            [ "$redirect" = "308 https://${host}/duet?x=1" ] || { echo "::error::http://${host} answered ${redirect}"; exit 1; }
+            echo "${host}: release ${RELEASE_SHA}, HSTS, no sign-in, /physician 404, HTTP 308" >> "$GITHUB_STEP_SUMMARY"
+          done

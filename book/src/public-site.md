@@ -1033,6 +1033,65 @@ for the bindings that need the service and runtime account to exist.
   and lets only that subject impersonate the deployer. Give the GitHub `production`
   environment Dev as a required reviewer.
 
+### Promotion
+
+[`promote-public-site.yml`](/.github/workflows/promote-public-site.yml) is manual
+(`workflow_dispatch` on `main`, input `release_sha`) and runs in the `production`
+environment, so its reviewer approves each run. It:
+
+1. requires a full SHA that is on `main`;
+2. finds the image the staging deploy tagged with that commit (tags are pushed only
+   after the image smoke passes, and are immutable) and copies that digest into the
+   production repository unchanged;
+3. plans the production root with `env/production.tfvars`, that image and that SHA,
+   and fails if the plan changes anything but an in-place update of the Cloud Run
+   service. Load balancer, certificate, IAM and identity changes are operator applies;
+4. applies the saved plan and checks the Ready revision serves the digest with all
+   traffic;
+5. pins `codahealth.ai` and `www.codahealth.ai` to the load balancer IP with
+   `curl --resolve` and checks each: `/api/health` reports production and the SHA,
+   the homepage sends production's HSTS and offers no Sign in, `/physician/today` is
+   404, and plain HTTP answers 308 to the same HTTPS URL.
+
+Known limit: Cloud CDN may serve the previous release's HTML for up to an hour
+(`s-maxage=3600`, then `stale-while-revalidate`). Its content-addressed assets keep
+working while the edge still caches them. A cache miss for an asset the new image no
+longer has returns 404 until the HTML refreshes. This is not mitigated yet.
+
+### First apply and cutover
+
+Each step needs Dev's authorization at the time it runs.
+
+1. Run the [production admin bootstrap](#production-admin-bootstrap).
+2. Copy the staging-tested digest into the production repository as the workflow
+   does, then, as an administrator:
+
+   ```bash
+   tofu -chdir=infra/gcp/public-site init -backend-config=backend/production.gcs.tfbackend
+   tofu -chdir=infra/gcp/public-site plan -var-file=env/production.tfvars \
+     -var image=IMAGE@DIGEST -var release_sha=SHA -out=production.tfplan
+   tofu -chdir=infra/gcp/public-site apply production.tfplan   # after review
+   ```
+
+   Rerun the bootstrap for the bindings that need the service and runtime account.
+3. Add the two `certificate_dns_records` CNAMEs (`_acme-challenge.codahealth.ai`
+   and `_acme-challenge.www.codahealth.ai`) in Cloudflare, DNS only. Wait until
+   `gcloud --project=coda-health-prod certificate-manager certificates describe
+   public-site-production` reports the certificate `ACTIVE`.
+4. Run the promotion workflow for the same SHA. Its plan is a no-op and its readback
+   qualifies both hostnames through the load balancer while DNS still points at
+   Vercel. Also look at the site in a browser pinned to the load balancer IP.
+5. Record the current Cloudflare records (on 2026-10-29 `codahealth.ai` and
+   `www.codahealth.ai` were DNS-only CNAMEs to
+   `aed33597e007abe5.vercel-dns-016.com`, TTL auto), then replace both with A records
+   to `load_balancer_ip`, DNS only. Check public DNS answers and the live responses.
+6. Keep the Vercel `kytos` project serving for the rollback window (seven days
+   unless Dev sets another). Rollback is restoring both CNAMEs.
+7. After the window, Dev removes `codahealth.ai` and `www.codahealth.ai` from the
+   `kytos` project in the `simplestudios-projects` Vercel team and deletes the
+   project. Do not remove the `codahealth.ai` domain from the team: `work`,
+   `work-staging`, `app` and `app-staging` are still served from it.
+
 ## Local release load check (2026-10-20)
 
 The approved `oha` package is included in the Nix shell (resolved version 1.16.0).
