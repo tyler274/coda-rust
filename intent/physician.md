@@ -144,7 +144,7 @@ Connecting a channel:
 A message arrives:
 
 6. A message arrives. Coda handles mail from patients; mail from colleagues or insurers about a patient is outside the MVP. The model decides whether mail is patient mail, with no brittle filters.
-7. A conversation or sender already confirmed for one patient routes on its own. Every other message gets Coda's suggestion and waits for a person to confirm. Matching always ends with a suggestion or a person deciding, and it never hangs.
+7. A conversation or sender already confirmed for one patient routes on its own, and so does a Spruce conversation whose one outside participant is saved as the contact of exactly one patient, linked to exactly one EHR record that matches exactly one Coda patient. Every other message gets Coda's suggestion and waits for a person to confirm. Matching always ends with a suggestion or a person deciding, and it never hangs.
 8. One conversation belongs to one patient.
 9. A message waiting for a match goes to the messaging manager and to a practice-wide Messages to match list any physician can match from. It shows the suggested patient and alternatives, and Confirm names the patient. Model scores never appear as confidence. The person confirms, picks another patient or leaves it unlinked.
 10. An unmatched message that looks urgent can be marked so, and its row leads Today as Now for everyone who sees it.
