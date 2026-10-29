@@ -13,6 +13,7 @@ Use absolute paths to this repository's script and a trusted workspace. Replace
 python3 /absolute/path/to/coda-rust/.agents/skills/review-pr/scripts/run_review.py \
   --pr https://github.com/OWNER/REPO/pull/123 \
   --workspace /absolute/path/to/trusted/workspace \
+  --github-app-config /absolute/path/to/reviewer-app.json \
   --engine codex --model gpt-6-astra --effort xhigh
 ```
 
@@ -41,7 +42,11 @@ The workspace need not contain the author's checkout. Use a trusted scratch
 workspace when needed; do not launch in a downloaded contributor-controlled
 folder merely to load its settings or hooks. Both engines retain their normal
 authentication and applicable configuration. CLI isolation and permissions are
-not identical; respect restrictions and do not alter global settings to bypass them.
+not identical. Both receive the same local reviewer MCP server for direct
+target-repository reads, publication drafting, and approved bot publication. The
+config file contains App and installation IDs plus a command that retrieves the
+private key; it contains no private key or token. Its path is inherited by
+follow-ups. Do not put credential values in run artifacts or model prompts.
 
 `--dry-run` reads the PRs and prepares the request without starting a model.
 Python 3.10+, authenticated `gh`, and the selected CLI must be on PATH.
@@ -53,9 +58,14 @@ Existing run files are never overwritten.
 
 Codex uses `exec` with a read-only shell sandbox, approval policy `never`, explicit
 model/effort, JSON events, and a final-message file. Follow-ups add
-`resume <saved-id>`. Claude uses `-p` with JSON output, plan permissions,
-permission prompts disabled, and Read/Glob/Grep/Bash tools; follow-ups add
-`--resume <saved-id>`. Read-only settings are reapplied on every turn.
+`resume <saved-id>`. Claude loads only the supplied MCP config for this invocation,
+uses JSON output and disabled permission prompts, and exposes only Read/Glob/Grep
+plus the reviewer MCP tools; follow-ups add
+`--resume <saved-id>`. Source remains read-only. Within the scoped reviewer MCP
+server, `reviewer.publish` is its only write capability and refuses without
+launcher-bound approval for an exact saved draft. Codex retains its applicable
+configuration and is instructed to use no other connector for publication; its
+read-only shell sandbox does not by itself establish global tool isolation.
 
 Run through the host's background execution and consume completion delivery.
 In Claude Code, use the parent's Bash tool with `run_in_background: true`, not
@@ -75,8 +85,9 @@ automatic fresh-session fallback.
 
 - Exit 0: prepared in dry-run mode, or completed; this is not an approval.
 - Exit 1: failed; inspect the recorded error and logs before retrying.
-- Exit 3: a report exists, but a target changed (`stale`) or its current state
-  could not be established (`freshness_unverified`).
+- Exit 3: a report exists, but direct reviewer access was not demonstrated
+  (`access_unverified`), a target changed (`stale`), or its current state could not
+  be established (`freshness_unverified`).
 
 Launcher tests with CLI stand-ins verify transport, not model judgment or live
 session restoration. Keep those proof boundaries explicit.
@@ -87,14 +98,22 @@ session restoration. Keep those proof boundaries explicit.
 - [Claude programmatic execution](https://code.claude.com/docs/en/headless)
 - [Claude permissions](https://code.claude.com/docs/en/permissions)
 
-## Connect local runs to the GitHub discussion
+## Publish an approved reviewer draft
 
-After the coordinator publishes and reads back a review or follow-up, add a
-`github_publications` array to that run's existing `run.json`. Each entry records
-`pr_url`, `url` (the verified review or comment URL), and `reviewed_head_sha`.
-Append only confirmed publications; drafts and attempted writes are not receipts.
-Preserve all existing run fields. These links connect the local reviewer session
-to GitHub; GitHub owns the discussion and no comment bodies or disposition ledger
-need to be copied into run metadata. Existing runs without this field remain valid.
-Use `--resume-from` exactly as before. Publishing is performed by the coordinator,
-not the launcher, and does not change reviewer permissions or invocation.
+The assessment run records drafts under `publications/`. After the user approves the
+exact content, destination, and event, resume that run's reviewer:
+
+```bash
+python3 /absolute/path/to/coda-rust/.agents/skills/review-pr/scripts/run_review.py \
+  --resume-from /absolute/path/to/assessment/run.json \
+  --approve-publication /absolute/path/to/assessment/publications/DIGEST.json
+```
+
+The draft must belong to that assessment run and its filename must match its content
+digest. Publication refuses a changed or closed PR, a changed draft, a different
+target, missing App credentials, or a personal-account fallback. A verified readback
+is recorded in `github_publications`; a draft or attempted write is not a receipt.
+An uncertain attempt stops before another write so GitHub state can be reconciled.
+The publication turn resumes the same reviewer session, which invokes the tool and
+returns the receipt. Use that same session again for later code and discussion
+follow-ups.
