@@ -401,6 +401,7 @@ These are how we build the product above. They matter to its behavior but are en
 - A run ends exactly once, whether it completes, is cancelled, shuts down, crashes or gets no answer.
 - A failed preparation, review or initial understanding retries on its own before it counts as can't restart.
 - Recovery never alerts the physician.
+- When context fills, the model writes its own durable working note before older context is released, with room kept for it. The note never replaces patient memory or source evidence.
 - A refused review is recorded as a refusal with its reason, and Couldn't finish, Try again and the automatic retries read from it.
 - Records that change before a run finishes reach the run, and the run keeps the exact source versions it read.
 - Steering prevents stale results from being published.

@@ -311,6 +311,7 @@ These are how we build Duet. They shape its behavior but are engineering's to ch
 
 **Runs.**
 
+- When context fills, Duet keeps structural checkpoints of each request rather than a model-written note.
 - A sent message is durable once accepted and is never lost to a model failure, the app exiting or a restart.
 - A message that arrives while a run is active steers that run. Several runs may be active for one account at once, and Duet's own work doesn't wait for the person to stop chatting.
 - A push only wakes work, and the work always pulls current truth.

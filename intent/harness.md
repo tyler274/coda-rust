@@ -30,7 +30,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 **Skills.** A skill explains a capability and loads only when the model opens it. The model sees a compact index of skill names, lists and views what it needs, and products can preload the skills a scheduled job will want. Reading a skill never grants tools or permissions. The loader is shared; each product has its own catalog.
 
-**Context.** Active context is a view the model can rebuild, never the store. Records come in through source tools, never injected wholesale, and workers don't inherit the lead's whole conversation. When context fills, the model writes its own durable working note before older context is released, with room kept for it; that note never replaces patient memory or source evidence. The harness measures context and offers the transition; each product decides its own preservation policy, and the two products' policies stay separate.
+**Context.** Active context is a view the model can rebuild, never the store. Records come in through source tools, never injected wholesale, and workers don't inherit the lead's whole conversation. When context fills, the harness measures it and offers the transition. Each product owns how its context is preserved, the two products' policies stay separate, and neither moves to one shared compaction policy.
 
 **Skills improve from traces.** Traces show which skills load, what they cost in context, and what goes wrong after a load. A skill that runs long gets slimmed, with detail moved into linked references. What nearly every run needs moves into the resident prompt, and a failing tool gets fixed at the tool instead of patched in a skill.
 
