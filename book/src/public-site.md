@@ -467,10 +467,10 @@ or replace the browser proof. No host tooling or flake changes are introduced by
 
 ## Prepared Cloud Run: staging IAP, production load balancer
 
-`infra/gcp/public-site` is an isolated OpenTofu root. It owns public-site
-**staging** state through a partial GCS backend (see
-[Staging state and deployment](#staging-state-and-deployment)); production has
-no backend configuration here and is never initialized from this workspace.
+`infra/gcp/public-site` is an isolated OpenTofu root. It owns public-site staging
+and production state through a partial GCS backend, one file per environment (see
+[Staging state and deployment](#staging-state-and-deployment) and
+[Production state and deployment](#production-state-and-deployment)).
 Both environments get a separate Cloud Run service and a dedicated service account.
 The root creates no DNS records, project, API enablement, service identity, Google
 Group, database, or physician runtime dependency. Production's one certificate is the
@@ -504,7 +504,8 @@ no load balancer:
 - There is no serverless NEG, backend service, Cloud CDN, URL map, TLS policy,
   HTTPS proxy, reserved IP or forwarding rule. No standalone certificate is needed.
 
-**Production** keeps its previous topology unchanged. Ingress is
+**Production** (`environment = "production"`) serves the same image behind a load
+balancer. Ingress is
 `INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER` and the `run.app` URI is disabled. It
 uses a serverless NEG, a global external managed HTTPS load balancer, an HTTP
 frontend on the same address that answers every request with a 308 to HTTPS
@@ -514,11 +515,8 @@ Certificate Manager certificate for `domains` (apex and www), attached through a
 certificate map with an entry per hostname. It is authorized by DNS records rather
 than by serving traffic, so it can be active before DNS moves: the
 `certificate_dns_records` output lists the CNAMEs the operator adds. Production
-without `domains` is rejected. IAP is
-off. `moved` blocks map the former unindexed load-balancer resources to `[0]`, so
-existing production state keeps its addresses. Existing staging load-balancer
-resources, if any, would be planned for destruction, not recreated. No Cloud Run
-custom-domain mapping is created for production.
+without `domains` is rejected. IAP is off. No Cloud Run custom-domain mapping is
+created for production.
 
 ### Cloud CDN support and staging safety
 
@@ -664,7 +662,7 @@ keep their product-repository apply authority; this ownership covers only
   `us-east1` and keeps the default soft-delete policy. The
   [admin bootstrap](#staging-admin-bootstrap) creates it; it does not exist until
   that runs. Staging state never lives in a `coda-health-prod` bucket, so the CI
-  deployer needs no production-project IAM. Production has no backend file.
+  deployer needs no production-project IAM. Production has its own backend file.
 - **Inputs.** `env/staging.tfvars` holds the non-secret staging inputs: the
   published image digest in the private `public-site` repository, release SHA,
   secret ID and pinned version, and `physician_app_url`, the physician preview
@@ -984,6 +982,23 @@ project. Keep the `staging` CNAME on `ghs.googlehosted.com` with proxying disabl
 the protected Cloud Run URL is also available for diagnosis. Do not change the
 root, `www`, app or work records. Production cutover remains a separate decision
 and is never planned or applied from this workspace.
+
+## Production state and deployment
+
+Production serves the image staging tested, without sign-in, at `codahealth.ai`
+and `www.codahealth.ai` from `coda-health-prod`. Every apply, DNS change and the
+retirement of the Vercel `kytos` project needs Dev's explicit authorization.
+
+- **State.** `backend/production.gcs.tfbackend` selects the existing
+  `coda-health-prod-terraform-state-us-east1` bucket with prefix
+  `coda-rust/public-site/production`, beside `shared-mail`'s
+  `coda-rust/shared-mail/production`. Nothing else in that bucket is read or written.
+- **Inputs.** `env/production.tfvars` holds the non-secret production inputs: the
+  project and number, `domains = ["codahealth.ai", "www.codahealth.ai"]`, and the
+  pinned `public-site-prd-doppler-token` version (a read-only `prd` service token).
+  It sets no `physician_app_url`, so production has no Sign in link and no
+  `/physician/` mount. `image` and `release_sha` are supplied per release: the
+  digest staging tested and its commit.
 
 ## Local release load check (2026-10-20)
 

@@ -293,38 +293,3 @@ resource "google_compute_global_forwarding_rule" "http" {
   load_balancing_scheme = "EXTERNAL_MANAGED"
   network_tier          = "PREMIUM"
 }
-
-# Preserve existing production addresses when making the ALB production-only.
-# For staging, existing ALB resources are removed rather than recreated.
-moved {
-  from = google_cloud_run_v2_service_iam_member.load_balancer
-  to   = google_cloud_run_v2_service_iam_member.load_balancer[0]
-}
-moved {
-  from = google_compute_region_network_endpoint_group.site
-  to   = google_compute_region_network_endpoint_group.site[0]
-}
-moved {
-  from = google_compute_backend_service.site
-  to   = google_compute_backend_service.site[0]
-}
-moved {
-  from = google_compute_url_map.site
-  to   = google_compute_url_map.site[0]
-}
-moved {
-  from = google_compute_ssl_policy.site
-  to   = google_compute_ssl_policy.site[0]
-}
-moved {
-  from = google_compute_target_https_proxy.site
-  to   = google_compute_target_https_proxy.site[0]
-}
-moved {
-  from = google_compute_global_address.site
-  to   = google_compute_global_address.site[0]
-}
-moved {
-  from = google_compute_global_forwarding_rule.https
-  to   = google_compute_global_forwarding_rule.https[0]
-}

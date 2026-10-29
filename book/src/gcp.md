@@ -1,6 +1,6 @@
 # GCP deployment
 
-Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#retained-physician-infrastructure-references) says what each root owns.
+Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and production (the marketing site only) and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#retained-physician-infrastructure-references) says what each root owns.
 
 The mail-only <a href="/infra/gcp/shared-mail/README%2Emd">shared-mail root</a> is owned here
 for production SMTP in `coda-health-prod`, with separate state and explicit
@@ -18,8 +18,11 @@ invoker. The origin also verifies the signed IAP assertion. Production stays beh
 a global external HTTPS load balancer with Cloud CDN. There is no Cloudflare
 dependency. Unlike the physician roots, this root owns its **staging** state
 (GCS prefix `public-site/staging` in the existing state bucket) and may be planned
-and applied for staging from this workspace. It is never planned or applied for
-production here. Staging is deployed at `staging.codahealth.ai` behind IAP (see
+and applied for staging from this workspace. Production (prefix
+`coda-rust/public-site/production` in the `coda-health-prod` state bucket) serves the
+same image without sign-in and is applied only from a reviewed saved plan with Dev's
+explicit authorization; see
+[production state and deployment](public-site.md#production-state-and-deployment). Staging is deployed at `staging.codahealth.ai` behind IAP (see
 [deployment status](public-site.md#staging-deployment-status-2026-10-21)). The
 root does not share physician/Duet databases or authorize a product cutover. See
 [Public site](public-site.md) for the architecture, IAP and cache controls, runtime

@@ -68,6 +68,11 @@ class Contract(unittest.TestCase):
         self.assertIn('${local.physician ? ",PHYSICIAN_PROXY_SERVICE_ACCOUNT" : ""}', main)
         self.assertIn('iap_enabled          = local.staging', main)
         self.assertIn('physician_app_url            = "https://physician-836508863523.us-east1.run.app"', (site / "env/staging.tfvars").read_text())
+        production = (site / "env/production.tfvars").read_text()
+        self.assertIn('environment                  = "production"', production)
+        self.assertIn('project_id                   = "coda-health-prod"', production)
+        self.assertNotRegex(production, r'(?m)^physician_app_url\s*=')
+        self.assertIn('prefix = "coda-rust/public-site/production"', (site / "backend/production.gcs.tfbackend").read_text())
         for forbidden in ['google_project_iam_member', 'google_project_service', 'google_iap_web_cloud_run_service_iam_member', 'google_service_account_iam_member']:
             self.assertNotIn(f'resource "{forbidden}"', main)
         bootstrap = (site / "scripts/staging-admin-bootstrap.sh").read_text()

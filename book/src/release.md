@@ -33,7 +33,7 @@ This workspace does not run `init` against a backend and does not apply these ro
 
 | Root | Owns | Owner document |
 | --- | --- | --- |
-| [`infra/gcp/public-site`](/infra/gcp/public-site) | Public-site Cloud Run behind IAP. This workspace owns its staging state and may plan and apply staging from a reviewed saved plan; never production. | [Public site](public-site.md#staging-state-and-deployment) |
+| [`infra/gcp/public-site`](/infra/gcp/public-site) | Public-site Cloud Run: staging behind IAP, production behind the load balancer without sign-in. This workspace owns both states and applies each only from a reviewed saved plan; production applies need Dev's explicit authorization. | [Public site](public-site.md#production-state-and-deployment) |
 | [`infra/gcp/rust-environments`](/infra/gcp/rust-environments) | The isolated Rust Cloud Run environments for the physician and Duet services. It needs an administrator bootstrap before its first apply. | [GCP deployment](gcp.md#rust-staging-bootstrap-and-deployment-gate) |
 | [`infra/gcp/shared-mail`](/infra/gcp/shared-mail) | Production mail only in `coda-health-prod`, with separate state and operator-approved saved-plan applies. | <a href="/infra/gcp/shared-mail/README%2Emd">Production shared mail</a> |
 | [`infra/gcp/observability`](/infra/gcp/observability) | The shared collector deployment | [Observability](observability.md) |
