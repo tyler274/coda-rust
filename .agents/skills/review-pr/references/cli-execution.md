@@ -86,3 +86,15 @@ session restoration. Keep those proof boundaries explicit.
 - [Codex non-interactive mode](https://learn.chatgpt.com/docs/non-interactive-mode)
 - [Claude programmatic execution](https://code.claude.com/docs/en/headless)
 - [Claude permissions](https://code.claude.com/docs/en/permissions)
+
+## Connect local runs to the GitHub discussion
+
+After the coordinator publishes and reads back a review or follow-up, add a
+`github_publications` array to that run's existing `run.json`. Each entry records
+`pr_url`, `url` (the verified review or comment URL), and `reviewed_head_sha`.
+Append only confirmed publications; drafts and attempted writes are not receipts.
+Preserve all existing run fields. These links connect the local reviewer session
+to GitHub; GitHub owns the discussion and no comment bodies or disposition ledger
+need to be copied into run metadata. Existing runs without this field remain valid.
+Use `--resume-from` exactly as before. Publishing is performed by the coordinator,
+not the launcher, and does not change reviewer permissions or invocation.

@@ -7,7 +7,8 @@ description: Review existing GitHub PRs or coherent batches through an independe
 
 The coordinating chat owns scope, interpretation, and authorized corrections.
 An independent, read-only CLI reviewer assesses the change. General local-work
-validation remains separate.
+validation remains separate. GitHub holds the shared review discussion; local run
+artifacts retain execution details and the reviewer session needed for continuation.
 
 ## Establish scope
 
@@ -26,6 +27,8 @@ separately, sequentially unless parallel runs were requested. State the selected
 targets and why they belong together. Use the current branch to find a PR only
 when the user refers to its PR.
 
+Read existing GitHub reviews, inline threads, author replies, and correction commits
+before preparing the review. Identify which revisions each finding concerns.
 Supply known context through `--context-file`: intended outcome, each PR's role,
 evidenced dependencies or landing order, and relevant user decisions and prior
 findings with sources. Label assumptions and keep the handoff neutral. The
@@ -58,7 +61,8 @@ Investigate launch failures; do not bypass restrictions or silently restart fres
 
 Read `run.json` and the complete `review.md`. A completed process is not a
 favorable verdict; failed, stale, or freshness-unverified results cannot establish
-current readiness. Present the useful result in chat.
+current readiness. Present the useful result and proposed GitHub review in chat.
+Follow the publication procedure below; a local assessment is not a posted review.
 
 Judge the whole report against intent and source evidence. Accept findings or
 reject them with reasons, and identify unresolved decisions and evidence gaps.
@@ -83,11 +87,51 @@ before adding a patch. Back-and-forth may clarify or challenge a finding without
 requiring a code change.
 
 Resume the reviewer for a concrete clarification, changed code, or new evidence,
-carrying sourced dispositions and verification. Focus follow-ups on the correction,
+carrying sourced dispositions and verification from the GitHub discussion, plus any
+relevant unpublished evidence clearly labeled as such. Focus follow-ups on the correction,
 unresolved findings, and affected contracts and consumers in the cumulative change.
 Broaden investigation when new evidence warrants it; do not repeat unchanged broad
 reviews to obtain a clean verdict. Finish when the requested outcome and appropriate
 proof are complete; state unresolved concerns and final changes left unreviewed.
+
+## Publish the review and follow-up on GitHub
+
+The coordinating agent owns publication; the independent CLI reviewer stays read-only.
+Prepare one coherent review per PR with the inspected commit, conclusion, material
+findings, concrete human decisions, and evidence limits. Attribute the assessment to
+the reviewer engine/model; do not imply the authenticated GitHub account independently
+performed a human review. Preserve the reviewer's substantive conclusions. Present
+coordinator disagreements separately, with evidence, rather than silently rewriting them.
+For a batch, place findings on their owning PR and link related findings across PRs.
+
+Use inline threads for findings with verified diff locations. Keep cross-cutting
+findings in the review body rather than attaching them to arbitrary lines. A clean
+assessment still states its scope and limits. Default to a COMMENT review; approval
+or request-changes status must be explicitly included in the approved publication.
+If the authenticated account cannot submit the selected review, explain the limitation
+and prepare an attributed PR conversation comment instead; do not switch identities.
+
+Before posting, obtain the user's approval of the exact content, destination, and
+review event. Re-read the PR head and relevant thread; if the head advanced, assess
+the delta or clearly mark the assessment as historical and obtain approval for the
+revised text. Use connected GitHub tools or structured CLI input. Read back the saved
+review/replies and record their URLs using the execution reference. An ambiguous write
+requires reconciliation against GitHub before retrying. Pending approval or a failed
+write leaves a complete draft in chat, clearly labeled unpublished.
+
+For authorized corrections, prepare replies to each material finding in its existing
+thread: corrected with commit and evidence, disagreed with reasons, or awaiting a
+specific decision and owner. For body-level findings, use a linked PR conversation
+reply. Group shared causes before editing; replies must not turn review into isolated
+patches. Publish replies under the same exact-content approval rule.
+
+Resume the same local reviewer for follow-up. Publish its verified disposition in the
+existing discussion, linking the correction revision and relevant evidence. Keep new
+findings distinct and avoid duplicate threads for an unchanged concern. Resolve a
+thread only after the correction has been checked and resolution is authorized; author
+claims, passing CI, or a merge alone do not establish that the concern was addressed.
+Leave unresolved decisions visible. A final review conclusion names the assessed head
+and any remaining limits; it never grants merge authority.
 
 A review does not authorize publication, commits, pushes, merges, deployment, or
 scheduling. External communication requires approval of the exact content and

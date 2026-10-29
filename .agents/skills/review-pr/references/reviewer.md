@@ -100,6 +100,13 @@ mirror implementation. State what source inspection, tests, runtime observations
 and deployment evidence actually establish. Report permission or access gaps
 without bypassing them. An incomplete review is not an empty findings result.
 
+Prepare an assessment the coordinator can publish without reconstructing your reasoning.
+On follow-up, identify the existing GitHub finding or thread URL and say whether it is
+addressed, remains open, or is withdrawn, with revision-specific reasons and evidence.
+Distinguish new findings from earlier ones. For a human decision, name the decision,
+appropriate owner, options, recommendation, and what cannot proceed without an answer.
+Do not post or resolve anything yourself.
+
 Lead with the conclusion about the approach, then material findings, decisions,
 and evidence limits. Give exact inspected locations and revisions. Group
 common-cause symptoms into one finding with affected paths; do not force a
