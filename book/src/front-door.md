@@ -7,12 +7,12 @@ are not migrated from the old app. The products keep separate data and authority
 
 ## Current scope
 
-The MVP has one live invited practice, fixed consent at join, sharing until
+The MVP allows independent connections to invited practices, fixed consent at join, sharing until
 patient leave, practice discharge or account deletion, and re-invitation after
 the connection ends. There is no separate stop/resume-sharing or re-consent
 flow. Ending a connection preserves the Duet account and history; the last
-received doctor's plan stays dated and is no longer updated. Multiple live
-practices and clinician lookup are later work.
+received doctor's plan stays dated and is no longer updated. Ending one connection
+leaves the others unaffected. Patient-facing clinician lookup is later work.
 
 The connection contract covers consented evidence reaching the physician and
 documented care instructions reaching Duet with provenance. Physicians do
@@ -26,6 +26,15 @@ paid tier in the MVP; the
 owns scope and cadence decisions.
 
 ## Implementation and remaining gaps
+
+The scope above is the intended MVP behavior, not a claim that the live
+Duet-to-practice journey is fully integrated in Rust. Existing adapters and
+physician preview routes do not establish that end-to-end connection.
+The patient-owned workspace remains in MVP, including explicitly sending a saved
+version to a connected practice; saving alone shares nothing. External public-page
+and link sharing is parked for post-MVP. See <a href="/intent/duet%2Emd">Duet intent</a> (D4)
+and <a href="/intent/connected-care%2Emd">Connected care intent</a> (C1.6)
+for the governing behavior.
 
 | Rust owner | Implemented responsibility and boundary |
 | --- | --- |

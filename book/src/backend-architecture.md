@@ -20,6 +20,16 @@ real-service journey.
 | Schema and moments persistence | [`database.rs`](/crates/duet-api/src/database.rs), [`migrations/`](/crates/duet-api/migrations) |
 | Practice invitations and connection adapter | [Accounts and practice connection](front-door.md) |
 
+The patient-owned doctor workspace and explicit sending to a connected practice
+are MVP scope. The live cross-product connection is not yet fully integrated;
+[Accounts and practice connection](front-door.md#implementation-and-remaining-gaps)
+owns that implementation boundary. External public-page and link sharing is
+parked for post-MVP. The current binary still mounts the publication routes in
+`doctor_routes`, including HTML, PDF and SMART Health Link retrieval. Retaining
+those routes neither qualifies external sharing for MVP nor restores PDF download
+to product scope. Parked product scope does not disable a route or resolve its
+security findings.
+
 Duet uses the product-neutral [`harness`](/crates/harness/src/lib.rs). It retains
 its own context policy, authority, durable state, effects and recovery. It must
 not import the physician `local-product`; [operating invariants](agent-contracts.md)
