@@ -63,7 +63,7 @@ run "staging_origin_is_protected" {
     error_message = "Staging must expose run.app only behind native IAP with invoker IAM checks enabled."
   }
   assert {
-    condition     = length(google_compute_global_forwarding_rule.http) == 0 && length(google_cloud_run_v2_service_iam_member.load_balancer) == 0 && length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 1 && google_cloud_run_v2_service_iam_binding.iap_invoker[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.iap_invoker[0].members == toset(["serviceAccount:service-134570912572@gcp-sa-iap.iam.gserviceaccount.com"])
+    condition     = length(google_compute_global_forwarding_rule.http) == 0 && length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 1 && google_cloud_run_v2_service_iam_binding.iap_invoker[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.iap_invoker[0].members == toset(["serviceAccount:service-134570912572@gcp-sa-iap.iam.gserviceaccount.com"])
     error_message = "Only the existing project's IAP service agent may invoke staging; never allUsers or CI."
   }
   assert {
@@ -133,12 +133,12 @@ run "production_respects_origin_cache_headers" {
     physician_app_url = null
   }
   assert {
-    condition     = google_cloud_run_v2_service.site.ingress == "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" && google_cloud_run_v2_service.site.default_uri_disabled && !google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled
-    error_message = "Production must retain ALB-only ingress and its disabled run.app endpoint without IAP."
+    condition     = google_cloud_run_v2_service.site.ingress == "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" && google_cloud_run_v2_service.site.default_uri_disabled && !google_cloud_run_v2_service.site.iap_enabled && google_cloud_run_v2_service.site.invoker_iam_disabled
+    error_message = "Production must retain ALB-only ingress and its disabled run.app endpoint without IAP; the ALB reaches it with the invoker check off."
   }
   assert {
-    condition     = length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 0 && length(google_iap_web_cloud_run_service_iam_binding.team) == 0 && google_cloud_run_v2_service_iam_member.load_balancer[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_member.load_balancer[0].member == "allUsers"
-    error_message = "Production must retain its public ALB invoker grant and have no staging IAP bindings."
+    condition     = length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 0 && length(google_iap_web_cloud_run_service_iam_binding.team) == 0
+    error_message = "Production has no staging IAP bindings and no invoker grant: the organization forbids allUsers."
   }
   assert {
     condition     = google_compute_backend_service.site[0].enable_cdn && google_compute_backend_service.site[0].cdn_policy[0].cache_mode == "USE_ORIGIN_HEADERS" && !google_compute_backend_service.site[0].cdn_policy[0].negative_caching && output.cdn_enabled
