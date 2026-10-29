@@ -40,8 +40,8 @@ use roots::{
     shared_root, sharing_root, today_root,
 };
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Composer, Disclosure, Icon, IconName, Message,
-    NavigationControl, NavigationRow, TabBar, TryAgain,
+    ActionRow, Author, Button, ButtonVariant, Composer, Dialog, Disclosure, Icon, IconName,
+    Message, NavigationControl, NavigationRow, SourceRow, SourcesButton, TabBar, TryAgain,
 };
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
@@ -629,6 +629,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut follow_failed = use_signal(|| false);
     let mut changing = use_signal(|| false);
     let mut opened_source = use_signal(|| None::<OpenedSource>);
+    let mut message_sources = use_signal(|| None::<Vec<ConversationSourceChip>>);
     let export_url = base_url.clone();
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
@@ -1673,19 +1674,29 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
             },
             Some(ConversationRoot::Messages(lines)) => rsx! {
+                if let Some(sources) = message_sources() {
+                    Dialog { sheet: true, title: "Sources", on_close: move |_| message_sources.set(None),
+                        ol { class: "sources-list",
+                            for source in sources {
+                                li {
+                                    SourceButton {
+                                        chip: source.clone(),
+                                        base_url: source_url.clone(),
+                                        bearer: source_bearer.clone(),
+                                        opened: opened_source,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 if let Some(open) = opened_source() {
-                    article { class: "card voice-card",
-                        p { class: "card-title", "{open.title}" }
+                    Dialog { sheet: true, title: open.title, on_close: move |_| opened_source.set(None),
                         if let Some(text) = open.text {
-                            p { class: "card-text", "{text}" }
+                            p { class: "source-text", "{text}" }
                         }
                         if open.failed {
                             p { class: "empty", role: "alert", "This source couldn’t be opened." }
-                        }
-                        Button {
-                            aria_label: "Close source",
-                            onclick: move |_| opened_source.set(None),
-                            "Close"
                         }
                     }
                 }
@@ -1695,13 +1706,8 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                             author: if line.from_duet { Author::Assistant } else { Author::Person },
                             by: line.role.clone(),
                             p { "{line.text}" }
-                            for source in line.sources {
-                                SourceButton {
-                                    chip: source.clone(),
-                                    base_url: source_url.clone(),
-                                    bearer: source_bearer.clone(),
-                                    opened: opened_source,
-                                }
+                            if !line.sources.is_empty() {
+                                MessageSources { sources: line.sources.clone(), open: message_sources }
                             }
                             for note in line.notes {
                                 ThreadNote {
@@ -1787,6 +1793,18 @@ fn ThreadNote(
     }
 }
 
+/// A message's one Sources button; its sources open together in a sheet.
+#[component]
+fn MessageSources(
+    sources: Vec<ConversationSourceChip>,
+    open: Signal<Option<Vec<ConversationSourceChip>>>,
+) -> Element {
+    let count = sources.len();
+    rsx! {
+        SourcesButton { count, onclick: move |_| open.set(Some(sources.clone())) }
+    }
+}
+
 #[component]
 fn SourceButton(
     chip: ConversationSourceChip,
@@ -1798,11 +1816,7 @@ fn SourceButton(
     let label = format!("Open source {title}");
     let open = move |_| load_source(opened, base_url.clone(), bearer.clone(), chip.clone());
     rsx! {
-        NavigationControl {
-            aria_label: "{label}",
-            onclick: open,
-            "{title}"
-        }
+        SourceRow { title, aria_label: "{label}", onclick: open }
     }
 }
 

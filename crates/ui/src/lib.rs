@@ -474,23 +474,28 @@ static DIALOGS: AtomicUsize = AtomicUsize::new(0);
 /// A modal dialog, after the React app's `TransientDialog` and `DialogHeader`: it opens over the
 /// scrim with focus inside it, its title heading the content with Close beside it. Escape, the
 /// scrim and Close dismiss it; it settles out before the host hears `on_close`. Focus lands on
-/// what the content marks `autofocus`, else the title. The host's class sizes it.
+/// what the content marks `autofocus`, else the title. The host's class sizes it. A sheet is the
+/// same dialog along the bottom edge, after the October 21 design review, and one sheet can
+/// open over another.
 #[component]
 pub fn Dialog(
     title: String,
     /// What the dialog belongs to, under the title, when that is not obvious.
     subtitle: Option<String>,
+    #[props(default)] sheet: bool,
     on_close: EventHandler,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
     let id = use_hook(|| format!("dialog-{}", DIALOGS.fetch_add(1, Ordering::Relaxed)));
     let mut closing = use_signal(|| false);
-    let mut class = String::from(if closing() {
-        "dialog is-closing"
-    } else {
-        "dialog"
-    });
+    let mut class = String::from("dialog");
+    if sheet {
+        class.push_str(" dialog-sheet");
+    }
+    if closing() {
+        class.push_str(" is-closing");
+    }
     let rest = host_attributes(&mut class, attributes);
     let opening = id.clone();
     // The browser owns the dialog's life: it opens modally here, the exit motion ends by closing
@@ -553,6 +558,88 @@ pub fn Dialog(
                 }
                 {children}
             }
+        }
+    }
+}
+
+/// A citation in prose, after the React app's citation chip: its number in a small pill. It opens
+/// its source when the host can; otherwise it stays a mark. `label` names the source for
+/// assistive technology.
+#[component]
+pub fn CitationChip(
+    index: usize,
+    label: String,
+    onclick: Option<EventHandler<MouseEvent>>,
+) -> Element {
+    match onclick {
+        Some(open) => rsx! {
+            button {
+                class: "source-trigger citation-chip",
+                r#type: "button",
+                aria_label: "{label}",
+                onclick: move |event| open.call(event),
+                "[{index}]"
+            }
+        },
+        None => rsx! {
+            span { class: "source-trigger citation-chip", aria_label: "{label}", "[{index}]" }
+        },
+    }
+}
+
+/// The one Sources control under a message, after the React app's sources index and the SwiftUI
+/// Sources pill: a compact pill with how many sources the message has.
+#[component]
+pub fn SourcesButton(
+    count: usize,
+    onclick: EventHandler<MouseEvent>,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+) -> Element {
+    let mut class = String::from("source-trigger sources-button");
+    let rest = host_attributes(&mut class, attributes);
+    rsx! {
+        button {
+            class: "{class}",
+            r#type: "button",
+            aria_haspopup: "dialog",
+            onclick: move |event| onclick.call(event),
+            ..rest,
+            Icon { name: IconName::ChevronDown }
+            "Sources"
+            span { class: "sources-count", "{count}" }
+        }
+    }
+}
+
+/// One source in a Sources list, after the React app's sources index: its number when the
+/// message numbers its citations, its title, a quiet detail, and an arrow. The whole row is one
+/// navigation row that opens it.
+#[component]
+pub fn SourceRow(
+    number: Option<usize>,
+    title: String,
+    detail: Option<String>,
+    onclick: EventHandler<MouseEvent>,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+) -> Element {
+    let mut class = String::from("navigation-row source-entry");
+    let rest = host_attributes(&mut class, attributes);
+    rsx! {
+        button {
+            class: "{class}",
+            r#type: "button",
+            onclick: move |event| onclick.call(event),
+            ..rest,
+            if let Some(number) = number {
+                span { class: "source-entry-number", "{number}" }
+            }
+            span { class: "source-entry-text",
+                strong { "{title}" }
+                if let Some(detail) = detail {
+                    small { "{detail}" }
+                }
+            }
+            Icon { name: IconName::ArrowRight }
         }
     }
 }

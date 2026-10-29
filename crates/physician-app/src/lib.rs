@@ -3624,21 +3624,15 @@ fn source_reading(chip: SourceChip) -> OpenReading {
 
 #[component]
 fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element {
-    let name = chip_name(&chip);
+    let label = chip_name(&chip);
     let index = chip.index;
     if chip.open {
         rsx! {
-            button {
-                class: "citation-chip",
-                r#type: "button",
-                aria_label: "{name}",
-                onclick: move |_| on_open.call(chip.clone()),
-                "[{index}]"
-            }
+            ui::CitationChip { index, label, onclick: move |_| on_open.call(chip.clone()) }
         }
     } else {
         rsx! {
-            span { class: "citation-chip", aria_label: "{name}", "[{index}]" }
+            ui::CitationChip { index, label }
         }
     }
 }

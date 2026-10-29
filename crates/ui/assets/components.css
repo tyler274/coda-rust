@@ -173,13 +173,45 @@
 }
 .dialog.is-closing { pointer-events: none; animation: dialog-exit var(--motion-control) var(--ease-exit) both; }
 .dialog.is-closing::backdrop { animation: backdrop-exit var(--motion-control) var(--ease-exit) both; }
-@keyframes dialog-exit { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(var(--rise)) scale(.99); } }
+@keyframes dialog-exit { from { opacity: 1; transform: none; }
+  to { opacity: var(--dialog-exit-opacity, 0); transform: var(--dialog-exit-transform, translateY(var(--rise)) scale(.99)); } }
 @keyframes backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
+/* A sheet, after the October 21 design review: the same dialog along the bottom edge, full width up to the dialog
+   width, its top corners rounded. It slides up from the edge with the step motion and back down, staying opaque. */
+.dialog-sheet { --dialog-exit-opacity: 1; --dialog-exit-transform: translateY(100%); width: min(var(--dialog-width), 100%);
+  max-height: calc(100dvh - var(--dialog-margin)); margin: auto auto 0; border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  transition-duration: var(--motion-step); transition-timing-function: var(--ease-emphasized); }
+.dialog-sheet .dialog-body { padding: var(--space-5) var(--space-5) max(var(--space-6), env(safe-area-inset-bottom)); }
+.dialog-sheet.is-closing { animation-duration: var(--motion-arrive); }
+@starting-style { .dialog-sheet[open] { opacity: 1; transform: translateY(100%); } }
 /* Without motion a dialog still runs its exit, in a millisecond, since that exit's end is what closes it; a
    zero-length animation never ends. */
 @media (prefers-reduced-motion: reduce) {
   .dialog.is-closing { animation: dialog-exit 1ms both !important; }
 }
+/* Sources, after the React app's source triggers: a citation is a small numbered pill in the prose and the Sources
+   control a compact pill under the message, both in the primary container. */
+.source-trigger { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
+  border: var(--hairline) solid var(--primary-outline); border-radius: var(--radius-pill); background: var(--primary-container);
+  color: var(--primary); font: var(--type-label-md); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+button.source-trigger { cursor: pointer; transition: border-color var(--motion-press) linear; }
+@media (hover: hover) { button.source-trigger:hover { border-color: var(--primary); } }
+.citation-chip { min-width: 1.5em; min-height: 1.5em; margin-inline: var(--space-hair); padding: var(--space-hair) var(--space-1);
+  vertical-align: baseline; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sources-button { gap: var(--space-1); min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+  font: var(--type-body-sm); }
+.sources-count { font: var(--type-label-md); font-variant-numeric: tabular-nums; }
+.message > .sources-button { margin-top: var(--space-2); }
+/* A Sources list runs its rows edge to edge, a hairline between them. */
+.sources-list { margin: 0; padding: 0; list-style: none; }
+.sources-list > li + li { border-top: var(--hairline) solid var(--outline-variant); }
+.source-entry { display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%;
+  min-height: var(--target); padding: var(--space-row) 0; border-radius: var(--radius-sm); }
+.source-entry-number { min-width: 2.5ch; color: var(--primary); font: var(--type-label-md); font-variant-numeric: tabular-nums; }
+.source-entry-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.source-entry-text strong { display: block; color: var(--ink); font: var(--type-body-md); font-weight: var(--weight-strong); }
+.source-entry-text small { display: block; margin-top: var(--space-hair); color: var(--muted); font: var(--type-body-sm); }
+.source-entry > .icon { flex: none; color: var(--muted); }
 @media (forced-colors: active) {
   .field:focus-within { outline: var(--focus-ring-width) solid Highlight; }
   .dialog { outline: var(--hairline) solid CanvasText; }
