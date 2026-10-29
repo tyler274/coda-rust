@@ -1000,6 +1000,39 @@ retirement of the Vercel `kytos` project needs Dev's explicit authorization.
   `/physician/` mount. `image` and `release_sha` are supplied per release: the
   digest staging tested and its commit.
 
+### Production admin bootstrap
+
+`scripts/production-admin-bootstrap.sh` prepares what the root does not own. An
+administrator of `coda-health-prod` runs it with Dev's authorization; one step needs
+an administrator of `coda-health-staging`. `--print` shows every command without
+calling gcloud or Doppler. It is safe to rerun, and it is rerun after the first apply
+for the bindings that need the service and runtime account to exist.
+
+- Enables the Run, Compute, Certificate Manager, Artifact Registry, Secret Manager,
+  IAM and STS APIs. Certificate Manager was off in `coda-health-prod`.
+- Creates the private `public-site` image repository (immutable tags, cleanup
+  policy) and refuses to continue if it is public. Production builds nothing, so
+  there are no base-image repositories.
+- Creates `public-site-prd-doppler-token` and adds a read-only Doppler `prd` token
+  as a version without echoing it.
+- Creates the keyless `public-site-prod-deployer` account with:
+  - `roles/storage.objectAdmin` on the shared state bucket, conditioned to objects
+    and list requests under `coda-rust/public-site/production/` only;
+  - writer on the production image repository and reader on staging's, so promotion
+    can copy the digest staging tested;
+  - admin on the one secret (the root manages its accessor binding);
+  - project `run.viewer`, `compute.viewer` and `certificatemanager.viewer`, so a
+    promotion plan can refresh what it may not change;
+  - after the first apply, `iam.serviceAccountUser` on the runtime account and
+    `run.admin` on the service only.
+
+  It gets no compute, certificate or IAM admin role: promotion cannot change the
+  load balancer, TLS or identities.
+- Creates the `github-actions` WIF pool and provider in `coda-health-prod`, accepting
+  only `Coda-Health/coda-rust` on `refs/heads/main` in the `production` environment,
+  and lets only that subject impersonate the deployer. Give the GitHub `production`
+  environment Dev as a required reviewer.
+
 ## Local release load check (2026-10-20)
 
 The approved `oha` package is included in the Nix shell (resolved version 1.16.0).
