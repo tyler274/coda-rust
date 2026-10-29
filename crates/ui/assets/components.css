@@ -132,13 +132,20 @@
 }
 /* The composer, after the React app's: the one raised text field, holding the words and, under them, a toolbar of the
    host's context and actions at its far edge. The words grow with what is written, up to seven lines, then scroll. */
-.composer { --field-elevation: var(--elevation-2); display: grid; gap: var(--space-1); min-width: 0; width: 100%; margin: 0;
-  padding: var(--space-2); border-radius: var(--radius-field); }
+.composer { --field-elevation: var(--elevation-2); --composer-inset: var(--space-2); display: grid; gap: var(--space-1); min-width: 0;
+  width: 100%; margin: 0; padding: var(--composer-inset); border-radius: var(--radius-field); }
 .composer-input { display: block; box-sizing: border-box; min-width: 0; width: 100%; min-height: var(--target); max-height: 7lh;
   field-sizing: content; margin: 0; padding: var(--space-2); resize: none; border: 0; border-radius: var(--radius-lg);
   background: transparent; color: var(--ink); font: var(--type-body-lg); }
 .composer-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2);
   min-height: var(--control-height); }
+/* Inline (the October 21 Duet mockups): the words and the actions share one row, the actions at the words' last line;
+   what the person brought in still sits above both. */
+.composer.is-inline { --composer-inset: var(--space-1); grid-template-columns: minmax(0, 1fr) auto; align-items: end;
+  column-gap: var(--space-1); }
+.composer.is-inline > :not(.composer-input, .composer-toolbar) { grid-column: 1 / -1; }
+.composer.is-inline > .composer-input { padding-inline: var(--space-3) 0; }
+.composer.is-inline > .composer-toolbar { flex-wrap: nowrap; min-height: 0; }
 /* A disclosure, after the React app's: the title is the toggle, its chevron turning as the section opens; the content
    grows open and shut and stays mounted, out of reach while closed. A detail is a quiet line. */
 .disclosure { min-width: 0; }
@@ -280,7 +287,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .later-context .quote { font: var(--type-body-md); }
 /* The conversation's frame, after the October 21 mockups. */
 .date-separator { margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); text-align: center; }
-.context-chip { display: flex; align-items: center; gap: var(--space-2); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0; padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
+.context-chip { display: flex; align-items: center; gap: var(--space-2); margin: calc(-1 * var(--composer-inset, var(--space-2))) calc(-1 * var(--composer-inset, var(--space-2))) 0; padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
   border-bottom: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-field) var(--radius-field) 0 0; background: var(--data-container); color: var(--on-data-container); font: var(--type-body-sm); }
 .context-chip-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .context-chip-remove { display: inline-grid; place-items: center; flex: none; width: var(--target); height: var(--target); margin-block: calc(-1 * var(--space-2)); border: 0; border-radius: var(--radius-pill); background: transparent; color: inherit; cursor: pointer; }

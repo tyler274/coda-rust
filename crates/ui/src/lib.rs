@@ -432,8 +432,9 @@ pub fn Message(
 }
 
 /// The composer, after the React app's: the one raised text field, holding the words and, under
-/// them, a toolbar of the host's context and actions; a host's submit control sends. The words
-/// grow with what is written, up to seven lines. Keys stay the host's.
+/// them, a toolbar of the host's context and actions; a host's submit control sends. `inline`
+/// puts the actions beside the words instead, at their last line, as the October 21 Duet mockups
+/// do. The words grow with what is written, up to seven lines. Keys stay the host's.
 #[component]
 pub fn Composer(
     /// The words' accessible name.
@@ -448,12 +449,15 @@ pub fn Composer(
     /// What the person brought in, held above the words: a `ContextChip`.
     #[props(default)]
     context: Option<Element>,
+    /// The actions sit beside the words rather than under them.
+    #[props(default)]
+    inline: bool,
     children: Element,
 ) -> Element {
     let held = value.clone();
     rsx! {
         form {
-            class: "composer field",
+            class: if inline { "composer field is-inline" } else { "composer field" },
             onsubmit: move |event| {
                 event.prevent_default();
                 let typed = event.get_first("draft").and_then(|value| match value {

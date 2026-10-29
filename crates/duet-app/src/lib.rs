@@ -1755,6 +1755,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
                 Composer {
                     label: CHAT_EMPTY_MESSAGE,
+                    inline: true,
                     value: draft(),
                     on_input: move |text| draft.set(text),
                     on_submit: submit,

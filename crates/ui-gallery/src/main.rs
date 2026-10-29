@@ -483,6 +483,7 @@ fn FrameDemo() -> Element {
             }
             Composer {
                 label: "Message Sprout",
+                inline: true,
                 placeholder: "Message Sprout",
                 value: draft(),
                 on_input: move |text| draft.set(text),
