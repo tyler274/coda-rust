@@ -2474,7 +2474,7 @@ impl CdpBrowser {
     }
 
     async fn dialog_text(&mut self) -> String {
-        self.eval("document.querySelector('section.dialog')?.innerText ?? ''")
+        self.eval("document.querySelector('dialog.dialog')?.innerText ?? ''")
             .await
             .pointer("/result/result/value")
             .and_then(|v| v.as_str())

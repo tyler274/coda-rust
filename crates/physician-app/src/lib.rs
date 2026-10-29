@@ -36,8 +36,8 @@ use shell::{
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
 use ui::{
-    Button, ButtonVariant, CommandNotice, CommandStage, EmptyState, ErrorState, Icon, IconName,
-    IconTile, LiveDot, NavigationControl, NavigationRow, ReadNotice, StatePill, Tone,
+    Button, ButtonVariant, CommandNotice, CommandStage, Dialog, EmptyState, ErrorState, Icon,
+    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, ReadNotice, StatePill, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -1348,22 +1348,6 @@ fn PhysicianShell(
             tabindex: "0",
             onkeydown: move |event| {
                 let key = event.key().to_string();
-                if key == "Escape" {
-                    event.prevent_default();
-                    if search_open() {
-                        search_open.set(false);
-                        editing.set(false);
-                    } else if shortcuts_open() {
-                        shortcuts_open.set(false);
-                    } else if connections_open() {
-                        connections_open.set(false);
-                    } else if past_work_open() {
-                        past_work_open.set(false);
-                    } else if reading.read().is_some() {
-                        reading.set(None);
-                    }
-                    return;
-                }
                 if key == " " && event.modifiers().ctrl() && event.modifiers().shift() {
                     event.prevent_default();
                     let client = client.read().clone();
@@ -1915,7 +1899,10 @@ fn PhysicianShell(
                 state: search_state.clone(),
                 on_retry: move |_| *search_attempt.write() += 1,
                 on_query: move |value: String| query.set(value),
-                on_close: move |_| search_open.set(false),
+                on_close: move |_| {
+                    search_open.set(false);
+                    editing.set(false);
+                },
                 on_open: move |id: String| {
                     selected.set(Some(id));
                     place.set(Place::Workspace);
@@ -3523,9 +3510,7 @@ fn SearchDialog(
         .map(|patient| patient.patient_workspace_id.clone());
     let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Find patient", onclick: move |event| event.stop_propagation(),
-                h2 { "Find patient" }
+        Dialog { title: "Find patient", on_close,
                 input {
                     class: "dialog-search field",
                     r#type: "search",
@@ -3570,7 +3555,6 @@ fn SearchDialog(
                         }
                     }
                 }
-            }
         }
     }
 }
@@ -3578,9 +3562,7 @@ fn SearchDialog(
 #[component]
 fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Connections", onclick: move |event| event.stop_propagation(),
-                h2 { "{CONNECTIONS}" }
+        Dialog { title: CONNECTIONS, on_close,
                 if failed {
                     p { "{TODAY_UNAVAILABLE}" }
                 } else if lines.is_empty() {
@@ -3590,8 +3572,6 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
                         p { class: "today-connection", "{line}" }
                     }
                 }
-                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -3665,9 +3645,9 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
         && reading.unavailable.is_none();
     let citation = reading.eyebrow.is_some();
     let section_class = if citation {
-        "dialog reader citation-inspection"
+        "reader citation-inspection"
     } else {
-        "dialog reader"
+        "reader"
     };
     let title = reading.title.clone();
     let eyebrow = reading.eyebrow.clone();
@@ -3675,14 +3655,8 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
     let unavailable = reading.unavailable.clone();
     let link_label = reading.link_label.clone();
     let link_uri = reading.link_uri.clone();
-    let label = if citation { "Citation" } else { "Reader" };
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "{section_class}", aria_label: "{label}", onclick: move |event| event.stop_propagation(),
-                if let Some(eyebrow) = eyebrow {
-                    span { class: "citation-eyebrow", "{eyebrow}" }
-                }
-                h2 { "{title}" }
+        Dialog { class: "{section_class}", title, subtitle: eyebrow, on_close,
                 if quiet {
                     p { "Nothing is open to read." }
                 }
@@ -3698,8 +3672,6 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
                 if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
                     a { class: "citation-open", href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
                 }
-                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -3707,18 +3679,12 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
 #[component]
 fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section {
-                class: "dialog past-work-dialog",
-                aria_label: "Past work",
-                onclick: move |event| event.stop_propagation(),
-                h2 { id: "past-work-title", "Past work" }
-                if !patient.is_empty() {
-                    p { class: "patient-synopsis-meta", "{patient}" }
-                }
-                p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
-                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
-            }
+        Dialog {
+            class: "past-work-dialog",
+            title: "Past work",
+            subtitle: (!patient.is_empty()).then_some(patient),
+            on_close,
+            p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
         }
     }
 }
@@ -3938,9 +3904,7 @@ fn copy_text_wasm(text: &str) -> bool {
 #[component]
 fn ShortcutsDialog(on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Keyboard shortcuts", onclick: move |event| event.stop_propagation(),
-                h2 { "Keyboard shortcuts" }
+        Dialog { title: "Keyboard shortcuts", on_close,
                 div { class: "shortcut", span { "Search your panel" } kbd { "/  ⌘ K" } }
                 div { class: "shortcut", span { "Move between patients or conversations" } kbd { "J  K" } }
                 div { class: "shortcut", span { "Open the focused item" } kbd { "Enter" } }
@@ -3948,8 +3912,6 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
                 div { class: "shortcut", span { "Close the current preview or dialog" } kbd { "Esc" } }
                 div { class: "shortcut", span { "Hold to record; release to transcribe" } kbd { "Ctrl+Shift+Space" } }
                 p { "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus. Esc cancels dictation." }
-                Button { compact: true, onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }

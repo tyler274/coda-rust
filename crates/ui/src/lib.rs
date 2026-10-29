@@ -3,6 +3,8 @@
 //! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
 
+use std::sync::atomic::{AtomicUsize, Ordering};
+
 use dioxus::dioxus_core::AttributeValue;
 use dioxus::prelude::*;
 
@@ -321,6 +323,94 @@ pub fn NavigationRow(
             },
             ..rest,
             {children}
+        }
+    }
+}
+
+static DIALOGS: AtomicUsize = AtomicUsize::new(0);
+
+/// A modal dialog, after the React app's `TransientDialog` and `DialogHeader`: it opens over the
+/// scrim with focus inside it, its title heading the content with Close beside it. Escape, the
+/// scrim and Close dismiss it; it settles out before the host hears `on_close`. Focus lands on
+/// what the content marks `autofocus`, else the title. The host's class sizes it.
+#[component]
+pub fn Dialog(
+    title: String,
+    /// What the dialog belongs to, under the title, when that is not obvious.
+    subtitle: Option<String>,
+    on_close: EventHandler,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
+    let id = use_hook(|| format!("dialog-{}", DIALOGS.fetch_add(1, Ordering::Relaxed)));
+    let mut closing = use_signal(|| false);
+    let mut class = String::from(if closing() {
+        "dialog is-closing"
+    } else {
+        "dialog"
+    });
+    let rest = host_attributes(&mut class, attributes);
+    let opening = id.clone();
+    // The browser owns the dialog's life: it opens modally here, the exit motion ends by closing
+    // it, and whatever closed it, the host hears it once.
+    use_effect(move || {
+        let mut opened = document::eval(&format!(
+            "const d = document.getElementById('{opening}');
+            if (d && !d.open) {{
+              d.addEventListener('animationend', (e) => {{
+                if (e.target === d && e.animationName === 'dialog-exit') d.close();
+              }});
+              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
+              d.showModal();
+              (d.querySelector('[autofocus]') ?? d.querySelector('h2')).focus({{ preventScroll: true }});
+            }}"
+        ));
+        spawn(async move {
+            if opened.recv::<bool>().await.is_ok() {
+                on_close.call(());
+            }
+        });
+    });
+    let mut dismiss = move || {
+        if !closing() {
+            closing.set(true);
+        }
+    };
+    rsx! {
+        dialog {
+            id: "{id}",
+            class: "{class}",
+            aria_labelledby: "{id}-title",
+            onkeydown: move |event| {
+                // The dialog answers its own Escape, through the browser's close request below.
+                if event.key() == Key::Escape {
+                    event.stop_propagation();
+                }
+            },
+            oncancel: move |event| {
+                event.prevent_default();
+                dismiss();
+            },
+            onclick: move |_| dismiss(),
+            ..rest,
+            div { class: "dialog-body", onclick: move |event| event.stop_propagation(),
+                header { class: "dialog-header",
+                    div {
+                        h2 { id: "{id}-title", tabindex: "-1", "{title}" }
+                        if let Some(subtitle) = subtitle {
+                            p { "{subtitle}" }
+                        }
+                    }
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        icon_only: true,
+                        aria_label: "Close",
+                        onclick: move |_| dismiss(),
+                        Icon { name: IconName::X }
+                    }
+                }
+                {children}
+            }
         }
     }
 }
