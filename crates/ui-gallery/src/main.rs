@@ -98,59 +98,83 @@ fn Gallery() -> Element {
                 Section { title: "Icons", note: "One stroke set in the text's colour, each icon named for what it shows.",
                     IconDemo {}
                 }
+                Section { title: "Buttons and navigation",
+                    Part { title: "Buttons", note: "One shape in three variants, with the shared hover, press, focus and touch target.",
+                        ButtonDemo {}
+                    }
+                    Part { title: "Tabs", note: "The app's sections, the current one marked; with icons, as a phone's tab bar does.",
+                        TabsDemo {}
+                    }
+                }
+                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. An amount moves along a track and says itself; a date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red. The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
+                    InputsDemo {}
+                }
+                Section { title: "Rows",
+                    Part { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
+                        RowsDemo {}
+                    }
+                    Part { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. With a keyboard, all of it simply arrives.",
+                        LiveDemo {}
+                    }
+                    Part { title: "Disclosure", note: "Rows open and close on a height transition; the chevron turns.",
+                        Disclosure { title: "What Duet used", default_open: true,
+                            p { class: "gallery-copy", "Sleep note from Tuesday, and seven nights of sleep from Apple Health." }
+                        }
+                        Disclosure { title: "Basis and limitations", detail: true,
+                            p { class: "gallery-copy", "Coverage is seven of the last ten nights." }
+                        }
+                    }
+                }
                 Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. One can open as a whole, or lead on from its footer.",
                     CardDemo {}
                 }
-                Section { title: "Measurements and charts", note: "Data draws in its own chart green, yellower than the action's, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
-                    ChartDemo {}
+                Section { title: "Pages",
+                    Part { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
+                        HeadingsDemo {}
+                    }
+                    Part { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices and settings as rows, and actions pinned to the foot.",
+                        PagesDemo {}
+                    }
+                    Part { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so.",
+                        ReviewDemo {}
+                    }
                 }
-                Section { title: "Series", note: "A series across its buckets: amounts as bars from zero, levels as a line on their own range. The latest is drawn full and the rest quieter, a bucket still filling between them; a dashed line in the action green marks what it is compared with. Tap a mark to pin it, again or on empty plot to let go; the arrow keys move it. The page says what is pinned.",
-                    SeriesDemo {}
-                }
-                Section { title: "Series readout", note: "Over its chart, a series says what its figure is, the figure, and the span it covers, each on one line so the chart never moves. Pinning a mark turns the readout to that bucket, its words in the accent. The span is a row of pills; the chosen one's fill slides to the next. Back and forward page the span, quiet where there is nowhere to go.",
-                    ReadoutDemo {}
-                }
-                Section { title: "Running total", note: "A day so far against its usual pace: the running total in the data colour, ending in a dot where the day so far ends, and the usual total as a quieter dashed curve over a soft wash across the whole day. Both rise smoothly and never double back. A tile draws the two curves alone.",
-                    RunningDemo {}
-                }
-                Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
-                    HeadingsDemo {}
-                }
-                Section { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so.",
-                    ReviewDemo {}
-                }
-                Section { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices and settings as rows, and actions pinned to the foot.",
-                    PagesDemo {}
-                }
-                Section { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads to a thing, and what the person brought in, held above the words.",
-                    FrameDemo {}
-                }
-                Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
-                    ConversationDemo {}
-                }
-                Section { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
-                    ComposerStatesDemo {}
-                }
-                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer. Speaking, the composer listens in the words' place, the voice drawn as it comes; Done transcribes into the words, Cancel drops it.",
-                    ThreadStatesDemo {}
-                    DeliveryDemo {}
-                    AttachmentsDemo {}
-                    DictationDemo {}
+                Section { title: "Charts",
+                    Part { title: "Measurements and charts", note: "Data draws in its own chart green, yellower than the action's, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
+                        ChartDemo {}
+                    }
+                    Part { title: "Series", note: "A series across its buckets: amounts as bars from zero, levels as a line on their own range. The latest is drawn full and the rest quieter, a bucket still filling between them; a dashed line in the action green marks what it is compared with. Tap a mark to pin it, again or on empty plot to let go; the arrow keys move it. The page says what is pinned.",
+                        SeriesDemo {}
+                    }
+                    Part { title: "Series readout", note: "Over its chart, a series says what its figure is, the figure, and the span it covers, each on one line so the chart never moves. Pinning a mark turns the readout to that bucket, its words in the accent. The span is a row of pills; the chosen one's fill slides to the next. Back and forward page the span, quiet where there is nowhere to go.",
+                        ReadoutDemo {}
+                    }
+                    Part { title: "Running total", note: "A day so far against its usual pace: the running total in the data colour, ending in a dot where the day so far ends, and the usual total as a quieter dashed curve over a soft wash across the whole day. Both rise smoothly and never double back. A tile draws the two curves alone.",
+                        RunningDemo {}
+                    }
                 }
                 Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
                     ProseDemo {}
                 }
-                Section { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
-                    ViewportDemo {}
-                }
-                Section { title: "Feedback and toasts", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. A toast says what just happened at the window's foot, with what can follow, such as Undo; one stands at a time, and it pauses while pointed at.",
-                    FeedbackDemo {}
-                }
-                Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
-                    OverlayDemo {}
-                }
-                Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
-                    MenuDemo {}
+                Section { title: "Conversation",
+                    Part { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads to a thing, and what the person brought in, held above the words.",
+                        FrameDemo {}
+                    }
+                    Part { title: "The thread", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
+                        ConversationDemo {}
+                    }
+                    Part { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
+                        ComposerStatesDemo {}
+                    }
+                    Part { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer. Speaking, the composer listens in the words' place, the voice drawn as it comes; Done transcribes into the words, Cancel drops it.",
+                        ThreadStatesDemo {}
+                        DeliveryDemo {}
+                        AttachmentsDemo {}
+                        DictationDemo {}
+                    }
+                    Part { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
+                        ViewportDemo {}
+                    }
                 }
                 Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy, and a change to it line by line. Every state comes from the run.",
                     AgentWorkDemo {}
@@ -158,52 +182,41 @@ fn Gallery() -> Element {
                     ReplyDemo {}
                     CodeDemo {}
                 }
-                Section { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
-                    PaletteDemo {}
-                }
-                Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
-                    LoadingDemo {}
-                }
-                Section { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. With a keyboard, all of it simply arrives.",
-                    LiveDemo {}
-                }
-                Section { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
-                    EmptyDemo {}
-                }
                 Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark; one whose source can't be shown is muted and says so. A source opens at the passage it was cited for, marked.",
                     CitationDemo {}
                 }
-                Section { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
-                    RowsDemo {}
+                Section { title: "Overlays",
+                    Part { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
+                        OverlayDemo {}
+                    }
+                    Part { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
+                        MenuDemo {}
+                    }
+                    Part { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
+                        PaletteDemo {}
+                    }
                 }
-                Section { title: "Buttons and navigation", note: "One shape in three variants, with the shared hover, press, focus and touch target.",
-                    ButtonDemo {}
+                Section { title: "Status",
+                    Part { title: "Feedback and toasts", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. A toast says what just happened at the window's foot, with what can follow, such as Undo; one stands at a time, and it pauses while pointed at.",
+                        FeedbackDemo {}
+                    }
+                    Part { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
+                        LoadingDemo {}
+                    }
+                    Part { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
+                        EmptyDemo {}
+                    }
+                    Part { title: "State pills", note: "What a state chip's colour says.",
+                        div { class: "gallery-row",
+                            StatePill { "Neutral" }
+                            StatePill { tone: Tone::Primary, icon: IconName::Check, "Saved" }
+                            StatePill { tone: Tone::Warning, icon: IconName::Flag, "Needs you" }
+                            StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
+                        }
+                    }
                 }
                 Section { title: "Duet's theme", note: "The same pieces under theme-duet: prose at body large, each action a full-width bar, quiet actions and links in green, cards on a hairline, and the person's bubble tailed toward them.",
                     ThemeDemo {}
-                }
-                Section { title: "Disclosure", note: "Rows open and close on a height transition; the chevron turns.",
-                    Disclosure { title: "What Duet used", default_open: true,
-                        p { class: "gallery-copy", "Sleep note from Tuesday, and seven nights of sleep from Apple Health." }
-                    }
-                    Disclosure { title: "Basis and limitations", detail: true,
-                        p { class: "gallery-copy", "Coverage is seven of the last ten nights." }
-                    }
-                }
-                Section { title: "State pills", note: "What a state chip's colour says.",
-                    div { class: "gallery-row",
-                        StatePill { "Neutral" }
-                        StatePill { tone: Tone::Primary, icon: IconName::Check, "Saved" }
-                        StatePill { tone: Tone::Warning, icon: IconName::Flag, "Needs you" }
-                        StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
-                    }
-                }
-                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. An amount moves along a track and says itself; a date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
-                    InputsDemo {}
-                }
-                Section { title: "Fields and tabs", note: "The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
-                    FieldsDemo {}
-                    TabsDemo {}
                 }
             }
         }
@@ -415,10 +428,25 @@ fn ChartDemo() -> Element {
 
 #[cfg(feature = "web")]
 #[component]
-fn Section(title: String, note: String, children: Element) -> Element {
+fn Section(title: String, #[props(default)] note: String, children: Element) -> Element {
     rsx! {
         section { class: "gallery-section card",
             h2 { class: "gallery-title", "{title}" }
+            if !note.is_empty() {
+                p { class: "gallery-note", "{note}" }
+            }
+            div { class: "gallery-stage", {children} }
+        }
+    }
+}
+
+/// One piece of a family, under its own name and note.
+#[cfg(feature = "web")]
+#[component]
+fn Part(title: String, note: String, children: Element) -> Element {
+    rsx! {
+        div { class: "gallery-part",
+            h3 { class: "gallery-part-title", "{title}" }
             p { class: "gallery-note", "{note}" }
             div { class: "gallery-stage", {children} }
         }
@@ -518,30 +546,6 @@ fn ConversationDemo() -> Element {
             Dialog { close_label: "Close", sheet: true, title: "Sleep note", on_close: move |_| source_open.set(false),
                 p { class: "gallery-copy", "About seven hours, from the sleep note." }
             }
-        }
-    }
-}
-
-#[cfg(feature = "web")]
-#[component]
-fn FieldsDemo() -> Element {
-    let mut title = use_signal(|| "Questions for my visit".to_string());
-    let mut discuss = use_signal(|| {
-        "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work."
-            .to_string()
-    });
-    let mut search = use_signal(|| "Delgado".to_string());
-    rsx! {
-        div { class: "gallery-fields",
-            SearchField {
-                label: "Search your panel",
-                placeholder: "Name, DOB or phone",
-                clear_label: "Clear search",
-                value: search(),
-                on_input: move |words| search.set(words),
-            }
-            TextField { label: "Title", value: title(), on_input: move |words| title.set(words) }
-            TextField { label: "What I want to discuss", multiline: true, value: discuss(), on_input: move |words| discuss.set(words) }
         }
     }
 }
@@ -2503,6 +2507,11 @@ fn InputsDemo() -> Element {
     let mut phone = use_signal(String::new);
     let mut span = use_signal(|| 1usize);
     let mut look = use_signal(|| 0usize);
+    let mut search = use_signal(|| "Delgado".to_string());
+    let mut discuss = use_signal(|| {
+        "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work."
+            .to_string()
+    });
     let mut pain = use_signal(|| 4.0);
     let mut day = use_signal(|| "2026-09-10".to_owned());
     let mut time = use_signal(String::new);
@@ -2516,7 +2525,12 @@ fn InputsDemo() -> Element {
         div { class: "gallery-inputs",
             Segmented {
                 label: "Span",
-                options: vec!["Day".into(), "Week".into(), "Month".into(), "Year".into()],
+                options: vec![
+                    "Day".into(),
+                    "Week".into(),
+                    "Month".into(),
+                    Choice { disabled: true, .."Year".into() },
+                ],
                 selected: span(),
                 on_select: move |index| span.set(index),
             }
@@ -2571,7 +2585,7 @@ fn InputsDemo() -> Element {
                 query: medicine(),
                 options: found().iter().map(|index| {
                     let (name, form) = MEDICATIONS[*index];
-                    Choice::from((name, form))
+                    Choice { disabled: name == "Apixaban", ..(name, form).into() }
                 }).collect::<Vec<_>>(),
                 selected: found().iter().position(|index| chosen_medicine() == Some(*index)),
                 loading: searching(),
@@ -2595,6 +2609,13 @@ fn InputsDemo() -> Element {
                     medicine.set(MEDICATIONS[index].0.to_owned());
                 },
             }
+            SearchField {
+                label: "Search your panel",
+                placeholder: "Name, DOB or phone",
+                clear_label: "Clear search",
+                value: search(),
+                on_input: move |words| search.set(words),
+            }
             Slider {
                 label: "Pain today",
                 value: pain(),
@@ -2617,6 +2638,12 @@ fn InputsDemo() -> Element {
                     value: time(),
                     on_change: move |when| time.set(when),
                 }
+            }
+            TextField {
+                label: "What I want to discuss",
+                multiline: true,
+                value: discuss(),
+                on_input: move |words| discuss.set(words),
             }
             TextField {
                 label: "Mobile number",
