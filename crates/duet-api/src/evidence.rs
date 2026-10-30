@@ -281,11 +281,17 @@ fn wire_revision(revision: i64) -> Result<i32, ApiError> {
 fn refused() -> ApiError {
     ApiError::Conflict(SOURCE_AUTHORITY_REFUSED)
 }
+/// RFC 3339 instant, or `None` when the literal is absent, partial, or not an instant.
+/// Browse uses this same acceptance for `measured_interval.start` and `.end`.
+pub(crate) fn declared_instant_text(text: &str) -> Option<DateTime<Utc>> {
+    text.parse().ok()
+}
+
 /// A declared instant: RFC 3339 → Some; absent/null/partial literal → None.
 fn declared_instant(value: Option<&Value>) -> Result<Option<DateTime<Utc>>, ApiError> {
     match value {
         None | Some(Value::Null) => Ok(None),
-        Some(Value::String(text)) => Ok(text.parse().ok()),
+        Some(Value::String(text)) => Ok(declared_instant_text(text)),
         Some(_) => Err(ApiError::Unprocessable("declared dates must be strings")),
     }
 }

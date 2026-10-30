@@ -168,6 +168,10 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
             "/api/conversation/messages/{message_id}/sources/{source_id}",
             get(message_source),
         )
+        .route(
+            "/api/conversation/messages/{message_id}/sources/{source_id}/revision",
+            get(cited_revision),
+        )
         .route("/api/insight-cycles", get(insights))
         .route("/api/intelligence/settings", get(settings))
         .route("/api/evidence/library", post(library))
@@ -327,6 +331,42 @@ async fn message_source(
         _ => source.title.clone(),
     };
     Ok(Json(ConversationSourceDetail::new(source, text)))
+}
+
+/// Stand-in for the exact cited revision. The sleep note's payload stays on the
+/// revision; the client renders person-facing lines and does not dump JSON.
+async fn cited_revision(
+    Path((_message_id, source_id)): Path<(uuid::Uuid, String)>,
+) -> Result<Json<duet_wire::models::EvidenceRevisionView>, StatusCode> {
+    if source_id != "sleep-note" {
+        return Err(StatusCode::NOT_FOUND);
+    }
+    use duet_wire::models::{
+        CanonicalSourceAddress, EvidenceRevisionView, canonical_source_address::Entity,
+        evidence_revision_view::Status,
+    };
+    let mut view = EvidenceRevisionView::new(
+        CanonicalSourceAddress::new(
+            uuid::Uuid::nil(),
+            "sleep-note".into(),
+            Entity::ClinicalNote,
+            1,
+        ),
+        Status::Current,
+        true,
+    );
+    view.payload = Some(Some(
+        [
+            ("title".to_owned(), serde_json::json!("Sleep note")),
+            (
+                "body".to_owned(),
+                serde_json::json!("About seven hours, from the sleep note."),
+            ),
+            ("source_label".to_owned(), serde_json::json!("Sleep note")),
+        ]
+        .into(),
+    ));
+    Ok(Json(view))
 }
 
 fn acceptance(message: ConversationMessage, revision: i32) -> ConversationAcceptance {
@@ -937,6 +977,23 @@ mod tests {
         let detail: ConversationSourceDetail = serde_json::from_str(&body(opened).await).unwrap();
         assert_eq!(detail.text, "About seven hours, from the sleep note.");
         assert_eq!(detail.reference.title, "Sleep note");
+        let revision = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/conversation/messages/00000000-0000-0000-0000-000000000002/sources/sleep-note/revision")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert!(revision.status().is_success());
+        let view: duet_wire::models::EvidenceRevisionView =
+            serde_json::from_str(&body(revision).await).unwrap();
+        assert_eq!(
+            view.payload.flatten().unwrap()["body"],
+            "About seven hours, from the sleep note."
+        );
         let missing = app
             .clone()
             .oneshot(

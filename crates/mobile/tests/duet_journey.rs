@@ -85,8 +85,8 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.click(r#"button[aria-label="Open source Sleep note"]"#);
     let text = browser.wait_for("About seven hours, from the sleep note.");
     assert!(
-        text.contains("Sleep note"),
-        "the source sheet did not name the citation:\n{text}"
+        text.contains("Source: Sleep note") && !text.contains("\"body\""),
+        "the source sheet did not show the cited note:\n{text}"
     );
     browser.click(r#"dialog.dialog-sheet:last-of-type button[aria-label="Close"]"#);
     wait_for_gone(&mut browser, "p.source-text");
@@ -160,13 +160,17 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         "the corrected medication disappeared with the deleted lab:\n{text}"
     );
 
-    // Stub/browser D2 proof: You lists every exact record with provenance and a
-    // version, and "Ask about this" hands that exact revision to the composer.
+    // Stub/browser D2 proof: You lists each record as a person would read it,
+    // and "Ask about this" hands that exact revision to the composer.
     browser.click("details.record-browser summary");
     let text = wait_until(&mut browser, |text| text.contains("Showing "));
     assert!(
-        text.contains("Source: manual via this device") && text.contains("Version 1"),
-        "the record browser did not show provenance and version:\n{text}"
+        text.contains("Source: Pharmacy") && text.contains("2026-10-01T15:00:00+00:00"),
+        "the record browser did not show the source and date:\n{text}"
+    );
+    assert!(
+        !text.contains("Version 1") && !text.contains("Show original"),
+        "the record browser still shows a technical inspector:\n{text}"
     );
     wait_for_selector(
         &mut browser,
@@ -174,7 +178,7 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     );
     browser.click(r#"button[aria-label="Ask about Lisinopril 5 mg"]"#);
     let text = wait_until(&mut browser, |text| {
-        text.contains("Asking about Lisinopril 5 mg (version 1)")
+        text.contains("Asking about Lisinopril 5 mg") && !text.contains("(version 1)")
     });
     assert!(
         text.contains("Asking about"),

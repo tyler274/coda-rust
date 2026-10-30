@@ -209,6 +209,26 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
     for i in 0..IMPORTED {
         let payload = if i < UNDATED {
             json!({"concept_id":"lab:undated","title":format!("Undated result {i}"),"source":{"kind":"healthRecords","record_id":format!("undated-{i}")},"value":{"literal":"< 0.03","unit":"mg/dL"}})
+        } else if i + 1 == IMPORTED {
+            // Interval-only shape of AcquisitionRecord::payload: no measured_at and no title.
+            json!({
+                "concept_id": "vital:steps",
+                "timezone": "America/Los_Angeles",
+                "source": {
+                    "kind": "appleHealth",
+                    "record_id": "HKQuantitySample/steps-day",
+                    "data_type": "HKQuantityTypeIdentifierStepCount",
+                    "source_name": "Apple Watch",
+                    "writer_id": "com.apple.health.ABC",
+                    "device": "Watch7,1"
+                },
+                "value": {"literal": "7654", "unit": "count"},
+                "measured_interval": {
+                    "start": "2026-10-28T00:00:00-07:00",
+                    "end": "2026-10-29T00:00:00-07:00"
+                },
+                "status": "entered-in-error"
+            })
         } else {
             json!({"concept_id":"lab:glucose","title":format!("Glucose {i}"),"measured_at":format!("2026-{:02}-{:02}T08:{:02}:00-07:00", 1 + i % 9, 1 + i % 27, i % 60),"source":{"kind":"healthRecords","record_id":format!("glucose-{i}")},"value":{"literal":format!("{}", 80 + i % 40),"unit":"mg/dL"},"status":"final"})
         };
@@ -263,7 +283,23 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
     );
     assert_eq!(undated[0].value.as_deref(), Some("< 0.03"));
     assert_eq!(undated[0].unit.as_deref(), Some("mg/dL"));
-    let dated = walked.iter().find(|r| r.date.is_some()).unwrap();
+    // The interval-only acquisition record sorts on its start and keeps the end.
+    let steps = &walked[0];
+    assert_eq!(steps.title, "Health record");
+    assert_eq!(steps.date.as_deref(), Some("2026-10-28T00:00:00-07:00"));
+    assert_eq!(steps.date_end.as_deref(), Some("2026-10-29T00:00:00-07:00"));
+    assert_eq!(steps.time_zone.as_deref(), Some("America/Los_Angeles"));
+    assert_eq!(steps.value.as_deref(), Some("7654"));
+    assert_eq!(steps.unit.as_deref(), Some("count"));
+    assert_eq!(steps.source_status.as_deref(), Some("entered-in-error"));
+    assert_eq!(
+        steps.payload.as_ref().unwrap()["source"]["record_id"],
+        "HKQuantitySample/steps-day"
+    );
+    let dated = walked
+        .iter()
+        .find(|r| r.provenance.source_kind == "healthRecords" && r.date.is_some())
+        .unwrap();
     assert_eq!(dated.time_zone.as_deref(), Some("-07:00"));
     assert_eq!(dated.provenance.source_kind, "healthRecords");
     assert!(dated.payload.as_ref().unwrap().contains_key("source"));

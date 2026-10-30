@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **title** | **String** |  |
 **provenance** | [**models::EvidenceRecordProvenance**](EvidenceRecordProvenance.md) |  |
 **date** | Option<**String**> | Literal declared date string; absent means the date is unknown | [optional]
+**date_end** | Option<**String**> | Literal interval end when it differs from date. Absent for a single instant. | [optional]
 **date_role** | Option<**String**> |  | [optional]
 **time_zone** | Option<**String**> |  | [optional]
 **value** | Option<**String**> | Literal value exactly as declared | [optional]

@@ -24,6 +24,9 @@ pub struct EvidenceBrowseRecord {
     /// Literal declared date string; absent means the date is unknown
     #[serde(rename = "date", skip_serializing_if = "Option::is_none")]
     pub date: Option<String>,
+    /// Literal interval end when it differs from date. Absent for a single instant.
+    #[serde(rename = "date_end", skip_serializing_if = "Option::is_none")]
+    pub date_end: Option<String>,
     #[serde(rename = "date_role", skip_serializing_if = "Option::is_none")]
     pub date_role: Option<String>,
     #[serde(rename = "time_zone", skip_serializing_if = "Option::is_none")]
@@ -53,6 +56,7 @@ impl EvidenceBrowseRecord {
             title,
             provenance: Box::new(provenance),
             date: None,
+            date_end: None,
             date_role: None,
             time_zone: None,
             value: None,

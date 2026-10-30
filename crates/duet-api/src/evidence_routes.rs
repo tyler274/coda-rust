@@ -369,9 +369,20 @@ async fn library(
     ))
 }
 
+/// A declared date kept literal. `end` is set only for an RFC 3339 interval whose
+/// end differs from the start, so the interval is not collapsed to one instant.
+#[derive(Debug, PartialEq, Eq)]
+struct DeclaredDate {
+    start: Option<String>,
+    end: Option<String>,
+    role: Option<String>,
+}
+
 /// Literal declared date and its role: the projected source date role first, then the
-/// common date fields. A missing date stays missing ("date unknown"), never invented.
-fn declared_date(payload: &Value) -> (Option<String>, Option<String>) {
+/// common date fields, then `measured_interval`. A missing date stays missing
+/// ("date unknown"), never invented. An interval start or end is kept only when it
+/// is an RFC 3339 instant, the same rule canonical ingest uses.
+fn declared_date(payload: &Value) -> DeclaredDate {
     if let Some(role) = payload
         .pointer("/source/projected_date_role")
         .and_then(Value::as_str)
@@ -380,7 +391,11 @@ fn declared_date(payload: &Value) -> (Option<String>, Option<String>) {
             .and_then(|d| d.get(role))
             .and_then(Value::as_str)
     {
-        return (Some(date.to_owned()), Some(role.to_owned()));
+        return DeclaredDate {
+            start: Some(date.to_owned()),
+            end: None,
+            role: Some(role.to_owned()),
+        };
     }
     for field in [
         "measured_at",
@@ -390,10 +405,33 @@ fn declared_date(payload: &Value) -> (Option<String>, Option<String>) {
         "date",
     ] {
         if let Some(date) = payload[field].as_str().filter(|s| !s.trim().is_empty()) {
-            return (Some(date.to_owned()), Some(field.to_owned()));
+            return DeclaredDate {
+                start: Some(date.to_owned()),
+                end: None,
+                role: Some(field.to_owned()),
+            };
         }
     }
-    (None, None)
+    if let Some(start) = payload
+        .pointer("/measured_interval/start")
+        .and_then(Value::as_str)
+        .filter(|start| crate::evidence::declared_instant_text(start).is_some())
+    {
+        let end = payload
+            .pointer("/measured_interval/end")
+            .and_then(Value::as_str)
+            .filter(|end| *end != start && crate::evidence::declared_instant_text(end).is_some());
+        return DeclaredDate {
+            start: Some(start.to_owned()),
+            end: end.map(str::to_owned),
+            role: Some("measured_interval".to_owned()),
+        };
+    }
+    DeclaredDate {
+        start: None,
+        end: None,
+        role: None,
+    }
 }
 
 /// Declared IANA zone, else the literal UTC offset carried by the date string.
@@ -409,6 +447,13 @@ fn time_zone(payload: &Value, date: Option<&str>) -> Option<String> {
         return Some("UTC".into());
     }
     Some(parsed.offset().to_string())
+}
+
+fn nonempty(value: Option<&Value>) -> Option<&str> {
+    value
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|text| !text.is_empty())
 }
 
 fn literal(value: &Value) -> Option<String> {
@@ -449,13 +494,11 @@ fn browse_record(record: &crate::evidence::ExactEvidence) -> Value {
     } else {
         "device"
     };
-    let (date, role) = declared_date(p);
-    let zone = time_zone(p, date.as_deref());
+    let declared = declared_date(p);
+    let zone = time_zone(p, declared.start.as_deref());
     let (value, unit) = value_and_unit(p);
-    let title = p["display_name"]
-        .as_str()
-        .or(p["title"].as_str())
-        .or(p["concept_id"].as_str())
+    let title = nonempty(p.get("display_name"))
+        .or(nonempty(p.get("title")))
         .unwrap_or("Health record");
     let mut provenance = json!({"source_kind": kind, "writer": writer});
     for (key, pointer) in [
@@ -475,8 +518,9 @@ fn browse_record(record: &crate::evidence::ExactEvidence) -> Value {
         "payload": p,
     });
     for (key, value) in [
-        ("date", date),
-        ("date_role", role),
+        ("date", declared.start),
+        ("date_end", declared.end),
+        ("date_role", declared.role),
         ("time_zone", zone),
         ("value", value),
         ("unit", unit),
@@ -501,11 +545,12 @@ fn browse_record(record: &crate::evidence::ExactEvidence) -> Value {
 fn browse_order(
     record: &crate::evidence::ExactEvidence,
 ) -> (u8, std::cmp::Reverse<i64>, uuid::Uuid) {
-    let (date, _) = declared_date(&record.payload);
-    let parsed = date
+    let declared = declared_date(&record.payload);
+    let parsed = declared
+        .start
         .as_deref()
-        .and_then(|d| chrono::DateTime::parse_from_rfc3339(d).ok());
-    match (date, parsed) {
+        .and_then(crate::evidence::declared_instant_text);
+    match (declared.start, parsed) {
         (_, Some(at)) => (
             0,
             std::cmp::Reverse(at.timestamp_millis()),
@@ -565,10 +610,46 @@ async fn revision(
 mod tests {
     use super::*;
 
+    fn evidence(id: u128, payload: Value) -> crate::evidence::ExactEvidence {
+        crate::evidence::ExactEvidence {
+            address: crate::evidence::AddressedRecordRevision::new(
+                uuid::Uuid::from_u128(id),
+                duet_wire::models::addressed_record_revision::Entity::HealthEvidence,
+                "native",
+                1,
+            ),
+            payload,
+            current: true,
+        }
+    }
+
+    /// Interval-only shape written by `AcquisitionRecord::payload`.
+    fn acquisition_interval() -> Value {
+        json!({
+            "concept_id": "vital:steps",
+            "timezone": "America/Los_Angeles",
+            "source": {
+                "kind": "appleHealth",
+                "record_id": "HKQuantitySample/steps-day",
+                "data_type": "HKQuantityTypeIdentifierStepCount",
+                "source_name": "Apple Watch",
+                "writer_id": "com.apple.health.ABC",
+                "device": "Watch7,1"
+            },
+            "value": {"literal": "7654", "unit": "count"},
+            "measured_interval": {
+                "start": "2026-10-28T00:00:00-07:00",
+                "end": "2026-10-29T00:00:00-07:00"
+            },
+            "status": "entered-in-error"
+        })
+    }
+
     #[test]
     fn undated_records_have_no_date_and_keep_literal_values() {
         let payload = json!({"title":"Pulse","value":{"literal":"< 60","unit":"/min"},"source":{"kind":"healthRecords"}});
-        assert_eq!(declared_date(&payload), (None, None));
+        assert_eq!(declared_date(&payload).start, None);
+        assert_eq!(declared_date(&payload).end, None);
         assert_eq!(
             value_and_unit(&payload),
             (Some("< 60".into()), Some("/min".into()))
@@ -579,16 +660,71 @@ mod tests {
     #[test]
     fn projected_role_and_offset_are_literal() {
         let payload = json!({"measured_at":"2026-09-30T08:15:00-07:00","source":{"kind":"epic","declared_dates":{"issued":"2026"},"projected_date_role":"issued"}});
-        assert_eq!(
-            declared_date(&payload),
-            (Some("2026".into()), Some("issued".into()))
-        );
+        let declared = declared_date(&payload);
+        assert_eq!(declared.start.as_deref(), Some("2026"));
+        assert_eq!(declared.role.as_deref(), Some("issued"));
+        assert_eq!(declared.end, None);
         let measured = json!({"measured_at":"2026-09-30T08:15:00-07:00"});
-        let (date, role) = declared_date(&measured);
-        assert_eq!(role.as_deref(), Some("measured_at"));
+        let declared = declared_date(&measured);
+        assert_eq!(declared.role.as_deref(), Some("measured_at"));
         assert_eq!(
-            time_zone(&measured, date.as_deref()).as_deref(),
+            time_zone(&measured, declared.start.as_deref()).as_deref(),
             Some("-07:00")
         );
+    }
+
+    #[test]
+    fn acquisition_interval_keeps_start_and_end_and_sorts_on_the_start() {
+        let payload = acquisition_interval();
+        let declared = declared_date(&payload);
+        assert_eq!(declared.start.as_deref(), Some("2026-10-28T00:00:00-07:00"));
+        assert_eq!(declared.end.as_deref(), Some("2026-10-29T00:00:00-07:00"));
+        assert_eq!(declared.role.as_deref(), Some("measured_interval"));
+
+        let partial =
+            json!({"measured_interval":{"start":"2026","end":"2027"},"concept_id":"vital:steps"});
+        assert_eq!(
+            declared_date(&partial).start,
+            None,
+            "a partial interval is unknown"
+        );
+
+        let same = json!({"measured_interval":{"start":"2026-10-28T00:00:00-07:00","end":"2026-10-28T00:00:00-07:00"}});
+        let collapsed = declared_date(&same);
+        assert_eq!(
+            collapsed.start.as_deref(),
+            Some("2026-10-28T00:00:00-07:00")
+        );
+        assert_eq!(collapsed.end, None, "an equal end is one instant");
+
+        let bad_end =
+            json!({"measured_interval":{"start":"2026-10-28T00:00:00-07:00","end":"later"}});
+        assert_eq!(declared_date(&bad_end).end, None);
+
+        let shown = browse_record(&evidence(1, payload));
+        assert_eq!(shown["title"], "Health record");
+        assert_eq!(shown["date"], "2026-10-28T00:00:00-07:00");
+        assert_eq!(shown["date_end"], "2026-10-29T00:00:00-07:00");
+        assert_eq!(shown["time_zone"], "America/Los_Angeles");
+        assert_eq!(shown["value"], "7654");
+        assert_eq!(shown["unit"], "count");
+        assert_eq!(shown["source_status"], "entered-in-error");
+        assert_eq!(
+            shown["payload"]["source"]["record_id"],
+            "HKQuantitySample/steps-day"
+        );
+
+        let interval = evidence(1, acquisition_interval());
+        let older = evidence(
+            2,
+            json!({"title":"Older","measured_at":"2026-09-30T08:15:00-07:00","source":{"kind":"appleHealth"}}),
+        );
+        let undated = evidence(
+            3,
+            json!({"title":"Undated","source":{"kind":"appleHealth"}}),
+        );
+        assert!(browse_order(&interval) < browse_order(&older));
+        assert!(browse_order(&older) < browse_order(&undated));
+        assert_eq!(browse_order(&evidence(4, partial)).0, 2);
     }
 }
