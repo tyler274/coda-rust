@@ -11,10 +11,10 @@ use ui::{
     ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog, Disclosure,
     FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile,
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, ProposedChange, Quote, Rating, Receipt, RowGroup, SectionHeader, SelectionRow,
-    SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline, StatePill,
-    StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart,
-    UndoNotice, Value, WorkingMark,
+    Placeholder, ProposedChange, Quote, Rating, RowGroup, SectionHeader, SelectionRow, SettingRow,
+    SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice,
+    Value, WorkingMark,
 };
 
 fn main() {
@@ -576,7 +576,9 @@ fn FrameDemo() -> Element {
                 Suggestion { text: "Help me keep a simple wind-down plan for this week.", onclick: move |_| {} }
                 Message { author: Author::Assistant,
                     p { "Saved. You can change it any time from Today." }
-                    Receipt { icon: IconName::Check, title: "Evening wind-down", detail: "Plan saved · open the current version", onclick: move |_| {} }
+                    RowGroup {
+                        li { ListRow { icon: IconName::Check, title: "Evening wind-down", detail: "Plan saved · open the current version", onclick: move |_| {} } }
+                    }
                 }
             }
             Composer {

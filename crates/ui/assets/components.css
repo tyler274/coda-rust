@@ -235,6 +235,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 /* Rows: a list runs its rows edge to edge, a hairline between them; a group sets them on one white surface. */
 .row-list { margin: 0; padding: 0; list-style: none; }
 .row-list > li + li { border-top: var(--hairline) solid var(--outline-variant); }
+.message > .row-group { margin-top: var(--space-3); }
 .row-group { padding: 0 var(--space-4); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--surface-lowest); }
 .list-row { display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%;
   min-height: var(--target); padding: var(--space-row) 0; border-radius: var(--radius-sm); }
@@ -347,13 +348,6 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .context-chip-remove { display: inline-grid; place-items: center; flex: none; width: var(--target); height: var(--target); margin-block: calc(-1 * var(--space-2)); border: 0; border-radius: var(--radius-pill); background: transparent; color: inherit; cursor: pointer; }
 .suggestion { align-self: flex-start; max-width: 94%; min-height: var(--target); padding: var(--space-3) var(--space-4); border: var(--hairline) solid var(--outline-variant);
   border-radius: var(--radius-lg); background: var(--surface-low); color: var(--body); font: var(--type-body-sm); }
-.receipt { display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%; padding: var(--space-4); border: var(--hairline) solid var(--outline-variant);
-  border-radius: var(--radius-lg); background: var(--surface-lowest); box-shadow: var(--elevation-1); }
-.receipt-icon { display: inline-grid; place-items: center; flex: none; width: var(--avatar-lg); height: var(--avatar-lg); border-radius: var(--radius-md); background: var(--data-container); color: var(--on-data-container); }
-.receipt-text { flex: 1; min-width: 0; }
-.receipt-text strong { display: block; color: var(--ink); font: var(--type-title-md); }
-.receipt-text small { display: block; margin-top: var(--space-hair); color: var(--muted); font: var(--type-body-sm); }
-.message > .receipt { margin-top: var(--space-3); }
 /* Pages, forms and their frame, after the October 21 mockups. */
 .top-bar { position: relative; display: flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 calc(var(--target) + var(--space-5));
   border-bottom: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); }

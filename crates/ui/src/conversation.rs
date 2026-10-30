@@ -1,6 +1,6 @@
 //! The conversation's frame, after the October 21 Duet mockups: the day it is on, what the person
-//! brought into it, a way to begin, and a receipt that leads to a thing in the thread. Who the
-//! conversation is with is the `TopBar`'s title.
+//! brought into it, and a way to begin. A receipt in the thread is a `ListRow` in a `RowGroup`;
+//! who the conversation is with is the `TopBar`'s title.
 
 use std::rc::Rc;
 
@@ -128,25 +128,5 @@ pub fn ContextChip(
 pub fn Suggestion(text: String, onclick: EventHandler<MouseEvent>) -> Element {
     rsx! {
         button { class: "suggestion navigation-row", r#type: "button", onclick: move |event| onclick.call(event), "{text}" }
-    }
-}
-
-/// A receipt in the thread: what a thing is, what happened to it, and the way to it.
-#[component]
-pub fn Receipt(
-    icon: IconName,
-    title: String,
-    detail: String,
-    onclick: EventHandler<MouseEvent>,
-) -> Element {
-    rsx! {
-        button { class: "receipt navigation-row", r#type: "button", onclick: move |event| onclick.call(event),
-            span { class: "receipt-icon", aria_hidden: "true", Icon { name: icon } }
-            span { class: "receipt-text",
-                strong { "{title}" }
-                small { "{detail}" }
-            }
-            span { class: "list-row-chevron", aria_hidden: "true", Icon { name: IconName::ChevronDown } }
-        }
     }
 }
