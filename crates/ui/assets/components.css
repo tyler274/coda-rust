@@ -57,8 +57,8 @@
 .tabs button[aria-current="page"] { color: var(--on-primary-container); }
 /* A selection host's current item carries one fill, anchored to it so it follows the item through any layout change at
    once; only when the selection moves does the fill travel there (motion.rs). A host sets the fill, its shadow and
-   its shape. Its own position wins: the fill needs only a containing block. */
-.selection-host { --selection-fill: var(--surface-high); --selection-shadow: none; --selection-radius: var(--radius-md); }
+   its shape; a component's own values and position win, the fill needing only a containing block. */
+:where(.selection-host) { --selection-fill: var(--surface-high); --selection-shadow: none; --selection-radius: var(--radius-md); }
 @supports (anchor-name: --selection) {
   :where(.selection-host) { position: relative; }
   .selection-host { isolation: isolate; anchor-scope: --selection; }
@@ -70,6 +70,10 @@
 @supports not (anchor-name: --selection) {
   .selection-host [aria-current]:not([aria-current="false"]) { background: var(--selection-fill); box-shadow: var(--selection-shadow); }
 }
+/* While a reorder moves the current item, the item carries the fill itself and the host's fill waits. */
+.selection-host [aria-current].is-carrying-selection { background: var(--selection-fill); box-shadow: var(--selection-shadow);
+  border-radius: var(--selection-radius); }
+.selection-host:has(.is-carrying-selection)::after { visibility: hidden; }
 /* A row rising past others as its list reorders is lifted over them while it moves: an opaque surface a level up, on the
    selection fill if it is the current one. */
 .is-lifted { position: relative; z-index: 1; background: var(--surface-lowest); box-shadow: var(--elevation-3); }

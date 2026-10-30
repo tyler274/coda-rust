@@ -117,7 +117,13 @@ pub fn use_live_rows<T: Clone + 'static>(
     });
     let keys: Vec<String> = listed.iter().map(|entry| entry.key.clone()).collect();
     let reordered = list.clone();
-    use_effect(use_reactive!(|keys| {
+    // The rows' places are taken after every render of the list, so a reorder slides from where
+    // each row last stood, whatever changed its height since.
+    let renders = use_hook(|| Rc::new(std::cell::Cell::new(0u64)));
+    renders.set(renders.get() + 1);
+    let render = renders.get();
+    use_effect(use_reactive!(|keys, render| {
+        let _ = render;
         let reorder = document::eval(&REORDER.replace("{id}", &reordered));
         let _ = reorder.send(keys);
     }));
@@ -129,8 +135,7 @@ pub fn use_live_rows<T: Clone + 'static>(
 }
 
 /// A list the server reorders, after the React app's `useReorderMotion`: each row it keeps slides
-/// from where it stood to where it now stands, and the list's selection fill travels with its
-/// row. A row that rises past others is lifted while it moves, so it passes over them rather than
+/// from where it stood to where it now stands, its current item carrying the selection fill. A row that rises past others is lifted while it moves, so it passes over them rather than
 /// through them. Rows that only join or leave move nothing here; their own frames open and close.
 /// The list's frames are its children, in the order of the keys sent. `{id}` is the list's id.
 const REORDER: &str = r#"
@@ -156,7 +161,11 @@ if (list !== null) {
         frame.classList.add("is-lifted");
         moving.finished.catch(() => undefined).then(() => frame.classList.remove("is-lifted"));
       }
-      if (selected !== null && frame.contains(selected)) motion.animate(list, shift, "step", "emphasized", "::after");
+      // The current item carries the fill itself while it moves, so the two never part.
+      if (moving !== undefined && selected !== null && frame.contains(selected)) {
+        selected.classList.add("is-carrying-selection");
+        moving.finished.catch(() => undefined).then(() => selected.classList.remove("is-carrying-selection"));
+      }
     });
   }
 }
@@ -165,15 +174,21 @@ if (list !== null) {
 static LISTS: AtomicUsize = AtomicUsize::new(0);
 
 /// Reports once a frame's collapse has finished, or at once with none to run: under reduced
-/// motion. A collapse cancelled by the row coming back reports nothing. `{id}` is the frame's id.
+/// motion. A collapse cancelled by the row coming back reports nothing; one cancelled while the
+/// row still leaves is watched again. `{id}` is the frame's id.
 const WATCH_EXIT: &str = r#"
-requestAnimationFrame(() => {
+const watch = () => requestAnimationFrame(() => {
   const frame = document.getElementById("{id}");
   const collapsing = frame ? frame.getAnimations().filter((animation) => animation.transitionProperty === "grid-template-rows") : [];
   if (collapsing.length === 0) { dioxus.send(true); return; }
-  Promise.allSettled(collapsing.map((animation) => animation.finished))
-    .then((settled) => dioxus.send(settled.every((result) => result.status === "fulfilled")));
+  Promise.allSettled(collapsing.map((animation) => animation.finished)).then((settled) => {
+    if (settled.every((result) => result.status === "fulfilled")) dioxus.send(true);
+    // A collapse cancelled while the row still leaves (motion became immediate) is watched again.
+    else if (frame.classList.contains("is-exiting")) watch();
+    else dioxus.send(false);
+  });
 });
+watch();
 "#;
 
 static FRAMES: AtomicUsize = AtomicUsize::new(0);
