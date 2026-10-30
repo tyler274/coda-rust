@@ -42,9 +42,9 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 
 [`ui-gallery`](/crates/ui-gallery/src/main.rs) renders every `ui` component with
 the shared stylesheet, apart from either app: the type and colour roles first, then
-each component. The library runs ahead of both apps: the physician web app and Duet
-on the web, iOS and Android are built from it, and it adds no palette beyond the
-shared roles. Each component's look is the library's; an app places a component through its own class.
+each component. The library runs ahead of both products: it is the ideal form that
+the physician web app and Duet's iOS and Android apps draw from as each is rebuilt,
+and it adds no palette beyond the shared roles. Each component's look is the library's; an app places a component through its own class.
 Its examples are fictional and scripted, and nothing in it is product behavior. To build and serve it:
 
 ```sh
