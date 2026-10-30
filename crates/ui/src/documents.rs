@@ -4,7 +4,7 @@
 
 use dioxus::prelude::*;
 
-use crate::{Disclosure, Icon, IconName, Tone};
+use crate::{Disclosure, Icon, IconName, StatePill, Tone};
 
 /// The bar atop a pushed screen: an optional way back on the leading edge, the title centred with
 /// an optional mark (who a conversation is with), and the screen's one action on the trailing edge.
@@ -154,7 +154,7 @@ pub fn ProposedChange(
         section { class: if is_unchanged { "proposed-change is-unchanged" } else { "proposed-change" },
             header { class: "proposed-change-heading",
                 if let Some(text) = tag.filter(|_| !is_unchanged) {
-                    Tag { text }
+                    StatePill { "{text}" }
                 }
                 h3 { "{title}" }
                 if let Some(state) = unchanged {
@@ -172,12 +172,6 @@ pub fn ProposedChange(
             }
         }
     }
-}
-
-/// A small label on content: what period it covers, or that it changed.
-#[component]
-pub fn Tag(text: String) -> Element {
-    rsx! { span { class: "tag", "{text}" } }
 }
 
 /// The screen's actions, pinned to its foot, with an optional note on what they do and don't do.

@@ -1,6 +1,6 @@
-//! Cards that hold one object: an observation and its evidence,
-//! a piece of saved work, an original record and the person's later context. A card names what it
-//! holds, then shows it.
+//! Cards that hold one object: an observation and its evidence, a piece of saved work, an original
+//! record and what was added to it later, as a tinted card inside it. A card names what it holds,
+//! then shows it.
 
 use dioxus::prelude::*;
 
@@ -99,17 +99,4 @@ pub fn StepList(steps: Vec<String>) -> Element {
 #[component]
 pub fn Quote(text: String) -> Element {
     rsx! { blockquote { class: "quote", "{text}" } }
-}
-
-/// What the person added after a record, beside it: it can change the understanding without
-/// rewriting the dated record.
-#[component]
-pub fn LaterContext(overline: String, text: String, added: String) -> Element {
-    rsx! {
-        aside { class: "later-context",
-            Overline { text: overline }
-            Quote { text }
-            p { class: "card-detail", "{added}" }
-        }
-    }
 }

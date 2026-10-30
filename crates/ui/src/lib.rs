@@ -21,15 +21,14 @@ mod motion;
 mod prose;
 mod sources;
 mod undo;
-pub use cards::{Card, LaterContext, Quote, StepList};
+pub use cards::{Card, Quote, StepList};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
     SeriesChart, SeriesPoint, SeriesShape, Sparkline, Value,
 };
 pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Suggestion};
 pub use documents::{
-    FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, Tag,
-    TopBar,
+    FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, TopBar,
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
@@ -88,9 +87,9 @@ pub fn PageTitle(
     }
 }
 
-/// What a card holds, named above its title in small capitals: "What Duet noticed", "Original record".
+/// What a card holds, named above its title in small capitals: "Original record".
 #[component]
-pub fn Overline(text: String) -> Element {
+fn Overline(text: String) -> Element {
     rsx! { p { class: "overline", "{text}" } }
 }
 

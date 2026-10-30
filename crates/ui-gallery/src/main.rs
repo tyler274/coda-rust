@@ -20,13 +20,13 @@ use ui::{
     ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, ChartHeader, CitationChip,
     CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
     Count, DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
-    FooterActions, Icon, IconName, KeyHint, LaterContext, ListRow, LiveDot, MeasurementTile,
-    Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
-    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
-    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
-    ToggleChip, Tone, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
+    FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Message,
+    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
+    PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating, RowFrame,
+    RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart, SeriesPoint,
+    SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton,
+    Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, TextField, ToggleChip, Tone,
+    TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -207,7 +207,7 @@ const TYPE_ROLES: [(&str, &str, &str); 14] = [
     ("value-lg", "Value large", "6 hr 18 min"),
     ("value-md", "Value medium", "4,280"),
     ("code", "Code", "PHYSICIAN_APP_URL"),
-    ("label-sm", "Overline", "What Duet noticed"),
+    ("label-sm", "Overline", "Original record"),
 ];
 
 #[cfg(feature = "web")]
@@ -219,7 +219,7 @@ fn TypeDemo() -> Element {
                 div { class: "gallery-specimen",
                     dt { class: "gallery-note", "{name} · --type-{role}" }
                     if name == "Overline" {
-                        dd { Overline { text: sample } }
+                        dd { class: "overline", "{sample}" }
                     } else {
                         dd { style: "font: var(--type-{role})", "{sample}" }
                     }
@@ -314,7 +314,9 @@ fn CardDemo() -> Element {
                 title: "Visit note",
                 detail: "Northside Clinic · October 15",
                 Quote { text: "Walks twice a week." }
-                LaterContext { overline: "Your later context", text: "I now walk four mornings a week.", added: "Added October 21" }
+                Card { tinted: true, overline: "Your later context", footer: "Added October 21",
+                    Quote { text: "I now walk four mornings a week." }
+                }
             }
         }
     }
@@ -586,8 +588,8 @@ fn PagesDemo() -> Element {
             div { class: "gallery-phone-thread",
                 Notice { tone: Tone::Primary, icon: IconName::Check, title: "Page saved", detail: "This update has not been shared." }
                 div { class: "gallery-row",
-                    Tag { text: "Updated" }
-                    Tag { text: "Through Oct 21" }
+                    StatePill { "Updated" }
+                    StatePill { "Through Oct 21" }
                 }
                 Paper { title: "For my doctor", detail: "Your continuing page · saved October 21",
                     PaperSection { heading: "What I want to discuss",
