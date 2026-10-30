@@ -111,8 +111,9 @@ pub struct SeriesPoint {
 /// a filling bucket between the two; a dashed reference marks what the series is compared with,
 /// named by a short word; the value axis stands on the trailing edge in round steps. With
 /// `on_select`, a mark is pinned by a tap and cleared by tapping it again or empty plot, and the
-/// arrow keys move it: the pinned bucket is drawn full, the rest quiet, under a scrub rule. The host
-/// owns what is selected and every word; `label` says the series in words.
+/// arrow keys move it: the pinned bucket is drawn full, the rest quiet, under a scrub rule. Each
+/// recorded bucket's words reach assistive technology, through its mark or, without `on_select`, a
+/// list. The host owns what is selected and every word; `label` says the series in words.
 #[component]
 pub fn SeriesChart(
     #[props(default)] shape: SeriesShape,
@@ -301,6 +302,17 @@ pub fn SeriesChart(
                                     span { class: "series-target-reach", aria_hidden: "true" }
                                 }
                             }
+                        }
+                    }
+                }
+            }
+            // Without its marks to step through, the series says each recorded bucket in a list
+            // only assistive technology reads.
+            if !interactive {
+                ul { class: "sr-only",
+                    for (index, point) in points.iter().enumerate() {
+                        if point.value.is_some() {
+                            li { key: "words-{index}", "{point.words}" }
                         }
                     }
                 }
@@ -811,6 +823,31 @@ fn monotone_path(at: &[(f64, f64)]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_series_without_a_pin_still_says_each_recorded_value() {
+        fn app() -> Element {
+            let point = |value: Option<f64>, words: &str| SeriesPoint {
+                value,
+                words: words.into(),
+                ..SeriesPoint::default()
+            };
+            rsx! {
+                SeriesChart {
+                    points: vec![point(Some(6.0), "Monday, 6,000 steps"), point(None, "Tuesday, none"), point(Some(8.0), "Wednesday, 8,000 steps")],
+                    label: "Steps each day",
+                }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert!(
+            html.contains("Monday, 6,000 steps") && html.contains("Wednesday, 8,000 steps"),
+            "{html}"
+        );
+        assert!(!html.contains("Tuesday, none"), "{html}");
+    }
 
     #[test]
     fn a_series_spans_its_box_and_ends_on_the_latest_point() {
