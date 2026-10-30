@@ -23,6 +23,14 @@
 .title-with-count { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .title-with-count > :is(h1, h2, h3, strong) { min-width: 0; }
 .empty { margin: 0; color: var(--body); font: var(--type-body-lg); }
+/* The empty state, after SwiftUI Duet's: a muted mark in a touch target, the line on the medium title, what to know in
+   small muted words, the way on in green and the way out muted, centred with a section's space around them. */
+.empty-state { display: grid; justify-items: center; gap: var(--space-2); padding-block: var(--space-6); text-align: center; }
+.empty-state-mark { display: grid; place-items: center; width: var(--target); height: var(--target); color: var(--muted); }
+.empty-state-title { margin: 0; color: var(--ink); font: var(--type-title-md); }
+.empty-state-detail { margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.control.empty-state-action { --control-quiet-color: var(--primary); font: var(--type-body-lg); font-weight: var(--weight-strong); }
+.control.empty-state-secondary { --control-quiet-color: var(--muted); font: var(--type-label-md); }
 .tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter) calc(var(--space-2) + env(safe-area-inset-bottom)); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
 .tabs button { flex: 1; min-height: var(--target); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--muted); font: var(--type-label-md); }
 .tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }

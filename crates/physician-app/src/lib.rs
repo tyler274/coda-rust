@@ -38,7 +38,7 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    Author, Button, ButtonVariant, Dialog, EmptyState, Icon, IconName, IconTile, LiveDot,
+    Author, Button, ButtonVariant, Dialog, EmptyLine, Icon, IconName, IconTile, LiveDot,
     NavigationControl, NavigationRow, StatePill, StatusLine, Tone,
 };
 
@@ -3372,7 +3372,7 @@ fn PatientSurface(
             section { class: "patient-section", aria_label: "Conversation",
                 h2 { "Conversation" }
                 match chats {
-                    ChatView::Closed => rsx! { EmptyState { message: WORKSPACE_CLOSED.to_owned() } },
+                    ChatView::Closed => rsx! { EmptyLine { message: WORKSPACE_CLOSED.to_owned() } },
                     ChatView::Pending => rsx! {},
                     // The page's own read line says the patient couldn't open.
                     ChatView::Unavailable => rsx! {},
@@ -3544,7 +3544,7 @@ fn SearchDialog(
                     on_retry,
                 }
                 if none {
-                    EmptyState { message: SEARCH_NONE }
+                    EmptyLine { message: SEARCH_NONE }
                 }
                 ul { class: "dialog-results",
                     for (index, patient) in results.iter().enumerate() {

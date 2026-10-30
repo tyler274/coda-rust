@@ -9,12 +9,13 @@ use std::time::Duration;
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CitationPreview, Comparison,
     ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog, Disclosure,
-    FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile,
-    Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup,
-    SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
-    ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
+    EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow,
+    LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline,
+    PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, ProposedChange, Prose,
+    ProsePart, Quote, Rating, RowGroup, SectionHeader, SelectionRow, SettingRow, SourceDetails,
+    SourcePane, SourceReading, SourcesButton, Sparkline, StatePill, StatusLine, StepList,
+    Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
+    WorkingMark,
 };
 
 fn main() {
@@ -116,6 +117,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
+                }
+                Section { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
+                    EmptyDemo {}
                 }
                 Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark.",
                     CitationDemo {}
@@ -635,6 +639,30 @@ fn OverlayDemo() -> Element {
         if over() {
             Dialog { close_label: "Close", sheet: true, title: "Sleep note", on_close: move |_| over.set(false),
                 p { class: "gallery-copy", "Closing this returns to the sheet beneath." }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn EmptyDemo() -> Element {
+    rsx! {
+        div { class: "gallery-empty",
+            EmptyLine { message: "Nothing shared yet." }
+            EmptyState {
+                icon: IconName::File,
+                title: "This record is no longer available",
+                detail: "It may have been removed or replaced by a correction.",
+            }
+            EmptyState {
+                icon: IconName::Refresh,
+                title: "Couldn’t check your account",
+                detail: "The connection was lost.",
+                action: "Try again",
+                on_action: move |_| {},
+                secondary: "Sign out",
+                on_secondary: move |_| {},
             }
         }
     }

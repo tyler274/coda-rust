@@ -87,9 +87,55 @@ pub fn Overline(text: String) -> Element {
     rsx! { p { class: "overline", "{text}" } }
 }
 
+/// An empty section, after SwiftUI Duet's `DuetEmptyLine`: one plain line, with no box or mark.
+/// What comes next on the screen carries the action.
 #[component]
-pub fn EmptyState(message: String) -> Element {
+pub fn EmptyLine(message: String) -> Element {
     rsx! { p { class: "empty", "{message}" } }
+}
+
+/// An empty or caught-up place, after SwiftUI Duet's `DuetEmptyState`: its mark, one line, what to
+/// know, and up to two quiet ways on, centred. The second is the quieter way out when the first
+/// may never succeed.
+#[component]
+pub fn EmptyState(
+    icon: IconName,
+    title: String,
+    #[props(default)] detail: String,
+    /// The way on's words; with `on_action`, it is offered.
+    #[props(default)]
+    action: String,
+    on_action: Option<EventHandler>,
+    /// The quieter way out's words; with `on_secondary`, it is offered.
+    #[props(default)]
+    secondary: String,
+    on_secondary: Option<EventHandler>,
+) -> Element {
+    rsx! {
+        div { class: "empty-state",
+            span { class: "empty-state-mark", aria_hidden: "true", Icon { name: icon } }
+            p { class: "empty-state-title", "{title}" }
+            if !detail.is_empty() {
+                p { class: "empty-state-detail", "{detail}" }
+            }
+            if let Some(handler) = on_action {
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    class: "empty-state-action",
+                    onclick: move |_| handler.call(()),
+                    "{action}"
+                }
+            }
+            if let Some(handler) = on_secondary {
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    class: "empty-state-secondary",
+                    onclick: move |_| handler.call(()),
+                    "{secondary}"
+                }
+            }
+        }
+    }
 }
 
 /// The one status line, after the React app's `StatusLine`: what failed or what is under way, in
