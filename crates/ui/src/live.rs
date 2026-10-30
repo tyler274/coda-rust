@@ -36,22 +36,24 @@ pub struct LiveRows<T: 'static> {
 
 struct Shown<T> {
     rows: Vec<ListedRow<T>>,
-    answered: bool,
+    /// Whether each row's own source had answered when the list was last shown, asked of a row now.
+    ready: Rc<dyn Fn(&T) -> bool>,
     exited: HashSet<String>,
 }
 
-/// The one entry and exit owner for a live list. `answered` says whether the list's read has
-/// answered: rows move only once the list was shown after an answer, so a first answer simply
-/// shows.
+/// The one entry and exit owner for a live list. `ready` says whether a row's own source has
+/// answered: a list drawn from several reads moves each source's rows only once that source had
+/// answered when the list was last shown, so a source's first answer simply shows, and a read that
+/// has not answered holds back no other source's rows.
 pub fn use_live_rows<T: Clone + 'static>(
     rows: Vec<T>,
     key_of: impl Fn(&T) -> String,
-    answered: bool,
+    ready: impl Fn(&T) -> bool + 'static,
 ) -> LiveRows<T> {
     let shown = use_hook(|| {
         Rc::new(RefCell::new(Shown {
             rows: Vec::new(),
-            answered: false,
+            ready: Rc::new(|_: &T| false) as Rc<dyn Fn(&T) -> bool>,
             exited: HashSet::new(),
         }))
     });
@@ -64,7 +66,7 @@ pub fn use_live_rows<T: Clone + 'static>(
         .into_iter()
         .map(|row| {
             let key = key_of(&row);
-            let arriving = answered && state.answered && !before.contains(&key);
+            let arriving = ready(&row) && (state.ready)(&row) && !before.contains(&key);
             ListedRow {
                 key,
                 row,
@@ -94,7 +96,7 @@ pub fn use_live_rows<T: Clone + 'static>(
         );
     }
     state.rows = listed.clone();
-    state.answered = answered;
+    state.ready = Rc::new(ready);
     // An exit is remembered only while its row still shows as leaving.
     let leaving: HashSet<&str> = listed
         .iter()
@@ -137,11 +139,19 @@ pub fn RowFrame(
 ) -> Element {
     let id = use_hook(|| format!("row-frame-{}", FRAMES.fetch_add(1, Ordering::Relaxed)));
     let watched = id.clone();
+    // Each change of `present` supersedes the exit watched before it: a row brought back while
+    // leaving never reports the exit it left.
+    let watch = use_hook(|| Rc::new(std::cell::Cell::new(0u64)));
     use_effect(use_reactive!(|present| {
+        let this = watch.get() + 1;
+        watch.set(this);
         if !present {
             let mut exit = document::eval(&WATCH_EXIT.replace("{id}", &watched));
+            let watch = watch.clone();
             spawn(async move {
-                if let Ok(true) = exit.recv::<bool>().await {
+                if let Ok(true) = exit.recv::<bool>().await
+                    && watch.get() == this
+                {
                     on_exited.call(());
                 }
             });
@@ -178,7 +188,7 @@ mod tests {
     fn a_first_answer_shows_a_joining_row_arrives_and_a_dropped_row_stays_in_place() {
         fn app() -> Element {
             let (rows, answered) = LIST.lock().unwrap().clone();
-            let live = use_live_rows(rows, |row| row.to_string(), answered);
+            let live = use_live_rows(rows, |row| row.to_string(), move |_| answered);
             SEEN.lock().unwrap().push(
                 live.listed
                     .iter()
@@ -233,6 +243,46 @@ mod tests {
         assert!(
             leaving.contains("inert=\"true\"") && leaving.contains("aria-hidden=\"true\""),
             "{html}"
+        );
+    }
+
+    static SOURCES: std::sync::Mutex<(Vec<&'static str>, bool, bool)> =
+        std::sync::Mutex::new((Vec::new(), false, false));
+    static FROM_SOURCES: std::sync::Mutex<Vec<Vec<(String, bool)>>> =
+        std::sync::Mutex::new(Vec::new());
+
+    #[test]
+    fn each_source_moves_its_rows_only_after_its_own_first_answer() {
+        // Rows from source a and source b, each named by its source's letter.
+        fn app() -> Element {
+            let (rows, a, b) = SOURCES.lock().unwrap().clone();
+            let live = use_live_rows(
+                rows,
+                |row| row.to_string(),
+                move |row: &&str| {
+                    if row.starts_with('a') { a } else { b }
+                },
+            );
+            FROM_SOURCES.lock().unwrap().push(
+                live.listed
+                    .iter()
+                    .map(|entry| (entry.key.clone(), entry.arriving))
+                    .collect(),
+            );
+            rsx! {}
+        }
+        *SOURCES.lock().unwrap() = (vec!["a1"], true, false);
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        // a lists a second row while b answers for the first time.
+        *SOURCES.lock().unwrap() = (vec!["a1", "a2", "b1"], true, true);
+        dom.mark_dirty(ScopeId::APP);
+        dom.render_immediate(&mut dioxus::dioxus_core::NoOpMutations);
+        let seen = FROM_SOURCES.lock().unwrap().clone();
+        let row = |key: &str, arriving| (key.to_owned(), arriving);
+        assert_eq!(
+            seen[1],
+            vec![row("a1", false), row("a2", true), row("b1", false)]
         );
     }
 }

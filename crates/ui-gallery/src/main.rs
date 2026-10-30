@@ -719,7 +719,7 @@ const LIVE: [(&str, &str); 5] = [
 #[component]
 fn LiveDemo() -> Element {
     let mut shown = use_signal(|| vec![0usize, 1, 2]);
-    let live = use_live_rows(shown(), |index| index.to_string(), true);
+    let live = use_live_rows(shown(), |index| index.to_string(), |_| true);
     let on_exited = live.on_exited;
     rsx! {
         div { class: "gallery-rows",
