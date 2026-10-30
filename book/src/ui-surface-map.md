@@ -40,7 +40,7 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 
 The assistant-ui study in the corpus is a conversation-pattern reference. No
 React library adoption is implied for the Rust/Dioxus client. Source snapshots
-and the October 21 review describe their stated revisions; verify the current
+describe their stated revisions; verify the current
 owner before turning an observation into implementation work.
 
 [Release](release.md) owns platform checks. A rendered screen or sample fixture

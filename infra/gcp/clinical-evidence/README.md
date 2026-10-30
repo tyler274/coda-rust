@@ -148,7 +148,7 @@ Retries reference the original archive object instead of uploading a copy.
 **PMC.** A maintained [tag policy](pmc-collection-policy.json) selects the clinical collection through
 NLM's PubMed publication-type index, PMC's official dated PMID→PMCID export (at most 72 hours old,
 checksum- and format-verified) and bounded live NLM links for PubMed IDs missing from that export.
-Existing export mappings stay authoritative when live links differ (`USER_SETTLED`, 2026-09-13).
+Existing export mappings stay authoritative when live links differ (`USER_SETTLED`).
 Selection is intersected with the complete, checksum-verified publisher inventory before metadata,
 JATS and image acquisition, and is re-enumerated on every refresh so tag and policy changes apply
 without an inventory change. An empty, incomplete or failed collection query retains prior state.
@@ -181,7 +181,7 @@ configured families and tolerates an unpublished new annual index. Response bodi
 1 GiB per acquisition within the 2,000-article limit. A failed existing article keeps its
 last-known-good body; a failed new article holds that snapshot out of the candidate until retry.
 
-**USPSTF.** AHRQ's Prevention TaskForce API, approved for Coda on 2026-09-09 and acquired only when
+**USPSTF.** AHRQ's Prevention TaskForce API, approved for Coda and acquired only when
 `clinical_uspstf_enabled` is set. Each night makes one `lastupdated` request and downloads the dataset
 only when that time changed. Only a dataset newer than the accepted one publishes: an older one, or
 different bytes under the accepted update time, fails the check and the accepted inventory keeps
@@ -260,15 +260,14 @@ segment without default compaction or version pruning; referenced native version
   alerts that the pending candidate and active corpus are kept: publish the candidate again once capacity
   returns. A build that starts and fails is never retried automatically. `clinical_bulk_build_timeout_seconds`, plus fifteen minutes, counts from when the
   build starts running. Batch owns GPU device and driver mounts. The shared runner submits each job once
-  and settles every attempt's exact job before SQL cleanup. The backfill batches' builds spent about an hour before
-  building and half an hour rebuilding indexes (batch 7, 43.8 million passages, 2026-09-30), past the
-  30-minute Cloud Run task that daily publication used; a daily run's own minimum is unmeasured. A
+  and settles every attempt's exact job before SQL cleanup. A backfill build of about 44 million passages spends about an hour before
+  building and half an hour rebuilding indexes, past a 30-minute Cloud Run task; a daily run's own minimum is unmeasured. A
   day with no candidate skips building, and an unchanged input returns the existing build before
   rebuilding indexes. The Cloud Run builder job is the container's canonical definition and runs
   only recipe conversion.
 - **Capacity guard:** `clinical_retrieval_max_passages` refuses an oversized snapshot before inference,
   and the builder also holds a refresh to its trained layout's allowed size. The guard is at most 46
-  million, the backfill's projected final size, set once rather than per batch (Dev, 2026-09-28). Neither qualifies encoder throughput, concurrent search latency or clinical quality.
+  million, the backfill's projected final size, set once rather than per batch. Neither qualifies encoder throughput, concurrent search latency or clinical quality.
 - **Index layout:** IVF_PQ (96 sub-vectors) in one of two qualified layouts, owned by
   `clinical_lance_updates.py`, with search settings owned by the worker. The small layout trains at
   most 16 partitions, probes all of them with refinement factor 32, and holds 15 million passages. The

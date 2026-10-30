@@ -60,7 +60,7 @@ done
 # --- Materialize the nix dev shell ------------------------------------------
 # Also the first real exercise of the flake inside the container.
 cd "$workspace"
-nix develop --command true
+nix develop .#agent --command true
 
 # Schema setup is explicit; never replay the legacy coda-app ledger here.
 # README.md and book/src/backend-architecture.md describe the Rust migration

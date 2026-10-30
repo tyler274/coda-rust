@@ -33,7 +33,11 @@ resource "google_cloud_run_v2_service" "site" {
   ingress              = local.staging ? "INGRESS_TRAFFIC_ALL" : "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
   default_uri_disabled = !local.staging
   iap_enabled          = local.staging
-  invoker_iam_disabled = false
+  # Production's external ALB does not authenticate to Cloud Run, and the
+  # organization's domain restriction forbids an allUsers invoker grant. With
+  # the invoker check off, ALB-only ingress and the disabled run.app URL are the
+  # boundary. Staging keeps the check: only the IAP service agent may invoke.
+  invoker_iam_disabled = !local.staging
 
   template {
     # Bound long-lived /physician SSE requests; clients reconnect after this deadline.
@@ -123,17 +127,6 @@ resource "google_cloud_run_domain_mapping" "staging" {
     google_cloud_run_v2_service_iam_binding.iap_invoker,
     google_iap_web_cloud_run_service_iam_binding.team,
   ]
-}
-
-# Production's external ALB does not authenticate to Cloud Run. Network ingress
-# and the disabled run.app URL constrain this production-only public grant.
-resource "google_cloud_run_v2_service_iam_member" "load_balancer" {
-  count    = local.staging ? 0 : 1
-  project  = var.project_id
-  location = var.region
-  name     = google_cloud_run_v2_service.site.name
-  role     = "roles/run.invoker"
-  member   = "allUsers"
 }
 
 resource "google_compute_region_network_endpoint_group" "site" {
