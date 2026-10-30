@@ -5,7 +5,10 @@
 mod account;
 mod approval;
 mod browser_identity;
+// Unmounted for MVP. You must not offer care-team lookup or a records request.
+#[allow(dead_code)]
 mod care_team;
+#[allow(dead_code)]
 mod care_team_model;
 mod export;
 mod preview;
@@ -134,7 +137,6 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                 }
                 div { hidden: tab() != 2,
                     YouTab {
-                        active: tab() == 2,
                         base_url: base_url.clone(),
                         bearer: active_bearer.clone(),
                         consent: match &status {
@@ -2146,7 +2148,6 @@ fn TodayTab(
 
 #[component]
 fn YouTab(
-    active: bool,
     base_url: String,
     bearer: String,
     consent: Result<ConsentState, FrontDoorError>,
@@ -2182,7 +2183,6 @@ fn YouTab(
     let evidence_url = base_url.clone();
     let evidence_bearer = bearer.clone();
     let sharing = sharing_root(consent.clone());
-    let care_team_url = base_url.clone();
     let resource = use_resource(move || {
         let _attempt = attempt();
         let base_url = base_url.clone();
@@ -2317,7 +2317,6 @@ fn YouTab(
     };
     rsx! {
         TabHeading { name: "You".to_owned(), loading }
-        care_team::CareTeam { base_url: care_team_url, active }
         if let Some(kind) = editor() {
             HealthDraft {
                 kind,
@@ -2905,6 +2904,118 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             },
             Some(SharedNotice::AwaitingAcceptance) => rsx! { p { class: "status-title", "{AWAITING}" } },
             None => rsx! {},
+        }
+    }
+}
+
+#[cfg(test)]
+mod you_screen {
+    use dioxus::dioxus_core::{AttributeValue, DynamicNode, TemplateAttribute, TemplateNode};
+    use dioxus::prelude::*;
+
+    use super::{PatientSession, PrivateRoot};
+
+    #[component]
+    fn SignedInShell() -> Element {
+        let retention = use_hook(|| {
+            duet_client::retention::RetentionOwner::new(std::sync::Arc::new(
+                duet_client::retention::VolatileSessionStore::default(),
+            ))
+        });
+        let fence = use_hook(|| {
+            retention
+                .session()
+                .switch(Some("patient".into()))
+                .expect("session")
+        });
+        use_context_provider(|| PatientSession {
+            retention: retention.clone(),
+            fence: fence.clone(),
+            access_token: Signal::new(String::new()),
+        });
+        rsx! {
+            PrivateRoot {
+                base_url: "http://127.0.0.1:9".to_owned(),
+                bearer: String::new(),
+            }
+        }
+    }
+
+    fn rendered(dom: &VirtualDom) -> String {
+        let mut text = String::new();
+        collect(dom, dom.base_scope().root_node(), &mut text);
+        text
+    }
+
+    fn collect(dom: &VirtualDom, node: &VNode, text: &mut String) {
+        for root in node.template.roots {
+            collect_template(dom, node, root, text);
+        }
+        for slot in node.dynamic_attrs.iter() {
+            for attr in slot.iter() {
+                if let AttributeValue::Text(value) = &attr.value {
+                    text.push('\n');
+                    text.push_str(value);
+                }
+            }
+        }
+    }
+
+    fn collect_template(
+        dom: &VirtualDom,
+        node: &VNode,
+        template: &TemplateNode,
+        text: &mut String,
+    ) {
+        match template {
+            TemplateNode::Text { text: value } => {
+                text.push('\n');
+                text.push_str(value);
+            }
+            TemplateNode::Element {
+                attrs, children, ..
+            } => {
+                for attr in *attrs {
+                    if let TemplateAttribute::Static { value, .. } = attr {
+                        text.push('\n');
+                        text.push_str(value);
+                    }
+                }
+                for child in *children {
+                    collect_template(dom, node, child, text);
+                }
+            }
+            TemplateNode::Dynamic { id } => match &node.dynamic_nodes[*id] {
+                DynamicNode::Text(value) => {
+                    text.push('\n');
+                    text.push_str(&value.value);
+                }
+                DynamicNode::Fragment(nodes) => {
+                    for child in nodes {
+                        collect(dom, child, text);
+                    }
+                }
+                DynamicNode::Component(component) => {
+                    if let Some(scope) = component.mounted_scope(*id, node, dom) {
+                        collect(dom, scope.root_node(), text);
+                    }
+                }
+                DynamicNode::Placeholder(_) => {}
+            },
+        }
+    }
+
+    #[test]
+    fn you_has_no_care_team_or_records_request() {
+        let mut dom = VirtualDom::new(SignedInShell);
+        dom.rebuild_in_place();
+        let text = rendered(&dom);
+        assert!(
+            text.contains("Sharing with my physician"),
+            "You did not render: {text}"
+        );
+        for entry in ["Care team", "Find a clinician", "Request my records"] {
+            assert!(!text.contains(entry), "{entry} is still on screen: {text}");
         }
     }
 }
