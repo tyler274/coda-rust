@@ -35,7 +35,8 @@ pub use charts::{
 };
 pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords};
 pub use conversation::{
-    ContextChip, ConversationViewport, DateSeparator, MessageActions, Suggestion, VersionSwitch,
+    ContextChip, ConversationViewport, DateSeparator, MessageActions, MessageEditor, MessageStatus,
+    Suggestion, VersionSwitch,
 };
 pub use documents::{
     FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, TopBar,
@@ -618,16 +619,34 @@ pub enum Author {
     Assistant,
 }
 
+/// Where the person's message stands on its way.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum MessageState {
+    /// Delivered.
+    #[default]
+    Sent,
+    /// On its way.
+    Sending,
+    /// Waiting its turn, such as until the reply under way is done.
+    Queued,
+    /// Didn't go.
+    Failed,
+}
+
 /// One message in a thread:
 /// the person's words in a light bubble at the far edge, the assistant's as plain prose. Who
-/// wrote it stays with assistive technology. A message rises in as it appears. Its `actions`, a
-/// `MessageActions` row, stand close under it, at the bubble's edge for the person's words.
+/// wrote it stays with assistive technology. A message rises in as it appears. On its way it
+/// stands a little quieter; waiting its turn, its bubble is outlined, not filled; when it didn't
+/// go, its outline is red. Its `status`, a `MessageStatus`, and its `actions`, a `MessageActions`
+/// row, stand close under it, at the bubble's edge for the person's words.
 #[component]
 pub fn Message(
     author: Author,
     /// Who wrote it, for assistive technology.
     #[props(default)]
     by: String,
+    #[props(default)] state: MessageState,
+    #[props(default)] status: Option<Element>,
     #[props(default)] actions: Option<Element>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
@@ -635,6 +654,12 @@ pub fn Message(
     let mut class = String::from(match author {
         Author::Person => "message message-person",
         Author::Assistant => "message message-assistant",
+    });
+    class.push_str(match state {
+        MessageState::Sent => "",
+        MessageState::Sending => " is-sending",
+        MessageState::Queued => " is-queued",
+        MessageState::Failed => " is-failed",
     });
     let rest = host_attributes(&mut class, attributes);
     let message = rsx! {
@@ -645,14 +670,15 @@ pub fn Message(
             {children}
         }
     };
-    match actions {
-        Some(actions) => rsx! {
-            div { class: if author == Author::Person { "message-turn is-person" } else { "message-turn" },
-                {message}
-                {actions}
-            }
-        },
-        None => message,
+    if status.is_none() && actions.is_none() {
+        return message;
+    }
+    rsx! {
+        div { class: if author == Author::Person { "message-turn is-person" } else { "message-turn" },
+            {message}
+            {status}
+            {actions}
+        }
     }
 }
 

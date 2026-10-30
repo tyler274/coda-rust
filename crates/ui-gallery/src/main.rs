@@ -23,14 +23,14 @@ use ui::{
     ConversationViewport, CopyButton, CopyWords, Count, DateSeparator, Dialog, Diff, DiffLine,
     DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions,
     Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem,
-    MenuPalette, MenuSection, Message, MessageActions, NavigationControl, NavigationRow, Notice,
-    PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, Popover, ProposedChange, Prose,
-    ProsePart, Quote, RangeChoice, Rating, RowFrame, RowGroup, RunningChart, SearchField,
-    SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails,
-    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
-    StepState, Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast,
-    ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
-    WorkingPresence, use_live_rows,
+    MenuPalette, MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
+    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
+    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
+    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
+    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList,
+    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value,
+    VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -130,8 +130,9 @@ fn Gallery() -> Element {
                 Section { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
                     ComposerStatesDemo {}
                 }
-                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows.",
+                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again.",
                     ThreadStatesDemo {}
+                    DeliveryDemo {}
                 }
                 Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
                     ProseDemo {}
@@ -2067,46 +2068,185 @@ const VERSIONS: [&str; 3] = [
     "5.4 mmol/L on Tuesday; it was 4.9 in September. No repeat level since.",
 ];
 
+/// The reply to the question once it is edited.
+#[cfg(feature = "web")]
+const EDITED_REPLY: &str = "Her last potassium was 5.4 mmol/L, on Tuesday's basic metabolic panel.";
+
 #[cfg(feature = "web")]
 #[component]
 fn ThreadStatesDemo() -> Element {
     let mut version = use_signal(|| VERSIONS.len() - 1);
     let mut rating = use_signal(|| None::<Rating>);
-    let question = "What was her last potassium?";
+    // The question as asked and as edited, which of them is shown, and the edit under way.
+    let mut questions = use_signal(|| vec!["What was her last potassium?".to_owned()]);
+    let mut asked = use_signal(|| 0usize);
+    let mut draft = use_signal(|| None::<String>);
+    let mut replying = use_signal(|| false);
+    let question = questions()[asked()].clone();
+    let reply = if asked() == 0 {
+        VERSIONS[version()]
+    } else {
+        EDITED_REPLY
+    };
     rsx! {
         div { class: "gallery-thread",
-            Message { author: Author::Person, by: "You",
-                actions: rsx! {
-                    MessageActions { label: "Your message",
-                        CopyButton { text: question, words: copy_words() }
-                        Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Edit", Icon { name: IconName::Pencil } }
-                    }
-                },
-                p { "{question}" }
+            if let Some(words) = draft() {
+                MessageEditor {
+                    label: "Edit your message",
+                    value: words,
+                    on_input: move |text| draft.set(Some(text)),
+                    on_save: move |text: String| {
+                        questions.write().push(text);
+                        asked.set(questions.len() - 1);
+                        draft.set(None);
+                        replying.set(true);
+                        spawn(async move {
+                            futures_timer::Delay::new(Duration::from_millis(1200)).await;
+                            replying.set(false);
+                        });
+                    },
+                    on_cancel: move |_| draft.set(None),
+                    save_label: "Save and ask",
+                    cancel_label: "Cancel",
+                    note: "Coda answers the edited question; the first answer stays one version back.",
+                }
+            } else {
+                Message { author: Author::Person, by: "You",
+                    actions: rsx! {
+                        MessageActions { label: "Your message",
+                            CopyButton { text: question.clone(), words: copy_words() }
+                            Button {
+                                variant: ButtonVariant::Quiet,
+                                compact: true,
+                                icon_only: true,
+                                aria_label: "Edit",
+                                disabled: replying(),
+                                onclick: {
+                                    let question = question.clone();
+                                    move |_| draft.set(Some(question.clone()))
+                                },
+                                Icon { name: IconName::Pencil }
+                            }
+                            if questions().len() > 1 {
+                                VersionSwitch {
+                                    at: asked(),
+                                    count: questions().len(),
+                                    label: format!("Question {} of {}", asked() + 1, questions().len()),
+                                    previous_label: "Previous question",
+                                    next_label: "Next question",
+                                    on_change: move |at| asked.set(at),
+                                }
+                            }
+                        }
+                    },
+                    p { "{question}" }
+                }
             }
-            Message { author: Author::Assistant, by: "Coda",
-                actions: rsx! {
-                    MessageActions { label: "Response", shown: true,
-                        CopyButton { text: VERSIONS[version()], words: copy_words() }
-                        Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Ask again", Icon { name: IconName::Refresh } }
-                        FeedbackRating {
-                            selected: rating(),
-                            label: "Rate this response",
-                            up_label: "Good response",
-                            down_label: "Poor response",
-                            on_rate: move |choice| rating.set(Some(choice)),
+            if replying() {
+                Message { author: Author::Assistant,
+                    span { class: "sr-only", role: "status", "Coda is responding" }
+                    WorkingMark {}
+                }
+            } else if draft().is_none() {
+                Message { author: Author::Assistant, by: "Coda",
+                    actions: rsx! {
+                        MessageActions { label: "Response", shown: true,
+                            CopyButton { text: reply, words: copy_words() }
+                            Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Ask again", Icon { name: IconName::Refresh } }
+                            FeedbackRating {
+                                selected: rating(),
+                                label: "Rate this response",
+                                up_label: "Good response",
+                                down_label: "Poor response",
+                                on_rate: move |choice| rating.set(Some(choice)),
+                            }
+                            if asked() == 0 {
+                                VersionSwitch {
+                                    at: version(),
+                                    count: VERSIONS.len(),
+                                    label: format!("Response {} of {}", version() + 1, VERSIONS.len()),
+                                    previous_label: "Previous response",
+                                    next_label: "Next response",
+                                    on_change: move |at| version.set(at),
+                                }
+                            }
                         }
-                        VersionSwitch {
-                            at: version(),
-                            count: VERSIONS.len(),
-                            label: format!("Response {} of {}", version() + 1, VERSIONS.len()),
-                            previous_label: "Previous response",
-                            next_label: "Next response",
-                            on_change: move |at| version.set(at),
+                    },
+                    p { "{reply}" }
+                }
+            }
+        }
+    }
+}
+
+/// Where a message stands in the delivery demo.
+#[cfg(feature = "web")]
+#[derive(Clone, Copy, PartialEq)]
+enum Delivery {
+    Failed,
+    Sending,
+    Sent,
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn DeliveryDemo() -> Element {
+    let mut delivery = use_signal(|| Delivery::Failed);
+    let mut queued = use_signal(|| true);
+    rsx! {
+        div { class: "gallery-thread",
+            Message { author: Author::Person, by: "You", p { "Summarize her last visit." } }
+            Message { author: Author::Assistant,
+                span { class: "sr-only", role: "status", "Coda is responding" }
+                WorkingMark {}
+            }
+            if queued() {
+                Message { author: Author::Person, by: "You", state: MessageState::Queued,
+                    status: rsx! {
+                        MessageStatus { words: "Sends after Coda's reply", icon: IconName::Clock,
+                            Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| queued.set(false), "Cancel" }
                         }
-                    }
+                    },
+                    p { "And when was her last ECG?" }
+                }
+            }
+            Message { author: Author::Person, by: "You",
+                state: match delivery() {
+                    Delivery::Failed => MessageState::Failed,
+                    Delivery::Sending => MessageState::Sending,
+                    Delivery::Sent => MessageState::Sent,
                 },
-                p { "{VERSIONS[version()]}" }
+                status: match delivery() {
+                    Delivery::Failed => Some(rsx! {
+                        MessageStatus { words: "Not sent. No connection.", icon: IconName::Alert, alert: true,
+                            Button {
+                                variant: ButtonVariant::Quiet,
+                                compact: true,
+                                onclick: move |_| {
+                                    delivery.set(Delivery::Sending);
+                                    spawn(async move {
+                                        futures_timer::Delay::new(Duration::from_millis(1200)).await;
+                                        delivery.set(Delivery::Sent);
+                                    });
+                                },
+                                "Try again"
+                            }
+                        }
+                    }),
+                    Delivery::Sending => Some(rsx! { MessageStatus { words: "Sending" } }),
+                    Delivery::Sent => None,
+                },
+                p { "Also check her magnesium." }
+            }
+            Button {
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                onclick: move |_| {
+                    delivery.set(Delivery::Failed);
+                    queued.set(true);
+                },
+                Icon { name: IconName::Refresh }
+                "Show again"
             }
         }
     }

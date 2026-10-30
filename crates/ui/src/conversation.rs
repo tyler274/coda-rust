@@ -207,3 +207,87 @@ pub fn VersionSwitch(
 }
 
 static SWITCHES: AtomicUsize = AtomicUsize::new(0);
+
+/// What has become of a message on its way, given as its `Message`'s `status`: its icon, its
+/// words, such as "Not sent" or "Sends after this reply", and the host's ways on, such as Try again
+/// or Cancel. When it says the message didn't go, it is `alert`, in red, and announced.
+#[component]
+pub fn MessageStatus(
+    words: String,
+    icon: Option<IconName>,
+    #[props(default)] alert: bool,
+    children: Element,
+) -> Element {
+    rsx! {
+        div {
+            class: if alert { "message-status is-alert" } else { "message-status" },
+            role: if alert { "alert" } else { "status" },
+            if let Some(name) = icon {
+                Icon { name }
+            }
+            span { "{words}" }
+            {children}
+        }
+    }
+}
+
+/// The person's words, being edited where they stood in the thread: the field the bubble's width,
+/// holding the words and growing with them, an optional `note` on what saving does, such as that
+/// the reply after it is asked again, then Cancel and Save. Escape cancels; Save waits for words.
+/// The field takes focus with the caret at the end.
+#[component]
+pub fn MessageEditor(
+    label: String,
+    value: String,
+    on_input: EventHandler<String>,
+    on_save: EventHandler<String>,
+    on_cancel: EventHandler,
+    save_label: String,
+    cancel_label: String,
+    note: Option<String>,
+) -> Element {
+    let empty = value.trim().is_empty();
+    let held = value.clone();
+    rsx! {
+        form {
+            class: "message-editor field",
+            onsubmit: move |event| {
+                event.prevent_default();
+                if !held.trim().is_empty() {
+                    on_save.call(held.clone());
+                }
+            },
+            textarea {
+                class: "message-editor-input",
+                aria_label: "{label}",
+                rows: "2",
+                value: "{value}",
+                oninput: move |event| on_input.call(event.value()),
+                onkeydown: move |event| {
+                    if event.key() == Key::Escape && !event.is_composing() {
+                        event.prevent_default();
+                        on_cancel.call(());
+                    }
+                },
+                onmounted: move |event| {
+                    let field = event.data();
+                    spawn(async move {
+                        let _ = field.set_focus(true).await;
+                        document::eval(
+                            "const field = document.activeElement; if (field && field.setSelectionRange) field.setSelectionRange(field.value.length, field.value.length);",
+                        );
+                    });
+                },
+            }
+            div { class: "message-editor-foot",
+                if let Some(note) = note {
+                    p { class: "message-editor-note", "{note}" }
+                }
+                div { class: "message-editor-actions",
+                    Button { compact: true, onclick: move |_| on_cancel.call(()), "{cancel_label}" }
+                    Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: empty, "{save_label}" }
+                }
+            }
+        }
+    }
+}

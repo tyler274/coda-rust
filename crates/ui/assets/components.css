@@ -669,6 +669,26 @@ del > .diff-sign, .diff-removed { color: var(--error); }
   .message-turn:is(:hover, :focus-within) > .message-actions, .message-actions:has([data-active="true"], [aria-busy="true"]) { opacity: 1; }
 }
 .version-switch { display: inline-flex; align-items: center; }
+/* A message on its way: quieter while sending; outlined, not filled, while it waits its turn; on a red outline when it
+   didn't go, its status in red beneath. Its status is one quiet line at the bubble's edge, its ways on beside it. */
+.message-person.is-sending { opacity: .62; }
+.message-person.is-queued { border: var(--hairline) dashed var(--outline); background: transparent; color: var(--body); }
+.message-person.is-failed { box-shadow: inset 0 0 0 var(--hairline) var(--error); }
+.message-status { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0 var(--space-2); min-height: var(--control-height);
+  color: var(--muted); font: var(--type-body-sm); }
+.message-turn:not(.is-person) > .message-status { justify-content: flex-start; }
+.message-status > .icon { width: 16px; height: 16px; }
+.message-status.is-alert { color: var(--error); }
+.message-status > .control { margin-inline: calc(-1 * var(--space-1)) 0; }
+/* The person's words being edited where they stood: the field at the bubble's edge, as wide as a bubble may be, the
+   words on body large growing with them, and under them a note on what saving does, then Cancel and Save. */
+.message-editor { display: grid; gap: var(--space-2); box-sizing: border-box; width: min(100%, 36rem); margin-inline-start: auto; padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg); }
+.message-editor-input { display: block; box-sizing: border-box; width: 100%; min-height: 2lh; max-height: 12lh; margin: 0; padding: 0; border: 0; resize: none;
+  field-sizing: content; background: transparent; color: var(--ink); font: var(--type-body-lg); }
+.message-editor-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.message-editor-note { flex: 1 1 14rem; margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.message-editor-actions { display: flex; gap: var(--space-2); margin-inline-start: auto; }
 .version-switch-place { min-width: 5ch; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; text-align: center; }
 .feedback-rating .control[aria-pressed="true"] { color: var(--primary); background: var(--primary-container); }
 .toggle-chip { border-radius: var(--radius-pill); font-weight: var(--weight-regular); white-space: normal; text-align: left; }
