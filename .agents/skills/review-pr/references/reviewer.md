@@ -101,7 +101,11 @@ same broken contract calls for revisiting its owner, not another isolated patch.
 Use proportional checks and required project checks within the read-only scope.
 Prefer observable behavior and meaningful failure/recovery paths over tests that
 mirror implementation. State what source inspection, tests, runtime observations,
-and deployment evidence actually establish. Report permission or access gaps
+and deployment evidence actually establish. Check each stated acceptance criterion
+against inspectable evidence at the reviewed revision; a criterion without it, or
+with evidence from an earlier revision that later changes could affect, is a proof
+gap. Evidence deliberately run at an earlier revision, such as the failure before
+a fix, is not. A statement that a check passed is not evidence. Report permission or access gaps
 without bypassing them. An incomplete review is not an empty findings result.
 
 Prepare your own exact GitHub review or follow-up with the reviewer publication tool.

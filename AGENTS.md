@@ -63,6 +63,10 @@ review before a PR exists remains internal.
 Resolve skill references from their real repository paths when using local
 symlinks. Report the actual revision or local change, evidence, and remaining
 limits; successful checks or a merge alone do not establish the intended outcome.
+Evidence is an artifact a reader can inspect, such as a command with its output or
+a screenshot, tied to the revision it ran against. The
+[verify skills](verification/README.md#verify-skills) name the proof for each
+feature they cover.
 
 Keep individual Linear ticket IDs, links and status mappings out of repository
 documentation. Linear owns that tracking; docs use source and document links to

@@ -40,11 +40,16 @@ landed prerequisites from proposed work. Use a diagram or before/after example
 when it clarifies the change.
 
 Connect material promises to inspected evidence at the relevant revision using
-existing verification owners. In Coda Rust, include the applicable feature's TLA+
-model, its TLC result and bug-path replay without implying that a formal model proves
-the running implementation. Distinguish local checks, CI, browser/runtime proof,
-domain judgment, merge, and deployment. Name failures, omissions, and stale results
-that change the assessment; summarize routine checks.
+existing verification owners. When the work has acceptance criteria, show each
+criterion with its evidence and result, and list unproven ones as gaps. Evidence is
+an artifact the reader can inspect: the command with its exit status and relevant
+output, a response body, a log, or a screenshot, inline or linked. A statement that
+a check passed is not evidence. Use the [verify skill](../../../verification/README.md#verify-skills) of each affected
+feature, including its model check and bug-path replay where it has one, without
+implying that a formal model proves the running implementation. Distinguish local
+checks, CI, browser/runtime proof, domain judgment, merge, and deployment. Name
+failures, omissions, and stale results that change the assessment; routine checks
+may share one summary that still shows their commands and results.
 
 ## Write and maintain the handoff
 

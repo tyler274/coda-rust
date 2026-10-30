@@ -43,6 +43,18 @@ Each feature's browser test lives in its own file named for the feature, such as
 The first run installs PStack's pinned TLC and Java with mise. The feature's README names its
 browser test.
 
+## Verify skills
+
+A verify skill names the commands, expected results and evidence that hold one feature to
+its spec, and the code whose changes call for it. When a change touches that code, its
+acceptance evidence comes from the skill. A change outside every skill's code proves itself
+with focused tests and the observations its criteria name.
+
+| Skill | Proves | Run when a change touches |
+| --- | --- | --- |
+| [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md#when-a-change-needs-this) | Physician sign-in against its TLA+ model: TLC on the five rules, then the bug paths replayed in the browser | Physician session, sign-in and tab code, the auth server's answers, or the sign-in spec or model |
+| [coda-verify-physician](../.agents/skills/coda-verify-physician/SKILL.md#when-a-change-needs-this) | Physician chat across two site instances and a worker: fan-out, couldn't-finish and Try again, resync, duplicate and retry delivery | Physician chat delivery, the worker, the event bus, durable chat runs, or the conversation renderer |
+
 ## The agent harness
 
 The agent harness stays out of the models and meets them only at declared events. An agent's

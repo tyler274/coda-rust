@@ -23,8 +23,8 @@ changes that implement one combined outcome or depend on the same contract;
 review unrelated outcomes separately. State the targets and grouping rationale.
 
 Supply sourced context through `--context-file`: intended outcome, each PR's role,
-dependencies, relevant user decisions, and prior findings and dispositions,
-including local review. Distinguish assumptions from decisions. The reviewer also
+dependencies, relevant user decisions, acceptance criteria with their evidence,
+and prior findings and dispositions, including local review. Distinguish assumptions from decisions. The reviewer also
 retrieves requirements, source, and relevant surrounding PR discussions; the
 original coding conversation is useful context, not a mandatory dependency.
 
