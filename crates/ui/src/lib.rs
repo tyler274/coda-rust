@@ -224,11 +224,12 @@ pub fn Spinner() -> Element {
     }
 }
 
-/// A card header's leading icon on its neutral tile.
+/// A leading icon on its tile: neutral on a hairline, as a card header or a record's heading leads,
+/// or `tinted` in the data colour, as a row leads (the October 21 mockups).
 #[component]
-pub fn IconTile(name: IconName) -> Element {
+pub fn IconTile(name: IconName, #[props(default)] tinted: bool) -> Element {
     rsx! {
-        span { class: "icon-tile", aria_hidden: "true", Icon { name } }
+        span { class: if tinted { "icon-tile is-tinted" } else { "icon-tile" }, aria_hidden: "true", Icon { name } }
     }
 }
 
@@ -814,7 +815,7 @@ pub fn ListRow(
             onclick: move |event| onclick.call(event),
             ..rest,
             if let Some(icon) = icon {
-                span { class: "list-row-icon", aria_hidden: "true", Icon { name: icon } }
+                IconTile { name: icon, tinted: true }
             } else if let Some(number) = number {
                 span { class: "list-row-number", "{number}" }
             }

@@ -16,6 +16,7 @@
 .card-title > :is(h2, h3) { margin: 0; font: inherit; }
 /* Icon tile: a card header's icon on a white tile at level 1, neutral like a secondary control; colour is kept for state. */
 .icon-tile { box-sizing: border-box; display: inline-grid; place-items: center; flex: none; width: var(--tile-size); height: var(--tile-size); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-lowest); color: var(--muted); box-shadow: var(--elevation-1); font: var(--type-body-md); }
+.icon-tile.is-tinted { width: var(--avatar-md); height: var(--avatar-md); border: 0; background: var(--data-container); color: var(--on-data-container); box-shadow: none; }
 /* A count sits right after its title, centred on it. */
 .count { flex: none; color: var(--muted); font: var(--type-body-sm); white-space: nowrap; }
 .count-value { display: inline-block; font-variant-numeric: tabular-nums; }
@@ -239,8 +240,6 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .row-group { padding: 0 var(--space-4); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--surface-lowest); }
 .list-row { display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%;
   min-height: var(--target); padding: var(--space-row) 0; border-radius: var(--radius-sm); }
-.list-row-icon { display: inline-grid; place-items: center; flex: none; width: var(--avatar-md); height: var(--avatar-md); border-radius: var(--radius-md);
-  background: var(--data-container); color: var(--on-data-container); }
 .list-row-number { min-width: 2.5ch; color: var(--primary); font: var(--type-label-md); font-variant-numeric: tabular-nums; }
 .list-row-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .list-row-text strong { display: block; color: var(--ink); font: var(--type-title-sm); }
