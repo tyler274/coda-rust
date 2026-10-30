@@ -37,7 +37,7 @@ pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RunningChart, SeriesChart,
     SeriesPoint, SeriesShape, Sparkline, Value,
 };
-pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords};
+pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords, copy_text};
 pub use conversation::{
     ContextChip, ConversationViewport, DateSeparator, Dictation, MessageActions, MessageEditor,
     MessageStatus, Suggestion, VersionSwitch,

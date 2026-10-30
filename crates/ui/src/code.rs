@@ -35,11 +35,7 @@ pub fn CopyButton(text: String, words: CopyWords) -> Element {
             onclick: move |_| {
                 let text = text.clone();
                 spawn(async move {
-                    let write = document::eval(COPY);
-                    if write.send(text).is_err() {
-                        return;
-                    }
-                    if write.join::<bool>().await.unwrap_or(false) {
+                    if copy_text(text).await {
                         copied.set(true);
                         futures_timer::Delay::new(Duration::from_millis(COPIED_MS)).await;
                         copied.set(false);
@@ -54,6 +50,13 @@ pub fn CopyButton(text: String, words: CopyWords) -> Element {
             }
         }
     }
+}
+
+/// Puts `text` on the clipboard and answers whether the clipboard took it, for a host's own copy
+/// action to say so only then.
+pub async fn copy_text(text: String) -> bool {
+    let write = document::eval(COPY);
+    write.send(text).is_ok() && write.join::<bool>().await.unwrap_or(false)
 }
 
 /// Writes the words it is sent to the clipboard, and answers whether the clipboard took them.

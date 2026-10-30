@@ -777,7 +777,7 @@ const LIVE: [(&str, &str); 5] = [
         "Patient message · Today, 7:42 AM",
     ),
     ("Echo report signed", "Cardiology · Yesterday"),
-    ("Visit tomorrow, 9:30 AM", "Follow-up · Dr. Osei"),
+    ("Visit tomorrow, 9:30 AM", "Follow-up · Primary care"),
     ("Prior authorization approved", "Insurance · Monday"),
 ];
 
@@ -1483,7 +1483,7 @@ fn FeedbackDemo() -> Element {
     let mut restored = use_signal(|| false);
     rsx! {
         Message { author: Author::Assistant, by: "Coda",
-            p { "Her potassium was 5.4 on Tuesday, up from 4.9 in September." }
+            p { "{COPIED_REPLY}" }
             FeedbackRating {
                 selected: rating(),
                 label: "Rate this response",
@@ -1514,8 +1514,12 @@ fn FeedbackDemo() -> Element {
             }
             Button {
                 onclick: move |_| {
-                    shown.set(shown() + 1);
-                    toast.set(Some((shown(), false)));
+                    spawn(async move {
+                        if ui::copy_text(COPIED_REPLY.to_owned()).await {
+                            shown.set(shown() + 1);
+                            toast.set(Some((shown(), false)));
+                        }
+                    });
                 },
                 Icon { name: IconName::Copy }
                 "Copy reply"
@@ -1605,13 +1609,13 @@ fn MenuDemo() -> Element {
             }
             Menu { id: "gallery-reply-menu", label: "Reply actions",
                 MenuSection {
-                    MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copied")), "Copy" }
-                    MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Editing")), "Edit" }
-                    MenuItem { icon: IconName::Refresh, onclick: move |_| chosen.set(Some("Retrying")), "Try again" }
+                    MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copy")), "Copy" }
+                    MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Edit")), "Edit" }
+                    MenuItem { icon: IconName::Refresh, onclick: move |_| chosen.set(Some("Try again")), "Try again" }
                     MenuItem { icon: IconName::Share, disabled: true, onclick: move |_| {}, "Share" }
                 }
                 MenuSection {
-                    MenuItem { icon: IconName::Trash, danger: true, onclick: move |_| chosen.set(Some("Deleted")), "Delete" }
+                    MenuItem { icon: IconName::Trash, danger: true, onclick: move |_| chosen.set(Some("Delete")), "Delete" }
                 }
             }
             Button {
@@ -1643,7 +1647,7 @@ fn MenuDemo() -> Element {
             Popover { id: "gallery-popover", label: "Who can see this",
                 h3 { "Only you" }
                 p { "This conversation is private. Sharing it makes a copy anyone with the link can read." }
-                Button { compact: true, autofocus: true, onclick: move |_| chosen.set(Some("Link copied")),
+                Button { compact: true, autofocus: true, onclick: move |_| chosen.set(Some("Copy link")),
                     Icon { name: IconName::Link }
                     "Copy link"
                 }
@@ -1672,16 +1676,16 @@ fn MenuDemo() -> Element {
             }
             Menu { id: "gallery-own-menu", label: "Message actions",
                 MenuSection {
-                    MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copied")), "Copy" }
-                    MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Editing")), "Edit" }
+                    MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copy")), "Copy" }
+                    MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Edit")), "Edit" }
                 }
                 MenuSection {
-                    MenuItem { icon: IconName::Trash, danger: true, onclick: move |_| chosen.set(Some("Deleted")), "Delete" }
+                    MenuItem { icon: IconName::Trash, danger: true, onclick: move |_| chosen.set(Some("Delete")), "Delete" }
                 }
             }
         }
         if let Some(words) = chosen() {
-            p { class: "gallery-note", "{words}." }
+            p { class: "gallery-note", "Chose {words}." }
         }
     }
 }
@@ -1777,7 +1781,7 @@ fn PaletteDemo() -> Element {
                 KeyHint { key_label: "⌘K" }
             }
             if let Some(name) = ran() {
-                span { class: "gallery-note", "Ran {name}." }
+                span { class: "gallery-note", "Chose {name}." }
             }
         }
         if open() {
@@ -2469,6 +2473,9 @@ fn DictationDemo() -> Element {
         }
     }
 }
+
+#[cfg(feature = "web")]
+const COPIED_REPLY: &str = "Her potassium was 5.4 on Tuesday, up from 4.9 in September.";
 
 #[cfg(feature = "web")]
 const VISIT_TYPES: [&str; 4] = ["Follow-up", "New patient", "Annual physical", "Telehealth"];
