@@ -195,12 +195,22 @@ fn split(
     }
 }
 
-/// A finished node, with any inline piece among its children stood outside the emphasis, link or
-/// code around it: the wrapper closes before the piece and opens again after it.
+/// A finished node, with any inline piece among its children stood outside the emphasis, link,
+/// code or image description around it: the wrapper closes before the piece and opens again after
+/// it. An image's description is plain words.
 fn around_pieces(kind: Kind, children: Vec<Node>) -> Vec<Node> {
+    let children = match kind {
+        Kind::Image => described(children),
+        _ => children,
+    };
     let wraps = matches!(
         kind,
-        Kind::Emphasis | Kind::Strong | Kind::Strikethrough | Kind::Link(_) | Kind::CodeBlock
+        Kind::Emphasis
+            | Kind::Strong
+            | Kind::Strikethrough
+            | Kind::Link(_)
+            | Kind::CodeBlock
+            | Kind::Image
     );
     if !wraps
         || !children
@@ -229,6 +239,20 @@ fn around_pieces(kind: Kind, children: Vec<Node>) -> Vec<Node> {
         nodes.push(Node::Block(kind, run));
     }
     nodes
+}
+
+/// Words without their Markdown, keeping the inline pieces among them.
+fn described(nodes: Vec<Node>) -> Vec<Node> {
+    nodes
+        .into_iter()
+        .flat_map(|node| match node {
+            Node::Text(words) | Node::Code(words) => vec![Node::Text(words)],
+            Node::Block(_, children) => described(children),
+            Node::Break => vec![Node::Text(" ".to_owned())],
+            Node::Inline(piece) => vec![Node::Inline(piece)],
+            Node::Rule => Vec::new(),
+        })
+        .collect()
 }
 
 fn heading(level: HeadingLevel) -> u8 {
@@ -442,6 +466,36 @@ mod tests {
                 Node::Block(Kind::CodeBlock, vec![text("lisinopril")]),
                 Node::Block(Kind::Paragraph, vec![Node::Inline(2)]),
                 Node::Block(Kind::CodeBlock, vec![text("\n")]),
+            ]
+        );
+    }
+
+    #[test]
+    fn an_image_is_described_in_plain_words_with_its_pieces_beside_it() {
+        assert_eq!(
+            parsed(&[
+                ProsePart::Words("[![**scan** ".into()),
+                piece(),
+                ProsePart::Words(
+                    "](image.png)](https://example.org)\n\n![see [here](https://a.org)](i.png)"
+                        .into()
+                ),
+            ]),
+            vec![
+                Node::Block(
+                    Kind::Paragraph,
+                    vec![
+                        Node::Block(
+                            Kind::Link("https://example.org".into()),
+                            vec![Node::Block(Kind::Image, vec![text("scan"), text(" ")])]
+                        ),
+                        Node::Inline(0),
+                    ]
+                ),
+                Node::Block(
+                    Kind::Paragraph,
+                    vec![Node::Block(Kind::Image, vec![text("see "), text("here")])]
+                ),
             ]
         );
     }
