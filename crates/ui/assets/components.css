@@ -566,6 +566,7 @@ del > .diff-sign, .diff-removed { color: var(--error); }
   padding: 0 var(--space-3); border-radius: var(--radius-pill); color: var(--body); font: var(--type-label-md); cursor: pointer; white-space: nowrap;
   -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out); }
 .segmented-option > .icon { flex: none; width: 16px; height: 16px; }
+.segmented-option:has(input:disabled) { cursor: default; opacity: .46; }
 .segmented-option::before { content: ""; position: absolute; inset: calc((var(--control-height) - var(--target)) / 2) 0; }
 /* The resting fill lies beneath the chosen one's, so the chosen fill travels over the pills it passes. */
 .segmented-option::after { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--surface-low); }

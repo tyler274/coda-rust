@@ -135,13 +135,17 @@ pub fn Checkbox(
     }
 }
 
-/// One of the choices in a `RadioGroup`.
+/// One of a set of choices, for a `RadioGroup`, `Segmented`, `Select` or `Combobox`: its words, what
+/// it means, more quietly, an icon before it, and whether it is shown but not to be chosen. A
+/// `Combobox` shows all of it; the others say what they have no room for.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct Choice {
     /// Its words.
     pub label: String,
     /// What choosing it means, more quietly.
     pub detail: Option<String>,
+    /// Before its words.
+    pub icon: Option<IconName>,
     /// Shown, but not to be chosen.
     pub disabled: bool,
 }
@@ -155,8 +159,27 @@ impl From<&str> for Choice {
     }
 }
 
+impl From<(&str, &str)> for Choice {
+    fn from((label, detail): (&str, &str)) -> Self {
+        Choice {
+            detail: Some(detail.to_owned()),
+            ..label.into()
+        }
+    }
+}
+
+impl From<(IconName, &str)> for Choice {
+    fn from((icon, label): (IconName, &str)) -> Self {
+        Choice {
+            icon: Some(icon),
+            ..label.into()
+        }
+    }
+}
+
 /// One of several choices that each need saying in full, as rows under a `label`, none chosen until
-/// the person chooses. The arrow keys move through them. For a few short words, `Segmented`.
+/// the person chooses. The arrow keys move through them. Rows carry no icon. For a few short words,
+/// `Segmented`.
 #[component]
 pub fn RadioGroup(
     label: String,
@@ -189,54 +212,14 @@ pub fn RadioGroup(
     }
 }
 
-/// One of the choices in a `Segmented`: its short word, what it is spoken as when that word alone
-/// would not say it, and an optional icon before it.
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct Segment {
-    /// Its short word.
-    pub label: String,
-    /// The word it is spoken as, when the short one wouldn't do.
-    pub spoken: Option<String>,
-    /// Before its word.
-    pub icon: Option<IconName>,
-}
-
-impl From<&str> for Segment {
-    fn from(label: &str) -> Self {
-        Segment {
-            label: label.to_owned(),
-            ..Segment::default()
-        }
-    }
-}
-
-impl From<(&str, &str)> for Segment {
-    fn from((label, spoken): (&str, &str)) -> Self {
-        Segment {
-            label: label.to_owned(),
-            spoken: Some(spoken.to_owned()),
-            icon: None,
-        }
-    }
-}
-
-impl From<(IconName, &str)> for Segment {
-    fn from((icon, label): (IconName, &str)) -> Self {
-        Segment {
-            label: label.to_owned(),
-            spoken: None,
-            icon: Some(icon),
-        }
-    }
-}
-
 /// One of a few short choices side by side, always one chosen, as a row of equal pills: the chosen
 /// one in the accent's words on its soft fill, which slides to the next one chosen. `label` names
-/// the choice; the arrow keys move through it.
+/// the choice; the arrow keys move through it. A pill has no room for a choice's `detail`, so that
+/// is what it is spoken as, where its short word alone wouldn't say it.
 #[component]
 pub fn Segmented(
     label: String,
-    options: Vec<Segment>,
+    options: Vec<Choice>,
     selected: usize,
     on_select: EventHandler<usize>,
 ) -> Element {
@@ -252,8 +235,9 @@ pub fn Segmented(
                         class: "sr-only",
                         r#type: "radio",
                         name: "{id}",
-                        aria_label: option.spoken,
+                        aria_label: option.detail,
                         checked: index == selected,
+                        disabled: option.disabled,
                         onchange: move |_| on_select.call(index),
                     }
                     if let Some(name) = option.icon {
@@ -267,11 +251,12 @@ pub fn Segmented(
 }
 
 /// One of a list of choices, from the platform's own picker, so a phone offers its wheel or sheet.
-/// With none `selected` yet, `placeholder` stands in the field.
+/// With none `selected` yet, `placeholder` stands in the field. The picker shows each choice's
+/// words alone.
 #[component]
 pub fn Select(
     label: String,
-    options: Vec<String>,
+    options: Vec<Choice>,
     selected: Option<usize>,
     on_select: EventHandler<usize>,
     #[props(default)] placeholder: String,
@@ -298,8 +283,14 @@ pub fn Select(
                     if selected.is_none() {
                         option { value: "", disabled: true, hidden: true, selected: true, "{placeholder}" }
                     }
-                    for (index, option) in options.into_iter().enumerate() {
-                        option { key: "{index}", value: "{index}", selected: selected == Some(index), "{option}" }
+                    for (index, choice) in options.into_iter().enumerate() {
+                        option {
+                            key: "{index}",
+                            value: "{index}",
+                            selected: selected == Some(index),
+                            disabled: choice.disabled,
+                            "{choice.label}"
+                        }
                     }
                 }
                 Icon { name: IconName::ChevronDown }

@@ -2559,9 +2559,9 @@ fn InputsDemo() -> Element {
                 selected: reach(),
                 on_select: move |index| reach.set(Some(index)),
                 options: vec![
-                    Choice { label: "By text".into(), detail: Some("Fastest, for anything routine".into()), disabled: false },
-                    Choice { label: "By phone".into(), detail: Some("For results that need a conversation".into()), disabled: false },
-                    Choice { label: "By letter".into(), detail: Some("No address on file".into()), disabled: true },
+                    ("By text", "Fastest, for anything routine").into(),
+                    ("By phone", "For results that need a conversation").into(),
+                    Choice { disabled: true, ..("By letter", "No address on file").into() },
                 ],
             }
             div { class: "row-list",
@@ -2571,7 +2571,7 @@ fn InputsDemo() -> Element {
             Select {
                 label: "Visit type",
                 placeholder: "Choose a visit type",
-                options: VISIT_TYPES.iter().map(|kind| (*kind).to_owned()).collect::<Vec<_>>(),
+                options: VISIT_TYPES.map(Choice::from).to_vec(),
                 selected: visit(),
                 on_select: move |index| visit.set(Some(index)),
             }
@@ -2581,7 +2581,7 @@ fn InputsDemo() -> Element {
                 query: medicine(),
                 options: found().iter().map(|index| {
                     let (name, form) = MEDICATIONS[*index];
-                    Choice { label: name.into(), detail: Some(form.into()), disabled: false }
+                    Choice::from((name, form))
                 }).collect::<Vec<_>>(),
                 selected: found().iter().position(|index| chosen_medicine() == Some(*index)),
                 loading: searching(),
