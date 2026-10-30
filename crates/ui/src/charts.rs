@@ -7,7 +7,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName};
+use crate::{Button, ButtonVariant, Icon, IconName};
 
 /// A measurement's figure, each number with its unit beside it in body text: `6 hr 18 min`.
 /// Large on a measurement's own page; medium in a tile or a card.
@@ -497,6 +497,86 @@ fn band_path(
             .map(|&index| edge(index, points[index].low)),
     );
     format!("{}Z", path(&at))
+}
+
+/// A series' readout over its chart, after SwiftUI Duet's detail header: what the figure is, the
+/// figure, and the span or bucket it covers, each on one line so the chart beneath never moves as
+/// the readout changes. While a mark is pinned (`pinned`) its words take the accent. With paging
+/// words, back and forward stand at the trailing edge, each quiet where there is nowhere to go.
+#[component]
+pub fn ChartHeader(
+    label: String,
+    value: Vec<(String, String)>,
+    caption: String,
+    #[props(default)] pinned: bool,
+    #[props(default)] previous: String,
+    #[props(default)] next: String,
+    on_previous: Option<EventHandler<MouseEvent>>,
+    on_next: Option<EventHandler<MouseEvent>>,
+) -> Element {
+    let page = |words: &str, handler: Option<EventHandler<MouseEvent>>, icon: IconName| {
+        (!words.trim().is_empty()).then(|| {
+            rsx! {
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    icon_only: true,
+                    aria_label: "{words}",
+                    disabled: handler.is_none(),
+                    onclick: move |event| {
+                        if let Some(handler) = handler {
+                            handler.call(event);
+                        }
+                    },
+                    Icon { name: icon }
+                }
+            }
+        })
+    };
+    let back = page(&previous, on_previous, IconName::ChevronLeft);
+    let forward = page(&next, on_next, IconName::ChevronRight);
+    rsx! {
+        div { class: "chart-header",
+            div { class: "chart-readout",
+                span { class: if pinned { "chart-header-label is-pinned" } else { "chart-header-label" }, "{label}" }
+                Value { parts: value }
+                span { class: "chart-header-caption", "{caption}" }
+            }
+            if back.is_some() || forward.is_some() {
+                div { class: "chart-paging", {back} {forward} }
+            }
+        }
+    }
+}
+
+/// The span a series shows, as a row of equal pills after SwiftUI Duet's range picker: the chosen
+/// one in the accent's words on its soft fill, which slides to the next one chosen. Each option is
+/// its short word and the word it is spoken as; `label` names the choice.
+#[component]
+pub fn RangeChoice(
+    label: String,
+    options: Vec<(String, String)>,
+    selected: usize,
+    on_select: EventHandler<usize>,
+) -> Element {
+    rsx! {
+        div { class: "range-choice selection-host", role: "group", aria_label: "{label}",
+            for (index, (short, spoken)) in options.iter().enumerate() {
+                button {
+                    key: "{short}",
+                    class: "range-choice-option",
+                    r#type: "button",
+                    aria_label: "{spoken}",
+                    aria_current: (index == selected).then_some("true"),
+                    onclick: move |_| {
+                        if index != selected {
+                            on_select.call(index);
+                        }
+                    },
+                    "{short}"
+                }
+            }
+        }
+    }
 }
 
 /// A measurement in a tile: what it is, its value, where and when it was read, and its recent

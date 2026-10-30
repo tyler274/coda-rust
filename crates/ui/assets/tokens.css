@@ -87,6 +87,8 @@
   --data-band: color-mix(in srgb, var(--data) 14%, transparent);
   --data-scrub: color-mix(in srgb, var(--data) 55%, transparent);
   --data-reference: var(--primary);
+  /* A choice at rest, after SwiftUI Duet's resting control: the green container in light, a raised surface in dark. */
+  --control-resting: var(--primary-container);
   /* Text on any surface: names and titles, running words, and details. */
   --ink: var(--ref-neutral-15);
   --body: var(--ref-neutral-25);
@@ -277,6 +279,7 @@
     --surface-lowest: var(--ref-night-11);
     --surface-low: var(--ref-night-14);
     --surface-high: var(--ref-night-17);
+    --control-resting: var(--surface-high);
     --surface-highest: var(--ref-night-23);
     --outline: rgb(243 244 246 / .22);
     --outline-variant: rgb(243 244 246 / .12);

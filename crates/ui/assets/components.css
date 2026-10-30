@@ -462,6 +462,27 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .series-axis { grid-area: 2 / 1; display: grid; grid-template-columns: repeat(var(--series-count), minmax(0, 1fr)); padding-top: var(--space-1); text-align: center; white-space: nowrap; }
 /* A week's letters stand centred under their days; beyond a week, each word starts at its bucket. */
 .series-chart:not(.is-narrow) .series-axis { text-align: start; }
+/* A series' readout, after SwiftUI Duet's detail header: the label in caption weight (the accent's words while a mark is
+   pinned), the figure, and its span in caption, each kept to one line; paging at the trailing edge. */
+.chart-header { display: flex; align-items: flex-start; gap: var(--space-2); }
+.chart-readout { display: grid; gap: var(--space-hair); flex: 1; min-width: 0; }
+.chart-readout > * { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chart-readout > .value { display: block; }
+.chart-header-label { color: var(--muted); font: var(--type-label-md); }
+.chart-header-label.is-pinned { color: var(--primary); }
+.chart-header-caption { color: var(--muted); font: var(--type-body-sm); }
+.chart-paging { display: flex; flex: none; }
+/* The span a series shows: equal pills on the resting fill, the chosen one's words in the accent on its soft fill.
+   Each pill is reached across the full target height. */
+.range-choice { --selection-fill: var(--primary-container); --selection-radius: var(--radius-pill);
+  display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: var(--space-1); padding-block: calc((var(--target) - var(--control-height)) / 2); }
+.range-choice-option { position: relative; min-height: var(--control-height); padding: 0 var(--space-3); border: 0; border-radius: var(--radius-pill);
+  background: transparent; color: var(--body); font: var(--type-label-md); cursor: pointer;
+  transition: color var(--motion-control) var(--ease-out); }
+.range-choice-option::before { content: ""; position: absolute; inset: calc((var(--control-height) - var(--target)) / 2) 0; }
+/* The resting fill lies beneath the chosen one's, so the chosen fill travels over the pills it passes. */
+.range-choice-option::after { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--control-resting); }
+.range-choice-option[aria-current]:not([aria-current="false"]) { color: var(--primary); }
 @keyframes series-grow { from { transform: scaleY(0); } }
 .measurement-tile { box-sizing: border-box; display: grid; gap: var(--space-1); align-content: start; min-width: 0; width: 100%; padding: var(--space-4) var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--data-container); color: var(--ink); text-align: left; }
 .measurement-tile-label { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-data-container); font: var(--type-label-md); }

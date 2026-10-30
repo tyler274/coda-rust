@@ -7,16 +7,16 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, CitationChip,
+    ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, ChartHeader, CitationChip,
     CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
     Count, DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
     FooterActions, Icon, IconName, KeyHint, LaterContext, ListRow, LiveDot, MeasurementTile,
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowFrame,
-    RowGroup, SearchField, SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape,
-    SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton, Sparkline,
-    StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar,
-    UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
+    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
+    RowFrame, RowGroup, SearchField, SectionHeader, SelectionRow, SeriesChart, SeriesPoint,
+    SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton,
+    Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip,
+    Tone, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -91,6 +91,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Series", note: "A series across its buckets: amounts as bars from zero, levels as a line on their own range. The latest is drawn full and the rest quieter, a bucket still filling between them; a dashed line in the action green marks what it is compared with. Tap a mark to pin it, again or on empty plot to let go; the arrow keys move it. The page says what is pinned.",
                     SeriesDemo {}
+                }
+                Section { title: "Series readout", note: "Over its chart, a series says what its figure is, the figure, and the span it covers, each on one line so the chart never moves. Pinning a mark turns the readout to that bucket, its words in the accent. The span is a row of pills; the chosen one's fill slides to the next. Back and forward page the span, quiet where there is nowhere to go.",
+                    ReadoutDemo {}
                 }
                 Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
                     HeadingsDemo {}
@@ -913,6 +916,94 @@ fn SeriesDemo() -> Element {
                 emphasized: Some((0, 29)),
                 selected: pinned_month(),
                 on_select: move |next| pinned_month.set(next),
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ReadoutDemo() -> Element {
+    let mut span = use_signal(|| 0usize);
+    let mut pinned = use_signal(|| None::<usize>);
+    let week = [6200.0, 8400.0, 7100.0, 9800.0, 5400.0, 10200.0, 4300.0];
+    let points: Vec<SeriesPoint> = if span() == 0 {
+        week.iter()
+            .enumerate()
+            .map(|(index, value)| SeriesPoint {
+                value: Some(*value),
+                axis: WEEK[index][..1].to_owned(),
+                words: format!("{}, October {}", WEEK[index], 24 + index),
+                ..SeriesPoint::default()
+            })
+            .collect()
+    } else {
+        (0..30)
+            .map(|date| SeriesPoint {
+                value: Some(5200.0 + ((date * 37 % 11) as f64) * 520.0),
+                axis: if date % 7 == 0 {
+                    format!("Oct {}", date + 1)
+                } else {
+                    String::new()
+                },
+                words: format!("October {}", date + 1),
+                ..SeriesPoint::default()
+            })
+            .collect()
+    };
+    let figure = |value: f64| {
+        let whole = value.round() as u64;
+        if whole >= 1000 {
+            format!("{},{:03}", whole / 1000, whole % 1000)
+        } else {
+            whole.to_string()
+        }
+    };
+    let average = points.iter().filter_map(|point| point.value).sum::<f64>() / points.len() as f64;
+    let (label, value, caption) = match pinned().and_then(|index| points.get(index)) {
+        Some(point) => (
+            "Total".to_owned(),
+            figure(point.value.unwrap_or_default()),
+            point.words.clone(),
+        ),
+        None => (
+            "Daily average".to_owned(),
+            figure(average),
+            if span() == 0 {
+                "Oct 24 – 30, 2026 · today so far".to_owned()
+            } else {
+                "October 2026".to_owned()
+            },
+        ),
+    };
+    rsx! {
+        div { class: "gallery-readout",
+            RangeChoice {
+                label: "Time range",
+                options: vec![("W".into(), "Week".into()), ("M".into(), "Month".into())],
+                selected: span(),
+                on_select: move |next| {
+                    span.set(next);
+                    pinned.set(None);
+                },
+            }
+            div { class: "gallery-readout-card",
+                ChartHeader {
+                    label,
+                    value: vec![(value, String::new())],
+                    caption,
+                    pinned: pinned().is_some(),
+                    previous: if span() == 0 { "Previous week" } else { "Previous month" },
+                    next: if span() == 0 { "Next week" } else { "Next month" },
+                    on_previous: move |_| {},
+                }
+                SeriesChart {
+                    points: points.clone(),
+                    label: if span() == 0 { "Steps each day this week" } else { "Steps each day in October" },
+                    emphasized: if span() == 0 { None } else { Some((0, 29)) },
+                    selected: pinned(),
+                    on_select: move |next| pinned.set(next),
+                }
             }
         }
     }

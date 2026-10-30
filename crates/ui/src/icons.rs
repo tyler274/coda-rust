@@ -6,7 +6,7 @@ use dioxus::prelude::*;
 pub const STROKE: &str = "1.8";
 
 /// The icons in the shared set: the React app's, each named as it names them, and Duet's own from the October 21
-/// mockups (arrow up through sun below), which the React app doesn't draw.
+/// mockups and SwiftUI Duet (arrow up through sun below), which the React app doesn't draw.
 #[allow(dead_code, missing_docs)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum IconName {
@@ -48,6 +48,8 @@ pub enum IconName {
     Users,
     X,
     ArrowUp,
+    ChevronLeft,
+    ChevronRight,
     Book,
     Clock,
     File,
@@ -61,7 +63,7 @@ pub enum IconName {
 
 impl IconName {
     /// Every icon in the set: the React app's, then Duet's own.
-    pub const ALL: [IconName; 47] = [
+    pub const ALL: [IconName; 49] = [
         IconName::Alert,
         IconName::Archive,
         IconName::ArrowLeft,
@@ -100,6 +102,8 @@ impl IconName {
         IconName::Users,
         IconName::X,
         IconName::ArrowUp,
+        IconName::ChevronLeft,
+        IconName::ChevronRight,
         IconName::Book,
         IconName::Clock,
         IconName::File,
@@ -152,6 +156,8 @@ impl IconName {
             IconName::Users => "users",
             IconName::X => "x",
             IconName::ArrowUp => "arrow-up",
+            IconName::ChevronLeft => "chevron-left",
+            IconName::ChevronRight => "chevron-right",
             IconName::Book => "book",
             IconName::Clock => "clock",
             IconName::File => "file",
@@ -283,6 +289,8 @@ pub fn icon_paths(name: IconName) -> &'static [&'static str] {
         IconName::Users => USERS,
         IconName::X => X,
         IconName::ArrowUp
+        | IconName::ChevronLeft
+        | IconName::ChevronRight
         | IconName::Book
         | IconName::Clock
         | IconName::File
@@ -426,6 +434,9 @@ fn marks(name: IconName) -> &'static [Mark] {
         ],
         IconName::X => &[Mark::Path("m6 6 12 12"), Mark::Path("m18 6-12 12")],
         IconName::ArrowUp => &[Mark::Path("M12 19V5"), Mark::Path("m5 12 7-7 7 7")],
+        // React's chevron, turned to page back and forward, as SwiftUI Duet's detail header does.
+        IconName::ChevronLeft => &[Mark::Path("m15 6-6 6 6 6")],
+        IconName::ChevronRight => &[Mark::Path("m9 6 6 6-6 6")],
         IconName::Book => &[Mark::Path("M4 3h13l3 3v15H4V3Zm4 5h8M8 12h8M8 16h6")],
         IconName::Clock => &[Mark::Path(
             "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-5v6l4 2",
