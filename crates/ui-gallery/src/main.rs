@@ -11,10 +11,10 @@ use ui::{
     ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog, Disclosure,
     FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile,
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, ProposedChange, Quote, Rating, RowGroup, SectionHeader, SelectionRow, SettingRow,
-    SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline, StatePill, StatusLine,
-    StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice,
-    Value, WorkingMark,
+    Placeholder, ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup, SectionHeader,
+    SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline,
+    StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar,
+    TrendChart, UndoNotice, Value, WorkingMark,
 };
 
 fn main() {
@@ -101,6 +101,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
                     ConversationDemo {}
+                }
+                Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
+                    ProseDemo {}
                 }
                 Section { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
                     ViewportDemo {}
@@ -763,6 +766,28 @@ fn ButtonDemo() -> Element {
             strong { "Evening walk" }
             span { class: "gallery-note", "Every evening" }
             Icon { name: IconName::ArrowRight }
+        }
+    }
+}
+
+/// The prose specimen, shared with the React side-by-side.
+#[cfg(feature = "web")]
+const PROSE_BEFORE: &str = "## Recorded measurements\n\nPotassium was **5.4 mmol/L** on Tuesday";
+#[cfg(feature = "web")]
+const PROSE_AFTER: &str = ", up from 4.9 in September. Confirm the current reading with the patient.\n\n- Lisinopril 10 mg daily\n- Spironolactone 25 mg, *held* since October 2\n\n> Feels well, with no palpitations.\n\n| Date | Potassium |\n| --- | --- |\n| September 12 | 4.9 |\n| October 28 | 5.4 |\n\nRecheck with a `BMP` next week.";
+
+#[cfg(feature = "web")]
+#[component]
+fn ProseDemo() -> Element {
+    rsx! {
+        div { class: "gallery-prose",
+            Prose {
+                parts: vec![
+                    ProsePart::Words(PROSE_BEFORE.to_owned()),
+                    ProsePart::Inline(rsx! { CitationChip { index: 1, label: "Source 1: Basic metabolic panel" } }),
+                    ProsePart::Words(PROSE_AFTER.to_owned()),
+                ],
+            }
         }
     }
 }

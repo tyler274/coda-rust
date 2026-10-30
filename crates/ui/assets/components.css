@@ -251,6 +251,32 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
 .tabs.has-icons button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 52px; font: var(--type-label-sm); }
 .tabs.has-icons .icon { width: 24px; height: 24px; }
+/* Prose, after the React app's clinical text: body large, a step between paragraphs, headings on the title roles, and
+   tables that scroll on their own. Only the Markdown's own elements take prose styles, never a host's inline piece. */
+.prose { width: 100%; min-width: 0; color: var(--body); font: var(--type-body-lg); overflow-wrap: anywhere; }
+.prose > :first-child { margin-top: 0; }
+.prose > :last-child { margin-bottom: 0; }
+.prose p:where([data-prose]) { margin: 0 0 var(--space-3); color: inherit; font: inherit; text-wrap: pretty; }
+.prose :is(h1, h2, h3, h4, h5, h6):where([data-prose]) { margin: var(--space-5) 0 var(--space-2); color: var(--ink); }
+.prose :is(h1, h2):where([data-prose]) { font: var(--type-title-lg); letter-spacing: var(--title-tracking); }
+.prose :is(h3, h4, h5, h6):where([data-prose]) { font: var(--type-title-sm); }
+.prose :is(ul, ol):where([data-prose]) { margin: var(--space-2) 0 var(--space-3); padding-left: 1.45em; }
+.prose li:where([data-prose]) { padding-left: .18em; }
+.prose li:where([data-prose]) + li { margin-top: var(--space-1); }
+.prose li:where([data-prose]) > p { margin-bottom: var(--space-1); }
+.prose strong:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
+.prose a:where([data-prose]) { color: inherit; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; }
+.prose blockquote:where([data-prose]) { margin: var(--space-3) 0; padding: 0 0 0 var(--space-3); border-left: var(--stroke) solid var(--outline); color: var(--muted); }
+.prose code:where([data-prose]) { padding: 0 var(--space-1); border-radius: var(--radius-sm); background: var(--surface-low); font: var(--type-code); }
+.prose pre:where([data-prose]), .prose-table-scroll th { background: var(--surface-low); }
+.prose pre:where([data-prose]) { overflow-x: auto; margin: var(--space-3) 0; padding: var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); }
+.prose pre:where([data-prose]) code { padding: 0; background: transparent; font: var(--type-code); }
+.prose hr:where([data-prose]) { margin: var(--space-5) 0; border: 0; border-top: var(--hairline) solid var(--outline-variant); }
+.prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; overflow-x: auto; }
+.prose-table-scroll table { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
+.prose-table-scroll :is(th, td) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
+.prose-table-scroll th { color: var(--ink); font-weight: var(--weight-strong); }
+.prose-image { color: var(--muted); font: var(--type-body-sm); font-style: italic; }
 /* Duet's theme, after the October 21 design review: prose and the conversation at body large, each action a full-width
    bar, quiet actions and links in green at the touch target's height, cards on a hairline rather than a shadow, and the
    person's bubble tailed toward them. A host sets it on its root. */
