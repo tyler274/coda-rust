@@ -89,22 +89,36 @@ pub(crate) struct Auth {
 }
 
 /// Registers the recorded practice's five workspaces to `STAGING_PRACTICE_ID`
-/// (if not already registered to a practice) and grants `"staging-physician"`
-/// panel access. Runs before the router is built so a workspace check never
-/// races its grant.
+/// (if not already registered to a practice) and places every active admin in
+/// that practice on their panel, along with the preview identity
+/// `staging-physician`. Runs before the router is built so a workspace check
+/// never races its grant. A later start asserts the same panel again. A
+/// deactivated admin is left off it.
 async fn seed_staging(store: &dyn AuthStore) {
-    let identity = PhysicianIdentity {
+    let mut identities = vec![PhysicianIdentity {
         practice_id: STAGING_PRACTICE_ID.to_owned(),
         physician_id: "staging-physician".to_owned(),
-    };
+    }];
+    for account in store.practice_accounts(STAGING_PRACTICE_ID).await {
+        if account.active
+            && account.admin
+            && !identities
+                .iter()
+                .any(|identity| identity == &account.identity)
+        {
+            identities.push(account.identity);
+        }
+    }
     for workspace in super::WORKSPACE_IDS {
         if store.patient_practice(workspace).await.is_none() {
             store.register_patient(STAGING_PRACTICE_ID, workspace).await;
         }
         if store.patient_practice(workspace).await.as_deref() == Some(STAGING_PRACTICE_ID) {
-            store
-                .set_membership(&identity, workspace, Membership::Allowed)
-                .await;
+            for identity in &identities {
+                store
+                    .set_membership(identity, workspace, Membership::Allowed)
+                    .await;
+            }
         }
     }
 }
@@ -1538,6 +1552,71 @@ mod tests {
         )
         .await;
         (required_router(crate::recorded(), auth), store, front_door)
+    }
+
+    #[tokio::test]
+    async fn active_staging_admins_see_the_sample_patients() {
+        let store = Arc::new(MemoryAuthStore::new());
+        store.seed_account(
+            STAGING_PRACTICE_ID,
+            "ops-admin",
+            "ops@codahealth.ai",
+            "Ops",
+            true,
+        );
+        store.seed_account(
+            STAGING_PRACTICE_ID,
+            "eli-admin",
+            "eli@codahealth.ai",
+            "Eli",
+            true,
+        );
+        store.seed_account(
+            STAGING_PRACTICE_ID,
+            "member",
+            "member@codahealth.ai",
+            "Member",
+            false,
+        );
+        store.seed_account(
+            STAGING_PRACTICE_ID,
+            "former-admin",
+            "former@codahealth.ai",
+            "Former",
+            true,
+        );
+        assert!(store.deactivate("former@codahealth.ai").await);
+        let _auth = Auth::on(
+            Arc::clone(&store) as Arc<dyn AuthStore>,
+            Arc::new(MemoryFrontDoorStore::new()),
+        )
+        .await;
+        let mut expected: Vec<String> = crate::WORKSPACE_IDS
+            .iter()
+            .map(|id| (*id).to_owned())
+            .collect();
+        expected.sort();
+        for physician_id in ["ops-admin", "eli-admin"] {
+            let panel = store
+                .panel(&PhysicianIdentity {
+                    practice_id: STAGING_PRACTICE_ID.to_owned(),
+                    physician_id: physician_id.to_owned(),
+                })
+                .await;
+            assert_eq!(panel, expected, "{physician_id}");
+        }
+        for physician_id in ["member", "former-admin"] {
+            let panel = store
+                .panel(&PhysicianIdentity {
+                    practice_id: STAGING_PRACTICE_ID.to_owned(),
+                    physician_id: physician_id.to_owned(),
+                })
+                .await;
+            assert!(
+                panel.is_empty(),
+                "{physician_id} should not receive the sample panel: {panel:?}"
+            );
+        }
     }
 
     async fn send(
