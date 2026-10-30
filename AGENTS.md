@@ -3,7 +3,7 @@
 This repository is the Rust workspace for Duet and the physician client. The [intent specs](intent/README.md) own product intent: the principles, the
 product specs and the open decisions, stated as current truth. Linear tracks scope, work and acceptance against them; this workspace owns Rust
 implementation, operations and proof. Start with the [canonical map](book/src/reading.md).
-Dev's latest explicit decisions take precedence and land in the specs; pinned submodules are historical
+The user's latest explicit decisions take precedence and land in the specs; pinned submodules are historical
 reference, not a competing specification.
 
 ## Development workflow
@@ -73,11 +73,11 @@ explain responsibilities, implemented behavior and operating procedures.
 | Work | Contract |
 | --- | --- |
 | Rust crates, the shared UI tokens, the physician Dioxus client, the sample practice server, and the skill loader | This file, then the crate you are changing |
-| Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; production serves the same tested image without sign-in from the same root, and its applies, DNS changes and Vercel retirement need Dev's explicit authorization |
+| Public marketing site, its Rust server, and deployment artifacts | [Public site](book/src/public-site.md), then `crates/public-site`; `submodules/kytos` is optional read-only developer reference; builds/tests/CI use committed source snapshots, not private-repo access; staging owns `staging.codahealth.ai`; production serves the same tested image without sign-in from the same root, and its applies, DNS changes and Vercel retirement need the user's explicit authorization |
 | Physician product, clinical runtime, and the clinical skill catalog | [Physician spec](intent/physician.md), [Rust implementation](book/src/physician-site.md), and [operating invariants](book/src/agent-contracts.md) |
 | Clinical skill markdown | [skills](skills), the same catalog as coda-agents', read by `crates/agent-skills` for `crates/harness`; hosted physician chat (`physician-worker`) loads it at startup |
 | Engineering workflow | [Development workflow](#development-workflow) routes shaping, implementation, local review, and PR work through the shared skills. [repo-graph-audit](.agents/skills/repo-graph-audit/SKILL.md) helps when repository ownership or handoffs need investigation. |
-| Product-flow design and verification workflows | [Coda verification](verification/README.md); discuss intended flows with Dev before formalizing them, and keep observed implementation separate |
+| Product-flow design and verification workflows | [Coda verification](verification/README.md); discuss intended flows with the user before formalizing them, and keep observed implementation separate |
 | Clinical-corpus operations | [coda-agents skill](submodules/coda-agents/.agents/skills/coda-gcp-clinical-corpus-operations/SKILL.md) |
 | Duet, the patient app | [Duet spec](intent/duet.md), [Rust backend](book/src/backend-architecture.md), [UI map](book/src/ui-surface-map.md), and [operating invariants](book/src/agent-contracts.md#duet-patient-app) |
 | Gym cases, promotion, and runs | [Gym invariants](book/src/agent-contracts.md#coda-gym-evaluation), [coda-gym AGENTS.md](submodules/coda-gym/AGENTS.md) and the skills under [coda-gym/.claude/skills](submodules/coda-gym/.claude/skills) |

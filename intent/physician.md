@@ -231,7 +231,7 @@ This is how we prove principle 4.
 
 ### A1. Sign-in and access
 
-Physicians sign in only through Coda Agents, with an emailed link and no password or code. Accounts are invite-only. The session is shared across the browser's tabs, signing out signs out everywhere, and another physician's link signs the current physician out first. The full sign-in behavior, with its chart and proof, lives in [sign-in](../verification/physician/sign-in/README.md).
+Physicians sign in only through Coda Agents, with an emailed link and no password or code. Accounts are invite-only. The session is shared across the browser's tabs, signing out signs out everywhere, and another physician's link signs the current physician out first. The full sign-in behavior, with its model, lives in [sign-in](../verification/physician/sign-in/README.md).
 
 Inside the workspace:
 
