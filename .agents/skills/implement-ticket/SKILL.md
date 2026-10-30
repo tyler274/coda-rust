@@ -20,8 +20,9 @@ Establish what already works, what remains, and what would prove completion.
 Restate acceptance as numbered criteria (AC1, AC2, ...), drafting them when the
 work has none and confirming consequential ones with the user. Choose each
 criterion's evidence: the [verify skill](../../../verification/README.md#verify-skills) feature that covers the affected
-code, a focused test, or the observation to capture. A defect's evidence includes
-the failure before the fix.
+code, a focused test, or the observation to capture. For a defect a test can
+show, write the test first and record its failure, for the reason the defect
+gives, before the fix.
 Reconcile material contradictions; use
 [write-linear-ticket](../write-linear-ticket/SKILL.md) when scope needs shaping.
 Explain the plan, responsible owners, affected workflows, criteria, and evidence.
