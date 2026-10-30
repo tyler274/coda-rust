@@ -28,19 +28,20 @@ models.
 
 ## Run
 
-From the repository root:
+Check the model, and read every result, with the pstack `/statechart` skill on
+`verification/physician/sign-in/SignIn.tla`. It passes when the report lists OnceOut, Expiry,
+SignedIn, TodayFirst, Lands and NoDeadlock under the rules that hold. TLC reaches 1,626,132 states
+in about two minutes, more than a chart can show, so a chart comes only with a rule that breaks.
+
+Then, from the repository root:
 
 ```sh
-.agents/skills/statechart/scripts/statechart verification/physician/sign-in/SignIn.tla
 CHROMIUM=<path to Chromium> cargo test -p physician-sample --test auth_browser -- --ignored --test-threads=1
 ```
 
-The first command passes when the report lists OnceOut, Expiry, SignedIn, TodayFirst, Lands and
-NoDeadlock under "Rules that hold". TLC reaches 1,626,132 states in about two minutes, more than
-the chart's budget, so it draws a chart only for a rule that breaks. The second plays, in two tabs
-of one browser against the real page and sample server, the shortest walk to each kind of step
-`COVER` in `auth_browser.rs` tells apart, 100 random 12-step walks, and the bug paths in
-`BUG_PATHS`, and compares both tabs with the model after every step. It takes about six minutes.
+It plays, in two tabs of one browser against the real page and sample server, the shortest walk
+to each kind of step `COVER` in `auth_browser.rs` tells apart, 100 random 12-step walks, and the
+bug paths in `BUG_PATHS`, and compares both tabs with the model after every step.
 
 ## Bounds and assumptions
 
@@ -82,4 +83,4 @@ break it again the same way and confirm TLC reports that rule.
 
 The model and walks were last confirmed to describe the code above at commit `d24e027d`. Move this
 forward only after reading each change to that code since then against the model and running both
-commands.
+checks under Run.

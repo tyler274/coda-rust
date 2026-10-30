@@ -96,7 +96,9 @@ const stateOf = (s) => { const { event, step, ...rest } = s; return flat(rest, "
 const eventOf = (e) => (e.tab ? `${e.name} in tab ${e.tab}` : e.name);
 const tla = (s) => JSON.stringify(s);
 
-function run(spec, wrapper, cfg, args) {
+// TLC's exit code doesn't say whether a run finished, so read what it printed: it must finish,
+// report no error but the walks' own invariant, and print what `complete` asks for.
+function run(spec, wrapper, cfg, args, complete) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "walks-"));
   fs.writeFileSync(path.join(dir, "Walk.tla"), `---- MODULE Walk ----\nEXTENDS ${path.basename(spec, ".tla")}, Naturals, Sequences, TLC\n${wrapper}\n====\n`);
   fs.writeFileSync(path.join(dir, "Walk.cfg"), cfg);
@@ -104,8 +106,14 @@ function run(spec, wrapper, cfg, args) {
   const r = spawnSync(java, [`-DTLA-Library=${path.dirname(path.resolve(spec))}`, "-XX:+UseParallelGC", "-cp", jar, "tlc2.TLC",
     "-workers", "1", "-metadir", path.join(dir, "meta"), "-config", "Walk.cfg", ...args, "Walk.tla"],
     { cwd: dir, encoding: "utf8", maxBuffer: 1 << 30 });
-  if (r.status !== 0 && !/Invariant \w+ is violated/.test(r.stdout)) throw new Error(`TLC failed:\n${r.stdout.slice(-3000)}${r.stderr}`);
-  return traces(r.stdout);
+  const stray = (r.stdout.match(/^Error: .*$/gm) ?? [])
+    .filter((e) => !/^Error: (Invariant \w+ is violated(\.| by the initial state:)|The behavior up to this point is:)$/.test(e));
+  const found = traces(r.stdout);
+  fs.writeFileSync(path.join(dir, "tlc.out"), r.stdout + r.stderr);
+  const why = r.signal ? `TLC was stopped by ${r.signal}` : !/^Finished in /m.test(r.stdout) ? "TLC did not finish"
+    : stray.length ? stray.join("\n") : !complete(r.stdout, found) ? `TLC finished without the walks asked for (${found.length} traces)` : "";
+  if (why) throw new Error(`${why}; TLC's output is in ${path.join(dir, "tlc.out")}`);
+  return found;
 }
 
 function main(argv) {
@@ -123,7 +131,8 @@ function main(argv) {
         "WalkInit == Init /\\ step = 0",
         "WalkNext == step < Len(Path) /\\ Next /\\ event' = Path[step + 1] /\\ step' = step + 1",
         "Unfinished == step < Len(Path)",
-      ].join("\n"), "INIT WalkInit\nNEXT WalkNext\nINVARIANT Unfinished\n", []);
+      ].join("\n"), "INIT WalkInit\nNEXT WalkNext\nINVARIANT Unfinished\n", ["-deadlock"],
+      (_, found) => found.length < 2 && found.every((w) => w.length === steps.length + 1));
       if (!found.length) throw new Error(`path ${n + 1} can't happen in the model: ${events.join(" → ")}`);
       return found[0];
     });
@@ -132,20 +141,25 @@ function main(argv) {
     const depth = Number(flag("--depth", 12));
     const view = fs.readFileSync(spec.replace(/\.tla$/, ".cfg"), "utf8").match(/^VIEW\s+(\w+)/m)?.[1];
     if (!view) throw new Error("the spec's config needs a VIEW that leaves `event` out");
-    // Breadth first, so the first state each event reaches ends the shortest walk to it.
+    // Breadth first, so the first step to each value of Cover ends the shortest walk to it. TLC
+    // checks an invariant only in a state it hasn't seen, so the view tells states apart by Cover
+    // too: a step back to a state already seen still counts.
     const first = run(spec, [
       "ASSUME TLCSet(1, {})",
       `FirstNext == Next /\\ event'.name \\notin ${skip}`,
       `Cover == ${flag("--cover", "event")}`,
+      `CoverView == <<${view}, Cover>>`,
       "Seen == Cover \\in TLCGet(1) \\/ (TLCSet(1, TLCGet(1) \\cup {Cover}) /\\ FALSE)",
-    ].join("\n"), `INIT Init\nNEXT FirstNext\nVIEW ${view}\nINVARIANT Seen\n`, ["-continue"]).filter((w) => w.length > 1);
+    ].join("\n"), "INIT Init\nNEXT FirstNext\nVIEW CoverView\nINVARIANT Seen\n", ["-continue"],
+    (out) => /^\d+ states generated, \d+ distinct states found, 0 states left on queue\.$/m.test(out)).filter((w) => w.length > 1);
     walks = first.concat(run(spec, [
       "VARIABLE step",
       "WalkInit == Init /\\ step = 0",
       `WalkNext == Next /\\ event'.name \\notin ${skip} /\\ step' = step + 1`,
       `Short == step < ${depth}`,
     ].join("\n"), "INIT WalkInit\nNEXT WalkNext\nINVARIANT Short\n",
-    ["-simulate", `num=${flag("--walks", 100)}`, "-depth", String(depth + 1), "-seed", flag("--seed", "1"), "-continue"]));
+    ["-simulate", `num=${flag("--walks", 100)}`, "-depth", String(depth + 1), "-seed", flag("--seed", "1"), "-continue"],
+    (_, found) => found.length === Number(flag("--walks", 100)) && found.every((w) => w.length === depth + 1)));
   }
   const start = stateOf(walks[0][0]);
   process.stdout.write(JSON.stringify({ start, walks: walks.map((w) => w.slice(1).map((s) => ({ event: eventOf(s.event), state: stateOf(s) }))) }));
