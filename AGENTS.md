@@ -33,6 +33,9 @@ methods and judgment within these shared development defaults.
   including work started without a ticket. After implementing and verifying a
   coherent change, obtain independent review, reconcile findings, and verify
   corrections before reporting it ready. No separate review request is needed.
+- [capture-proof](.agents/skills/capture-proof/SKILL.md) records each acceptance
+  criterion's evidence against its revision, checks it for secrets, publishes it,
+  and renders the PR's Proof section.
 - [write-pr](.agents/skills/write-pr/SKILL.md) prepares the PR explanation and
   refreshes it after material changes. [review-pr](.agents/skills/review-pr/SKILL.md)
   assesses existing PRs and handles review follow-ups. Carry prior findings and

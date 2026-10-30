@@ -54,6 +54,8 @@ jobs:
         run: python3 scripts/check_engineering_skills.py
       - name: Test PR review launcher without model calls
         run: python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
+      - name: Test proof capture against a scratch repository
+        run: python3 -m unittest discover -s .agents/skills/capture-proof/scripts -p 'test_*.py' -v
       - name: Install mdBook
         run: |
           version=0.4.52
