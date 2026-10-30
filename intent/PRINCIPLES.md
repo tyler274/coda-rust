@@ -1,6 +1,6 @@
 # Coda principles
 
-These govern everything below them: physician.md, duet.md, connected-care.md, harness.md, the behavior charts and the proofs. Each product spec keeps only its product-specific principles and defers to these. When a spec line conflicts with a principle, the principle wins and the line changes. A cap, gate, pause, dialog, toggle, fixed count or code-side judgment is ruled out by default. Questions the principles don't settle, such as what's in scope, consent and data choices, and real product trade-offs, go to DECISIONS.md.
+These govern everything below them: physician.md, duet.md, connected-care.md, harness.md and the feature models. Each product spec keeps only its product-specific principles and defers to these. When a spec line conflicts with a principle, the principle wins and the line changes. A cap, gate, pause, dialog, toggle, fixed count or code-side judgment is ruled out by default. Questions the principles don't settle, such as what's in scope, consent and data choices, and real product trade-offs, go to DECISIONS.md.
 
 ## The principles
 
@@ -18,7 +18,7 @@ These govern everything below them: physician.md, duet.md, connected-care.md, ha
 
 **7. Real data is messy.** Nothing assumes clean input.
 
-**8. Learn from the best open agents.** Codex, Hermes, OpenClaw, Muse, Instinct and Grok are the references for the harness and the experience. The harness keeps evolving with them, which is why it stays out of the behavior charts.
+**8. Learn from the best open agents.** Codex, Hermes, OpenClaw, Muse, Instinct and Grok are the references for the harness and the experience. The harness keeps evolving with them, which is why it stays out of the feature models.
 
 **9. Few controls, nothing internal on screen.** People steer by talking to the agent and with a few direct controls. There are no extra buttons, modals, toggles or exposed machinery, and every extra click takes something away from the physician's own intuition.
 
@@ -54,7 +54,7 @@ These apply to the physician app and Duet alike, on the web, iOS and Android. Th
 
 ## Testing a rule against these principles
 
-For any rule in a spec, chart or proof, ask:
+For any rule in a spec or model, ask:
 
 - Does it limit what the model may think, investigate or take on? Then it goes, unless it's a principle 5 limit.
 - Does it put judgment in code, such as a fixed count, threshold, label or parser? Then it goes. The model decides; code checks truth and access.

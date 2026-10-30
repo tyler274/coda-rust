@@ -4,7 +4,7 @@ These specs say what we're building and why. They are the source of truth for wh
 
 **Read in this order.**
 
-1. `PRINCIPLES.md`: the principles that govern every spec, chart and proof, including the shared UI principles (U1–U9).
+1. `PRINCIPLES.md`: the principles that govern every spec and model, including the shared UI principles (U1–U9).
 2. The specs, one per product:
    - `physician.md`: Coda Agents, the physician web app.
    - `duet.md`: Duet, the patient app.

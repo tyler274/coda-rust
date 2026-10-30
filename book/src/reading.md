@@ -24,7 +24,7 @@ keep the gap visible and update the responsible owner as the work lands.
 | Invitations, consent and practice connections | [Accounts and practice connection](front-door.md) |
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
 | Shared execution and product boundaries | [Operating invariants](agent-contracts.md), [crate map](crate-map.md) |
-| Statecharts, design decisions and formal proof | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
+| Feature models, design decisions and their checks | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
 | Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |
 
