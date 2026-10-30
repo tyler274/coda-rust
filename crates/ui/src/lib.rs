@@ -22,7 +22,10 @@ mod prose;
 mod sources;
 mod undo;
 pub use cards::{Card, LaterContext, Quote, StepList};
-pub use charts::{Comparison, ComparisonBars, MeasurementTile, Sparkline, TrendChart, Value};
+pub use charts::{
+    Comparison, ComparisonBars, MeasurementTile, SeriesChart, SeriesPoint, SeriesShape, Sparkline,
+    Value,
+};
 pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Suggestion};
 pub use documents::{
     FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, Tag,

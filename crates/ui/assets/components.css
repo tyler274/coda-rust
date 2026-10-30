@@ -310,7 +310,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
    than not at all, so taking up a pointer again never replays it. An exit whose end closes its surface takes a
    millisecond. A busy mark keeps turning and a focus ring still grows: they are feedback, not change. */
 :root[data-interaction="keyboard"] *, :root[data-interaction="keyboard"] *::before, :root[data-interaction="keyboard"] *::after, :root[data-interaction="keyboard"] ::backdrop { transition: none !important; }
-:root[data-interaction="keyboard"] :is(.count, .comparison-bar, .sparkline svg, .trend-chart svg, .chart-point, .chart-dot,
+:root[data-interaction="keyboard"] :is(.count, .comparison-bar, .sparkline svg, .chart-point, .series-bar, .series-line, .series-dot,
   .citation-preview, .source-reading-pane) { animation-duration: 0s !important; animation-delay: 0s !important; }
 :root[data-interaction="keyboard"] :is(.dialog.is-closing, .source-reading-layout.is-source-closing .source-reading-pane),
 :root[data-interaction="keyboard"] .dialog.is-closing::backdrop { animation-duration: 1ms !important; }
@@ -417,13 +417,44 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .comparison-bar { display: block; height: 100%; border-radius: var(--radius-pill); background: var(--data-track); transform-origin: left; animation: chart-grow var(--spring-step) both; }
 .is-observed .comparison-bar { background: var(--data); }
 .sparkline { position: relative; display: block; height: 40px; }
-.sparkline svg, .trend-chart svg { display: block; width: 100%; height: 100%; overflow: visible; animation: chart-reveal var(--motion-step) var(--ease-out) both; }
+.sparkline svg { display: block; width: 100%; height: 100%; overflow: visible; animation: chart-reveal var(--motion-step) var(--ease-out) both; }
 .chart-line { fill: none; stroke: var(--data); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.chart-grid { fill: none; stroke: var(--outline-variant); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .chart-point { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--data); animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; }
-.chart-dot { fill: var(--data); animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; transform-box: fill-box; transform-origin: center; }
-.trend-chart { display: grid; gap: var(--space-2); margin: 0; }
-.trend-chart svg { height: auto; aspect-ratio: 320 / 130; }
+/* A series across its buckets, after SwiftUI Duet's days and detail charts: the plot, its value axis on the trailing
+   edge in quiet caption figures, and each bucket's word beneath. A bucket is a column; its bar stands in the middle,
+   narrow for a week and three-fifths of its column beyond. */
+.series-chart { --series-height: 132px; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-2);
+  margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
+.series-chart.is-bare { --series-height: 56px; grid-template-columns: minmax(0, 1fr); }
+.series-plot { position: relative; height: var(--series-height); }
+.series-gridline { position: absolute; inset-inline: 0; height: 0; border-top: var(--hairline) solid var(--outline-variant); }
+.series-bar { position: absolute; bottom: 0; width: calc(100% / var(--series-count) * .6); translate: -50% 0; border-radius: 3px;
+  background: var(--data); transform-origin: bottom; animation: series-grow var(--spring-step) both;
+  transition: background-color var(--motion-control) var(--ease-out); }
+.series-chart.is-narrow .series-bar { width: 14px; }
+.series-bar.is-quiet { background: var(--data-quiet); }
+.series-bar.is-partial { background: var(--data-partial); }
+.series-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: chart-reveal var(--motion-step) var(--ease-out) both; }
+.series-stroke { fill: none; stroke: var(--data); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.series-line.is-quiet .series-stroke { stroke: var(--data-line-quiet); }
+.series-band { fill: var(--data-band); stroke: none; }
+.series-dot { position: absolute; width: 7px; height: 7px; translate: -50% -50%; border-radius: 50%; background: var(--data);
+  animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; }
+.series-dot.is-quiet { width: 4px; height: 4px; background: var(--data-quiet); }
+.series-dot.is-partial { background: var(--data-partial); }
+.series-dot.is-chosen { width: 8px; height: 8px; box-shadow: 0 0 0 2px var(--surface-lowest); animation: none; }
+.series-scrub { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px solid var(--data-scrub); }
+.series-reference { position: absolute; inset-inline: 0; height: 1.5px; translate: 0 50%;
+  background: repeating-linear-gradient(90deg, var(--data-reference) 0 4px, transparent 4px 7px); }
+.series-reference-word { position: absolute; bottom: calc(100% + 2px); left: 0; color: var(--data-reference); font: var(--type-label-sm); }
+/* A pinned mark's target: the bar with a little room above it, or a fingertip round a point. Empty plot clears. */
+.series-target { position: absolute; bottom: 0; width: max(24px, calc(100% / var(--series-count) * .84)); translate: -50% 0;
+  padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; cursor: pointer; }
+.series-chart.is-line .series-target { bottom: auto; width: 48px; height: 48px; translate: -50% -50%; border-radius: 50%; }
+.series-ticks { position: relative; height: var(--series-height); }
+.series-ticks > span { position: absolute; right: 0; translate: 0 50%; white-space: nowrap; }
+.series-axis { display: grid; grid-template-columns: repeat(var(--series-count), minmax(0, 1fr)); padding-top: var(--space-1); text-align: center; white-space: nowrap; }
+@keyframes series-grow { from { transform: scaleY(0); } }
 .measurement-tile { box-sizing: border-box; display: grid; gap: var(--space-1); align-content: start; min-width: 0; width: 100%; padding: var(--space-4) var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--data-container); color: var(--ink); text-align: left; }
 .measurement-tile-label { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-data-container); font: var(--type-label-md); }
 .measurement-tile-detail { color: var(--muted); font: var(--type-body-sm); }

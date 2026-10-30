@@ -77,6 +77,16 @@
   --data-track: var(--primary-container);
   --data-container: color-mix(in srgb, var(--primary-container) 55%, var(--surface-lowest));
   --on-data-container: var(--on-primary-container);
+  /* A series' weights, after SwiftUI Duet's chart style: one data hue, never an invented opacity. Quiet marks stand
+     back while others are emphasized or pinned, a filling bucket sits between quiet and full, a spread is a wash behind
+     its line, and the scrub rule marks what is pinned. What a series is compared with is a dashed line in the action
+     green, the dash its second cue. */
+  --data-quiet: color-mix(in srgb, var(--data) 35%, transparent);
+  --data-partial: color-mix(in srgb, var(--data) 48%, transparent);
+  --data-line-quiet: color-mix(in srgb, var(--data) 50%, transparent);
+  --data-band: color-mix(in srgb, var(--data) 14%, transparent);
+  --data-scrub: color-mix(in srgb, var(--data) 55%, transparent);
+  --data-reference: var(--primary);
   /* Text on any surface: names and titles, running words, and details. */
   --ink: var(--ref-neutral-15);
   --body: var(--ref-neutral-25);

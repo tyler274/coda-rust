@@ -13,10 +13,10 @@ use ui::{
     FooterActions, Icon, IconName, KeyHint, LaterContext, ListRow, LiveDot, MeasurementTile,
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
     Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowFrame,
-    RowGroup, SearchField, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane,
-    SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepList,
-    Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
-    WorkingMark, WorkingPresence, use_live_rows,
+    RowGroup, SearchField, SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape,
+    SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton, Sparkline,
+    StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar,
+    UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -88,6 +88,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
                     ChartDemo {}
+                }
+                Section { title: "Series", note: "A series across its buckets: amounts as bars from zero, levels as a line on their own range. The latest is drawn full and the rest quieter, a bucket still filling between them; a dashed line in the action green marks what it is compared with. Tap a mark to pin it, again or on empty plot to let go; the arrow keys move it. The page says what is pinned.",
+                    SeriesDemo {}
                 }
                 Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
                     HeadingsDemo {}
@@ -338,10 +341,23 @@ fn ChartDemo() -> Element {
         div { class: "gallery-measure",
             p { class: "gallery-note", "Sleep · Last night" }
             Value { parts: parts(&[("6", "hr"), ("18", "min")]), large: true }
-            TrendChart {
-                points: SLEEP_HOURS.to_vec(),
+            SeriesChart {
+                shape: SeriesShape::Line,
+                points: SLEEP_HOURS
+                    .iter()
+                    .enumerate()
+                    .map(|(night, hours)| SeriesPoint {
+                        value: Some(*hours),
+                        axis: match night {
+                            0 => "Oct 14".into(),
+                            7 => "Oct 21".into(),
+                            _ => String::new(),
+                        },
+                        ..SeriesPoint::default()
+                    })
+                    .collect::<Vec<_>>(),
                 label: "Sleep each night, October 14 to 21: from 7.1 hours to 6.3 last night",
-                labels: vec!["Oct 14".into(), "Oct 21".into()],
+                emphasized: Some((0, 7)),
             }
         }
         div { class: "gallery-row",
@@ -778,6 +794,89 @@ fn LiveDemo() -> Element {
                     },
                     "Move the last to the top"
                 }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const WEEK: [&str; 7] = [
+    "Saturday",
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn SeriesDemo() -> Element {
+    let steps = [6200.0, 8400.0, 7100.0, 9800.0, 5400.0, 10200.0, 4300.0];
+    let resting = [
+        Some(62.0),
+        Some(64.0),
+        Some(61.0),
+        None,
+        Some(66.0),
+        Some(60.0),
+        Some(62.0),
+    ];
+    let mut pinned_steps = use_signal(|| None::<usize>);
+    let mut pinned_rest = use_signal(|| None::<usize>);
+    let day = |index: usize| {
+        WEEK[index]
+            .chars()
+            .next()
+            .map(String::from)
+            .unwrap_or_default()
+    };
+    let step_points: Vec<SeriesPoint> = steps
+        .iter()
+        .enumerate()
+        .map(|(index, value)| SeriesPoint {
+            value: Some(*value),
+            axis: day(index),
+            words: format!("{}, {} steps", WEEK[index], *value as u32),
+            ..SeriesPoint::default()
+        })
+        .collect();
+    let rest_points: Vec<SeriesPoint> = resting
+        .iter()
+        .enumerate()
+        .map(|(index, value)| SeriesPoint {
+            value: *value,
+            axis: day(index),
+            words: value.map_or_else(String::new, |bpm| {
+                format!("{}, {bpm} beats per minute", WEEK[index])
+            }),
+            ..SeriesPoint::default()
+        })
+        .collect();
+    let readout = |pinned: Option<usize>, points: &[SeriesPoint], idle: &str| {
+        pinned
+            .and_then(|index| points.get(index))
+            .map_or_else(|| idle.to_owned(), |point| point.words.clone())
+    };
+    rsx! {
+        div { class: "gallery-series",
+            p { class: "gallery-note", "{readout(pinned_steps(), &step_points, \"Steps · this week, today so far\")}" }
+            SeriesChart {
+                points: step_points.clone(),
+                label: "Steps each day this week, averaging 7,343; 4,300 today so far",
+                reference: 7343.0,
+                reference_label: "avg",
+                selected: pinned_steps(),
+                on_select: move |next| pinned_steps.set(next),
+            }
+            p { class: "gallery-note", "{readout(pinned_rest(), &rest_points, \"Resting heart rate · this week\")}" }
+            SeriesChart {
+                shape: SeriesShape::Line,
+                points: rest_points.clone(),
+                label: "Resting heart rate each day this week, 60 to 66 beats per minute, nothing on Tuesday",
+                selected: pinned_rest(),
+                on_select: move |next| pinned_rest.set(next),
             }
         }
     }
