@@ -7,6 +7,7 @@ mod composer;
 mod local_draft;
 mod panels;
 mod shell;
+mod status;
 mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -35,10 +36,10 @@ use shell::{
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
+use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    Author, Button, ButtonVariant, CommandNotice, CommandStage, Dialog, EmptyState, ErrorState,
-    Icon, IconName, IconTile, LiveDot, NavigationControl, NavigationRow, ReadNotice, StatePill,
-    Tone,
+    Author, Button, ButtonVariant, Dialog, EmptyState, Icon, IconName, IconTile, LiveDot,
+    NavigationControl, NavigationRow, StatePill, StatusLine, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -1218,10 +1219,10 @@ fn PhysicianShell(
     };
     let patient_gone = selected.read().is_some() && *gone.read() == *selected.read();
     let patient_read = match (workspace_answer, &workspace_current) {
-        (Some(Err(())), Some(Ok(_))) => ui::ReadStage::Stale,
-        (_, Some(Ok(_))) => ui::ReadStage::Showing,
-        (_, Some(Err(()))) => ui::ReadStage::Unavailable,
-        (_, None) => ui::ReadStage::Loading,
+        (Some(Err(())), Some(Ok(_))) => ReadStage::Stale,
+        (_, Some(Ok(_))) => ReadStage::Showing,
+        (_, Some(Err(()))) => ReadStage::Unavailable,
+        (_, None) => ReadStage::Loading,
     };
     let chats = chat_view(
         selected.read().as_deref(),
@@ -2027,11 +2028,8 @@ struct CommandSlot {
 
 /// A schedule rail shows while its day is loading or failed: only an answered day
 /// can say there is no calendar or no visit to show.
-fn schedule_unanswered(schedule: ui::ReadStage) -> bool {
-    matches!(
-        schedule,
-        ui::ReadStage::Loading | ui::ReadStage::Unavailable
-    )
+fn schedule_unanswered(schedule: ReadStage) -> bool {
+    matches!(schedule, ReadStage::Loading | ReadStage::Unavailable)
 }
 
 /// One read as the page shows it. A failed refresh keeps the last answer.
@@ -2541,7 +2539,7 @@ fn TodaySurface(
     connections: Vec<String>,
     visits: Vec<VisitLine>,
     show_schedule: bool,
-    schedule: ui::ReadStage,
+    schedule: ReadStage,
     on_schedule_retry: EventHandler,
     schedule_empty: String,
     schedule_collapsed: bool,
@@ -2764,7 +2762,7 @@ fn TodayRows(
 fn ScheduleRail(
     visits: Vec<VisitLine>,
     title: &'static str,
-    read: ui::ReadStage,
+    read: ReadStage,
     on_retry: EventHandler,
     empty: String,
     collapsed: bool,
@@ -2820,7 +2818,7 @@ fn ScheduleRail(
                 retry: TRY_AGAIN,
                 on_retry,
             }
-            if visits.is_empty() && read == ui::ReadStage::Showing {
+            if visits.is_empty() && read == ReadStage::Showing {
                 p { class: "schedule-rail-empty", "{empty}" }
             }
             for (index, visit) in visits.iter().enumerate() {
@@ -2891,7 +2889,7 @@ fn UpdatesSurface(state: ReadView<Vec<serde_json::Value>>, on_retry: EventHandle
 #[component]
 fn PatientSurface(
     gone: bool,
-    read: ui::ReadStage,
+    read: ReadStage,
     on_go_today: EventHandler,
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
@@ -2899,7 +2897,7 @@ fn PatientSurface(
     visits: Vec<VisitLine>,
     schedule_collapsed: bool,
     on_schedule_collapsed: EventHandler<bool>,
-    schedule: ui::ReadStage,
+    schedule: ReadStage,
     on_schedule_retry: EventHandler,
     focused: Option<i32>,
     chats: ChatView,
@@ -3024,7 +3022,7 @@ fn PatientSurface(
         // Nothing of the patient shows, not even the name.
         return rsx! {
             div { class: "reading-workspace patient-page",
-                ErrorState { message: PATIENT_GONE }
+                StatusLine { message: PATIENT_GONE, alert: true }
                 NavigationControl { onclick: move |_| on_go_today.call(()), "{GO_TO_TODAY}" }
             }
         };

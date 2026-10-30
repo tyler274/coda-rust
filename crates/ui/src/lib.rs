@@ -90,12 +90,6 @@ pub fn EmptyState(message: String) -> Element {
     rsx! { p { class: "empty", "{message}" } }
 }
 
-/// Something that failed and has no retry of its own: the one status line, announced.
-#[component]
-pub fn ErrorState(message: String) -> Element {
-    rsx! { StatusLine { message, alert: true } }
-}
-
 /// The one status line, after the React app's `StatusLine`: what failed or what is under way, in
 /// one muted line, with the one Try again under the words after a failure. While pending it draws
 /// the shape of what is coming, after the shared delay so a fast read never flashes, and keeps its
@@ -227,74 +221,6 @@ pub fn Spinner() -> Element {
             circle { class: "spinner-track", cx: "12", cy: "12", r: "9" }
             path { d: "M21 12a9 9 0 0 0-9-9" }
         }
-    }
-}
-
-/// Where one read stands, as the page shows it.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum ReadStage {
-    /// The first read has not answered yet.
-    Loading,
-    /// The read answered and its content shows.
-    Showing,
-    /// A refresh failed: the last answer stays, under one quiet line with Retry.
-    Stale,
-    /// The first read failed: nothing to show, with Retry.
-    Unavailable,
-}
-
-/// A read's own line beside its content: loading, one quiet line with Retry
-/// over the last answer, or couldn't load with Retry. Showing adds nothing.
-#[component]
-pub fn ReadNotice(
-    stage: ReadStage,
-    loading: String,
-    stale: String,
-    unavailable: String,
-    retry: String,
-    on_retry: EventHandler,
-) -> Element {
-    match stage {
-        ReadStage::Loading => rsx! { StatusLine { message: loading, pending: true } },
-        ReadStage::Showing => rsx! {},
-        ReadStage::Stale => rsx! { StatusLine { message: stale, retry, on_retry } },
-        ReadStage::Unavailable => {
-            rsx! { StatusLine { message: unavailable, alert: true, retry, on_retry } }
-        }
-    }
-}
-
-/// Where one command stands after it was pressed.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum CommandStage {
-    /// Nothing is in flight.
-    Idle,
-    /// Sent and not yet answered.
-    Sending,
-    /// The answer never arrived, so whether it took is unknown; the host's check again action
-    /// follows.
-    Unconfirmed,
-    /// It was answered and not taken, saying why.
-    Refused(String),
-}
-
-/// A command's own line: sending, couldn't confirm with its check again action, or why
-/// it was refused. Idle adds nothing.
-#[component]
-pub fn CommandNotice(
-    stage: CommandStage,
-    sending: String,
-    unconfirmed: String,
-    check_again: String,
-    on_check_again: EventHandler,
-) -> Element {
-    match stage {
-        CommandStage::Idle => rsx! {},
-        CommandStage::Sending => rsx! { StatusLine { message: sending } },
-        CommandStage::Unconfirmed => rsx! {
-            StatusLine { message: unconfirmed, retry: check_again, on_retry: on_check_again }
-        },
-        CommandStage::Refused(reason) => rsx! { StatusLine { message: reason, alert: true } },
     }
 }
 

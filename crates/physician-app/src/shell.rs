@@ -89,12 +89,12 @@ pub enum ReadView<T> {
 }
 
 impl<T> ReadView<T> {
-    pub fn stage(&self) -> ui::ReadStage {
+    pub fn stage(&self) -> crate::status::ReadStage {
         match self {
-            Self::Loading => ui::ReadStage::Loading,
-            Self::Showing(_) => ui::ReadStage::Showing,
-            Self::Stale(_) => ui::ReadStage::Stale,
-            Self::Unavailable => ui::ReadStage::Unavailable,
+            Self::Loading => crate::status::ReadStage::Loading,
+            Self::Showing(_) => crate::status::ReadStage::Showing,
+            Self::Stale(_) => crate::status::ReadStage::Stale,
+            Self::Unavailable => crate::status::ReadStage::Unavailable,
         }
     }
 

@@ -7,15 +7,14 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CitationPreview, CommandNotice,
-    CommandStage, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
-    DateSeparator, Dialog, Disclosure, FeedbackRating, FooterActions, Icon, IconName, LaterContext,
-    ListRow, LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline,
-    PageTitle, Paper, PaperSection, Placeholder, ProposedChange, Quote, Rating, ReadNotice,
-    ReadStage, Receipt, RowGroup, SectionHeader, SelectionRow, SettingRow, SourceDetails,
-    SourcePane, SourceReading, SourcesButton, Sparkline, StatePill, StatusLine, StepList,
-    Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
-    WorkingMark,
+    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CitationPreview, Comparison,
+    ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog, Disclosure,
+    FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile,
+    Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
+    Placeholder, ProposedChange, Quote, Rating, Receipt, RowGroup, SectionHeader, SelectionRow,
+    SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline, StatePill,
+    StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart,
+    UndoNotice, Value, WorkingMark,
 };
 
 fn main() {
@@ -643,21 +642,8 @@ fn LoadingDemo() -> Element {
         }
         div { class: "gallery-placeholder", Placeholder {} Placeholder {} }
         StatusLine { message: "Reading records…", pending: true }
-        ReadNotice {
-            stage: ReadStage::Stale,
-            loading: "Loading…",
-            stale: "Couldn’t refresh. Showing what was read at 9:41.",
-            unavailable: "Couldn’t load.",
-            retry: "Try again",
-            on_retry: move |_| {},
-        }
-        CommandNotice {
-            stage: CommandStage::Unconfirmed,
-            sending: "Sending…",
-            unconfirmed: "Couldn’t confirm it was saved.",
-            check_again: "Check again",
-            on_check_again: move |_| {},
-        }
+        StatusLine { message: "Couldn’t refresh. Showing what was read at 9:41.", retry: "Try again", on_retry: move |_| {} }
+        StatusLine { message: "Couldn’t confirm it was saved.", retry: "Check again", on_retry: move |_| {} }
     }
 }
 
