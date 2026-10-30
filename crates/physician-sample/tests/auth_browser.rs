@@ -411,8 +411,9 @@ fn find_on_path(name: &str) -> Option<PathBuf> {
 
 // The sign-in model's walks, played in two tabs of one browser.
 //
-// `verification/statechart.mjs walks` covers every case of every event in the
-// model, from both tabs closed. Each step does what the event names: you open,
+// `verification/walks.mjs` asks TLC, from both tabs closed, for the shortest
+// walk to each kind of step COVER tells apart, and for random walks for the
+// orders between them. Each step does what the event names: you open,
 // click and sign out in the real page; Coda's answers wait in the page until
 // the model says Coda answers, and another tab's news waits until the tab
 // hears it. After every step both tabs must look as the model says: what each
@@ -429,9 +430,24 @@ async fn every_walk_of_the_sign_in_model_holds_in_two_tabs() {
     // The page reads on its own, so a walk can't make it read.
     play(
         server.address,
-        &model_walks(&["--only", "^(?!the workspace reads)"]),
+        &model_walks(&[
+            "--cover",
+            COVER,
+            "--walks",
+            "100",
+            "--depth",
+            "12",
+            "--skip",
+            "the workspace reads",
+        ]),
     );
 }
+
+/// What tells two steps apart for the walks: the event, and what the tab it
+/// happened in shows, waits on and holds after it.
+const COVER: &str = r#"<<event, IF event.tab = "" THEN <<>> ELSE
+  <<tab[event.tab].shows, tab[event.tab].whose, tab[event.tab].read, tab[event.tab].signIn,
+    tab[event.tab].link, tab[event.tab].opens, stores = NoSession>>>>"#;
 
 /// Paths on which the code once broke a rule the model holds: a tab opened at
 /// a patient link while signed out, following another tab's sign-in, still
@@ -545,13 +561,12 @@ fn model_walks(choice: &[&str]) -> Walks {
     let output = std::process::Command::new("node")
         .current_dir(&workspace)
         .args([
-            "verification/statechart.mjs",
-            "walks",
-            "verification/physician/sign-in/sign-in.mjs",
+            "verification/walks.mjs",
+            "verification/physician/sign-in/SignIn.tla",
         ])
         .args(choice)
         .output()
-        .expect("node runs the model");
+        .expect("node asks TLC for the walks");
     assert!(
         output.status.success(),
         "{}",
@@ -784,14 +799,14 @@ impl Walker {
         // Coda knows each session the model knows, live or ended.
         for (i, slot) in self.slots.clone().iter().enumerate() {
             if let Some(token) = slot {
-                let live = LIVE.contains(&before[&format!("Session {}", i + 1)].as_str());
+                let live = LIVE.contains(&before[&format!("session.Session {}", i + 1)].as_str());
                 let (status, _) = http(self.address, "GET", "/auth/whoami", Some(token), None);
                 assert_eq!(
                     status == 200,
                     live,
                     "Session {} is {} but Coda answered {status}",
                     i + 1,
-                    before[&format!("Session {}", i + 1)]
+                    before[&format!("session.Session {}", i + 1)]
                 );
             }
         }
@@ -802,7 +817,7 @@ impl Walker {
             Some((what, t)) => (what, t.to_owned()),
             None => (event, String::new()),
         };
-        let c = |region: &str| format!("Tab {t} {region}");
+        let c = |field: &str| format!("tab.{t}.{field}");
         match what {
             "open Coda" => { let url = self.base.clone(); self.open(&t, &url) }
             "open a patient link" => { let url = format!("{}/?patient={MARY}", self.base); self.open(&t, &url) }
@@ -821,8 +836,8 @@ impl Walker {
             "use another email" => self.click_text(&t, "Use a different email"),
             "Coda checks the link" | "Coda answers who signed in" => self.answer(&t, "whoami", before),
             "Coda signs in the link" => {
-                let slot = (0..3).find(|&i| before[&format!("Session {}", i + 1)] == "Not signed in yet"
-                    && after[&format!("Session {}", i + 1)] != "Not signed in yet").expect("a new session");
+                let slot = (0..3).find(|&i| before[&format!("session.Session {}", i + 1)] == "Not signed in yet"
+                    && after[&format!("session.Session {}", i + 1)] != "Not signed in yet").expect("a new session");
                 let verified = mint(self.address);
                 self.slots[slot] = Some(verified["session"].as_str().unwrap().to_owned());
                 self.release(&t, "verify", None, &Answer::Says(200, verified));
@@ -831,7 +846,7 @@ impl Walker {
                 "detail": "That sign-in link is no longer valid.", "reason": "invalid" }))),
             "the link no longer grants access" => self.release(&t, "verify", None, &Answer::Says(403, serde_json::json!({
                 "detail": "This sign-in link no longer gives access to this practice.", "reason": "no_access" }))),
-            "Coda can't reach sign-in" => match before[&c("signs in")].as_str() {
+            "Coda can't reach sign-in" => match before[&c("signIn")].as_str() {
                 s if s.starts_with("Verifying") => self.release(&t, "verify", None, &Answer::Unreachable),
                 s if s.starts_with("Checking the link") => {
                     let bearer = self.slot_token(s);
@@ -850,7 +865,7 @@ impl Walker {
             "the practice removes your access" => {
                 // Coda ends the event stream of every workspace on your live sessions.
                 for i in 0..3 {
-                    if before[&format!("Session {}", i + 1)] == "Yours, live" && let Some(token) = self.slots[i].clone() {
+                    if before[&format!("session.Session {}", i + 1)] == "Yours, live" && let Some(token) = self.slots[i].clone() {
                         for t in ["A", "B"] {
                             let page = self.tab(t);
                             if page.evaluate("!!window.__coda").as_bool() == Some(true) {
@@ -939,8 +954,8 @@ impl Walker {
         else {
             return Answer::Coda;
         };
-        match state[&format!("Session {}", i + 1)].as_str() {
-            "Yours, live" if state["Your access"] != "Granted" => Answer::Says(
+        match state[&format!("session.Session {}", i + 1)].as_str() {
+            "Yours, live" if state["access"] != "Granted" => Answer::Says(
                 401,
                 serde_json::json!({
                 "detail": "The practice removed your access.", "reason": "access_removed" }),
@@ -1012,7 +1027,7 @@ impl Walker {
         loop {
             let mut differences = Vec::new();
             for t in ["A", "B"] {
-                let signing = state[&format!("Tab {t} signs in")].clone();
+                let signing = state[&format!("tab.{t}.signIn")].clone();
                 if !signing.starts_with("Checking") && !signing.starts_with("Asking") {
                     let stray: std::collections::BTreeSet<_> = self
                         .held(t)
@@ -1037,13 +1052,13 @@ impl Walker {
                     break;
                 }
             }
-            let stored = stored.map_or(state["This browser stores"].clone(), |stored| {
+            let stored = stored.map_or(state["stores"].clone(), |stored| {
                 self.slot_of(stored.as_str())
             });
-            if stored != state["This browser stores"] {
+            if stored != state["stores"] {
                 differences.push(format!(
                     "the browser stores {stored}, not {}",
-                    state["This browser stores"]
+                    state["stores"]
                 ));
             }
             if differences.is_empty() {
@@ -1058,7 +1073,7 @@ impl Walker {
 
     fn differences(&mut self, t: &str, state: &ModelState) -> Vec<String> {
         let seen = self.tab(t).evaluate(OBSERVE);
-        let region = |name: &str| state[&format!("Tab {t} {name}")].clone();
+        let region = |field: &str| state[&format!("tab.{t}.{field}")].clone();
         let mut out = Vec::new();
         let shows = seen["shows"].as_str().unwrap_or_default().to_owned();
         if shows != region("shows") {
@@ -1066,11 +1081,11 @@ impl Walker {
         }
         if region("shows") == "Your workspace" {
             let patient = seen["patient"].as_bool() == Some(true);
-            if patient != (region("opens at") == "The linked patient") {
+            if patient != (region("opens") == "The linked patient") {
                 out.push(format!(
                     "tab {t} opens at {}, not {}",
                     if patient { "the patient" } else { "Today" },
-                    region("opens at")
+                    region("opens")
                 ));
             }
         }
@@ -1093,7 +1108,7 @@ impl Walker {
                 .collect::<std::collections::BTreeSet<_>>()
         };
         let reads = of("read");
-        let want_reads = match region("reads").as_str() {
+        let want_reads = match region("read").as_str() {
             "No read out" => Default::default(),
             "Reading with no session" => {
                 std::collections::BTreeSet::from(["No session".to_owned()])
@@ -1105,10 +1120,10 @@ impl Walker {
         if reads != want_reads {
             out.push(format!(
                 "tab {t} waits on reads with {reads:?}, not {}",
-                region("reads")
+                region("read")
             ));
         }
-        let signing = region("signs in");
+        let signing = region("signIn");
         let verifying = !of("verify").is_empty();
         if verifying != signing.starts_with("Verifying") {
             out.push(format!(
@@ -1136,12 +1151,11 @@ impl Walker {
         }
         let news = seen["news"].as_u64().unwrap_or(0) > 0;
         // A closed tab has no page to hear news.
-        if region("shows") != "Closed" && news != (state[&format!("News for tab {t}")] != "No news")
-        {
+        if region("shows") != "Closed" && news != (state[&format!("tab.{t}.news")] != "No news") {
             out.push(format!(
                 "tab {t} {} news, but the model says {}",
                 if news { "has" } else { "has no" },
-                state[&format!("News for tab {t}")]
+                state[&format!("tab.{t}.news")]
             ));
         }
         if seen["signingOut"].as_u64().unwrap_or(0) > 0 {

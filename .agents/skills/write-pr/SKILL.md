@@ -78,7 +78,7 @@ even when it spans many files.
 Follow the project's existing verification owners. Where relevant, connect the
 agreed journey and affected promises to their statecharts, formal obligations,
 implementation, and running-product evidence. In Coda Rust, use the existing Coda
-verification guidance and Verus owners. Identify changed assumptions, stale evidence,
+verification guidance and journey models. Identify changed assumptions, stale evidence,
 and missing correspondence; do not create a parallel specification or require formal
 proof for every edit.
 
