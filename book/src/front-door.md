@@ -62,5 +62,5 @@ consumers matter when reconciling the adapter under the existing outcomes.
 [GCP migration jobs](gcp.md). The existing
 [`front_door_postgres.rs`](/crates/physician-sample/tests/front_door_postgres.rs)
 proves its scoped invitation/link path, not all current connection acceptance.
-The [Bridge technical outline](https://linear.app/coda-health/document/bridge-technical-outline-6206e6c1af4c)
-routes to these owners and the current outcomes.
+The [Connected care project](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874)
+tracks these outcomes and their acceptance.
