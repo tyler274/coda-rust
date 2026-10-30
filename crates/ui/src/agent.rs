@@ -1,7 +1,7 @@
 //! Agent work: what an agent is doing and has done, shown as it happens. Its steps (thinking,
 //! reading, searching, running a tool) stand under one line that says what it did, and the plan
-//! it works through checks off as it goes. Every state here is the host's, from the agent's own
-//! run; nothing invents progress.
+//! it works through checks off as it goes, and what it asks before acting waits for the person's
+//! answer. Every state here is the host's, from the agent's own run; nothing invents progress.
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -9,7 +9,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName, Spinner, WorkingMark};
+use crate::{Button, ButtonVariant, Icon, IconName, Spinner, WorkingMark};
 
 /// Where one step of an agent's work stands.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -256,3 +256,70 @@ pub fn TaskList(
         }
     }
 }
+
+/// The person's answer to what an agent asked.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Answer {
+    /// Go ahead.
+    Approved,
+    /// Don't.
+    Declined,
+}
+
+/// What an agent asks before it acts: what it wants to do, a quieter `detail`, and what it would
+/// act on as the card's content, such as a command, a change or a message to send. The two answers
+/// stand at its foot, approving filled, and red when it removes what the person has; `busy` holds
+/// both while an answer is on its way. Answered, the card keeps what was asked and says the
+/// `answer` in `answered` words, never what came of it: the action's own result is reported apart.
+#[component]
+pub fn ApprovalCard(
+    title: String,
+    detail: Option<String>,
+    approve_label: String,
+    decline_label: String,
+    on_approve: EventHandler<MouseEvent>,
+    on_decline: EventHandler<MouseEvent>,
+    #[props(default)] danger: bool,
+    #[props(default)] busy: bool,
+    answer: Option<Answer>,
+    #[props(default)] answered: String,
+    children: Element,
+) -> Element {
+    let id = use_hook(|| format!("approval-{}", APPROVALS.fetch_add(1, Ordering::Relaxed)));
+    rsx! {
+        section {
+            class: if answer.is_some() { "approval is-answered" } else { "approval" },
+            aria_labelledby: "{id}",
+            div { class: "approval-heading",
+                strong { id: "{id}", "{title}" }
+                if let Some(detail) = detail {
+                    span { "{detail}" }
+                }
+            }
+            div { class: "approval-content", {children} }
+            match answer {
+                None => rsx! {
+                    div { class: "approval-actions",
+                        Button { compact: true, disabled: busy, onclick: move |event| on_decline.call(event), "{decline_label}" }
+                        Button {
+                            variant: ButtonVariant::Primary,
+                            compact: true,
+                            danger,
+                            busy,
+                            onclick: move |event| on_approve.call(event),
+                            "{approve_label}"
+                        }
+                    }
+                },
+                Some(answer) => rsx! {
+                    p { class: "approval-answer", role: "status",
+                        Icon { name: if answer == Answer::Approved { IconName::Check } else { IconName::X } }
+                        "{answered}"
+                    }
+                },
+            }
+        }
+    }
+}
+
+static APPROVALS: AtomicUsize = AtomicUsize::new(0);

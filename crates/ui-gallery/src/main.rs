@@ -17,18 +17,18 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, ChartHeader, CitationChip,
-    CitationPreview, Command, CommandPalette, Comparison, ComparisonBars, Composer, ContextChip,
-    ContextMenu, ConversationViewport, Count, DateSeparator, Dialog, Disclosure, DraftConflict,
-    EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow,
-    LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Message,
-    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
-    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
-    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
-    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList,
-    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, WorkStep,
-    WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    ActionRow, Answer, ApprovalCard, Author, Avatar, AvatarSize, Button, ButtonVariant, Card,
+    ChartHeader, CitationChip, CitationPreview, Command, CommandPalette, Comparison,
+    ComparisonBars, Composer, ContextChip, ContextMenu, ConversationViewport, Count, DateSeparator,
+    Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
+    IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette,
+    MenuSection, Message, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
+    Placeholder, PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice,
+    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow,
+    SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading,
+    SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar,
+    Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar,
+    Value, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -143,8 +143,9 @@ fn Gallery() -> Element {
                 Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
                 }
-                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Every state comes from the run.",
+                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Every state comes from the run.",
                     AgentWorkDemo {}
+                    ApprovalDemo {}
                 }
                 Section { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
                     PaletteDemo {}
@@ -1878,6 +1879,74 @@ fn AgentWorkDemo() -> Element {
                     body: rsx! { p { "Asked the regional exchange for results since September; no answer after 8 seconds." } },
                 }
                 WorkStep { icon: IconName::Search, label: "Stopped searching older notes", state: StepState::Stopped, detail: "You stopped it" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ApprovalDemo() -> Element {
+    let mut answer = use_signal(|| None::<Answer>);
+    let mut busy = use_signal(|| false);
+    // What came of the answer, reported apart from it: None until sending starts.
+    let mut sent = use_signal(|| None::<bool>);
+    let mut removal = use_signal(|| None::<Answer>);
+    let mut give = move |given: Answer| {
+        busy.set(true);
+        spawn(async move {
+            futures_timer::Delay::new(Duration::from_millis(700)).await;
+            busy.set(false);
+            answer.set(Some(given));
+            if given == Answer::Approved {
+                sent.set(Some(false));
+                futures_timer::Delay::new(Duration::from_millis(1600)).await;
+                sent.set(Some(true));
+            }
+        });
+    };
+    rsx! {
+        div { class: "gallery-agent",
+            ApprovalCard {
+                title: "Send this summary to her cardiologist?",
+                detail: "Through the practice's secure messages",
+                approve_label: "Send",
+                decline_label: "Not now",
+                busy: busy(),
+                answer: answer(),
+                answered: if answer() == Some(Answer::Approved) { "You approved sending it." } else { "You said not now." },
+                on_approve: move |_| give(Answer::Approved),
+                on_decline: move |_| give(Answer::Declined),
+                Quote { text: "Potassium rose from 4.9 to 5.4 since the spironolactone dose went to 25 mg on October 2. No repeat level since. Worth a recheck this week?" }
+            }
+            if let Some(done) = sent() {
+                WorkTrace { label: if done { "Sent the summary" } else { "Sending the summary" }, working: !done,
+                    WorkStep { icon: IconName::Message,
+                        label: if done { "Sent to her cardiologist" } else { "Sending to her cardiologist" },
+                        state: if done { StepState::Done } else { StepState::Running },
+                        detail: done.then(|| "Secure messages".to_owned()),
+                    }
+                }
+            }
+            ApprovalCard {
+                title: "Remove the old care plan?",
+                detail: "Replaced by the plan saved October 21",
+                approve_label: "Remove",
+                decline_label: "Keep it",
+                danger: true,
+                answer: removal(),
+                answered: if removal() == Some(Answer::Approved) { "You approved removing it." } else { "You kept it." },
+                on_approve: move |_| removal.set(Some(Answer::Approved)),
+                on_decline: move |_| removal.set(Some(Answer::Declined)),
+            }
+            Button { compact: true, variant: ButtonVariant::Quiet,
+                onclick: move |_| {
+                    answer.set(None);
+                    sent.set(None);
+                    removal.set(None);
+                },
+                Icon { name: IconName::Refresh }
+                "Ask again"
             }
         }
     }

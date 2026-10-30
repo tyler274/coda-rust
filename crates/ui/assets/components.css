@@ -677,6 +677,21 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .work-step-body > :first-child { margin-top: 0; }
 .work-step-body > :last-child { margin-bottom: 0; }
 @media (prefers-reduced-motion: reduce) { .work-step.is-running .work-step-label { animation: none; background: none; color: var(--ink); } }
+/* An approval: a card at the resting card's depth on the action's outline while it waits, its content set in, the
+   answers at its trailing foot. Answered, its outline goes quiet and the answer takes the actions' place. */
+.approval { display: grid; gap: var(--space-3); min-width: 0; padding: var(--space-4); border: var(--hairline) solid var(--primary-outline); border-radius: var(--radius-lg);
+  background: var(--surface-lowest); box-shadow: var(--elevation-2); transition: border-color var(--motion-arrive) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
+.approval.is-answered { border-color: var(--outline-variant); box-shadow: none; }
+.approval-heading { display: grid; gap: var(--space-hair); }
+.approval-heading strong { color: var(--ink); font: var(--type-title-sm); }
+.approval-heading span { color: var(--muted); font: var(--type-body-sm); }
+.approval-content { min-width: 0; color: var(--body); font: var(--type-body-md); }
+.approval-content:empty { display: none; }
+.approval-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+.approval-answer { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--muted); font: var(--type-body-sm);
+  transition: opacity var(--motion-arrive) var(--ease-out); }
+@starting-style { .approval-answer { opacity: 0; } }
+.approval-answer > .icon { color: var(--primary); }
 /* Overlays: the browser's own popover, in the top layer at the overlay's depth, beside the control that opens it. It
    opens under the control from its leading edge and flips above or across where there isn't room; without anchoring it
    stands centred. It arrives on the arrival spring from the corner nearest the control and settles back shorter. */
