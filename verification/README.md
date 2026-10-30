@@ -76,7 +76,10 @@ Coda uses PStack's five verification skills as they are:
 
 Each skill writes a project skill, such as
 [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md), that names Coda's commands
-and what each check covers.
+and what each check covers. The PStack skills say to write it under `.cursor/skills/verify-<app>/`;
+in Coda it goes in `.agents/skills/coda-verify-<feature>/` with a `.claude/skills` link, like every
+repository skill, and gets a row under [Verify skills](#verify-skills). The maintain skills look
+for it there.
 
 The skills in `.agents/skills` are [PStack at 519d36a](https://github.com/cursor/plugins/tree/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills),
 copied unchanged except that `statechart/scripts/test`, the tool's own test corpus, is left out.
