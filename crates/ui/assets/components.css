@@ -78,6 +78,12 @@
 .working-dots { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 1lh; }
 .working-dots > .live-dot:nth-child(2) { animation-delay: calc(var(--motion-working) / 6); }
 .working-dots > .live-dot:nth-child(3) { animation-delay: calc(var(--motion-working) / 3); }
+/* Running work, after the React app's working presence: the mark beside the verb, and under it the step under way. */
+.working-presence { display: flex; align-items: center; gap: var(--space-2); color: var(--body); font: var(--type-body-md); }
+.working-presence.is-compact { font: var(--type-body-sm); }
+.working-presence-verb { min-width: 0; }
+.working-presence:has(.run-activity) { flex-wrap: wrap; }
+.working-presence > .run-activity { flex-basis: 100%; color: var(--body); font: var(--type-body-sm); }
 @media (prefers-reduced-motion: reduce) {
   .placeholder-bar, .live-dot, .state-pill { animation: none; transition: none; }
   .pending-status { animation-duration: 0s; }
@@ -101,6 +107,9 @@
 @media (hover: hover) { .navigation-control:hover:not(:disabled) { color: var(--navigation-hover-color, var(--ink)); text-decoration: underline; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; } }
 .navigation-control:disabled { cursor: default; opacity: .46; }
 .action-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+/* A key hint beside a control's words, where there is a keyboard. */
+.key-hint { margin-inline-start: var(--space-1); color: inherit; opacity: .72; font: inherit; font-weight: var(--weight-regular); }
+@media (pointer: coarse) { .key-hint { display: none; } }
 .control-compact { width: fit-content; min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3); }
 .control-quiet { padding-inline: var(--control-quiet-padding-inline, var(--space-3)); }
 .control-icon { width: var(--control-height); height: var(--control-height); min-width: var(--control-height); min-height: var(--control-height); padding: var(--space-2); }
@@ -187,6 +196,14 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 .composer.is-inline > :not(.composer-input, .composer-toolbar) { grid-column: 1 / -1; }
 .composer.is-inline > .composer-input { padding-inline: var(--space-3) 0; }
 .composer.is-inline > .composer-toolbar { flex-wrap: nowrap; min-height: 0; }
+/* What is happening leads the toolbar, muted and small; the actions keep the far edge. */
+.composer-context { display: flex; flex: 1 1 11em; align-items: center; flex-wrap: wrap; gap: var(--space-1) var(--space-3); min-width: 0; margin-inline-end: auto; padding-inline: var(--space-2); color: var(--muted); font: var(--type-body-sm); }
+/* A draft saved elsewhere, after the React app's: under a hairline, what happened, the saved words as written, then the
+   choice. */
+.draft-conflict { margin: var(--space-2); padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); }
+.draft-conflict p { margin: 0 0 var(--space-2); font: var(--type-body-sm); }
+.draft-conflict-label { color: var(--muted); font-weight: var(--weight-strong); }
+.draft-conflict pre { max-height: 8lh; margin: 0 0 var(--space-3); overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); font: var(--type-body-lg); }
 /* A disclosure, after the React app's: the title is the toggle, its chevron turning as the section opens; the content
    grows open and shut and stays mounted, out of reach while closed. A detail is a quiet line. */
 .disclosure { min-width: 0; }

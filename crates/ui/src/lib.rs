@@ -296,6 +296,70 @@ pub fn WorkingMark() -> Element {
     }
 }
 
+/// Running work, after the React app's `WorkingPresence`: the working mark beside the verb that
+/// says what runs, and under it, while there is one, the step under way. It announces itself
+/// unless the host says it shouldn't.
+#[component]
+pub fn WorkingPresence(
+    label: String,
+    /// The smaller form, for a toolbar or a row.
+    #[props(default)]
+    compact: bool,
+    /// The verb's hover title and accessible description, such as when the work started.
+    #[props(default)]
+    hint: String,
+    /// The step under way.
+    #[props(default)]
+    activity: String,
+    #[props(default = true)] announce: bool,
+) -> Element {
+    rsx! {
+        div {
+            class: if compact { "working-presence is-compact" } else { "working-presence" },
+            role: if announce { "status" },
+            WorkingMark {}
+            span { class: "working-presence-verb", title: if !hint.is_empty() { "{hint}" }, "{label}" }
+            if !activity.is_empty() {
+                span { class: "run-activity", "{activity}" }
+            }
+        }
+    }
+}
+
+/// A key that does what the control does, after the React app's key hint: shown beside the
+/// control's words where there is a keyboard, hidden from assistive technology, which hears the
+/// control's own shortcut.
+#[component]
+pub fn KeyHint(key_label: String) -> Element {
+    rsx! { kbd { class: "key-hint", aria_hidden: "true", "{key_label}" } }
+}
+
+/// A draft saved elsewhere from the same revision, after the React app's `DraftConflictChoice`:
+/// what happened, the saved draft's words as written, and then the host's way to choose.
+#[component]
+pub fn DraftConflict(
+    message: String,
+    /// What the saved words are called, above them.
+    #[props(default)]
+    label: String,
+    saved: String,
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
+    let mut class = String::from("draft-conflict");
+    let rest = host_attributes(&mut class, attributes);
+    rsx! {
+        div { class: "{class}", role: "alert", ..rest,
+            p { "{message}" }
+            if !label.is_empty() {
+                p { class: "draft-conflict-label", "{label}" }
+            }
+            pre { "{saved}" }
+            {children}
+        }
+    }
+}
+
 /// Waiting on an action the person took, after the React app's `Spinner`: a turning ring where the
 /// control's icon was, at icon size. Running work keeps the working mark; content still loading
 /// keeps its placeholder.
@@ -654,6 +718,14 @@ pub fn Composer(
     /// The actions sit beside the words rather than under them.
     #[props(default)]
     inline: bool,
+    /// What is happening, at the toolbar's leading edge: working presence, the draft's state, or
+    /// guidance.
+    #[props(default)]
+    status: Option<Element>,
+    /// What needs the person under the toolbar, inside the field: a `DraftConflict`, or what
+    /// failed.
+    #[props(default)]
+    notices: Option<Element>,
     children: Element,
 ) -> Element {
     let held = value.clone();
@@ -688,7 +760,13 @@ pub fn Composer(
                     }
                 },
             }
-            div { class: "composer-toolbar", {children} }
+            div { class: "composer-toolbar",
+                if let Some(status) = status {
+                    div { class: "composer-context", {status} }
+                }
+                {children}
+            }
+            {notices}
         }
     }
 }

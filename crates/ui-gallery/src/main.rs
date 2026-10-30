@@ -9,13 +9,13 @@ use std::time::Duration;
 use ui::{
     ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, CitationChip,
     CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
-    DateSeparator, Dialog, Disclosure, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
-    IconName, LaterContext, ListRow, LiveDot, MeasurementTile, Message, NavigationControl,
-    NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape,
-    ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup, SearchField, SectionHeader,
-    SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline,
-    StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar,
-    TrendChart, UndoNotice, Value, WorkingMark,
+    DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
+    FooterActions, Icon, IconName, KeyHint, LaterContext, ListRow, LiveDot, MeasurementTile,
+    Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
+    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup,
+    SearchField, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
+    ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark, WorkingPresence,
 };
 
 fn main() {
@@ -102,6 +102,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
                     ConversationDemo {}
+                }
+                Section { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
+                    ComposerStatesDemo {}
                 }
                 Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
                     ProseDemo {}
@@ -648,6 +651,47 @@ fn OverlayDemo() -> Element {
             Dialog { close_label: "Close", sheet: true, title: "Sleep note", on_close: move |_| over.set(false),
                 p { class: "gallery-copy", "Closing this returns to the sheet beneath." }
             }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ComposerStatesDemo() -> Element {
+    let mut next = use_signal(|| "Also check her potassium trend.".to_string());
+    let mut mine = use_signal(|| "Summarize the cardiology note for her visit.".to_string());
+    rsx! {
+        div { class: "gallery-composers",
+            Composer {
+                label: "Message Coda",
+                value: next(),
+                on_input: move |text| next.set(text),
+                on_submit: move |_| {},
+                status: rsx! { WorkingPresence { label: "Reviewing the chart", compact: true, announce: false, hint: "Started 9:41 AM" } },
+                Button { variant: ButtonVariant::Quiet, "Stop" }
+                Button { "Update response" }
+                Button { variant: ButtonVariant::Primary, submit: true, "Send next", KeyHint { key_label: "↵" } }
+            }
+            Composer {
+                label: "Message Coda",
+                value: mine(),
+                on_input: move |text| mine.set(text),
+                on_submit: move |_| {},
+                status: rsx! { span { "Draft changed in another window" } },
+                notices: rsx! {
+                    DraftConflict {
+                        message: "Your text is still in the composer. Choose which draft to keep.",
+                        label: "Saved draft",
+                        saved: "Summarize the cardiology note and the latest echo for her visit.",
+                        ActionRow {
+                            Button { "Keep my text" }
+                            Button { "Use saved text" }
+                        }
+                    }
+                },
+                Button { variant: ButtonVariant::Primary, submit: true, disabled: true, "Send", KeyHint { key_label: "↵" } }
+            }
+            WorkingPresence { label: "Reviewing the chart", activity: "Reading the cardiology note", announce: false }
         }
     }
 }

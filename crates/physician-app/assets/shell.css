@@ -217,12 +217,9 @@ button.sidebar-expand { display: none; }
 .schedule-visit-preparation { display: block; color: var(--muted); font: var(--type-body-sm); }
 .schedule-visit.is-next .schedule-visit-preparation { color: inherit; }
 .synopsis { margin: 0; white-space: pre-wrap; font: var(--type-body-md); }
-.composer-actions { display: flex; align-items: center; gap: var(--space-2); }
 .composer-notice { color: var(--muted); font: var(--type-body-sm); }
 /* The composer keeps a gutter under it, as React's composer region does, so its edge never meets the window's. */
 .composer { margin-bottom: max(var(--space-3), env(safe-area-inset-bottom)); }
-/* The composer's own notice leads its toolbar; its actions keep the far edge. */
-.composer-toolbar > .composer-notice { margin-right: auto; }
 .reader-body { margin: 0 0 var(--space-4); color: var(--body); white-space: pre-wrap; font: var(--type-body-md); }/* The public entry, on the shared colour roles like the rest of the app. */
 .sign-in-screen {
   display: grid;

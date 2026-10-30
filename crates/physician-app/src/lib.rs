@@ -38,8 +38,9 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    Author, Button, ButtonVariant, Dialog, EmptyLine, Icon, IconName, IconTile, LiveDot,
-    NavigationControl, NavigationRow, SearchField, StatePill, StatusLine, Tone,
+    ActionRow, Author, Button, ButtonVariant, Dialog, DraftConflict, EmptyLine, Icon, IconName,
+    IconTile, KeyHint, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill,
+    StatusLine, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -3446,24 +3447,23 @@ fn PatientSurface(
                                     on_draft_blur.call(());
                                 }
                             },
-                            if !notice.is_empty() {
-                                span { class: "composer-notice", role: "status", "{notice}" }
-                            }
+                            status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
+                            notices: conflict.map(|newer| rsx! {
+                                DraftConflict {
+                                    message: DRAFT_CONFLICT,
+                                    saved: newer.text,
+                                    "data-revision": "{newer.revision}",
+                                    p { class: "quiet-line",
+                                        if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                                    }
+                                    ActionRow {
+                                        Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                        Button { compact: true, onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
+                                    }
+                                }
+                            }),
                             Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
-                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
-                        }
-                        if let Some(newer) = conflict {
-                            div { class: "composer-conflict", role: "alert", "data-revision": "{newer.revision}",
-                                p { "{DRAFT_CONFLICT}" }
-                                blockquote { class: "composer-conflict-text", "{newer.text}" }
-                                p { class: "quiet-line",
-                                    if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
-                                }
-                                div { class: "composer-actions",
-                                    Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
-                                    Button { compact: true, onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
-                                }
-                            }
+                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send", KeyHint { key_label: "↵" } }
                         }
                         if recovery_unavailable {
                             p { class: "quiet-line composer-recovery", role: "status", "{RECOVERY_UNAVAILABLE}" }
