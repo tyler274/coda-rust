@@ -78,7 +78,7 @@ fn Gallery() -> Element {
                 Section { title: "Colour", note: "Roles in pairs, a fill and what reads on it. Hosts read roles, never tones; dark mode swaps the tones beneath.",
                     ColourDemo {}
                 }
-                Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context.",
+                Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. An observation opens as a whole; saved work's footer leads back to the conversation it came from.",
                     CardDemo {}
                 }
                 Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
@@ -230,7 +230,9 @@ fn CardDemo() -> Element {
             Card {
                 overline: "What Duet noticed",
                 title: "Sleep was shorter than your recent average",
-                footer: "October 14–21 · Apple Health",
+                footer: "42 min less · Apple Health",
+                footer_icon: IconName::Heart,
+                onclick: move |_| {},
                 ComparisonBars {
                     rows: vec![
                         Comparison { label: "Last night".into(), value: "6 hr 18 min".into(), fraction: 0.9 },
@@ -243,6 +245,8 @@ fn CardDemo() -> Element {
                 overline: "Your saved plan",
                 title: "Evening wind-down",
                 footer: "Saved in chat · October 21",
+                footer_icon: IconName::Message,
+                on_footer: move |_| {},
                 StepList {
                     steps: vec![
                         "Put my phone away at 10:30 pm.".into(),

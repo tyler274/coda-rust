@@ -250,6 +250,8 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   .field:focus-within { outline: var(--focus-ring-width) solid Highlight; }
   .dialog { outline: var(--hairline) solid CanvasText; }
   :is(.control, .navigation-row)::before { display: none; }
+  .card-open::after { background: transparent; }
+  .card-object:has(.card-open:focus-visible) { outline-color: Highlight; }
   .control { border-color: ButtonText; }
   .state-pill { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
   :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
@@ -288,7 +290,24 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .card-lead + .card-object-title { margin-top: calc(-1 * var(--space-1)); }
 .card-object-title + .card-detail { margin-top: calc(-1 * var(--space-3)); }
 .card-detail { margin: 0; color: var(--muted); font: var(--type-body-sm); }
-.card-footer { margin: 0; padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); color: var(--muted); font: var(--type-body-sm); }
+.card-footer { display: flex; align-items: center; gap: var(--space-2); margin: 0; padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant);
+  color: var(--muted); font: var(--type-body-sm); }
+.card-footer .icon { width: 16px; height: 16px; }
+.card-footer-go { margin-inline-start: auto; }
+.card-footer-link { --navigation-color: var(--muted); min-height: 0; padding: 0; font: inherit; }
+/* A card that opens its object: the title is the button, and its reach and state layer cover the card; the ring goes round
+   the card. */
+.card-object.is-openable { position: relative; }
+.card-open { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; }
+.card-open::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-lg); background: currentColor; opacity: 0;
+  transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { .card-open:hover::after { opacity: var(--state-hover); } }
+.card-open:active::after { opacity: var(--state-pressed); }
+.card-open:focus-visible { outline: 0; animation: none; }
+.card-object:has(.card-open:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset);
+  animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
+    focus-ring-settle calc(var(--motion-focus) * .75) var(--ease-emphasized) calc(var(--motion-focus) * .25); }
 .is-tinted .card-footer { padding-top: 0; border-top: 0; }
 .step-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--outline-variant); }
 .step-list li { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--outline-variant); color: var(--ink); font: var(--type-body-md); }

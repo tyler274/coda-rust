@@ -4,11 +4,16 @@
 
 use dioxus::prelude::*;
 
-use crate::Overline;
+use crate::{Icon, IconName, Overline};
 
 /// One object on a white reading surface, or on the data container when `tinted`: an optional
 /// mark and overline naming what it holds, its title, a detail line, its content, and the source
-/// or receipt it closes on.
+/// or receipt it closes on, after its icon.
+///
+/// A card is a way in when its object has a place of its own. With `onclick` the whole card opens
+/// it, as an insight on Today opens its evidence: the title is the one button and its reach is the
+/// card, so such a card holds no other controls. Otherwise `on_footer` makes the footer the way to
+/// where the object came from, as a saved plan leads back to its conversation.
 #[component]
 pub fn Card(
     #[props(default)] overline: Option<String>,
@@ -16,11 +21,23 @@ pub fn Card(
     #[props(default)] title: Option<String>,
     #[props(default)] detail: Option<String>,
     #[props(default)] footer: Option<String>,
+    #[props(default)] footer_icon: Option<IconName>,
     #[props(default)] tinted: bool,
+    #[props(default)] onclick: Option<EventHandler<MouseEvent>>,
+    #[props(default)] on_footer: Option<EventHandler<MouseEvent>>,
     children: Element,
 ) -> Element {
+    let opens = onclick.filter(|_| title.is_some());
+    let mut class = String::from("card card-object");
+    if tinted {
+        class.push_str(" is-tinted");
+    }
+    if opens.is_some() {
+        class.push_str(" is-openable");
+    }
+    let footer_lead = footer_icon.map(|name| rsx! { Icon { name } });
     rsx! {
-        article { class: if tinted { "card card-object is-tinted" } else { "card card-object" },
+        article { class: "{class}",
             if overline.is_some() || mark.is_some() {
                 div { class: "card-lead",
                     {mark}
@@ -30,14 +47,35 @@ pub fn Card(
                 }
             }
             if let Some(title) = title {
-                h3 { class: "card-object-title", "{title}" }
+                h3 { class: "card-object-title",
+                    if let Some(open) = opens {
+                        button { class: "card-open", r#type: "button", onclick: move |event| open.call(event), "{title}" }
+                    } else {
+                        "{title}"
+                    }
+                }
             }
             if let Some(detail) = detail {
                 p { class: "card-detail", "{detail}" }
             }
             {children}
             if let Some(footer) = footer {
-                p { class: "card-footer", "{footer}" }
+                p { class: "card-footer",
+                    if opens.is_some() {
+                        {footer_lead}
+                        span { "{footer}" }
+                        span { class: "card-footer-go", aria_hidden: "true", Icon { name: IconName::ArrowRight } }
+                    } else if let Some(follow) = on_footer {
+                        button { class: "navigation-control card-footer-link", r#type: "button", onclick: move |event| follow.call(event),
+                            {footer_lead}
+                            span { "{footer}" }
+                            Icon { name: IconName::ArrowRight }
+                        }
+                    } else {
+                        {footer_lead}
+                        span { "{footer}" }
+                    }
+                }
             }
         }
     }
