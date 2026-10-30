@@ -395,6 +395,8 @@ pub fn Button(
     #[props(default)]
     submit: bool,
     onclick: Option<EventHandler<MouseEvent>>,
+    /// The press, before it takes focus: a control that leaves focus where it is prevents it here.
+    onmousedown: Option<EventHandler<MouseEvent>>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
@@ -423,6 +425,11 @@ pub fn Button(
             aria_label: pending,
             onclick: move |event| {
                 if let Some(handler) = &onclick {
+                    handler.call(event);
+                }
+            },
+            onmousedown: move |event| {
+                if let Some(handler) = &onmousedown {
                     handler.call(event);
                 }
             },
@@ -604,12 +611,13 @@ pub fn SearchField(
                 },
             }
             if !value.is_empty() {
-                button {
-                    class: "control control-quiet control-icon control-compact",
-                    r#type: "button",
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    icon_only: true,
+                    compact: true,
                     aria_label: "{clear_label}",
                     // Pressing it leaves focus in the field, so clearing never ends the search.
-                    onmousedown: move |event| event.prevent_default(),
+                    onmousedown: move |event: MouseEvent| event.prevent_default(),
                     onclick: move |_| {
                         on_input.call(String::new());
                         if let Some(field) = input.peek().clone() {
