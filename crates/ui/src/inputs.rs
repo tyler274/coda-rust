@@ -26,13 +26,19 @@ fn note_id(id: &str, hint: &Option<String>, error: &Option<String>) -> Option<St
 fn FieldFrame(
     id: String,
     label: String,
+    reading: Option<String>,
     hint: Option<String>,
     error: Option<String>,
     children: Element,
 ) -> Element {
     rsx! {
         div { class: "text-field",
-            label { class: "text-field-label", r#for: "{id}", "{label}" }
+            div { class: "field-heading",
+                label { class: "text-field-label", r#for: "{id}", "{label}" }
+                if let Some(reading) = reading {
+                    span { class: "field-reading", aria_hidden: "true", "{reading}" }
+                }
+            }
             {children}
             if let Some(error) = error {
                 p { id: "{id}-note", class: "field-note is-error", role: "alert",
@@ -363,7 +369,7 @@ pub fn Combobox(
     };
     rsx! {
         FieldFrame { id: id.clone(), label: label.clone(), hint, error: error.clone(),
-            div { class: "search-field field", style: "anchor-name: --{id}",
+            div { class: "search-field field combobox", style: "anchor-name: --{id}",
                 Icon { name: IconName::Search }
                 input {
                     id: "{id}",
@@ -474,6 +480,104 @@ pub fn Combobox(
                 if options.is_empty() && !loading {
                     p { class: "combobox-empty", role: "status", "{empty}" }
                 }
+            }
+        }
+    }
+}
+
+/// An amount along a track from `min` to `max`, moved by `step`, by finger, pointer or arrow key.
+/// `reading` says it in words, such as "4 of 10", beside the label and to assistive technology.
+#[component]
+pub fn Slider(
+    label: String,
+    value: f64,
+    min: f64,
+    max: f64,
+    #[props(default = 1.0)] step: f64,
+    reading: String,
+    on_change: EventHandler<f64>,
+    #[props(default)] disabled: bool,
+    hint: Option<String>,
+) -> Element {
+    let id = use_hook(field_id);
+    let note = note_id(&id, &hint, &None);
+    let filled = if max > min {
+        ((value - min) / (max - min) * 100.0).clamp(0.0, 100.0)
+    } else {
+        0.0
+    };
+    rsx! {
+        FieldFrame { id: id.clone(), label, reading: reading.clone(), hint,
+            input {
+                id: "{id}",
+                class: "slider",
+                r#type: "range",
+                // The range stands before the value, or the browser clamps the value to its own.
+                min: "{min}",
+                max: "{max}",
+                step: "{step}",
+                value: "{value}",
+                disabled,
+                style: "--filled: {filled}%",
+                aria_valuetext: "{reading}",
+                aria_describedby: note,
+                oninput: move |event| {
+                    if let Ok(value) = event.value().parse() {
+                        on_change.call(value);
+                    }
+                },
+            }
+        }
+    }
+}
+
+/// What a `DateField` asks for.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum DateKind {
+    /// A day.
+    #[default]
+    Date,
+    /// A time of day.
+    Time,
+    /// A day and a time.
+    DateTime,
+}
+
+/// A date, a time or both, from the platform's own picker, in the person's own format on screen.
+/// `value` is the platform's plain form, such as `2026-08-27` or `14:30`, and empty until it is
+/// whole; `min` and `max`, in the same form, bound what the picker offers. What is wrong with a
+/// date is the host's to say, in `error`.
+#[component]
+pub fn DateField(
+    label: String,
+    value: String,
+    on_change: EventHandler<String>,
+    #[props(default)] kind: DateKind,
+    min: Option<String>,
+    max: Option<String>,
+    #[props(default)] disabled: bool,
+    hint: Option<String>,
+    error: Option<String>,
+) -> Element {
+    let id = use_hook(field_id);
+    let note = note_id(&id, &hint, &error);
+    rsx! {
+        FieldFrame { id: id.clone(), label, hint, error: error.clone(),
+            input {
+                id: "{id}",
+                class: "field text-field-input date-field",
+                r#type: match kind {
+                    DateKind::Date => "date",
+                    DateKind::Time => "time",
+                    DateKind::DateTime => "datetime-local",
+                },
+                min,
+                max,
+                value: "{value}",
+                disabled,
+                aria_describedby: note,
+                aria_invalid: error.is_some().then_some("true"),
+                oninput: move |event| on_change.call(event.value()),
             }
         }
     }

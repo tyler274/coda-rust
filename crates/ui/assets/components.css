@@ -208,12 +208,34 @@
 .text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
 :where(input, textarea).text-field-input { padding: var(--space-3); }
 textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
+/* A combobox stands at a text field's height. */
+.search-field.combobox > input { min-height: 0; padding-block: var(--space-3); }
 /* A select is the platform's own, in the field's look, with the library's chevron. */
 .select { position: relative; min-width: 0; }
 .select > select { appearance: none; display: block; width: 100%; padding: var(--space-3) calc(var(--space-3) + 28px) var(--space-3) var(--space-3); cursor: pointer; }
 .select > select.is-placeholder { color: var(--muted); }
 .select > select:disabled { cursor: default; opacity: .46; }
 .select > .icon { position: absolute; top: 50%; inset-inline-end: var(--space-3); translate: 0 -50%; color: var(--muted); pointer-events: none; }
+/* What a field reads, level with its label: a slider's amount. */
+.field-heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.field-reading { color: var(--muted); font: var(--type-body-md); font-variant-numeric: tabular-nums; }
+/* A date or time is the platform's own, in the field's look, its picker mark as quiet as a select's chevron. */
+.date-field { box-sizing: border-box; padding-block: 0; height: calc(var(--space-3) * 2 + 1lh + 2 * var(--hairline)); display: grid; align-items: center; }
+.date-field::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .62; }
+.date-field:disabled { opacity: .46; }
+/* A slider: the platform's control on a filled track, a ringed thumb that stands out on any surface, a target's height to take hold of. */
+.slider { --thumb: 22px; appearance: none; display: block; width: 100%; height: var(--target); margin: 0; background: transparent; cursor: pointer; touch-action: pan-y; }
+.slider::-webkit-slider-runnable-track { height: 6px; border-radius: var(--radius-pill); background: linear-gradient(to right, var(--primary) var(--filled), var(--surface-highest) var(--filled)); }
+.slider::-moz-range-track { height: 6px; border-radius: var(--radius-pill); background: linear-gradient(to right, var(--primary) var(--filled), var(--surface-highest) var(--filled)); }
+.slider::-webkit-slider-thumb { appearance: none; width: var(--thumb); height: var(--thumb); margin-top: calc((6px - var(--thumb)) / 2); box-sizing: border-box; border: 3px solid var(--surface-lowest); border-radius: 50%; background: var(--primary);
+  box-shadow: var(--elevation-2); transition: scale var(--motion-control) var(--ease-out); }
+.slider::-moz-range-thumb { box-sizing: border-box; width: var(--thumb); height: var(--thumb); border: 3px solid var(--surface-lowest); border-radius: 50%; background: var(--primary); box-shadow: var(--elevation-2); transition: scale var(--motion-control) var(--ease-out); }
+.slider:active::-webkit-slider-thumb { scale: 1.12; }
+.slider:active::-moz-range-thumb { scale: 1.12; }
+.slider:focus { outline: 0; }
+.slider:focus-visible::-webkit-slider-thumb, :root[data-interaction="keyboard"] .slider:focus::-webkit-slider-thumb { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.slider:focus-visible::-moz-range-thumb, :root[data-interaction="keyboard"] .slider:focus::-moz-range-thumb { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.slider:disabled { cursor: default; opacity: .46; }
 /* Beneath a field, a quiet hint, or what is wrong in red, with the field's outline red too. */
 .field-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--muted); font: var(--type-body-sm); }
 .field-note > .icon { flex: none; width: 16px; height: 16px; }

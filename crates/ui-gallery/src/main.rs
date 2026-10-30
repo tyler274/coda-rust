@@ -21,17 +21,18 @@ use ui::{
     Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
     Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Combobox, Command, CommandPalette,
     Comparison, ComparisonBars, Composer, ContextChip, ContextMenu, ConversationViewport,
-    CopyButton, CopyWords, Count, DateSeparator, Dialog, Dictation, Diff, DiffLine, DiffWords,
-    Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
-    IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette,
-    MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
-    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
-    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup, Rating,
-    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart,
-    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList,
-    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value,
-    VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog, Dictation, Diff,
+    DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
+    FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice,
+    MenuItem, MenuPalette, MenuSection, Message, MessageActions, MessageEditor, MessageState,
+    MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
+    Placeholder, PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup,
+    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select,
+    SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SourceDetails, SourcePane,
+    SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState,
+    Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone,
+    Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
+    use_live_rows,
 };
 
 fn main() {
@@ -198,7 +199,7 @@ fn Gallery() -> Element {
                         StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
                     }
                 }
-                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
+                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. An amount moves along a track and says itself; a date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
                     InputsDemo {}
                 }
                 Section { title: "Fields and tabs", note: "The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
@@ -2512,6 +2513,9 @@ fn InputsDemo() -> Element {
     let mut phone = use_signal(String::new);
     let mut span = use_signal(|| 1usize);
     let mut look = use_signal(|| 0usize);
+    let mut pain = use_signal(|| 4.0);
+    let mut day = use_signal(|| "2026-09-10".to_owned());
+    let mut time = use_signal(String::new);
     let mut visit = use_signal(|| None::<usize>);
     let mut medicine = use_signal(String::new);
     let mut chosen_medicine = use_signal(|| None::<usize>);
@@ -2600,6 +2604,29 @@ fn InputsDemo() -> Element {
                     chosen_medicine.set(Some(index));
                     medicine.set(MEDICATIONS[index].0.to_owned());
                 },
+            }
+            Slider {
+                label: "Pain today",
+                value: pain(),
+                min: 0.0,
+                max: 10.0,
+                reading: format!("{} of 10", pain()),
+                hint: "0 is none, 10 the worst you can imagine.",
+                on_change: move |amount| pain.set(amount),
+            }
+            div { class: "gallery-when",
+                DateField {
+                    label: "Follow-up",
+                    value: day(),
+                    min: "2026-08-27",
+                    on_change: move |when| day.set(when),
+                }
+                DateField {
+                    label: "Time",
+                    kind: DateKind::Time,
+                    value: time(),
+                    on_change: move |when| time.set(when),
+                }
             }
             TextField {
                 label: "Mobile number",
