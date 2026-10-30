@@ -16,7 +16,7 @@ class ProofTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
-        self.root = Path(self.tmp.name) / "repo"
+        self.root = Path(self.tmp.name).resolve() / "repo"
         self.root.mkdir()
         self.git("init", "--quiet", "--initial-branch=feature/x")
         self.git("config", "user.email", "agent@codahealth.test")
@@ -154,6 +154,92 @@ class ProofTests(unittest.TestCase):
         self.assertIn("with uncommitted changes", section)
         self.assertIn(str(self.bundle / "01-true.log"), section)
 
+
+    def test_credentials_in_commands_are_redacted_and_bare_tokens_refused(self):
+        session = "codas-" + "a1" * 16
+        self.proof("run", "--claim", "AC1", "--", "echo", "--session", session, f"--token={session}")
+        entry = self.manifest()["entries"][0]
+        self.assertEqual(entry["command"], ["echo", "--session", "<redacted>", "--token=<redacted>"])
+        self.assertNotIn(session, (self.bundle / "manifest.json").read_text())
+        self.assertNotIn(session, self.proof("render").stdout)
+        self.assertIn("Coda token", self.proof("check", code=1).stderr)
+        self.proof("supersede", "1", "--reason", "printed the session")
+        for name, text in [("printed.log", f"{session}\n"),
+                           ("url.log", "GET https://user:hunter22@host/x"),
+                           ("query.log", "GET /events?token=abcdefgh12345678")]:
+            with self.subTest(name=name):
+                path = Path(self.tmp.name) / name
+                path.write_text(text)
+                self.proof("add", "--claim", "AC1", "--revision", "HEAD", str(path))
+                self.assertIn("refused", self.proof("check", code=1).stderr)
+                ids = [str(e["id"]) for e in self.manifest()["entries"] if not e.get("superseded")]
+                self.proof("supersede", *ids, "--reason", "leaked")
+
+    def test_imported_artifacts_keep_their_stated_revision(self):
+        result = Path(self.tmp.name) / "response.json"
+        result.write_text("{}")
+        self.proof("add", "--claim", "AC1", str(result))
+        self.assertIn("REVISION UNKNOWN", self.proof("status", code=1).stdout)
+        self.assertIn("revision unknown", self.proof("render").stdout)
+        self.proof("supersede", "1", "--reason", "restated with its revision")
+        self.proof("add", "--claim", "AC1", "--revision", self.base, str(result))
+        self.proof("status")
+        (self.root / "code.txt").write_text("changed\n")
+        self.git("commit", "--quiet", "-am", "later")
+        self.assertIn(f"STALE at {self.base[:10]}", self.proof("status", code=1).stdout)
+
+    def test_supersede_and_keep_resolve_failures_and_staleness(self):
+        self.proof("run", "--claim", "AC1", "--", "false", code=1)
+        self.proof("gap", "--claim", "AC2", "--reason", "not run yet")
+        self.proof("run", "--claim", "AC1", "--", "true")
+        self.proof("run", "--claim", "AC2", "--", "true")
+        self.proof("status", code=1)
+        self.proof("supersede", "1", "2", "--reason", "corrected and re-run")
+        self.proof("status")
+        section = self.proof("render").stdout
+        self.assertNotIn("not run yet", section)
+        self.assertNotIn("**Fail**", section)
+        (self.root / "notes.md").write_text("words\n")
+        self.git("add", ".")
+        self.git("commit", "--quiet", "-m", "docs")
+        self.proof("status", code=1)
+        self.proof("keep", "3", "4", "--reason", "docs-only commit")
+        self.assertIn("kept from", self.proof("status").stdout)
+        self.assertIn("kept: docs-only commit", self.proof("render").stdout)
+        (self.root / "code.txt").write_text("again\n")
+        self.git("commit", "--quiet", "-am", "code")
+        self.proof("status", code=1)
+
+    def test_run_folders_link_and_new_evidence_invalidates_publication(self):
+        remote = Path(self.tmp.name) / "remote.git"
+        self.git("init", "--quiet", "--bare", str(remote))
+        self.git("remote", "add", "origin", str(remote))
+        run = Path(self.tmp.name) / "couldnt-finish"
+        run.mkdir()
+        (run / "send-a.json").write_text('{"outcome": "accepted"}')
+        self.proof("add", "--claim", "AC3", "--revision", "HEAD", "--label", "drive", str(run))
+        self.assertIn(f"[drive]({self.bundle}/01-couldnt-finish) (1 files)", self.proof("render").stdout)
+        self.proof("publish", "--web-base", "https://github.com/o/r")
+        record = self.manifest()["published"]
+        tree = f"https://github.com/o/r/tree/{record['commit']}/{record['prefix']}"
+        section = self.proof("render").stdout
+        self.assertIn(f"[all evidence]({tree})", section)
+        self.assertIn(f"[drive]({tree}/01-couldnt-finish) (1 files)", section)
+        self.proof("run", "--claim", "AC4", "--", "true")
+        section = self.proof("render").stdout
+        self.assertNotIn("https://github.com/o/r", section)
+        self.assertIn("(not published)", section)
+
+    def test_screenshot_uses_the_given_browser(self):
+        browser = Path(self.tmp.name) / "chromium"
+        browser.write_text("#!/bin/sh\nfor a; do case $a in --screenshot=*) printf PNG > \"${a#--screenshot=}\";; esac; done\n")
+        browser.chmod(0o755)
+        self.proof("screenshot", "--claim", "AC4", "--url", "http://127.0.0.1:1/", "--label", "page",
+                   "--chromium", str(browser))
+        entry = self.manifest()["entries"][0]
+        self.assertEqual((entry["kind"], entry["ok"], entry["revision"]), ("screenshot", True, self.base))
+        self.assertEqual((self.bundle / entry["files"][0]).read_text(), "PNG")
+        self.assertIn("![AC4: page]", self.proof("render").stdout)
 
 if __name__ == "__main__":
     unittest.main()

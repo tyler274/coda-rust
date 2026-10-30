@@ -25,11 +25,13 @@ $P run --claim AC1 --label "try again" -- cargo test -p physician-sample --test 
 $P run --claim AC1 --label "before the fix" --expect-fail --at origin/main \
   --with crates/physician-sample/tests/try_again.rs -- cargo test -p physician-sample --test try_again
 $P run --claim AC2 --expect 'failed\|5\|5' -- psql "$URL" -At -c "select ..."
-$P add --claim AC3 --label "Try again, site A" "$RUN/couldnt-finish-try-again/site-a-failed.png"
-$P add --claim AC3 --label "scale stack run" "$RUN/couldnt-finish-try-again"
+$P add --claim AC3 --revision HEAD --label "Try again, site A" "$RUN/couldnt-finish-try-again/site-a-failed.png"
+$P add --claim AC3 --revision HEAD --label "scale stack run" "$RUN/couldnt-finish-try-again"
 $P screenshot --claim AC4 --url http://127.0.0.1:8080/ --label "empty state"
 $P gap --claim AC5 --reason "needs hosted staging; not run"
 $P status
+$P supersede 1 --reason "re-run after the fix"
+$P keep 4 5 --reason "later commit changed only docs"
 ```
 
 - `run` passes the command's output through and exits nonzero when the entry is not
@@ -40,7 +42,9 @@ $P status
   worktree at that revision, and `--with` copies the new test into it.
 - Prefer the feature's [verify skill](../../../verification/README.md#verify-skills).
   Add its evidence folder or the specific files its recipe names rather than
-  capturing the same behavior again. A browser step needs its own screenshot; an
+  capturing the same behavior again. `add` cannot see when an artifact was made:
+  give `--revision` the revision the binaries and page were built from, or the
+  entry stays marked as of unknown revision. A browser step needs its own screenshot; an
   HTTP pass does not stand in for it.
 - Look at every screenshot before recording it. A page can contain the right text
   while the panel is clipped, blank or off-screen.
@@ -52,13 +56,21 @@ $P status
 
 `status` lists failing and stale entries first and exits 1 when any remain. An entry
 is stale when it ran against another revision or with uncommitted changes. Re-run
-it, or keep it with a stated reason that the later change cannot affect it.
+it and `supersede` the old entry, or `keep` it at this head with the reason the later
+change cannot affect it. Superseding also retires a failure that a correction fixed
+or a gap that later evidence filled; the manifest keeps the history, and the Proof
+section shows only current entries. Several entries can share a criterion, such as
+the failure before a fix and the pass after it.
 
 ## Publish and render
 
 Use synthetic data only. `check` refuses tokens, sessions, keys and other credential
-shapes, and files or bundles over the size limits; it warns about email addresses
-outside synthetic domains. Remove or regenerate a refused artifact rather than
+shapes, including Coda's `codas-`/`codap-`/`codaf-` tokens and credentials in
+arguments and URLs, in the artifacts and the manifest. It also refuses files or
+bundles over the size limits and warns about email addresses outside synthetic
+domains. `run` records `--session`, `--token` and similar argument values as
+`<redacted>`, but a command that prints a credential still puts it in its log.
+Screenshots are not scanned: look at them. Remove or regenerate a refused artifact rather than
 editing the check.
 
 ```bash
@@ -68,14 +80,17 @@ $P render > target/verification/proof/pr-section.md
 ```
 
 `publish` pushes the bundle as a commit on `refs/proof/<branch>`, outside
-`refs/heads`, so clones and branch lists do not fetch it. Each publish adds a commit
-whose parent is the previous one, so links to earlier revisions keep working. Links
-point at that commit through the repository's own access controls, and images render
-for signed-in readers. Publishing is part of the PR's publication and needs the same
-approval. Pass a remote URL as `--remote` when the configured remote is unreachable.
+`refs/heads`, so ordinary clones and branch lists do not fetch it; mirror clones do.
+Each publish adds a commit whose parent is the previous one, so links to earlier
+revisions keep working while the ref exists. Deleting the ref
+(`git push origin :refs/proof/<branch>`) lets GitHub collect the commits, after which
+their links stop working. Links use the repository's own access controls. Publishing
+is part of the PR's publication and needs the same approval. Pass a remote URL as
+`--remote` when the configured remote is unreachable.
 
-`render` prints the Proof section: one row per entry with its criterion, evidence and
-result, the last lines of each run's output, and embedded screenshots. Links are to the
-published commit when it matches the current revision, otherwise to local paths, which
-only suit a draft returned in chat. Publish again after new commits so the section
-describes the PR head.
+`render` prints the Proof section: a link to the whole bundle, one row per current
+entry with its criterion, evidence and result, the last lines of each run's output
+(redacted), and embedded screenshots. Links are to the published commit while it
+matches the current revision and bundle; after a new commit or new evidence they fall
+back to local paths, which only suit a draft returned in chat. Publish again so the
+section describes the PR head, then open its links in the saved PR.

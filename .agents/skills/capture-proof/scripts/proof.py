@@ -5,9 +5,11 @@ The bundle lives in target/verification/proof/<branch>/ with manifest.json besid
 artifacts. Every entry records the revision it ran against, so stale proof shows.
 
   run        --claim C [--label L] [--expect RE] [--expect-fail] [--at REV [--with PATH...]] -- CMD...
-  add        --claim C [--label L] PATH                a log, response, screenshot or run folder
+  add        --claim C [--label L] [--revision REV] PATH   a log, response, screenshot or run folder
   screenshot --claim C --url URL [--label L] [--window 1440,900]
   gap        --claim C --reason R                      a criterion with no proof, and why
+  supersede  ID... --reason R                          retire entries a later one replaces; history stays
+  keep       ID... --reason R                          keep stale entries at this head, with the reason
   status                                               every entry; exit 1 if any is failing or stale
   check                                                secrets, emails and sizes; exit 1 if unpublishable
   publish    [--remote origin] [--web-base URL]        push the bundle to refs/proof/<branch>
@@ -15,6 +17,7 @@ artifacts. Every entry records the revision it ran against, so stale proof shows
 """
 import argparse
 import datetime
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -38,6 +41,12 @@ SECRETS = [
     ("Doppler token", re.compile(r"\bdp\.(?:st|ct|sa|pt|scim|audit)\.[A-Za-z0-9_.-]{20,}")),
     ("GitHub token", re.compile(r"\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})")),
     ("AWS key", re.compile(r"\bAKIA[0-9A-Z]{16}\b")),
+    ("Coda token", re.compile(r"\bcoda[a-z]-[0-9a-f]{32}\b")),
+    ("credential argument", re.compile(
+        r"(?i)--(?:session|token|password|secret|api-key|bearer)(?:=|\s+|[\"'],\s*[\"'])(?!<redacted>)[^\s\"']{8,}")),
+    ("URL credentials", re.compile(r"://[^/\s:@\"']+:[^/\s@\"']+@")),
+    ("URL credential parameter", re.compile(
+        r"(?i)[?&](?:token|session|key|access_token|sig|signature)=[^&\s\"']{8,}")),
     ("credential field", re.compile(
         r"(?i)[\"']?\b(?:token|session|access_token|refresh_token|secret|password|api_key)\b[\"']?"
         r"\s*[:=]\s*[\"'][^\"'\s]{12,}[\"']")),
@@ -46,6 +55,12 @@ EMAIL = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 SYNTHETIC_EMAIL = re.compile(
     r"(?i)@(?:[a-z0-9.-]+\.)?(?:codahealth\.test|example\.(?:com|org|net)|anthropic\.com|"
     r"users\.noreply\.github\.com)$")
+
+
+def redact(text):
+    for _, pattern in SECRETS:
+        text = pattern.sub("<redacted>", text)
+    return text
 
 
 def git(*args, cwd=None, check=True):
@@ -86,6 +101,7 @@ def save(path, data):
 
 def new_entry(data, args, kind):
     head, dirty = revision()
+    data.pop("published", None)
     entry = {"id": len(data["entries"]) + 1, "claim": args.claim, "label": args.label or "",
              "kind": kind, "revision": head, "dirty": dirty,
              "recorded": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")}
@@ -102,7 +118,13 @@ def cmd_run(args):
         sys.exit("run: give the command after --")
     path, data = load()
     entry = new_entry(data, args, "run")
-    entry.update(command=args.command, expect=args.expect, expect_fail=args.expect_fail)
+    redacted = [redact(arg) for arg in args.command]
+    previous = None
+    for index, arg in enumerate(args.command):
+        if previous and re.fullmatch(r"(?i)--(?:session|token|password|secret|api-key|bearer)", previous):
+            redacted[index] = "<redacted>"
+        previous = arg
+    entry.update(command=redacted, expect=args.expect, expect_fail=args.expect_fail)
     log_name = f"{entry['id']:02d}-{slugify(args.label or args.command[0])}.log"
     entry["files"] = [log_name]
     cwd, worktree = Path.cwd(), None
@@ -169,6 +191,8 @@ def cmd_add(args):
         shutil.copy2(source, path / name)
         entry["files"] = [name]
     entry["source"] = str(source)
+    entry["revision"] = git("rev-parse", args.revision) if args.revision else None
+    entry["dirty"] = False
     entry["ok"] = True
     save(path, data)
     print(f"proof: entry {entry['id']} {args.claim} added {kind} -> {path / name}", file=sys.stderr)
@@ -202,8 +226,45 @@ def cmd_gap(args):
     return 0
 
 
+def cmd_supersede(args):
+    path, data = load()
+    for entry in pick(data, args.ids):
+        entry["superseded"] = args.reason
+    data.pop("published", None)
+    save(path, data)
+    return 0
+
+
+def cmd_keep(args):
+    path, data = load()
+    head, dirty = revision()
+    if dirty:
+        sys.exit("keep: commit first; a reason cannot cover uncommitted changes")
+    for entry in pick(data, args.ids):
+        entry["kept"] = {"revision": head, "reason": args.reason}
+    data.pop("published", None)
+    save(path, data)
+    return 0
+
+
+def pick(data, ids):
+    entries = {entry["id"]: entry for entry in data["entries"]}
+    missing = [i for i in ids if i not in entries]
+    if missing:
+        sys.exit(f"no entries {missing}")
+    return [entries[i] for i in ids]
+
+
+def current(data):
+    return [entry for entry in data["entries"] if not entry.get("superseded")]
+
+
 def stale(entry, head):
-    return entry["kind"] != "gap" and (entry["revision"] != head or entry["dirty"])
+    if entry["kind"] == "gap":
+        return False
+    if entry.get("kept", {}).get("revision") == head:
+        return False
+    return entry["revision"] != head or entry["dirty"]
 
 
 def cmd_status(args):
@@ -211,13 +272,17 @@ def cmd_status(args):
     head, dirty = revision()
     bad = 0
     print(f"bundle {path}\nhead {head[:10]}{' (uncommitted changes)' if dirty else ''}")
-    for entry in sorted(data["entries"], key=lambda e: (e["ok"] and not stale(e, head), e["id"])):
+    for entry in sorted(current(data), key=lambda e: (e["ok"] and not stale(e, head), e["id"])):
         if entry["kind"] == "gap":
             state = f"GAP: {entry['reason']}"
         else:
             state = "ok" if entry["ok"] else f"FAILING (exit {entry.get('exit')})"
-            if stale(entry, head):
+            if entry["revision"] is None and stale(entry, head):
+                state += ", REVISION UNKNOWN (add --revision)"
+            elif stale(entry, head):
                 state += f", STALE at {entry['revision'][:10]}{' + uncommitted' if entry['dirty'] else ''}"
+            elif entry.get("kept", {}).get("revision") == head:
+                state += f", kept from {(entry['revision'] or 'unknown')[:10]}: {entry['kept']['reason']}"
         bad += entry["kind"] != "gap" and (not entry["ok"] or stale(entry, head))
         print(f"{entry['id']:>3} {entry['claim']:<8} {entry['kind']:<10} {entry['label'] or ''}  {state}")
     return 1 if bad else 0
@@ -242,6 +307,10 @@ def scan(path, data):
             for address in sorted(set(EMAIL.findall(text))):
                 if not SYNTHETIC_EMAIL.search(address):
                     warnings.append(f"{name}: email {address} is not a synthetic account")
+    manifest = json.dumps(data)
+    for kind, pattern in SECRETS:
+        if pattern.search(manifest):
+            problems.append(f"manifest.json: possible {kind}")
     if total > BUNDLE_LIMIT:
         problems.append(f"bundle is {total} bytes, over the {BUNDLE_LIMIT} byte limit")
     return problems, warnings
@@ -297,17 +366,33 @@ def cmd_publish(args):
     if push.returncode:
         sys.exit(f"publish: push failed: {push.stderr.strip()}")
     data["published"] = {"ref": ref, "commit": commit, "prefix": prefix, "web_base": base,
-                         "revision": head}
+                         "revision": head, "digest": digest(path, data)}
     save(path, data)
     print(f"proof: published {len(names)} files to {ref} at {commit[:10]}; "
           f"{base}/tree/{commit}/{prefix}", file=sys.stderr)
     return 0
 
 
-def link(data, path, name, raw=False):
-    published = data.get("published")
-    if published and published["revision"] == revision()[0]:
-        url = f"{published['web_base']}/blob/{published['commit']}/{published['prefix']}/{name}"
+def digest(path, data):
+    hasher = hashlib.sha256(json.dumps(data["entries"], sort_keys=True).encode())
+    for entry in data["entries"]:
+        for name in entry.get("files", []):
+            hasher.update(name.encode() + b"\0" + (path / name).read_bytes())
+    return hasher.hexdigest()
+
+
+def published(path, data):
+    record = data.get("published")
+    if record and record["revision"] == revision()[0] and record.get("digest") == digest(path, data):
+        return record
+    return None
+
+
+def link(data, path, name, raw=False, tree=False):
+    record = published(path, data)
+    if record:
+        kind = "tree" if tree else "blob"
+        url = f"{record['web_base']}/{kind}/{record['commit']}/{record['prefix']}/{name}"
         return url + ("?raw=true" if raw else "")
     return str(path / name)
 
@@ -326,32 +411,42 @@ def result(entry, head):
             text += "" if entry.get("expect_matched") else ", expected output missing"
     else:
         text = "Recorded"
-    if stale(entry, head):
+    if entry["revision"] is None:
+        text += ", revision unknown"
+    elif stale(entry, head):
         text += f", at `{entry['revision'][:10]}`{' with uncommitted changes' if entry['dirty'] else ''}"
+    if entry.get("kept", {}).get("revision") == head:
+        text += f", from `{(entry['revision'] or 'unknown')[:10]}`, kept: {entry['kept']['reason']}"
     return text
 
 
 def cmd_render(args):
     path, data = load()
     head, dirty = revision()
+    record = published(path, data)
+    bundle = (f"[all evidence]({record['web_base']}/tree/{record['commit']}/{record['prefix']})"
+              if record else f"all evidence in `{path}` (not published)")
     lines = [f"## Proof (at `{head[:10]}`{', with uncommitted changes' if dirty else ''})", "",
-             "| Criterion | Evidence | Result |", "| --- | --- | --- |"]
-    for entry in sorted(data["entries"], key=lambda e: (e["claim"], e["id"])):
+             bundle, "", "| Criterion | Evidence | Result |", "| --- | --- | --- |"]
+    entries = current(data)
+    for entry in sorted(entries, key=lambda e: (e["claim"], e["id"])):
         files = entry.get("files", [])
+        label = entry["label"]
         if entry["kind"] == "run":
-            label = entry["label"] or shlex.join(entry["command"])
-            evidence = f"`{label}` ([log]({link(data, path, files[0])}))"
+            evidence = f"`{label or shlex.join(entry['command'])}` ([log]({link(data, path, files[0])}))"
         elif entry["kind"] == "run-dir":
-            evidence = f"{entry['label'] or entry['source']} ({len(files)} files)"
+            folder = files[0].split("/")[0] if files else ""
+            evidence = (f"[{label or entry['source']}]({link(data, path, folder, tree=True)}) "
+                        f"({len(files)} files)")
         elif files:
-            evidence = f"[{entry['label'] or files[0]}]({link(data, path, files[0])})"
+            evidence = f"[{label or files[0]}]({link(data, path, files[0])})"
         else:
             evidence = "None"
         lines.append(f"| {entry['claim']} | {evidence} | {result(entry, head)} |")
-    for entry in data["entries"]:
+    for entry in entries:
         files = entry.get("files", [])
         if entry["kind"] == "run":
-            tail = (path / files[0]).read_text(errors="replace").splitlines()[-args.tail:]
+            tail = redact((path / files[0]).read_text(errors="replace")).splitlines()[-args.tail:]
             where = f" at `{entry['at'][:10]}`" if entry.get("at") else ""
             lines += ["", f"<details><summary>{entry['claim']}: "
                           f"{entry['label'] or entry['command'][0]}{where}, last {len(tail)} lines</summary>",
@@ -383,6 +478,7 @@ def main():
     run.add_argument("command", nargs=argparse.REMAINDER)
     run.set_defaults(func=cmd_run)
     add = claimed("add")
+    add.add_argument("--revision", help="the revision the artifact was produced at, when known")
     add.add_argument("path")
     add.set_defaults(func=cmd_add)
     shot = claimed("screenshot")
@@ -393,6 +489,12 @@ def main():
     gap = claimed("gap")
     gap.add_argument("--reason", required=True)
     gap.set_defaults(func=cmd_gap)
+    for name, func, text in [("supersede", cmd_supersede, "why a later entry replaces these"),
+                             ("keep", cmd_keep, "why later changes cannot affect these")]:
+        sub = commands.add_parser(name)
+        sub.add_argument("ids", nargs="+", type=int)
+        sub.add_argument("--reason", required=True, help=text)
+        sub.set_defaults(func=func)
     commands.add_parser("status").set_defaults(func=cmd_status)
     commands.add_parser("check").set_defaults(func=cmd_check)
     publish = commands.add_parser("publish")
