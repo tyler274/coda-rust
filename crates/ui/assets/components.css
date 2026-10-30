@@ -208,6 +208,12 @@
 .text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
 :where(input, textarea).text-field-input { padding: var(--space-3); }
 textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
+/* Beneath a field, a quiet hint, or what is wrong in red, with the field's outline red too. */
+.field-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.field-note > .icon { flex: none; width: 16px; height: 16px; }
+.field-note.is-error { color: var(--error); }
+.field[aria-invalid="true"], .field:has([aria-invalid="true"]) { --field-outline: var(--error); }
+.field[aria-invalid="true"]:focus-within, .field:has([aria-invalid="true"]):focus-within { border-color: var(--error); box-shadow: inset 0 0 0 var(--hairline) var(--error); }
 /* A thread's messages: the person's words in a
    light bubble at the far edge, the assistant's as plain prose. A message rises in as it appears, the person's on the
    send spring from below, a reply on the arrival spring. */
@@ -630,7 +636,27 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .proposed-change-sources { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
 .proposed-change-sources .navigation-control { min-height: 0; font: var(--type-body-sm); }
 .selection-row, .setting-row { display: flex; align-items: center; gap: var(--space-3); min-height: var(--target); padding: var(--space-row) 0; cursor: pointer; }
-.selection-row input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--primary); }
+/* A box or a ring on the outline, filled with the action once chosen: the check draws across, the dot springs out, and a
+   mixed box holds a bar. A disabled row stands back and takes no press. */
+.selection-row input { appearance: none; display: grid; place-items: center; flex: none; box-sizing: border-box; width: 22px; height: 22px; margin: 0;
+  border: var(--stroke) solid var(--outline); background: var(--surface-lowest); cursor: inherit;
+  transition: background-color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out); }
+.selection-row input[type="checkbox"] { border-radius: var(--radius-sm); }
+.selection-row input[type="radio"] { border-radius: 50%; }
+@media (hover: hover) { .selection-row:hover input:not(:disabled) { border-color: var(--primary); } }
+.selection-row input:is(:checked, :indeterminate) { border-color: var(--primary); background: var(--primary); }
+.selection-row input[type="checkbox"]::after { content: ""; width: 14px; height: 14px; background: var(--on-primary); clip-path: inset(0 100% 0 0);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 7.5 5.5 11 12 3.5' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: clip-path var(--motion-arrive) var(--ease-out); }
+.selection-row input[type="checkbox"]:checked::after { clip-path: inset(0); }
+.selection-row input[type="checkbox"]:indeterminate::after { width: 10px; height: 2px; border-radius: var(--radius-pill); clip-path: inset(0); mask: none; }
+.selection-row input[type="radio"]::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--on-primary); scale: 0; transition: scale var(--spring-send); }
+.selection-row input[type="radio"]:checked::after { scale: 1; }
+.selection-row input:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+:is(.selection-row, .setting-row):has(input:disabled) { opacity: .46; cursor: default; }
+.switch:disabled { cursor: default; }
+.radio-group { display: grid; min-width: 0; margin: 0; padding: 0; border: 0; }
+.radio-group > legend { padding: 0 0 var(--space-1); color: var(--ink); font: var(--type-label-lg); }
 .row-list > li + li > :is(.selection-row, .setting-row) { border-top: 0; }
 .switch { flex: none; appearance: none; position: relative; width: 51px; height: 31px; margin: 0; border-radius: var(--radius-pill); background: var(--surface-highest);
   cursor: pointer; transition: background-color var(--motion-control) var(--ease-out); }

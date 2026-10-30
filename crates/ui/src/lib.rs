@@ -20,6 +20,7 @@ mod conversation;
 mod documents;
 mod feedback;
 mod icons;
+mod inputs;
 mod live;
 mod motion;
 mod overlays;
@@ -42,10 +43,11 @@ pub use conversation::{
     MessageStatus, Suggestion, VersionSwitch,
 };
 pub use documents::{
-    FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, TopBar,
+    FooterActions, Notice, Paper, PaperSection, ProposedChange, SettingRow, TopBar,
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
+pub use inputs::{Checkbox, Choice, RadioGroup, TextField};
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
 pub use overlays::{
@@ -681,40 +683,6 @@ pub fn Message(
             {message}
             {status}
             {actions}
-        }
-    }
-}
-
-/// A field with its label above it: one line, or with
-/// `multiline` words that grow with what is written. The host owns its value and hears each
-/// change.
-#[component]
-pub fn TextField(
-    label: String,
-    value: String,
-    on_input: EventHandler<String>,
-    #[props(default)] multiline: bool,
-    #[props(default)] placeholder: String,
-) -> Element {
-    rsx! {
-        label { class: "text-field",
-            span { class: "text-field-label", "{label}" }
-            if multiline {
-                textarea {
-                    class: "field text-field-input",
-                    rows: "3",
-                    placeholder: "{placeholder}",
-                    value: "{value}",
-                    oninput: move |event| on_input.call(event.value()),
-                }
-            } else {
-                input {
-                    class: "field text-field-input",
-                    placeholder: "{placeholder}",
-                    value: "{value}",
-                    oninput: move |event| on_input.call(event.value()),
-                }
-            }
         }
     }
 }

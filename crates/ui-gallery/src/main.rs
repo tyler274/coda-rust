@@ -19,19 +19,19 @@ use std::time::Duration;
 use ui::{
     ActionRow, Answer, ApprovalCard, ArtifactCard, AttachButton, Attachment, AttachmentState,
     Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
-    CitationChip, CitationPreview, CodeBlock, Command, CommandPalette, Comparison, ComparisonBars,
-    Composer, ContextChip, ContextMenu, ConversationViewport, CopyButton, CopyWords, Count,
-    DateSeparator, Dialog, Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict,
-    EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow,
-    LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Message,
-    MessageActions, MessageEditor, MessageState, MessageStatus, NavigationControl, NavigationRow,
-    Notice, PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, Popover, ProposedChange,
-    Prose, ProsePart, Quote, RangeChoice, Rating, RowFrame, RowGroup, RunningChart, SearchField,
-    SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails,
-    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
-    StepState, Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast,
-    ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
-    WorkingPresence, use_live_rows,
+    Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Command, CommandPalette,
+    Comparison, ComparisonBars, Composer, ContextChip, ContextMenu, ConversationViewport,
+    CopyButton, CopyWords, Count, DateSeparator, Dialog, Dictation, Diff, DiffLine, DiffWords,
+    Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
+    IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette,
+    MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
+    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
+    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup, RangeChoice,
+    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SeriesChart, SeriesPoint,
+    SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton,
+    Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList, TaskState,
+    TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep,
+    WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -197,6 +197,9 @@ fn Gallery() -> Element {
                         StatePill { tone: Tone::Warning, icon: IconName::Flag, "Needs you" }
                         StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
                     }
+                }
+                Section { title: "Inputs", note: "A choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
+                    InputsDemo {}
                 }
                 Section { title: "Fields and tabs", note: "The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
                     FieldsDemo {}
@@ -624,8 +627,8 @@ fn PagesDemo() -> Element {
                     }
                 }
                 ul { class: "row-list",
-                    li { SelectionRow { title: "Recorded sleep", detail: "Apple Health · October 14–21", checked: sleep(), on_change: move |on| sleep.set(on) } }
-                    li { SelectionRow { title: "Visit note", detail: "Northside Clinic · October 15", checked: visit(), on_change: move |on| visit.set(on) } }
+                    li { Checkbox { label: "Recorded sleep", detail: "Apple Health · October 14–21", checked: sleep(), on_change: move |on| sleep.set(on) } }
+                    li { Checkbox { label: "Visit note", detail: "Northside Clinic · October 15", checked: visit(), on_change: move |on| visit.set(on) } }
                     li { SettingRow { title: "Remind me", detail: "Daily · 10:30 pm", on: reminder(), on_change: move |on| reminder.set(on) } }
                 }
                 Notice { tone: Tone::Error, icon: IconName::Alert, title: "Your changes weren’t saved", detail: "Your draft is still here.",
@@ -2467,6 +2470,68 @@ fn DictationDemo() -> Element {
             if listening().is_none() {
                 Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Dictate", onclick: start, Icon { name: IconName::Microphone } }
                 Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: draft().trim().is_empty(), "Send" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const RESULTS: [&str; 3] = ["Labs", "Imaging", "Visit notes"];
+
+#[cfg(feature = "web")]
+#[component]
+fn InputsDemo() -> Element {
+    let mut sharing = use_signal(|| [true, false, true]);
+    let mut reach = use_signal(|| Some(0usize));
+    let mut on = use_signal(|| true);
+    let mut email = use_signal(|| "dana@northside".to_owned());
+    let mut phone = use_signal(String::new);
+    let chosen = sharing().iter().filter(|on| **on).count();
+    rsx! {
+        div { class: "gallery-inputs",
+            div { class: "row-list",
+                Checkbox {
+                    label: "Everything since September",
+                    detail: format!("{chosen} of {} kinds of record", RESULTS.len()),
+                    checked: chosen == RESULTS.len(),
+                    mixed: chosen > 0 && chosen < RESULTS.len(),
+                    on_change: move |all: bool| sharing.set([all; 3]),
+                }
+                for (index, label) in RESULTS.into_iter().enumerate() {
+                    Checkbox {
+                        key: "{label}",
+                        label,
+                        checked: sharing()[index],
+                        on_change: move |on: bool| sharing.write()[index] = on,
+                    }
+                }
+                Checkbox { label: "Billing records", detail: "Not shared with this clinic", checked: false, disabled: true, on_change: move |_| {} }
+            }
+            RadioGroup {
+                label: "How should we reach her?",
+                selected: reach(),
+                on_select: move |index| reach.set(Some(index)),
+                options: vec![
+                    Choice { label: "By text".into(), detail: Some("Fastest, for anything routine".into()), disabled: false },
+                    Choice { label: "By phone".into(), detail: Some("For results that need a conversation".into()), disabled: false },
+                    Choice { label: "By letter".into(), detail: Some("No address on file".into()), disabled: true },
+                ],
+            }
+            div { class: "row-list",
+                SettingRow { title: "Share with her care team", detail: "Clinicians at Northside Clinic", on: on(), on_change: move |value| on.set(value) }
+                SettingRow { title: "Share with research", detail: "Set by the practice", on: false, disabled: true, on_change: move |_| {} }
+            }
+            TextField {
+                label: "Mobile number",
+                value: phone(),
+                on_input: move |words| phone.set(words),
+                hint: "For reminders only.",
+            }
+            TextField {
+                label: "Email",
+                value: email(),
+                on_input: move |words| email.set(words),
+                error: (!email().contains('.')).then(|| "That address looks incomplete.".to_owned()),
             }
         }
     }
