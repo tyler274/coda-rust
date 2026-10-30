@@ -26,7 +26,7 @@ These govern everything below them: physician.md, duet.md, connected-care.md, ha
 
 ## UI principles
 
-These apply to the physician app and Duet alike, on the web, iOS and Android. The UI is its own full program later; until then these keep every surface pointed the same way.
+These apply to the physician app and Duet alike, on the web, iOS and Android.
 
 **U1. Salient, with the least burden.** Show the most salient information with the fewest clicks and the least scrolling. Salient doesn't mean cutting information.
 
