@@ -9,14 +9,14 @@ use std::time::Duration;
 use ui::{
     ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, CitationChip,
     CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
-    DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
+    Count, DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
     FooterActions, Icon, IconName, KeyHint, LaterContext, ListRow, LiveDot, MeasurementTile,
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup,
-    SearchField, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
-    SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag,
-    TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
-    WorkingPresence,
+    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowFrame,
+    RowGroup, SearchField, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane,
+    SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepList,
+    Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
+    WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -121,6 +121,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
+                }
+                Section { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together.",
+                    LiveDemo {}
                 }
                 Section { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
                     EmptyDemo {}
@@ -693,6 +696,72 @@ fn ComposerStatesDemo() -> Element {
                 Button { variant: ButtonVariant::Primary, submit: true, disabled: true, "Send", KeyHint { key_label: "↵" } }
             }
             WorkingPresence { label: "Reviewing the chart", activity: "Reading the cardiology note", announce: false }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const LIVE: [(&str, &str); 5] = [
+    (
+        "Potassium 5.4 mmol/L",
+        "Basic metabolic panel · Today, 8:00 AM",
+    ),
+    (
+        "Refill request: lisinopril",
+        "Patient message · Today, 7:42 AM",
+    ),
+    ("Echo report signed", "Cardiology · Yesterday"),
+    ("Visit tomorrow, 9:30 AM", "Follow-up · Dr. Osei"),
+    ("Prior authorization approved", "Insurance · Monday"),
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn LiveDemo() -> Element {
+    let mut shown = use_signal(|| vec![0usize, 1, 2]);
+    let live = use_live_rows(shown(), |index| index.to_string(), true);
+    let on_exited = live.on_exited;
+    rsx! {
+        div { class: "gallery-rows",
+            div { class: "title-with-count",
+                h3 { class: "section-title", "Needs you" }
+                Count { value: shown().len(), words: "to review" }
+            }
+            RowGroup {
+                for entry in live.listed {
+                    RowFrame {
+                        key: "{entry.key}",
+                        present: entry.present,
+                        arriving: entry.arriving,
+                        on_exited: {
+                            let key = entry.key.clone();
+                            move |_| on_exited.call(key.clone())
+                        },
+                        ListRow { icon: IconName::File, title: LIVE[entry.row].0, detail: LIVE[entry.row].1, onclick: move |_| {} }
+                    }
+                }
+            }
+            ActionRow {
+                Button {
+                    disabled: shown().len() == LIVE.len(),
+                    onclick: move |_| {
+                        let next = (0..LIVE.len()).find(|index| !shown().contains(index));
+                        if let Some(next) = next {
+                            let at = 1.min(shown().len());
+                            shown.write().insert(at, next);
+                        }
+                    },
+                    "Add a row"
+                }
+                Button {
+                    disabled: shown().is_empty(),
+                    onclick: move |_| {
+                        let at = shown().len() / 2;
+                        shown.write().remove(at);
+                    },
+                    "Remove a row"
+                }
+            }
         }
     }
 }

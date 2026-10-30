@@ -16,6 +16,7 @@ mod conversation;
 mod documents;
 mod feedback;
 mod icons;
+mod live;
 mod prose;
 mod sources;
 mod undo;
@@ -28,6 +29,7 @@ pub use documents::{
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
+pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use prose::{Prose, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
 pub use undo::{UNDO_MS, UndoNotice};
@@ -321,6 +323,32 @@ pub fn WorkingPresence(
             span { class: "working-presence-verb", title: if !hint.is_empty() { "{hint}" }, "{label}" }
             if !activity.is_empty() {
                 span { class: "run-activity", "{activity}" }
+            }
+        }
+    }
+}
+
+/// A count that changes quietly, after the React app's `Count` (Dev, 2026-10-03): the number and
+/// its words fade into a new value together, once, so they never move apart. The first value is
+/// simply there.
+#[component]
+pub fn Count(value: usize, #[props(default)] words: String) -> Element {
+    // The value last drawn, and how many times it has changed since.
+    let seen = use_hook(|| std::rc::Rc::new(std::cell::Cell::new((value, 0u64))));
+    let (last, changes) = seen.get();
+    let changes = if last == value { changes } else { changes + 1 };
+    seen.set((value, changes));
+    // Each change takes the other of two identical animations, so the next change runs again.
+    let class = match changes {
+        0 => "count",
+        odd if odd % 2 == 1 => "count is-changed",
+        _ => "count is-changed-again",
+    };
+    rsx! {
+        span { class,
+            span { class: "count-value", "{value}" }
+            if !words.is_empty() {
+                " {words}"
             }
         }
     }

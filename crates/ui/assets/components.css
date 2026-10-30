@@ -24,6 +24,22 @@
 /* A count sits right after its title, centred on it. */
 .count { flex: none; color: var(--muted); font: var(--type-body-sm); white-space: nowrap; }
 .count-value { display: inline-block; font-variant-numeric: tabular-nums; }
+/* A count that changes fades into its new value once, number and words together. */
+.count.is-changed { animation: count-change var(--motion-arrive) var(--ease-out); }
+.count.is-changed-again { animation: count-change-again var(--motion-arrive) var(--ease-out); }
+@keyframes count-change { from { opacity: 0; } }
+@keyframes count-change-again { from { opacity: 0; } }
+/* A live list's row (RowFrame): it opens and settles from just below as it joins, and collapses and fades as it leaves,
+   its hairline inside it so a leaving row takes its own along. */
+.row-frame { display: grid; grid-template-rows: minmax(0, 1fr); overflow: clip;
+  transition: grid-template-rows var(--motion-step) var(--ease-in-out), opacity var(--motion-arrive) var(--ease-out); }
+.row-frame-content { min-height: 0; }
+.row-frame.is-exiting { grid-template-rows: minmax(0, 0fr); opacity: 0; }
+.row-frame.is-arriving { transition: grid-template-rows var(--motion-step) var(--ease-out), opacity var(--motion-arrive) var(--ease-out),
+  transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .row-frame.is-arriving { grid-template-rows: minmax(0, 0fr); opacity: 0; transform: translateY(var(--rise-small)); } }
+.row-list > li.row-frame + li.row-frame { border-top: 0; }
+.row-list > li.row-frame + li.row-frame > .row-frame-content { border-top: var(--hairline) solid var(--outline-variant); }
 .title-with-count { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .title-with-count > :is(h1, h2, h3, strong) { min-width: 0; }
 .empty { margin: 0; color: var(--body); font: var(--type-body-lg); }
@@ -85,7 +101,8 @@
 .working-presence:has(.run-activity) { flex-wrap: wrap; }
 .working-presence > .run-activity { flex-basis: 100%; color: var(--body); font: var(--type-body-sm); }
 @media (prefers-reduced-motion: reduce) {
-  .placeholder-bar, .live-dot, .state-pill { animation: none; transition: none; }
+  .placeholder-bar, .live-dot, .state-pill, .count { animation: none; transition: none; }
+  .row-frame { transition: none; }
   .pending-status { animation-duration: 0s; }
 }
 /* Buttons, after the React physician app's controls (Material's button family): the one filled action, a white one on a

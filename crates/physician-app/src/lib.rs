@@ -38,8 +38,9 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Dialog, DraftConflict, EmptyLine, Icon, IconName,
-    IconTile, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill, StatusLine, Tone,
+    ActionRow, Author, Button, ButtonVariant, Count, Dialog, DraftConflict, EmptyLine, Icon,
+    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill,
+    StatusLine, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -2579,7 +2580,7 @@ fn TodaySurface(
             header { class: "today-heading",
                 h1 { "Today" }
                 if need_you > 0 {
-                    span { class: "count", span { class: "count-value", "{need_you}" } " {words}" }
+                    Count { value: need_you, words }
                 }
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
@@ -2787,7 +2788,7 @@ fn ScheduleRail(
                     onclick: move |_| on_collapsed.call(false),
                     IconTile { name: IconName::Calendar }
                     if count > 0 {
-                        span { class: "count", span { class: "count-value", "{count}" } }
+                        Count { value: count }
                     }
                 }
             }
@@ -2797,7 +2798,7 @@ fn ScheduleRail(
                 div { class: "card-title title-with-count",
                     h2 { "{title}" }
                     if count > 0 {
-                        span { class: "count", span { class: "count-value", "{count}" } " left" }
+                        Count { value: count, words: "left" }
                     }
                 }
                 Button {
