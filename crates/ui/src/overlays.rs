@@ -1,12 +1,12 @@
-//! Overlays: surfaces that stand over the page beside what opened them. Each is the browser's own
-//! popover in the top layer, so nothing beneath covers or clips it, and the stylesheet places it
-//! against the control that opens it.
+//! Overlays: surfaces that stand over the page in the top layer, so nothing beneath covers or clips
+//! them. A popover, menu or tooltip is the browser's own popover, which the stylesheet places
+//! against what opens it; the command palette is a modal dialog.
 
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName, KeyHint, host_attributes};
+use crate::{Icon, IconName, KeyHint, host_attributes, use_modal};
 
 /// A surface of the host's content beside the control that opens it, a `Button` whose `opens`
 /// names this `id`. It opens under the control from its leading edge, flipping above or across
@@ -155,13 +155,22 @@ pub fn ContextMenu(
     children: Element,
 ) -> Element {
     let id = use_hook(|| format!("context-{}", HOSTS.fetch_add(1, Ordering::Relaxed)));
-    let script = CONTEXT.replace("{host}", &id).replace("{menu}", &menu);
+    let script = CONTEXT.replace("{host}", &id);
+    // Content removed while lifted takes its lifted copy with it.
+    let dropped = id.clone();
+    use_drop(move || {
+        document::eval(&format!(
+            "const layer = window.codaLift;
+            if (layer?.dataset.host === '{dropped}') {{ try {{ layer.hidePopover(); }} catch {{}} layer.replaceChildren(); }}"
+        ));
+    });
     let mut class = String::from("context-menu-host");
     let rest = host_attributes(&mut class, attributes);
     rsx! {
         div {
             id: "{id}",
             class: "{class}",
+            "data-menu": "{menu}",
             onmounted: move |_| {
                 document::eval(&script);
             },
@@ -173,15 +182,21 @@ pub fn ContextMenu(
 
 static HOSTS: AtomicUsize = AtomicUsize::new(0);
 
-/// One context menu host's ways in. `{host}` is its id, `{menu}` its menu's. A menu opened at a
-/// point keeps that place until it next opens from its own control. Lifting uses one layer per
-/// page, `window.codaLift`, whose backdrop blurs the page; its motion runs on the springs and
-/// simply arrives where motion is immediate.
+/// One context menu host's ways in. `{host}` is its id; its menu's is its `data-menu`, read each
+/// time it opens. A menu opened at a point keeps that place until it next opens from its own
+/// control. Lifting uses one layer per page, `window.codaLift`, which blurs the page beneath; its
+/// motion runs on the springs and simply arrives where motion is immediate.
 const CONTEXT: &str = r#"
 const host = document.getElementById("{host}");
 if (host && !host.dataset.contextMenu) {
   host.dataset.contextMenu = "";
   const root = document.documentElement;
+  // Whether a button or finger is down anywhere on the page, kept once for every host.
+  if (!window.codaPressed) {
+    window.codaPressed = { down: false };
+    addEventListener("pointerdown", () => { window.codaPressed.down = true; }, { capture: true, passive: true });
+    for (const ending of ["pointerup", "pointercancel"]) addEventListener(ending, () => { window.codaPressed.down = false; }, { capture: true, passive: true });
+  }
   const margin = 12, gap = 8;
   const immediate = () => matchMedia("(prefers-reduced-motion: reduce)").matches || root.dataset.interaction === "keyboard";
   const timing = (name) => {
@@ -191,7 +206,7 @@ if (host && !host.dataset.contextMenu) {
   // A press released outside a popover closes every open one, so a menu asked for while a button or finger is still down
   // opens once it is let go.
   const released = (then) => {
-    if (!pressed) { then(); return; }
+    if (!window.codaPressed.down) { then(); return; }
     const go = () => { removeEventListener("pointerup", go, true); removeEventListener("pointercancel", go, true); setTimeout(then); };
     addEventListener("pointerup", go, true);
     addEventListener("pointercancel", go, true);
@@ -199,10 +214,10 @@ if (host && !host.dataset.contextMenu) {
   const run = (element, keyframes, how) => immediate() ? undefined : element.animate(keyframes, how);
   // Shows the menu at a point, its own control's placement given back the next time that control opens it.
   const show = () => {
-    const menu = document.getElementById("{menu}");
+    const menu = document.getElementById(host.dataset.menu);
     if (!menu) return;
     if (menu.matches(":popover-open")) menu.hidePopover();
-    if (!menu.dataset.placesItself) {
+    if (menu.dataset.placesItself === undefined) {
       menu.dataset.placesItself = "";
       menu.addEventListener("beforetoggle", (event) => {
         if (event.newState !== "open" || menu.dataset.atPoint !== undefined) return;
@@ -229,11 +244,19 @@ if (host && !host.dataset.contextMenu) {
   const lift = () => {
     getSelection()?.removeAllRanges();
     const content = host.firstElementChild ?? host;
-    const at = content.getBoundingClientRect();
+    // Its own box, without the shrink of the press it may still be settling from.
+    const box = content.getBoundingClientRect();
+    const at = { width: content.offsetWidth, height: content.offsetHeight };
+    at.left = box.left + (box.width - at.width) / 2;
+    at.top = box.top + (box.height - at.height) / 2;
+    at.right = at.left + at.width;
     const copy = content.cloneNode(true);
     for (const element of [copy, ...copy.querySelectorAll("[id]")]) element.removeAttribute("id");
     copy.inert = true;
+    // The copy keeps the box the content was given, never one it would take from the layer.
+    Object.assign(copy.style, { boxSizing: "border-box", width: `${at.width}px`, maxWidth: "none", margin: "0" });
     const layer = window.codaLift ??= Object.assign(document.createElement("div"), { className: "context-lift", popover: "manual" });
+    layer.dataset.host = host.id;
     if (!layer.isConnected) document.body.append(layer);
     const preview = Object.assign(document.createElement("div"), { className: "context-lift-preview" });
     preview.append(copy);
@@ -271,10 +294,8 @@ if (host && !host.dataset.contextMenu) {
   // A held press on touch or pen: the content shrinks a touch while held and, unmoved for half a second, lifts; the tap
   // that ends it does nothing else. Movement, lifting the finger or a scroll lets go. Android's own long-press menu
   // request lifts it at once.
-  let timer, start, fired = false, touch = false, pressed = false;
-  addEventListener("pointerdown", () => { pressed = true; }, { capture: true, passive: true });
-  for (const ending of ["pointerup", "pointercancel"]) addEventListener(ending, () => { pressed = false; }, { capture: true, passive: true });
-  const release = () => { clearTimeout(timer); timer = undefined; delete host.dataset.pressing; };
+  let timer, start, fired = false, touch = false;
+  const release = () => { clearTimeout(timer); timer = undefined; delete host.dataset.pressing; removeEventListener("scroll", release, true); };
   const fire = () => { release(); fired = true; lift(); };
   host.addEventListener("pointerdown", (event) => {
     touch = event.pointerType !== "mouse";
@@ -282,13 +303,13 @@ if (host && !host.dataset.contextMenu) {
     start = [event.clientX, event.clientY];
     fired = false;
     host.dataset.pressing = "";
+    addEventListener("scroll", release, { capture: true, passive: true });
     timer = setTimeout(fire, 500);
   });
   host.addEventListener("pointermove", (event) => {
     if (timer !== undefined && Math.hypot(event.clientX - start[0], event.clientY - start[1]) > 10) release();
   });
   for (const ending of ["pointerup", "pointercancel", "pointerleave"]) host.addEventListener(ending, release);
-  addEventListener("scroll", release, { capture: true, passive: true });
   host.addEventListener("click", (event) => {
     if (fired) { fired = false; event.preventDefault(); event.stopPropagation(); }
   }, true);
@@ -336,23 +357,27 @@ pub fn Tooltip(text: String, shortcut: Option<String>, children: Element) -> Ele
 static TIPS: AtomicUsize = AtomicUsize::new(0);
 
 /// Installs, once per page, every tooltip's showing and leaving. A rest of half a second shows one;
-/// within a moment of another leaving, the next shows at once.
+/// within a moment of another leaving, the next shows at once. The pointer can cross to the tooltip
+/// and rest on it: leaving the control waits a moment for it.
 const TOOLTIPS: &str = r#"
 if (!window.codaTooltips) {
   window.codaTooltips = true;
-  let timer, shown, warmUntil = 0;
+  let timer, leaving, shown, warmUntil = 0;
   const tipOf = (host) => host?.querySelector(":scope > .tooltip");
   const hide = () => {
     clearTimeout(timer);
+    clearTimeout(leaving);
     if (shown?.matches(":popover-open")) { shown.hidePopover(); warmUntil = performance.now() + 400; }
     shown = undefined;
   };
   const show = (host, now) => {
     clearTimeout(timer);
+    clearTimeout(leaving);
     const tip = tipOf(host);
     if (!tip || tip === shown) return;
+    // It opens on a task of its own, never inside a focus change another popover is making.
     const open = () => { hide(); if (tip.isConnected) { tip.showPopover(); shown = tip; } };
-    now || performance.now() < warmUntil ? open() : (timer = setTimeout(open, 500));
+    timer = setTimeout(open, now || shown || performance.now() < warmUntil ? 0 : 500);
   };
   document.addEventListener("pointerover", (event) => {
     if (event.pointerType !== "mouse") return;
@@ -361,7 +386,10 @@ if (!window.codaTooltips) {
   });
   document.addEventListener("pointerout", (event) => {
     const host = event.target.closest?.(".tooltip-host");
-    if (host && !host.contains(event.relatedTarget)) hide();
+    if (!host || host.contains(event.relatedTarget)) return;
+    clearTimeout(timer);
+    clearTimeout(leaving);
+    leaving = setTimeout(hide, 120);
   });
   document.addEventListener("focusin", (event) => {
     const host = event.target.closest?.(".tooltip-host");
@@ -409,27 +437,7 @@ pub fn CommandPalette(
     let mut query = use_signal(String::new);
     let mut active = use_signal(|| 0usize);
     let mut closing = use_signal(|| false);
-    let opening = id.clone();
-    // As a dialog does: it opens modally, its exit motion ends by closing it, and the host hears
-    // the close once.
-    use_effect(move || {
-        let mut opened = document::eval(&format!(
-            "const d = document.getElementById('{opening}');
-            if (d && !d.open) {{
-              d.addEventListener('animationend', (e) => {{
-                if (e.target === d && e.animationName === 'dialog-exit') d.close();
-              }});
-              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
-              d.showModal();
-              d.querySelector('input')?.focus({{ preventScroll: true }});
-            }}"
-        ));
-        spawn(async move {
-            if opened.recv::<bool>().await.is_ok() {
-                on_close.call(());
-            }
-        });
-    });
+    use_modal(id.clone(), "input", on_close);
     let mut dismiss = move || closing.set(true);
     let rows = matching(&commands, &query());
     let current = rows
@@ -488,6 +496,10 @@ pub fn CommandPalette(
                             active.set(0);
                         },
                         onkeydown: move |event| {
+                            // Keys that confirm composed text are the text's, not the palette's.
+                            if event.is_composing() {
+                                return;
+                            }
                             let rows = &keyed;
                             let count = rows.len();
                             let now = active().min(count.saturating_sub(1));

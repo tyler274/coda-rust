@@ -670,7 +670,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 :is(.menu-item, .menu-choice)::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none;
   transition: opacity var(--motion-press) linear; }
 @media (hover: hover) { :is(.menu-item, .menu-choice):hover:not([aria-disabled="true"])::before { opacity: var(--state-hover); } }
-:is(.menu-item, .menu-choice):focus-visible:not([aria-disabled="true"])::before { opacity: var(--state-hover); }
+:is(.menu-item, .menu-choice):focus-visible::before { opacity: var(--state-hover); }
 :is(.menu-item, .menu-choice):active:not([aria-disabled="true"])::before { opacity: var(--state-pressed); }
 :is(.menu-item, .menu-choice):focus-visible { outline: 0; animation: none; }
 @media (pointer: coarse) { .menu-item { min-height: var(--target); } }
@@ -696,7 +696,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 /* A tooltip: a small inverted label above its control, fading in on the press timing and out shorter. */
 .tooltip-host { display: inline-flex; }
 .tooltip { box-sizing: border-box; max-width: min(16rem, calc(100vw - 2 * var(--space-3))); margin: 0; padding: var(--space-1) var(--space-2); overflow: visible;
-  border: 0; border-radius: var(--radius-sm); background: var(--ink); color: var(--surface-lowest); font: var(--type-body-sm); pointer-events: none;
+  border: 0; border-radius: var(--radius-sm); background: var(--ink); color: var(--surface-lowest); font: var(--type-body-sm);
   opacity: 0; transition: opacity var(--motion-control) var(--ease-exit), overlay var(--motion-control) allow-discrete, display var(--motion-control) allow-discrete; }
 .tooltip:popover-open { opacity: 1; transition: opacity var(--motion-press) var(--ease-out), overlay var(--motion-press) allow-discrete, display var(--motion-press) allow-discrete; }
 @starting-style { .tooltip:popover-open { opacity: 0; } }

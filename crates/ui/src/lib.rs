@@ -966,6 +966,31 @@ if (sheet && body) {
 }
 ";
 
+/// The life of a modal dialog `id` the browser owns: it opens modally once mounted, with focus on
+/// what its content marks `autofocus`, else the first match of `focus`; its exit motion
+/// (`dialog-exit`, on `.is-closing`) ends by closing it; and whatever closed it, `on_close` hears
+/// it once.
+pub(crate) fn use_modal(id: String, focus: &'static str, on_close: EventHandler) {
+    use_effect(move || {
+        let mut opened = document::eval(&format!(
+            "const d = document.getElementById('{id}');
+            if (d && !d.open) {{
+              d.addEventListener('animationend', (e) => {{
+                if (e.target === d && e.animationName === 'dialog-exit') d.close();
+              }});
+              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
+              d.showModal();
+              (d.querySelector('[autofocus]') ?? d.querySelector('{focus}'))?.focus({{ preventScroll: true }});
+            }}"
+        ));
+        spawn(async move {
+            if opened.recv::<bool>().await.is_ok() {
+                on_close.call(());
+            }
+        });
+    });
+}
+
 /// A modal dialog: it opens over the
 /// scrim with focus inside it, its title heading the content with Close beside it. Escape, the
 /// scrim and its close button (named by `close_label`) dismiss it; it settles out before the host
@@ -994,29 +1019,12 @@ pub fn Dialog(
         class.push_str(" is-closing");
     }
     let rest = host_attributes(&mut class, attributes);
-    let opening = id.clone();
-    // The browser owns the dialog's life: it opens modally here, the exit motion ends by closing
-    // it, and whatever closed it, the host hears it once.
+    use_modal(id.clone(), "h2", on_close);
+    let dragging = id.clone();
     use_effect(move || {
-        let mut opened = document::eval(&format!(
-            "const d = document.getElementById('{opening}');
-            if (d && !d.open) {{
-              d.addEventListener('animationend', (e) => {{
-                if (e.target === d && e.animationName === 'dialog-exit') d.close();
-              }});
-              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
-              d.showModal();
-              (d.querySelector('[autofocus]') ?? d.querySelector('h2')).focus({{ preventScroll: true }});
-            }}"
-        ));
         if sheet {
-            document::eval(&SHEET_DRAG.replace("{dialog}", &opening));
+            document::eval(&SHEET_DRAG.replace("{dialog}", &dragging));
         }
-        spawn(async move {
-            if opened.recv::<bool>().await.is_ok() {
-                on_close.call(());
-            }
-        });
     });
     let mut dismiss = move || {
         if !closing() {
