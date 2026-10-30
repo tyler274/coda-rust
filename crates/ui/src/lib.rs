@@ -558,6 +558,73 @@ pub fn TextField(
     }
 }
 
+/// The one search field, after the React app's patient search: the search mark, then the words on
+/// body large, and, while there are words, the field's own clear in place of the browser's, which
+/// empties the field and keeps focus in it. Its name and words are the host's; so are its keys.
+#[component]
+pub fn SearchField(
+    /// The field's accessible name.
+    label: String,
+    value: String,
+    on_input: EventHandler<String>,
+    #[props(default)] placeholder: String,
+    /// The clear control's accessible name.
+    clear_label: String,
+    #[props(default)] autofocus: bool,
+    onkeydown: Option<EventHandler<KeyboardEvent>>,
+    onfocus: Option<EventHandler<FocusEvent>>,
+    onblur: Option<EventHandler<FocusEvent>>,
+) -> Element {
+    let mut input = use_signal(|| None::<std::rc::Rc<MountedData>>);
+    rsx! {
+        div { class: "search-field field",
+            Icon { name: IconName::Search }
+            input {
+                r#type: "search",
+                aria_label: "{label}",
+                placeholder: "{placeholder}",
+                value: "{value}",
+                autofocus,
+                onmounted: move |event| input.set(Some(event.data())),
+                oninput: move |event| on_input.call(event.value()),
+                onkeydown: move |event| {
+                    if let Some(handler) = onkeydown {
+                        handler.call(event);
+                    }
+                },
+                onfocus: move |event| {
+                    if let Some(handler) = onfocus {
+                        handler.call(event);
+                    }
+                },
+                onblur: move |event| {
+                    if let Some(handler) = onblur {
+                        handler.call(event);
+                    }
+                },
+            }
+            if !value.is_empty() {
+                button {
+                    class: "control control-quiet control-icon control-compact",
+                    r#type: "button",
+                    aria_label: "{clear_label}",
+                    // Pressing it leaves focus in the field, so clearing never ends the search.
+                    onmousedown: move |event| event.prevent_default(),
+                    onclick: move |_| {
+                        on_input.call(String::new());
+                        if let Some(field) = input.peek().clone() {
+                            spawn(async move {
+                                let _ = field.set_focus(true).await;
+                            });
+                        }
+                    },
+                    Icon { name: IconName::X }
+                }
+            }
+        }
+    }
+}
+
 /// The composer, after the React app's: the one raised text field, holding the words and, under
 /// them, a toolbar of the host's context and actions; a host's submit control sends. `inline`
 /// puts the actions beside the words instead, at their last line, as the October 21 Duet mockups

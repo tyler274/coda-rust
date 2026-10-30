@@ -39,7 +39,7 @@ use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
     Author, Button, ButtonVariant, Dialog, EmptyLine, Icon, IconName, IconTile, LiveDot,
-    NavigationControl, NavigationRow, StatePill, StatusLine, Tone,
+    NavigationControl, NavigationRow, SearchField, StatePill, StatusLine, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -3517,16 +3517,16 @@ fn SearchDialog(
     let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
     rsx! {
         Dialog { close_label: "Close", title: "Find patient", on_close,
-                input {
-                    class: "dialog-search field",
-                    r#type: "search",
+                SearchField {
+                    label: "Search your panel",
                     placeholder: "Name, DOB or phone",
-                    value: "{query}",
+                    clear_label: "Clear search",
+                    value: query.clone(),
                     autofocus: true,
                     onfocus: move |_| on_editing.call(true),
                     onblur: move |_| on_editing.call(false),
-                    oninput: move |event| on_query.call(event.value()),
-                    onkeydown: move |event| {
+                    on_input: move |words| on_query.call(words),
+                    onkeydown: move |event: KeyboardEvent| {
                         if event.key().to_string() == "Enter" {
                             event.stop_propagation();
                             if let Some(id) = first.clone() {

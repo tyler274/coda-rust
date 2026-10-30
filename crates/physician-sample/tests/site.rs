@@ -2467,7 +2467,7 @@ impl CdpBrowser {
 
     async fn search_for(&mut self, query: &str) {
         self.eval(&format!(r#"(() => {{
-            const input = document.querySelector('input.dialog-search');
+            const input = document.querySelector('.search-field input');
             Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, {});
             input.dispatchEvent(new Event('input', {{bubbles: true}}));
         }})()"#, serde_json::to_string(query).unwrap())).await;

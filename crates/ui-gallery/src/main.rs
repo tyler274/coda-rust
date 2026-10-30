@@ -12,10 +12,10 @@ use ui::{
     DateSeparator, Dialog, Disclosure, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
     IconName, LaterContext, ListRow, LiveDot, MeasurementTile, Message, NavigationControl,
     NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape,
-    ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup, SectionHeader, SelectionRow,
-    SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline, StatePill,
-    StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart,
-    UndoNotice, Value, WorkingMark,
+    ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup, SearchField, SectionHeader,
+    SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline,
+    StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar,
+    TrendChart, UndoNotice, Value, WorkingMark,
 };
 
 fn main() {
@@ -149,7 +149,7 @@ fn Gallery() -> Element {
                         StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
                     }
                 }
-                Section { title: "Fields and tabs", note: "The text field carries focus on its outline. A labelled field names what it holds; with several lines, it grows with what is written.",
+                Section { title: "Fields and tabs", note: "The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
                     FieldsDemo {}
                     TabsDemo {}
                 }
@@ -461,8 +461,16 @@ fn FieldsDemo() -> Element {
         "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work."
             .to_string()
     });
+    let mut search = use_signal(|| "Delgado".to_string());
     rsx! {
         div { class: "gallery-fields",
+            SearchField {
+                label: "Search your panel",
+                placeholder: "Name, DOB or phone",
+                clear_label: "Clear search",
+                value: search(),
+                on_input: move |words| search.set(words),
+            }
             TextField { label: "Title", value: title(), on_input: move |words| title.set(words) }
             TextField { label: "What I want to discuss", multiline: true, value: discuss(), on_input: move |words| discuss.set(words) }
         }
