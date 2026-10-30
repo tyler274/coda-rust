@@ -268,14 +268,14 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose a:where([data-prose]) { color: inherit; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; }
 .prose blockquote:where([data-prose]) { margin: var(--space-3) 0; padding: 0 0 0 var(--space-3); border-left: var(--stroke) solid var(--outline); color: var(--muted); }
 .prose code:where([data-prose]) { padding: 0 var(--space-1); border-radius: var(--radius-sm); background: var(--surface-low); font: var(--type-code); }
-.prose pre:where([data-prose]), .prose-table-scroll th { background: var(--surface-low); }
+.prose pre:where([data-prose]), .prose th:where([data-prose]) { background: var(--surface-low); }
 .prose pre:where([data-prose]) { overflow-x: auto; margin: var(--space-3) 0; padding: var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); }
 .prose pre:where([data-prose]) code { padding: 0; background: transparent; font: var(--type-code); }
 .prose hr:where([data-prose]) { margin: var(--space-5) 0; border: 0; border-top: var(--hairline) solid var(--outline-variant); }
 .prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; overflow-x: auto; }
-.prose-table-scroll table { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
-.prose-table-scroll :is(th, td) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
-.prose-table-scroll th { color: var(--ink); font-weight: var(--weight-strong); }
+.prose table:where([data-prose]) { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
+.prose :is(th, td):where([data-prose]) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
+.prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
 .prose-image { color: var(--muted); font: var(--type-body-sm); font-style: italic; }
 /* Duet's theme, after the October 21 design review: prose and the conversation at body large, each action a full-width
    bar, quiet actions and links in green at the touch target's height, cards on a hairline rather than a shadow, and the
