@@ -647,6 +647,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .popover p { margin: 0 0 var(--space-3); }
 /* A menu: choices on rows at the control height, the target height under a finger. The choice under the pointer or
    the keys is one, holding focus; it carries the state layer, which stands for its focus ring. */
+.menu:focus { outline: 0; }
 .menu { width: max-content; min-width: 13rem; max-width: min(21rem, calc(100vw - 2 * var(--space-3))); padding: var(--space-1); border-radius: var(--radius-md); }
 .menu-section + .menu-section, .menu-palette + * { margin-top: var(--space-1); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
 .menu-section-label { padding: var(--space-2) var(--space-3) var(--space-1); color: var(--muted); font: var(--type-label-sm); }
@@ -672,6 +673,24 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 :is(.menu-item, .menu-choice):focus-visible { outline: 0; animation: none; }
 @media (pointer: coarse) { .menu-item { min-height: var(--target); } }
 @media (forced-colors: active) { :is(.menu-item, .menu-choice):is(:hover, :focus-visible) { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
+/* A menu opened at a point stands where its script puts it. */
+.popover.is-at-point { position-area: none; inset: auto; margin: 0; }
+/* A context menu's content shrinks a touch while held; lifted, its copy stands in its place over the blurred page, the
+   original hidden beneath. The copy's foot fades where it is cut short. A tap anywhere on the page closes the menu. */
+.context-menu-host { -webkit-touch-callout: none; }
+.context-menu-host > * { transition: scale var(--motion-step) var(--ease-out); }
+.context-menu-host[data-pressing] { user-select: none; -webkit-user-select: none; }
+.context-menu-host[data-pressing] > * { scale: .97; }
+.context-menu-host[data-lifted] > * { visibility: hidden; }
+.context-lift { position: fixed; inset: 0; width: auto; height: auto; max-width: none; max-height: none; margin: 0; padding: 0; overflow: visible;
+  border: 0; background: transparent; }
+.context-lift::before { content: ""; position: fixed; inset: 0; background: color-mix(in srgb, var(--surface) 40%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); transition: opacity var(--motion-arrive) var(--ease-out); }
+@starting-style { .context-lift:popover-open::before { opacity: 0; } }
+.context-lift.is-settling::before { opacity: 0; transition: opacity var(--motion-control) var(--ease-exit); }
+.context-lift-preview { position: fixed; overflow: hidden; pointer-events: none; filter: drop-shadow(0 12px 28px rgb(var(--ref-shadow) / .18)); }
+.context-lift-preview > * { margin: 0; }
+.context-lift-preview.is-clipped { mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); }
 /* Reading a cited source. The preview sits at the overlay's
    depth beside its citation, on the side with more room, and never covers it; the component places it. */
 .anchored-popover { display: inline; }

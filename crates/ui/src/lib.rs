@@ -35,7 +35,7 @@ pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
-pub use overlays::{Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Popover};
+pub use overlays::{ContextMenu, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Popover};
 pub use prose::{Prose, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
 pub use undo::{UNDO_MS, UndoNotice};
