@@ -1,6 +1,6 @@
 ---
 name: coda-verify-sign-in
-description: "Check a change to physician sign-in against its TLA+ model: TLC on the five agreed rules, then the model's walks and bug paths in two browser tabs against the real page. Use when a change touches the physician app's session, sign-in or tab code, the auth server's answers, or the sign-in spec or model."
+description: "Check a change to physician sign-in against its TLA+ model: TLC on the five agreed rules, then the model's bug paths replayed in two browser tabs against the real page. Use when a change touches the physician app's session, sign-in or tab code, the auth server's answers, or the sign-in spec or model."
 ---
 
 # Verify physician sign-in
@@ -39,28 +39,26 @@ Then, from the repository root:
 CHROMIUM=<path to Chromium> cargo test -p physician-sample --test sign_in_model -- --ignored --test-threads=1
 ```
 
-It plays, in two tabs of one browser against the real page and sample server, the shortest walk
-to each kind of step `COVER` in `sign_in_model.rs` tells apart, 100 random 12-step walks, and the
-bug paths in `BUG_PATHS`, and compares both tabs with the model after every step.
+It replays each path in `BUG_PATHS` in `sign_in_model.rs`, in two tabs of one browser against the
+real page and sample server, and compares both tabs with the model after every step.
 
 ## Bounds and assumptions
 
 Two tabs and up to three sessions. Each wait in the code is one step, and the model's header says
 what it takes as one step and the timing it assumes. TLC covers every state of that finite model;
-the walks cover the steps they take, not every order. Safety only: no rule says anything must
+the browser test covers only the bug paths, not every path the code can take. Safety only: no rule says anything must
 eventually happen. The README lists the promises that rest on records the model can't hold, and
 the tests that hold them.
 
 ## A failure
 
-- **TLC breaks a rule.** The report gives the shortest path. Replay it in the browser with
-  `node verification/walks.mjs verification/physician/sign-in/SignIn.tla --paths '[[...]]'` and
-  the bug-path test. If every step can happen in the code and the code shows the same, the design
-  breaks the rule: take it to Dev, and never weaken the rule.
-- **A walk differs from the model.** The message names the step and the difference. If the code
-  does what the README says and the model doesn't, the model is wrong: fix the action from the
-  README's words. If the code differs from both, it's a bug: add the path to `BUG_PATHS`, see it
-  fail, then fix the code. A step the driver can't take or a page that never loads is the driver.
+- **TLC breaks a rule.** The report gives the shortest path. Add it to `BUG_PATHS` and run the
+  browser test. If every step can happen in the code and the code shows the same, the design breaks
+  the rule: take it to Dev, and never weaken the rule.
+- **The page differs from the model on a path.** The message names the step and the difference. If
+  the code does what the README says and the model doesn't, the model is wrong: fix the action from
+  the README's words. If the code differs from both, it's a bug: keep the path in `BUG_PATHS`, see
+  it fail, then fix the code. A step the driver can't take or a page that never loads is the driver.
 - **An intended change.** Change the README with Dev first, then the model, then the code.
 
 ## Checks seen failing
@@ -81,6 +79,6 @@ break it again the same way and confirm TLC reports that rule.
 
 ## Sync
 
-The model and walks were last confirmed to describe the code above at commit `d24e027d`. Move this
+The model and bug paths were last confirmed to describe the code above at commit `d24e027d`. Move this
 forward only after reading each change to that code since then against the model and running both
 checks under Run.

@@ -33,14 +33,13 @@ harness: when a rule depends on it, it belongs in the model.
 
 ## Holding the code to the model
 
-TLC takes every step of the walks a journey's browser test plays.
-[walks.mjs](walks.mjs) asks TLC for the shortest walk to each kind of step the test tells apart,
-and for random walks for the orders between them, or for the walk through each listed bug path,
-and prints them as JSON. The browser test does what each event names in the real page and, after
-every step, compares the page with the model's state. Each bug path TLC or review found stays in
-the journey's bug-path test, which failed on the code before its fix. A journey's model tests live
-in their own test file, named for the journey such as `sign_in_model.rs`, and run locally: CI
-doesn't run TLC.
+TLC checks the model; it doesn't reach the code. When TLC or review finds a path on which the code
+breaks a rule, that path is replayed against the real code, as PStack's `statechart` skill directs.
+[replay.mjs](replay.mjs) asks TLC for the model's state after each step of each path, and the
+journey's browser test does what each event names in the real page and, after every step, compares
+the page with the model. Each bug path stays in that test, which failed on the code before its fix.
+The test lives in its own file, named for the journey such as `sign_in_model.rs`, and runs locally:
+CI doesn't run TLC.
 
 ## Commands
 
@@ -48,7 +47,6 @@ From the repository root, for a journey's model:
 
 ```sh
 .agents/skills/statechart/scripts/statechart verification/physician/sign-in/SignIn.tla
-node verification/walks.mjs verification/physician/sign-in/SignIn.tla --walks 10
 ```
 
 The first run installs PStack's pinned TLC and Java with mise. The journey's README names its

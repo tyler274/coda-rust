@@ -1,19 +1,19 @@
-//! The sign-in model's walks, played in two tabs of one browser.
+//! The sign-in model's bug paths, replayed in two tabs of one browser.
 //!
-//! `verification/walks.mjs` asks TLC, from both tabs closed, for the shortest
-//! walk to each kind of step COVER tells apart, and for random walks for the
-//! orders between them. Each step does what the event names: you open,
-//! click and sign out in the real page; Coda's answers wait in the page until
-//! the model says Coda answers, and another tab's news waits until the tab
-//! hears it. After every step both tabs must look as the model says: what each
-//! shows, what it still waits on from Coda, whether news is on its way, and the
-//! session the browser stores. The driver answers for what the sample server
-//! can't be: another physician (a real session whose whoami names someone
-//! else), a practice that removed your access, a used link, and Coda out of
-//! reach. Sessions expire by ending them on the server.
+//! Each bug path is a list of the model's events on which the code once broke
+//! a rule. `verification/replay.mjs` asks TLC for the model's state after each
+//! step. Each step does what the event names: you open, click and sign out in
+//! the real page; Coda's answers wait in the page until the model says Coda
+//! answers, and another tab's news waits until the tab hears it. After every
+//! step both tabs must look as the model says: what each shows, what it still
+//! waits on from Coda, whether news is on its way, and the session the browser
+//! stores. The driver answers for what the sample server can't be: another
+//! physician (a real session whose whoami names someone else), a practice that
+//! removed your access, a used link, and Coda out of reach. Sessions expire by
+//! ending them on the server.
 //!
-//! These need TLC, so they run locally through the coda-verify-sign-in skill
-//! and CI leaves them out. The spec and model are in
+//! This needs TLC, so it runs locally through the coda-verify-sign-in skill
+//! and CI leaves it out. The spec and model are in
 //! `verification/physician/sign-in/`.
 
 use std::path::PathBuf;
@@ -31,32 +31,6 @@ use required_auth::{STAGING_EMAIL, spawn_required_server};
 /// A stored owner other than the signed-in physician: the browser now holds
 /// another physician's session.
 const ANOTHER_EMAIL: &str = "another.physician@codahealth.test";
-
-#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
-#[ignore = "browser qualification; run explicitly with --ignored"]
-async fn every_walk_of_the_sign_in_model_holds_in_two_tabs() {
-    let server = spawn_required_server().await;
-    // The page reads on its own, so a walk can't make it read.
-    play(
-        server.address,
-        &model_walks(&[
-            "--cover",
-            COVER,
-            "--walks",
-            "100",
-            "--depth",
-            "12",
-            "--skip",
-            "the workspace reads",
-        ]),
-    );
-}
-
-/// What tells two steps apart for the walks: the event, and what the tab it
-/// happened in shows, waits on and holds after it.
-const COVER: &str = r#"<<event, IF event.tab = "" THEN <<>> ELSE
-  <<tab[event.tab].shows, tab[event.tab].whose, tab[event.tab].read, tab[event.tab].signIn,
-    tab[event.tab].link, tab[event.tab].opens, stores = NoSession>>>>"#;
 
 /// Paths on which the code once broke a rule the model holds: a tab opened at
 /// a patient link while signed out, following another tab's sign-in, still
@@ -78,110 +52,46 @@ const BUG_PATHS: &str = r#"[
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_sign_in_model_s_bug_paths_hold_in_two_tabs() {
     let server = spawn_required_server().await;
-    play(server.address, &model_walks(&["--paths", BUG_PATHS]));
-}
-
-/// Plays the walks in browsers side by side and fails with every walk that
-/// strays from the model.
-fn play(address: std::net::SocketAddr, walks: &Walks) {
-    // SIGN_IN_WALKS picks walks by index ("3,17"); SIGN_IN_WALKERS runs browsers in parallel.
-    let picked: Vec<usize> = match std::env::var("SIGN_IN_WALKS") {
-        Ok(list) => list
-            .split(',')
-            .map(str::trim)
-            .filter(|n| !n.is_empty())
-            .map(|n| n.parse().expect("walk index"))
-            .collect(),
-        Err(_) => (0..walks.len()).collect(),
-    };
-    let walkers: usize = std::env::var("SIGN_IN_WALKERS")
-        .ok()
-        .and_then(|n| n.parse().ok())
-        .unwrap_or(3);
-    let next = std::sync::atomic::AtomicUsize::new(0);
-    let failures = std::sync::Mutex::new(Vec::new());
+    let replay = replay(BUG_PATHS);
     tokio::task::block_in_place(|| {
-        std::thread::scope(|scope| {
-            for _ in 0..walkers {
-                scope.spawn(|| {
-                    loop {
-                        let n = next.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
-                        let Some(&index) = picked.get(n) else { return };
-                        let walk = &walks[index];
-                        let outcome =
-                            std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                                Walker::new(address).walk(&walks.start, walk)
-                            }));
-                        if let Err(panic) = outcome {
-                            let message = panic
-                                .downcast_ref::<String>()
-                                .cloned()
-                                .or_else(|| panic.downcast_ref::<&str>().map(|s| (*s).to_owned()))
-                                .unwrap_or_default();
-                            failures
-                                .lock()
-                                .unwrap()
-                                .push(format!("walk {index}: {message}"));
-                        }
-                    }
-                });
-            }
-        });
+        for path in &replay.paths {
+            Walker::new(server.address).walk(&replay.start, path);
+        }
     });
-    let failures = failures.into_inner().unwrap();
-    assert!(
-        failures.is_empty(),
-        "{} of {} walks failed:\n\n{}",
-        failures.len(),
-        picked.len(),
-        failures.join("\n\n")
-    );
 }
 
 type ModelState = std::collections::BTreeMap<String, String>;
 
 #[derive(serde::Deserialize)]
-struct WalkStep {
+struct Step {
     event: String,
     state: ModelState,
 }
 
 #[derive(serde::Deserialize)]
-struct Walks {
+struct Replay {
     start: ModelState,
-    walks: Vec<Vec<WalkStep>>,
+    paths: Vec<Vec<Step>>,
 }
 
-impl std::ops::Index<usize> for Walks {
-    type Output = Vec<WalkStep>;
-    fn index(&self, index: usize) -> &Self::Output {
-        &self.walks[index]
-    }
-}
-
-impl Walks {
-    fn len(&self) -> usize {
-        self.walks.len()
-    }
-}
-
-fn model_walks(choice: &[&str]) -> Walks {
+/// The model's state after each step of each path, from TLC.
+fn replay(paths: &str) -> Replay {
     let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
     let output = std::process::Command::new("node")
         .current_dir(&workspace)
         .args([
-            "verification/walks.mjs",
+            "verification/replay.mjs",
             "verification/physician/sign-in/SignIn.tla",
+            paths,
         ])
-        .args(choice)
         .output()
-        .expect("node asks TLC for the walks");
+        .expect("node asks TLC for the paths");
     assert!(
         output.status.success(),
         "{}",
         String::from_utf8_lossy(&output.stderr)
     );
-    serde_json::from_slice(&output.stdout).expect("walks")
+    serde_json::from_slice(&output.stdout).expect("paths")
 }
 
 /// Holds Coda's answers and other tabs' news in the page until the driver
@@ -389,7 +299,7 @@ impl Walker {
         if t == "A" { &mut self.a } else { &mut self.b }
     }
 
-    fn walk(mut self, start: &ModelState, steps: &[WalkStep]) {
+    fn walk(mut self, start: &ModelState, steps: &[Step]) {
         let mut before = start.clone();
         for (n, step) in steps.iter().enumerate() {
             self.act(&step.event, &before, &step.state);
