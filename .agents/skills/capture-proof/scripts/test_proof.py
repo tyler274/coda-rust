@@ -56,18 +56,21 @@ class ProofTests(unittest.TestCase):
         self.assertFalse(self.manifest()["entries"][0]["expect_matched"])
         self.proof("run", "--claim", "AC1", "--expect", r"failed\|5\|5", "--", "echo", "failed|5|5")
 
-    def test_failure_before_the_fix_runs_new_test_at_base(self):
+    def test_failure_before_the_fix_must_be_the_expected_failure(self):
+        check = ["sh", "-c", "grep -q fixed code.txt || { echo 'assertion failed: fixed'; exit 1; }"]
+        self.proof("run", "--claim", "AC1", "--expect-fail", "--", *check, code=1)
+        self.assertFalse((self.bundle / "manifest.json").exists())
+        self.proof("run", "--claim", "AC1", "--expect-fail", "--expect", "error: cannot find", "--",
+                   *check, code=1)
+        self.proof("run", "--claim", "AC1", "--expect-fail", "--expect", "assertion failed", "--", *check)
         (self.root / "code.txt").write_text("fixed\n")
-        (self.root / "check.sh").write_text("grep -q fixed code.txt\n")
-        self.git("add", ".")
-        self.git("commit", "--quiet", "-m", "fix")
-        self.proof("run", "--claim", "AC1", "--expect-fail", "--at", self.base, "--with", "check.sh",
-                   "--", "sh", "check.sh")
-        self.proof("run", "--claim", "AC1", "--", "sh", "check.sh")
-        before, after = self.manifest()["entries"]
-        self.assertEqual((before["at"], before["ok"], after["ok"]), (self.base, True, True))
-        self.assertNotIn("proof-at-", self.git("worktree", "list"))
-        self.proof("run", "--claim", "AC1", "--expect-fail", "--", "sh", "check.sh", code=1)
+        self.git("commit", "--quiet", "-am", "fix")
+        self.proof("run", "--claim", "AC1", "--", *check)
+        self.proof("run", "--claim", "AC1", "--expect-fail", "--expect", "assertion failed", "--",
+                   *check, code=1)
+        wrong, before, after, passed = self.manifest()["entries"]
+        self.assertEqual([e["ok"] for e in (wrong, before, after, passed)], [False, True, True, False])
+        self.assertIn("Fails as expected (exit 1)", self.proof("render").stdout)
 
     def test_status_reports_stale_and_gaps(self):
         self.proof("run", "--claim", "AC1", "--", "true")

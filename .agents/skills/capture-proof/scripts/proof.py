@@ -4,7 +4,7 @@
 The bundle lives in target/verification/proof/<branch>/ with manifest.json beside the
 artifacts. Every entry records the revision it ran against, so stale proof shows.
 
-  run        --claim C [--label L] [--expect RE] [--expect-fail] [--at REV [--with PATH...]] -- CMD...
+  run        --claim C [--label L] [--expect RE] [--expect-fail --expect RE] -- CMD...
   add        --claim C [--label L] [--revision REV] PATH   a log, response, screenshot or run folder
   screenshot --claim C --url URL [--label L] [--window 1440,900]
   gap        --claim C --reason R                      a criterion with no proof, and why
@@ -117,6 +117,9 @@ def slugify(text):
 def cmd_run(args):
     if not args.command:
         sys.exit("run: give the command after --")
+    if args.expect_fail and not args.expect:
+        sys.exit("run: --expect-fail needs --expect naming the failure the defect gives, "
+                 "so a build error does not count")
     path, data = load()
     entry = new_entry(data, args, "run")
     redacted = [redact(arg) for arg in args.command]
@@ -128,40 +131,22 @@ def cmd_run(args):
     entry.update(command=redacted, expect=args.expect, expect_fail=args.expect_fail)
     log_name = f"{entry['id']:02d}-{slugify(args.label or args.command[0])}.log"
     entry["files"] = [log_name]
-    cwd, worktree = Path.cwd(), None
-    if args.at:
-        base = git("rev-parse", args.at)
-        entry["at"] = base
-        worktree = Path(tempfile.mkdtemp(prefix="proof-at-"))
-        git("worktree", "add", "--detach", str(worktree), base)
-        root = repo_root()
-        for item in args.with_paths:
-            source = root / item
-            target = worktree / item
-            target.parent.mkdir(parents=True, exist_ok=True)
-            (shutil.copytree if source.is_dir() else shutil.copy2)(source, target)
-        entry["with"] = args.with_paths
-        cwd = worktree / Path.cwd().relative_to(root)
     started = time.monotonic()
     output = []
-    try:
-        with (path / log_name).open("w") as log:
-            try:
-                process = subprocess.Popen(args.command, cwd=cwd, stdout=subprocess.PIPE,
-                                           stderr=subprocess.STDOUT, text=True, errors="replace")
-            except OSError as error:
-                log.write(f"{error}\n")
-                output.append(f"{error}\n")
-                exit_code = 127
-            else:
-                for line in process.stdout:
-                    sys.stdout.write(line)
-                    log.write(line)
-                    output.append(line)
-                exit_code = process.wait()
-    finally:
-        if worktree:
-            git("worktree", "remove", "--force", str(worktree), check=False)
+    with (path / log_name).open("w") as log:
+        try:
+            process = subprocess.Popen(args.command, stdout=subprocess.PIPE,
+                                       stderr=subprocess.STDOUT, text=True, errors="replace")
+        except OSError as error:
+            log.write(f"{error}\n")
+            output.append(f"{error}\n")
+            exit_code = 127
+        else:
+            for line in process.stdout:
+                sys.stdout.write(line)
+                log.write(line)
+                output.append(line)
+            exit_code = process.wait()
     entry["seconds"] = round(time.monotonic() - started, 1)
     entry["exit"] = exit_code
     failed_as_asked = (exit_code != 0) == bool(args.expect_fail)
@@ -403,8 +388,7 @@ def result(entry, head):
         return f"Gap: {entry['reason']}"
     if entry["kind"] == "run":
         if entry.get("expect_fail"):
-            text = (f"Fails as expected at `{entry['at'][:10]}`" if entry.get("at") else
-                    "Fails as expected") if entry["ok"] else "**Did not fail as expected**"
+            text = "Fails as expected" if entry["ok"] else "**Did not fail as expected**"
         else:
             text = "Pass" if entry["ok"] else "**Fail**"
         text += f" (exit {entry['exit']})"
@@ -448,9 +432,8 @@ def cmd_render(args):
         files = entry.get("files", [])
         if entry["kind"] == "run":
             tail = redact((path / files[0]).read_text(errors="replace")).splitlines()[-args.tail:]
-            where = f" at `{entry['at'][:10]}`" if entry.get("at") else ""
             lines += ["", f"<details><summary>{entry['claim']}: "
-                          f"{entry['label'] or entry['command'][0]}{where}, last {len(tail)} lines</summary>",
+                          f"{entry['label'] or entry['command'][0]}, last {len(tail)} lines</summary>",
                       "", "```console", f"$ {shlex.join(entry['command'])}", *tail,
                       f"# exit {entry['exit']}", "```", "</details>"]
         for name in files:
@@ -472,10 +455,8 @@ def main():
 
     run = claimed("run")
     run.add_argument("--expect", help="a regular expression the output must contain")
-    run.add_argument("--expect-fail", action="store_true", help="the command must exit nonzero")
-    run.add_argument("--at", help="run in a temporary worktree at this revision")
-    run.add_argument("--with", dest="with_paths", nargs="+", default=[],
-                     help="paths copied from this checkout into the --at worktree, such as a new test")
+    run.add_argument("--expect-fail", action="store_true",
+                     help="the command must exit nonzero, with --expect output")
     run.add_argument("command", nargs=argparse.REMAINDER)
     run.set_defaults(func=cmd_run)
     add = claimed("add")
