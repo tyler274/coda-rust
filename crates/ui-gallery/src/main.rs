@@ -123,6 +123,9 @@ fn Gallery() -> Element {
                 Section { title: "Buttons and navigation", note: "One shape in three variants, with the shared hover, press, focus and touch target.",
                     ButtonDemo {}
                 }
+                Section { title: "Duet's theme", note: "The same pieces under theme-duet: prose at body large, each action a full-width bar, quiet actions and links in green, cards on a hairline, and the person's bubble tailed toward them.",
+                    ThemeDemo {}
+                }
                 Section { title: "Disclosure", note: "Rows open and close on a height transition; the chevron turns.",
                     Disclosure { title: "What Duet used", default_open: true,
                         p { class: "gallery-copy", "Sleep note from Tuesday, and seven nights of sleep from Apple Health." }
@@ -760,6 +763,23 @@ fn ButtonDemo() -> Element {
             strong { "Evening walk" }
             span { class: "gallery-note", "Every evening" }
             Icon { name: IconName::ArrowRight }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ThemeDemo() -> Element {
+    rsx! {
+        div { class: "theme-duet gallery-theme",
+            Message { author: Author::Person, by: "You", p { "Can we keep it simple this week?" } }
+            Message { author: Author::Assistant, by: "Duet", p { "Yes: phone away at 10:30, and the same wake-up time." } }
+            Card { overline: "Your saved plan", title: "Evening wind-down", footer: "Saved in chat · October 21",
+                StepList { steps: vec!["Put my phone away at 10:30 pm.".into(), "Keep my usual wake-up time.".into()] }
+            }
+            NavigationControl { "Open original" }
+            Button { variant: ButtonVariant::Primary, "Save plan" }
+            Button { variant: ButtonVariant::Quiet, "Not now" }
         }
     }
 }

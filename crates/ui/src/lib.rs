@@ -400,8 +400,8 @@ pub fn Message(
 }
 
 /// A field with its label above it, after the October 21 mockups' page editor: one line, or with
-/// `multiline` words that grow with what is written. The host owns the words, so they survive a
-/// newer save arriving while the person types.
+/// `multiline` words that grow with what is written. The host owns its value and hears each
+/// change.
 #[component]
 pub fn TextField(
     label: String,
