@@ -2358,7 +2358,7 @@ fn AttachmentsDemo() -> Element {
                 p { "Can you read these and tell me if anything changed?" }
             }
             if let Some(name) = opened() {
-                p { class: "gallery-note", "Opened {name}." }
+                p { class: "gallery-note", "Chose {name}." }
             }
         }
         Composer {
