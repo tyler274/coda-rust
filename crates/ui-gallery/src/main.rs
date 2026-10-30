@@ -11,8 +11,8 @@ use ui::{
     CommandStage, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
     DateSeparator, Dialog, Disclosure, FeedbackRating, FooterActions, Icon, IconName, LaterContext,
     ListRow, LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline,
-    Paper, PaperSection, Placeholder, Quote, Rating, ReadNotice, ReadStage, Receipt, RowGroup,
-    SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
+    PageTitle, Paper, PaperSection, Placeholder, Quote, Rating, ReadNotice, ReadStage, Receipt,
+    RowGroup, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
     SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, ToggleChip,
     Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
 };
@@ -83,6 +83,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
                     ChartDemo {}
+                }
+                Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
+                    HeadingsDemo {}
                 }
                 Section { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document for a clinician, choices and settings as rows, and actions pinned to the foot.",
                     PagesDemo {}
@@ -414,6 +417,25 @@ fn ConversationDemo() -> Element {
             Dialog { sheet: true, title: "Sleep note", on_close: move |_| source_open.set(false),
                 p { class: "gallery-copy", "About seven hours, from the sleep note." }
             }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn HeadingsDemo() -> Element {
+    rsx! {
+        div { class: "gallery-headings",
+            PageTitle { text: "Good morning, Alex", eyebrow: "Wednesday, October 21" }
+            PageTitle {
+                text: "You",
+                actions: rsx! {
+                    Button { variant: ButtonVariant::Quiet, icon_only: true, aria_label: "Settings", Icon { name: IconName::Settings } }
+                },
+            }
+            PageTitle { text: "For my doctor", eyebrow: "Your continuing page", detail: "Saved October 21 · Not sent" }
+            PageTitle { text: "Visit note", icon: IconName::File, detail: "Northside Clinic · October 15, 2026" }
+            PageTitle { text: "Here’s what changed.", detail: "Proposed by Duet · Not saved" }
         }
     }
 }

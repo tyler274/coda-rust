@@ -38,9 +38,42 @@ pub const STYLESHEET: &str = concat!(
     include_str!("../assets/components.css"),
 );
 
+/// A screen's heading, after the October 21 mockups: its title, what the screen belongs to on the
+/// line above (the day, "Your continuing page"), and its state or source on the line beneath
+/// ("Proposed by Duet · Not saved"). A record's heading leads with its icon. A screen with no top
+/// bar sets its own `actions` above the title, at the trailing edge, as You does with Settings.
 #[component]
-pub fn PageTitle(text: String) -> Element {
-    rsx! { h1 { class: "page-title", "{text}" } }
+pub fn PageTitle(
+    text: String,
+    #[props(default)] eyebrow: Option<String>,
+    #[props(default)] detail: Option<String>,
+    #[props(default)] icon: Option<IconName>,
+    #[props(default)] actions: Option<Element>,
+) -> Element {
+    if eyebrow.is_none() && detail.is_none() && icon.is_none() && actions.is_none() {
+        return rsx! { h1 { class: "page-title", "{text}" } };
+    }
+    rsx! {
+        header { class: "page-heading",
+            if let Some(actions) = actions {
+                div { class: "page-heading-actions", {actions} }
+            }
+            div { class: "page-heading-main",
+                if let Some(name) = icon {
+                    IconTile { name }
+                }
+                div { class: "page-heading-text",
+                    if let Some(eyebrow) = eyebrow {
+                        p { class: "page-heading-eyebrow", "{eyebrow}" }
+                    }
+                    h1 { class: "page-title", "{text}" }
+                    if let Some(detail) = detail {
+                        p { class: "card-detail", "{detail}" }
+                    }
+                }
+            }
+        }
+    }
 }
 
 /// What a card holds, named above its title in small capitals: "What Duet noticed", "Original record".

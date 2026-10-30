@@ -1,6 +1,14 @@
 .app { min-height: 100%; color: var(--ink); background: var(--surface); font: var(--type-body-md); }
 .page { max-width: var(--measure); margin: 0 auto; padding: var(--space-6) var(--page-gutter) calc(var(--target) + var(--space-8)); }
 .page-title { margin: 0 0 var(--space-4); color: var(--ink); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
+/* A screen's heading: what it belongs to above the title, its state or source beneath, a record's icon beside it, and on
+   a screen with no top bar, its actions above at the trailing edge. */
+.page-heading { display: grid; gap: var(--space-2); margin: 0 0 var(--space-5); }
+.page-heading .page-title { margin: 0; }
+.page-heading-actions { display: flex; justify-content: flex-end; gap: var(--space-1); margin-inline-end: calc(-1 * var(--space-2)); }
+.page-heading-main { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.page-heading-text { display: grid; gap: var(--space-1); min-width: 0; }
+.page-heading-eyebrow { margin: 0; color: var(--muted); font: var(--type-body-sm); }
 .overline { margin: 0; color: var(--muted); font: var(--type-label-sm); letter-spacing: var(--overline-tracking); text-transform: uppercase; }
 .card { box-sizing: border-box; min-width: 0; border: var(--card-outline, 0); background: var(--surface-lowest); border-radius: var(--radius-lg); box-shadow: var(--card-elevation, var(--elevation-2)); }
 .card-header { display: flex; align-items: center; gap: var(--space-3); min-width: 0; padding: var(--space-3) var(--space-4); }
