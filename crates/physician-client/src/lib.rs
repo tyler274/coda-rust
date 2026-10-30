@@ -110,8 +110,17 @@ impl PhysicianClient {
         path: &str,
         body: &impl serde::Serialize,
     ) -> Result<T, http::HttpError> {
+        self.post_as(self.bearer(), path, body).await
+    }
+
+    async fn post_as<T: serde::de::DeserializeOwned>(
+        &self,
+        bearer: Option<String>,
+        path: &str,
+        body: &impl serde::Serialize,
+    ) -> Result<T, http::HttpError> {
         let mut request = self.http.post(format!("{}{path}", self.base)).json(body);
-        if let Some(bearer) = self.bearer() {
+        if let Some(bearer) = bearer {
             request = request.header(reqwest::header::AUTHORIZATION, bearer);
         }
         let response = request
@@ -182,15 +191,17 @@ impl PhysicianClient {
         Ok(verified)
     }
 
-    /// Ends the held session on the server and drops it locally, unless a
-    /// newer session replaced it while the request was out.
-    pub async fn sign_out(&self) -> Result<(), http::HttpError> {
-        let ending = self.session.get();
-        let result: Result<serde_json::Value, http::HttpError> =
-            self.post("/auth/sign-out", &serde_json::json!({})).await;
-        if let Some(ending) = ending {
-            self.session.clear_if(&ending);
-        }
+    /// Ends `session` on the server, and drops it locally if it is still the
+    /// one held; a newer session set meanwhile stays.
+    pub async fn sign_out(&self, session: &str) -> Result<(), http::HttpError> {
+        let result: Result<serde_json::Value, http::HttpError> = self
+            .post_as(
+                Some(format!("Bearer {session}")),
+                "/auth/sign-out",
+                &serde_json::json!({}),
+            )
+            .await;
+        self.session.clear_if(session);
         result.map(|_| ())
     }
 
@@ -767,7 +778,8 @@ mod tests {
         assert_eq!(today.rows.len(), 0);
 
         // Sign out: the session ends locally and reads stop presenting it.
-        client.sign_out().await.unwrap();
+        let held = client.session().get().expect("signed in");
+        client.sign_out(&held).await.unwrap();
         assert!(matches!(
             client.today().await,
             Err(http::HttpError::Status { status: 401, .. })

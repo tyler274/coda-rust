@@ -1388,7 +1388,7 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
         .wait_for_text("Staging Physician", Duration::from_secs(10))
         .await;
     // A newly mailed link signs in once, after sign-out. (Opened while you are
-    // signed in, your own link keeps your session; auth_browser covers that.)
+    // signed in, your own link keeps your session; sign_in_model covers that.)
     browser
         .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
         .await;

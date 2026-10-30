@@ -40,9 +40,9 @@ landed prerequisites from proposed work. Use a diagram or before/after example
 when it clarifies the change.
 
 Connect material promises to inspected evidence at the relevant revision using
-existing verification owners. In Coda Rust, include the applicable journey,
-statechart, and Verus evidence without implying that a formal model proves the
-running implementation. Distinguish local checks, CI, browser/runtime proof,
+existing verification owners. In Coda Rust, include the applicable feature's TLA+
+model, its TLC result and bug-path replay without implying that a formal model proves
+the running implementation. Distinguish local checks, CI, browser/runtime proof,
 domain judgment, merge, and deployment. Name failures, omissions, and stale results
 that change the assessment; summarize routine checks.
 
