@@ -467,7 +467,9 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .chart-header { display: flex; align-items: flex-start; gap: var(--space-2); }
 .chart-readout { display: grid; gap: var(--space-hair); flex: 1; min-width: 0; }
 .chart-readout > * { min-height: 1lh; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chart-readout > .value { flex-wrap: nowrap; }
+/* The figure runs as one line of its parts, so a figure too wide ends in an ellipsis; its parts keep Value's gap. */
+.chart-readout > .value { display: block; }
+.chart-readout > .value > .value-part + .value-part { margin-inline-start: .3em; }
 .chart-header-label { color: var(--muted); font: var(--type-label-md); }
 .chart-header-label.is-pinned { color: var(--primary); }
 .chart-header-caption { color: var(--muted); font: var(--type-body-sm); }
