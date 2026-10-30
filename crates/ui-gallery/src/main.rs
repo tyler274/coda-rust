@@ -13,8 +13,8 @@ use ui::{
     ListRow, LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline,
     PageTitle, Paper, PaperSection, Placeholder, Quote, Rating, ReadNotice, ReadStage, Receipt,
     RowGroup, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, ToggleChip,
-    Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
+    ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
 };
 
 fn main() {
@@ -133,8 +133,8 @@ fn Gallery() -> Element {
                         StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
                     }
                 }
-                Section { title: "Fields and tabs", note: "The text field carries focus on its outline.",
-                    input { class: "field", aria_label: "Name", placeholder: "Name" }
+                Section { title: "Fields and tabs", note: "The text field carries focus on its outline. A labelled field names what it holds; with several lines, it grows with what is written.",
+                    FieldsDemo {}
                     TabsDemo {}
                 }
             }
@@ -421,6 +421,22 @@ fn ConversationDemo() -> Element {
             Dialog { sheet: true, title: "Sleep note", on_close: move |_| source_open.set(false),
                 p { class: "gallery-copy", "About seven hours, from the sleep note." }
             }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn FieldsDemo() -> Element {
+    let mut title = use_signal(|| "Questions for my visit".to_string());
+    let mut discuss = use_signal(|| {
+        "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work."
+            .to_string()
+    });
+    rsx! {
+        div { class: "gallery-fields",
+            TextField { label: "Title", value: title(), on_input: move |words| title.set(words) }
+            TextField { label: "What I want to discuss", multiline: true, value: discuss(), on_input: move |words| discuss.set(words) }
         }
     }
 }

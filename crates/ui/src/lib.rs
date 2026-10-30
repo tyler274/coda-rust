@@ -469,6 +469,40 @@ pub fn Message(
     }
 }
 
+/// A field with its label above it, after the October 21 mockups' page editor: one line, or with
+/// `multiline` words that grow with what is written. The host owns the words, so they survive a
+/// newer save arriving while the person types.
+#[component]
+pub fn TextField(
+    label: String,
+    value: String,
+    on_input: EventHandler<String>,
+    #[props(default)] multiline: bool,
+    #[props(default)] placeholder: String,
+) -> Element {
+    rsx! {
+        label { class: "text-field",
+            span { class: "text-field-label", "{label}" }
+            if multiline {
+                textarea {
+                    class: "field text-field-input",
+                    rows: "3",
+                    placeholder: "{placeholder}",
+                    value: "{value}",
+                    oninput: move |event| on_input.call(event.value()),
+                }
+            } else {
+                input {
+                    class: "field text-field-input",
+                    placeholder: "{placeholder}",
+                    value: "{value}",
+                    oninput: move |event| on_input.call(event.value()),
+                }
+            }
+        }
+    }
+}
+
 /// The composer, after the React app's: the one raised text field, holding the words and, under
 /// them, a toolbar of the host's context and actions; a host's submit control sends. `inline`
 /// puts the actions beside the words instead, at their last line, as the October 21 Duet mockups
