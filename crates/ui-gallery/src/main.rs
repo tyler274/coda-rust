@@ -354,6 +354,7 @@ fn ChartDemo() -> Element {
                     .enumerate()
                     .map(|(night, hours)| SeriesPoint {
                         value: Some(*hours),
+                        words: format!("October {}, {hours:.1} hours of sleep", 14 + night),
                         axis: match night {
                             0 => "Oct 14".into(),
                             7 => "Oct 21".into(),
