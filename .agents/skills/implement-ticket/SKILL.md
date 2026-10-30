@@ -18,7 +18,7 @@ evidence rather than inventing ticket contents or a separate integration.
 Read the ticket, discussion, governing specs, dependencies, and current code.
 Establish what already works, what remains, and what would prove completion.
 Reconcile material contradictions; use
-[linear-github-issues](../linear-github-issues/SKILL.md) when scope needs shaping.
+[write-linear-ticket](../write-linear-ticket/SKILL.md) when scope needs shaping.
 Explain the plan, responsible owners, affected workflows, and verification.
 
 ## Implement, verify, and review

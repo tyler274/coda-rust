@@ -25,8 +25,8 @@ Use the relevant skills as the work calls for them; the user need not name
 each one. The links below identify when to use each skill. Skills supply
 methods and judgment within these shared development defaults.
 
-- [linear-github-issues](.agents/skills/linear-github-issues/SKILL.md) shapes work,
-  checks its framing, and prepares a useful ticket or project handoff.
+- [write-linear-ticket](.agents/skills/write-linear-ticket/SKILL.md) writes and
+  refines tickets, checks their framing, and prepares a useful handoff.
 - [implement-ticket](.agents/skills/implement-ticket/SKILL.md) carries an agreed
   ticket through implementation, verification, local review, and PR preparation.
 - [local-review](.agents/skills/local-review/SKILL.md) is part of local development,

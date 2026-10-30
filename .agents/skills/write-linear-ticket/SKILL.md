@@ -1,9 +1,9 @@
 ---
-name: linear-github-issues
-description: Shape and write Linear issues, GitHub issues, and project overviews. Turn ideas or observed problems into grounded outcomes, check the proposed scope, and fit the work into existing plans.
+name: write-linear-ticket
+description: Write and refine Linear tickets, GitHub issues, and project overviews. Turn ideas or observed problems into grounded outcomes, check the proposed scope, and fit the work into existing plans.
 ---
 
-# Shape and Write Work
+# Write Linear Ticket
 
 Help clarify what work should happen, why it matters, where it belongs,
 and what would establish success. Scale the investigation to the request.
