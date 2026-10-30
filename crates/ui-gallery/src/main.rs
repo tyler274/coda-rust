@@ -19,7 +19,7 @@ use std::time::Duration;
 use ui::{
     ActionRow, Answer, ApprovalCard, ArtifactCard, AttachButton, Attachment, AttachmentState,
     Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
-    Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Command, CommandPalette,
+    Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Combobox, Command, CommandPalette,
     Comparison, ComparisonBars, Composer, ContextChip, ContextMenu, ConversationViewport,
     CopyButton, CopyWords, Count, DateSeparator, Dialog, Dictation, Diff, DiffLine, DiffWords,
     Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
@@ -27,7 +27,7 @@ use ui::{
     MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
     NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
     PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup, Rating,
-    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, SeriesChart,
+    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart,
     SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
     SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList,
     TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value,
@@ -198,7 +198,7 @@ fn Gallery() -> Element {
                         StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
                     }
                 }
-                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
+                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
                     InputsDemo {}
                 }
                 Section { title: "Fields and tabs", note: "The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
@@ -2476,6 +2476,30 @@ fn DictationDemo() -> Element {
 }
 
 #[cfg(feature = "web")]
+const VISIT_TYPES: [&str; 4] = ["Follow-up", "New patient", "Annual physical", "Telehealth"];
+
+#[cfg(feature = "web")]
+const MEDICATIONS: [(&str, &str); 8] = [
+    ("Lisinopril", "Tablet, 10 mg"),
+    ("Losartan", "Tablet, 50 mg"),
+    ("Metoprolol succinate", "Tablet, 50 mg"),
+    ("Metformin", "Tablet, 500 mg"),
+    ("Spironolactone", "Tablet, 25 mg"),
+    ("Atorvastatin", "Tablet, 40 mg"),
+    ("Apixaban", "Tablet, 5 mg"),
+    ("Furosemide", "Tablet, 40 mg"),
+];
+
+/// Where each medication matching the words stands in the list.
+#[cfg(feature = "web")]
+fn matching_medications(words: &str) -> Vec<usize> {
+    let words = words.trim().to_lowercase();
+    (0..MEDICATIONS.len())
+        .filter(|index| MEDICATIONS[*index].0.to_lowercase().contains(&words))
+        .collect()
+}
+
+#[cfg(feature = "web")]
 const RESULTS: [&str; 3] = ["Labs", "Imaging", "Visit notes"];
 
 #[cfg(feature = "web")]
@@ -2488,6 +2512,11 @@ fn InputsDemo() -> Element {
     let mut phone = use_signal(String::new);
     let mut span = use_signal(|| 1usize);
     let mut look = use_signal(|| 0usize);
+    let mut visit = use_signal(|| None::<usize>);
+    let mut medicine = use_signal(String::new);
+    let mut chosen_medicine = use_signal(|| None::<usize>);
+    let mut found = use_signal(|| matching_medications(""));
+    let mut searching = use_signal(|| false);
     let chosen = sharing().iter().filter(|on| **on).count();
     rsx! {
         div { class: "gallery-inputs",
@@ -2534,6 +2563,43 @@ fn InputsDemo() -> Element {
             div { class: "row-list",
                 SettingRow { title: "Share with her care team", detail: "Clinicians at Northside Clinic", on: on(), on_change: move |value| on.set(value) }
                 SettingRow { title: "Share with research", detail: "Set by the practice", on: false, disabled: true, on_change: move |_| {} }
+            }
+            Select {
+                label: "Visit type",
+                placeholder: "Choose a visit type",
+                options: VISIT_TYPES.iter().map(|kind| (*kind).to_owned()).collect::<Vec<_>>(),
+                selected: visit(),
+                on_select: move |index| visit.set(Some(index)),
+            }
+            Combobox {
+                label: "Medication",
+                placeholder: "Search medications",
+                query: medicine(),
+                options: found().iter().map(|index| {
+                    let (name, form) = MEDICATIONS[*index];
+                    Choice { label: name.into(), detail: Some(form.into()), disabled: false }
+                }).collect::<Vec<_>>(),
+                selected: found().iter().position(|index| chosen_medicine() == Some(*index)),
+                loading: searching(),
+                empty: "No medication by that name.",
+                hint: "Search by name.",
+                on_query: move |words: String| {
+                    medicine.set(words.clone());
+                    chosen_medicine.set(None);
+                    searching.set(true);
+                    spawn(async move {
+                        futures_timer::Delay::new(Duration::from_millis(240)).await;
+                        if medicine() == words {
+                            found.set(matching_medications(&words));
+                            searching.set(false);
+                        }
+                    });
+                },
+                on_choose: move |at: usize| {
+                    let index = found()[at];
+                    chosen_medicine.set(Some(index));
+                    medicine.set(MEDICATIONS[index].0.to_owned());
+                },
             }
             TextField {
                 label: "Mobile number",

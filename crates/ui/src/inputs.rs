@@ -7,7 +7,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName};
+use crate::{Icon, IconName, Spinner};
 
 static FIELDS: AtomicUsize = AtomicUsize::new(0);
 
@@ -257,5 +257,252 @@ pub fn Segmented(
                 }
             }
         }
+    }
+}
+
+/// One of a list of choices, from the platform's own picker, so a phone offers its wheel or sheet.
+/// With none `selected` yet, `placeholder` stands in the field.
+#[component]
+pub fn Select(
+    label: String,
+    options: Vec<String>,
+    selected: Option<usize>,
+    on_select: EventHandler<usize>,
+    #[props(default)] placeholder: String,
+    #[props(default)] disabled: bool,
+    hint: Option<String>,
+    error: Option<String>,
+) -> Element {
+    let id = use_hook(field_id);
+    let note = note_id(&id, &hint, &error);
+    rsx! {
+        FieldFrame { id: id.clone(), label, hint, error: error.clone(),
+            div { class: "select",
+                select {
+                    id: "{id}",
+                    class: if selected.is_none() { "field text-field-input is-placeholder" } else { "field text-field-input" },
+                    disabled,
+                    aria_describedby: note,
+                    aria_invalid: error.is_some().then_some("true"),
+                    onchange: move |event| {
+                        if let Ok(index) = event.value().parse() {
+                            on_select.call(index);
+                        }
+                    },
+                    if selected.is_none() {
+                        option { value: "", disabled: true, hidden: true, selected: true, "{placeholder}" }
+                    }
+                    for (index, option) in options.into_iter().enumerate() {
+                        option { key: "{index}", value: "{index}", selected: selected == Some(index), "{option}" }
+                    }
+                }
+                Icon { name: IconName::ChevronDown }
+            }
+        }
+    }
+}
+
+/// The choice to move to from `from`, forward or back, past any that are disabled, wrapping round.
+fn step_choice(options: &[Choice], from: Option<usize>, forward: bool) -> Option<usize> {
+    let count = options.len();
+    (1..=count)
+        .map(|distance| match (from, forward) {
+            (Some(from), true) => (from + distance) % count,
+            (Some(from), false) => (from + count - distance % count) % count,
+            (None, true) => distance - 1,
+            (None, false) => count - distance,
+        })
+        .find(|&index| !options[index].disabled)
+}
+
+/// One choice, found by typing, for a list too long to read: the field holds the host's `query`,
+/// and the host narrows `options` to it, from memory or by asking, `loading` while it does. The
+/// arrow keys or the pointer move through what is listed; Enter or a press chooses, Escape or
+/// leaving the field closes the list. `selected` is marked; `empty` is said when nothing is found.
+/// After a choice the host sets the `query` to what it wants the field to say.
+#[component]
+pub fn Combobox(
+    label: String,
+    query: String,
+    options: Vec<Choice>,
+    on_query: EventHandler<String>,
+    on_choose: EventHandler<usize>,
+    empty: String,
+    selected: Option<usize>,
+    #[props(default)] placeholder: String,
+    #[props(default)] loading: bool,
+    hint: Option<String>,
+    error: Option<String>,
+) -> Element {
+    let id = use_hook(field_id);
+    let note = note_id(&id, &hint, &error);
+    let mut open = use_signal(|| false);
+    let mut active = use_signal(|| None::<usize>);
+    let popup = format!("{id}-popup");
+    let list = format!("{id}-list");
+    let shown = popup.clone();
+    use_effect(move || {
+        let show = open();
+        document::eval(&format!(
+            "document.getElementById('{shown}')?.togglePopover({show})"
+        ));
+    });
+    // The active choice stands for a place in this list; a new list starts again from its first.
+    use_effect(use_reactive!(|options| {
+        let _ = options;
+        active.set(None);
+    }));
+    let current = active()
+        .filter(|&index| options.get(index).is_some_and(|option| !option.disabled))
+        .or_else(|| step_choice(&options, None, true));
+    let keyed = options.clone();
+    let moving = id.clone();
+    let mut choose = move |index: usize| {
+        on_choose.call(index);
+        open.set(false);
+    };
+    rsx! {
+        FieldFrame { id: id.clone(), label: label.clone(), hint, error: error.clone(),
+            div { class: "search-field field", style: "anchor-name: --{id}",
+                Icon { name: IconName::Search }
+                input {
+                    id: "{id}",
+                    r#type: "text",
+                    role: "combobox",
+                    aria_expanded: "{open}",
+                    aria_controls: "{list}",
+                    aria_autocomplete: "list",
+                    aria_activedescendant: current.filter(|_| open()).map(|index| format!("{id}-{index}")),
+                    aria_describedby: note,
+                    aria_invalid: error.is_some().then_some("true"),
+                    aria_busy: loading.then_some("true"),
+                    autocomplete: "off",
+                    spellcheck: "false",
+                    placeholder: "{placeholder}",
+                    value: "{query}",
+                    oninput: move |event| {
+                        on_query.call(event.value());
+                        active.set(None);
+                        open.set(true);
+                    },
+                    onclick: move |_| open.set(true),
+                    onblur: move |_| open.set(false),
+                    onkeydown: move |event| {
+                        // Keys that confirm composed text are the text's, not the list's.
+                        if event.is_composing() {
+                            return;
+                        }
+                        match event.key() {
+                            Key::ArrowDown | Key::ArrowUp => {
+                                event.prevent_default();
+                                if !open() {
+                                    open.set(true);
+                                    return;
+                                }
+                                let next = step_choice(&keyed, current, event.key() == Key::ArrowDown);
+                                active.set(next);
+                                if let Some(next) = next {
+                                    document::eval(&format!(
+                                        "document.getElementById('{moving}-{next}')?.scrollIntoView({{ block: 'nearest' }})"
+                                    ));
+                                }
+                            }
+                            Key::Enter if open() => {
+                                event.prevent_default();
+                                // Mid-search the list is the last search's, not what was asked for.
+                                if let Some(index) = current.filter(|_| !loading) {
+                                    choose(index);
+                                }
+                            }
+                            Key::Escape if open() => {
+                                event.prevent_default();
+                                event.stop_propagation();
+                                open.set(false);
+                            }
+                            _ => {}
+                        }
+                    },
+                }
+                if loading {
+                    Spinner {}
+                }
+            }
+            div {
+                id: "{popup}",
+                class: "popover combobox-popup",
+                "popover": "manual",
+                style: "position-anchor: --{id}",
+                // A press in the list leaves focus in the field, so the press still lands.
+                onmousedown: move |event| event.prevent_default(),
+                div { id: "{list}", role: "listbox", aria_label: "{label}",
+                    for (index, option) in options.iter().enumerate() {
+                        div {
+                            key: "{index}",
+                            id: "{id}-{index}",
+                            class: "command-row",
+                            role: "option",
+                            aria_selected: if current == Some(index) { "true" } else { "false" },
+                            aria_disabled: option.disabled.then_some("true"),
+                            onpointermove: {
+                                let disabled = option.disabled;
+                                move |_| {
+                                    if !disabled && current != Some(index) {
+                                        active.set(Some(index));
+                                    }
+                                }
+                            },
+                            onclick: {
+                                let disabled = option.disabled;
+                                move |_| {
+                                    if !disabled {
+                                        choose(index);
+                                    }
+                                }
+                            },
+                            span { class: "command-row-label",
+                                span { "{option.label}" }
+                                if let Some(detail) = &option.detail {
+                                    small { "{detail}" }
+                                }
+                            }
+                            if selected == Some(index) {
+                                Icon { name: IconName::Check }
+                            }
+                        }
+                    }
+                }
+                if options.is_empty() && !loading {
+                    p { class: "combobox-empty", role: "status", "{empty}" }
+                }
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn options() -> Vec<Choice> {
+        vec![
+            "a".into(),
+            Choice {
+                label: "b".into(),
+                disabled: true,
+                ..Choice::default()
+            },
+            "c".into(),
+        ]
+    }
+
+    #[test]
+    fn stepping_passes_disabled_choices_and_wraps() {
+        let options = options();
+        assert_eq!(step_choice(&options, None, true), Some(0));
+        assert_eq!(step_choice(&options, None, false), Some(2));
+        assert_eq!(step_choice(&options, Some(0), true), Some(2));
+        assert_eq!(step_choice(&options, Some(2), true), Some(0));
+        assert_eq!(step_choice(&options, Some(0), false), Some(2));
+        assert_eq!(step_choice(&[], None, true), None);
     }
 }

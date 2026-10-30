@@ -47,7 +47,7 @@ pub use documents::{
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
-pub use inputs::{Checkbox, Choice, RadioGroup, Segment, Segmented, TextField};
+pub use inputs::{Checkbox, Choice, Combobox, RadioGroup, Segment, Segmented, Select, TextField};
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
 pub use overlays::{

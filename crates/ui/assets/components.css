@@ -208,6 +208,12 @@
 .text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
 :where(input, textarea).text-field-input { padding: var(--space-3); }
 textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
+/* A select is the platform's own, in the field's look, with the library's chevron. */
+.select { position: relative; min-width: 0; }
+.select > select { appearance: none; display: block; width: 100%; padding: var(--space-3) calc(var(--space-3) + 28px) var(--space-3) var(--space-3); cursor: pointer; }
+.select > select.is-placeholder { color: var(--muted); }
+.select > select:disabled { cursor: default; opacity: .46; }
+.select > .icon { position: absolute; top: 50%; inset-inline-end: var(--space-3); translate: 0 -50%; color: var(--muted); pointer-events: none; }
 /* Beneath a field, a quiet hint, or what is wrong in red, with the field's outline red too. */
 .field-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--muted); font: var(--type-body-sm); }
 .field-note > .icon { flex: none; width: 16px; height: 16px; }
@@ -863,6 +869,15 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 }
 .popover :is(h2, h3) { margin: 0 0 var(--space-2); color: var(--ink); font: var(--type-title-sm); }
 .popover p { margin: 0 0 var(--space-3); }
+/* A combobox's list hangs from its field, at the field's width, flipping above where there isn't room. */
+.combobox-popup { width: anchor-size(width); max-height: min(18rem, 50dvh); padding: var(--space-1); position-area: block-end span-inline-end;
+  position-try-fallbacks: flip-block; scroll-padding: var(--space-1); }
+.combobox-popup .command-row > .icon { flex: none; color: var(--primary); }
+.combobox-popup .command-row[aria-disabled="true"] { cursor: default; opacity: .46; }
+.combobox-popup .command-row[aria-disabled="true"]::before { opacity: 0; }
+.combobox-popup .command-row-label { flex-wrap: wrap; gap: 0 var(--space-2); }
+.combobox-popup .command-row-label > span { flex: 0 1 auto; }
+.combobox-popup .combobox-empty { margin: 0; padding: var(--space-3); color: var(--muted); font: var(--type-body-md); }
 /* A menu: choices on rows at the control height, the target height under a finger. The choice under the pointer or
    the keys is one, holding focus; it carries the state layer, which stands for its focus ring. */
 .menu:focus { outline: 0; }
