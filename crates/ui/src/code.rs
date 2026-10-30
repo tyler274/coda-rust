@@ -1,6 +1,7 @@
 //! Code as written, to read and take away: a block of code with what it is and a way to copy it,
 //! and a change to code, line by line, what it adds and what it removes. Both stand in one frame,
-//! in the monospace the prose's code uses.
+//! in the monospace the prose's code uses. The copy control copies any words as written, such as a
+//! message's.
 
 use std::time::Duration;
 
@@ -11,21 +12,60 @@ use crate::{Button, ButtonVariant, Icon, IconName};
 /// How long a copy says it is done before it offers to copy again.
 const COPIED_MS: u64 = 1600;
 
-/// What the copy control is called, and what it says once the code is on the clipboard.
+/// What the copy control is called, and what it says once the words are on the clipboard.
 #[derive(Clone, Debug, Default, PartialEq)]
 pub struct CopyWords {
     /// The control's name.
     pub copy: String,
-    /// Said once the clipboard holds the code.
+    /// Said once the clipboard holds the words.
     pub copied: String,
 }
 
+/// A quiet icon control that puts `text` on the clipboard, and says so, its copy mark turned to a
+/// check, only once the clipboard has taken it.
+#[component]
+pub fn CopyButton(text: String, words: CopyWords) -> Element {
+    let mut copied = use_signal(|| false);
+    rsx! {
+        Button {
+            variant: ButtonVariant::Quiet,
+            compact: true,
+            icon_only: true,
+            aria_label: if copied() { words.copied.clone() } else { words.copy.clone() },
+            onclick: move |_| {
+                let text = text.clone();
+                spawn(async move {
+                    let write = document::eval(COPY);
+                    if write.send(text).is_err() {
+                        return;
+                    }
+                    if write.join::<bool>().await.unwrap_or(false) {
+                        copied.set(true);
+                        futures_timer::Delay::new(Duration::from_millis(COPIED_MS)).await;
+                        copied.set(false);
+                    }
+                });
+            },
+            Icon { name: if copied() { IconName::Check } else { IconName::Copy } }
+        }
+        span { class: "sr-only", role: "status",
+            if copied() {
+                "{words.copied}"
+            }
+        }
+    }
+}
+
+/// Writes the words it is sent to the clipboard, and answers whether the clipboard took them.
+const COPY: &str = r#"
+const text = await dioxus.recv();
+try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
+"#;
+
 /// Code as written, kept to its lines and scrolled across rather than wrapped, under a `label` that
-/// says what it is, such as its language or file. With `copy`, a control puts the code on the
-/// clipboard and says so only once the clipboard has taken it.
+/// says what it is, such as its language or file. With `copy`, a `CopyButton` copies it.
 #[component]
 pub fn CodeBlock(code: String, label: Option<String>, copy: Option<CopyWords>) -> Element {
-    let mut copied = use_signal(|| false);
     let heading = label.is_some() || copy.is_some();
     rsx! {
         div { class: "code-block",
@@ -35,35 +75,7 @@ pub fn CodeBlock(code: String, label: Option<String>, copy: Option<CopyWords>) -
                         span { class: "code-block-label", "{label}" }
                     }
                     if let Some(words) = copy {
-                        Button {
-                            variant: ButtonVariant::Quiet,
-                            compact: true,
-                            icon_only: true,
-                            aria_label: if copied() { words.copied.clone() } else { words.copy.clone() },
-                            onclick: {
-                                let code = code.clone();
-                                move |_| {
-                                    let code = code.clone();
-                                    spawn(async move {
-                                        let write = document::eval(COPY);
-                                        if write.send(code).is_err() {
-                                            return;
-                                        }
-                                        if write.join::<bool>().await.unwrap_or(false) {
-                                            copied.set(true);
-                                            futures_timer::Delay::new(Duration::from_millis(COPIED_MS)).await;
-                                            copied.set(false);
-                                        }
-                                    });
-                                }
-                            },
-                            Icon { name: if copied() { IconName::Check } else { IconName::Copy } }
-                        }
-                        span { class: "sr-only", role: "status",
-                            if copied() {
-                                "{words.copied}"
-                            }
-                        }
+                        CopyButton { text: code.clone(), words }
                     }
                 }
             }
@@ -71,12 +83,6 @@ pub fn CodeBlock(code: String, label: Option<String>, copy: Option<CopyWords>) -
         }
     }
 }
-
-/// Writes the code it is sent to the clipboard, and answers whether the clipboard took it.
-const COPY: &str = r#"
-const code = await dioxus.recv();
-try { await navigator.clipboard.writeText(code); return true; } catch { return false; }
-"#;
 
 /// What a line of a change does.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]

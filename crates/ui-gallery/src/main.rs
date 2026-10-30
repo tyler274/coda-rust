@@ -20,16 +20,17 @@ use ui::{
     ActionRow, Answer, ApprovalCard, ArtifactCard, Author, Avatar, AvatarSize, Button,
     ButtonVariant, Card, Change, ChartHeader, CitationChip, CitationPreview, CodeBlock, Command,
     CommandPalette, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
-    ConversationViewport, CopyWords, Count, DateSeparator, Dialog, Diff, DiffLine, DiffWords,
-    Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
-    IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette,
-    MenuSection, Message, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice,
-    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow,
-    SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading,
-    SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar,
-    Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar,
-    Value, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    ConversationViewport, CopyButton, CopyWords, Count, DateSeparator, Dialog, Diff, DiffLine,
+    DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions,
+    Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem,
+    MenuPalette, MenuSection, Message, MessageActions, NavigationControl, NavigationRow, Notice,
+    PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, Popover, ProposedChange, Prose,
+    ProsePart, Quote, RangeChoice, Rating, RowFrame, RowGroup, RunningChart, SearchField,
+    SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails,
+    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepState, Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast,
+    ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -128,6 +129,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
                     ComposerStatesDemo {}
+                }
+                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows.",
+                    ThreadStatesDemo {}
                 }
                 Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
                     ProseDemo {}
@@ -2050,6 +2054,59 @@ fn CodeDemo() -> Element {
                     line(Change::Added, "- Repeat basic metabolic panel within 1 week"),
                     line(Change::Kept, "- Metoprolol succinate 50 mg daily"),
                 ],
+            }
+        }
+    }
+}
+
+/// A reply asked three times, in the order it was asked.
+#[cfg(feature = "web")]
+const VERSIONS: [&str; 3] = [
+    "Her potassium was 5.4 on Tuesday, up from 4.9 in September.",
+    "Potassium rose from 4.9 in September to 5.4 on Tuesday, since the spironolactone dose went up.",
+    "5.4 mmol/L on Tuesday; it was 4.9 in September. No repeat level since.",
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn ThreadStatesDemo() -> Element {
+    let mut version = use_signal(|| VERSIONS.len() - 1);
+    let mut rating = use_signal(|| None::<Rating>);
+    let question = "What was her last potassium?";
+    rsx! {
+        div { class: "gallery-thread",
+            Message { author: Author::Person, by: "You",
+                actions: rsx! {
+                    MessageActions { label: "Your message",
+                        CopyButton { text: question, words: copy_words() }
+                        Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Edit", Icon { name: IconName::Pencil } }
+                    }
+                },
+                p { "{question}" }
+            }
+            Message { author: Author::Assistant, by: "Coda",
+                actions: rsx! {
+                    MessageActions { label: "Response", shown: true,
+                        CopyButton { text: VERSIONS[version()], words: copy_words() }
+                        Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Ask again", Icon { name: IconName::Refresh } }
+                        FeedbackRating {
+                            selected: rating(),
+                            label: "Rate this response",
+                            up_label: "Good response",
+                            down_label: "Poor response",
+                            on_rate: move |choice| rating.set(Some(choice)),
+                        }
+                        VersionSwitch {
+                            at: version(),
+                            count: VERSIONS.len(),
+                            label: format!("Response {} of {}", version() + 1, VERSIONS.len()),
+                            previous_label: "Previous response",
+                            next_label: "Next response",
+                            on_change: move |at| version.set(at),
+                        }
+                    }
+                },
+                p { "{VERSIONS[version()]}" }
             }
         }
     }

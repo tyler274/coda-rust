@@ -649,12 +649,27 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .jump-to-latest { position: absolute; right: var(--space-row); bottom: var(--space-row); box-shadow: var(--elevation-3);
   transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .jump-to-latest { opacity: 0; transform: translateY(var(--rise)) scale(.98); } }
-/* Feedback: the rating pair, and reasons as toggle chips. */
+/* Feedback: the rating pair, and reasons as toggle chips. Among a message's actions, the pair shows with the row. */
 .feedback-rating { display: inline-flex; gap: var(--space-hair); transition: opacity var(--motion-control) var(--ease-out); }
 @media (hover: hover) {
-  .feedback-rating { opacity: 0; pointer-events: none; }
-  :is(.message:hover, .message:focus-within) .feedback-rating, .feedback-rating:is(:focus-within, [data-active="true"]) { opacity: 1; pointer-events: auto; }
+  :not(.message-actions) > .feedback-rating { opacity: 0; pointer-events: none; }
+  :is(.message:hover, .message:focus-within) :not(.message-actions) > .feedback-rating, :not(.message-actions) > .feedback-rating:is(:focus-within, [data-active="true"]) { opacity: 1; pointer-events: auto; }
 }
+/* A message's actions: quiet icon controls in a row close under it, at the bubble's edge after the person's words. On
+   pointer devices they show while the message or the row is hovered or focused, or while an action is busy. A version
+   switch says where it is between its arrows. */
+.message-turn { display: grid; gap: var(--space-1); min-width: 0; }
+.message-turn.is-person { justify-items: end; }
+.message-turn.is-person > .message-person { margin-inline-start: 0; }
+.message-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-hair); min-height: var(--control-height);
+  transition: opacity var(--motion-control) var(--ease-out); }
+.message-turn > .message-actions { margin-inline: calc(-1 * var(--space-2)); }
+@media (hover: hover) {
+  .message-actions:not(.is-shown) { opacity: 0; }
+  .message-turn:is(:hover, :focus-within) > .message-actions, .message-actions:has([data-active="true"], [aria-busy="true"]) { opacity: 1; }
+}
+.version-switch { display: inline-flex; align-items: center; }
+.version-switch-place { min-width: 5ch; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; text-align: center; }
 .feedback-rating .control[aria-pressed="true"] { color: var(--primary); background: var(--primary-container); }
 .toggle-chip { border-radius: var(--radius-pill); font-weight: var(--weight-regular); white-space: normal; text-align: left; }
 .toggle-chip[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-container); }

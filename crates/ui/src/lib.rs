@@ -33,8 +33,10 @@ pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
     SeriesChart, SeriesPoint, SeriesShape, Sparkline, Value,
 };
-pub use code::{Change, CodeBlock, CopyWords, Diff, DiffLine, DiffWords};
-pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Suggestion};
+pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords};
+pub use conversation::{
+    ContextChip, ConversationViewport, DateSeparator, MessageActions, Suggestion, VersionSwitch,
+};
 pub use documents::{
     FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, TopBar,
 };
@@ -618,13 +620,15 @@ pub enum Author {
 
 /// One message in a thread:
 /// the person's words in a light bubble at the far edge, the assistant's as plain prose. Who
-/// wrote it stays with assistive technology. A message rises in as it appears.
+/// wrote it stays with assistive technology. A message rises in as it appears. Its `actions`, a
+/// `MessageActions` row, stand close under it, at the bubble's edge for the person's words.
 #[component]
 pub fn Message(
     author: Author,
     /// Who wrote it, for assistive technology.
     #[props(default)]
     by: String,
+    #[props(default)] actions: Option<Element>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
@@ -633,13 +637,22 @@ pub fn Message(
         Author::Assistant => "message message-assistant",
     });
     let rest = host_attributes(&mut class, attributes);
-    rsx! {
+    let message = rsx! {
         article { class: "{class}", ..rest,
             if !by.is_empty() {
                 span { class: "sr-only", "{by}" }
             }
             {children}
         }
+    };
+    match actions {
+        Some(actions) => rsx! {
+            div { class: if author == Author::Person { "message-turn is-person" } else { "message-turn" },
+                {message}
+                {actions}
+            }
+        },
+        None => message,
     }
 }
 

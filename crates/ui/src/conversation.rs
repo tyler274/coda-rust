@@ -1,8 +1,9 @@
-//! The conversation's frame: the day it is on, what the person
-//! brought into it, and a way to begin. A receipt in the thread is a `ListRow` in a `RowGroup`;
-//! who the conversation is with is the `TopBar`'s title.
+//! The conversation's frame: the day it is on, what the person brought into it, a way to begin,
+//! and what can be done with a message once it is there. A receipt in the thread is a `ListRow` in
+//! a `RowGroup`; who the conversation is with is the `TopBar`'s title.
 
 use std::rc::Rc;
+use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::html::geometry::PixelsVector2D;
 use dioxus::prelude::*;
@@ -130,3 +131,79 @@ pub fn Suggestion(text: String, onclick: EventHandler<MouseEvent>) -> Element {
         button { class: "suggestion navigation-row", r#type: "button", onclick: move |event| onclick.call(event), "{text}" }
     }
 }
+
+/// What can be done with one message, a row of quiet controls given as its `Message`'s
+/// `actions`, named as a whole by `label`: a `CopyButton`, a retry, an edit, a `FeedbackRating`, a
+/// `VersionSwitch`, a `Menu`'s button. On pointer devices the row shows while its message is
+/// hovered or focused, or while one of its actions is busy, unless it is `shown` always, as under
+/// the latest reply; on touch it always shows.
+#[component]
+pub fn MessageActions(label: String, #[props(default)] shown: bool, children: Element) -> Element {
+    rsx! {
+        div {
+            class: if shown { "message-actions is-shown" } else { "message-actions" },
+            role: "group",
+            aria_label: "{label}",
+            {children}
+        }
+    }
+}
+
+/// Which of a message's versions is shown, such as a reply asked again or a question edited, and
+/// a way to the one before and after: `at` counts from zero among `count`. Its `label` says the
+/// same in words, such as "Response 2 of 3"; the quiet "2 / 3" between the arrows is only seen.
+/// Reaching the first or last, focus moves to the arrow that still goes somewhere.
+#[component]
+pub fn VersionSwitch(
+    at: usize,
+    count: usize,
+    label: String,
+    previous_label: String,
+    next_label: String,
+    on_change: EventHandler<usize>,
+) -> Element {
+    let id = use_hook(|| {
+        format!(
+            "version-switch-{}",
+            SWITCHES.fetch_add(1, Ordering::Relaxed)
+        )
+    });
+    let shown = at.min(count.saturating_sub(1));
+    let switch = id.clone();
+    let go = move |to: usize, end: bool, other: &'static str| {
+        let id = switch.clone();
+        move |_| {
+            on_change.call(to);
+            if end {
+                document::eval(&format!("document.getElementById('{id}-{other}')?.focus()"));
+            }
+        }
+    };
+    rsx! {
+        div { class: "version-switch", role: "group", aria_label: "{label}",
+            Button {
+                id: "{id}-previous",
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                icon_only: true,
+                aria_label: "{previous_label}",
+                disabled: shown == 0,
+                onclick: go(shown.saturating_sub(1), shown <= 1, "next"),
+                Icon { name: IconName::ChevronLeft }
+            }
+            span { class: "version-switch-place", aria_hidden: "true", "{shown + 1} / {count}" }
+            Button {
+                id: "{id}-next",
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                icon_only: true,
+                aria_label: "{next_label}",
+                disabled: shown + 1 >= count,
+                onclick: go(shown + 1, shown + 2 >= count, "previous"),
+                Icon { name: IconName::ChevronRight }
+            }
+        }
+    }
+}
+
+static SWITCHES: AtomicUsize = AtomicUsize::new(0);
