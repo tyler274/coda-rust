@@ -20,13 +20,14 @@ use ui::{
     ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, ChartHeader, CitationChip,
     CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
     Count, DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
-    FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Message,
-    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
-    PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating, RowFrame,
-    RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart, SeriesPoint,
-    SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton,
-    Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, TextField, ToggleChip, Tone,
-    TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
+    FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice,
+    MenuItem, MenuPalette, MenuSection, Message, NavigationControl, NavigationRow, Notice,
+    PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, Popover, ProposedChange, Prose,
+    ProsePart, Quote, RangeChoice, Rating, RowFrame, RowGroup, RunningChart, SearchField,
+    SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails,
+    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepList, Suggestion, TabBar, TextField, ToggleChip, Tone, TopBar, UndoNotice, Value,
+    WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -137,6 +138,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
                     OverlayDemo {}
+                }
+                Section { title: "Menus and popovers", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices.",
+                    MenuDemo {}
                 }
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
@@ -1535,6 +1539,88 @@ fn FeedbackDemo() -> Element {
                     }
                 }
             }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn MenuDemo() -> Element {
+    let mut rating = use_signal(|| None::<bool>);
+    let mut model = use_signal(|| 0usize);
+    let mut sources = use_signal(|| true);
+    let mut chosen = use_signal(|| None::<&'static str>);
+    let models = [
+        ("Most capable", "For the hardest questions"),
+        ("Balanced", "Fast and thorough"),
+        ("Fastest", "For quick answers"),
+    ];
+    rsx! {
+        div { class: "gallery-row",
+            Button {
+                variant: ButtonVariant::Quiet,
+                icon_only: true,
+                opens: "gallery-reply-menu",
+                aria_label: "More actions",
+                aria_haspopup: "menu",
+                Icon { name: IconName::More }
+            }
+            Menu { id: "gallery-reply-menu", label: "Reply actions",
+                MenuPalette { label: "Rate this reply",
+                    MenuChoice { label: "Good reply", icon: IconName::ThumbUp, chosen: rating() == Some(true),
+                        onclick: move |_| rating.set(if rating() == Some(true) { None } else { Some(true) }) }
+                    MenuChoice { label: "Bad reply", icon: IconName::ThumbDown, chosen: rating() == Some(false),
+                        onclick: move |_| rating.set(if rating() == Some(false) { None } else { Some(false) }) }
+                    MenuChoice { label: "Save", icon: IconName::Heart, onclick: move |_| chosen.set(Some("Saved")) }
+                    MenuChoice { label: "Flag", icon: IconName::Flag, onclick: move |_| chosen.set(Some("Flagged")) }
+                }
+                MenuSection {
+                    MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copied")), "Copy" }
+                    MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Editing")), "Edit" }
+                    MenuItem { icon: IconName::Refresh, onclick: move |_| chosen.set(Some("Retrying")), "Try again" }
+                    MenuItem { icon: IconName::Share, disabled: true, onclick: move |_| {}, "Share" }
+                }
+                MenuSection {
+                    MenuItem { icon: IconName::Trash, danger: true, onclick: move |_| chosen.set(Some("Deleted")), "Delete" }
+                }
+            }
+            Button {
+                variant: ButtonVariant::Secondary,
+                compact: true,
+                opens: "gallery-model-menu",
+                aria_haspopup: "menu",
+                "{models[model()].0}"
+                Icon { name: IconName::ChevronDown }
+            }
+            Menu { id: "gallery-model-menu", label: "Model",
+                MenuSection { label: "Model",
+                    for (index, (name, detail)) in models.into_iter().enumerate() {
+                        MenuItem { key: "{name}", detail, checked: model() == index, radio: true,
+                            onclick: move |_| model.set(index), "{name}" }
+                    }
+                }
+                MenuSection {
+                    MenuItem { icon: IconName::Book, checked: sources(), onclick: move |_| sources.set(!sources()), "Show sources" }
+                }
+            }
+            Button {
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                opens: "gallery-popover",
+                Icon { name: IconName::Users }
+                "Who can see this"
+            }
+            Popover { id: "gallery-popover", label: "Who can see this",
+                h3 { "Only you" }
+                p { "This conversation is private. Sharing it makes a copy anyone with the link can read." }
+                Button { compact: true, autofocus: true, onclick: move |_| chosen.set(Some("Link copied")),
+                    Icon { name: IconName::Link }
+                    "Copy link"
+                }
+            }
+        }
+        if let Some(words) = chosen() {
+            p { class: "gallery-note", "{words}." }
         }
     }
 }

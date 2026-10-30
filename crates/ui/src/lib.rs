@@ -18,6 +18,7 @@ mod feedback;
 mod icons;
 mod live;
 mod motion;
+mod overlays;
 mod prose;
 mod sources;
 mod undo;
@@ -34,6 +35,7 @@ pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
+pub use overlays::{Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Popover};
 pub use prose::{Prose, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
 pub use undo::{UNDO_MS, UndoNotice};
@@ -490,6 +492,9 @@ pub fn Button(
     /// Submits its form instead of acting on its own.
     #[props(default)]
     submit: bool,
+    /// The id of the `Popover` or `Menu` it opens and closes, which stands beside it.
+    #[props(default)]
+    opens: Option<String>,
     onclick: Option<EventHandler<MouseEvent>>,
     /// The press, before it takes focus: a control that leaves focus where it is prevents it here.
     onmousedown: Option<EventHandler<MouseEvent>>,
@@ -519,6 +524,7 @@ pub fn Button(
             disabled: disabled || busy,
             aria_busy: if busy { "true" },
             aria_label: pending,
+            popovertarget: opens,
             onclick: move |event| {
                 if let Some(handler) = &onclick {
                     handler.call(event);

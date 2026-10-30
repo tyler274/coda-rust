@@ -627,6 +627,51 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   color: var(--body); font: var(--type-body-md); transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .undo-notice { opacity: 0; transform: translateY(var(--rise)); } }
 .undo-notice.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
+/* Overlays: the browser's own popover, in the top layer at the overlay's depth, beside the control that opens it. It
+   opens under the control from its leading edge and flips above or across where there isn't room; without anchoring it
+   stands centred. It arrives on the arrival spring from the corner nearest the control and settles back shorter. */
+.popover { box-sizing: border-box; width: min(var(--popover-width), calc(100vw - 2 * var(--space-3)));
+  max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3))); padding: var(--space-4); overflow: auto; overscroll-behavior: contain;
+  border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--surface-lowest); color: var(--body);
+  box-shadow: var(--elevation-4); font: var(--type-body-md); opacity: 0; scale: .96; transform-origin: top left;
+  transition: opacity var(--motion-control) var(--ease-exit), scale var(--motion-control) var(--ease-exit),
+    overlay var(--motion-control) allow-discrete, display var(--motion-control) allow-discrete; }
+.popover:popover-open { opacity: 1; scale: 1; transition: opacity var(--motion-arrive) var(--ease-out), scale var(--spring-arrive),
+  overlay var(--motion-arrive) allow-discrete, display var(--motion-arrive) allow-discrete; }
+@starting-style { .popover:popover-open { opacity: 0; scale: .96; } }
+@supports (position-area: block-end) {
+  .popover { inset: auto; margin: var(--space-1) 0; position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; }
+}
+.popover :is(h2, h3) { margin: 0 0 var(--space-2); color: var(--ink); font: var(--type-title-sm); }
+.popover p { margin: 0 0 var(--space-3); }
+/* A menu: choices on rows at the control height, the target height under a finger. The choice under the pointer or
+   the keys is one, holding focus; it carries the state layer, which stands for its focus ring. */
+.menu { width: max-content; min-width: 13rem; max-width: min(21rem, calc(100vw - 2 * var(--space-3))); padding: var(--space-1); border-radius: var(--radius-md); }
+.menu-section + .menu-section, .menu-palette + * { margin-top: var(--space-1); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
+.menu-section-label { padding: var(--space-2) var(--space-3) var(--space-1); color: var(--muted); font: var(--type-label-sm); }
+.menu-item { position: relative; display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%; min-height: var(--control-height);
+  padding: var(--space-1) var(--space-3); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--ink); font: var(--type-body-md);
+  text-align: start; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.menu-item > .icon { color: var(--muted); }
+.menu-item-label { display: grid; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.menu-item-label small { color: var(--muted); font: var(--type-body-sm); }
+.menu-item > .key-hint { margin-inline-start: var(--space-4); color: var(--muted); opacity: 1; }
+.menu-item-check { display: contents; color: var(--primary); }
+.menu-item.is-danger, .menu-item.is-danger > .icon { color: var(--error); }
+.menu-item[aria-disabled="true"] { cursor: default; opacity: .46; }
+.menu-palette { display: flex; justify-content: space-between; gap: var(--space-1); padding: var(--space-1); }
+.menu-choice { position: relative; display: grid; place-items: center; width: var(--target); height: var(--target); padding: 0; border: 0; border-radius: var(--radius-pill);
+  background: transparent; color: var(--body); font-size: 20px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.menu-choice[aria-checked="true"] { background: var(--primary-container); color: var(--on-primary-container); }
+:is(.menu-item, .menu-choice)::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none;
+  transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { :is(.menu-item, .menu-choice):hover:not([aria-disabled="true"])::before { opacity: var(--state-hover); } }
+:is(.menu-item, .menu-choice):focus-visible:not([aria-disabled="true"])::before { opacity: var(--state-hover); }
+:is(.menu-item, .menu-choice):active:not([aria-disabled="true"])::before { opacity: var(--state-pressed); }
+:is(.menu-item, .menu-choice):focus-visible { outline: 0; animation: none; }
+@media (pointer: coarse) { .menu-item { min-height: var(--target); } }
+@media (forced-colors: active) { :is(.menu-item, .menu-choice):is(:hover, :focus-visible) { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
 /* Reading a cited source. The preview sits at the overlay's
    depth beside its citation, on the side with more room, and never covers it; the component places it. */
 .anchored-popover { display: inline; }
