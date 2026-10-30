@@ -962,7 +962,7 @@ fn RunningDemo() -> Element {
                 RunningChart {
                     total: place(&today),
                     usual: place(&usual),
-                    label: "Steps today, 5,100 so far",
+                    label: "Steps today, 5,100 by 2 PM, against a usual 5,600 by then",
                     axes: false,
                 }
             }
