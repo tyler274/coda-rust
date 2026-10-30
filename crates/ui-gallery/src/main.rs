@@ -7,15 +7,15 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Card, CitationChip, CitationPreview, Comparison,
-    ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog, Disclosure,
-    EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow,
-    LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline,
-    PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, ProposedChange, Prose,
-    ProsePart, Quote, Rating, RowGroup, SectionHeader, SelectionRow, SettingRow, SourceDetails,
-    SourcePane, SourceReading, SourcesButton, Sparkline, StatePill, StatusLine, StepList,
-    Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
-    WorkingMark,
+    ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, CitationChip,
+    CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
+    DateSeparator, Dialog, Disclosure, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
+    IconName, LaterContext, ListRow, LiveDot, MeasurementTile, Message, NavigationControl,
+    NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape,
+    ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup, SectionHeader, SelectionRow,
+    SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline, StatePill,
+    StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart,
+    UndoNotice, Value, WorkingMark,
 };
 
 fn main() {
@@ -124,7 +124,7 @@ fn Gallery() -> Element {
                 Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark.",
                     CitationDemo {}
                 }
-                Section { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A section's one action sits beside its title.",
+                Section { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
                     RowsDemo {}
                 }
                 Section { title: "Buttons and navigation", note: "One shape in three variants, with the shared hover, press, focus and touch target.",
@@ -880,6 +880,16 @@ fn RowsDemo() -> Element {
                 li { ListRow { icon: IconName::File, title: "Visit note", detail: "Northside Clinic · October 15", onclick: move |_| {} } }
                 li { ListRow { icon: IconName::Heart, title: "Blood pressure", detail: "Home cuff · October 20", onclick: move |_| {} } }
                 li { ListRow { icon: IconName::Book, title: "Questions for my visit", detail: "Your note · October 21", onclick: move |_| {} } }
+            }
+            SectionHeader { title: "People" }
+            RowGroup {
+                li { ListRow { person: "Maria Delgado", title: "Maria Delgado", detail: "DOB March 4, 1961", onclick: move |_| {} } }
+                li { ListRow { person: "James O’Neill", title: "James O’Neill", detail: "DOB not recorded", onclick: move |_| {} } }
+            }
+            div { class: "gallery-row",
+                Avatar { name: "Maria Delgado" }
+                Avatar { name: "Maria Delgado", size: AvatarSize::Medium }
+                Avatar { name: "Maria Delgado", size: AvatarSize::Large }
             }
             SectionHeader { title: "Sources, numbered" }
             ol { class: "row-list",

@@ -17,6 +17,10 @@
 /* Icon tile: a card header's icon on a white tile at level 1, neutral like a secondary control; colour is kept for state. */
 .icon-tile { box-sizing: border-box; display: inline-grid; place-items: center; flex: none; width: var(--tile-size); height: var(--tile-size); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-lowest); color: var(--muted); box-shadow: var(--elevation-1); font: var(--type-body-md); }
 .icon-tile.is-tinted { width: var(--avatar-md); height: var(--avatar-md); border: 0; background: var(--data-container); color: var(--on-data-container); box-shadow: none; }
+/* An avatar, after the React app's patient avatar: initials in a circle on the highest surface, a size per place. */
+.avatar { display: grid; place-items: center; width: var(--avatar-size, var(--avatar-sm)); height: var(--avatar-size, var(--avatar-sm)); flex: none; border-radius: 50%; background: var(--surface-highest); color: var(--body); font: var(--type-label-md); }
+.avatar-md { --avatar-size: var(--avatar-md); }
+.avatar-lg { --avatar-size: var(--avatar-lg); font: var(--type-title-sm); }
 /* A count sits right after its title, centred on it. */
 .count { flex: none; color: var(--muted); font: var(--type-body-sm); white-space: nowrap; }
 .count-value { display: inline-block; font-variant-numeric: tabular-nums; }
@@ -318,7 +322,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   .card-open::after { background: transparent; }
   .card-object:has(.card-open:focus-visible) { outline-color: Highlight; }
   .control { border-color: ButtonText; }
-  .state-pill { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
+  :is(.state-pill, .avatar) { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
   :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
 }
 /* Measurements and charts, after the October 21 mockups. A value's units read in body text beside its figures. */

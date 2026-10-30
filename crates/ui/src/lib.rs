@@ -316,6 +316,39 @@ pub fn Spinner() -> Element {
     }
 }
 
+/// How large an avatar is drawn.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum AvatarSize {
+    /// In a list row.
+    #[default]
+    Small,
+    /// Beside a current person in navigation.
+    Medium,
+    /// At the head of a person's page.
+    Large,
+}
+
+/// A person's initials in a circle, after the React app's `PatientAvatar`. Decoration only: the
+/// person's name belongs to the words beside it.
+#[component]
+pub fn Avatar(name: String, #[props(default)] size: AvatarSize) -> Element {
+    let class = match size {
+        AvatarSize::Small => "avatar",
+        AvatarSize::Medium => "avatar avatar-md",
+        AvatarSize::Large => "avatar avatar-lg",
+    };
+    rsx! { span { class, aria_hidden: "true", "{initials(&name)}" } }
+}
+
+/// The first letters of a name's first two words.
+fn initials(name: &str) -> String {
+    name.split_whitespace()
+        .take(2)
+        .filter_map(|word| word.chars().next())
+        .flat_map(char::to_uppercase)
+        .collect()
+}
+
 /// A leading icon on its tile: neutral on a hairline, as a card header or a record's heading leads,
 /// or `tinted` in the data colour, as a row leads (the October 21 mockups).
 #[component]
@@ -886,13 +919,16 @@ pub fn SourcesButton(
     }
 }
 
-/// One row in a list of rows: an optional icon on its tile or a number, the row's name, an
+/// One row in a list of rows: an optional icon on its tile, a number or a person's avatar, the row's name, an
 /// optional detail beneath it, and a chevron, with the whole row one button. Rows group once, a
 /// hairline between them, rather than a card around each (the October 21 mockups).
 #[component]
 pub fn ListRow(
     #[props(default)] icon: Option<IconName>,
     #[props(default)] number: Option<usize>,
+    /// The person the row is, by name, drawn as their avatar.
+    #[props(default)]
+    person: Option<String>,
     title: String,
     detail: Option<String>,
     onclick: EventHandler<MouseEvent>,
@@ -910,6 +946,8 @@ pub fn ListRow(
                 IconTile { name: icon, tinted: true }
             } else if let Some(number) = number {
                 span { class: "list-row-number", "{number}" }
+            } else if let Some(name) = person {
+                Avatar { name }
             }
             span { class: "list-row-text",
                 strong { "{title}" }
@@ -1007,6 +1045,13 @@ mod tests {
         assert_eq!(submitted_text(Some("Hello"), ""), "Hello");
         assert_eq!(submitted_text(Some("  "), draft), draft);
         assert_eq!(submitted_text(None, draft), draft);
+    }
+
+    #[test]
+    fn an_avatar_shows_the_first_letters_of_the_first_two_words() {
+        assert_eq!(initials("maria  de la Cruz"), "MD");
+        assert_eq!(initials("Ólafur"), "Ó");
+        assert_eq!(initials("  "), "");
     }
 
     #[test]
