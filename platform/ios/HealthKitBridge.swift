@@ -42,9 +42,10 @@ public func duetHealthKitAvailable() -> Int32 {
 }
 
 /// One `HKAnchoredObjectQuery`. The request is the JSON `HealthKitQuery`
-/// (`data_type`, `unit`, `anchor`, `history_start_unix`, `limit`); the reply
-/// is `{"ok": HealthKitChanges}` or `{"error": {"code": ...}}`. Durable policy
-/// (which anchor is committed, coverage, retries) stays in Rust.
+/// (`data_type`, `unit`, `anchor`, optional `history_start_unix`, `limit`);
+/// the reply is `{"ok": HealthKitChanges}` or `{"error": {"code": ...}}`.
+/// Durable policy (which anchor is committed, coverage, retries) stays in Rust.
+/// A missing `history_start_unix` reads with no start predicate.
 @_cdecl("duet_healthkit_read_type")
 public func duetHealthKitReadType(_ request: UnsafePointer<CChar>?) -> UnsafeMutablePointer<CChar>? {
     guard let request else { return copyString(AnchoredReader.failure("missing request")) }
@@ -75,7 +76,6 @@ private enum AnchoredReader {
               let request = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
               let identifier = request["data_type"] as? String,
               let unitText = request["unit"] as? String,
-              let historyStart = (request["history_start_unix"] as? NSNumber)?.doubleValue,
               let limit = (request["limit"] as? NSNumber)?.intValue else {
             return failure("malformed request")
         }
@@ -92,11 +92,13 @@ private enum AnchoredReader {
             }
             anchor = restored
         }
-        let predicate = HKQuery.predicateForSamples(
-            withStart: Date(timeIntervalSince1970: historyStart),
-            end: nil,
-            options: []
-        )
+        let predicate = (request["history_start_unix"] as? NSNumber).map { start in
+            HKQuery.predicateForSamples(
+                withStart: Date(timeIntervalSince1970: start.doubleValue),
+                end: nil,
+                options: []
+            )
+        }
         let box = QueryBox<String>()
         let ready = DispatchSemaphore(value: 0)
         let query = HKAnchoredObjectQuery(
@@ -165,7 +167,8 @@ private enum AnchoredReader {
         var out: [String: Any] = [
             "id": sample.uuid.uuidString,
             // Shortest round-tripping decimal of the stored double, in the
-            // requested unit. Never rounded for display.
+            // requested unit. Never rounded for display. Percent stays on
+            // HKUnit.percent()'s 0–1 scale; Rust scales that literal once.
             "value": "\(sample.quantity.doubleValue(for: unit))",
             "unit": unitText,
             "start": format.string(from: sample.startDate),

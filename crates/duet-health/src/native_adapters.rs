@@ -3,9 +3,9 @@
 //! The native bridges are thin: they answer one bounded query and return
 //! what the store reported (records, deleted identifiers, a new opaque
 //! sub-anchor or changes token, or a typed error). Every durable decision —
-//! which anchor is committed, how failures map to coverage, the initial
+//! which anchor is committed, how failures map to coverage, an explicit
 //! history window, the Health Connect scope gate — lives here and is tested
-//! on Linux against fake bridges.
+//! on Linux against fake bridges. Paging is the default history bound.
 //!
 //! * [`HealthKitAdapter`] keeps one `HKQueryAnchor` per data type inside a
 //!   composite [`Anchor`]. A type whose read failed keeps its previous
@@ -22,11 +22,8 @@ use crate::acquisition::{
     SourceTime, TypeCoverage,
 };
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{Value, json};
 use std::collections::{BTreeMap, BTreeSet};
-
-/// Default bounded history read the first time a type is acquired.
-pub const DEFAULT_INITIAL_WINDOW_DAYS: u32 = 30;
 
 /// Typed failure reported by a native bridge for one query.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -113,6 +110,60 @@ impl NativeSample {
             provenance,
             original: self.metadata,
         }
+    }
+}
+
+/// `HKUnit.percent()` is 0–1. Shift a plain decimal literal two places so the
+/// canonical value is a conventional percent. `0.98` becomes `98`.
+fn scale_healthkit_percent(literal: &str) -> Option<String> {
+    let (negative, body) = if let Some(rest) = literal.strip_prefix('-') {
+        (true, rest)
+    } else if let Some(rest) = literal.strip_prefix('+') {
+        (false, rest)
+    } else {
+        (false, literal)
+    };
+    if body.is_empty() || body.chars().filter(|c| *c == '.').count() > 1 {
+        return None;
+    }
+    let (whole, frac) = body.split_once('.').unwrap_or((body, ""));
+    if whole.is_empty() && frac.is_empty() {
+        return None;
+    }
+    if !whole.chars().all(|c| c.is_ascii_digit()) || !frac.chars().all(|c| c.is_ascii_digit()) {
+        return None;
+    }
+    let whole = if whole.is_empty() { "0" } else { whole };
+    let mut digits = String::with_capacity(whole.len() + frac.len().max(2));
+    digits.push_str(whole);
+    digits.push_str(frac);
+    let pad = 2usize.saturating_sub(frac.len());
+    digits.extend(std::iter::repeat_n('0', pad));
+    let (head, tail) = digits.split_at(whole.len() + 2);
+    let head = head.trim_start_matches('0');
+    let head = if head.is_empty() { "0" } else { head };
+    let mut scaled = String::with_capacity(head.len() + tail.len() + 2);
+    if negative && !(head == "0" && tail.chars().all(|c| c == '0')) {
+        scaled.push('-');
+    }
+    scaled.push_str(head);
+    if !tail.is_empty() {
+        scaled.push('.');
+        scaled.push_str(tail);
+    }
+    Some(scaled)
+}
+
+/// Keep the bridge's 0–1 reading beside any metadata the sample already retained.
+fn retain_unscaled_reading(original: Option<Value>, literal: &str, unit: &str) -> Value {
+    let reading = json!({"literal": literal, "unit": unit});
+    match original {
+        Some(Value::Object(mut map)) => {
+            map.insert("reading".into(), reading);
+            Value::Object(map)
+        }
+        Some(other) => json!({"reading": reading, "metadata": other}),
+        None => json!({"reading": reading}),
     }
 }
 
@@ -203,8 +254,10 @@ pub struct HealthKitQuery {
     /// Base64 `NSKeyedArchiver` archive of the previous `HKQueryAnchor`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub anchor: Option<String>,
-    /// Lower bound (Unix seconds) of the bounded history predicate.
-    pub history_start_unix: i64,
+    /// Lower bound (Unix seconds) of an explicit history predicate.
+    /// Absent means the anchored query has no start predicate.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub history_start_unix: Option<i64>,
     /// Maximum samples + deleted objects to return.
     pub limit: usize,
 }
@@ -237,9 +290,10 @@ pub trait HealthKitBridge {
 #[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 struct CompositeAnchor {
     v: u32,
-    /// Fixed lower bound of the history window, set on the first read so the
-    /// predicate (and therefore every sub-anchor) stays stable across pages.
-    history_start_unix: i64,
+    /// Fixed lower bound of an explicit initial window, set on the first read
+    /// so later pages keep the same predicate. Absent when paging is the only bound.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    history_start_unix: Option<i64>,
     /// Data type → base64 `HKQueryAnchor`.
     #[serde(default)]
     types: BTreeMap<String, String>,
@@ -271,7 +325,7 @@ pub fn healthkit_native_id(uuid: &str) -> String {
 pub struct HealthKitAdapter<B> {
     bridge: B,
     types: Vec<TypeSpec>,
-    initial_window_days: u32,
+    initial_window_days: Option<u32>,
     now_unix: fn() -> i64,
 }
 
@@ -283,12 +337,13 @@ fn system_now_unix() -> i64 {
 }
 
 impl<B: HealthKitBridge> HealthKitAdapter<B> {
-    /// Adapter over `bridge` for the default types and history window.
+    /// Adapter over `bridge` for the default types. History has no start
+    /// predicate; each read is bounded by the page limit.
     pub fn new(bridge: B) -> Self {
         Self {
             bridge,
             types: default_healthkit_types(),
-            initial_window_days: DEFAULT_INITIAL_WINDOW_DAYS,
+            initial_window_days: None,
             now_unix: system_now_unix,
         }
     }
@@ -299,9 +354,10 @@ impl<B: HealthKitBridge> HealthKitAdapter<B> {
         self
     }
 
-    /// Replace the bounded initial history window.
+    /// Bound the first read to the last `days` days and keep that predicate
+    /// for later pages. The default does not set a window.
     pub fn with_initial_window_days(mut self, days: u32) -> Self {
-        self.initial_window_days = days;
+        self.initial_window_days = Some(days);
         self
     }
 
@@ -352,8 +408,9 @@ impl<B: HealthKitBridge> HealthSourceAdapter for HealthKitAdapter<B> {
             Some(anchor) => CompositeAnchor::decode(anchor)?,
             None => CompositeAnchor {
                 v: COMPOSITE_VERSION,
-                history_start_unix: (self.now_unix)()
-                    - i64::from(self.initial_window_days) * 86_400,
+                history_start_unix: self
+                    .initial_window_days
+                    .map(|days| (self.now_unix)() - i64::from(days) * 86_400),
                 types: BTreeMap::new(),
             },
         };
@@ -404,8 +461,18 @@ impl<B: HealthKitBridge> HealthSourceAdapter for HealthKitAdapter<B> {
                             device: sample.device.clone(),
                         };
                         let native_id = healthkit_native_id(&sample.id);
-                        page.records
-                            .push(sample.into_record(native_id, spec, provenance));
+                        let mut record = sample.into_record(native_id, spec, provenance);
+                        if record.value.unit.as_deref() == Some("%")
+                            && let Some(scaled) = scale_healthkit_percent(&record.value.literal)
+                        {
+                            let unscaled = std::mem::replace(&mut record.value.literal, scaled);
+                            record.original = Some(retain_unscaled_reading(
+                                record.original.take(),
+                                &unscaled,
+                                "%",
+                            ));
+                        }
+                        page.records.push(record);
                     }
                     for uuid in changes.deleted {
                         page.deletions.push(DeletionRecord {
@@ -425,7 +492,7 @@ impl<B: HealthKitBridge> HealthSourceAdapter for HealthKitAdapter<B> {
                 }
                 Err(error) => {
                     if error == BridgeError::AnchorInvalidated {
-                        // Only this type rereads from its history window.
+                        // Only this type rereads; its predicate is unchanged.
                         composite.types.remove(&spec.data_type);
                     }
                     page.coverage.push(TypeCoverage {

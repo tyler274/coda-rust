@@ -6,6 +6,7 @@ use std::collections::{BTreeMap, VecDeque};
 
 const HR: &str = "HKQuantityTypeIdentifierHeartRate";
 const WEIGHT: &str = "HKQuantityTypeIdentifierBodyMass";
+const SPO2: &str = "HKQuantityTypeIdentifierOxygenSaturation";
 
 fn specs() -> Vec<TypeSpec> {
     vec![
@@ -92,18 +93,49 @@ fn changes(samples: Vec<NativeSample>, deleted: &[&str], anchor: &str) -> Health
 
 #[test]
 fn first_read_is_bounded_by_the_initial_window_and_the_bound_is_stable() {
+    let open = FakeKit::default();
+    let adapter = HealthKitAdapter::new(&open)
+        .with_types(specs())
+        .with_clock(fixed_now);
+    let page = adapter.read_page(&request(None)).unwrap();
+    assert!(
+        open.queries
+            .borrow()
+            .iter()
+            .all(|q| q.history_start_unix.is_none() && q.anchor.is_none())
+    );
+    let anchor = page.next_anchor.unwrap();
+    assert!(
+        !anchor.0.contains("history_start_unix"),
+        "a default anchor stores no history floor"
+    );
+    let floor = (fixed_now() - 30 * 86_400).to_string();
+    assert!(!anchor.0.contains(&floor));
+    open.queries.borrow_mut().clear();
+    HealthKitAdapter::new(&open)
+        .with_types(specs())
+        .with_clock(|| 2_000_000_000)
+        .read_page(&request(Some(anchor)))
+        .unwrap();
+    assert!(
+        open.queries
+            .borrow()
+            .iter()
+            .all(|q| q.history_start_unix.is_none())
+    );
+
     let fake = FakeKit::default();
     let adapter = kit(&fake);
     let page = adapter.read_page(&request(None)).unwrap();
-    let first: Vec<i64> = fake
+    let first: Vec<Option<i64>> = fake
         .queries
         .borrow()
         .iter()
         .map(|q| q.history_start_unix)
         .collect();
-    assert_eq!(first, vec![fixed_now() - 7 * 86_400; 2]);
+    assert_eq!(first, vec![Some(fixed_now() - 7 * 86_400); 2]);
     assert!(fake.queries.borrow().iter().all(|q| q.anchor.is_none()));
-    // The second pass keeps the same lower bound even though "now" would move.
+    // An explicit window stays fixed even when the clock moves.
     let adapter = HealthKitAdapter::new(&fake)
         .with_types(specs())
         .with_clock(|| 2_000_000_000)
@@ -113,7 +145,7 @@ fn first_read_is_bounded_by_the_initial_window_and_the_bound_is_stable() {
         fake.queries
             .borrow()
             .iter()
-            .all(|q| q.history_start_unix == fixed_now() - 7 * 86_400)
+            .all(|q| q.history_start_unix == Some(fixed_now() - 7 * 86_400))
     );
 }
 
@@ -181,6 +213,36 @@ fn deletions_pass_through_with_the_sample_identity() {
     );
     let hr = page.coverage.iter().find(|c| c.data_type == HR).unwrap();
     assert_eq!(hr.outcome, CoverageOutcome::Data);
+}
+
+#[test]
+fn oxygen_saturation_percent_is_scaled_once_from_the_native_fraction() {
+    let fake = FakeKit::default();
+    fake.script(
+        SPO2,
+        Ok(changes(
+            vec![sample("o", "0.98", "%"), sample("p", "0.985", "%")],
+            &[],
+            "o-1",
+        )),
+    );
+    let page = HealthKitAdapter::new(&fake)
+        .with_types(vec![TypeSpec::new(SPO2, "vital:oxygen_saturation", "%")])
+        .with_clock(fixed_now)
+        .read_page(&request(None))
+        .unwrap();
+    let oxygen = &page.records[0];
+    assert_eq!(oxygen.value.literal, "98");
+    assert_eq!(oxygen.value.unit.as_deref(), Some("%"));
+    assert_eq!(oxygen.concept_id, "vital:oxygen_saturation");
+    let original = oxygen.original.as_ref().unwrap();
+    assert_eq!(original["reading"]["literal"], "0.98");
+    assert_eq!(original["reading"]["unit"], "%");
+    assert_eq!(page.records[1].value.literal, "98.5");
+    assert_eq!(
+        page.records[1].original.as_ref().unwrap()["reading"]["literal"],
+        "0.985"
+    );
 }
 
 #[test]
