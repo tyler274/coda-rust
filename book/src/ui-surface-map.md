@@ -44,7 +44,7 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 the shared stylesheet, apart from either app: the type and colour roles first, then
 each component. The library runs ahead of both apps: the physician web app and Duet
 on the web, iOS and Android are built from it, and it adds no palette beyond the
-shared roles. An app places a component through its own class and never restyles it.
+shared roles. Each component's look is the library's; an app places a component through its own class.
 Its examples are fictional and scripted, and nothing in it is product behavior. To build and serve it:
 
 ```sh
@@ -56,11 +56,6 @@ cp crates/ui-gallery/web/index.html target/ui-gallery-web/
 Then serve `target/ui-gallery-web` with any static file server. **Slow
 motion** plays every animation at quarter speed, and **Replay entries**
 remounts the sections so their entry motion runs again.
-
-The assistant-ui study in the corpus is a conversation-pattern reference. No
-React library adoption is implied for the Rust/Dioxus client. Source snapshots
-describe their stated revisions; verify the current
-owner before turning an observation into implementation work.
 
 [Release](release.md) owns platform checks. A rendered screen or sample fixture
 does not establish saved state, consent, background delivery or real-model
