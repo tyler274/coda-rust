@@ -86,7 +86,7 @@ fn Gallery() -> Element {
                 Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. One can open as a whole, or lead on from its footer.",
                     CardDemo {}
                 }
-                Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
+                Section { title: "Measurements and charts", note: "Data draws in its own chart green, yellower than the action's, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
                     ChartDemo {}
                 }
                 Section { title: "Series", note: "A series across its buckets: amounts as bars from zero, levels as a line on their own range. The latest is drawn full and the rest quieter, a bucket still filling between them; a dashed line in the action green marks what it is compared with. Tap a mark to pin it, again or on empty plot to let go; the arrow keys move it. The page says what is pinned.",

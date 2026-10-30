@@ -12,6 +12,7 @@
   --ref-green-40: #126c5a;
   --ref-green-90: #d4eadd;
   --ref-green-95: #e5f2ea;
+  --ref-chart-green: #1f7a52;
   --ref-amber-30: #6b4408;
   --ref-amber-40: #946115;
   --ref-amber-80: #ddc38d;
@@ -45,6 +46,7 @@
   --ref-green-dark-highlight: #28534a;
   --ref-green-80: #89d2c3;
   --ref-green-92: #d3eee9;
+  --ref-chart-green-dark: #2e9e6b;
   --ref-amber-20: #3d290b;
   --ref-amber-dark-container: #392c18;
   --ref-amber-85: #dfbf90;
@@ -71,9 +73,10 @@
   --on-error-container: var(--ref-red-30);
   --error-outline: var(--ref-red-80);
   --tertiary: var(--ref-teal-45);
-  /* Data: measurements and their charts, a quieter green than the action, so a chart never reads as a control or a
-     verdict; the track holds what a value is compared with; a tile of data stands on its container. */
-  --data: color-mix(in srgb, var(--primary) 72%, var(--surface-lowest));
+  /* Data: measurements and their charts, in SwiftUI Duet's chart green, a yellower green than the action's, so a chart
+     never reads as a control or a verdict; the track holds what a value is compared with; a tile of data stands on its
+     container. */
+  --data: var(--ref-chart-green);
   --data-track: var(--primary-container);
   --data-container: color-mix(in srgb, var(--primary-container) 55%, var(--surface-lowest));
   --on-data-container: var(--on-primary-container);
@@ -263,6 +266,7 @@
     --on-primary: var(--ref-green-20);
     --primary-container: var(--ref-green-dark-container);
     --on-primary-container: var(--ref-green-92);
+    --data: var(--ref-chart-green-dark);
     --warning: var(--ref-amber-85);
     --warning-container: var(--ref-amber-dark-container);
     --on-warning-container: var(--ref-amber-93);
