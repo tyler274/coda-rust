@@ -8,7 +8,7 @@ There is one product-neutral loop, in the shared `harness` crate beside the shar
 
 A good harness is about context management and safety, and not much else. Everything that makes a product what it is stays with that product: clinical types, accounts, consent, evidence, context policy, model roles and instructions, which tools and skills are admitted, durable state, scheduling, effects, commit, recovery and how a run ends. The harness carries those through execution without owning them.
 
-The harness stays out of the product behavior charts. It meets them only at events: a tool call is an event, and what a product must supply before a run is a precondition.
+The harness stays out of the feature models. It meets them only at events: a tool call is an event, and what a product must supply before a run is a precondition.
 
 ## Principles
 
@@ -81,7 +81,7 @@ Before and during a run, the product supplies its preconditions: admitted tools,
 - Invent progress. Status comes only from real events.
 - Keep a second run ledger anywhere, including cloud scheduling or delivery.
 - Grow cost with the size of the roster instead of with what changed.
-- Appear in the product behavior charts.
+- Appear in the feature models.
 
 ## Scope
 
