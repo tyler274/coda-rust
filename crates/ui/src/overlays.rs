@@ -156,12 +156,10 @@ pub fn ContextMenu(
 ) -> Element {
     let id = use_hook(|| format!("context-{}", HOSTS.fetch_add(1, Ordering::Relaxed)));
     let script = CONTEXT.replace("{host}", &id);
-    // Content removed while lifted takes its lifted copy with it.
     let dropped = id.clone();
     use_drop(move || {
         document::eval(&format!(
-            "const layer = window.codaLift;
-            if (layer?.dataset.host === '{dropped}') {{ try {{ layer.hidePopover(); }} catch {{}} layer.replaceChildren(); }}"
+            "window.codaContextHosts?.['{dropped}']?.dispose()"
         ));
     });
     let mut class = String::from("context-menu-host");
@@ -185,12 +183,15 @@ static HOSTS: AtomicUsize = AtomicUsize::new(0);
 /// One context menu host's ways in. `{host}` is its id; its menu's is its `data-menu`, read each
 /// time it opens. A menu opened at a point keeps that place until it next opens from its own
 /// control. Lifting uses one layer per page, `window.codaLift`, which blurs the page beneath; its
-/// motion runs on the springs and simply arrives where motion is immediate.
+/// motion runs on the springs and simply arrives where motion is immediate. The host's
+/// `window.codaContextHosts[id].dispose()` ends it: a press or opening still pending never lands,
+/// and its lifted copy, and a menu it opened, close.
 const CONTEXT: &str = r#"
 const host = document.getElementById("{host}");
 if (host && !host.dataset.contextMenu) {
   host.dataset.contextMenu = "";
   const root = document.documentElement;
+  let gone = false;
   // Whether a button or finger is down anywhere on the page, kept once for every host.
   if (!window.codaPressed) {
     window.codaPressed = { down: false };
@@ -207,7 +208,7 @@ if (host && !host.dataset.contextMenu) {
   // opens once it is let go.
   const released = (then) => {
     if (!window.codaPressed.down) { then(); return; }
-    const go = () => { removeEventListener("pointerup", go, true); removeEventListener("pointercancel", go, true); setTimeout(then); };
+    const go = () => { removeEventListener("pointerup", go, true); removeEventListener("pointercancel", go, true); setTimeout(() => { if (!gone) then(); }); };
     addEventListener("pointerup", go, true);
     addEventListener("pointercancel", go, true);
   };
@@ -221,11 +222,13 @@ if (host && !host.dataset.contextMenu) {
       menu.dataset.placesItself = "";
       menu.addEventListener("beforetoggle", (event) => {
         if (event.newState !== "open" || menu.dataset.atPoint !== undefined) return;
+        delete menu.dataset.openedBy;
         menu.classList.remove("is-at-point");
         for (const property of ["left", "top", "transform-origin"]) menu.style.removeProperty(property);
       });
     }
     menu.classList.add("is-at-point");
+    menu.dataset.openedBy = host.id;
     menu.dataset.atPoint = "";
     menu.showPopover();
     delete menu.dataset.atPoint;
@@ -324,6 +327,18 @@ if (host && !host.dataset.contextMenu) {
     const at = (host.contains(document.activeElement) ? document.activeElement : host).getBoundingClientRect();
     openAt(at.left, at.bottom + 4);
   });
+  window.codaContextHosts ??= {};
+  window.codaContextHosts[host.id] = {
+    dispose() {
+      gone = true;
+      release();
+      const layer = window.codaLift;
+      if (layer?.dataset.host === host.id) { if (layer.matches(":popover-open")) layer.hidePopover(); layer.replaceChildren(); }
+      const menu = document.getElementById(host.dataset.menu);
+      if (menu?.dataset.openedBy === host.id && menu.matches(":popover-open")) menu.hidePopover();
+      delete window.codaContextHosts[host.id];
+    },
+  };
 }
 "#;
 
