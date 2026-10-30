@@ -452,7 +452,10 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .series-target { --series-column: calc(100% / var(--series-count)); position: absolute; bottom: 0;
   width: min(var(--series-column), max(24px, calc(var(--series-column) * .84))); translate: -50% 0;
   padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; cursor: pointer; }
-.series-chart.is-line .series-target { bottom: auto; width: min(var(--series-column), 48px); height: 48px; translate: -50% -50%; border-radius: 50%; }
+.series-chart.is-line .series-target { bottom: auto; width: min(var(--series-column), 48px); height: 48px; translate: -50% -50%;
+  pointer-events: none; }
+/* A point is reached within a fingertip of it, inside its own column: the reach is that circle, clipped to the target. */
+.series-target-reach { position: absolute; inset: 0; clip-path: circle(24px at 50% 50%); pointer-events: auto; }
 .series-ticks { position: relative; grid-area: 1 / 2; height: var(--series-height); }
 .series-ticks-width { display: block; height: 0; overflow: hidden; visibility: hidden; white-space: nowrap; }
 .series-tick { position: absolute; right: 0; translate: 0 50%; white-space: nowrap; }

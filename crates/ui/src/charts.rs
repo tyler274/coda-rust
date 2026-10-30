@@ -303,6 +303,9 @@ pub fn SeriesChart(
                                         }
                                     }
                                 },
+                                if shape == SeriesShape::Line {
+                                    span { class: "series-target-reach", aria_hidden: "true" }
+                                }
                             }
                         }
                     }
