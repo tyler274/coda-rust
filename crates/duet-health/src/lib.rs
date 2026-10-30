@@ -3,7 +3,12 @@
 //! Android reads granted Health Connect records through `platform/android`.
 //! A missing permission or an empty store contributes no sample.
 //! Book: `book/src/backend-architecture.md`.
+//! Durable acquisition lives in [`acquisition`] (records and the native
+//! adapter contract) and [`outbox`] (the transactional upload outbox).
 #![deny(missing_docs)]
+
+pub mod acquisition;
+pub mod outbox;
 
 use serde::Deserialize;
 
