@@ -323,8 +323,9 @@ fn step_choice(options: &[Choice], from: Option<usize>, forward: bool) -> Option
 
 /// One choice, found by typing, for a list too long to read: the field holds the host's `query`,
 /// and the host narrows `options` to it, from memory or by asking, `loading` while it does. The
-/// arrow keys or the pointer move through what is listed; Enter or a press chooses, Escape or
-/// leaving the field closes the list. `selected` is marked; `empty` is said when nothing is found.
+/// arrow keys or the pointer move through what is listed; Enter or a press chooses, once any
+/// search is done, and Escape or leaving the field closes the list. `selected` is marked; `empty`
+/// is said when nothing is found.
 /// After a choice the host sets the `query` to what it wants the field to say.
 #[component]
 pub fn Combobox(
@@ -364,8 +365,11 @@ pub fn Combobox(
     let keyed = options.clone();
     let moving = id.clone();
     let mut choose = move |index: usize| {
-        on_choose.call(index);
-        open.set(false);
+        // Mid-search the list is the last search's, not what was asked for.
+        if !loading {
+            on_choose.call(index);
+            open.set(false);
+        }
     };
     rsx! {
         FieldFrame { id: id.clone(), label: label.clone(), hint, error: error.clone(),
@@ -415,8 +419,7 @@ pub fn Combobox(
                             }
                             Key::Enter if open() => {
                                 event.prevent_default();
-                                // Mid-search the list is the last search's, not what was asked for.
-                                if let Some(index) = current.filter(|_| !loading) {
+                                if let Some(index) = current {
                                     choose(index);
                                 }
                             }
