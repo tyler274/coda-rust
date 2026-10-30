@@ -1,5 +1,7 @@
-//! Shared presentation for the Duet and physician Dioxus apps.
-//! The tokens here own the product's colour, type, space, shape and motion roles; product screens stay in each app.
+//! The one source of truth for the design of the Duet and physician Dioxus apps: the tokens (colour,
+//! type, space, shape and motion), the icons, and each component's look, motion, gestures, states and
+//! accessibility. It holds no product rules. Each app decides when a component shows, what pressing
+//! it does, what its server guarantees, every word it says, and how its screens are laid out.
 //! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
 
@@ -40,9 +42,9 @@ pub const STYLESHEET: &str = concat!(
 );
 
 /// A screen's heading, after the October 21 mockups: its title, what the screen belongs to on the
-/// line above (the day, "Your continuing page"), and its state or source on the line beneath
-/// ("Proposed by Duet · Not saved"). A record's heading leads with its icon. A screen with no top
-/// bar sets its own `actions` above the title, at the trailing edge, as You does with Settings.
+/// line above (the day, a collection), and its state or source on the line beneath. A record's
+/// heading leads with its icon. A screen with no top bar sets its own `actions` above the title,
+/// at the trailing edge.
 #[component]
 pub fn PageTitle(
     text: String,
@@ -158,13 +160,13 @@ pub enum Tone {
     Neutral,
     /// Ready or done.
     Primary,
-    /// What Coda flags.
+    /// Flagged.
     Warning,
     /// What failed or conflicts.
     Error,
 }
 
-/// What Coda did, or where a thing stands, on its tone, led by its kind's icon. The host names the
+/// Where a thing stands, on its tone, led by its kind's icon. The host names the
 /// tone and icon from structured state, never from the words.
 #[component]
 pub fn StatePill(
@@ -267,16 +269,16 @@ pub fn ReadNotice(
 pub enum CommandStage {
     /// Nothing is in flight.
     Idle,
-    /// Sent and not yet answered; other commands on the same item wait.
+    /// Sent and not yet answered.
     Sending,
-    /// The answer never arrived, so whether it took is unknown. Check again
-    /// resends the same request, which the server recognizes.
+    /// The answer never arrived, so whether it took is unknown; the host's check again action
+    /// follows.
     Unconfirmed,
-    /// The server answered and did not take it, saying why.
+    /// It was answered and not taken, saying why.
     Refused(String),
 }
 
-/// A command's own line: sending, couldn't confirm with Check again, or why
+/// A command's own line: sending, couldn't confirm with its check again action, or why
 /// it was refused. Idle adds nothing.
 #[component]
 pub fn CommandNotice(
@@ -721,7 +723,8 @@ if (sheet && body) {
 
 /// A modal dialog, after the React app's `TransientDialog` and `DialogHeader`: it opens over the
 /// scrim with focus inside it, its title heading the content with Close beside it. Escape, the
-/// scrim and Close dismiss it; it settles out before the host hears `on_close`. Focus lands on
+/// scrim and its close button (named by `close_label`) dismiss it; it settles out before the host
+/// hears `on_close`. Focus lands on
 /// what the content marks `autofocus`, else the title. The host's class sizes it. A sheet is the
 /// same dialog along the bottom edge, after the October 21 design review, and one sheet can
 /// open over another.
@@ -731,6 +734,7 @@ pub fn Dialog(
     /// What the dialog belongs to, under the title, when that is not obvious.
     subtitle: Option<String>,
     #[props(default)] sheet: bool,
+    close_label: String,
     on_close: EventHandler,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
@@ -802,7 +806,7 @@ pub fn Dialog(
                     Button {
                         variant: ButtonVariant::Quiet,
                         icon_only: true,
-                        aria_label: "Close",
+                        aria_label: "{close_label}",
                         onclick: move |_| dismiss(),
                         Icon { name: IconName::X }
                     }
@@ -839,9 +843,10 @@ pub fn CitationChip(
 }
 
 /// The one Sources control under a message, after the React app's sources index and the SwiftUI
-/// Sources pill: a compact pill with how many sources the message has.
+/// Sources pill: a compact pill with its words and how many sources the message has.
 #[component]
 pub fn SourcesButton(
+    label: String,
     count: usize,
     onclick: EventHandler<MouseEvent>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
@@ -856,7 +861,7 @@ pub fn SourcesButton(
             onclick: move |event| onclick.call(event),
             ..rest,
             Icon { name: IconName::ChevronDown }
-            "Sources"
+            "{label}"
             span { class: "sources-count", "{count}" }
         }
     }
@@ -944,10 +949,11 @@ pub fn ActionRow(children: Element) -> Element {
     rsx! { div { class: "action-row", {children} } }
 }
 
-/// The app's sections, the current one marked. With `icons`, one per label, each section shows its
-/// icon above its label, as a phone's tab bar does.
+/// The app's sections, the current one marked, named as a whole by `label`. With `icons`, one per
+/// label, each section shows its icon above its label, as a phone's tab bar does.
 #[component]
 pub fn TabBar(
+    label: String,
     labels: Vec<String>,
     selected: usize,
     on_select: EventHandler<usize>,
@@ -955,7 +961,7 @@ pub fn TabBar(
 ) -> Element {
     let with_icons = icons.len() == labels.len();
     rsx! {
-        nav { class: if with_icons { "tabs has-icons" } else { "tabs" }, aria_label: "Sections",
+        nav { class: if with_icons { "tabs has-icons" } else { "tabs" }, aria_label: "{label}",
             for (index, label) in labels.iter().enumerate() {
                 button {
                     key: "{label}",

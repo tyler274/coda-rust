@@ -3518,7 +3518,7 @@ fn SearchDialog(
         .map(|patient| patient.patient_workspace_id.clone());
     let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
     rsx! {
-        Dialog { title: "Find patient", on_close,
+        Dialog { close_label: "Close", title: "Find patient", on_close,
                 input {
                     class: "dialog-search field",
                     r#type: "search",
@@ -3570,7 +3570,7 @@ fn SearchDialog(
 #[component]
 fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -> Element {
     rsx! {
-        Dialog { title: CONNECTIONS, on_close,
+        Dialog { close_label: "Close", title: CONNECTIONS, on_close,
                 if failed {
                     p { "{TODAY_UNAVAILABLE}" }
                 } else if lines.is_empty() {
@@ -3658,7 +3658,7 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
     let link_label = reading.link_label.clone();
     let link_uri = reading.link_uri.clone();
     rsx! {
-        Dialog { class: "{section_class}", title, subtitle: eyebrow, on_close,
+        Dialog { close_label: "Close", class: "{section_class}", title, subtitle: eyebrow, on_close,
                 if quiet {
                     p { "Nothing is open to read." }
                 }
@@ -3682,6 +3682,7 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
 fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
     rsx! {
         Dialog {
+            close_label: "Close",
             class: "past-work-dialog",
             title: "Past work",
             subtitle: (!patient.is_empty()).then_some(patient),
@@ -3906,7 +3907,7 @@ fn copy_text_wasm(text: &str) -> bool {
 #[component]
 fn ShortcutsDialog(on_close: EventHandler) -> Element {
     rsx! {
-        Dialog { title: "Keyboard shortcuts", on_close,
+        Dialog { close_label: "Close", title: "Keyboard shortcuts", on_close,
                 div { class: "shortcut", span { "Search your panel" } kbd { "/  ⌘ K" } }
                 div { class: "shortcut", span { "Move between patients or conversations" } kbd { "J  K" } }
                 div { class: "shortcut", span { "Open the focused item" } kbd { "Enter" } }

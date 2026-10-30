@@ -1,6 +1,5 @@
-//! Feedback on one completed response, after the React app's `FeedbackControl`: a good or poor
-//! rating, then optional reasons the person can toggle. Feedback never starts clinical work; the
-//! host owns saving, its outcome and any recovery.
+//! Feedback on one response, after the React app's `FeedbackControl`: a good or poor rating, then
+//! optional reasons the person can toggle.
 
 use dioxus::prelude::*;
 
@@ -15,12 +14,15 @@ pub enum Rating {
     Down,
 }
 
-/// The two ratings as pressed icon controls. The saved or pending rating is pressed; while a
-/// rating saves, only it stays enabled. On pointer devices the pair shows while its message is
-/// hovered or focused, or while a rating saves; on touch it always shows.
+/// The two ratings as pressed icon controls, named by `label`, `up_label` and `down_label`. The
+/// selected rating is pressed; while `busy`, only it stays enabled. On pointer devices the pair shows while its message is
+/// hovered or focused, or while busy; on touch it always shows.
 #[component]
 pub fn FeedbackRating(
     selected: Option<Rating>,
+    label: String,
+    up_label: String,
+    down_label: String,
     #[props(default)] busy: bool,
     #[props(default)] disabled: bool,
     on_rate: EventHandler<Rating>,
@@ -29,12 +31,12 @@ pub fn FeedbackRating(
         div {
             class: "feedback-rating",
             role: "group",
-            aria_label: "Rate this response",
+            aria_label: label,
             aria_busy: if busy { "true" },
             "data-active": if busy { "true" },
             for (rating, label, icon) in [
-                (Rating::Up, "Good response", IconName::ThumbUp),
-                (Rating::Down, "Poor response", IconName::ThumbDown),
+                (Rating::Up, up_label.clone(), IconName::ThumbUp),
+                (Rating::Down, down_label.clone(), IconName::ThumbDown),
             ] {
                 Button {
                     key: "{label}",

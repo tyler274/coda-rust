@@ -1,6 +1,6 @@
 //! The conversation's frame, after the October 21 Duet mockups: the day it is on, what the person
-//! brought into it, a way to begin, and a receipt for saved work that leads back to the same
-//! object. Who the conversation is with is the `TopBar`'s title.
+//! brought into it, a way to begin, and a receipt that leads to a thing in the thread. Who the
+//! conversation is with is the `TopBar`'s title.
 
 use std::rc::Rc;
 
@@ -13,14 +13,14 @@ use crate::{Button, ButtonVariant, Icon, IconName};
 const FOLLOW_PX: f64 = 48.0;
 
 /// The conversation's scrolling region, after the React app's conversation viewport. At its end it
-/// follows each new reply; scrolled back, it leaves the reading where it is and offers Jump to new
-/// response instead. What the person sends always brings them to the end. The host counts its
+/// follows each new reply; scrolled back, it leaves the reading where it is and offers `jump_label`
+/// instead. What the person sends always brings them to the end. The host counts its
 /// `replies` and its person's `sent` messages; a change in either is what arrived.
 #[component]
 pub fn ConversationViewport(
     replies: usize,
     sent: usize,
-    #[props(default = "Jump to new response".to_owned())] jump_label: String,
+    jump_label: String,
     children: Element,
 ) -> Element {
     let mut at_end = use_signal(|| true);
@@ -103,8 +103,8 @@ pub fn DateSeparator(date: String) -> Element {
     rsx! { p { class: "date-separator", "{date}" } }
 }
 
-/// What the person brought into the conversation, held above the words until they send or remove
-/// it: a selected measurement, a record, a page.
+/// What the person brought into the conversation, above the words, with a way to remove it: a
+/// selected measurement, a record, a page.
 #[component]
 pub fn ContextChip(
     icon: IconName,
@@ -123,7 +123,7 @@ pub fn ContextChip(
     }
 }
 
-/// A way to begin, in the person's own words, that they can send as it stands.
+/// A suggested way to begin, as a quiet row.
 #[component]
 pub fn Suggestion(text: String, onclick: EventHandler<MouseEvent>) -> Element {
     rsx! {
@@ -131,8 +131,7 @@ pub fn Suggestion(text: String, onclick: EventHandler<MouseEvent>) -> Element {
     }
 }
 
-/// A receipt for work the conversation saved: what it is, what happened to it, and the way back to
-/// its current version. It appears only once the owning service confirms the save.
+/// A receipt in the thread: what a thing is, what happened to it, and the way to it.
 #[component]
 pub fn Receipt(
     icon: IconName,

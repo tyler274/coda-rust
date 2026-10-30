@@ -1,5 +1,5 @@
 //! Pages, forms and their frame, after the October 21 Duet mockups: the bar atop a pushed screen,
-//! the document a person prepares for a clinician, choices and settings as rows, the notices that
+//! a document page, choices and settings as rows, the notices that
 //! say what actually happened, small tags, and the actions pinned to a screen's foot.
 
 use dioxus::prelude::*;
@@ -33,8 +33,7 @@ pub fn TopBar(
     }
 }
 
-/// A document with its own hierarchy inside the shared family: what a person prepares for a
-/// clinician, titled, in sections, on paper.
+/// A document with its own hierarchy inside the shared family: titled, in sections, on paper.
 #[component]
 pub fn Paper(
     title: String,
@@ -137,35 +136,35 @@ pub fn Notice(
     }
 }
 
-/// One section of a proposed update, for the person to review before anything is saved: what
-/// kind of change it is (a `tag`: "Updated", "Through Oct 21"), the section's name, the proposed
-/// words, what was saved before under Previously saved, and the `sources` it rests on, each
-/// reopening what Duet read. A section the proposal leaves as it was says so, and shows the words
-/// that stay.
+/// One section of a proposed change, to read against what it replaces: what kind of change it is
+/// (a `tag`: "Updated", "Through Oct 21"), the section's name, the proposed words, the earlier
+/// words in a detail that opens (`previous`: its label, then the words), and the `sources` it
+/// rests on. A section left as it was says so in `unchanged`'s words, and shows the words that stay.
 #[component]
 pub fn ProposedChange(
     title: String,
     #[props(default)] tag: Option<String>,
-    #[props(default)] previous: Option<String>,
-    #[props(default)] unchanged: bool,
+    #[props(default)] previous: Option<(String, String)>,
+    #[props(default)] unchanged: Option<String>,
     #[props(default)] sources: Option<Element>,
     children: Element,
 ) -> Element {
+    let is_unchanged = unchanged.is_some();
     rsx! {
-        section { class: if unchanged { "proposed-change is-unchanged" } else { "proposed-change" },
+        section { class: if is_unchanged { "proposed-change is-unchanged" } else { "proposed-change" },
             header { class: "proposed-change-heading",
-                if let Some(text) = tag.filter(|_| !unchanged) {
+                if let Some(text) = tag.filter(|_| !is_unchanged) {
                     Tag { text }
                 }
                 h3 { "{title}" }
-                if unchanged {
-                    span { class: "proposed-change-state", "Unchanged" }
+                if let Some(state) = unchanged {
+                    span { class: "proposed-change-state", "{state}" }
                 }
             }
             div { class: "proposed-change-words", {children} }
-            if let Some(previous) = previous.filter(|_| !unchanged) {
-                Disclosure { title: "Previously saved", detail: true,
-                    p { class: "proposed-change-previous", "{previous}" }
+            if let Some((label, words)) = previous.filter(|_| !is_unchanged) {
+                Disclosure { title: label, detail: true,
+                    p { class: "proposed-change-previous", "{words}" }
                 }
             }
             if let Some(sources) = sources {

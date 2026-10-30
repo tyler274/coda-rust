@@ -45,7 +45,7 @@
 .tone-primary { --tone-container: var(--primary-container); --tone-on: var(--on-primary-container); }
 .tone-warning { --tone-container: var(--warning-container); --tone-on: var(--on-warning-container); }
 .tone-error { --tone-container: var(--error-container); --tone-on: var(--on-error-container); }
-/* State pill (Material's assist chip at rest): what Coda did or where a thing stands, on its tone, led by its kind's icon.
+/* State pill (Material's assist chip at rest): where a thing stands, on its tone, led by its kind's icon.
    Where it is narrower than its words they wrap inside it, and its corners stay those of one line. */
 .state-pill { display: inline-flex; align-items: baseline; gap: var(--space-1); max-width: 100%; overflow: clip; padding: var(--space-hair) .6em; border-radius: calc(.5lh + var(--space-hair)); background: var(--tone-container); color: var(--tone-on); font: var(--type-label-md); transition: background-color var(--motion-arrive) var(--ease-out), color var(--motion-arrive) var(--ease-out); }
 .state-pill > .icon { align-self: center; width: 14px; height: 14px; }
@@ -352,7 +352,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .paper-title + .card-detail { margin-top: calc(-1 * var(--space-4)); }
 .paper-section { display: grid; gap: var(--space-2); }
 .paper-section > p { margin: 0; color: var(--ink); font: var(--type-body-lg); }
-/* A proposed update, section by section: what changed and its name, the proposed words, what was saved before, and the
+/* A proposed change, section by section: what changed and its name, the proposed words, the earlier words, and the
    sources. A section left as it was reads quieter. Sections sit a hairline apart. */
 .proposed-change { display: grid; gap: var(--space-3); min-width: 0; padding-block: var(--space-5); }
 .proposed-change + .proposed-change { border-top: var(--hairline) solid var(--outline-variant); }

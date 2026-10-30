@@ -166,6 +166,7 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
             }
             if !needs_join {
                 TabBar {
+                    label: "Sections",
                     labels: TABS.iter().map(|label| (*label).to_owned()).collect(),
                     icons: vec![IconName::Message, IconName::Sun, IconName::User, IconName::Users],
                     selected: tab(),
@@ -1677,7 +1678,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             },
             Some(ConversationRoot::Messages(lines)) => rsx! {
                 if let Some(sources) = message_sources() {
-                    Dialog { sheet: true, title: "Sources", on_close: move |_| message_sources.set(None),
+                    Dialog { close_label: "Close", sheet: true, title: "Sources", on_close: move |_| message_sources.set(None),
                         ol { class: "row-list",
                             for source in sources {
                                 li {
@@ -1693,7 +1694,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     }
                 }
                 if let Some(open) = opened_source() {
-                    Dialog { sheet: true, title: open.title, on_close: move |_| opened_source.set(None),
+                    Dialog { close_label: "Close", sheet: true, title: open.title, on_close: move |_| opened_source.set(None),
                         if let Some(text) = open.text {
                             p { class: "source-text", "{text}" }
                         }
@@ -1810,7 +1811,7 @@ fn MessageSources(
 ) -> Element {
     let count = sources.len();
     rsx! {
-        SourcesButton { count, onclick: move |_| open.set(Some(sources.clone())) }
+        SourcesButton { label: "Sources", count, onclick: move |_| open.set(Some(sources.clone())) }
     }
 }
 

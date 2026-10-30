@@ -82,7 +82,7 @@ fn Gallery() -> Element {
                 Section { title: "Icons", note: "One stroke set in the text's colour: the React app's icons, then Duet's own from the October 21 mockups.",
                     IconDemo {}
                 }
-                Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. An observation opens as a whole; saved work's footer leads back to the conversation it came from.",
+                Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. One can open as a whole, or lead on from its footer.",
                     CardDemo {}
                 }
                 Section { title: "Measurements and charts", note: "Data draws in a quieter green than the action, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
@@ -91,13 +91,13 @@ fn Gallery() -> Element {
                 Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
                     HeadingsDemo {}
                 }
-                Section { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so. Nothing is saved until the person saves.",
+                Section { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so.",
                     ReviewDemo {}
                 }
-                Section { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document for a clinician, choices and settings as rows, and actions pinned to the foot.",
+                Section { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices and settings as rows, and actions pinned to the foot.",
                     PagesDemo {}
                 }
-                Section { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads back to saved work, and what the person brought in, held above the words.",
+                Section { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads to a thing, and what the person brought in, held above the words.",
                     FrameDemo {}
                 }
                 Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
@@ -409,7 +409,7 @@ fn ConversationDemo() -> Element {
                     by: if line.person { "You" } else { "Duet" },
                     p { "{line.text}" }
                     if line.sources {
-                        SourcesButton { count: 2, onclick: move |_| sources_open.set(true) }
+                        SourcesButton { label: "Sources", count: 2, onclick: move |_| sources_open.set(true) }
                     }
                 }
             }
@@ -429,7 +429,7 @@ fn ConversationDemo() -> Element {
             Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: typing(), "Send" }
         }
         if sources_open() {
-            Dialog { sheet: true, title: "Sources", on_close: move |_| sources_open.set(false),
+            Dialog { close_label: "Close", sheet: true, title: "Sources", on_close: move |_| sources_open.set(false),
                 ol { class: "row-list",
                     li { ListRow { title: "Sleep note", detail: "Tuesday", onclick: move |_| source_open.set(true) } }
                     li { ListRow { title: "Sleep, Apple Health", detail: "Last 7 nights", onclick: move |_| source_open.set(true) } }
@@ -437,7 +437,7 @@ fn ConversationDemo() -> Element {
             }
         }
         if source_open() {
-            Dialog { sheet: true, title: "Sleep note", on_close: move |_| source_open.set(false),
+            Dialog { close_label: "Close", sheet: true, title: "Sleep note", on_close: move |_| source_open.set(false),
                 p { class: "gallery-copy", "About seven hours, from the sleep note." }
             }
         }
@@ -472,7 +472,7 @@ fn ReviewDemo() -> Element {
                     ProposedChange {
                         title: "What you’ve tried",
                         tag: "Updated",
-                        previous: "Since October 16, Alex has stopped drinking coffee after noon.",
+                        previous: ("Previously saved".to_owned(), "Since October 16, Alex has stopped drinking coffee after noon.".to_owned()),
                         sources: rsx! {
                             NavigationControl { Icon { name: IconName::File } "Your note · October 21" }
                         },
@@ -486,7 +486,7 @@ fn ReviewDemo() -> Element {
                         },
                         p { "Apple Watch recorded 6 hr 18 min on October 20–21, after an average of 7 hr per night across October 14–20 (7 nights)." }
                     }
-                    ProposedChange { title: "What I want to discuss", unchanged: true,
+                    ProposedChange { title: "What I want to discuss", unchanged: "Unchanged",
                         p { "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work." }
                     }
                 }
@@ -615,18 +615,18 @@ fn OverlayDemo() -> Element {
             Button { onclick: move |_| sheet.set(true), "Open a sheet" }
         }
         if dialog() {
-            Dialog { title: "Past work", subtitle: "Mary Louis", on_close: move |_| dialog.set(false),
+            Dialog { close_label: "Close", title: "Past work", subtitle: "Mary Louis", on_close: move |_| dialog.set(false),
                 p { class: "gallery-copy", "A dialog rises near the top of the window over the scrim, with focus on its title." }
             }
         }
         if sheet() {
-            Dialog { sheet: true, title: "Sources", on_close: move |_| sheet.set(false),
+            Dialog { close_label: "Close", sheet: true, title: "Sources", on_close: move |_| sheet.set(false),
                 p { class: "gallery-copy", "A sheet runs along the bottom edge." }
                 Button { onclick: move |_| over.set(true), "Open another over it" }
             }
         }
         if over() {
-            Dialog { sheet: true, title: "Sleep note", on_close: move |_| over.set(false),
+            Dialog { close_label: "Close", sheet: true, title: "Sleep note", on_close: move |_| over.set(false),
                 p { class: "gallery-copy", "Closing this returns to the sheet beneath." }
             }
         }
@@ -696,6 +696,7 @@ fn CitedDetails(cited: Cited) -> Element {
         SourceDetails {
             metadata: cited.metadata.iter().map(|value| value.to_string()).collect::<Vec<_>>(),
             passages: vec![cited.passage.to_owned()],
+            passages_label: "Quoted source passages",
             p { class: "gallery-copy", "{cited.content}" }
         }
     }
@@ -709,6 +710,8 @@ fn CitationDemo() -> Element {
         eyebrow: format!("Source {}", cited.index),
         title: cited.title.to_owned(),
         content: rsx! { CitedDetails { cited } },
+        back: "Back".to_owned(),
+        close: "Close source".to_owned(),
     });
     rsx! {
         div { class: "gallery-reading",
@@ -719,15 +722,24 @@ fn CitationDemo() -> Element {
                         CitationPreview {
                             index: 1,
                             label: CITED[0].title,
+                            eyebrow: "Source 1",
+                            citation_label: "Source 1: {CITED[0].title}. Preview source.",
+                            close_label: "Close source preview",
                             on_expand: move |_| open.set(Some(CITED[0])),
+                            expand_label: "Expand",
                             original: "https://example.org/records/discharge",
-                            original_label: "Epic",
+                            original_label: "Open in Epic",
+                            new_tab_hint: "Opens in a new tab",
                             CitedDetails { cited: CITED[0] }
                         }
                         CitationPreview {
                             index: 2,
                             label: CITED[1].title,
+                            eyebrow: "Source 2",
+                            citation_label: "Source 2: {CITED[1].title}. Preview source.",
+                            close_label: "Close source preview",
                             on_expand: move |_| open.set(Some(CITED[1])),
+                            expand_label: "Expand",
                             CitedDetails { cited: CITED[1] }
                         }
                         " Genetic testing was not yet back."
@@ -771,12 +783,14 @@ fn TabsDemo() -> Element {
     let mut phone = use_signal(|| 1usize);
     rsx! {
         TabBar {
+            label: "Sections",
             labels: vec!["Duet".into(), "Today".into(), "You".into()],
             selected: selected(),
             on_select: move |index| selected.set(index),
         }
         div { class: "gallery-phone-tabs",
             TabBar {
+                label: "Sections",
                 labels: vec!["Duet".into(), "Today".into(), "You".into()],
                 icons: vec![IconName::Message, IconName::Sun, IconName::User],
                 selected: phone(),
@@ -860,7 +874,7 @@ fn ViewportDemo() -> Element {
     let sent = lines.read().iter().filter(|line| line.person).count();
     rsx! {
         div { class: "gallery-viewport",
-            ConversationViewport { replies, sent,
+            ConversationViewport { replies, sent, jump_label: "Jump to new response",
                 div { class: "gallery-thread",
                     for (index, line) in lines().into_iter().enumerate() {
                         Message {
@@ -916,6 +930,9 @@ fn FeedbackDemo() -> Element {
             p { "Her potassium was 5.4 on Tuesday, up from 4.9 in September." }
             FeedbackRating {
                 selected: rating(),
+                label: "Rate this response",
+                up_label: "Good response",
+                down_label: "Poor response",
                 busy: saving(),
                 on_rate: move |choice| {
                     rating.set(Some(choice));
@@ -947,6 +964,7 @@ fn FeedbackDemo() -> Element {
             UndoNotice {
                 key: "{key}",
                 words: "Conversation archived.",
+                undo_label: "Undo",
                 on_undo: move |_| restored.set(true),
                 on_gone: move |_| {
                     if undo() == Some(key) {
@@ -956,7 +974,7 @@ fn FeedbackDemo() -> Element {
             }
         }
         if asking() {
-            Dialog { title: "Share feedback", subtitle: "What was wrong with this response?", on_close: move |_| asking.set(false),
+            Dialog { close_label: "Close", title: "Share feedback", subtitle: "What was wrong with this response?", on_close: move |_| asking.set(false),
                 div { class: "gallery-row",
                     for (index, reason) in REASONS.into_iter().enumerate() {
                         ToggleChip {

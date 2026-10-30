@@ -1,6 +1,5 @@
-//! The one undo notice, after the React app's `UndoNotice`: what just happened and Undo, floating
-//! at one layer over the page so it never moves what is being read. What it undoes has already
-//! landed; Undo is the server's own reverse, so leaving it loses only the chance to undo.
+//! The one undo notice, after the React app's `UndoNotice`: what just happened and its undo action,
+//! floating at one layer over the page so it never moves what is being read.
 
 use std::time::Duration;
 
@@ -11,16 +10,17 @@ use crate::{Button, ButtonVariant, EXIT_MS};
 /// How long Undo stays, counted while the person is not pointing at or focused on it.
 pub const UNDO_MS: u64 = 6_000;
 
-/// What just happened, and Undo. Its own time pauses while it is pointed at or focused; a bound the
-/// server sets (`expires_in_ms`) ends it exactly then, never held longer, so every Undo it shows is
-/// one the server can honour. It leaves the same way whether its time ran out or Undo was pressed,
-/// then reports `on_gone`. The host keys it by what it undoes, so a newer action replaces it.
+/// What just happened, and its undo action. Its time pauses while it is pointed at or focused; with
+/// `ends_in_ms` it ends exactly then instead, and nothing holds it longer. It leaves the same way
+/// whether its time ran out or the action was pressed, then reports `on_gone`. The host keys it by
+/// what it undoes, so a newer one replaces it.
 #[component]
 pub fn UndoNotice(
     words: String,
+    undo_label: String,
     on_undo: EventHandler<MouseEvent>,
     on_gone: EventHandler,
-    #[props(default)] expires_in_ms: Option<u64>,
+    #[props(default)] ends_in_ms: Option<u64>,
 ) -> Element {
     let mut pointed = use_signal(|| false);
     let mut focused = use_signal(|| false);
@@ -37,18 +37,17 @@ pub fn UndoNotice(
         });
     };
     // Each change of pause or exit starts the count again from its full time and retires the last.
-    // A bounded notice never reads either, so pointing at it can't restart its time. Pointing and
+    // A notice with an end never reads either, so pointing at it can't restart its time. Pointing and
     // focus are kept apart: leaving one while the other remains still holds it.
     use_effect(move || {
-        let paused = expires_in_ms.is_none() && (pointed() || focused());
+        let paused = ends_in_ms.is_none() && (pointed() || focused());
         let started = *clock.peek() + 1;
         clock.set(started);
         if paused || leaving() {
             return;
         }
         spawn(async move {
-            futures_timer::Delay::new(Duration::from_millis(expires_in_ms.unwrap_or(UNDO_MS)))
-                .await;
+            futures_timer::Delay::new(Duration::from_millis(ends_in_ms.unwrap_or(UNDO_MS))).await;
             if *clock.peek() == started {
                 leave();
             }
@@ -73,7 +72,7 @@ pub fn UndoNotice(
                     on_undo.call(event);
                     leave();
                 },
-                "Undo"
+                "{undo_label}"
             }
         }
     }

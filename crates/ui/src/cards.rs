@@ -1,6 +1,6 @@
 //! Cards that hold one object, after the October 21 Duet mockups: an observation and its evidence,
-//! a piece of saved work, an original record and the person's later context. Useful work has a
-//! shape, a name and a place to return; a card names what it holds, then shows it.
+//! a piece of saved work, an original record and the person's later context. A card names what it
+//! holds, then shows it.
 
 use dioxus::prelude::*;
 
@@ -10,10 +10,9 @@ use crate::{Icon, IconName, Overline};
 /// mark and overline naming what it holds, its title, a detail line, its content, and the source
 /// or receipt it closes on, after its icon.
 ///
-/// A card is a way in when its object has a place of its own. With `onclick` the whole card opens
-/// it, as an insight on Today opens its evidence: the title is the one button and its reach is the
-/// card, so such a card holds no other controls. Otherwise `on_footer` makes the footer the way to
-/// where the object came from, as a saved plan leads back to its conversation.
+/// With `onclick` the whole card is one way in: the title is the one button and its reach is the
+/// card, so such a card holds no other controls. Otherwise `on_footer` makes the footer the one way
+/// on, such as to where the object came from.
 #[component]
 pub fn Card(
     #[props(default)] overline: Option<String>,

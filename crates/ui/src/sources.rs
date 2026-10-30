@@ -116,20 +116,33 @@ struct SourceReturn(Signal<Option<Rc<MountedData>>>);
 /// A citation in prose that previews its source. Pointing at it opens the preview beside it, which
 /// stays while the pointer or focus is on either; Escape or Close dismisses it. Choosing it opens
 /// the source beside the reader when the host gives `on_expand`, and otherwise toggles the
-/// preview, as on touch. The preview's actions are Expand and the way to the original record.
+/// preview, as on touch. The preview's actions open the pane and the original record, each shown
+/// with its words.
 #[component]
 pub fn CitationPreview(
     index: usize,
     label: String,
+    /// Which source it is, above its label: "Source 2".
+    eyebrow: String,
+    /// The citation's accessible name, saying that it previews its source.
+    citation_label: String,
+    /// The preview's close button's accessible name.
+    close_label: String,
     /// Opens the same source in the reading pane.
     #[props(default)]
     on_expand: Option<EventHandler>,
+    /// The words of the action that opens the pane.
+    #[props(default)]
+    expand_label: Option<String>,
     /// The original record in its own system, opened in a new tab.
     #[props(default)]
     original: Option<String>,
-    /// The system that holds the original, when it has a name.
+    /// The words of the link to the original.
     #[props(default)]
     original_label: Option<String>,
+    /// Says the original opens in a new tab.
+    #[props(default)]
+    new_tab_hint: Option<String>,
     children: Element,
 ) -> Element {
     let id = use_hook(|| PREVIEWS.fetch_add(1, Ordering::Relaxed));
@@ -172,10 +185,6 @@ pub fn CitationPreview(
     };
     let citation_id = format!("citation-{id}");
     let preview_id = format!("citation-preview-{id}");
-    let original_text = match &original_label {
-        Some(name) if !name.trim().is_empty() => format!("Open in {}", name.trim()),
-        _ => "Open original".to_owned(),
-    };
     rsx! {
         span {
             class: "anchored-popover",
@@ -193,7 +202,7 @@ pub fn CitationPreview(
                 id: "{citation_id}",
                 class: "source-trigger citation-chip",
                 r#type: "button",
-                aria_label: "Source {index}: {label}. Preview source.",
+                aria_label: "{citation_label}",
                 aria_expanded: if open() { "true" } else { "false" },
                 aria_haspopup: "dialog",
                 aria_controls: "{preview_id}",
@@ -213,7 +222,7 @@ pub fn CitationPreview(
             if open() {
                 PreviewSurface {
                     id: "{preview_id}",
-                    label: "Source {index}: {label}",
+                    label: "{eyebrow}: {label}",
                     citation: trigger,
                     citation_id: "{citation_id}",
                     on_enter: move |_| {
@@ -224,14 +233,14 @@ pub fn CitationPreview(
                     on_escape: close,
                     span { class: "citation-preview-heading",
                         span {
-                            small { "Source {index}" }
+                            small { "{eyebrow}" }
                             strong { "{label}" }
                         }
                         Button {
                             variant: ButtonVariant::Quiet,
                             icon_only: true,
                             compact: true,
-                            aria_label: "Close source preview",
+                            aria_label: "{close_label}",
                             onclick: move |_| close(true),
                             Icon { name: IconName::X }
                         }
@@ -239,24 +248,24 @@ pub fn CitationPreview(
                     span { class: "citation-preview-body", {children} }
                     if on_expand.is_some() || original.is_some() {
                         span { class: "citation-preview-actions",
-                            if let Some(handler) = on_expand {
+                            if let (Some(handler), Some(words)) = (on_expand, expand_label) {
                                 button {
                                     class: "navigation-control",
                                     r#type: "button",
                                     onclick: move |_| expand(handler),
                                     Icon { name: IconName::Expand }
-                                    "Expand"
+                                    "{words}"
                                 }
                             }
-                            if let Some(href) = original {
+                            if let (Some(href), Some(words)) = (original, original_label) {
                                 a {
                                     class: "navigation-control",
                                     href: "{href}",
                                     target: "_blank",
                                     rel: "noopener noreferrer",
-                                    title: "Opens in a new tab",
+                                    title: new_tab_hint,
                                     onclick: move |_| close(false),
-                                    span { "{original_text}" }
+                                    span { "{words}" }
                                     Icon { name: IconName::ExternalLink }
                                 }
                             }
@@ -356,6 +365,9 @@ fn PreviewSurface(
 pub fn SourceDetails(
     #[props(default)] metadata: Vec<String>,
     #[props(default)] passages: Vec<String>,
+    /// The quoted passages' accessible name.
+    #[props(default)]
+    passages_label: Option<String>,
     #[props(default)] unavailable: Option<String>,
     children: Element,
 ) -> Element {
@@ -369,7 +381,7 @@ pub fn SourceDetails(
                 }
             }
             if !passages.is_empty() {
-                span { class: "citation-selected-passages", aria_label: "Quoted source passages",
+                span { class: "citation-selected-passages", aria_label: passages_label,
                     for (index, quote) in passages.into_iter().enumerate() {
                         blockquote { key: "{index}", "{quote}" }
                     }
@@ -384,8 +396,9 @@ pub fn SourceDetails(
 }
 
 /// A page or dialog with one on-demand source beside it. With room for both, the source takes the
-/// narrower column; without, it covers the reader with Back. The reader is never remounted. The
-/// host gives the open source's `title`, its `eyebrow` (which source it is) and its `content`;
+/// narrower column; without, it covers the reader with a way back. The reader is never remounted.
+/// The host gives the open source's `title`, its `eyebrow` (which source it is), its `content` and
+/// the words of its way back and its close button;
 /// `on_close` reports once the pane has settled away, and focus returns to the citation that
 /// opened it.
 #[component]
@@ -432,12 +445,12 @@ pub fn SourceReading(
             div { class: "source-reading-frame",
             div { class: "source-reading-main", {children} }
             if let Some(pane) = source {
-                aside { class: "source-reading-pane", aria_label: "Source",
+                aside { class: "source-reading-pane", aria_label: "{pane.eyebrow}",
                     div { class: "source-pane-content",
                         div { class: "source-pane-heading",
                             button { class: "navigation-control source-pane-back", r#type: "button", onclick: move |_| dismiss(),
                                 Icon { name: IconName::ArrowLeft }
-                                "Back"
+                                "{pane.back}"
                             }
                             div {
                                 small { "{pane.eyebrow}" }
@@ -457,7 +470,7 @@ pub fn SourceReading(
                                 variant: ButtonVariant::Quiet,
                                 icon_only: true,
                                 compact: true,
-                                aria_label: "Close source",
+                                aria_label: "{pane.close}",
                                 onclick: move |_| dismiss(),
                                 Icon { name: IconName::X }
                             }
@@ -480,6 +493,10 @@ pub struct SourcePane {
     pub title: String,
     /// What it says, usually a `SourceDetails`.
     pub content: Element,
+    /// The words of the way back to the reader, where the source covers it.
+    pub back: String,
+    /// The close button's accessible name.
+    pub close: String,
 }
 
 #[cfg(test)]
