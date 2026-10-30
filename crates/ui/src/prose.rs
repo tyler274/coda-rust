@@ -1,4 +1,4 @@
-//! Prose to read, after the React app's `ClinicalText` and SwiftUI Duet's `DuetMarkdownProse`: the
+//! Prose to read: the
 //! words as GitHub-flavoured Markdown (paragraphs, headings, lists, emphasis, links, quotes, code,
 //! rules and tables), with the host's inline pieces, such as citations, where they were written.
 //! Raw HTML is dropped, an image shows only its description, and a link opens only on a web,

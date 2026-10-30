@@ -1,4 +1,4 @@
-//! The conversation's frame, after the October 21 Duet mockups: the day it is on, what the person
+//! The conversation's frame: the day it is on, what the person
 //! brought into it, and a way to begin. A receipt in the thread is a `ListRow` in a `RowGroup`;
 //! who the conversation is with is the `TopBar`'s title.
 
@@ -12,7 +12,7 @@ use crate::{Button, ButtonVariant, Icon, IconName};
 /// How near the end counts as at it: within this, new replies are followed.
 const FOLLOW_PX: f64 = 48.0;
 
-/// The conversation's scrolling region, after the React app's conversation viewport. At its end it
+/// The conversation's scrolling region. At its end it
 /// follows each new reply; scrolled back, it leaves the reading where it is and offers `jump_label`
 /// instead. What the person sends always brings them to the end. The host counts its
 /// `replies` and its person's `sent` messages; a change in either is what arrived.
@@ -79,7 +79,7 @@ pub fn ConversationViewport(
                     onclick: move |_| {
                         has_new.set(false);
                         // Scrolling asked for in code ignores the stylesheet's reduced-motion rule,
-                        // so the preference is read here, as the React app does.
+                        // so the preference is read here.
                         spawn(async move {
                             let reduced = document::eval(
                                 "return matchMedia('(prefers-reduced-motion: reduce)').matches",

@@ -1,4 +1,4 @@
-//! Feedback on one response, after the React app's `FeedbackControl`: a good or poor rating, then
+//! Feedback on one response: a good or poor rating, then
 //! optional reasons the person can toggle.
 
 use dioxus::prelude::*;

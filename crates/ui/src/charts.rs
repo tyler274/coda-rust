@@ -1,4 +1,4 @@
-//! Measurements and their charts, after the October 21 Duet mockups: a value with its units, one
+//! Measurements and their charts: a value with its units, one
 //! observation against its comparison, a series' recent shape, and a series in full. Charts draw
 //! in the data colour, never the action's, and a colour never says whether a value is normal. Every
 //! chart carries its values in words for assistive technology; the drawing is hidden from it.
@@ -76,7 +76,7 @@ pub fn Sparkline(points: Vec<f64>, label: String) -> Element {
     }
 }
 
-/// How a series is drawn, after SwiftUI Duet's days and detail charts: amounts as bars from zero,
+/// How a series is drawn: amounts as bars from zero,
 /// levels as a line on their own range.
 #[derive(Clone, Copy, PartialEq, Default, Debug)]
 pub enum SeriesShape {
@@ -106,7 +106,7 @@ pub struct SeriesPoint {
     pub partial: bool,
 }
 
-/// A series across its buckets, after SwiftUI Duet's `HealthStatDaysChart` and detail chart. The
+/// A series across its buckets. The
 /// emphasized buckets (the latest, unless given) are drawn at full strength and the rest quieter,
 /// a filling bucket between the two; a dashed reference marks what the series is compared with,
 /// named by a short word; the value axis stands on the trailing edge in round steps. With
@@ -319,8 +319,8 @@ pub fn SeriesChart(
 
 static SERIES: AtomicUsize = AtomicUsize::new(0);
 
-/// A running total across a span (a day) so far against its usual pace, after SwiftUI Duet's
-/// `HealthStatDayChart`: the total in the data colour, ending in a dot (named by `end_word`, if
+/// A running total across a span (a day) so far against its usual pace:
+/// the total in the data colour, ending in a dot (named by `end_word`, if
 /// any) where the span so far ends; the usual total behind it as a quieter dashed curve over a
 /// soft wash, across the whole span; both smooth curves that never double back. Each point is
 /// `(place, total)`, its place across the span from 0 at the start to 1 at the end; `marks` stand
@@ -460,8 +460,8 @@ fn series_domain(shape: SeriesShape, points: &[SeriesPoint], reference: Option<f
     }
 }
 
-/// Value-axis ticks at about `desired` round steps across `domain`, after SwiftUI Duet's
-/// `HealthStatAxisMath`: the smallest of 1, 2 or 5 times a power of ten at least the span over
+/// Value-axis ticks at about `desired` round steps across `domain`:
+/// the smallest of 1, 2 or 5 times a power of ten at least the span over
 /// `desired`, widened until every tick reads differently. None when no step leaves two ticks.
 fn value_ticks(
     domain: (f64, f64),
@@ -603,7 +603,7 @@ fn band_path(
     format!("{}Z", path(&at))
 }
 
-/// A series' readout over its chart, after SwiftUI Duet's detail header: what the figure is, the
+/// A series' readout over its chart: what the figure is, the
 /// figure, and the span or bucket it covers, each on one line so the chart beneath never moves as
 /// the readout changes. While a mark is pinned (`pinned`) its words take the accent. With paging
 /// words, back and forward stand at the trailing edge, each quiet where there is nowhere to go.
@@ -652,7 +652,7 @@ pub fn ChartHeader(
     }
 }
 
-/// The span a series shows, as a row of equal pills after SwiftUI Duet's range picker: the chosen
+/// The span a series shows, as a row of equal pills: the chosen
 /// one in the accent's words on its soft fill, which slides to the next one chosen. Each option is
 /// its short word and the word it is spoken as; `label` names the choice.
 #[component]
@@ -762,7 +762,7 @@ fn path(at: &[(f64, f64)]) -> String {
 }
 
 /// A smooth curve through points in order across, which never rises or falls between two points
-/// beyond them (Swift Charts' and d3's monotone interpolation): each point's slope is the
+/// beyond them (monotone cubic interpolation): each point's slope is the
 /// gentler of its two sides', flat where they disagree or one is flat, drawn as cubic segments.
 fn monotone_path(at: &[(f64, f64)]) -> String {
     if at.len() < 3 {

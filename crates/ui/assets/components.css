@@ -17,7 +17,7 @@
 /* Icon tile: a card header's icon on a white tile at level 1, neutral like a secondary control; colour is kept for state. */
 .icon-tile { box-sizing: border-box; display: inline-grid; place-items: center; flex: none; width: var(--tile-size); height: var(--tile-size); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-lowest); color: var(--muted); box-shadow: var(--elevation-1); font: var(--type-body-md); }
 .icon-tile.is-tinted { width: var(--avatar-md); height: var(--avatar-md); border: 0; background: var(--data-container); color: var(--on-data-container); box-shadow: none; }
-/* An avatar, after the React app's patient avatar: initials in a circle on the highest surface, a size per place. */
+/* An avatar: initials in a circle on the highest surface, a size per place. */
 .avatar { display: grid; place-items: center; width: var(--avatar-size, var(--avatar-sm)); height: var(--avatar-size, var(--avatar-sm)); flex: none; border-radius: 50%; background: var(--surface-highest); color: var(--body); font: var(--type-label-md); }
 .avatar-md { --avatar-size: var(--avatar-md); }
 .avatar-lg { --avatar-size: var(--avatar-lg); font: var(--type-title-sm); }
@@ -43,7 +43,7 @@
 .title-with-count { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .title-with-count > :is(h1, h2, h3, strong) { min-width: 0; }
 .empty { margin: 0; color: var(--body); font: var(--type-body-lg); }
-/* The empty state, after SwiftUI Duet's: a muted mark in a touch target, the line on the medium title, what to know in
+/* The empty state: a muted mark in a touch target, the line on the medium title, what to know in
    small muted words, the way on in green and the way out muted, centred with a section's space around them. */
 .empty-state { display: grid; justify-items: center; gap: var(--space-2); padding-block: var(--space-6); text-align: center; }
 .empty-state-mark { display: grid; place-items: center; width: var(--target); height: var(--target); color: var(--muted); }
@@ -90,7 +90,7 @@
 .status-line > p { margin: 0; overflow-wrap: anywhere; }
 .pending-status { animation: pending-status-reveal var(--motion-control) var(--ease-out) var(--pending-status-delay) both; }
 @keyframes pending-status-reveal { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
-/* Placeholder (Material's skeleton): what is loading, drawn as its shape (a line, list items, rows or reading) in the
+/* Placeholder: what is loading, drawn as its shape (a line, list items, rows or reading) in the
    text's own measure. */
 .placeholder { display: grid; gap: .6em; width: 100%; min-width: 0; }
 .placeholder-bar { display: block; width: 100%; height: .8em; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--surface-highest) 0 40%, var(--surface-high) 50%, var(--surface-highest) 60% 100%) 100% 0 / 250% 100%; animation: placeholder-sheen calc(var(--motion-working) * 1.5) var(--ease-in-out) infinite; }
@@ -108,7 +108,7 @@
 .tone-primary { --tone-container: var(--primary-container); --tone-on: var(--on-primary-container); }
 .tone-warning { --tone-container: var(--warning-container); --tone-on: var(--on-warning-container); }
 .tone-error { --tone-container: var(--error-container); --tone-on: var(--on-error-container); }
-/* State pill (Material's assist chip at rest): where a thing stands, on its tone, led by its kind's icon.
+/* State pill: where a thing stands, on its tone, led by its kind's icon.
    Where it is narrower than its words they wrap inside it, and its corners stay those of one line. */
 .state-pill { display: inline-flex; align-items: baseline; gap: var(--space-1); max-width: 100%; overflow: clip; padding: var(--space-hair) .6em; border-radius: calc(.5lh + var(--space-hair)); background: var(--tone-container); color: var(--tone-on); font: var(--type-label-md); transition: background-color var(--motion-arrive) var(--ease-out), color var(--motion-arrive) var(--ease-out); }
 .state-pill > .icon { align-self: center; width: 14px; height: 14px; }
@@ -119,7 +119,7 @@
 .working-dots { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 1lh; }
 .working-dots > .live-dot:nth-child(2) { animation-delay: calc(var(--motion-working) / 6); }
 .working-dots > .live-dot:nth-child(3) { animation-delay: calc(var(--motion-working) / 3); }
-/* Running work, after the React app's working presence: the mark beside the verb, and under it the step under way. */
+/* Running work: the mark beside the verb, and under it the step under way. */
 .working-presence { display: flex; align-items: center; gap: var(--space-2); color: var(--body); font: var(--type-body-md); }
 .working-presence.is-compact { font: var(--type-body-sm); }
 .working-presence-verb { min-width: 0; }
@@ -130,7 +130,7 @@
   .row-frame { transition: none; }
   .pending-status { animation-duration: 0s; }
 }
-/* Buttons, after the React physician app's controls (Material's button family): the one filled action, a white one on a
+/* Buttons: the one filled action, a white one on a
    hairline, and text alone. A host places a control through its own class; it never restyles one. A surface may set the
    control's component tokens (width, height, shape, quiet colour) once at its root, as Duet does. */
 .control { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); width: var(--control-width, fit-content); min-width: var(--target); min-height: var(--control-min-height, var(--control-height)); padding: var(--space-1) var(--space-4); border: var(--hairline) solid transparent; border-radius: var(--control-radius, var(--radius-pill)); cursor: pointer; font: var(--type-label-lg); text-decoration: none; white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out), opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
@@ -158,7 +158,7 @@
 .control-icon.control-compact { width: var(--control-compact-height); height: var(--control-compact-height); min-width: var(--control-compact-height); min-height: var(--control-compact-height); }
 .control:active:not(:disabled) { transform: scale(.98); }
 .control:disabled { cursor: default; opacity: .46; transform: none; }
-/* A row that opens something, after the React app's NavigationRow: no chrome of its own, the shared state layer, and a
+/* A row that opens something: no chrome of its own, the shared state layer, and a
    focus ring drawn inward, since the list or card that holds it clips what stands outside. Its host lays it out. */
 :where(.navigation-row) { position: relative; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; font: inherit; -webkit-tap-highlight-color: transparent; --focus-ring-offset: calc(-1 * var(--focus-ring-width)); }
 /* State layer: an overlay of the element's own text colour, so a filled control lightens, a quiet one greys and a row
@@ -179,7 +179,7 @@
 }
 @keyframes focus-ring-grow { from { outline-width: 0; } to { outline-width: var(--focus-ring-active-width); } }
 @keyframes focus-ring-settle { from { outline-width: var(--focus-ring-active-width); } }
-/* The one text field, after the React app's (text-field/outlined): its outline carries focus, turning primary and
+/* The one text field: its outline carries focus, turning primary and
    doubling; the words inside draw no ring of their own. The class goes on the input itself, or on the box that holds one,
    as a composer does; its host gives it its shape and place. A field may rest raised (--field-elevation), as a composer
    does, or on a quieter outline (--field-outline). */
@@ -197,7 +197,7 @@
 .field:focus-within { border-color: var(--primary); box-shadow: inset 0 0 0 var(--hairline) var(--primary), var(--field-elevation, 0 0 transparent); }
 :is(.field input, .field textarea, :is(input, textarea, select).field):focus-visible { outline: 0; animation: none; }
 :is(.field, .field *)::placeholder { color: var(--muted); opacity: 1; }
-/* The search field, after the React app's patient search: the mark muted until the field has focus, the words on body
+/* The search field: the mark muted until the field has focus, the words on body
    large, and the field's own clear in place of the browser's. */
 .search-field { display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-1) 0 var(--space-3); color: var(--muted); }
 .search-field:focus-within { color: var(--ink); }
@@ -208,9 +208,9 @@
 .text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
 :where(input, textarea).text-field-input { padding: var(--space-3); }
 textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
-/* A thread's messages, after the React app's conversation and the October 21 design review: the person's words in a
+/* A thread's messages: the person's words in a
    light bubble at the far edge, the assistant's as plain prose. A message rises in as it appears, the person's on the
-   send spring from below, a reply on the arrival spring, as Duet's native thread moves. */
+   send spring from below, a reply on the arrival spring. */
 .message { box-sizing: border-box; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); overflow-wrap: anywhere;
   transition: opacity var(--motion-arrive) var(--ease-out), transform var(--spring-arrive); }
 .message > p { margin: 0; }
@@ -222,7 +222,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
   .message { opacity: 0; transform: translateY(var(--rise-small)); }
   .message-person { transform: translateY(var(--rise)); }
 }
-/* The composer, after the React app's: the one raised text field, holding the words and, under them, a toolbar of the
+/* The composer: the one raised text field, holding the words and, under them, a toolbar of the
    host's context and actions at its far edge. The words grow with what is written, up to seven lines, then scroll. */
 .composer { --field-elevation: var(--elevation-2); --composer-inset: var(--space-2); display: grid; gap: var(--space-1); min-width: 0;
   width: 100%; margin: 0; padding: var(--composer-inset); border-radius: var(--radius-field); }
@@ -231,7 +231,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
   background: transparent; color: var(--ink); font: var(--type-body-lg); }
 .composer-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2);
   min-height: var(--control-height); }
-/* Inline (the October 21 Duet mockups): the words and the actions share one row, the actions at the words' last line;
+/* Inline: the words and the actions share one row, the actions at the words' last line;
    what the person brought in still sits above both. */
 .composer.is-inline { --composer-inset: var(--space-1); grid-template-columns: minmax(0, 1fr) auto; align-items: end;
   column-gap: var(--space-1); }
@@ -240,13 +240,13 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 .composer.is-inline > .composer-toolbar { flex-wrap: nowrap; min-height: 0; }
 /* What is happening leads the toolbar, muted and small; the actions keep the far edge. */
 .composer-context { display: flex; flex: 1 1 11em; align-items: center; flex-wrap: wrap; gap: var(--space-1) var(--space-3); min-width: 0; margin-inline-end: auto; padding-inline: var(--space-2); color: var(--muted); font: var(--type-body-sm); }
-/* A draft saved elsewhere, after the React app's: under a hairline, what happened, the saved words as written, then the
+/* A draft saved elsewhere: under a hairline, what happened, the saved words as written, then the
    choice. */
 .draft-conflict { margin: var(--space-2); padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); }
 .draft-conflict p { margin: 0 0 var(--space-2); font: var(--type-body-sm); }
 .draft-conflict-label { color: var(--muted); font-weight: var(--weight-strong); }
 .draft-conflict pre { max-height: 8lh; margin: 0 0 var(--space-3); overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); font: var(--type-body-lg); }
-/* A disclosure, after the React app's: the title is the toggle, its chevron turning as the section opens; the content
+/* A disclosure: the title is the toggle, its chevron turning as the section opens; the content
    grows open and shut and stays mounted, out of reach while closed. A detail is a quiet line. */
 .disclosure { min-width: 0; }
 .disclosure-heading { margin: 0; font: inherit; }
@@ -265,7 +265,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 .disclosure.is-detail .disclosure-toggle { justify-content: flex-start; gap: var(--space-2); }
 .disclosure.is-detail .disclosure-toggle strong { color: var(--muted); font: var(--type-body-sm); }
 .disclosure.is-detail .disclosure-body { padding-top: 0; }
-/* Dialogs, after the React app's transient dialogs: the lowest surface at level 5 over the scrim, near the top of the
+/* Dialogs: the lowest surface at level 5 over the scrim, near the top of the
    window at the dialog width, the title heading the content with Close beside it. A dialog rises in as it opens and
    settles out, shorter than it came; the host hears it close once it has. */
 .dialog { box-sizing: border-box; width: min(var(--dialog-width), calc(100% - 2 * var(--page-gutter))); max-width: none;
@@ -288,7 +288,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 @keyframes dialog-exit { from { opacity: 1; transform: none; }
   to { opacity: var(--dialog-exit-opacity, 0); transform: var(--dialog-exit-transform, translateY(var(--rise)) scale(.99)); } }
 @keyframes backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
-/* A sheet, after the October 21 design review: the same dialog along the bottom edge, full width up to the dialog
+/* A sheet: the same dialog along the bottom edge, full width up to the dialog
    width, its top corners rounded. It slides up from the edge on the step spring and back down, staying opaque. */
 .dialog-sheet { --dialog-exit-opacity: 1; --dialog-exit-transform: translateY(100%); width: min(var(--dialog-width), 100%);
   max-height: calc(100dvh - var(--dialog-margin)); margin: auto auto 0; border-radius: var(--radius-xl) var(--radius-xl) 0 0;
@@ -314,7 +314,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
   .citation-preview, .source-reading-pane) { animation-duration: 0s !important; animation-delay: 0s !important; }
 :root[data-interaction="keyboard"] :is(.dialog.is-closing, .source-reading-layout.is-source-closing .source-reading-pane),
 :root[data-interaction="keyboard"] .dialog.is-closing::backdrop { animation-duration: 1ms !important; }
-/* Sources, after the React app's source triggers: a citation is a small numbered pill in the prose and the Sources
+/* Sources: a citation is a small numbered pill in the prose and the Sources
    control a compact pill under the message, both in the primary container. */
 .source-trigger { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
   border: var(--hairline) solid var(--primary-outline); border-radius: var(--radius-pill); background: var(--primary-container);
@@ -352,7 +352,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
 .tabs.has-icons button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 52px; font: var(--type-label-sm); }
 .tabs.has-icons .icon { width: 24px; height: 24px; }
-/* Prose, after the React app's clinical text: body large, a step between paragraphs, headings on the title roles, and
+/* Prose: body large, a step between paragraphs, headings on the title roles, and
    tables that scroll on their own. Only the Markdown's own elements take prose styles, never a host's inline piece. */
 .prose { width: 100%; min-width: 0; color: var(--body); font: var(--type-body-lg); overflow-wrap: anywhere; }
 .prose > :first-child { margin-top: 0; }
@@ -378,7 +378,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose :is(th, td):where([data-prose]) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
 .prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
 .prose-image { color: var(--muted); font: var(--type-body-sm); font-style: italic; }
-/* Duet's theme, after the October 21 design review: prose and the conversation at body large, each action a full-width
+/* Duet's theme: prose and the conversation at body large, each action a full-width
    bar, quiet actions and links in green at the touch target's height, cards on a hairline rather than a shadow, and the
    person's bubble tailed toward them. A host sets it on its root. */
 .theme-duet {
@@ -405,7 +405,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   :is(.state-pill, .avatar) { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
   :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
 }
-/* Measurements and charts, after the October 21 mockups. A value's units read in body text beside its figures. */
+/* Measurements and charts. A value's units read in body text beside its figures. */
 .value { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .3em; color: var(--ink); font: var(--type-value-md); letter-spacing: var(--title-tracking); font-variant-numeric: tabular-nums; }
 .value-lg { font: var(--type-value-lg); }
 .value-unit { margin-inline-start: .15em; font: var(--type-body-md); letter-spacing: 0; }
@@ -420,7 +420,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .sparkline svg { display: block; width: 100%; height: 100%; overflow: visible; animation: chart-reveal var(--motion-step) var(--ease-out) both; }
 .chart-line { fill: none; stroke: var(--data); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
 .chart-point { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--data); animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; }
-/* A series across its buckets, after SwiftUI Duet's days and detail charts: the plot, its value axis on the trailing
+/* A series across its buckets: the plot, its value axis on the trailing
    edge in quiet caption figures, and each bucket's word beneath. A bucket is a column; its bar stands in the middle,
    narrow for a week and three-fifths of its column beyond. */
 .series-chart { --series-height: 132px; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-2);
@@ -447,7 +447,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .series-reference { position: absolute; inset-inline: 0; height: 1.5px; translate: 0 50%;
   background: repeating-linear-gradient(90deg, var(--data-reference) 0 4px, transparent 4px 7px); }
 .series-reference-word { position: absolute; bottom: calc(100% + 2px); left: 0; color: var(--data-reference); font: var(--type-label-sm); }
-/* A running total, after SwiftUI Duet's day chart: dashed marks across the span, the usual total's dashed curve over its
+/* A running total: dashed marks across the span, the usual total's dashed curve over its
    wash, the total's line a touch heavier, and its end named above its dot. Each mark's word starts at its mark. */
 .series-mark { position: absolute; top: 0; bottom: 0; width: 0; border-left: var(--hairline) dashed var(--outline-variant); }
 .series-wash { fill: var(--data-wash); stroke: none; }
@@ -474,7 +474,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .series-axis { grid-area: 2 / 1; display: grid; grid-template-columns: repeat(var(--series-count), minmax(0, 1fr)); padding-top: var(--space-1); text-align: center; white-space: nowrap; }
 /* A week's letters stand centred under their days; beyond a week, each word starts at its bucket. */
 .series-chart:not(.is-narrow) .series-axis { text-align: start; }
-/* A series' readout, after SwiftUI Duet's detail header: the label in caption weight (the accent's words while a mark is
+/* A series' readout: the label in caption weight (the accent's words while a mark is
    pinned), the figure, and its span in caption, each holding one line even while it is empty; paging at the trailing edge. */
 .chart-header { display: flex; align-items: flex-start; gap: var(--space-2); }
 .chart-readout { display: grid; gap: var(--space-hair); flex: 1; min-width: 0; }
@@ -505,7 +505,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 @keyframes chart-grow { from { transform: scaleX(0); } }
 @keyframes chart-reveal { from { clip-path: inset(-8px 100% -8px -8px); } to { clip-path: inset(-8px -8px -8px -8px); } }
 @keyframes chart-point { from { opacity: 0; transform: scale(.4); } }
-/* A card holding one object, after the October 21 mockups: what it holds, its title, its content and its source. */
+/* A card holding one object: what it holds, its title, its content and its source. */
 .card-object { display: grid; gap: var(--space-4); padding: var(--space-5); border: var(--hairline) solid var(--outline-variant); box-shadow: none; }
 .card-object.is-tinted { background: var(--data-container); }
 .card-lead { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
@@ -540,7 +540,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .quote::after { content: close-quote; }
 .later-context { display: grid; gap: var(--space-2); padding: var(--space-4); border-inline-start: var(--stroke) solid var(--outline); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--data-container); }
 .later-context .quote { font: var(--type-body-md); }
-/* The conversation's frame, after the October 21 mockups. */
+/* The conversation's frame. */
 .date-separator { margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); text-align: center; }
 .context-chip { display: flex; align-items: center; gap: var(--space-2); margin: calc(-1 * var(--composer-inset, var(--space-2))) calc(-1 * var(--composer-inset, var(--space-2))) 0; padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
   border-bottom: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-field) var(--radius-field) 0 0; background: var(--data-container); color: var(--on-data-container); font: var(--type-body-sm); }
@@ -548,7 +548,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .context-chip-remove { display: inline-grid; place-items: center; flex: none; width: var(--target); height: var(--target); margin-block: calc(-1 * var(--space-2)); border: 0; border-radius: var(--radius-pill); background: transparent; color: inherit; cursor: pointer; }
 .suggestion { align-self: flex-start; max-width: 94%; min-height: var(--target); padding: var(--space-3) var(--space-4); border: var(--hairline) solid var(--outline-variant);
   border-radius: var(--radius-lg); background: var(--surface-low); color: var(--body); font: var(--type-body-sm); }
-/* Pages, forms and their frame, after the October 21 mockups. */
+/* Pages, forms and their frame. */
 .top-bar { position: relative; display: flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 calc(var(--target) + var(--space-5));
   border-bottom: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); }
 .top-bar-title { display: flex; align-items: center; gap: var(--space-2); min-width: 0; margin: 0; color: var(--ink); font: var(--type-title-sm); text-align: center; }
@@ -599,7 +599,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .footer-note { margin: 0; color: var(--muted); font: var(--type-body-sm); text-align: center; }
 /* A sheet's handle: where it can be held. */
 .dialog-sheet::before { content: ""; display: block; width: 38px; height: 4px; margin: var(--space-2) auto 0; border-radius: var(--radius-pill); background: var(--outline); }
-/* Waiting on the person's own action: the spinner turns in the control's icon's place (React's Spinner). A control
+/* Waiting on the person's own action: the spinner turns in the control's icon's place. A control
    without an icon keeps its geometry and says it is busy. Busy is not unavailable, so it keeps full strength. */
 .control[aria-busy="true"] { opacity: 1; }
 .spinner-track { opacity: .22; }
@@ -608,13 +608,13 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .control[aria-busy="true"] > .icon:not(.spinner) { display: none; }
 .control[aria-busy="true"]:not(:has(> .icon:not(.spinner))) > .spinner { display: none; }
 @keyframes spinner-turn { to { transform: rotate(1turn); } }
-/* The conversation's scrolling region and its one way back to the newest reply (React's conversation viewport). */
+/* The conversation's scrolling region and its one way back to the newest reply. */
 .conversation-viewport { position: relative; display: grid; min-height: 0; }
 .conversation-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 .jump-to-latest { position: absolute; right: var(--space-row); bottom: var(--space-row); box-shadow: var(--elevation-3);
   transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .jump-to-latest { opacity: 0; transform: translateY(var(--rise)) scale(.98); } }
-/* Feedback (React's FeedbackControl): the rating pair, and reasons as toggle chips. */
+/* Feedback: the rating pair, and reasons as toggle chips. */
 .feedback-rating { display: inline-flex; gap: var(--space-hair); transition: opacity var(--motion-control) var(--ease-out); }
 @media (hover: hover) {
   .feedback-rating { opacity: 0; pointer-events: none; }
@@ -623,7 +623,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .feedback-rating .control[aria-pressed="true"] { color: var(--primary); background: var(--primary-container); }
 .toggle-chip { border-radius: var(--radius-pill); font-weight: var(--weight-regular); white-space: normal; text-align: left; }
 .toggle-chip[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-container); }
-/* The one undo notice (React's stage notice): a surface at the overlay's depth, words then Undo, floating at the foot
+/* The one undo notice: a surface at the overlay's depth, words then Undo, floating at the foot
    of the window so it never moves what is being read. It settles back the way it came, shorter than it arrived. */
 .undo-notice { position: fixed; z-index: 10; inset-inline: 0; bottom: max(var(--space-6), env(safe-area-inset-bottom)); display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3);
   box-sizing: border-box; width: fit-content; max-width: calc(100% - 2 * var(--page-gutter)); min-height: var(--target); margin: 0 auto;
@@ -631,7 +631,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   color: var(--body); font: var(--type-body-md); transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .undo-notice { opacity: 0; transform: translateY(var(--rise)); } }
 .undo-notice.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
-/* Reading a cited source (React's citation preview and source reading layout). The preview sits at the overlay's
+/* Reading a cited source. The preview sits at the overlay's
    depth beside its citation, on the side with more room, and never covers it; the component places it. */
 .anchored-popover { display: inline; }
 .citation-chip[aria-expanded="true"] { border-color: var(--primary); background: var(--highlight); }

@@ -32,7 +32,7 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 
 | Owner | What to inspect |
 | --- | --- |
-| [`ui`](/crates/ui/src/lib.rs) | The stylesheet each app root draws, shared tokens (light and dark: one type scale, colour roles including data, space, shape and motion with springs), icons, buttons with their busy spinner, navigation links, list rows and row groups, section headers, screen headings, the top bar, the text field, the search field and the labelled field, selection and setting rows, the dialog and the sheet that drags away, the disclosure, the composer with its context chip, status and notices, the key hint, the draft conflict choice, messages, prose (Markdown with inline citations), the conversation viewport with Jump to new response, feedback ratings and toggle chips, the undo notice, the date separator, suggestions, the working mark and working presence, citations with their source preview (or muted, when unavailable), a source's words with its cited passages marked, the source reading pane and the Sources control, cards with overlines that open their object or lead back to where it came from, plan steps, quotes and later context, measurement values, comparison bars, sparklines, series charts (bars or a line across their buckets, with what they are compared with and a mark to pin), a running total against its usual pace, a series' readout with its paging, the choice of span, and measurement tiles, the document page, a proposed update to review, notices, tags, footer actions, state pills, the status line, avatars, placeholders shaped like what loads (a line, list items, rows or reading), the empty line and empty state, Try again, counts that change quietly, list rows that open and close in place as they join or leave and rise lifted when their list moves them up, a selection that is one fill sliding to the item chosen, motion that simply arrives under reduced motion or a keyboard, and tabs. It is design only: each app owns when a piece shows, what it does, its words and its screens' layout |
+| [`ui`](/crates/ui/src/lib.rs) | The design both apps draw: shared tokens in light and dark (type, colour, space, shape, motion), icons, and each component's look, motion, gestures, states and accessibility, with no product rules. The [gallery](#seeing-the-shared-components) shows every component |
 | [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs removal of person-to-person sharing |
 | [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens; the old join gate is disabled, while the retained sharing toggle still conflicts with fixed consent |
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
@@ -42,11 +42,10 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 
 [`ui-gallery`](/crates/ui-gallery/src/main.rs) renders every `ui` component with
 the shared stylesheet, apart from either app: the type and colour roles first, then
-each pattern from the October 21 mockups. The library is the ideal state the rebuilt
-physician web app and Duet on iOS and Android build from; a mockup's raw values are
-mapped onto the shared roles rather than added as another palette. Its examples are
-fictional and scripted, and nothing in it is product behavior. Each app restyles some components, so check
-a change in the app it serves as well. To build and serve it:
+each component. The library runs ahead of both apps: the physician web app and Duet
+on the web, iOS and Android are built from it, and it adds no palette beyond the
+shared roles. An app places a component through its own class and never restyles it.
+Its examples are fictional and scripted, and nothing in it is product behavior. To build and serve it:
 
 ```sh
 cargo build -p ui-gallery --target wasm32-unknown-unknown --features web
@@ -60,7 +59,7 @@ remounts the sections so their entry motion runs again.
 
 The assistant-ui study in the corpus is a conversation-pattern reference. No
 React library adoption is implied for the Rust/Dioxus client. Source snapshots
-and the October 21 review describe their stated revisions; verify the current
+describe their stated revisions; verify the current
 owner before turning an observation into implementation work.
 
 [Release](release.md) owns platform checks. A rendered screen or sample fixture

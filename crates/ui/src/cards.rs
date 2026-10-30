@@ -1,4 +1,4 @@
-//! Cards that hold one object, after the October 21 Duet mockups: an observation and its evidence,
+//! Cards that hold one object: an observation and its evidence,
 //! a piece of saved work, an original record and the person's later context. A card names what it
 //! holds, then shows it.
 

@@ -1,4 +1,4 @@
-//! Pages, forms and their frame, after the October 21 Duet mockups: the bar atop a pushed screen,
+//! Pages, forms and their frame: the bar atop a pushed screen,
 //! a document page, choices and settings as rows, the notices that
 //! say what actually happened, small tags, and the actions pinned to a screen's foot.
 

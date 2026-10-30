@@ -50,7 +50,7 @@ const STYLESHEET: &str = concat!(
     include_str!("../assets/components.css"),
 );
 
-/// A screen's heading, after the October 21 mockups: its title, what the screen belongs to on the
+/// A screen's heading: its title, what the screen belongs to on the
 /// line above (the day, a collection), and its state or source on the line beneath. A record's
 /// heading leads with its icon. A screen with no top bar sets its own `actions` above the title,
 /// at the trailing edge.
@@ -94,14 +94,14 @@ pub fn Overline(text: String) -> Element {
     rsx! { p { class: "overline", "{text}" } }
 }
 
-/// An empty section, after SwiftUI Duet's `DuetEmptyLine`: one plain line, with no box or mark.
+/// An empty section: one plain line, with no box or mark.
 /// What comes next on the screen carries the action.
 #[component]
 pub fn EmptyLine(message: String) -> Element {
     rsx! { p { class: "empty", "{message}" } }
 }
 
-/// An empty or caught-up place, after SwiftUI Duet's `DuetEmptyState`: its mark, one line, what to
+/// An empty or caught-up place: its mark, one line, what to
 /// know, and up to two quiet ways on, centred. The second is the quieter way out when the first
 /// may never succeed.
 #[component]
@@ -145,7 +145,7 @@ pub fn EmptyState(
     }
 }
 
-/// The one status line, after the React app's `StatusLine`: what failed or what is under way, in
+/// The one status line: what failed or what is under way, in
 /// one muted line, with the one Try again under the words after a failure. While pending it draws
 /// the shape of what is coming, after the shared delay so a fast read never flashes, and keeps its
 /// words for assistive technology. A failure the person was waiting on announces itself.
@@ -211,7 +211,7 @@ pub enum PlaceholderShape {
     Reading,
 }
 
-/// What is loading, drawn as its shape (Material's skeleton): bars in the text's own measure with
+/// What is loading, drawn as its shape: bars in the text's own measure with
 /// a slow sheen passing over them. Decoration only; the host's words stay with assistive
 /// technology.
 #[component]
@@ -289,7 +289,7 @@ pub fn LiveDot() -> Element {
     rsx! { span { class: "live-dot", aria_hidden: "true" } }
 }
 
-/// The one working mark, after the React app's `WorkingMark`: three live dots lighting in turn,
+/// The one working mark: three live dots lighting in turn,
 /// shown only while work actually runs. Duet's typing indicator is this mark in a reply's place.
 /// The words beside it, or the host's status, say what runs.
 #[component]
@@ -303,7 +303,7 @@ pub fn WorkingMark() -> Element {
     }
 }
 
-/// Running work, after the React app's `WorkingPresence`: the working mark beside the verb that
+/// Running work: the working mark beside the verb that
 /// says what runs, and under it, while there is one, the step under way. It announces itself
 /// unless the host says it shouldn't.
 #[component]
@@ -333,7 +333,7 @@ pub fn WorkingPresence(
     }
 }
 
-/// A count that changes quietly, after the React app's `Count` (Dev, 2026-10-03): the number and
+/// A count that changes quietly: the number and
 /// its words fade into a new value together, once, so they never move apart. The first value is
 /// simply there.
 #[component]
@@ -359,7 +359,7 @@ pub fn Count(value: usize, #[props(default)] words: String) -> Element {
     }
 }
 
-/// A key that does what the control does, after the React app's key hint: shown beside the
+/// A key that does what the control does, shown beside the
 /// control's words where there is a keyboard, hidden from assistive technology, which hears the
 /// control's own shortcut.
 #[component]
@@ -367,7 +367,7 @@ pub fn KeyHint(key_label: String) -> Element {
     rsx! { kbd { class: "key-hint", aria_hidden: "true", "{key_label}" } }
 }
 
-/// A draft saved elsewhere from the same revision, after the React app's `DraftConflictChoice`:
+/// A draft saved elsewhere from the same revision:
 /// what happened, the saved draft's words as written, and then the host's way to choose.
 #[component]
 pub fn DraftConflict(
@@ -393,7 +393,7 @@ pub fn DraftConflict(
     }
 }
 
-/// Waiting on an action the person took, after the React app's `Spinner`: a turning ring where the
+/// Waiting on an action the person took: a turning ring where the
 /// control's icon was, at icon size. Running work keeps the working mark; content still loading
 /// keeps its placeholder.
 #[component]
@@ -425,7 +425,7 @@ pub enum AvatarSize {
     Large,
 }
 
-/// A person's initials in a circle, after the React app's `PatientAvatar`. Decoration only: the
+/// A person's initials in a circle. Decoration only: the
 /// person's name belongs to the words beside it.
 #[component]
 pub fn Avatar(name: String, #[props(default)] size: AvatarSize) -> Element {
@@ -447,7 +447,7 @@ fn initials(name: &str) -> String {
 }
 
 /// A leading icon on its tile: neutral on a hairline, as a card header or a record's heading leads,
-/// or `tinted` in the data colour, as a row leads (the October 21 mockups).
+/// or `tinted` in the data colour, as a row leads.
 #[component]
 pub fn IconTile(name: IconName, #[props(default)] tinted: bool) -> Element {
     rsx! {
@@ -467,7 +467,7 @@ pub enum ButtonVariant {
     Quiet,
 }
 
-/// A command, after the React physician app's `Control`: one shape, a variant, and the shared
+/// A command: one shape, a variant, and the shared
 /// hover, press, focus and touch target. A host class places it; it never restyles it.
 #[component]
 pub fn Button(
@@ -539,7 +539,7 @@ pub fn Button(
     }
 }
 
-/// In-place navigation, after the React app's `NavigationControl`: a quiet link, separate from
+/// In-place navigation: a quiet link, separate from
 /// commands, that opens another place or goes back. It reads in body text and underlines on hover;
 /// a surface may colour it once at its root (`--navigation-color`), as Duet does.
 #[component]
@@ -567,7 +567,7 @@ pub fn NavigationControl(
     }
 }
 
-/// A row that opens something, after the React app's `NavigationRow`: the whole row is one button
+/// A row that opens something: the whole row is one button
 /// with the shared state layer and an inward focus ring. The host's class lays the row out.
 #[component]
 pub fn NavigationRow(
@@ -601,7 +601,7 @@ pub enum Author {
     Assistant,
 }
 
-/// One message in a thread, after the React app's conversation and the October 21 design review:
+/// One message in a thread:
 /// the person's words in a light bubble at the far edge, the assistant's as plain prose. Who
 /// wrote it stays with assistive technology. A message rises in as it appears.
 #[component]
@@ -628,7 +628,7 @@ pub fn Message(
     }
 }
 
-/// A field with its label above it, after the October 21 mockups' page editor: one line, or with
+/// A field with its label above it: one line, or with
 /// `multiline` words that grow with what is written. The host owns its value and hears each
 /// change.
 #[component]
@@ -662,7 +662,7 @@ pub fn TextField(
     }
 }
 
-/// The one search field, after the React app's patient search: the search mark, then the words on
+/// The one search field: the search mark, then the words on
 /// body large, and, while there are words, the field's own clear in place of the browser's, which
 /// empties the field and keeps focus in it. Its name and words are the host's; so are its keys.
 #[component]
@@ -730,10 +730,10 @@ pub fn SearchField(
     }
 }
 
-/// The composer, after the React app's: the one raised text field, holding the words and, under
+/// The composer: the one raised text field, holding the words and, under
 /// them, a toolbar of the host's context and actions; a host's submit control sends. `inline`
-/// puts the actions beside the words instead, at their last line, as the October 21 Duet mockups
-/// do. The words grow with what is written, up to seven lines. Keys stay the host's.
+/// puts the actions beside the words instead, at their last line.
+/// The words grow with what is written, up to seven lines. Keys stay the host's.
 #[component]
 pub fn Composer(
     /// The words' accessible name.
@@ -815,7 +815,7 @@ fn submitted_text(field: Option<&str>, value: &str) -> String {
 
 static DISCLOSURES: AtomicUsize = AtomicUsize::new(0);
 
-/// A section that opens in place, after the React app's `ProductDisclosure`: its title is one
+/// A section that opens in place: its title is one
 /// toggle with a chevron, and its content stays mounted, out of reach while closed, growing open
 /// and shut. A detail reads as a quiet line rather than a section's title.
 #[component]
@@ -867,11 +867,10 @@ pub fn Disclosure(
 static DIALOGS: AtomicUsize = AtomicUsize::new(0);
 
 /// A sheet follows the finger or pointer down from its handle, its header, or its content once
-/// that is scrolled to the top, after the native sheets SwiftUI Duet presents. Pulled up, it
-/// resists, rubber-banding as iOS does. Let go, it is projected where the flick would carry it, as
-/// UIScrollView decelerates: past half its height it goes, otherwise it springs back. Either way
-/// the release carries the flick's speed into the step spring (`--spring-step`: SwiftUI's smooth
-/// spring, response 0.35, critically damped). Without motion it lands at once. A drag that began on
+/// that is scrolled to the top. Pulled up, it resists, rubber-banding as iOS does. Let go, it is
+/// projected where the flick would carry it, decelerating as a native scroll view does: past half its height it goes, otherwise it springs back. Either way
+/// the release carries the flick's speed into the step spring (`--spring-step`: a smooth spring,
+/// response 0.35, critically damped). Without motion it lands at once. A drag that began on
 /// a control doesn't also press it. `{dialog}` is the sheet's id.
 const SHEET_DRAG: &str = "
 const sheet = document.getElementById('{dialog}');
@@ -959,12 +958,12 @@ if (sheet && body) {
 }
 ";
 
-/// A modal dialog, after the React app's `TransientDialog` and `DialogHeader`: it opens over the
+/// A modal dialog: it opens over the
 /// scrim with focus inside it, its title heading the content with Close beside it. Escape, the
 /// scrim and its close button (named by `close_label`) dismiss it; it settles out before the host
 /// hears `on_close`. Focus lands on
 /// what the content marks `autofocus`, else the title. The host's class sizes it. A sheet is the
-/// same dialog along the bottom edge, after the October 21 design review, and one sheet can
+/// same dialog along the bottom edge, and one sheet can
 /// open over another.
 #[component]
 pub fn Dialog(
@@ -1055,7 +1054,7 @@ pub fn Dialog(
     }
 }
 
-/// A citation in prose, after the React app's citation chip: its number in a small pill. It opens
+/// A citation in prose: its number in a small pill. It opens
 /// its source when the host can; otherwise it stays a mark. `label` names the source for
 /// assistive technology. A citation whose source can't be shown is muted, with `unavailable`'s
 /// words after its number.
@@ -1090,8 +1089,7 @@ pub fn CitationChip(
     }
 }
 
-/// The one Sources control under a message, after the React app's sources index and the SwiftUI
-/// Sources pill: a compact pill with its words and how many sources the message has.
+/// The one Sources control under a message: a compact pill with its words and how many sources the message has.
 #[component]
 pub fn SourcesButton(
     label: String,
@@ -1117,7 +1115,7 @@ pub fn SourcesButton(
 
 /// One row in a list of rows: an optional icon on its tile, a number or a person's avatar, the row's name, an
 /// optional detail beneath it, and a chevron, with the whole row one button. Rows group once, a
-/// hairline between them, rather than a card around each (the October 21 mockups).
+/// hairline between them, rather than a card around each.
 #[component]
 pub fn ListRow(
     #[props(default)] icon: Option<IconName>,

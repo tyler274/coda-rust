@@ -1,4 +1,4 @@
-//! The one undo notice, after the React app's `UndoNotice`: what just happened and its undo action,
+//! The one undo notice: what just happened and its undo action,
 //! floating at one layer over the page so it never moves what is being read.
 
 use std::time::Duration;

@@ -1,7 +1,6 @@
-//! The crate's look and the motion its stylesheet cannot express alone, after the React app's
-//! `motion.ts`: script-driven motion runs on the stylesheet's own roles, and none of it runs under
-//! reduced motion or keyboard-driven interaction, where the same end state simply arrives (Dev,
-//! 2026-09-29/30). A list's selection is one fill that slides to the item chosen and otherwise stays
+//! The crate's look and the motion its stylesheet cannot express alone: script-driven motion runs
+//! on the stylesheet's own roles, and none of it runs under reduced motion or keyboard-driven
+//! interaction, where the same end state simply arrives. A list's selection is one fill that slides to the item chosen and otherwise stays
 //! anchored to it.
 
 use dioxus::prelude::*;

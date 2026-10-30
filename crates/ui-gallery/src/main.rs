@@ -80,7 +80,7 @@ fn Gallery() -> Element {
                 Section { title: "Colour", note: "Roles in pairs, a fill and what reads on it. Hosts read roles, never tones; dark mode swaps the tones beneath.",
                     ColourDemo {}
                 }
-                Section { title: "Icons", note: "One stroke set in the text's colour: the React app's icons, then Duet's own from the October 21 mockups.",
+                Section { title: "Icons", note: "One stroke set in the text's colour, each icon named for what it shows.",
                     IconDemo {}
                 }
                 Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. One can open as a whole, or lead on from its footer.",
@@ -927,7 +927,7 @@ fn SeriesDemo() -> Element {
 #[cfg(feature = "web")]
 #[component]
 fn RunningDemo() -> Element {
-    // The usual running total at each hour's start, and today's to 2 PM (SwiftUI's sample day).
+    // The usual running total at each hour's start, and today's to 2 PM.
     let usual = [
         0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 150.0, 600.0, 1400.0, 2200.0, 2900.0, 3500.0, 4300.0, 5000.0,
         5600.0, 6200.0, 6900.0, 7500.0, 8100.0, 8600.0, 8900.0, 9100.0, 9200.0, 9250.0, 9300.0,
@@ -1238,7 +1238,7 @@ fn ButtonDemo() -> Element {
     }
 }
 
-/// The prose specimen, shared with the React side-by-side.
+/// The prose specimen.
 #[cfg(feature = "web")]
 const PROSE_BEFORE: &str = "## Recorded measurements\n\nPotassium was **5.4 mmol/L** on Tuesday";
 #[cfg(feature = "web")]

@@ -1,5 +1,4 @@
-//! A live list's rows, after the React app's `ExitFrame` (Dev, 2026-10-02: whatever shows or leaves
-//! moves like liquid, never a pop). A row that joins a list already shown opens and settles from
+//! A live list's rows, which move like liquid as they show or leave, never popping. A row that joins a list already shown opens and settles from
 //! just below; a row the list drops stays where it stood, as last listed, until its frame has
 //! collapsed; a row brought back while leaving returns from where its exit reached. What a list
 //! first answers with is simply there.
@@ -134,7 +133,7 @@ pub fn use_live_rows<T: Clone + 'static>(
     }
 }
 
-/// A list the server reorders, after the React app's `useReorderMotion`: each row it keeps slides
+/// A list the server reorders: each row it keeps slides
 /// from where it stood to where it now stands, its current item carrying the selection fill. A row that rises past others is lifted while it moves, so it passes over them rather than
 /// through them. Rows that only join or leave move nothing here; their own frames open and close.
 /// The list's frames are its children, in the order of the keys sent. `{id}` is the list's id.

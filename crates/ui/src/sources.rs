@@ -1,4 +1,4 @@
-//! Reading a cited source, after the React app's citation preview and source reading layout: a
+//! Reading a cited source: a
 //! citation inspects its source in place on hover, and opens the same content beside the reader
 //! when asked. The reader is never replaced; on a narrow page the source covers it, with Back.
 
@@ -85,8 +85,8 @@ struct Placement {
     room: f64,
 }
 
-/// Places a preview of `width` beside `citation` in a window of `window` size, after the React
-/// app's anchored popover. It goes on the side with more room, chosen once per opening (`side`)
+/// Places a preview of `width` beside `citation` in a window of `window` size.
+/// It goes on the side with more room, chosen once per opening (`side`)
 /// so content that loads later never flips it, and never covers the citation: its height is
 /// held to that side instead. Above, it grows away from the citation.
 fn place(citation: PixelsRect, width: f64, window: (f64, f64), side: Option<bool>) -> Placement {
@@ -530,8 +530,8 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
 #[derive(Clone, Copy)]
 struct PassageSurface(Signal<Option<String>>);
 
-/// A source's own words with the passages cited from it marked, after the React app's source
-/// document: its line breaks kept, long words wrapping, and passages that overlap read as one
+/// A source's own words with the passages cited from it marked:
+/// its line breaks kept, long words wrapping, and passages that overlap read as one
 /// mark. The preview or pane it is read in opens at the first once laid out, and again whenever
 /// the words or their passages change, never on other renders. `passages` are byte ranges of
 /// `text`; one that isn't a range of it is left unmarked.
