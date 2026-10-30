@@ -221,15 +221,6 @@ pub fn draft_after_send(draft: &str, accepted: bool) -> String {
     }
 }
 
-/// The text a send uses. The field wins when it has something in it: on Android
-/// the controlled value can drop keystrokes while the person still sees them.
-pub fn composer_text(field: Option<&str>, signal: &str) -> String {
-    match field {
-        Some(text) if !text.trim().is_empty() => text.to_owned(),
-        _ => signal.to_owned(),
-    }
-}
-
 /// A retry of an uncertain send reuses its id while the draft is unchanged.
 /// A new or edited draft takes a fresh id.
 pub fn send_id(pending: Option<(uuid::Uuid, &str)>, text: &str, fresh: uuid::Uuid) -> uuid::Uuid {
@@ -1349,9 +1340,6 @@ mod tests {
         let draft = "How did I sleep?";
         assert_eq!(draft_after_send(draft, false), draft);
         assert_eq!(draft_after_send(draft, true), "");
-        assert_eq!(composer_text(Some("Hello"), ""), "Hello");
-        assert_eq!(composer_text(Some("  "), draft), draft);
-        assert_eq!(composer_text(None, draft), draft);
         let id = uuid::Uuid::nil();
         let fresh = uuid::Uuid::from_u128(1);
         assert_eq!(send_id(Some((id, draft)), draft, fresh), id);

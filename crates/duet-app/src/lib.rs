@@ -35,11 +35,15 @@ use roots::{
     SHARE_WITH_MY_PHYSICIAN, SHARING_ERROR, SHARING_HEADING, SHARING_OFF_DETAIL, SHARING_ON_DETAIL,
     SHARING_SAVED, SHARING_UNAVAILABLE, SHARING_UNCHECKED, STOP_SHARING, SavedItemPage,
     SharedNotice, SharedRoot, SharingRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open,
-    composer_text, conversation_root, date_line, doctor_page, doctor_plan_section,
-    draft_after_send, greeting, library_root, note_open, opens_doctor, page_with_accepted,
-    plan_page, reminder_page, send_id, shared_root, sharing_root, today_root,
+    conversation_root, date_line, doctor_page, doctor_plan_section, draft_after_send, greeting,
+    library_root, note_open, opens_doctor, page_with_accepted, plan_page, reminder_page, send_id,
+    shared_root, sharing_root, today_root,
 };
-use ui::TabBar;
+use ui::{
+    ActionRow, Author, Button, ButtonVariant, Composer, Dialog, Disclosure, Icon, IconName,
+    ListRow, Message, NavigationControl, NavigationRow, SourcesButton, TabBar, TryAgain,
+    WorkingMark,
+};
 
 const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
 
@@ -104,8 +108,8 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let needs_join = false;
     let active_bearer = joined_session().unwrap_or_else(|| bearer.clone());
     rsx! {
-        style { "{ui::STYLESHEET}{DUET_STYLES}" }
-        main { class: "duet",
+        ui::Stylesheet { app: DUET_STYLES }
+        main { class: "duet theme-duet",
             div { class: "duet-page",
                 if needs_join {
                     JoinScreen {
@@ -162,7 +166,9 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
             }
             if !needs_join {
                 TabBar {
+                    label: "Sections",
                     labels: TABS.iter().map(|label| (*label).to_owned()).collect(),
+                    icons: vec![IconName::Message, IconName::Sun, IconName::User, IconName::Users],
                     selected: tab(),
                     on_select: move |index| {
                         tab.set(index);
@@ -241,12 +247,7 @@ fn JoinScreen(
             TabHeading { name: "Duet".to_owned(), loading: use_signal(|| false) }
             if checking {
                 p { class: "status-detail", "{CONNECTING}" }
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
-                    onclick: move |_| on_retry.call(()),
-                    "{TRY_AGAIN}"
-                }
+                TryAgain { label: TRY_AGAIN, on_retry }
             }
             p { class: "status-title", "{roots::JOIN_HEADING}" }
             p { class: "status-detail", "{roots::JOIN_DETAIL}" }
@@ -258,7 +259,7 @@ fn JoinScreen(
                 },
                 p { class: "status-detail", "{roots::JOIN_EMAIL_LABEL}" }
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "email",
                     name: "email",
                     value: "{email}",
@@ -266,7 +267,7 @@ fn JoinScreen(
                 }
                 p { class: "status-detail", "{roots::JOIN_TOKEN_LABEL}" }
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "text",
                     name: "token",
                     value: "{token}",
@@ -275,16 +276,16 @@ fn JoinScreen(
                 if let Some(error) = failure() {
                     p { class: "empty", role: "alert", "{roots::join_failure_sentence(&error)}" }
                     if error == FrontDoorError::Unavailable {
-                        button {
-                            class: "duet-retry",
-                            r#type: "submit",
+                        Button {
+                            compact: true,
+                            submit: true,
                             "{roots::JOIN_RETRY}"
                         }
                     }
                 }
-                button {
-                    class: "duet-send",
-                    r#type: "submit",
+                Button {
+                    variant: ButtonVariant::Primary,
+                    submit: true,
                     disabled: submitting() || !ready,
                     "{roots::JOIN_BUTTON}"
                 }
@@ -323,18 +324,6 @@ fn TabHeading(name: String, loading: Signal<bool>) -> Element {
         div { class: "duet-heading",
             h1 { "{name}" }
             p { class: "duet-status", if waiting { "{CONNECTING}" } }
-        }
-    }
-}
-
-#[component]
-fn TryAgain(on_retry: EventHandler) -> Element {
-    rsx! {
-        button {
-            class: "duet-retry",
-            r#type: "button",
-            onclick: move |_| on_retry.call(()),
-            "{TRY_AGAIN}"
         }
     }
 }
@@ -643,6 +632,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut follow_failed = use_signal(|| false);
     let mut changing = use_signal(|| false);
     let mut opened_source = use_signal(|| None::<OpenedSource>);
+    let mut message_sources = use_signal(|| None::<Vec<ConversationSourceChip>>);
     let export_url = base_url.clone();
     let send_url = base_url.clone();
     let send_bearer = bearer.clone();
@@ -832,7 +822,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let closed = page.as_ref().and_then(closed_send);
     let page_url = send_url.clone();
     let page_bearer = send_bearer.clone();
-    let mut submit = move |text: String| {
+    let submit = move |text: String| {
         if sending() {
             return;
         }
@@ -1388,10 +1378,10 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         selection::DeviceSources { base_url: doctor_source_url.clone(), blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); open_item.set(Some(NoteOpen::Doctor)); }, on_recheck: move |_| attempt.set(attempt() + 1) }
         selection::DoctorSources { base_url: doctor_source_url, blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); open_item.set(Some(NoteOpen::Doctor)); } }
         if let Some(Err(error)) = workspace() { p { role: "alert", "For my doctor: {error}" } }
-        if doctor().is_some() && open_item().is_none() { button { onclick: move |_| open_item.set(Some(NoteOpen::Doctor)), "Open For my doctor" } }
+        if doctor().is_some() && open_item().is_none() { NavigationControl { onclick: move |_| open_item.set(Some(NoteOpen::Doctor)), "Open For my doctor" } }
         if let Some(proposal) = doctor().and_then(|c| c.proposal.flatten()) {
             if proposal_review() != Some(proposal.id) {
-                button { onclick: move |_| { proposal_review.set(Some(proposal.id)); confirmed_medications.set(Vec::new()); }, "Review proposed doctor page" }
+                Button { onclick: move |_| { proposal_review.set(Some(proposal.id)); confirmed_medications.set(Vec::new()); }, "Review proposed doctor page" }
             } else {
                 section {
                     h2 { "Proposed page — not saved" }
@@ -1414,9 +1404,11 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                             }
                         }
                     }
-                    button { onclick: move |_| proposal_review.set(None), "Close review without saving" }
-                    button { disabled: saving_page() || draft_uncertain(), onclick: reject_proposal, "Reject reviewed proposal" }
-                    button { disabled: saving_page() || draft_uncertain(), onclick: approve_proposal, "Approve and save reviewed proposal" }
+                    ActionRow {
+                        Button { variant: ButtonVariant::Primary, disabled: saving_page() || draft_uncertain(), onclick: approve_proposal, "Approve and save reviewed proposal" }
+                        Button { disabled: saving_page() || draft_uncertain(), onclick: reject_proposal, "Reject reviewed proposal" }
+                        Button { onclick: move |_| proposal_review.set(None), "Close review without saving" }
+                    }
                 }
             }
         }
@@ -1426,26 +1418,26 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             p { role: "alert", "The protected draft is damaged. It has not been overwritten. Discard it only if you no longer need it." }
         }
         if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Draft(_))) && !doctor_editing() {
-            button { onclick: move |_| restore_draft(()), "Recover unsaved doctor draft" }
+            Button { onclick: move |_| restore_draft(()), "Recover unsaved doctor draft" }
         }
         if draft_uncertain() {
-            button { disabled: saving_page(), onclick: retry_exact_save, "Retry exact original save" }
+            Button { disabled: saving_page(), onclick: retry_exact_save, "Retry exact original save" }
             p { role: "alert", "The last save may have succeeded. Your exact draft is retained. Compare it with the saved page before retrying; do not silently rebase or duplicate the save." }
-            button { onclick: move |_| attempt.set(attempt() + 1), "Reload saved page to reconcile" }
+            Button { onclick: move |_| attempt.set(attempt() + 1), "Reload saved page to reconcile" }
         }
         if !matches!(retained(), Ok(duet_client::retention::DraftRecovery::Empty)) {
-            button { disabled: saving_page(), onclick: move |_| confirm_discard.set(true), "Discard local draft…" }
+            Button { danger: true, disabled: saving_page(), onclick: move |_| confirm_discard.set(true), "Discard local draft…" }
         }
         if confirm_discard() {
             p { "Discard this unsaved local draft? This does not delete the approved server page." }
-            button { onclick: move |_| confirm_discard.set(false), "Keep draft" }
-            button { onclick: discard_draft, "Confirm discard" }
+            ActionRow {
+                Button { variant: ButtonVariant::Primary, danger: true, onclick: discard_draft, "Confirm discard" }
+                Button { onclick: move |_| confirm_discard.set(false), "Keep draft" }
+            }
         }
         if let Some(shown) = shown {
             TabHeading { name: shown.heading(), loading }
-            button {
-                class: "duet-retry",
-                r#type: "button",
+            NavigationControl {
                 aria_label: "Close page",
                 onclick: move |_| {
                     open_item.set(None);
@@ -1460,6 +1452,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     page_failed.set(false);
                     fresh_failed.set(false);
                 },
+                Icon { name: IconName::ArrowLeft }
                 "Close"
             }
             match shown {
@@ -1504,33 +1497,32 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
             }
             if !editing() && !removed_plan() && !confirm_remove() && matches!(open_item(), Some(NoteOpen::Routine(_))) {
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
-                    disabled: changing(),
-                    onclick: move |_| {
-                        let Some(NoteOpen::Routine(id)) = open_item() else {
-                            return;
-                        };
-                        let Some(routine) = routines().iter().find(|routine| routine.id == id).cloned() else {
-                            return;
-                        };
-                        plan_title.set(routine.title);
-                        plan_body.set(routine.body);
-                        plan_save_failed.set(false);
-                        editing.set(true);
-                    },
-                    "Edit plan"
-                }
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
-                    disabled: changing(),
-                    onclick: move |_| {
-                        plan_remove_failed.set(false);
-                        confirm_remove.set(true);
-                    },
-                    "Remove plan"
+                ActionRow {
+                    Button {
+                        disabled: changing(),
+                        onclick: move |_| {
+                            let Some(NoteOpen::Routine(id)) = open_item() else {
+                                return;
+                            };
+                            let Some(routine) = routines().iter().find(|routine| routine.id == id).cloned() else {
+                                return;
+                            };
+                            plan_title.set(routine.title);
+                            plan_body.set(routine.body);
+                            plan_save_failed.set(false);
+                            editing.set(true);
+                        },
+                        "Edit plan"
+                    }
+                    Button {
+                        danger: true,
+                        disabled: changing(),
+                        onclick: move |_| {
+                            plan_remove_failed.set(false);
+                            confirm_remove.set(true);
+                        },
+                        "Remove plan"
+                    }
                 }
                 if plan_remove_failed() {
                     p { class: "empty", role: "alert", "The plan couldn’t be removed. Review the current version and try again." }
@@ -1539,19 +1531,19 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             if confirm_remove() {
                 p { class: "status-title", "Remove this plan?" }
                 p { class: "status-detail", "This removes the saved plan and discards your unsaved edits. Your conversation stays in Duet." }
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
-                    disabled: changing(),
-                    onclick: move |_| confirm_remove.set(false),
-                    "Cancel"
-                }
-                button {
-                    class: "duet-send",
-                    r#type: "button",
-                    disabled: changing(),
-                    onclick: remove_plan,
-                    "Remove"
+                ActionRow {
+                    Button {
+                        variant: ButtonVariant::Primary,
+                        danger: true,
+                        disabled: changing(),
+                        onclick: remove_plan,
+                        "Remove"
+                    }
+                    Button {
+                        disabled: changing(),
+                        onclick: move |_| confirm_remove.set(false),
+                        "Cancel"
+                    }
                 }
             }
             if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id)) {
@@ -1559,17 +1551,15 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     p { class: "empty", role: "alert", "Duet couldn’t change this scheduled item. Its last saved state is still here." }
                 }
                 if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id && follow_up.state == duet_wire::models::FollowUpState::Paused)) {
-                    button {
-                        class: "duet-send",
-                        r#type: "button",
+                    Button {
+                        variant: ButtonVariant::Primary,
                         disabled: changing(),
                         onclick: resume_reminder,
                         "Resume reminder"
                     }
                 } else {
-                    button {
-                        class: "duet-send",
-                        r#type: "button",
+                    Button {
+                        variant: ButtonVariant::Primary,
                         disabled: changing(),
                         onclick: pause_reminder,
                         "Pause reminder"
@@ -1604,70 +1594,67 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 if fresh_failed() {
                     p { class: "empty", role: "alert", "Duet couldn’t confirm that For my doctor was cleared. Try again." }
                 }
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
-                    disabled: saving_page(),
-                    onclick: move |_| confirm_fresh.set(false),
-                    "Cancel"
-                }
-                button {
-                    class: "duet-send",
-                    r#type: "button",
-                    disabled: saving_page(),
-                    onclick: start_fresh,
-                    "Start fresh"
+                ActionRow {
+                    Button {
+                        variant: ButtonVariant::Primary,
+                        disabled: saving_page(),
+                        onclick: start_fresh,
+                        "Start fresh"
+                    }
+                    Button {
+                        disabled: saving_page(),
+                        onclick: move |_| confirm_fresh.set(false),
+                        "Cancel"
+                    }
                 }
             }
             if matches!(open_item(), Some(NoteOpen::Doctor)) && !doctor_editing() && !confirm_fresh() {
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
-                    disabled: saving_page(),
-                    onclick: move |_| {
-                        let Some(collection) = doctor() else {
-                            return;
-                        };
-                        if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Draft(_))) { edit_recovered(()); return; }
-                        if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Damaged)) { return; }
-                        confirmed_medications.set(collection.items.iter().flatten().filter(|item| approval::is_medication(item) && item.medication_confirmed == Some(true)).map(|item| item.id).collect());
-                        draft_proposal.set(None);
-                        draft_base.set(Some(collection.clone()));
-                        draft_uncertain.set(false);
-                        let page = collection.page.as_ref().map(|page| page.as_ref());
-                        doctor_name.set(page.map(|page| field_text(&page.name)).unwrap_or_default());
-                        doctor_birth.set(
-                            page.and_then(|page| page.date_of_birth.as_ref())
-                                .and_then(|day| day.as_ref())
-                                .map(|day| day.format("%Y-%m-%d").to_string())
-                                .unwrap_or_default(),
-                        );
-                        doctor_note.set(field_text(&collection.note));
-                        doctor_cover.set(page.map(|page| field_text(&page.cover_note)).unwrap_or_default());
-                        doctor_questions.set(page.and_then(|page| page.questions.clone()).unwrap_or_default());
-                        let items = collection
-                            .items
-                            .iter()
-                            .flatten()
-                            .map(|item| (item.id, item.title.clone()))
-                            .collect::<Vec<_>>();
-                        doctor_kept.set(vec![true; items.len()]);
-                        doctor_items.set(items);
-                        page_failed.set(false);
-                        doctor_editing.set(true);
-                    },
-                    aria_label: "Edit page",
-                    "Edit page"
-                }
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
-                    disabled: saving_page(),
-                    onclick: move |_| {
-                        fresh_failed.set(false);
-                        confirm_fresh.set(true);
-                    },
-                    "Start fresh"
+                ActionRow {
+                    Button {
+                        disabled: saving_page(),
+                        onclick: move |_| {
+                            let Some(collection) = doctor() else {
+                                return;
+                            };
+                            if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Draft(_))) { edit_recovered(()); return; }
+                            if matches!(retained(), Ok(duet_client::retention::DraftRecovery::Damaged)) { return; }
+                            confirmed_medications.set(collection.items.iter().flatten().filter(|item| approval::is_medication(item) && item.medication_confirmed == Some(true)).map(|item| item.id).collect());
+                            draft_proposal.set(None);
+                            draft_base.set(Some(collection.clone()));
+                            draft_uncertain.set(false);
+                            let page = collection.page.as_ref().map(|page| page.as_ref());
+                            doctor_name.set(page.map(|page| field_text(&page.name)).unwrap_or_default());
+                            doctor_birth.set(
+                                page.and_then(|page| page.date_of_birth.as_ref())
+                                    .and_then(|day| day.as_ref())
+                                    .map(|day| day.format("%Y-%m-%d").to_string())
+                                    .unwrap_or_default(),
+                            );
+                            doctor_note.set(field_text(&collection.note));
+                            doctor_cover.set(page.map(|page| field_text(&page.cover_note)).unwrap_or_default());
+                            doctor_questions.set(page.and_then(|page| page.questions.clone()).unwrap_or_default());
+                            let items = collection
+                                .items
+                                .iter()
+                                .flatten()
+                                .map(|item| (item.id, item.title.clone()))
+                                .collect::<Vec<_>>();
+                            doctor_kept.set(vec![true; items.len()]);
+                            doctor_items.set(items);
+                            page_failed.set(false);
+                            doctor_editing.set(true);
+                        },
+                        aria_label: "Edit page",
+                        "Edit page"
+                    }
+                    Button {
+                        disabled: saving_page(),
+                        onclick: move |_| {
+                            fresh_failed.set(false);
+                            confirm_fresh.set(true);
+                        },
+                        "Start fresh"
+                    }
                 }
             }
         } else {
@@ -1677,7 +1664,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             None => rsx! {
                 div { role: "alert",
                     p { class: "empty", "{CHAT_UNAVAILABLE}" }
-                    TryAgain { on_retry: retry }
+                    TryAgain { label: TRY_AGAIN, on_retry: retry }
                 }
             },
             Some(ConversationRoot::Empty { title, message }) => rsx! {
@@ -1685,41 +1672,45 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     p { class: "empty-title", "{title}" }
                     p { class: "empty", "{message}" }
                     if failed {
-                        TryAgain { on_retry: retry }
+                        TryAgain { label: TRY_AGAIN, on_retry: retry }
                     }
                 }
             },
             Some(ConversationRoot::Messages(lines)) => rsx! {
+                if let Some(sources) = message_sources() {
+                    Dialog { close_label: "Close", sheet: true, title: "Sources", on_close: move |_| message_sources.set(None),
+                        ol { class: "row-list",
+                            for source in sources {
+                                li {
+                                    SourceButton {
+                                        chip: source.clone(),
+                                        base_url: source_url.clone(),
+                                        bearer: source_bearer.clone(),
+                                        opened: opened_source,
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 if let Some(open) = opened_source() {
-                    article { class: "voice-card",
-                        p { class: "card-title", "{open.title}" }
+                    Dialog { close_label: "Close", sheet: true, title: open.title, on_close: move |_| opened_source.set(None),
                         if let Some(text) = open.text {
-                            p { class: "card-text", "{text}" }
+                            p { class: "source-text", "{text}" }
                         }
                         if open.failed {
                             p { class: "empty", role: "alert", "This source couldn’t be opened." }
-                        }
-                        button {
-                            class: "duet-retry",
-                            r#type: "button",
-                            aria_label: "Close source",
-                            onclick: move |_| opened_source.set(None),
-                            "Close"
                         }
                     }
                 }
                 div { class: "duet-thread",
                     for line in lines {
-                        article { class: if line.from_duet { "voice-card" } else { "user-bubble" },
-                            p { class: "card-title", "{line.role}" }
-                            p { class: "card-text", "{line.text}" }
-                            for source in line.sources {
-                                SourceButton {
-                                    chip: source.clone(),
-                                    base_url: source_url.clone(),
-                                    bearer: source_bearer.clone(),
-                                    opened: opened_source,
-                                }
+                        Message {
+                            author: if line.from_duet { Author::Assistant } else { Author::Person },
+                            by: line.role.clone(),
+                            p { "{line.text}" }
+                            if !line.sources.is_empty() {
+                                MessageSources { sources: line.sources.clone(), open: message_sources }
                             }
                             for note in line.notes {
                                 ThreadNote {
@@ -1733,10 +1724,16 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     if provisional().stopped {
                         p { class: "status-detail", "Draft ended. Checking the saved response; unfinished work remains available for recovery." }
                     }
-                    if !provisional().text.is_empty() {
-                        article { class: "voice-card", aria_label: "Provisional response",
-                            p { class: "card-title", "Luna — drafting, not yet saved" }
-                            p { class: "card-text", "{provisional().text}" }
+                    // While a reply runs it holds its place in the thread: the typing indicator
+                    // until its first words, then the words as they stream.
+                    if provisional().command.is_some() && !provisional().stopped {
+                        Message { author: Author::Assistant, class: "is-replying", aria_label: "Duet's reply",
+                            if provisional().text.is_empty() {
+                                span { class: "sr-only", role: "status", "Duet is responding" }
+                                WorkingMark {}
+                            } else {
+                                p { "{provisional().text}" }
+                            }
                         }
                     }
                     if let Some(closed) = closed {
@@ -1746,7 +1743,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     if failed {
                         div { role: "alert",
                             p { class: "empty", "{CHAT_UNAVAILABLE}" }
-                            TryAgain { on_retry: retry }
+                            TryAgain { label: TRY_AGAIN, on_retry: retry }
                         }
                     }
                 }
@@ -1757,29 +1754,21 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 if send_failed() {
                     p { class: "empty", role: "alert", "{CHAT_UNAVAILABLE}" }
                 }
-                form {
-                    class: "duet-composer",
-                    onsubmit: move |event| {
-                        event.prevent_default();
-                        let typed = event.get_first("draft").and_then(|value| match value {
-                            dioxus::events::FormValue::Text(text) => Some(text),
-                            dioxus::events::FormValue::File(_) => None,
-                        });
-                        submit(composer_text(typed.as_deref(), &draft()));
-                    },
-                    textarea {
-                        class: "duet-composer-field",
-                        name: "draft",
-                        aria_label: "{CHAT_EMPTY_MESSAGE}",
-                        rows: "1",
-                        value: "{draft}",
-                        oninput: move |event| draft.set(event.value()),
-                    }
-                    button {
+                Composer {
+                    label: CHAT_EMPTY_MESSAGE,
+                    inline: true,
+                    value: draft(),
+                    on_input: move |text| draft.set(text),
+                    on_submit: submit,
+                    Button {
+                        variant: ButtonVariant::Primary,
+                        compact: true,
+                        icon_only: true,
                         class: "duet-send",
-                        r#type: "submit",
+                        submit: true,
                         disabled: sending(),
-                        "Send"
+                        aria_label: "Send",
+                        "↑"
                     }
                 }
             }
@@ -1802,9 +1791,8 @@ fn ThreadNote(
         };
         let body = note_body(note);
         rsx! {
-            button {
+            NavigationRow {
                 class: "thread-open",
-                r#type: "button",
                 aria_label: "{label}",
                 onclick: move |_| on_open.call(open),
                 {body}
@@ -1812,6 +1800,18 @@ fn ThreadNote(
         }
     } else {
         note_body(note)
+    }
+}
+
+/// A message's one Sources button; its sources open together in a sheet.
+#[component]
+fn MessageSources(
+    sources: Vec<ConversationSourceChip>,
+    open: Signal<Option<Vec<ConversationSourceChip>>>,
+) -> Element {
+    let count = sources.len();
+    rsx! {
+        SourcesButton { label: "Sources", count, onclick: move |_| open.set(Some(sources.clone())) }
     }
 }
 
@@ -1826,13 +1826,7 @@ fn SourceButton(
     let label = format!("Open source {title}");
     let open = move |_| load_source(opened, base_url.clone(), bearer.clone(), chip.clone());
     rsx! {
-        button {
-            class: "duet-retry",
-            r#type: "button",
-            aria_label: "{label}",
-            onclick: open,
-            "{title}"
-        }
+        ListRow { title, aria_label: "{label}", onclick: open }
     }
 }
 
@@ -1946,19 +1940,20 @@ fn EvidenceRow(
         if let Some(source) = source {
             p { class: "record-meta", "{source}" }
         }
-        button {
-            class: "duet-retry",
-            r#type: "button",
-            aria_label: "{correct_label}",
-            onclick: start_edit,
-            "Correct"
-        }
-        button {
-            class: "duet-retry",
-            r#type: "button",
-            aria_label: "{delete_label}",
-            onclick: remove,
-            "Delete"
+        ActionRow {
+            Button {
+                compact: true,
+                aria_label: "{correct_label}",
+                onclick: start_edit,
+                "Correct"
+            }
+            Button {
+                compact: true,
+                danger: true,
+                aria_label: "{delete_label}",
+                onclick: remove,
+                "Delete"
+            }
         }
     }
 }
@@ -2032,11 +2027,11 @@ fn DoctorLetter(
     rsx! {
         p { class: "card-title", "Saved page preview" }
         {rsx! { publication::PublicationControls { key: "publication-{generation}", base_url: publication_url, generation } }}
-        button { disabled: exporting() || preview.incomplete || !preview.layout.fits(), onclick: share, "Check and share PDF" }
+        Button { disabled: exporting() || preview.incomplete || !preview.layout.fits(), onclick: share, "Check and share PDF" }
         if !export_error().is_empty() { p { role: "alert", "{export_error}" } }
         // Only our glyph-path renderer supplies this markup; patient text never becomes raw HTML.
         div { class: "doctor-preview", dangerous_inner_html: "{svg}" }
-        details { summary { "Read complete page text" } pre { style: "white-space: pre-wrap", "{full_text}" } }
+        Disclosure { title: "Read complete page text", detail: true, pre { style: "white-space: pre-wrap", "{full_text}" } }
         if !preview.layout.fits() { p { role: "alert", "The complete page cannot be exported faithfully on one page. Your saved words remain unchanged; shorten the page before exporting." } }
         if preview.incomplete { p { role: "alert", "Some selected information needs exact-source review. Export is blocked until it is checked." } }
     }
@@ -2122,7 +2117,7 @@ fn TodayTab(
             },
             Some(TodayRoot::Insights(cards)) => rsx! {
                 for card in cards {
-                    article { class: "voice-card",
+                    article { class: "card voice-card",
                         p { class: "card-title", "{card.title}" }
                         p { class: "card-text", "{card.sentence}" }
                     }
@@ -2134,7 +2129,7 @@ fn TodayTab(
             div { role: "alert",
                 p { class: "status-title", "{CHECK_UNAVAILABLE}" }
                 p { class: "status-detail", "{CHECK_UNAVAILABLE_DETAIL}" }
-                TryAgain { on_retry: retry }
+                TryAgain { label: TRY_AGAIN, on_retry: retry }
             }
         }
     }
@@ -2326,29 +2321,25 @@ fn YouTab(
                 on_save: save_record,
             }
         } else if menu() {
-            button {
-                class: "duet-retry",
-                r#type: "button",
-                onclick: move |_| {
-                    menu.set(false);
-                    editor.set(Some(YouEditor::Medication));
-                },
-                "New medication"
-            }
-            button {
-                class: "duet-retry",
-                r#type: "button",
-                onclick: move |_| {
-                    menu.set(false);
-                    editor.set(Some(YouEditor::Note));
-                },
-                "New note"
-            }
-            button {
-                class: "duet-retry",
-                r#type: "button",
-                onclick: move |_| menu.set(false),
-                "Close"
+            ActionRow {
+                Button {
+                    onclick: move |_| {
+                        menu.set(false);
+                        editor.set(Some(YouEditor::Medication));
+                    },
+                    "New medication"
+                }
+                Button {
+                    onclick: move |_| {
+                        menu.set(false);
+                        editor.set(Some(YouEditor::Note));
+                    },
+                    "New note"
+                }
+                Button {
+                    onclick: move |_| menu.set(false),
+                    "Close"
+                }
             }
         } else {
         div { class: "source-row",
@@ -2401,8 +2392,7 @@ fn YouTab(
             span { class: "source-name", "Sources" }
             span { class: "source-detail", "{phone.sentence()}" }
             if phone.state.can_request() {
-                button {
-                    class: "duet-retry",
+                Button {
                     aria_label: "{ALLOW_HEALTHKIT}",
                     onclick: move |_| on_allow.call(()),
                     "Allow"
@@ -2414,8 +2404,7 @@ fn YouTab(
                 span { class: "source-name", "Notifications" }
                 span { class: "source-detail", "{alerts.sentence()}" }
                 if alerts.state.can_request() {
-                    button {
-                        class: "duet-retry",
+                    Button {
                         aria_label: "{ALLOW_NOTIFICATIONS}",
                         onclick: move |_| on_allow_alerts.call(()),
                         "Allow"
@@ -2433,9 +2422,7 @@ fn YouTab(
                 }
             }
             if alerts.state == AlertState::Denied {
-                button {
-                    class: "duet-retry",
-                    r#type: "button",
+                Button {
                     aria_label: "{OPEN_NOTIFICATION_SETTINGS}",
                     onclick: move |_| on_open_settings.call(()),
                     "{OPEN_NOTIFICATION_SETTINGS}"
@@ -2444,7 +2431,7 @@ fn YouTab(
         }
         PhoneReadings { readings: phone.readings.clone(), connected: phone.state.connected() }
         if let Some(section) = plan_section {
-            article { class: "voice-card",
+            article { class: "card voice-card",
                 p { class: "card-title", "{section.heading}" }
                 p { class: "record-meta", "{section.attribution}" }
                 for item in section.items {
@@ -2455,7 +2442,7 @@ fn YouTab(
         }
         if let Some(edit) = editing() {
             input {
-                class: "duet-field",
+                class: "field duet-field",
                 r#type: "text",
                 aria_label: "Corrected value",
                 value: "{edit.title}",
@@ -2466,19 +2453,18 @@ fn YouTab(
                     }
                 },
             }
-            button {
-                class: "duet-send",
-                r#type: "button",
-                aria_label: "Save correction",
-                disabled: saving() || edit.title.trim().is_empty(),
-                onclick: save_correction,
-                "Save correction"
-            }
-            button {
-                class: "duet-retry",
-                r#type: "button",
-                onclick: move |_| editing.set(None),
-                "Cancel"
+            ActionRow {
+                Button {
+                    variant: ButtonVariant::Primary,
+                    aria_label: "Save correction",
+                    disabled: saving() || edit.title.trim().is_empty(),
+                    onclick: save_correction,
+                    "Save correction"
+                }
+                Button {
+                    onclick: move |_| editing.set(None),
+                    "Cancel"
+                }
             }
         }
         if let Some(notice) = evidence_notice() {
@@ -2488,7 +2474,7 @@ fn YouTab(
             Some(LibraryRoot::Empty) => rsx! { p { class: "empty", "{LIBRARY_EMPTY}" } },
             Some(LibraryRoot::Sections(sections)) => rsx! {
                 for section in sections {
-                    article { class: if section.measured { "number-card" } else { "voice-card" },
+                    article { class: if section.measured { "card number-card" } else { "card voice-card" },
                         p { class: "card-title", "{section.name}" }
                         for record in section.records {
                             EvidenceRow {
@@ -2509,12 +2495,10 @@ fn YouTab(
         if failed && page.is_none() {
             div { role: "alert",
                 p { class: "empty", "{LIBRARY_UNAVAILABLE}" }
-                TryAgain { on_retry: retry }
+                TryAgain { label: TRY_AGAIN, on_retry: retry }
             }
         }
-        button {
-            class: "duet-retry",
-            r#type: "button",
+        Button {
             onclick: move |_| menu.set(true),
             "Add health information"
         }
@@ -2533,22 +2517,21 @@ fn PlanEditor(
     let ready = !title().trim().is_empty() && !body().trim().is_empty();
     rsx! {
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             value: "{title}",
             oninput: move |event| title.set(event.value()),
         }
         textarea {
-            class: "duet-field",
+            class: "field duet-field",
             value: "{body}",
             oninput: move |event| body.set(event.value()),
         }
         if failed() {
             p { class: "empty", role: "alert", "Your changes haven’t been confirmed. Your words are kept; refresh to check the saved version." }
         }
-        button {
-            class: "duet-send",
-            r#type: "button",
+        Button {
+            variant: ButtonVariant::Primary,
             disabled: saving() || !ready,
             onclick: move |_| on_save.call(()),
             "Save changes"
@@ -2574,7 +2557,7 @@ fn DoctorEditor(
     rsx! {
         p { class: "status-detail", "Name" }
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             aria_label: "Name",
             value: "{name}",
@@ -2582,7 +2565,7 @@ fn DoctorEditor(
         }
         p { class: "status-detail", "Date of birth" }
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             aria_label: "Date of birth",
             value: "{birth}",
@@ -2590,7 +2573,7 @@ fn DoctorEditor(
         }
         p { class: "status-detail", "What I want to discuss" }
         textarea {
-            class: "duet-field",
+            class: "field duet-field",
             value: "{note}",
             oninput: move |event| note.set(event.value()),
         }
@@ -2598,9 +2581,7 @@ fn DoctorEditor(
             QuestionField { index, questions }
         }
         if can_add {
-            button {
-                class: "duet-retry",
-                r#type: "button",
+            Button {
                 aria_label: "Add a question",
                 onclick: move |_| {
                     let mut fields = questions();
@@ -2612,7 +2593,7 @@ fn DoctorEditor(
         }
         p { class: "status-detail", "Cover note" }
         textarea {
-            class: "duet-field",
+            class: "field duet-field",
             value: "{cover}",
             oninput: move |event| cover.set(event.value()),
         }
@@ -2622,9 +2603,8 @@ fn DoctorEditor(
         if failed() {
             p { class: "empty", role: "alert", "This page couldn’t be saved." }
         }
-        button {
-            class: "duet-send",
-            r#type: "button",
+        Button {
+            variant: ButtonVariant::Primary,
             disabled: saving() || !ready,
             aria_label: "Save page",
             onclick: move |_| on_save.call(()),
@@ -2638,7 +2618,7 @@ fn QuestionField(index: usize, questions: Signal<Vec<String>>) -> Element {
     let value = questions().get(index).cloned().unwrap_or_default();
     rsx! {
         input {
-            class: "duet-field",
+            class: "field duet-field",
             r#type: "text",
             aria_label: "Question",
             value: "{value}",
@@ -2650,9 +2630,10 @@ fn QuestionField(index: usize, questions: Signal<Vec<String>>) -> Element {
                 questions.set(fields);
             },
         }
-        button {
-            class: "duet-retry",
-            r#type: "button",
+        Button {
+            variant: ButtonVariant::Quiet,
+            compact: true,
+            danger: true,
             onclick: move |_| {
                 let mut fields = questions();
                 if index < fields.len() {
@@ -2669,9 +2650,8 @@ fn QuestionField(index: usize, questions: Signal<Vec<String>>) -> Element {
 fn KeepChoice(index: usize, title: String, kept: Signal<Vec<bool>>) -> Element {
     let included = kept().get(index).copied().unwrap_or(true);
     rsx! {
-        button {
-            class: "duet-retry",
-            r#type: "button",
+        Button {
+            compact: true,
             onclick: move |_| {
                 let mut flags = kept();
                 if let Some(flag) = flags.get_mut(index) {
@@ -2704,9 +2684,9 @@ fn HealthDraft(
         YouEditor::Note => !note_title().trim().is_empty() && !note_body().trim().is_empty(),
     };
     rsx! {
-        button {
-            class: "duet-retry",
-            r#type: "button",
+        Button {
+            variant: ButtonVariant::Quiet,
+            compact: true,
             onclick: move |_| on_close.call(()),
             "Close"
         }
@@ -2714,7 +2694,7 @@ fn HealthDraft(
             YouEditor::Medication => rsx! {
                 p { class: "status-detail", "Enter the medication as one descriptive line, including dose when you know it." }
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "text",
                     value: "{medication}",
                     placeholder: "Atorvastatin 20 mg",
@@ -2723,9 +2703,8 @@ fn HealthDraft(
                 if failed() {
                     p { class: "empty", role: "alert", "This medication couldn’t be saved. Nothing was changed." }
                 }
-                button {
-                    class: "duet-send",
-                    r#type: "button",
+                Button {
+                    variant: ButtonVariant::Primary,
                     disabled: saving() || !ready,
                     onclick: move |_| on_save.call(()),
                     "Add medication"
@@ -2733,23 +2712,22 @@ fn HealthDraft(
             },
             YouEditor::Note => rsx! {
                 input {
-                    class: "duet-field",
+                    class: "field duet-field",
                     r#type: "text",
                     value: "{note_title}",
                     placeholder: "What is this note about?",
                     oninput: move |event| note_title.set(event.value()),
                 }
                 textarea {
-                    class: "duet-field",
+                    class: "field duet-field",
                     value: "{note_body}",
                     oninput: move |event| note_body.set(event.value()),
                 }
                 if failed() {
                     p { class: "empty", role: "alert", "This note couldn’t be saved. Nothing was changed." }
                 }
-                button {
-                    class: "duet-send",
-                    r#type: "button",
+                Button {
+                    variant: ButtonVariant::Primary,
                     disabled: saving() || !ready,
                     onclick: move |_| on_save.call(()),
                     "Save note"
@@ -2766,7 +2744,7 @@ fn PhoneReadings(readings: Vec<PhoneReading>, connected: bool) -> Element {
             p { class: "empty", "{NO_READINGS}" }
         }
         for reading in readings {
-            article { class: "number-card",
+            article { class: "card number-card",
                 p { class: "card-title", "{reading.name}" }
                 p { class: "card-text", "{reading.value} {reading.unit}" }
                 if !reading.source.is_empty() {
@@ -2853,21 +2831,18 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
     rsx! {
         TabHeading { name: "Shared".to_owned(), loading }
         if let Some(status) = physician_status.filter(|status| status.linked) {
-            article { class: "voice-card",
+            article { class: "card voice-card",
                 p { class: "card-title", "{status.practice_name.as_deref().unwrap_or(\"Connected practice\")}" }
                 if status.sharing_consented {
                     p { class: "record-meta", "{SHARE_WITH_MY_PHYSICIAN} ({status.consent_version.as_deref().unwrap_or(\"v1\")})" }
-                    button {
-                        class: "duet-retry",
-                        r#type: "button",
+                    Button {
+                        danger: true,
                         onclick: stop_sharing,
                         "{STOP_SHARING}"
                     }
                 } else {
                     p { class: "record-meta", "Sharing stopped" }
-                    button {
-                        class: "duet-retry",
-                        r#type: "button",
+                    Button {
                         onclick: grant_sharing,
                         "{SHARE_WITH_MY_PHYSICIAN}"
                     }
@@ -2877,7 +2852,7 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
         if !people.is_empty() {
             p { class: "status-title", "People" }
             for person in people {
-                article { class: "voice-card",
+                article { class: "card voice-card",
                     p { class: "card-title", "{person}" }
                 }
             }
@@ -2887,13 +2862,13 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
             Some(SharedNotice::CouldNotCheck) => rsx! {
                 div { role: "alert",
                     p { class: "empty", "{SHARING_UNCHECKED}" }
-                    TryAgain { on_retry: retry }
+                    TryAgain { label: TRY_AGAIN, on_retry: retry }
                 }
             },
             Some(SharedNotice::SavedStayVisible) => rsx! {
                 div { role: "alert",
                     p { class: "empty", "{SHARING_SAVED}" }
-                    TryAgain { on_retry: retry }
+                    TryAgain { label: TRY_AGAIN, on_retry: retry }
                 }
             },
             Some(SharedNotice::AwaitingAcceptance) => rsx! { p { class: "status-title", "{AWAITING}" } },

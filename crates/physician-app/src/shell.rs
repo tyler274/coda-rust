@@ -89,12 +89,12 @@ pub enum ReadView<T> {
 }
 
 impl<T> ReadView<T> {
-    pub fn stage(&self) -> ui::ReadStage {
+    pub fn stage(&self) -> crate::status::ReadStage {
         match self {
-            Self::Loading => ui::ReadStage::Loading,
-            Self::Showing(_) => ui::ReadStage::Showing,
-            Self::Stale(_) => ui::ReadStage::Stale,
-            Self::Unavailable => ui::ReadStage::Unavailable,
+            Self::Loading => crate::status::ReadStage::Loading,
+            Self::Showing(_) => crate::status::ReadStage::Showing,
+            Self::Stale(_) => crate::status::ReadStage::Stale,
+            Self::Unavailable => crate::status::ReadStage::Unavailable,
         }
     }
 
@@ -153,6 +153,26 @@ fn today_line(row: &TodayRow) -> TodayLine {
             .as_ref()
             .map(|target| target.expected_run_id.clone()),
     }
+}
+
+/// The row's state as its pill's tone, after the React app's Today: a flagged concern is a warning,
+/// a drafted reply is ready, a review that couldn't finish failed, and anything else is neutral.
+pub fn row_tone(kind: &str) -> ui::Tone {
+    match kind {
+        "concern" => ui::Tone::Warning,
+        "reply" => ui::Tone::Primary,
+        "failed_review" => ui::Tone::Error,
+        _ => ui::Tone::Neutral,
+    }
+}
+
+/// The row's kind as its pill's leading icon.
+pub fn row_icon(kind: &str) -> Option<ui::IconName> {
+    Some(match kind {
+        "concern" => ui::IconName::Flag,
+        "reply" => ui::IconName::Reply,
+        _ => ui::IconName::Alert,
+    })
 }
 
 /// What the row's state pill says. A failed review uses the work kind's subject.

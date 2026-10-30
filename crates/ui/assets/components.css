@@ -1,21 +1,687 @@
 .app { min-height: 100%; color: var(--ink); background: var(--surface); font: var(--type-body-md); }
 .page { max-width: var(--measure); margin: 0 auto; padding: var(--space-6) var(--page-gutter) calc(var(--target) + var(--space-8)); }
 .page-title { margin: 0 0 var(--space-4); color: var(--ink); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
-.card { min-width: 0; background: var(--surface-lowest); border-radius: var(--radius-lg); box-shadow: var(--elevation-2); }
-.card-body { padding: var(--space-4); }
-.empty, .error { margin: 0; color: var(--body); font: var(--type-body-lg); }
-.error { color: var(--on-error-container); background: var(--error-container); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); }
-.row { display: flex; flex-direction: column; gap: var(--space-hair); padding: var(--space-3) 0; border-top: var(--hairline) solid var(--outline-variant); }
-.row-name { color: var(--ink); font: var(--type-title-sm); }
-.row-detail { color: var(--muted); font: var(--type-body-sm); }
-.text-button { min-height: var(--target); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary); font: var(--type-label-lg); }
-.text-button.quiet { background: transparent; color: var(--primary); }
-.tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
+/* A screen's heading: what it belongs to above the title, its state or source beneath, a record's icon beside it, and on
+   a screen with no top bar, its actions above at the trailing edge. */
+.page-heading { display: grid; gap: var(--space-2); margin: 0 0 var(--space-5); }
+.page-heading .page-title { margin: 0; }
+.page-heading-actions { display: flex; justify-content: flex-end; gap: var(--space-1); margin-inline-end: calc(-1 * var(--space-2)); }
+.page-heading-main { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+.page-heading-text { display: grid; gap: var(--space-1); min-width: 0; }
+.page-heading-eyebrow { margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.overline { margin: 0; color: var(--muted); font: var(--type-label-sm); letter-spacing: var(--overline-tracking); text-transform: uppercase; }
+.card { box-sizing: border-box; min-width: 0; border: var(--card-outline, 0); background: var(--surface-lowest); border-radius: var(--radius-lg); box-shadow: var(--card-elevation, var(--elevation-2)); }
+.card-header { display: flex; align-items: center; gap: var(--space-3); min-width: 0; padding: var(--space-3) var(--space-4); }
+.card-title { flex: 1 1 auto; min-width: 0; margin: 0; color: var(--ink); font: var(--type-title-md); }
+.card-title > :is(h2, h3) { margin: 0; font: inherit; }
+/* Icon tile: a card header's icon on a white tile at level 1, neutral like a secondary control; colour is kept for state. */
+.icon-tile { box-sizing: border-box; display: inline-grid; place-items: center; flex: none; width: var(--tile-size); height: var(--tile-size); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-lowest); color: var(--muted); box-shadow: var(--elevation-1); font: var(--type-body-md); }
+.icon-tile.is-tinted { width: var(--avatar-md); height: var(--avatar-md); border: 0; background: var(--data-container); color: var(--on-data-container); box-shadow: none; }
+/* An avatar: initials in a circle on the highest surface, a size per place. */
+.avatar { display: grid; place-items: center; width: var(--avatar-size, var(--avatar-sm)); height: var(--avatar-size, var(--avatar-sm)); flex: none; border-radius: 50%; background: var(--surface-highest); color: var(--body); font: var(--type-label-md); }
+.avatar-md { --avatar-size: var(--avatar-md); }
+.avatar-lg { --avatar-size: var(--avatar-lg); font: var(--type-title-sm); }
+/* A count sits right after its title, centred on it. */
+.count { flex: none; color: var(--muted); font: var(--type-body-sm); white-space: nowrap; }
+.count-value { display: inline-block; font-variant-numeric: tabular-nums; }
+/* A count that changes fades into its new value once, number and words together. */
+.count.is-changed { animation: count-change var(--motion-arrive) var(--ease-out); }
+.count.is-changed-again { animation: count-change-again var(--motion-arrive) var(--ease-out); }
+@keyframes count-change { from { opacity: 0; } }
+@keyframes count-change-again { from { opacity: 0; } }
+/* A live list's row (RowFrame): it opens and settles from just below as it joins, and collapses and fades as it leaves,
+   its hairline inside it so a leaving row takes its own along. */
+.row-frame { display: grid; grid-template-rows: minmax(0, 1fr); overflow: clip;
+  transition: grid-template-rows var(--motion-step) var(--ease-in-out), opacity var(--motion-arrive) var(--ease-out); }
+.row-frame-content { min-height: 0; }
+.row-frame.is-exiting { grid-template-rows: minmax(0, 0fr); opacity: 0; }
+.row-frame.is-arriving { transition: grid-template-rows var(--motion-step) var(--ease-out), opacity var(--motion-arrive) var(--ease-out),
+  transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .row-frame.is-arriving { grid-template-rows: minmax(0, 0fr); opacity: 0; transform: translateY(var(--rise-small)); } }
+.row-list > li.row-frame + li.row-frame { border-top: 0; }
+.row-list > li.row-frame + li.row-frame > .row-frame-content { border-top: var(--hairline) solid var(--outline-variant); }
+.title-with-count { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.title-with-count > :is(h1, h2, h3, strong) { min-width: 0; }
+.empty { margin: 0; color: var(--body); font: var(--type-body-lg); }
+/* The empty state: a muted mark in a touch target, the line on the medium title, what to know in
+   small muted words, the way on in green and the way out muted, centred with a section's space around them. */
+.empty-state { display: grid; justify-items: center; gap: var(--space-2); padding-block: var(--space-6); text-align: center; }
+.empty-state-mark { display: grid; place-items: center; width: var(--target); height: var(--target); color: var(--muted); }
+.empty-state-title { margin: 0; color: var(--ink); font: var(--type-title-md); }
+.empty-state-detail { margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.control.empty-state-action { --control-quiet-color: var(--primary); font: var(--type-body-lg); font-weight: var(--weight-strong); }
+.control.empty-state-secondary { --control-quiet-color: var(--muted); font: var(--type-label-md); }
+.tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter) calc(var(--space-2) + env(safe-area-inset-bottom)); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
 .tabs button { flex: 1; min-height: var(--target); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--muted); font: var(--type-label-md); }
-.tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }
+.tabs { --selection-fill: var(--primary-container); }
+.tabs button[aria-current="page"] { color: var(--on-primary-container); }
+/* A selection host's current item carries one fill, anchored to it so it follows the item through any layout change at
+   once; only when the selection moves does the fill travel there (motion.rs). A host sets the fill, its shadow and
+   its shape; a component's own values and position win, the fill needing only a containing block. */
+:where(.selection-host) { --selection-fill: var(--surface-high); --selection-shadow: none; --selection-radius: var(--radius-md); }
+@supports (anchor-name: --selection) {
+  :where(.selection-host) { position: relative; }
+  .selection-host { isolation: isolate; anchor-scope: --selection; }
+  .selection-host [aria-current]:not([aria-current="false"]) { anchor-name: --selection; }
+  .selection-host:has([aria-current]:not([aria-current="false"]))::after { content: ""; position: absolute; z-index: -1;
+    position-anchor: --selection; top: anchor(top); left: anchor(left); width: anchor-size(width); height: anchor-size(height);
+    border-radius: var(--selection-radius); background: var(--selection-fill); box-shadow: var(--selection-shadow); pointer-events: none; }
+}
+@supports not (anchor-name: --selection) {
+  .selection-host [aria-current]:not([aria-current="false"]) { background: var(--selection-fill); box-shadow: var(--selection-shadow); }
+}
+/* While a reorder moves the current item, the item carries the fill itself and the host's fill waits; an item no
+   longer current carries nothing and holds back nothing. */
+.selection-host [aria-current]:not([aria-current="false"]).is-carrying-selection { background: var(--selection-fill);
+  box-shadow: var(--selection-shadow); border-radius: var(--selection-radius); }
+.selection-host:has([aria-current]:not([aria-current="false"]).is-carrying-selection)::after { visibility: hidden; }
+/* A row rising past others as its list reorders is lifted over them while it moves: an opaque surface a level up, on the
+   selection fill if it is the current one. */
+.is-lifted { position: relative; z-index: 1; background: var(--surface-lowest); box-shadow: var(--elevation-3); }
+.is-lifted:has([aria-current]:not([aria-current="false"])) { background: var(--selection-fill, var(--surface-lowest)); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 .quiet-line { margin: 0; color: var(--muted); font: var(--type-body-sm); }
-.inline-action { padding: 0; border: 0; background: transparent; color: var(--primary); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.inline-action:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.sr-only { position: absolute; width: var(--hairline); height: var(--hairline); padding: 0; margin: calc(-1 * var(--hairline)); overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+/* The one status line: what failed or what is under way, muted, its one Try again under the words. A pending line shows
+   only after the shared delay, so a read that settles sooner shows only its content. */
+.status-line { display: grid; justify-items: start; gap: var(--space-2); min-width: 0; margin: 0; color: var(--muted); font: var(--type-body-md); }
+.status-line > p { margin: 0; overflow-wrap: anywhere; }
+.pending-status { animation: pending-status-reveal var(--motion-control) var(--ease-out) var(--pending-status-delay) both; }
+@keyframes pending-status-reveal { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
+/* Placeholder: what is loading, drawn as its shape (a line, list items, rows or reading) in the
+   text's own measure. */
+.placeholder { display: grid; gap: .6em; width: 100%; min-width: 0; }
+.placeholder-bar { display: block; width: 100%; height: .8em; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--surface-highest) 0 40%, var(--surface-high) 50%, var(--surface-highest) 60% 100%) 100% 0 / 250% 100%; animation: placeholder-sheen calc(var(--motion-working) * 1.5) var(--ease-in-out) infinite; }
+.placeholder-bar.is-title { width: 40%; height: 1em; }
+.placeholder-bar.is-short { width: 62%; }
+.placeholder-bar.is-mark { flex: none; width: 1.6em; height: 1.6em; border-radius: 50%; }
+.placeholder.is-items, .placeholder.is-rows { gap: 0; }
+.placeholder-item { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-2); }
+.placeholder-row { display: grid; gap: .5em; padding-block: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); }
+.placeholder-row:first-child { border-top: 0; }
+.placeholder.is-reading > .is-title { margin-block-end: .4em; }
+@keyframes placeholder-sheen { to { background-position: 0 0; } }
+/* Tones: a state's container and what reads on it. */
+.tone-neutral { --tone-container: var(--surface-high); --tone-on: var(--body); }
+.tone-primary { --tone-container: var(--primary-container); --tone-on: var(--on-primary-container); }
+.tone-warning { --tone-container: var(--warning-container); --tone-on: var(--on-warning-container); }
+.tone-error { --tone-container: var(--error-container); --tone-on: var(--on-error-container); }
+/* State pill: where a thing stands, on its tone, led by its kind's icon.
+   Where it is narrower than its words they wrap inside it, and its corners stay those of one line. */
+.state-pill { display: inline-flex; align-items: baseline; gap: var(--space-1); max-width: 100%; overflow: clip; padding: var(--space-hair) .6em; border-radius: calc(.5lh + var(--space-hair)); background: var(--tone-container); color: var(--tone-on); font: var(--type-label-md); transition: background-color var(--motion-arrive) var(--ease-out), color var(--motion-arrive) var(--ease-out); }
+.state-pill > .icon { align-self: center; width: 14px; height: 14px; }
+/* The live mark pulses while something is live. */
+.live-dot { display: inline-block; flex: none; width: var(--unread-dot); height: var(--unread-dot); border-radius: 50%; background: var(--primary); animation: live-pulse var(--motion-working) var(--ease-in-out) infinite both; }
+@keyframes live-pulse { 0%, 70%, 100% { opacity: .45; transform: scale(.7); } 35% { opacity: 1; transform: scale(1); } }
+/* Running work: the live dots in turn, a sixth of a pass apart. Without motion they hold still, still saying work runs. */
+.working-dots { display: inline-flex; align-items: center; gap: var(--space-1); min-height: 1lh; }
+.working-dots > .live-dot:nth-child(2) { animation-delay: calc(var(--motion-working) / 6); }
+.working-dots > .live-dot:nth-child(3) { animation-delay: calc(var(--motion-working) / 3); }
+/* Running work: the mark beside the verb, and under it the step under way. */
+.working-presence { display: flex; align-items: center; gap: var(--space-2); color: var(--body); font: var(--type-body-md); }
+.working-presence.is-compact { font: var(--type-body-sm); }
+.working-presence-verb { min-width: 0; }
+.working-presence:has(.run-activity) { flex-wrap: wrap; }
+.working-presence > .run-activity { flex-basis: 100%; color: var(--body); font: var(--type-body-sm); }
+@media (prefers-reduced-motion: reduce) {
+  .placeholder-bar, .live-dot, .state-pill, .count { animation: none; transition: none; }
+  .row-frame { transition: none; }
+  .pending-status { animation-duration: 0s; }
+}
+/* Buttons: the one filled action, a white one on a
+   hairline, and text alone. A host places a control through its own class; it never restyles one. A surface may set the
+   control's component tokens (width, height, shape, quiet colour) once at its root, as Duet does. */
+.control { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); width: var(--control-width, fit-content); min-width: var(--target); min-height: var(--control-min-height, var(--control-height)); padding: var(--space-1) var(--space-4); border: var(--hairline) solid transparent; border-radius: var(--control-radius, var(--radius-pill)); cursor: pointer; font: var(--type-label-lg); text-decoration: none; white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out), opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
+.control-primary { border-color: var(--primary); background: var(--primary); color: var(--on-primary); box-shadow: var(--elevation-1); }
+.control-secondary { border-color: var(--outline-variant); background: var(--surface-lowest); color: var(--ink); box-shadow: var(--elevation-1); }
+.control-quiet { padding: var(--space-2) var(--space-3); border-color: transparent; background: transparent; color: var(--control-quiet-color, var(--muted)); font-weight: var(--weight-regular); }
+/* Danger: what removes or disconnects what the person has. A shaped control asks for it, the filled one confirms it. */
+.control-danger.control-primary { border-color: var(--error); background: var(--error); color: var(--on-error); }
+.control-danger:is(.control-secondary, .control-quiet) { color: var(--error); }
+.control-danger.control-secondary { border-color: var(--error-outline); }
+/* A leading icon is quieter than its label, except where it is the label or on the filled action. */
+.icon { display: block; width: var(--icon-size); height: var(--icon-size); flex: none; }
+.control > .icon { color: var(--muted); }
+:is(.control-primary, .control-icon, .control-danger) > .icon { color: inherit; }
+.navigation-control { position: relative; display: inline-flex; align-items: center; justify-content: flex-start; gap: var(--space-2); width: fit-content; max-width: 100%; min-height: var(--navigation-min-height, var(--control-height)); padding: var(--space-1) 0; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--navigation-color, var(--body)); cursor: pointer; text-align: left; text-decoration: none; font: var(--type-body-md); -webkit-tap-highlight-color: transparent; }
+@media (hover: hover) { .navigation-control:hover:not(:disabled) { color: var(--navigation-hover-color, var(--ink)); text-decoration: underline; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; } }
+.navigation-control:disabled { cursor: default; opacity: .46; }
+.action-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+/* A key hint beside a control's words, where there is a keyboard. */
+.key-hint { margin-inline-start: var(--space-1); color: inherit; opacity: .72; font: inherit; font-weight: var(--weight-regular); }
+@media (pointer: coarse) { .key-hint { display: none; } }
+.control-compact { width: fit-content; min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3); }
+.control-quiet { padding-inline: var(--control-quiet-padding-inline, var(--space-3)); }
+.control-icon { width: var(--control-height); height: var(--control-height); min-width: var(--control-height); min-height: var(--control-height); padding: var(--space-2); }
+.control-icon.control-compact { width: var(--control-compact-height); height: var(--control-compact-height); min-width: var(--control-compact-height); min-height: var(--control-compact-height); }
+.control:active:not(:disabled) { transform: scale(.98); }
+.control:disabled { cursor: default; opacity: .46; transform: none; }
+/* A row that opens something: no chrome of its own, the shared state layer, and a
+   focus ring drawn inward, since the list or card that holds it clips what stands outside. Its host lays it out. */
+:where(.navigation-row) { position: relative; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left; font: inherit; -webkit-tap-highlight-color: transparent; --focus-ring-offset: calc(-1 * var(--focus-ring-width)); }
+/* State layer: an overlay of the element's own text colour, so a filled control lightens, a quiet one greys and a row
+   tints, with no hover colour of its own. */
+:is(.control, .navigation-row)::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { :is(.control, .navigation-row):hover:not(:disabled)::before { opacity: var(--state-hover); } }
+:is(.control, .navigation-row):active:not(:disabled)::before { opacity: var(--state-pressed); }
+/* Touch target: where the pointer is coarse, a control reaches the target size while its visible size stays. */
+@media (pointer: coarse) {
+  :is(.control, .navigation-control)::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--target)); height: max(100%, var(--target)); transform: translate(-50%, -50%); }
+}
+/* Focus ring: one ring for everything a person can reach, following its corners; it grows in, then settles. */
+:is(button, a, input, textarea, select, summary):focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
+    focus-ring-settle calc(var(--motion-focus) * .75) var(--ease-emphasized) calc(var(--motion-focus) * .25);
+}
+@keyframes focus-ring-grow { from { outline-width: 0; } to { outline-width: var(--focus-ring-active-width); } }
+@keyframes focus-ring-settle { from { outline-width: var(--focus-ring-active-width); } }
+/* The one text field: its outline carries focus, turning primary and
+   doubling; the words inside draw no ring of their own. The class goes on the input itself, or on the box that holds one,
+   as a composer does; its host gives it its shape and place. A field may rest raised (--field-elevation), as a composer
+   does, or on a quieter outline (--field-outline). */
+.field {
+  box-sizing: border-box;
+  min-height: var(--target);
+  border: var(--hairline) solid var(--field-outline, var(--outline));
+  border-radius: var(--radius-md);
+  background: var(--surface-lowest);
+  color: var(--ink);
+  box-shadow: var(--field-elevation, 0 0 transparent);
+  transition: border-color var(--motion-control) var(--ease-out), box-shadow var(--motion-control) var(--ease-out);
+}
+:where(input, textarea, select).field { padding: var(--space-2) var(--space-3); font: inherit; }
+.field:focus-within { border-color: var(--primary); box-shadow: inset 0 0 0 var(--hairline) var(--primary), var(--field-elevation, 0 0 transparent); }
+:is(.field input, .field textarea, :is(input, textarea, select).field):focus-visible { outline: 0; animation: none; }
+:is(.field, .field *)::placeholder { color: var(--muted); opacity: 1; }
+/* The search field: the mark muted until the field has focus, the words on body
+   large, and the field's own clear in place of the browser's. */
+.search-field { display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-1) 0 var(--space-3); color: var(--muted); }
+.search-field:focus-within { color: var(--ink); }
+.search-field > input { flex: 1 1 auto; min-width: 0; min-height: var(--target); padding: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font: var(--type-body-lg); }
+.search-field > input::-webkit-search-cancel-button { appearance: none; }
+/* A labelled field: its label above, then the words, which grow with what is written when there can be several lines. */
+.text-field { display: grid; gap: var(--space-2); min-width: 0; color: var(--ink); font: var(--type-label-lg); }
+.text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
+:where(input, textarea).text-field-input { padding: var(--space-3); }
+textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
+/* A thread's messages: the person's words in a
+   light bubble at the far edge, the assistant's as plain prose. A message rises in as it appears, the person's on the
+   send spring from below, a reply on the arrival spring. */
+.message { box-sizing: border-box; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); overflow-wrap: anywhere;
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--spring-arrive); }
+.message > p { margin: 0; }
+.message > p + p { margin-top: var(--space-2); }
+.message-person { width: fit-content; max-width: 86%; margin-inline-start: auto; padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg); background: var(--surface-low);
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--spring-send); }
+@starting-style {
+  .message { opacity: 0; transform: translateY(var(--rise-small)); }
+  .message-person { transform: translateY(var(--rise)); }
+}
+/* The composer: the one raised text field, holding the words and, under them, a toolbar of the
+   host's context and actions at its far edge. The words grow with what is written, up to seven lines, then scroll. */
+.composer { --field-elevation: var(--elevation-2); --composer-inset: var(--space-2); display: grid; gap: var(--space-1); min-width: 0;
+  width: 100%; margin: 0; padding: var(--composer-inset); border-radius: var(--radius-field); }
+.composer-input { display: block; box-sizing: border-box; min-width: 0; width: 100%; min-height: var(--target); max-height: 7lh;
+  field-sizing: content; margin: 0; padding: var(--space-2); resize: none; border: 0; border-radius: var(--radius-lg);
+  background: transparent; color: var(--ink); font: var(--type-body-lg); }
+.composer-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2);
+  min-height: var(--control-height); }
+/* Inline: the words and the actions share one row, the actions at the words' last line;
+   what the person brought in still sits above both. */
+.composer.is-inline { --composer-inset: var(--space-1); grid-template-columns: minmax(0, 1fr) auto; align-items: end;
+  column-gap: var(--space-1); }
+.composer.is-inline > :not(.composer-input, .composer-toolbar) { grid-column: 1 / -1; }
+.composer.is-inline > .composer-input { padding-inline: var(--space-3) 0; }
+.composer.is-inline > .composer-toolbar { flex-wrap: nowrap; min-height: 0; }
+/* What is happening leads the toolbar, muted and small; the actions keep the far edge. */
+.composer-context { display: flex; flex: 1 1 11em; align-items: center; flex-wrap: wrap; gap: var(--space-1) var(--space-3); min-width: 0; margin-inline-end: auto; padding-inline: var(--space-2); color: var(--muted); font: var(--type-body-sm); }
+/* A draft saved elsewhere: under a hairline, what happened, the saved words as written, then the
+   choice. */
+.draft-conflict { margin: var(--space-2); padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); }
+.draft-conflict p { margin: 0 0 var(--space-2); font: var(--type-body-sm); }
+.draft-conflict-label { color: var(--muted); font-weight: var(--weight-strong); }
+.draft-conflict pre { max-height: 8lh; margin: 0 0 var(--space-3); overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); font: var(--type-body-lg); }
+/* A disclosure: the title is the toggle, its chevron turning as the section opens; the content
+   grows open and shut and stays mounted, out of reach while closed. A detail is a quiet line. */
+.disclosure { min-width: 0; }
+.disclosure-heading { margin: 0; font: inherit; }
+.disclosure-toggle { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); width: 100%;
+  min-height: var(--control-height); padding: var(--space-1) 0; border: 0; border-radius: var(--radius-sm); background: transparent;
+  color: var(--ink); cursor: pointer; text-align: left; font: inherit;
+  transition: color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out); }
+.disclosure-toggle strong { min-width: 0; font: var(--type-title-md); }
+.disclosure-toggle .icon { flex: none; color: var(--muted); transition: transform var(--motion-arrive) var(--ease-out); }
+.disclosure[data-state="open"] > .disclosure-heading .icon { transform: rotate(180deg); }
+.disclosure-region { display: grid; grid-template-rows: 0fr; min-width: 0; opacity: 0;
+  transition: grid-template-rows var(--motion-step) var(--ease-in-out), opacity var(--motion-arrive) var(--ease-out); }
+.disclosure-region.is-open { grid-template-rows: 1fr; opacity: 1; }
+.disclosure-clip { min-width: 0; min-height: 0; overflow: hidden; }
+.disclosure-body { padding: var(--space-row) 0 var(--space-section); }
+.disclosure.is-detail .disclosure-toggle { justify-content: flex-start; gap: var(--space-2); }
+.disclosure.is-detail .disclosure-toggle strong { color: var(--muted); font: var(--type-body-sm); }
+.disclosure.is-detail .disclosure-body { padding-top: 0; }
+/* Dialogs: the lowest surface at level 5 over the scrim, near the top of the
+   window at the dialog width, the title heading the content with Close beside it. A dialog rises in as it opens and
+   settles out, shorter than it came; the host hears it close once it has. */
+.dialog { box-sizing: border-box; width: min(var(--dialog-width), calc(100% - 2 * var(--page-gutter))); max-width: none;
+  max-height: var(--dialog-max-height); overflow: hidden; margin: var(--dialog-margin) auto auto; padding: 0; border: 0;
+  border-radius: var(--radius-xl); background: var(--surface-lowest); color: var(--ink); box-shadow: var(--elevation-5);
+  transition: opacity var(--motion-step) var(--ease-out), transform var(--spring-step); }
+.dialog[open] { display: grid; grid-template-rows: minmax(0, 1fr); }
+.dialog::backdrop { background: var(--scrim); transition: opacity var(--motion-step) var(--ease-out); }
+.dialog-body { min-height: 0; overflow: auto; padding: var(--space-6); }
+.dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-4); }
+.dialog-header h2 { margin: 0; color: var(--ink); font: var(--type-title-lg); }
+.dialog-header p { margin: var(--space-1) 0 0; color: var(--body); font: var(--type-body-md); }
+.dialog:focus, .dialog-header h2:focus { outline: none; }
+@starting-style {
+  .dialog[open] { opacity: 0; transform: translateY(var(--rise)) scale(.99); }
+  .dialog[open]::backdrop { opacity: 0; }
+}
+.dialog.is-closing { pointer-events: none; animation: dialog-exit var(--motion-control) var(--ease-exit) both; }
+.dialog.is-closing::backdrop { animation: backdrop-exit var(--motion-control) var(--ease-exit) both; }
+@keyframes dialog-exit { from { opacity: 1; transform: none; }
+  to { opacity: var(--dialog-exit-opacity, 0); transform: var(--dialog-exit-transform, translateY(var(--rise)) scale(.99)); } }
+@keyframes backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
+/* A sheet: the same dialog along the bottom edge, full width up to the dialog
+   width, its top corners rounded. It slides up from the edge on the step spring and back down, staying opaque. */
+.dialog-sheet { --dialog-exit-opacity: 1; --dialog-exit-transform: translateY(100%); width: min(var(--dialog-width), 100%);
+  max-height: calc(100dvh - var(--dialog-margin)); margin: auto auto 0; border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  transition: transform var(--spring-step); }
+.dialog-sheet .dialog-body { padding: var(--space-5) var(--space-5) max(var(--space-6), env(safe-area-inset-bottom)); }
+.dialog-sheet.is-closing { animation-duration: var(--motion-arrive); }
+/* Held and dragged, the sheet follows the hand and the scrim thins as it goes; the gesture itself moves it, so nothing
+   transitions until it rests. Its header never scrolls the page, so a drag begun there is always the sheet's. */
+.dialog-sheet[data-dragging], .dialog-sheet[data-dragging]::backdrop { transition: none; }
+.dialog-sheet::backdrop { opacity: var(--sheet-shown, 1); }
+.dialog-sheet .dialog-header { touch-action: none; }
+@starting-style { .dialog-sheet[open] { opacity: 1; transform: translateY(100%); } }
+/* Without motion a dialog still runs its exit, in a millisecond, since that exit's end is what closes it; a
+   zero-length animation never ends. */
+@media (prefers-reduced-motion: reduce) {
+  .dialog.is-closing { animation: dialog-exit 1ms both !important; }
+}
+/* Driven by keyboard, motion is immediate too: what transitions simply arrives, and what enters runs at no length rather
+   than not at all, so taking up a pointer again never replays it. An exit whose end closes its surface takes a
+   millisecond. A busy mark keeps turning and a focus ring still grows: they are feedback, not change. */
+:root[data-interaction="keyboard"] *, :root[data-interaction="keyboard"] *::before, :root[data-interaction="keyboard"] *::after, :root[data-interaction="keyboard"] ::backdrop { transition: none !important; }
+:root[data-interaction="keyboard"] :is(.count, .comparison-bar, .sparkline svg, .chart-point, .series-bar, .series-line, .series-dot,
+  .citation-preview, .source-reading-pane) { animation-duration: 0s !important; animation-delay: 0s !important; }
+:root[data-interaction="keyboard"] :is(.dialog.is-closing, .source-reading-layout.is-source-closing .source-reading-pane),
+:root[data-interaction="keyboard"] .dialog.is-closing::backdrop { animation-duration: 1ms !important; }
+/* Sources: a citation is a small numbered pill in the prose and the Sources
+   control a compact pill under the message, both in the primary container. */
+.source-trigger { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
+  border: var(--hairline) solid var(--primary-outline); border-radius: var(--radius-pill); background: var(--primary-container);
+  color: var(--primary); font: var(--type-label-md); text-decoration: none; -webkit-tap-highlight-color: transparent; }
+button.source-trigger { cursor: pointer; transition: border-color var(--motion-press) linear; }
+@media (hover: hover) { button.source-trigger:hover { border-color: var(--primary); } }
+.citation-chip { min-width: 1.5em; min-height: 1.5em; margin-inline: var(--space-hair); padding: var(--space-hair) var(--space-1);
+  vertical-align: baseline; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* A citation whose source can't be shown: muted, its words after its number. */
+.citation-chip-unavailable { gap: var(--space-hair); border-color: var(--outline); background: var(--surface-low); color: var(--muted); }
+.citation-unavailable-label { font: inherit; font-weight: var(--weight-regular); }
+/* A source's own words as written, line breaks kept and long words wrapping, a cited passage marked as its citation is
+   while open. */
+.source-text { display: block; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
+.source-text mark { color: inherit; background: var(--highlight); border-radius: .15em; }
+.sources-button { gap: var(--space-1); min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
+  font: var(--type-body-sm); }
+.sources-count { font: var(--type-label-md); font-variant-numeric: tabular-nums; }
+.message > .sources-button { margin-top: var(--space-2); }
+/* Rows: a list runs its rows edge to edge, a hairline between them; a group sets them on one white surface. */
+.row-list { margin: 0; padding: 0; list-style: none; }
+.row-list > li + li { border-top: var(--hairline) solid var(--outline-variant); }
+.message > .row-group { margin-top: var(--space-3); }
+.row-group { padding: 0 var(--space-4); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--surface-lowest); }
+.list-row { display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%;
+  min-height: var(--target); padding: var(--space-row) 0; border-radius: var(--radius-sm); }
+.list-row-number { min-width: 2.5ch; color: var(--primary); font: var(--type-label-md); font-variant-numeric: tabular-nums; }
+.list-row-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.list-row-text strong { display: block; color: var(--ink); font: var(--type-title-sm); }
+.list-row-text small { display: block; margin-top: var(--space-hair); color: var(--muted); font: var(--type-body-sm); }
+.list-row-chevron { flex: none; color: var(--muted); }
+.list-row-chevron .icon { transform: rotate(-90deg); }
+.section-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--target); }
+.section-title { margin: 0; color: var(--ink); font: var(--type-title-md); }
+.section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
+.tabs.has-icons button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 52px; font: var(--type-label-sm); }
+.tabs.has-icons .icon { width: 24px; height: 24px; }
+/* Prose: body large, a step between paragraphs, headings on the title roles, and
+   tables that scroll on their own. Only the Markdown's own elements take prose styles, never a host's inline piece. */
+.prose { width: 100%; min-width: 0; color: var(--body); font: var(--type-body-lg); overflow-wrap: anywhere; }
+.prose > :first-child { margin-top: 0; }
+.prose > :last-child { margin-bottom: 0; }
+.prose p:where([data-prose]) { margin: 0 0 var(--space-3); color: inherit; font: inherit; text-wrap: pretty; }
+.prose :is(h1, h2, h3, h4, h5, h6):where([data-prose]) { margin: var(--space-5) 0 var(--space-2); color: var(--ink); }
+.prose :is(h1, h2):where([data-prose]) { font: var(--type-title-lg); letter-spacing: var(--title-tracking); }
+.prose :is(h3, h4, h5, h6):where([data-prose]) { font: var(--type-title-sm); }
+.prose :is(ul, ol):where([data-prose]) { margin: var(--space-2) 0 var(--space-3); padding-left: 1.45em; }
+.prose li:where([data-prose]) { padding-left: .18em; }
+.prose li:where([data-prose]) + li { margin-top: var(--space-1); }
+.prose li:where([data-prose]) > p { margin-bottom: var(--space-1); }
+.prose strong:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
+.prose a:where([data-prose]) { color: inherit; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; }
+.prose blockquote:where([data-prose]) { margin: var(--space-3) 0; padding: 0 0 0 var(--space-3); border-left: var(--stroke) solid var(--outline); color: var(--muted); }
+.prose code:where([data-prose]) { padding: 0 var(--space-1); border-radius: var(--radius-sm); background: var(--surface-low); font: var(--type-code); }
+.prose pre:where([data-prose]), .prose th:where([data-prose]) { background: var(--surface-low); }
+.prose pre:where([data-prose]) { overflow-x: auto; margin: var(--space-3) 0; padding: var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); }
+.prose pre:where([data-prose]) code { padding: 0; background: transparent; font: var(--type-code); }
+.prose hr:where([data-prose]) { margin: var(--space-5) 0; border: 0; border-top: var(--hairline) solid var(--outline-variant); }
+.prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; overflow-x: auto; }
+.prose table:where([data-prose]) { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
+.prose :is(th, td):where([data-prose]) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
+.prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
+.prose-image { color: var(--muted); font: var(--type-body-sm); font-style: italic; }
+/* Duet's theme: prose and the conversation at body large, each action a full-width
+   bar, quiet actions and links in green at the touch target's height, cards on a hairline rather than a shadow, and the
+   person's bubble tailed toward them. A host sets it on its root. */
+.theme-duet {
+  font: var(--type-body-lg);
+  --control-width: 100%;
+  --control-min-height: 50px;
+  --control-radius: var(--radius-lg);
+  --control-quiet-color: var(--primary);
+  --control-quiet-padding-inline: 0;
+  --navigation-color: var(--primary);
+  --navigation-hover-color: var(--primary);
+  --navigation-min-height: var(--target);
+  --card-elevation: none;
+  --card-outline: var(--hairline) solid var(--outline-variant);
+}
+.theme-duet .message-person { border-end-end-radius: 5px; }
+@media (forced-colors: active) {
+  .field:focus-within { outline: var(--focus-ring-width) solid Highlight; }
+  .dialog { outline: var(--hairline) solid CanvasText; }
+  :is(.control, .navigation-row)::before { display: none; }
+  .card-open::after { background: transparent; }
+  .card-object:has(.card-open:focus-visible) { outline-color: Highlight; }
+  .control { border-color: ButtonText; }
+  :is(.state-pill, .avatar) { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
+  :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
+}
+/* Measurements and charts. A value's units read in body text beside its figures. */
+.value { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .3em; color: var(--ink); font: var(--type-value-md); letter-spacing: var(--title-tracking); font-variant-numeric: tabular-nums; }
+.value-lg { font: var(--type-value-lg); }
+.value-unit { margin-inline-start: .15em; font: var(--type-body-md); letter-spacing: 0; }
+.value-lg .value-unit { font: var(--type-title-lg); font-weight: var(--weight-regular); }
+.chart-caption { display: flex; justify-content: space-between; gap: var(--space-3); margin: 0; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.comparison { display: grid; gap: var(--space-3); }
+.comparison-row { display: grid; gap: var(--space-2); }
+.comparison-track { display: block; height: 7px; }
+.comparison-bar { display: block; height: 100%; border-radius: var(--radius-pill); background: var(--data-track); transform-origin: left; animation: chart-grow var(--spring-step) both; }
+.is-observed .comparison-bar { background: var(--data); }
+.sparkline { position: relative; display: block; height: 40px; }
+.sparkline svg { display: block; width: 100%; height: 100%; overflow: visible; animation: chart-reveal var(--motion-step) var(--ease-out) both; }
+.chart-line { fill: none; stroke: var(--data); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.chart-point { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--data); animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; }
+/* A series across its buckets: the plot, its value axis on the trailing
+   edge in quiet caption figures, and each bucket's word beneath. A bucket is a column; its bar stands in the middle,
+   narrow for a week and three-fifths of its column beyond. */
+.series-chart { --series-height: 132px; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-2);
+  margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
+.series-chart.is-bare { --series-height: 56px; grid-template-columns: minmax(0, 1fr); }
+.series-plot { position: relative; grid-area: 1 / 1; height: var(--series-height); }
+.series-gridline { position: absolute; inset-inline: 0; height: 0; border-top: var(--hairline) solid var(--outline-variant); }
+.series-bar { position: absolute; bottom: 0; width: calc(100% / var(--series-count) * .6); translate: -50% 0; border-radius: 3px;
+  background: var(--data); transform-origin: bottom; animation: series-grow var(--spring-step) both;
+  transition: background-color var(--motion-control) var(--ease-out); }
+.series-chart.is-narrow .series-bar { width: 14px; }
+.series-bar.is-quiet { background: var(--data-quiet); }
+.series-bar.is-partial { background: var(--data-partial); }
+.series-line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: chart-reveal var(--motion-step) var(--ease-out) both; }
+.series-stroke { fill: none; stroke: var(--data); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.series-line.is-quiet .series-stroke { stroke: var(--data-line-quiet); }
+.series-band { fill: var(--data-band); stroke: none; }
+.series-dot { position: absolute; width: 7px; height: 7px; translate: -50% -50%; border-radius: 50%; background: var(--data);
+  animation: chart-point var(--motion-arrive) var(--ease-out) var(--motion-step) both; }
+.series-dot.is-quiet { width: 4px; height: 4px; background: var(--data-quiet); }
+.series-dot.is-partial { background: var(--data-partial); }
+.series-dot.is-chosen { width: 8px; height: 8px; box-shadow: 0 0 0 2px var(--surface-lowest); animation: none; }
+.series-scrub { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px solid var(--data-scrub); }
+.series-reference { position: absolute; inset-inline: 0; height: 1.5px; translate: 0 50%;
+  background: repeating-linear-gradient(90deg, var(--data-reference) 0 4px, transparent 4px 7px); }
+.series-reference-word { position: absolute; bottom: calc(100% + 2px); left: 0; color: var(--data-reference); font: var(--type-label-sm); }
+/* A running total: dashed marks across the span, the usual total's dashed curve over its
+   wash, the total's line a touch heavier, and its end named above its dot. Each mark's word starts at its mark. */
+.series-mark { position: absolute; top: 0; bottom: 0; width: 0; border-left: var(--hairline) dashed var(--outline-variant); }
+.series-wash { fill: var(--data-wash); stroke: none; }
+.series-usual { fill: none; stroke: var(--data-quiet); stroke-width: 1.5; stroke-dasharray: 3 3; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.series-chart.is-running .series-stroke { stroke-width: 2.2; }
+.series-chart.is-running .series-plot { container-type: inline-size; }
+/* The end's word stands centred over its dot, shifted only as far as keeps it inside the plot, clear of the value axis. */
+.series-end-word { position: absolute; bottom: calc(100% + 4px); left: 50%; color: var(--body); font-weight: var(--weight-strong); white-space: nowrap;
+  translate: clamp(calc(var(--place) * -100cqw), -50%, calc((1 - var(--place)) * 100cqw - 100%)) 0; }
+.series-chart.is-running .series-axis { position: relative; display: block; min-height: 1lh; }
+.series-axis-word { position: absolute; padding-inline-start: var(--space-1); }
+/* A pinned mark's target: the bar with a little room above it, or a fingertip round a point. Empty plot clears. */
+/* A target never leaves its own column, so the bucket nearest a tap is the one it pins. */
+.series-target { --series-column: calc(100% / var(--series-count)); position: absolute; bottom: 0;
+  width: min(var(--series-column), max(24px, calc(var(--series-column) * .84))); translate: -50% 0;
+  padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; cursor: pointer; }
+.series-chart.is-line .series-target { bottom: auto; width: min(var(--series-column), 48px); height: 48px; translate: -50% -50%;
+  pointer-events: none; }
+/* A point is reached within a fingertip of it, inside its own column: the reach is that circle, clipped to the target. */
+.series-target-reach { position: absolute; inset: 0; clip-path: circle(24px at 50% 50%); pointer-events: auto; }
+.series-ticks { position: relative; grid-area: 1 / 2; height: var(--series-height); }
+.series-ticks-width { display: block; height: 0; overflow: hidden; visibility: hidden; white-space: nowrap; }
+.series-tick { position: absolute; right: 0; translate: 0 50%; white-space: nowrap; }
+.series-axis { grid-area: 2 / 1; display: grid; grid-template-columns: repeat(var(--series-count), minmax(0, 1fr)); padding-top: var(--space-1); text-align: center; white-space: nowrap; }
+/* A week's letters stand centred under their days; beyond a week, each word starts at its bucket. */
+.series-chart:not(.is-narrow) .series-axis { text-align: start; }
+/* A series' readout: the label in caption weight (the accent's words while a mark is
+   pinned), the figure, and its span in caption, each holding one line even while it is empty; paging at the trailing edge. */
+.chart-header { display: flex; align-items: flex-start; gap: var(--space-2); }
+.chart-readout { display: grid; gap: var(--space-hair); flex: 1; min-width: 0; }
+.chart-readout > * { min-height: 1lh; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The figure runs as one line of its parts, so a figure too wide ends in an ellipsis; its parts keep Value's gap. */
+.chart-readout > .value { display: block; }
+.chart-readout > .value > .value-part + .value-part { margin-inline-start: .3em; }
+.chart-header-label { color: var(--muted); font: var(--type-label-md); }
+.chart-header-label.is-pinned { color: var(--primary); }
+.chart-header-caption { color: var(--muted); font: var(--type-body-sm); }
+.chart-paging { display: flex; flex: none; }
+/* The span a series shows: equal pills on the resting fill, the chosen one's words in the accent on its soft fill.
+   Each pill is reached across the full target height. */
+.range-choice { --selection-fill: var(--primary-container); --selection-radius: var(--radius-pill); isolation: isolate;
+  display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: var(--space-1); padding-block: calc((var(--target) - var(--control-height)) / 2); }
+.range-choice-option { position: relative; min-height: var(--control-height); padding: 0 var(--space-3); border: 0; border-radius: var(--radius-pill);
+  background: transparent; color: var(--body); font: var(--type-label-md); cursor: pointer;
+  transition: color var(--motion-control) var(--ease-out); }
+.range-choice-option::before { content: ""; position: absolute; inset: calc((var(--control-height) - var(--target)) / 2) 0; }
+/* The resting fill lies beneath the chosen one's, so the chosen fill travels over the pills it passes. */
+.range-choice-option::after { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--control-resting); }
+.range-choice-option[aria-current]:not([aria-current="false"]) { color: var(--primary); }
+@keyframes series-grow { from { transform: scaleY(0); } }
+.measurement-tile { box-sizing: border-box; display: grid; gap: var(--space-1); align-content: start; min-width: 0; width: 100%; padding: var(--space-4) var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--data-container); color: var(--ink); text-align: left; }
+.measurement-tile-label { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-data-container); font: var(--type-label-md); }
+.measurement-tile-detail { color: var(--muted); font: var(--type-body-sm); }
+.measurement-tile .sparkline { margin-top: var(--space-3); }
+@keyframes chart-grow { from { transform: scaleX(0); } }
+@keyframes chart-reveal { from { clip-path: inset(-8px 100% -8px -8px); } to { clip-path: inset(-8px -8px -8px -8px); } }
+@keyframes chart-point { from { opacity: 0; transform: scale(.4); } }
+/* A card holding one object: what it holds, its title, its content and its source. */
+.card-object { display: grid; gap: var(--space-4); padding: var(--space-5); border: var(--hairline) solid var(--outline-variant); box-shadow: none; }
+.card-object.is-tinted { background: var(--data-container); }
+.card-lead { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.card-object-title { margin: 0; color: var(--ink); font: var(--type-title-lg); letter-spacing: var(--title-tracking); }
+.card-lead + .card-object-title { margin-top: calc(-1 * var(--space-1)); }
+.card-object-title + .card-detail { margin-top: calc(-1 * var(--space-3)); }
+.card-detail { margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.card-footer { display: flex; align-items: center; gap: var(--space-2); margin: 0; padding-top: var(--space-3); border-top: var(--hairline) solid var(--outline-variant);
+  color: var(--muted); font: var(--type-body-sm); }
+.card-footer .icon { width: 16px; height: 16px; }
+.card-footer-go { margin-inline-start: auto; }
+.card-footer-link { --navigation-color: var(--muted); min-height: 0; padding: 0; font: inherit; }
+/* A card that opens its object: the title is the button, and its reach and state layer cover the card; the ring goes round
+   the card. */
+.card-object.is-openable { position: relative; }
+.card-open { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; }
+.card-open::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius-lg); background: currentColor; opacity: 0;
+  transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { .card-open:hover::after { opacity: var(--state-hover); } }
+.card-open:active::after { opacity: var(--state-pressed); }
+.card-open:focus-visible { outline: 0; animation: none; }
+.card-object:has(.card-open:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset);
+  animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
+    focus-ring-settle calc(var(--motion-focus) * .75) var(--ease-emphasized) calc(var(--motion-focus) * .25); }
+.is-tinted .card-footer { padding-top: 0; border-top: 0; }
+.step-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--outline-variant); }
+.step-list li { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--outline-variant); color: var(--ink); font: var(--type-body-md); }
+.step-number { flex: none; min-width: 2ch; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.quote { margin: 0; color: var(--ink); font: var(--type-body-lg); quotes: "\201C" "\201D"; }
+.quote::before { content: open-quote; }
+.quote::after { content: close-quote; }
+.later-context { display: grid; gap: var(--space-2); padding: var(--space-4); border-inline-start: var(--stroke) solid var(--outline); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--data-container); }
+.later-context .quote { font: var(--type-body-md); }
+/* The conversation's frame. */
+.date-separator { margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); text-align: center; }
+.context-chip { display: flex; align-items: center; gap: var(--space-2); margin: calc(-1 * var(--composer-inset, var(--space-2))) calc(-1 * var(--composer-inset, var(--space-2))) 0; padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
+  border-bottom: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-field) var(--radius-field) 0 0; background: var(--data-container); color: var(--on-data-container); font: var(--type-body-sm); }
+.context-chip-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.context-chip-remove { display: inline-grid; place-items: center; flex: none; width: var(--target); height: var(--target); margin-block: calc(-1 * var(--space-2)); border: 0; border-radius: var(--radius-pill); background: transparent; color: inherit; cursor: pointer; }
+.suggestion { align-self: flex-start; max-width: 94%; min-height: var(--target); padding: var(--space-3) var(--space-4); border: var(--hairline) solid var(--outline-variant);
+  border-radius: var(--radius-lg); background: var(--surface-low); color: var(--body); font: var(--type-body-sm); }
+/* Pages, forms and their frame. */
+.top-bar { position: relative; display: flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 calc(var(--target) + var(--space-5));
+  border-bottom: var(--hairline) solid var(--outline-variant); background: var(--surface-lowest); }
+.top-bar-title { display: flex; align-items: center; gap: var(--space-2); min-width: 0; margin: 0; color: var(--ink); font: var(--type-title-sm); text-align: center; }
+.top-bar-back, .top-bar-action { position: absolute; display: inline-flex; align-items: center; gap: var(--space-hair); min-height: var(--target); padding: 0 var(--space-2);
+  border: 0; background: transparent; color: var(--primary); font: var(--type-body-md); cursor: pointer; }
+.top-bar-back { inset-inline-start: var(--space-3); }
+.top-bar-action { inset-inline-end: var(--space-3); }
+.top-bar-back-chevron .icon { transform: rotate(90deg); }
+.paper { display: grid; gap: var(--space-5); padding: var(--space-6) var(--space-5); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg);
+  background: var(--surface-lowest); box-shadow: var(--elevation-1); }
+.paper-title { margin: 0; color: var(--ink); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
+.paper-title + .card-detail { margin-top: calc(-1 * var(--space-4)); }
+.paper-section { display: grid; gap: var(--space-2); }
+.paper-section > p { margin: 0; color: var(--ink); font: var(--type-body-lg); }
+/* A proposed change, section by section: what changed and its name, the proposed words, the earlier words, and the
+   sources. A section left as it was reads quieter. Sections sit a hairline apart. */
+.proposed-change { display: grid; gap: var(--space-3); min-width: 0; padding-block: var(--space-5); }
+.proposed-change + .proposed-change { border-top: var(--hairline) solid var(--outline-variant); }
+.proposed-change:first-child { padding-top: 0; }
+.proposed-change-heading { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+.proposed-change-heading h3 { margin: 0; color: var(--ink); font: var(--type-title-md); }
+.proposed-change-state { color: var(--muted); font: var(--type-body-sm); }
+.proposed-change-words > p { margin: 0; color: var(--ink); font: var(--type-body-lg); }
+.proposed-change-words > p + p { margin-top: var(--space-2); }
+.is-unchanged .proposed-change-words > p { color: var(--body); }
+.proposed-change-previous { margin: 0; color: var(--muted); font: var(--type-body-md); }
+.proposed-change-sources { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
+.proposed-change-sources .navigation-control { min-height: 0; font: var(--type-body-sm); }
+.selection-row, .setting-row { display: flex; align-items: center; gap: var(--space-3); min-height: var(--target); padding: var(--space-row) 0; cursor: pointer; }
+.selection-row input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--primary); }
+.row-list > li + li > :is(.selection-row, .setting-row) { border-top: 0; }
+.switch { flex: none; appearance: none; position: relative; width: 51px; height: 31px; margin: 0; border-radius: var(--radius-pill); background: var(--surface-highest);
+  cursor: pointer; transition: background-color var(--motion-control) var(--ease-out); }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: var(--surface-lowest); box-shadow: var(--elevation-2);
+  transition: transform var(--spring-send); }
+.switch:checked { background: var(--primary); }
+.switch:checked::after { transform: translateX(20px); }
+.switch:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.notice { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--tone-container); color: var(--tone-on); }
+.notice > .icon { margin-top: .15em; }
+.notice-text { display: grid; gap: var(--space-hair); min-width: 0; font: var(--type-body-sm); }
+.notice-text strong { font: var(--type-title-sm); }
+.notice-text > .control { justify-self: start; margin-top: var(--space-2); }
+.tag { display: inline-flex; align-items: center; padding: var(--space-hair) var(--space-2); border: var(--hairline) solid var(--outline); border-radius: var(--radius-sm);
+  color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); }
+.footer-actions { --control-width: 100%; display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-5) max(var(--space-5), env(safe-area-inset-bottom)); border-top: var(--hairline) solid var(--outline-variant);
+  background: var(--surface-lowest); }
+.footer-note { margin: 0; color: var(--muted); font: var(--type-body-sm); text-align: center; }
+/* A sheet's handle: where it can be held. */
+.dialog-sheet::before { content: ""; display: block; width: 38px; height: 4px; margin: var(--space-2) auto 0; border-radius: var(--radius-pill); background: var(--outline); }
+/* Waiting on the person's own action: the spinner turns in the control's icon's place. A control
+   without an icon keeps its geometry and says it is busy. Busy is not unavailable, so it keeps full strength. */
+.control[aria-busy="true"] { opacity: 1; }
+.spinner-track { opacity: .22; }
+.spinner { animation: spinner-turn var(--motion-spinner) linear infinite; }
+.control > .spinner { color: inherit; }
+.control[aria-busy="true"] > .icon:not(.spinner) { display: none; }
+.control[aria-busy="true"]:not(:has(> .icon:not(.spinner))) > .spinner { display: none; }
+@keyframes spinner-turn { to { transform: rotate(1turn); } }
+/* The conversation's scrolling region and its one way back to the newest reply. */
+.conversation-viewport { position: relative; display: grid; min-height: 0; }
+.conversation-scroll { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.jump-to-latest { position: absolute; right: var(--space-row); bottom: var(--space-row); box-shadow: var(--elevation-3);
+  transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .jump-to-latest { opacity: 0; transform: translateY(var(--rise)) scale(.98); } }
+/* Feedback: the rating pair, and reasons as toggle chips. */
+.feedback-rating { display: inline-flex; gap: var(--space-hair); transition: opacity var(--motion-control) var(--ease-out); }
+@media (hover: hover) {
+  .feedback-rating { opacity: 0; pointer-events: none; }
+  :is(.message:hover, .message:focus-within) .feedback-rating, .feedback-rating:is(:focus-within, [data-active="true"]) { opacity: 1; pointer-events: auto; }
+}
+.feedback-rating .control[aria-pressed="true"] { color: var(--primary); background: var(--primary-container); }
+.toggle-chip { border-radius: var(--radius-pill); font-weight: var(--weight-regular); white-space: normal; text-align: left; }
+.toggle-chip[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-container); }
+/* The one undo notice: a surface at the overlay's depth, words then Undo, floating at the foot
+   of the window so it never moves what is being read. It settles back the way it came, shorter than it arrived. */
+.undo-notice { position: fixed; z-index: 10; inset-inline: 0; bottom: max(var(--space-6), env(safe-area-inset-bottom)); display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3);
+  box-sizing: border-box; width: fit-content; max-width: calc(100% - 2 * var(--page-gutter)); min-height: var(--target); margin: 0 auto;
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-radius: var(--radius-lg); background: var(--surface-lowest); box-shadow: var(--elevation-4);
+  color: var(--body); font: var(--type-body-md); transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
+@starting-style { .undo-notice { opacity: 0; transform: translateY(var(--rise)); } }
+.undo-notice.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
+/* Reading a cited source. The preview sits at the overlay's
+   depth beside its citation, on the side with more room, and never covers it; the component places it. */
+.anchored-popover { display: inline; }
+.citation-chip[aria-expanded="true"] { border-color: var(--primary); background: var(--highlight); }
+.citation-preview { position: fixed; z-index: 20;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; row-gap: var(--space-3); box-sizing: border-box;
+  width: min(var(--popover-width), calc(100vw - 2 * var(--space-3))); max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3)), var(--popover-available-height, var(--popover-max-height)));
+  margin: 0; padding: var(--space-4); overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg);
+  background: var(--surface-lowest); color: var(--body); box-shadow: var(--elevation-4); font: var(--type-body-md); text-align: left; white-space: normal; }
+/* It enters once placed, from its citation's side. */
+.citation-preview[data-side] { animation: preview-enter var(--motion-arrive) var(--ease-out) both; }
+.citation-preview[data-side="above"] { --preview-from: calc(-1 * var(--rise-small)); }
+@keyframes preview-enter { from { opacity: 0; transform: translateY(calc(-1 * var(--preview-from, var(--rise-small)))); } }
+.citation-preview-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.citation-preview-heading > span { display: grid; gap: var(--space-hair); min-width: 0; }
+.citation-preview-heading small, .source-pane-heading small { color: var(--muted); font: var(--type-body-sm); }
+.citation-preview-heading strong { color: var(--ink); font: var(--type-title-sm); }
+.citation-preview-body { display: block; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.citation-preview-actions { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
+.citation-preview-actions .navigation-control { min-height: var(--control-height); padding: var(--space-1) 0; font: var(--type-body-sm); overflow-wrap: anywhere; }
+/* What a source says: its own metadata in a quiet line, quoted passages set off, then its content. */
+.citation-source-details { display: grid; gap: var(--space-3); }
+.citation-source-metadata { display: flex; flex-wrap: wrap; gap: var(--space-hair) var(--space-2); color: var(--muted); font: var(--type-body-sm); }
+.citation-source-metadata > span + span::before { content: "·"; margin-inline-end: var(--space-2); }
+.citation-selected-passages { display: grid; gap: var(--space-2); }
+.citation-selected-passages blockquote { margin: 0; padding: var(--space-2) var(--space-3); border-left: 3px solid var(--primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; background: var(--highlight); color: var(--ink); }
+.citation-unavailable-view { color: var(--muted); font: var(--type-body-sm); }
+/* One source beside the reader when both have room (a content fit in font-relative units), over it with Back when
+   not. The pane enters from its own edge and leaves the same way, shorter than it came. */
+.source-reading-layout { container: source-reading / inline-size; min-width: 0; min-height: 0; height: 100%; overflow: hidden; }
+.source-reading-frame { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); height: 100%; }
+.source-reading-main { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; }
+.source-reading-pane { grid-column: 1; grid-row: 1; min-width: 0; min-height: 0; overflow: hidden; background: var(--surface-lowest);
+  animation: source-enter var(--motion-arrive) var(--ease-out) both; }
+.source-reading-layout.is-source-closing .source-reading-pane { pointer-events: none; animation: source-exit var(--motion-control) var(--ease-exit) both; }
+.source-reading-layout.has-source .source-reading-main { visibility: hidden; }
+/* Leaving, the source uncovers the reader beneath it, so focus can return to the citation that opened it. */
+.source-reading-layout.is-source-closing .source-reading-main { visibility: visible; }
+.source-pane-close { display: none; }
+@container source-reading (min-width: 60rem) {
+  .source-reading-layout.has-source > .source-reading-frame { grid-template-columns: var(--source-reading-ratio); }
+  .source-reading-layout.has-source .source-reading-main { visibility: visible; }
+  .source-reading-pane { grid-column: 2; border-left: var(--hairline) solid var(--outline-variant); }
+  .source-pane-back { display: none; }
+  .source-pane-close { display: inline-flex; }
+}
+.source-pane-content { display: grid; grid-template-rows: auto minmax(0, 1fr); row-gap: var(--space-3); box-sizing: border-box; height: 100%; padding: var(--space-4); }
+.source-pane-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--space-2); }
+.source-pane-back { grid-column: 1 / -1; justify-self: start; }
+.source-pane-heading h2 { margin: var(--space-2) 0 0; color: var(--ink); font: var(--type-title-lg); }
+.source-pane-heading h2:focus { outline: none; }
+.source-pane-body { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+@keyframes source-enter { from { opacity: 0; transform: translateX(var(--rise)); } }
+@keyframes source-exit { to { opacity: 0; transform: translateX(var(--rise)); } }

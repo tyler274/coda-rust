@@ -572,8 +572,9 @@ impl PhysicianSession {
             Ok(())
         })
     }
-    /// Physician-visible authored texts, never provider/tool evidence.
-    pub fn conversation(&self, scope: ChatScope<'_>) -> Vec<String> {
+    /// Physician-visible authored turns in order, each with who wrote it (`user` for the
+    /// physician, `assistant` for Coda), never provider/tool evidence.
+    pub fn conversation(&self, scope: ChatScope<'_>) -> Vec<(String, String)> {
         self.state
             .targets
             .iter()
@@ -582,7 +583,7 @@ impl PhysicianSession {
                     && t.workspace == scope.workspace
                     && t.id == scope.chat
             })
-            .map(|t| t.turns.iter().map(|(_, text)| text.clone()).collect())
+            .map(|t| t.turns.clone())
             .unwrap_or_default()
     }
     /// This owner's chats in a workspace that have a physician turn, newest opened first,

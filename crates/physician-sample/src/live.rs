@@ -608,7 +608,7 @@ pub(crate) async fn snapshot(
         "snapshot": {
             "conversation": conversation
                 .into_iter()
-                .map(|text| json!({ "text": text }))
+                .map(|(role, text)| json!({ "kind": turn_kind(&role), "text": text }))
                 .collect::<Vec<_>>()
         }
     }))
@@ -689,6 +689,15 @@ async fn durable_snapshot(
     Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref()) })).into_response()
 }
 
+/// Who wrote a turn, as the snapshot names it: Coda's turns are the model's, every other the physician's.
+fn turn_kind(role: &str) -> &'static str {
+    if role == "assistant" {
+        "model"
+    } else {
+        "physician"
+    }
+}
+
 /// The reference `SnapshotResponse` subset this site owns. A failed turn adds
 /// its run and a mechanical "couldn't finish" line whose `resume_target` names
 /// the exact work and run Try again resumes; the physician's text stays saved.
@@ -699,14 +708,7 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
     let mut items: Vec<Value> = conversation
         .messages
         .iter()
-        .map(|message| {
-            let kind = if message.role == "assistant" {
-                "model"
-            } else {
-                "physician"
-            };
-            json!({ "kind": kind, "text": message.text })
-        })
+        .map(|message| json!({ "kind": turn_kind(&message.role), "text": message.text }))
         .collect();
     let mut runs = Vec::new();
     if conversation.status == "failed"

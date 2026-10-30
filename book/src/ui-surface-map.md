@@ -32,16 +32,30 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 
 | Owner | What to inspect |
 | --- | --- |
-| [`ui`](/crates/ui/src/lib.rs) | Shared tokens and tab primitives; product-specific layout remains in each app |
+| [`ui`](/crates/ui/src/lib.rs) | The design both apps draw: shared tokens in light and dark (type, colour, space, shape, motion), icons, and each component's look, motion, gestures, states and accessibility, with no product rules. The [gallery](#seeing-the-shared-components) shows every component |
 | [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs removal of person-to-person sharing |
 | [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens; the old join gate is disabled, while the retained sharing toggle still conflicts with fixed consent |
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
 | [`duet-health`](/crates/duet-health/src/lib.rs), [`duet-notify`](/crates/duet-notify/src/lib.rs), [`duet-widget`](/crates/duet-widget/src/lib.rs) | Native health, notification and widget adapters; verify on installed clients under the owning outcomes |
 
-The assistant-ui study in the corpus is a conversation-pattern reference. No
-React library adoption is implied for the Rust/Dioxus client. Source snapshots
-describe their stated revisions; verify the current
-owner before turning an observation into implementation work.
+## Seeing the shared components
+
+[`ui-gallery`](/crates/ui-gallery/src/main.rs) renders every `ui` component with
+the shared stylesheet, apart from either app: the type and colour roles first, then
+each component. The library runs ahead of both products: it is the ideal form that
+the physician web app and Duet's iOS and Android apps draw from as each is rebuilt,
+and it adds no palette beyond the shared roles. Each component's look is the library's; an app places a component through its own class.
+Its examples are fictional and scripted, and nothing in it is product behavior. To build and serve it:
+
+```sh
+cargo build -p ui-gallery --target wasm32-unknown-unknown --features web
+wasm-bindgen --target web --out-dir target/ui-gallery-web target/wasm32-unknown-unknown/debug/ui-gallery.wasm
+cp crates/ui-gallery/web/index.html target/ui-gallery-web/
+```
+
+Then serve `target/ui-gallery-web` with any static file server. **Slow
+motion** plays every animation at quarter speed, and **Replay entries**
+remounts the sections so their entry motion runs again.
 
 [Release](release.md) owns platform checks. A rendered screen or sample fixture
 does not establish saved state, consent, background delivery or real-model

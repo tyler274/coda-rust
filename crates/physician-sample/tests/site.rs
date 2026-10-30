@@ -213,14 +213,13 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let message = "Review the discharge summary before the follow-up visit";
     // There is no Save button: typing saves itself once the physician
     // pauses, confirms beside the composer, and an edit clears the mark.
-    let notice =
-        r#"document.querySelector('.composer-actions .composer-notice')?.textContent ?? ''"#;
+    let notice = r#"document.querySelector('.composer-context [role=status]')?.textContent ?? ''"#;
     let buttons = browser
-        .eval("[...document.querySelectorAll('.composer-actions button')].map(b => b.textContent.trim())")
+        .eval("[...document.querySelectorAll('.composer-toolbar button')].map(b => b.textContent.trim())")
         .await;
     assert_eq!(
         buttons.pointer("/result/result/value"),
-        Some(&serde_json::json!(["Send", "Dictate"])),
+        Some(&serde_json::json!(["Dictate", "Send"])),
         "the composer still offers a manual Save: {buttons}"
     );
     browser.type_composer(message).await;
@@ -232,7 +231,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let edited = browser
         .eval(&format!(
             r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer');
+            const box = document.querySelector('textarea.composer-input');
             Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, box.value + ' ');
             box.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => resolve({notice}), 200);
@@ -247,11 +246,11 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     browser
         .eval(&format!(
             r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer');
+            const box = document.querySelector('textarea.composer-input');
             Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
             box.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => {{
-                const send = [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Send');
+                const send = [...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send');
                 send.click();
                 resolve(true);
             }}, 100);
@@ -923,7 +922,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
             .unwrap()
     };
     let ctrl_enter = r#"(() => {
-        const box = document.querySelector('textarea.composer');
+        const box = document.querySelector('textarea.composer-input');
         box.focus();
         box.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', ctrlKey: true, bubbles: true}));
         return true;
@@ -981,7 +980,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     )
     .await;
     tab.eval(
-        "[...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Send').click()",
+        "[...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send').click()",
     )
     .await;
     let answered = tab.held_request("POST").await;
@@ -2260,7 +2259,7 @@ impl CdpBrowser {
     async fn type_composer(&mut self, text: &str) {
         self.eval(&format!(
             r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer');
+            const box = document.querySelector('textarea.composer-input');
             Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
             box.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => resolve(true), 100);
@@ -2273,7 +2272,7 @@ impl CdpBrowser {
     /// The composer's text, and the mark beside it.
     async fn composer(&mut self) -> (String, String) {
         let value = self
-            .eval("[document.querySelector('textarea.composer')?.value ?? null, document.querySelector('.composer-actions .composer-notice')?.textContent ?? '']")
+            .eval("[document.querySelector('textarea.composer-input')?.value ?? null, document.querySelector('.composer-context [role=status]')?.textContent ?? '']")
             .await;
         let pair = &value["result"]["result"]["value"];
         (
@@ -2319,7 +2318,7 @@ impl CdpBrowser {
     /// The conflict the composer shows: the newer revision and its text.
     async fn conflict(&mut self) -> Option<(u64, String)> {
         let value = self
-            .eval("(() => { const c = document.querySelector('.composer-conflict'); return c ? [Number(c.dataset.revision), c.querySelector('.composer-conflict-text')?.textContent ?? ''] : null; })()")
+            .eval("(() => { const c = document.querySelector('.draft-conflict'); return c ? [Number(c.dataset.revision), c.querySelector('pre')?.textContent ?? ''] : null; })()")
             .await;
         let pair = value.pointer("/result/result/value")?.as_array()?.clone();
         Some((pair[0].as_u64()?, pair[1].as_str()?.to_owned()))
@@ -2345,7 +2344,7 @@ impl CdpBrowser {
     async fn click_conflict(&mut self, label: &str) {
         let clicked = self
             .eval(&format!(
-                "(() => {{ const b = [...document.querySelectorAll('.composer-conflict button')].find(b => b.textContent.trim() === {}); if (!b) return false; b.click(); return true; }})()",
+                "(() => {{ const b = [...document.querySelectorAll('.draft-conflict button')].find(b => b.textContent.trim() === {}); if (!b) return false; b.click(); return true; }})()",
                 serde_json::to_string(label).unwrap()
             ))
             .await;
@@ -2477,14 +2476,14 @@ impl CdpBrowser {
 
     async fn search_for(&mut self, query: &str) {
         self.eval(&format!(r#"(() => {{
-            const input = document.querySelector('input.dialog-search');
+            const input = document.querySelector('.search-field input');
             Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, {});
             input.dispatchEvent(new Event('input', {{bubbles: true}}));
         }})()"#, serde_json::to_string(query).unwrap())).await;
     }
 
     async fn dialog_text(&mut self) -> String {
-        self.eval("document.querySelector('section.dialog')?.innerText ?? ''")
+        self.eval("document.querySelector('dialog.dialog')?.innerText ?? ''")
             .await
             .pointer("/result/result/value")
             .and_then(|v| v.as_str())

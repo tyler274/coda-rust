@@ -4,17 +4,16 @@
 #![deny(missing_docs)]
 
 mod composer;
-mod icons;
 mod local_draft;
 mod panels;
 mod shell;
+mod status;
 mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAnswer};
 use dioxus::prelude::*;
-use icons::{Icon, IconName};
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
@@ -31,13 +30,18 @@ use shell::{
     chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
     format_calendar_date, format_clock, format_message, format_waited, keyboard_command,
     need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words,
-    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
-    today_view, upcoming_visits, work_end_reason, work_heading,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
+    row_tone, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
-use ui::{CommandNotice, CommandStage, EmptyState, ErrorState, ReadNotice, TextButton};
+use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
+use ui::{
+    ActionRow, Author, Button, ButtonVariant, Count, Dialog, DraftConflict, EmptyLine, Icon,
+    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill,
+    StatusLine, Tone,
+};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
 const UPDATES_LOADING: &str = "Loading updates…";
@@ -85,6 +89,7 @@ const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a n
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
 const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
 const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
+const SHOW_SESSION_PROMPT: &str = "document.getElementById('session-prompt')?.showModal()";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
 /// send is missing or fails, and never returns the code.
@@ -762,7 +767,7 @@ pub fn PhysicianRoot(
     });
     if !signed_in() {
         rsx! {
-            style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+            ui::Stylesheet { app: SHELL_STYLES }
             SignInScreen {
                 client,
                 session,
@@ -1388,10 +1393,10 @@ fn PhysicianShell(
     };
     let patient_gone = selected.read().is_some() && *gone.read() == *selected.read();
     let patient_read = match (workspace_answer, &workspace_current) {
-        (Some(Err(())), Some(Ok(_))) => ui::ReadStage::Stale,
-        (_, Some(Ok(_))) => ui::ReadStage::Showing,
-        (_, Some(Err(()))) => ui::ReadStage::Unavailable,
-        (_, None) => ui::ReadStage::Loading,
+        (Some(Err(())), Some(Ok(_))) => ReadStage::Stale,
+        (_, Some(Ok(_))) => ReadStage::Showing,
+        (_, Some(Err(()))) => ReadStage::Unavailable,
+        (_, None) => ReadStage::Loading,
     };
     let chats = chat_view(
         selected.read().as_deref(),
@@ -1483,7 +1488,7 @@ fn PhysicianShell(
         }
     );
     rsx! {
-        style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+        ui::Stylesheet { app: SHELL_STYLES }
         if app_collapsed() {
             button {
                 class: "coda-restore",
@@ -1494,12 +1499,17 @@ fn PhysicianShell(
             }
         }
         if expired() {
-            // Covers and hides the page; nothing underneath changes.
-            div {
+            // Covers and hides the page; nothing underneath changes. A modal opened last, it
+            // stands over any dialog left open, which stays as it was. Only signing in or out
+            // closes it.
+            dialog {
+                id: "session-prompt",
                 class: "session-prompt",
-                role: "dialog",
-                aria_modal: "true",
                 aria_label: "Sign in to continue",
+                "closedby": "none",
+                onmounted: move |_| {
+                    document::eval(SHOW_SESSION_PROMPT);
+                },
                 SignInScreen {
                     client,
                     session,
@@ -1520,22 +1530,6 @@ fn PhysicianShell(
             tabindex: "0",
             onkeydown: move |event| {
                 let key = event.key().to_string();
-                if key == "Escape" {
-                    event.prevent_default();
-                    if search_open() {
-                        search_open.set(false);
-                        editing.set(false);
-                    } else if shortcuts_open() {
-                        shortcuts_open.set(false);
-                    } else if connections_open() {
-                        connections_open.set(false);
-                    } else if past_work_open() {
-                        past_work_open.set(false);
-                    } else if reading.read().is_some() {
-                        reading.set(None);
-                    }
-                    return;
-                }
                 if key == " " && event.modifiers().ctrl() && event.modifiers().shift() {
                     event.prevent_default();
                     let client = client.read().clone();
@@ -1606,27 +1600,28 @@ fn PhysicianShell(
                             onclick: move |_| place.set(Place::Today),
                             img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "Coda Health" }
                         }
-                        button {
-                            class: "icon-button sidebar-collapse",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            icon_only: true,
+                            class: "sidebar-collapse",
                             aria_label: "Collapse navigation",
                             onclick: move |_| remember(Panel::Sidebar, true),
                             Icon { name: IconName::SidebarCollapse }
                         }
-                        button {
-                            class: "icon-button sidebar-expand",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            icon_only: true,
+                            class: "sidebar-expand",
                             aria_label: "Expand navigation",
                             onclick: move |_| remember(Panel::Sidebar, false),
                             Icon { name: IconName::SidebarExpand }
                         }
                     }
-                    nav { class: "sidebar-primary", aria_label: "Primary",
-                        button {
+                    nav { class: "sidebar-primary selection-host", aria_label: "Primary",
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
                             aria_label: "Open Today",
-                            aria_current: if place() == Place::Today { "page" } else { "" },
+                            aria_current: (place() == Place::Today).then_some("page"),
                             onclick: move |_| {
                                 place.set(Place::Today);
                             },
@@ -1637,17 +1632,15 @@ fn PhysicianShell(
                             }
                             strong { class: "item-text", "Today" }
                         }
-                        button {
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
-                            aria_current: if place() == Place::Updates { "page" } else { "" },
+                            aria_current: (place() == Place::Updates).then_some("page"),
                             onclick: move |_| place.set(Place::Updates),
                             Icon { name: IconName::Message }
                             strong { class: "item-text", "Updates" }
                         }
-                        button {
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
                             aria_label: "Find patient",
                             onclick: move |_| search_open.set(true),
                             Icon { name: IconName::Search }
@@ -1667,9 +1660,9 @@ fn PhysicianShell(
                                 p { class: "sidebar-empty", "Not on your panel" }
                             } else {
                                 if !matches!(chats, ChatView::Closed | ChatView::Pending | ChatView::Unavailable) {
-                                    button {
-                                        class: "control-secondary sidebar-new-conversation",
-                                        r#type: "button",
+                                    Button {
+                                        compact: true,
+                                        class: "sidebar-new-conversation",
                                         onclick: move |_| start_chat(),
                                         Icon { name: IconName::Plus }
                                         "{NEW_CONVERSATION}"
@@ -1683,9 +1676,8 @@ fn PhysicianShell(
                                     ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
                                     ChatView::Chats(lines) => rsx! {
                                         for line in lines {
-                                            button {
+                                            NavigationRow {
                                                 class: "sidebar-conversation-link",
-                                                r#type: "button",
                                                 onclick: {
                                                     let id = line.id.clone();
                                                     move |_| open_chat.set(Some(id.clone()))
@@ -1718,21 +1710,21 @@ fn PhysicianShell(
                             span { class: "sidebar-physician", "{whoami_name}" }
                         }
                         if connection_accounts {
-                            button {
-                                r#type: "button",
+                            Button {
+                                variant: ButtonVariant::Quiet,
                                 onclick: move |_| connections_open.set(true),
                                 Icon { name: IconName::Users }
                                 "{CONNECTIONS}"
                             }
                         }
-                        button {
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
                             onclick: move |_| shortcuts_open.set(true),
                             Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
                         }
-                        button {
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
                             aria_label: "Sign out of Coda",
                             onclick: move |_| sign_out_everywhere(session),
                             Icon { name: IconName::Users }
@@ -1742,9 +1734,9 @@ fn PhysicianShell(
                 }
             }
             main { class: "glass-stage",
-                button {
+                Button {
+                    variant: ButtonVariant::Quiet,
                     class: "stage-minimize",
-                    r#type: "button",
                     onclick: move |_| app_collapsed.set(true),
                     "Collapse Coda"
                 }
@@ -2089,7 +2081,10 @@ fn PhysicianShell(
                 state: search_state.clone(),
                 on_retry: move |_| *search_attempt.write() += 1,
                 on_query: move |value: String| query.set(value),
-                on_close: move |_| search_open.set(false),
+                on_close: move |_| {
+                    search_open.set(false);
+                    editing.set(false);
+                },
                 on_open: move |id: String| {
                     selected.set(Some(id));
                     place.set(Place::Workspace);
@@ -2213,11 +2208,8 @@ struct CommandSlot {
 
 /// A schedule rail shows while its day is loading or failed: only an answered day
 /// can say there is no calendar or no visit to show.
-fn schedule_unanswered(schedule: ui::ReadStage) -> bool {
-    matches!(
-        schedule,
-        ui::ReadStage::Loading | ui::ReadStage::Unavailable
-    )
+fn schedule_unanswered(schedule: ReadStage) -> bool {
+    matches!(schedule, ReadStage::Loading | ReadStage::Unavailable)
 }
 
 /// One read as the page shows it. A failed refresh keeps the last answer.
@@ -2771,7 +2763,7 @@ fn TodaySurface(
     connections: Vec<String>,
     visits: Vec<VisitLine>,
     show_schedule: bool,
-    schedule: ui::ReadStage,
+    schedule: ReadStage,
     on_schedule_retry: EventHandler,
     schedule_empty: String,
     schedule_collapsed: bool,
@@ -2811,7 +2803,7 @@ fn TodaySurface(
             header { class: "today-heading",
                 h1 { "Today" }
                 if need_you > 0 {
-                    span { class: "count", span { class: "count-value", "{need_you}" } " {words}" }
+                    Count { value: need_you, words }
                 }
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
@@ -2904,13 +2896,13 @@ fn SimulationPanel(
             }
             div { class: "simulation-scenarios", aria_label: "Simulation scenarios",
                 for scenario in sim.scenarios.iter() {
-                    button {
-                        class: if scenario.key == sim.active_scenario_key {
-                            "control-secondary is-active-scenario"
+                    Button {
+                        variant: if scenario.key == sim.active_scenario_key {
+                            ButtonVariant::Primary
                         } else {
-                            "control-secondary"
+                            ButtonVariant::Secondary
                         },
-                        r#type: "button",
+                        compact: true,
                         "data-scenario-key": "{scenario.key}",
                         onclick: {
                             let key = scenario.key.clone();
@@ -2922,9 +2914,8 @@ fn SimulationPanel(
             }
             div { class: "simulation-panel-patients", aria_label: "Synthetic panel patients",
                 for patient in sim.panel_patients.iter() {
-                    button {
-                        class: "control-secondary",
-                        r#type: "button",
+                    Button {
+                        compact: true,
                         "data-panel-patient": "{patient.patient_workspace_id}",
                         onclick: {
                             let id = patient.patient_workspace_id.clone();
@@ -2950,24 +2941,20 @@ fn TodayRows(
         div { class: "today-list",
             for (index, row) in rows.iter().enumerate() {
                 article { class: "today-row",
-                    button {
+                    NavigationRow {
                         class: if focused == Some(index) { "today-row-open is-keyboard-focus" } else { "today-row-open" },
-                        r#type: "button",
                         onclick: {
                             let row = row.clone();
                             move |_| on_open.call(row.clone())
                         },
                         span { class: "today-row-line",
                             span { class: "today-row-heading",
-                                span { class: "live-dot", aria_hidden: "true" }
+                                LiveDot {}
                                 strong { class: "today-row-who", "{row.patient}" }
                                 if row.now {
                                     span { class: "urgency-now", "{NEEDS_YOU_NOW}" }
                                 }
-                                span { class: "state-pill",
-                                    Icon { name: IconName::Alert }
-                                    "{row.did}"
-                                }
+                                StatePill { tone: row_tone(&row.kind), icon: row_icon(&row.kind), "{row.did}" }
                             }
                             if let Some(waited) = format_waited(&row.waiting_since, &server_now) {
                                 time { class: "today-row-waited", datetime: "{row.waiting_since}", "{waited}" }
@@ -2979,9 +2966,8 @@ fn TodayRows(
                     }
                     if row.resume_work_item_id.is_some() {
                         div { class: "today-row-action",
-                            button {
-                                class: "control-secondary",
-                                r#type: "button",
+                            Button {
+                                compact: true,
                                 onclick: {
                                     let row = row.clone();
                                     move |_| on_resume.call(row.clone())
@@ -3000,7 +2986,7 @@ fn TodayRows(
 fn ScheduleRail(
     visits: Vec<VisitLine>,
     title: &'static str,
-    read: ui::ReadStage,
+    read: ReadStage,
     on_retry: EventHandler,
     empty: String,
     collapsed: bool,
@@ -3011,41 +2997,37 @@ fn ScheduleRail(
 ) -> Element {
     let count = visits.len();
     let rail_class = if collapsed {
-        "schedule-rail is-collapsed"
+        "schedule-rail card is-collapsed"
     } else {
-        "schedule-rail"
+        "schedule-rail card"
     };
     rsx! {
         aside { class: "{rail_class}", aria_label: "{title}",
             if collapsed {
-                button {
+                NavigationRow {
                     class: "schedule-rail-expand",
-                    r#type: "button",
                     aria_expanded: "false",
                     aria_label: "Show {title}",
                     onclick: move |_| on_collapsed.call(false),
-                    span { class: "icon-tile", aria_hidden: "true",
-                        Icon { name: IconName::Calendar }
-                    }
+                    IconTile { name: IconName::Calendar }
                     if count > 0 {
-                        span { class: "count", span { class: "count-value", "{count}" } }
+                        Count { value: count }
                     }
                 }
             }
             div { class: "schedule-rail-body",
             header { class: "card-header",
-                span { class: "icon-tile", aria_hidden: "true",
-                    Icon { name: IconName::Calendar }
-                }
-                div { class: "card-title",
+                IconTile { name: IconName::Calendar }
+                div { class: "card-title title-with-count",
                     h2 { "{title}" }
                     if count > 0 {
-                        span { class: "count", span { class: "count-value", "{count}" } " left" }
+                        Count { value: count, words: "left" }
                     }
                 }
-                button {
-                    class: "icon-button schedule-rail-collapse",
-                    r#type: "button",
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    icon_only: true,
+                    class: "schedule-rail-collapse",
                     aria_expanded: "true",
                     aria_label: "Collapse {title}",
                     onclick: move |_| on_collapsed.call(true),
@@ -3060,11 +3042,11 @@ fn ScheduleRail(
                 retry: TRY_AGAIN,
                 on_retry,
             }
-            if visits.is_empty() && read == ui::ReadStage::Showing {
+            if visits.is_empty() && read == ReadStage::Showing {
                 p { class: "schedule-rail-empty", "{empty}" }
             }
             for (index, visit) in visits.iter().enumerate() {
-                button {
+                NavigationRow {
                     class: if focused == Some(index) {
                         "schedule-visit is-next is-keyboard-focus"
                     } else if index == 0 {
@@ -3072,7 +3054,6 @@ fn ScheduleRail(
                     } else {
                         "schedule-visit"
                     },
-                    r#type: "button",
                     onclick: {
                         let visit = visit.clone();
                         move |_| on_open.call(visit.clone())
@@ -3132,7 +3113,7 @@ fn UpdatesSurface(state: ReadView<Vec<serde_json::Value>>, on_retry: EventHandle
 #[component]
 fn PatientSurface(
     gone: bool,
-    read: ui::ReadStage,
+    read: ReadStage,
     on_go_today: EventHandler,
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
@@ -3140,7 +3121,7 @@ fn PatientSurface(
     visits: Vec<VisitLine>,
     schedule_collapsed: bool,
     on_schedule_collapsed: EventHandler<bool>,
-    schedule: ui::ReadStage,
+    schedule: ReadStage,
     on_schedule_retry: EventHandler,
     focused: Option<i32>,
     chats: ChatView,
@@ -3265,8 +3246,8 @@ fn PatientSurface(
         // Nothing of the patient shows, not even the name.
         return rsx! {
             div { class: "reading-workspace patient-page",
-                ErrorState { message: PATIENT_GONE }
-                TextButton { label: GO_TO_TODAY, quiet: true, on_press: on_go_today }
+                StatusLine { message: PATIENT_GONE, alert: true }
+                NavigationControl { onclick: move |_| on_go_today.call(()), "{GO_TO_TODAY}" }
             }
         };
     }
@@ -3277,17 +3258,18 @@ fn PatientSurface(
                     h1 { class: "workspace-title", "{heading_name}" }
                     div { class: "patient-identity-actions",
                         if past_work && !clinic_demographic {
-                            button {
-                                class: "control-secondary past-work-button",
-                                r#type: "button",
+                            Button {
+                                compact: true,
+                                class: "past-work-button",
                                 onclick: move |_| on_open_past_work.call(()),
                                 "Past work"
                             }
                         }
                         if is_admin && workspace.is_some() && !clinic_demographic {
-                            button {
-                                class: "control-secondary remove-panel-button",
-                                r#type: "button",
+                            Button {
+                                compact: true,
+                                danger: true,
+                                class: "remove-panel-button",
                                 disabled: panel_busy,
                                 onclick: move |_| on_remove_panel.call(()),
                                 if panel_busy { "Updating…" } else { "Remove from panel" }
@@ -3378,7 +3360,7 @@ fn PatientSurface(
                                 label { class: "panel-physician-label",
                                     "Physician panel"
                                     select {
-                                        class: "panel-physician-select",
+                                        class: "panel-physician-select field",
                                         aria_label: "Physician panel",
                                         value: "{target_physician_id}",
                                         onchange: move |event| on_select_physician.call(event.value()),
@@ -3391,9 +3373,9 @@ fn PatientSurface(
                                     }
                                 }
                             }
-                            button {
-                                class: "sign-in-primary assign-panel-button",
-                                r#type: "button",
+                            Button {
+                                variant: ButtonVariant::Primary,
+                                class: "assign-panel-button",
                                 disabled: panel_busy,
                                 onclick: move |_| on_assign_panel.call(()),
                                 if panel_busy { "Assigning…" } else { "Assign to panel" }
@@ -3413,9 +3395,8 @@ fn PatientSurface(
                         "Scenario: {sim.active_scenario_label} · {sim.investor_metric.physician_touched_items} touches across {sim.investor_metric.panel_size} patients"
                     }
                     if !replies.is_empty() {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-action": "admit-corrected-labs",
                             disabled: work_busy,
                             onclick: move |_| on_admit_corrected_labs.call(()),
@@ -3461,7 +3442,7 @@ fn PatientSurface(
                             "data-reply-state": "superseded_by_correction",
                             div { class: "simulation-card-header",
                                 strong { "{superseded.headline}" }
-                                span { class: "state-pill", "Superseded by corrected labs" }
+                                StatePill { "Superseded by corrected labs" }
                             }
                             if let Some(reason) = superseded.superseded_reason {
                                 p { class: "patient-synopsis-meta", "{reason}" }
@@ -3474,18 +3455,18 @@ fn PatientSurface(
                 if let Some(heading) = work_heading(&run) {
                     section { class: "patient-section", aria_label: "Current work",
                         h2 { "Current work" }
-                        button {
+                        NavigationRow {
                             class: "today-row-open",
-                            r#type: "button",
                             onclick: {
                                 let heading = heading.clone();
                                 let preparation = visits
                                     .first()
                                     .and_then(|visit| visit.preparation.clone());
+                                let ended_cause = run.ended_cause.clone();
                                 move |_| {
                                     let body = preparation
                                         .clone()
-                                        .or_else(|| work_end_reason(run.ended_cause.as_deref()).map(str::to_owned))
+                                        .or_else(|| work_end_reason(ended_cause.as_deref()).map(str::to_owned))
                                         .unwrap_or_default();
                                     on_read.call((heading.clone(), body));
                                 }
@@ -3550,9 +3531,8 @@ fn PatientSurface(
                             "data-recommendation-id": "{rec.recommendation_id}",
                             div { class: "simulation-card-header",
                                 strong { "{rec.medication} — Held (undecided)" }
-                                button {
-                                    class: "control-secondary",
-                                    r#type: "button",
+                                Button {
+                                    compact: true,
                                     "data-decide-recommendation": "{rec.recommendation_id}",
                                     disabled: work_busy,
                                     onclick: {
@@ -3616,15 +3596,14 @@ fn PatientSurface(
             section { class: "patient-section", aria_label: "Conversation",
                 h2 { "Conversation" }
                 match chats {
-                    ChatView::Closed => rsx! { EmptyState { message: WORKSPACE_CLOSED.to_owned() } },
+                    ChatView::Closed => rsx! { EmptyLine { message: WORKSPACE_CLOSED.to_owned() } },
                     ChatView::Pending => rsx! {},
                     // The page's own read line says the patient couldn't open.
                     ChatView::Unavailable => rsx! {},
                     ChatView::Empty => rsx! {
                         p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" }
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             onclick: move |_| on_new_chat.call(()),
                             Icon { name: IconName::Plus }
                             "{NEW_CONVERSATION}"
@@ -3632,9 +3611,8 @@ fn PatientSurface(
                     },
                     ChatView::Chats(lines) => rsx! {
                         for line in lines {
-                            button {
+                            NavigationRow {
                                 class: "sidebar-conversation-link",
-                                r#type: "button",
                                 onclick: {
                                     let id = line.id.clone();
                                     move |_| on_open_chat.call(id.clone())
@@ -3660,50 +3638,55 @@ fn PatientSurface(
                             if let Some(target) = line.resume {
                                 div { class: "conversation-mechanical", role: "status",
                                     p { "{line.text}" }
-                                    button {
-                                        class: "control-secondary",
-                                        r#type: "button",
+                                    Button {
+                                        compact: true,
                                         disabled: conversation_resume_busy,
                                         onclick: move |_| on_conversation_resume.call(target.clone()),
                                         "{TRY_AGAIN}"
                                     }
+                                }
+                            } else if line.author == Some(Author::Person) {
+                                ui::Message { author: Author::Person, by: "You",
+                                    FormattedMessage { text: line.text }
+                                }
+                            } else if line.author == Some(Author::Assistant) {
+                                ui::Message { author: Author::Assistant, by: "Coda",
+                                    FormattedMessage { text: line.text }
                                 }
                             } else {
                                 FormattedMessage { text: line.text }
                             }
                         }
                         {conversation_resume_notice}
-                        textarea {
-                            class: "composer",
+                        ui::Composer {
+                            label: "Message",
                             placeholder: "Write a message",
-                            value: "{draft}",
-                            aria_label: "Message",
-                            onfocus: move |_| on_editing.call(true),
-                            onblur: move |_| {
-                                on_editing.call(false);
-                                on_draft_blur.call(());
+                            value: draft.clone(),
+                            on_input: move |text| on_draft.call(text),
+                            on_submit: move |_| on_send.call(()),
+                            on_editing: move |editing| {
+                                on_editing.call(editing);
+                                if !editing {
+                                    on_draft_blur.call(());
+                                }
                             },
-                            oninput: move |event| on_draft.call(event.value()),
-                        }
-                        div { class: "composer-actions",
-                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
-                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
-                            if !notice.is_empty() {
-                                span { class: "composer-notice", role: "status", "{notice}" }
-                            }
-                        }
-                        if let Some(newer) = conflict {
-                            div { class: "composer-conflict", role: "alert", "data-revision": "{newer.revision}",
-                                p { "{DRAFT_CONFLICT}" }
-                                blockquote { class: "composer-conflict-text", "{newer.text}" }
-                                p { class: "quiet-line",
-                                    if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                            status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
+                            notices: conflict.map(|newer| rsx! {
+                                DraftConflict {
+                                    message: DRAFT_CONFLICT,
+                                    saved: newer.text,
+                                    "data-revision": "{newer.revision}",
+                                    p { class: "quiet-line",
+                                        if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                                    }
+                                    ActionRow {
+                                        Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                        Button { compact: true, onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
+                                    }
                                 }
-                                div { class: "composer-actions",
-                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
-                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
-                                }
-                            }
+                            }),
+                            Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
+                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
                         }
                         if recovery_unavailable {
                             p { class: "quiet-line composer-recovery", role: "status", "{RECOVERY_UNAVAILABLE}" }
@@ -3756,19 +3739,17 @@ fn SearchDialog(
         .map(|patient| patient.patient_workspace_id.clone());
     let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Find patient", onclick: move |event| event.stop_propagation(),
-                h2 { "Find patient" }
-                input {
-                    class: "dialog-search",
-                    r#type: "search",
+        Dialog { close_label: "Close", title: "Find patient", on_close,
+                SearchField {
+                    label: "Search your panel",
                     placeholder: "Name, DOB or phone",
-                    value: "{query}",
+                    clear_label: "Clear search",
+                    value: query.clone(),
                     autofocus: true,
                     onfocus: move |_| on_editing.call(true),
                     onblur: move |_| on_editing.call(false),
-                    oninput: move |event| on_query.call(event.value()),
-                    onkeydown: move |event| {
+                    on_input: move |words| on_query.call(words),
+                    onkeydown: move |event: KeyboardEvent| {
                         if event.key().to_string() == "Enter" {
                             event.stop_propagation();
                             if let Some(id) = first.clone() {
@@ -3786,14 +3767,13 @@ fn SearchDialog(
                     on_retry,
                 }
                 if none {
-                    EmptyState { message: SEARCH_NONE }
+                    EmptyLine { message: SEARCH_NONE }
                 }
                 ul { class: "dialog-results",
                     for (index, patient) in results.iter().enumerate() {
                         li {
-                            button {
+                            NavigationRow {
                                 class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
-                                r#type: "button",
                                 onclick: {
                                     let id = patient.patient_workspace_id.clone();
                                     move |_| on_open.call(id.clone())
@@ -3804,7 +3784,6 @@ fn SearchDialog(
                         }
                     }
                 }
-            }
         }
     }
 }
@@ -3812,9 +3791,7 @@ fn SearchDialog(
 #[component]
 fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Connections", onclick: move |event| event.stop_propagation(),
-                h2 { "{CONNECTIONS}" }
+        Dialog { close_label: "Close", title: CONNECTIONS, on_close,
                 if failed {
                     p { "{TODAY_UNAVAILABLE}" }
                 } else if lines.is_empty() {
@@ -3824,8 +3801,6 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
                         p { class: "today-connection", "{line}" }
                     }
                 }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -3872,21 +3847,15 @@ fn source_reading(chip: SourceChip) -> OpenReading {
 
 #[component]
 fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element {
-    let name = chip_name(&chip);
+    let label = chip_name(&chip);
     let index = chip.index;
     if chip.open {
         rsx! {
-            button {
-                class: "citation-chip",
-                r#type: "button",
-                aria_label: "{name}",
-                onclick: move |_| on_open.call(chip.clone()),
-                "[{index}]"
-            }
+            ui::CitationChip { index, label, onclick: move |_| on_open.call(chip.clone()) }
         }
     } else {
         rsx! {
-            span { class: "citation-chip", aria_label: "{name}", "[{index}]" }
+            ui::CitationChip { index, label }
         }
     }
 }
@@ -3899,9 +3868,9 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
         && reading.unavailable.is_none();
     let citation = reading.eyebrow.is_some();
     let section_class = if citation {
-        "dialog reader citation-inspection"
+        "reader citation-inspection"
     } else {
-        "dialog reader"
+        "reader"
     };
     let title = reading.title.clone();
     let eyebrow = reading.eyebrow.clone();
@@ -3909,14 +3878,8 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
     let unavailable = reading.unavailable.clone();
     let link_label = reading.link_label.clone();
     let link_uri = reading.link_uri.clone();
-    let label = if citation { "Citation" } else { "Reader" };
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "{section_class}", aria_label: "{label}", onclick: move |event| event.stop_propagation(),
-                if let Some(eyebrow) = eyebrow {
-                    span { class: "citation-eyebrow", "{eyebrow}" }
-                }
-                h2 { "{title}" }
+        Dialog { close_label: "Close", class: "{section_class}", title, subtitle: eyebrow, on_close,
                 if quiet {
                     p { "Nothing is open to read." }
                 }
@@ -3932,8 +3895,6 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
                 if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
                     a { class: "citation-open", href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
                 }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -3941,18 +3902,13 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
 #[component]
 fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section {
-                class: "dialog past-work-dialog",
-                aria_label: "Past work",
-                onclick: move |event| event.stop_propagation(),
-                h2 { id: "past-work-title", "Past work" }
-                if !patient.is_empty() {
-                    p { class: "patient-synopsis-meta", "{patient}" }
-                }
-                p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
+        Dialog {
+            close_label: "Close",
+            class: "past-work-dialog",
+            title: "Past work",
+            subtitle: (!patient.is_empty()).then_some(patient),
+            on_close,
+            p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
         }
     }
 }
@@ -4046,7 +4002,7 @@ fn ReplyReviewCard(
             aria_label: "{label}",
             div { class: "simulation-card-header",
                 strong { "{headline}" }
-                span { class: "state-pill", "{urgency}" }
+                StatePill { tone: Tone::Warning, "{urgency}" }
             }
             p { class: "patient-synopsis-meta", "{label}" }
             FormattedMessage { text: draft.clone() }
@@ -4061,9 +4017,8 @@ fn ReplyReviewCard(
             if can_copy || can_close {
                 div { class: "reply-review-actions",
                     if can_copy {
-                        button {
-                            class: "sign-in-primary",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Primary,
                             "data-reply-action": "copy",
                             disabled: busy,
                             onclick: move |_| {
@@ -4077,9 +4032,8 @@ fn ReplyReviewCard(
                         }
                     }
                     if can_close {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-reply-action": "no-reply-needed",
                             disabled: busy,
                             onclick: {
@@ -4097,7 +4051,7 @@ fn ReplyReviewCard(
             if can_revise {
                 div { class: "reply-review-ask",
                     input {
-                        class: "reply-review-instruction",
+                        class: "reply-review-instruction field",
                         r#type: "text",
                         placeholder: "{REPLY_TELL_CODA}",
                         aria_label: "{REPLY_TELL_CODA}",
@@ -4118,9 +4072,8 @@ fn ReplyReviewCard(
                         },
                     }
                     if !instruction.read().trim().is_empty() && !busy {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-reply-action": "revise",
                             aria_label: "{REPLY_ASK}",
                             onclick: {
@@ -4175,9 +4128,7 @@ fn copy_text_wasm(text: &str) -> bool {
 #[component]
 fn ShortcutsDialog(on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Keyboard shortcuts", onclick: move |event| event.stop_propagation(),
-                h2 { "Keyboard shortcuts" }
+        Dialog { close_label: "Close", title: "Keyboard shortcuts", on_close,
                 div { class: "shortcut", span { "Search your panel" } kbd { "/  ⌘ K" } }
                 div { class: "shortcut", span { "Move between patients or conversations" } kbd { "J  K" } }
                 div { class: "shortcut", span { "Open the focused item" } kbd { "Enter" } }
@@ -4185,8 +4136,6 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
                 div { class: "shortcut", span { "Close the current preview or dialog" } kbd { "Esc" } }
                 div { class: "shortcut", span { "Hold to record; release to transcribe" } kbd { "Ctrl+Shift+Space" } }
                 p { "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus. Esc cancels dictation." }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -4503,6 +4452,9 @@ fn message_command(
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
+    /// Who wrote it, when the server says: the physician or Coda. A turn that
+    /// doesn't say shows without a speaker rather than as either.
+    author: Option<Author>,
     resume: Option<WorkResumeTarget>,
 }
 
@@ -4518,7 +4470,16 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 .resume_target
                 .clone()
                 .filter(|_| turn.kind.as_deref() == Some("mechanical"));
-            Some(ConversationLine { text, resume })
+            let author = match turn.kind.as_deref() {
+                Some("physician") => Some(Author::Person),
+                Some("model") => Some(Author::Assistant),
+                _ => None,
+            };
+            Some(ConversationLine {
+                text,
+                author,
+                resume,
+            })
         })
         .collect()
 }
@@ -4622,6 +4583,7 @@ fn now_millis() -> u128 {
 mod conversation_line_tests {
     use super::{ConversationLine, chat_resume_command, conversation_lines, new_chat_id};
     use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+    use ui::Author;
 
     #[test]
     fn new_conversation_ids_are_distinct_chat_ids() {
@@ -4658,13 +4620,35 @@ mod conversation_line_tests {
             vec![
                 ConversationLine {
                     text: "Hello".into(),
+                    author: Some(Author::Person),
                     resume: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    author: None,
                     resume: Some(target()),
                 },
             ]
+        );
+    }
+
+    #[test]
+    fn only_a_turn_that_names_its_writer_gets_a_speaker() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "physician", "text": "Start metoprolol?" },
+                { "kind": "model", "text": "Her heart rate allows it." },
+                { "text": "Recorded in local simulation." },
+            ] }
+        }))
+        .unwrap();
+        let authors: Vec<_> = conversation_lines(&page.snapshot)
+            .into_iter()
+            .map(|line| line.author)
+            .collect();
+        assert_eq!(
+            authors,
+            vec![Some(Author::Person), Some(Author::Assistant), None]
         );
     }
 

@@ -130,6 +130,9 @@ const COVERED: &str = "(() => { const shell = document.querySelector('.glass-app
      return !!prompt && !!shell && prompt.contains(top) \
          && shell.getAttribute('aria-hidden') === 'true' && shell.hasAttribute('inert'); })()";
 
+const FIND_PATIENT_OPEN: &str = "[...document.querySelectorAll('dialog[open]')]\
+     .some((dialog) => dialog.innerText.includes('Find patient'))";
+
 const RESUMED_ON_THE_PATIENT: &str = "!document.querySelector('.session-prompt') \
      && !document.querySelector('.glass-app').hasAttribute('inert') \
      && document.body.innerText.includes('Patient summary')";
@@ -212,6 +215,40 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
         &mut browser,
         RESUMED_ON_THE_PATIENT,
         "resuming on another tab's link",
+    );
+
+    // A dialog open when the session ends stays open beneath the prompt, and
+    // is still open once signing in again resumes the page. It opens by a real
+    // click, as a person opens it, since the browser treats Escape differently
+    // over a dialog no gesture opened.
+    let at = browser.page().evaluate(
+        "(() => { const r = document.querySelector('button[aria-label=\"Find patient\"]').getBoundingClientRect(); \
+         return [r.x + r.width / 2, r.y + r.height / 2]; })()",
+    );
+    for kind in ["mousePressed", "mouseReleased"] {
+        browser.page().call_session(
+            "Input.dispatchMouseEvent",
+            serde_json::json!({ "type": kind, "x": at[0], "y": at[1], "button": "left", "clickCount": 1 }),
+        );
+    }
+    wait_until(&mut browser, FIND_PATIENT_OPEN, "Find patient opening");
+    browser.page().evaluate(END_THE_SESSION);
+    wait_until(&mut browser, COVERED, "the prompt covering an open dialog");
+    // Escape never dismisses the prompt, even pressed again without other input.
+    for _ in 0..3 {
+        for kind in ["keyDown", "keyUp"] {
+            browser.page().call_session(
+                "Input.dispatchKeyEvent",
+                serde_json::json!({ "type": kind, "key": "Escape", "code": "Escape", "windowsVirtualKeyCode": 27 }),
+            );
+        }
+    }
+    wait_until(&mut browser, COVERED, "the prompt still up after Escape");
+    browser.click(".session-prompt .sign-in-primary");
+    wait_until(
+        &mut browser,
+        &format!("{RESUMED_ON_THE_PATIENT} && {FIND_PATIENT_OPEN}"),
+        "resuming with Find patient still open",
     );
 
     // Another tab's sign-out reaches this one.

@@ -2,6 +2,7 @@
 use crate::PatientSession;
 use dioxus::prelude::*;
 use duet_client::doctor::{PendingDoctorOperation, PublicationView, PublishRequest};
+use ui::{ActionRow, Button, ButtonVariant};
 
 #[component]
 pub(crate) fn PublicationControls(base_url: String, generation: i32) -> Element {
@@ -153,11 +154,11 @@ pub(crate) fn PublicationControls(base_url: String, generation: i32) -> Element 
             p { "Links contain a pinned copy of the page you approve. Later edits do not change it. Revocation stops future access, but cannot erase downloaded copies." }
             if let Some(message) = restore_error { p { role: "alert", "{message}" } }
             if !error().is_empty() { p { role: "alert", "{error}" } }
-            button { disabled: busy(), onclick: move |_| retry.set(retry() + 1), "Check active link" }
+            Button { disabled: busy(), onclick: move |_| retry.set(retry() + 1), "Check active link" }
             if let Some(operation) = pending() {
                 p { role: "status", "An operation still needs confirmation. Its original identity and approval are retained; do not create a new request." }
                 if !matches!(operation, PendingDoctorOperation::Clear { .. }) {
-                    button { disabled: busy(), onclick: move |_| repeat(operation.clone()), "Retry original operation" }
+                    Button { disabled: busy(), onclick: move |_| repeat(operation.clone()), "Retry original operation" }
                 } else { p { "Finish the pending Start fresh operation before sharing." } }
             }
             if checked() && pending().is_none() {
@@ -167,29 +168,35 @@ pub(crate) fn PublicationControls(base_url: String, generation: i32) -> Element 
                     if active {
                         LinkCopy { label: "Web link".to_owned(), value: link.web_url.clone() }
                         LinkCopy { label: "SMART Health Link".to_owned(), value: link.shl_url.clone() }
-                        button { onclick: move |_| qr.set(Some(link.web_url.clone())), "Show web QR" }
-                        button { onclick: move |_| qr.set(Some(link.shl_url.clone())), "Show SMART Health Link QR" }
-                        button { disabled: busy(), onclick: move |_| confirm_revoke.set(true), "Revoke link…" }
+                        ActionRow {
+                            Button { onclick: move |_| qr.set(Some(link.web_url.clone())), "Show web QR" }
+                            Button { onclick: move |_| qr.set(Some(link.shl_url.clone())), "Show SMART Health Link QR" }
+                            Button { danger: true, disabled: busy(), onclick: move |_| confirm_revoke.set(true), "Revoke link…" }
+                        }
                         if confirm_revoke() {
                             p { "Stop future retrieval of both link formats? Downloaded copies remain with their recipients." }
-                            button { disabled: busy(), onclick: move |_| revoke(PendingDoctorOperation::Revoke { operation_id: uuid::Uuid::new_v4(), publication_id: link.id }), "Confirm revoke" }
-                            button { onclick: move |_| confirm_revoke.set(false), "Keep link" }
+                            ActionRow {
+                                Button { variant: ButtonVariant::Primary, danger: true, disabled: busy(), onclick: move |_| revoke(PendingDoctorOperation::Revoke { operation_id: uuid::Uuid::new_v4(), publication_id: link.id }), "Confirm revoke" }
+                                Button { onclick: move |_| confirm_revoke.set(false), "Keep link" }
+                            }
                         }
                     }
                 } else { p { "No publication is active." } }
                 label { "Link lifetime"
-                    select { disabled: busy(), value: "{lifetime}", onchange: move |e| { if let Ok(seconds) = e.value().parse::<i64>() { lifetime.set(seconds); } },
+                    select { class: "field duet-field", disabled: busy(), value: "{lifetime}", onchange: move |e| { if let Ok(seconds) = e.value().parse::<i64>() { lifetime.set(seconds); } },
                         option { value: "3600", "1 hour" }
                         option { value: "86400", "1 day" }
                         option { value: "604800", "7 days" }
                         option { value: "2592000", "30 days" }
                     }
                 }
-                button { disabled: busy(), onclick: move |_| confirm_replace.set(true), if active { "Republish reviewed page…" } else { "Publish reviewed page…" } }
+                Button { disabled: busy(), onclick: move |_| confirm_replace.set(true), if active { "Republish reviewed page…" } else { "Publish reviewed page…" } }
                 if confirm_replace() {
                     p { "Publish the reviewed saved page generation {generation}? This replaces and revokes the previous publication in both formats." }
-                    button { disabled: busy(), onclick: move |_| publish(PendingDoctorOperation::Publish(PublishRequest { operation_id: uuid::Uuid::new_v4(), expected_generation: generation.into(), expires_in_seconds: lifetime() })), "Confirm publish" }
-                    button { onclick: move |_| confirm_replace.set(false), "Cancel" }
+                    ActionRow {
+                        Button { variant: ButtonVariant::Primary, disabled: busy(), onclick: move |_| publish(PendingDoctorOperation::Publish(PublishRequest { operation_id: uuid::Uuid::new_v4(), expected_generation: generation.into(), expires_in_seconds: lifetime() })), "Confirm publish" }
+                        Button { onclick: move |_| confirm_replace.set(false), "Cancel" }
+                    }
                 }
             }
             if let Some(value) = qr() {
@@ -197,7 +204,7 @@ pub(crate) fn PublicationControls(base_url: String, generation: i32) -> Element 
                     Ok(code) => rsx! { div { role: "img", aria_label: "Private share link QR code", dangerous_inner_html: code.render::<qrcode::render::svg::Color>().min_dimensions(256,256).build() } },
                     Err(_) => rsx! { p { role: "alert", "This link is too long for a QR code; copy the full link instead." } },
                 }
-                button { onclick: move |_| qr.set(None), "Hide QR" }
+                Button { onclick: move |_| qr.set(None), "Hide QR" }
             }
         }
     }
@@ -207,8 +214,8 @@ fn LinkCopy(label: String, value: String) -> Element {
     let mut message = use_signal(String::new);
     let copy = value.clone();
     rsx! {
-        label { "{label}" input { readonly: true, r#type: "text", value: "{value}", aria_label: "{label}" } }
-        button { onclick: move |_| {
+        label { "{label}" input { class: "field duet-field", readonly: true, r#type: "text", value: "{value}", aria_label: "{label}" } }
+        Button { onclick: move |_| {
             let text = copy.clone();
             spawn(async move { message.set(match copy_link(&text).await { Ok(()) => "Copied. Anyone with this link can read the approved page.".into(), Err(e) => e }); });
         }, "Copy {label}" }
