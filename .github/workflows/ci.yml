@@ -185,8 +185,10 @@ jobs:
         # Select browser targets only; other ignored tests have their own jobs.
         # React comparison still requires a separate practice on port 8787.
         # backend_process is a child-only helper, launched by its parent proof.
+        # CI doesn't run TLC: the sign-in model's walks run locally through
+        # the coda-verify-sign-in skill.
         run: |
-          cargo test -p physician-sample --test site --test auth_browser -- --ignored
+          cargo test -p physician-sample --test site --test auth_browser -- --ignored --skip sign_in_model
           cargo test -p public-site --test site -- --ignored
           cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
       - name: Upload public-site browser screenshots
