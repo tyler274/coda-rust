@@ -36,7 +36,8 @@ qualification, and domain judgment distinct.
 
 Keep each criterion's evidence as artifacts a reader can inspect: the command
 with its exit status and output, response bodies, logs, and screenshots you have
-looked at, each recorded with the revision it ran against. Re-run evidence that a
+looked at, each recorded with the revision it ran against through
+[capture-proof](../capture-proof/SKILL.md). Re-run evidence that a
 later correction makes stale. A criterion without evidence stays listed as a gap.
 
 Use [local-review](../local-review/SKILL.md) with the original intent, exact
