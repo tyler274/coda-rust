@@ -70,10 +70,11 @@
 @supports not (anchor-name: --selection) {
   .selection-host [aria-current]:not([aria-current="false"]) { background: var(--selection-fill); box-shadow: var(--selection-shadow); }
 }
-/* While a reorder moves the current item, the item carries the fill itself and the host's fill waits. */
-.selection-host [aria-current].is-carrying-selection { background: var(--selection-fill); box-shadow: var(--selection-shadow);
-  border-radius: var(--selection-radius); }
-.selection-host:has(.is-carrying-selection)::after { visibility: hidden; }
+/* While a reorder moves the current item, the item carries the fill itself and the host's fill waits; an item no
+   longer current carries nothing and holds back nothing. */
+.selection-host [aria-current]:not([aria-current="false"]).is-carrying-selection { background: var(--selection-fill);
+  box-shadow: var(--selection-shadow); border-radius: var(--selection-radius); }
+.selection-host:has([aria-current]:not([aria-current="false"]).is-carrying-selection)::after { visibility: hidden; }
 /* A row rising past others as its list reorders is lifted over them while it moves: an opaque surface a level up, on the
    selection fill if it is the current one. */
 .is-lifted { position: relative; z-index: 1; background: var(--surface-lowest); box-shadow: var(--elevation-3); }
