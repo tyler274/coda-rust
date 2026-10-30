@@ -11,10 +11,11 @@ use ui::{
     CommandStage, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
     DateSeparator, Dialog, Disclosure, FeedbackRating, FooterActions, Icon, IconName, LaterContext,
     ListRow, LiveDot, MeasurementTile, Message, NavigationControl, NavigationRow, Notice, Overline,
-    PageTitle, Paper, PaperSection, Placeholder, Quote, Rating, ReadNotice, ReadStage, Receipt,
-    RowGroup, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
-    ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
+    PageTitle, Paper, PaperSection, Placeholder, ProposedChange, Quote, Rating, ReadNotice,
+    ReadStage, Receipt, RowGroup, SectionHeader, SelectionRow, SettingRow, SourceDetails,
+    SourcePane, SourceReading, SourcesButton, Sparkline, StatePill, StatusLine, StepList,
+    Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value,
+    WorkingMark,
 };
 
 fn main() {
@@ -86,6 +87,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
                     HeadingsDemo {}
+                }
+                Section { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so. Nothing is saved until the person saves.",
+                    ReviewDemo {}
                 }
                 Section { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document for a clinician, choices and settings as rows, and actions pinned to the foot.",
                     PagesDemo {}
@@ -437,6 +441,44 @@ fn FieldsDemo() -> Element {
         div { class: "gallery-fields",
             TextField { label: "Title", value: title(), on_input: move |words| title.set(words) }
             TextField { label: "What I want to discuss", multiline: true, value: discuss(), on_input: move |words| discuss.set(words) }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ReviewDemo() -> Element {
+    rsx! {
+        div { class: "gallery-phone",
+            TopBar { title: "Review update", back: "Back", on_back: move |_| {}, action: "Edit", on_action: move |_| {} }
+            div { class: "gallery-phone-thread",
+                PageTitle { text: "Here’s what changed.", detail: "Proposed by Duet · Not saved" }
+                div {
+                    ProposedChange {
+                        title: "What you’ve tried",
+                        tag: "Updated",
+                        previous: "Since October 16, Alex has stopped drinking coffee after noon.",
+                        sources: rsx! {
+                            NavigationControl { Icon { name: IconName::File } "Your note · October 21" }
+                        },
+                        p { "Since October 16, Alex has stopped drinking coffee after noon. On October 21, Alex reported that the afternoon tiredness had not improved." }
+                    }
+                    ProposedChange {
+                        title: "Recorded sleep",
+                        tag: "Through Oct 21",
+                        sources: rsx! {
+                            NavigationControl { Icon { name: IconName::Heart } "Apple Health · October 14–21" }
+                        },
+                        p { "Apple Watch recorded 6 hr 18 min on October 20–21, after an average of 7 hr per night across October 14–20 (7 nights)." }
+                    }
+                    ProposedChange { title: "What I want to discuss", unchanged: true,
+                        p { "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work." }
+                    }
+                }
+            }
+            FooterActions { note: "Saving does not send this page.",
+                Button { variant: ButtonVariant::Primary, "Save updated page" }
+            }
         }
     }
 }

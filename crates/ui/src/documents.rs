@@ -4,7 +4,7 @@
 
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName, Tone};
+use crate::{Disclosure, Icon, IconName, Tone};
 
 /// The bar atop a pushed screen: an optional way back on the leading edge, the title centred with
 /// an optional mark (who a conversation is with), and the screen's one action on the trailing edge.
@@ -132,6 +132,44 @@ pub fn Notice(
                     span { "{detail}" }
                 }
                 {children}
+            }
+        }
+    }
+}
+
+/// One section of a proposed update, for the person to review before anything is saved: what
+/// kind of change it is (a `tag`: "Updated", "Through Oct 21"), the section's name, the proposed
+/// words, what was saved before under Previously saved, and the `sources` it rests on, each
+/// reopening what Duet read. A section the proposal leaves as it was says so, and shows the words
+/// that stay.
+#[component]
+pub fn ProposedChange(
+    title: String,
+    #[props(default)] tag: Option<String>,
+    #[props(default)] previous: Option<String>,
+    #[props(default)] unchanged: bool,
+    #[props(default)] sources: Option<Element>,
+    children: Element,
+) -> Element {
+    rsx! {
+        section { class: if unchanged { "proposed-change is-unchanged" } else { "proposed-change" },
+            header { class: "proposed-change-heading",
+                if let Some(text) = tag.filter(|_| !unchanged) {
+                    Tag { text }
+                }
+                h3 { "{title}" }
+                if unchanged {
+                    span { class: "proposed-change-state", "Unchanged" }
+                }
+            }
+            div { class: "proposed-change-words", {children} }
+            if let Some(previous) = previous.filter(|_| !unchanged) {
+                Disclosure { title: "Previously saved", detail: true,
+                    p { class: "proposed-change-previous", "{previous}" }
+                }
+            }
+            if let Some(sources) = sources {
+                div { class: "proposed-change-sources", {sources} }
             }
         }
     }

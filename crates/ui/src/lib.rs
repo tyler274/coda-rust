@@ -20,7 +20,8 @@ pub use cards::{Card, LaterContext, Quote, StepList};
 pub use charts::{Comparison, ComparisonBars, MeasurementTile, Sparkline, TrendChart, Value};
 pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Receipt, Suggestion};
 pub use documents::{
-    FooterActions, Notice, Paper, PaperSection, SelectionRow, SettingRow, Tag, TopBar,
+    FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, Tag,
+    TopBar,
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
@@ -591,18 +592,24 @@ pub fn Disclosure(
     } else {
         "disclosure"
     };
+    let toggle = rsx! {
+        button {
+            class: "disclosure-toggle",
+            r#type: "button",
+            aria_expanded: "{open}",
+            aria_controls: "{id}",
+            onclick: move |_| open.toggle(),
+            strong { "{title}" }
+            Icon { name: IconName::ChevronDown }
+        }
+    };
     rsx! {
         section { class: "{class}", "data-state": if open() { "open" } else { "closed" },
-            h2 { class: "disclosure-heading",
-                button {
-                    class: "disclosure-toggle",
-                    r#type: "button",
-                    aria_expanded: "{open}",
-                    aria_controls: "{id}",
-                    onclick: move |_| open.toggle(),
-                    strong { "{title}" }
-                    Icon { name: IconName::ChevronDown }
-                }
+            // A detail is a line within a section, not a heading of its own.
+            if detail {
+                div { class: "disclosure-heading", {toggle} }
+            } else {
+                h2 { class: "disclosure-heading", {toggle} }
             }
             div {
                 id: "{id}",
