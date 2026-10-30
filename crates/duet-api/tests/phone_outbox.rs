@@ -8,7 +8,7 @@ use duet_api::{
     evidence::{EvidenceBatch, EvidenceItemOutcome, EvidenceRejectionCode, EvidenceStore},
     identity::{AccountContext, IdentityStore, IdentityVerifier, VerifiedIdentity},
 };
-use duet_client::health_upload::{EvidenceTransport, SyncBudget, sync, upload};
+use duet_client::health_upload::{EvidenceTransport, SyncBudget, SyncPause, sync, upload};
 use duet_health::acquisition::*;
 use duet_health::outbox::*;
 use sqlx::{AssertSqlSafe, ConnectOptions, Connection, PgConnection};
@@ -260,6 +260,138 @@ async fn phone_outbox_drains_into_canonical_evidence_on_postgres() {
     assert!(view.items.is_empty() && view.rejected.is_empty());
     assert!(view.ledger["HKQuantitySample/1"].revision.unwrap() > before);
     assert!(!view.ledger.contains_key("HKQuantitySample/2"));
+
+    // Committed upsert, lost answer, same-generation disconnect, reconnect,
+    // correction and deletion stay on one canonical id.
+    log.put(80, "090");
+    *transport.lose_answer.borrow_mut() = true;
+    let report = sync(&outbox, &log, &transport, 4, SyncBudget::default()).await;
+    assert_eq!(report.acquired.upserts, 1);
+    assert_eq!(report.uploaded.retrying, 1);
+    assert_eq!(report.uploaded.acknowledged, 0);
+    let queued = outbox.view().unwrap();
+    let operation_id = queued.items[0].operation_id;
+    let canonical = queued.ledger["HKQuantitySample/80"].canonical_record_id;
+    let anchor = queued.anchor.clone();
+    assert_eq!(queued.ledger["HKQuantitySample/80"].revision, None);
+    assert!(queued.items[0].frozen.is_some());
+
+    outbox.disconnect().unwrap();
+    let disconnected = outbox.view().unwrap();
+    assert!(!disconnected.connected);
+    assert!(disconnected.fenced.is_empty());
+    assert_eq!(disconnected.anchor, anchor);
+    assert_eq!(disconnected.items[0].operation_id, operation_id);
+    assert_eq!(
+        disconnected.ledger["HKQuantitySample/80"].canonical_record_id,
+        canonical
+    );
+    let paused = sync(&outbox, &log, &transport, 4, SyncBudget::default()).await;
+    assert_eq!(paused.paused, Some(SyncPause::NotConnected));
+    assert_eq!(outbox.view().unwrap().items[0].operation_id, operation_id);
+
+    outbox.connect(0).unwrap();
+    assert!(outbox.view().unwrap().connected);
+    assert_eq!(outbox.view().unwrap().items[0].operation_id, operation_id);
+    let (finished, _) = upload(&outbox, &transport, 5, 10).await.unwrap();
+    assert_eq!((finished.acknowledged, finished.rejected), (1, 0));
+    assert_eq!(
+        outbox.view().unwrap().ledger["HKQuantitySample/80"].canonical_record_id,
+        canonical
+    );
+    let learned = outbox.view().unwrap().ledger["HKQuantitySample/80"]
+        .revision
+        .unwrap();
+    assert!(learned > 0);
+    let replayed: i64 = sqlx::query_scalar(
+        "select count(*) from duet_evidence_ingestions where user_id=$1 and operation_id=$2",
+    )
+    .bind(a.account_id)
+    .bind(operation_id)
+    .fetch_one(&mut owner)
+    .await
+    .unwrap();
+    assert_eq!(replayed, 1);
+
+    log.put(80, "091");
+    let report = sync(&outbox, &log, &transport, 6, SyncBudget::default()).await;
+    assert_eq!(
+        (report.uploaded.acknowledged, report.uploaded.rejected),
+        (1, 0)
+    );
+    assert_eq!(
+        outbox.view().unwrap().ledger["HKQuantitySample/80"].canonical_record_id,
+        canonical
+    );
+    assert!(
+        outbox.view().unwrap().ledger["HKQuantitySample/80"]
+            .revision
+            .unwrap()
+            > learned
+    );
+    let corrected: serde_json::Value =
+        sqlx::query_scalar("select payload from health_evidence where user_id=$1 and id=$2")
+            .bind(a.account_id)
+            .bind(canonical)
+            .fetch_one(&mut owner)
+            .await
+            .unwrap();
+    assert_eq!(corrected["value"]["literal"], "091");
+
+    log.delete(80);
+    let report = sync(&outbox, &log, &transport, 7, SyncBudget::default()).await;
+    assert_eq!(
+        (report.uploaded.acknowledged, report.uploaded.rejected),
+        (1, 0)
+    );
+    assert!(
+        !outbox
+            .view()
+            .unwrap()
+            .ledger
+            .contains_key("HKQuantitySample/80")
+    );
+    let (stored_id, deleted, source_removed): (Uuid, bool, bool) = sqlx::query_as(
+        "select record_id, deleted, source_removed from evidence_sync_changes where user_id=$1 and client_record_id='HKQuantitySample/80'",
+    )
+    .bind(a.account_id)
+    .fetch_one(&mut owner)
+    .await
+    .unwrap();
+    assert_eq!(stored_id, canonical);
+    assert!(deleted && source_removed);
+    let operations: i64 = sqlx::query_scalar(
+        "select count(*) from duet_evidence_ingestions where user_id=$1 and address->>'canonical_record_id'=$2",
+    )
+    .bind(a.account_id)
+    .bind(canonical.to_string())
+    .fetch_one(&mut owner)
+    .await
+    .unwrap();
+    assert_eq!(operations, 3);
+    let revisions: i64 = sqlx::query_scalar(
+        "select count(*) from canonical_evidence_revisions where user_id=$1 and evidence_id=$2",
+    )
+    .bind(a.account_id)
+    .bind(canonical)
+    .fetch_one(&mut owner)
+    .await
+    .unwrap();
+    assert_eq!(revisions, 2);
+    let snapshot = store.snapshot(&a, 0).await.unwrap();
+    assert!(
+        snapshot
+            .records
+            .iter()
+            .all(|record| record.address.canonical_record_id != canonical)
+    );
+    let change = snapshot
+        .changes
+        .iter()
+        .find(|change| change.record_id == "HKQuantitySample/80")
+        .unwrap();
+    assert_eq!(change.canonical_record_id, canonical);
+    assert!(change.deleted && change.source_removed);
 
     // The server's source generation advances (reconnect elsewhere): stale
     // work is refused as a conflict and retained, not dropped.

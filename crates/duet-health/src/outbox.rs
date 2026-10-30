@@ -194,7 +194,8 @@ pub struct RejectedItem {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum FenceReason {
-    /// The source was disconnected.
+    /// Older documents fenced the queue on disconnect. Ordinary disconnect no
+    /// longer does; the variant stays so those documents still decode.
     Disconnected,
     /// The source generation advanced.
     GenerationChanged,
@@ -480,9 +481,10 @@ impl<S: OutboxStorage> Outbox<S> {
         })
     }
 
-    /// Enable acquisition under `source_generation`. A newer generation fences
-    /// all pending work from the old generation and restarts acquisition; an
-    /// older generation is refused.
+    /// Enable acquisition under `source_generation`. The same generation resumes
+    /// retained work, including after [`Self::disconnect`]. A newer generation
+    /// fences pending work from the old generation, clears the ledger, and
+    /// restarts acquisition. An older generation is refused.
     pub fn connect(&self, source_generation: i32) -> Result<(), OutboxError> {
         let mut d = self.load()?;
         if source_generation < d.source_generation {
@@ -500,10 +502,11 @@ impl<S: OutboxStorage> Outbox<S> {
         self.save(&d)
     }
 
-    /// Disconnect the source: fence pending work, forget the anchor, stop.
+    /// Stop acquisition and upload. The queue, frozen operation ids, ledger and
+    /// anchor stay, so the same generation can resume them and a late
+    /// acknowledgement still names the original operation.
     pub fn disconnect(&self) -> Result<(), OutboxError> {
         let mut d = self.load()?;
-        d.fence_all(FenceReason::Disconnected);
         d.connected = false;
         self.save(&d)
     }

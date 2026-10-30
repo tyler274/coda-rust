@@ -601,14 +601,149 @@ fn generation_bump_and_disconnect_fence_stale_work() {
             .all(|id| !in_flight.operation_ids().contains(id))
     );
 
+    // Ordinary disconnect keeps the queue, frozen ids, ledger and anchor.
+    // Generation-change fences stay where they are.
+    let before = outbox.view().unwrap();
     outbox.disconnect().unwrap();
     let view = outbox.view().unwrap();
-    assert!(!view.connected && view.items.is_empty());
-    assert_eq!(view.fenced.len(), 4);
+    assert!(!view.connected);
+    assert_eq!(view.items, before.items);
+    assert_eq!(view.anchor, before.anchor);
+    assert_eq!(view.ledger, before.ledger);
+    assert!(view.items.iter().all(|item| item.frozen.is_some()));
+    assert_eq!(view.fenced.len(), 2);
+    assert!(
+        view.fenced
+            .iter()
+            .all(|f| f.source_generation == 0 && f.reason == FenceReason::GenerationChanged)
+    );
     assert_eq!(outbox.acquire(&adapter), Err(OutboxError::NotConnected));
     assert_eq!(outbox.begin_upload(0), Err(OutboxError::NotConnected));
+    // A late acknowledgement still finds the original operation.
+    let mut resumed = Server {
+        generation: 1,
+        ..Server::default()
+    };
+    let acks = resumed.apply(&batch);
+    let report = outbox
+        .finish_upload(&batch, UploadOutcome::Delivered(acks), 0)
+        .unwrap();
+    assert_eq!(report.acknowledged, 2);
+    assert!(outbox.view().unwrap().items.is_empty());
+    assert_eq!(outbox.view().unwrap().fenced.len(), 2);
     outbox.discard_fenced().unwrap();
     assert!(outbox.view().unwrap().fenced.is_empty());
+}
+
+#[test]
+fn same_generation_disconnect_resumes_a_lost_acknowledgement() {
+    let disk = Disk::default();
+    let outbox = open(&disk);
+    outbox.connect(0).unwrap();
+    let adapter = FakeAdapter::new(vec![Change::Put(Box::new(record(1, "70")))]);
+    outbox.acquire(&adapter).unwrap();
+    let anchor = outbox.view().unwrap().anchor.clone();
+    let create = outbox.begin_upload(0).unwrap().unwrap();
+    let operation_id = create.operation_ids()[0];
+    let canonical: Uuid = create.items[0].1["canonical_record_id"]
+        .as_str()
+        .unwrap()
+        .parse()
+        .unwrap();
+    let mut server = Server::default();
+    server.apply(&create);
+    outbox.disconnect().unwrap();
+    // The answer was lost. Reconciling it after disconnect still names this
+    // operation; the queue was not fenced.
+    let lost = outbox
+        .finish_upload(&create, UploadOutcome::Uncertain, 0)
+        .unwrap();
+    assert_eq!(lost.retrying, 1);
+    let view = outbox.view().unwrap();
+    assert!(!view.connected);
+    assert!(view.fenced.is_empty());
+    assert_eq!(view.anchor, anchor);
+    assert_eq!(view.items.len(), 1);
+    assert_eq!(view.items[0].operation_id, operation_id);
+    assert_eq!(view.items[0].frozen.as_ref(), Some(&create.items[0].1));
+    assert_eq!(
+        view.ledger["HKQuantitySample/1"].canonical_record_id,
+        canonical
+    );
+    assert_eq!(view.ledger["HKQuantitySample/1"].revision, None);
+    assert_eq!(outbox.acquire(&adapter), Err(OutboxError::NotConnected));
+    assert_eq!(outbox.begin_upload(1_000), Err(OutboxError::NotConnected));
+
+    outbox.connect(0).unwrap();
+    let retry = outbox.begin_upload(1_000).unwrap().unwrap();
+    assert_eq!(retry, create);
+    let acks = server.apply(&retry);
+    assert!(matches!(
+        &acks[0],
+        ItemAck::Accepted {
+            operation_id: id,
+            canonical_record_id,
+            revision: 1,
+        } if *id == operation_id && *canonical_record_id == canonical
+    ));
+    outbox
+        .finish_upload(&retry, UploadOutcome::Delivered(acks), 1_000)
+        .unwrap();
+    assert_eq!(server.applied, 1);
+    assert_eq!(
+        outbox.view().unwrap().ledger["HKQuantitySample/1"].revision,
+        Some(1)
+    );
+
+    adapter
+        .log
+        .borrow_mut()
+        .push(Change::Put(Box::new(record(1, "71"))));
+    outbox.acquire(&adapter).unwrap();
+    let correction = outbox.begin_upload(2_000).unwrap().unwrap();
+    assert_ne!(correction.operation_ids()[0], operation_id);
+    assert_eq!(
+        correction.items[0].1["canonical_record_id"]
+            .as_str()
+            .unwrap()
+            .parse::<Uuid>()
+            .unwrap(),
+        canonical
+    );
+    assert_eq!(correction.items[0].1["expected_revision"], 1);
+    assert_eq!(correction.items[0].1["payload"]["value"]["literal"], "71");
+    let acks = server.apply(&correction);
+    outbox
+        .finish_upload(&correction, UploadOutcome::Delivered(acks), 2_000)
+        .unwrap();
+
+    adapter
+        .log
+        .borrow_mut()
+        .push(Change::Delete("HKQuantitySample/1".into()));
+    outbox.acquire(&adapter).unwrap();
+    let deletion = outbox.begin_upload(3_000).unwrap().unwrap();
+    assert_eq!(deletion.items[0].1["operation"], "delete");
+    assert_eq!(
+        deletion.items[0].1["canonical_record_id"]
+            .as_str()
+            .unwrap()
+            .parse::<Uuid>()
+            .unwrap(),
+        canonical
+    );
+    assert_eq!(deletion.items[0].1["expected_revision"], 2);
+    let acks = server.apply(&deletion);
+    outbox
+        .finish_upload(&deletion, UploadOutcome::Delivered(acks), 3_000)
+        .unwrap();
+
+    let view = outbox.view().unwrap();
+    assert!(view.items.is_empty() && view.rejected.is_empty());
+    assert!(!view.ledger.contains_key("HKQuantitySample/1"));
+    assert_eq!(server.records.len(), 1);
+    let (revision, deleted, _) = server.records[&canonical];
+    assert_eq!((revision, deleted, server.applied), (3, true, 3));
 }
 
 #[test]
