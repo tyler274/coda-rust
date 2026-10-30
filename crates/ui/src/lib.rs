@@ -10,6 +10,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use dioxus::dioxus_core::AttributeValue;
 use dioxus::prelude::*;
 
+mod agent;
 mod cards;
 mod charts;
 mod conversation;
@@ -22,6 +23,7 @@ mod overlays;
 mod prose;
 mod sources;
 mod toast;
+pub use agent::{StepState, WorkStep, WorkTrace};
 pub use cards::{Card, Quote, StepList};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,

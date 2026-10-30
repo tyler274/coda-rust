@@ -26,8 +26,9 @@ use ui::{
     PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
     RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
     SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, TextField,
-    Toast, ToggleChip, Tone, Tooltip, TopBar, Value, WorkingMark, WorkingPresence, use_live_rows,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepList, StepState, Suggestion, TabBar,
+    TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -141,6 +142,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
+                }
+                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Every state comes from the run.",
+                    AgentWorkDemo {}
                 }
                 Section { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
                     PaletteDemo {}
@@ -1773,6 +1777,85 @@ fn PaletteDemo() -> Element {
                 empty: "No commands match.",
                 on_choose: move |index: usize| ran.set(Some(names[index].clone())),
                 on_close: move |_| open.set(false),
+            }
+        }
+    }
+}
+
+/// A scripted run: each step runs, then is done, and the trace folds once the last is.
+#[cfg(feature = "web")]
+const RUN: [(IconName, &str, &str, &str); 4] = [
+    (IconName::Sparkle, "Thinking", "Thought for 4s", ""),
+    (
+        IconName::File,
+        "Reading the discharge summary",
+        "Read the discharge summary",
+        "2 pages",
+    ),
+    (
+        IconName::Search,
+        "Searching for potassium results",
+        "Searched for potassium results",
+        "6 found",
+    ),
+    (
+        IconName::File,
+        "Reading the cardiology note",
+        "Read the cardiology note",
+        "October 2",
+    ),
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn AgentWorkDemo() -> Element {
+    // How far the run has come: steps before it are done, the one at it runs.
+    let mut reached = use_signal(|| RUN.len());
+    let mut runs = use_signal(|| 0u32);
+    let replay = move |_| {
+        let run = runs() + 1;
+        runs.set(run);
+        reached.set(0);
+        spawn(async move {
+            for at in 1..=RUN.len() {
+                futures_timer::Delay::new(Duration::from_millis(1400)).await;
+                if runs() != run {
+                    return;
+                }
+                reached.set(at);
+            }
+        });
+    };
+    let working = reached() < RUN.len();
+    rsx! {
+        div { class: "gallery-agent",
+            WorkTrace {
+                label: if working { RUN[reached()].1 } else { "Read 2 notes and searched the record" },
+                working,
+                detail: (!working).then(|| "14s".to_owned()),
+                for (index, (icon, running, done, detail)) in RUN.into_iter().enumerate().take(reached() + 1).take(RUN.len()) {
+                    WorkStep {
+                        key: "{index}",
+                        icon,
+                        label: if index < reached() { done } else { running },
+                        state: if index < reached() { StepState::Done } else { StepState::Running },
+                        detail: (index < reached() && !detail.is_empty()).then(|| detail.to_owned()),
+                        body: (index == 0).then(|| rsx! {
+                            p { "The question is whether her potassium is still rising after the spironolactone dose went up. I need the discharge summary for the baseline, the recent results, and the cardiology note for the dose." }
+                        }),
+                    }
+                }
+            }
+            Button { compact: true, disabled: working, onclick: replay,
+                Icon { name: IconName::Refresh }
+                "Replay the run"
+            }
+            WorkTrace { label: "Checked 3 sources, one didn't answer", detail: "9s",
+                WorkStep { icon: IconName::File, label: "Read the visit note", state: StepState::Done, detail: "Northside Clinic" }
+                WorkStep { icon: IconName::ExternalLink, label: "Couldn't reach the outside records", state: StepState::Failed, detail: "The connection timed out",
+                    body: rsx! { p { "Asked the regional exchange for results since September; no answer after 8 seconds." } },
+                }
+                WorkStep { icon: IconName::Search, label: "Stopped searching older notes", state: StepState::Stopped, detail: "You stopped it" }
             }
         }
     }
