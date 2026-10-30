@@ -1,5 +1,15 @@
-//! Every shared `ui` component, rendered by the crate itself with its own stylesheet, so its
-//! look and motion can be seen and replayed apart from either app. The conversation is scripted.
+//! Every `ui` family, rendered with the library's own stylesheet so each component's look, states
+//! and motion can be seen and replayed on its own. Its examples are fictional and scripted.
+//!
+//! ```sh
+//! cargo build -p ui-gallery --target wasm32-unknown-unknown --features web
+//! wasm-bindgen --target web --out-dir target/ui-gallery-web target/wasm32-unknown-unknown/debug/ui-gallery.wasm
+//! cp crates/ui-gallery/web/index.html target/ui-gallery-web/
+//! ```
+//!
+//! Then serve `target/ui-gallery-web` with any static file server. **Slow motion** plays every
+//! animation at quarter speed, and **Replay entries** remounts the sections so their entry motion
+//! runs again.
 
 #[cfg(feature = "web")]
 use dioxus::prelude::*;
@@ -57,7 +67,7 @@ fn Gallery() -> Element {
                 div {
                     h1 { class: "page-title", "crates/ui" }
                     p { class: "gallery-lede",
-                        "Each piece below is the shared component and stylesheet both apps use. Entry motion replays when a section remounts."
+                        "Every family in the library, with its states. Entry motion replays when a section remounts."
                     }
                 }
                 ActionRow {

@@ -1,8 +1,8 @@
-//! The one source of truth for the design of the Duet and physician Dioxus apps: the tokens (colour,
-//! type, space, shape and motion), the icons, and each component's look, motion, gestures, states and
-//! accessibility. It holds no product rules. Each app decides when a component shows, what pressing
-//! it does, what its server guarantees, every word it says, and how its screens are laid out.
-//! Book: `book/src/ui-surface-map.md`.
+//! Coda's design, as a catalog of AI-native component families any surface can compose: the
+//! tokens (colour, type, space, shape and motion), the icons, and each component's look, motion,
+//! gestures, states and accessibility. It holds no product rules. The surface that places a
+//! component decides when it shows, what pressing it does, what its server guarantees, every word
+//! it says, and how the screen is laid out. `crates/ui-gallery` renders every family.
 #![deny(missing_docs)]
 
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -289,9 +289,9 @@ pub fn LiveDot() -> Element {
     rsx! { span { class: "live-dot", aria_hidden: "true" } }
 }
 
-/// The one working mark: three live dots lighting in turn,
-/// shown only while work actually runs. Duet's typing indicator is this mark in a reply's place.
-/// The words beside it, or the host's status, say what runs.
+/// The one working mark: three live dots lighting in turn, shown only while work actually runs; in
+/// a reply's place, it says a reply is coming. The words beside it, or the host's status, say what
+/// runs.
 #[component]
 pub fn WorkingMark() -> Element {
     rsx! {
@@ -541,7 +541,7 @@ pub fn Button(
 
 /// In-place navigation: a quiet link, separate from
 /// commands, that opens another place or goes back. It reads in body text and underlines on hover;
-/// a surface may colour it once at its root (`--navigation-color`), as Duet does.
+/// a surface may colour it once at its root (`--navigation-color`).
 #[component]
 pub fn NavigationControl(
     #[props(default)] disabled: bool,
@@ -597,7 +597,7 @@ pub fn NavigationRow(
 pub enum Author {
     /// The person using the app: their words stand in a bubble at the far edge.
     Person,
-    /// Coda or Duet: its words read as plain prose.
+    /// The assistant: its words read as plain prose.
     Assistant,
 }
 

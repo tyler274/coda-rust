@@ -128,7 +128,7 @@
   --sans: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   /* Type roles: one type scale at Coda's sizes. A role is a whole setting, weight, size and line;
      every host names one and composes none of its own. Colour stays the host's: ink heads, body words, muted details.
-     Headline medium: a page's own title (Today, a patient's page). Title large: dialog and reader titles. Title medium: a card's or section's title. Title small: a row's or list's name.
+     Headline medium: a page's own title. Title large: dialog and reader titles. Title medium: a card's or section's title. Title small: a row's or list's name.
      Body large: prose to read. Body medium: interface words and a row's text. Body small: times and supporting details.
      Label large: every control. Label medium: state pills and small headings. Label small: a tab bar's labels under their icons.
      Overline: label small in capitals, naming what a card holds ("What Duet noticed", "Original record").
@@ -156,12 +156,12 @@
   /* A reading dialog reads at the page's one content width; it widens only while a source reads beside it. */
   --reader-dialog-inline-size: calc(var(--measure) + 2 * var(--page-gutter));
   --reader-source-inline-size: max(84vi, var(--reader-dialog-inline-size));
-  /* A reader's pinned row below its top inset: one-line title, patient, bottom inset and edge. */
+  /* A reader's pinned row below its top inset: one-line title, subject, bottom inset and edge. */
   --source-reading-ratio: minmax(0, 3fr) minmax(0, 2fr);
   --page-gutter: clamp(16px, 1.5vw, 24px);
   /* A page's one content width: about 105 characters of content text, however wide the window. */
   --measure: 50rem;
-  /* The page's side column (Today's schedule, a patient's briefings), beside the measure where it fits. */
+  /* The page's side column, beside the measure where it fits. */
   --side-column-width: 19rem;
   /* A side panel collapsed to its rail: its tile, with room around it. */
   --side-rail-width: calc(var(--tile-size) + 2 * var(--space-3));

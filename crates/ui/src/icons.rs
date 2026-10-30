@@ -1,4 +1,4 @@
-//! The shared icons, for the physician app and Duet alike, drawn on one 24-unit grid at one stroke.
+//! The shared icons, drawn on one 24-unit grid at one stroke.
 
 use dioxus::prelude::*;
 
