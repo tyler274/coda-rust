@@ -758,7 +758,7 @@ const CITED: [Cited; 2] = [
         title: "Discharge summary",
         metadata: ["Hospital course", "April 18", "Final"],
         passage: "Admitted with decompensated heart failure; diuresed 6 kg.",
-        content: "Hospital course. Presented to the emergency department with three days of worsening dyspnea, orthopnea and leg swelling. Chest radiograph showed pulmonary vascular congestion and small bilateral effusions. BNP was elevated on arrival. Admitted with decompensated heart failure; diuresed 6 kg. Renal function stayed stable through diuresis. Echocardiogram showed an ejection fraction of 35 percent. Discharged on furosemide 40 mg daily with follow-up in cardiology clinic within two weeks.",
+        content: "Hospital course.\nPresented to the emergency department with three days of worsening dyspnea, orthopnea and leg swelling. Chest radiograph showed pulmonary vascular congestion and small bilateral effusions. BNP was elevated on arrival. Admitted with decompensated heart failure; diuresed 6 kg. Renal function stayed stable through diuresis. Echocardiogram showed an ejection fraction of 35 percent. Discharged on furosemide 40 mg daily with follow-up in cardiology clinic within two weeks.",
     },
     Cited {
         index: 2,

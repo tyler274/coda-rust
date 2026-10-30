@@ -276,7 +276,9 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 /* A citation whose source can't be shown: muted, its words after its number. */
 .citation-chip-unavailable { gap: var(--space-hair); border-color: var(--outline); background: var(--surface-low); color: var(--muted); }
 .citation-unavailable-label { font: inherit; font-weight: var(--weight-regular); }
-/* A source's own words, a cited passage marked as its citation is while open. */
+/* A source's own words as written, line breaks kept and long words wrapping, a cited passage marked as its citation is
+   while open. */
+.source-text { display: block; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; }
 .source-text mark { color: inherit; background: var(--highlight); border-radius: .15em; }
 .sources-button { gap: var(--space-1); min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
   font: var(--type-body-sm); }

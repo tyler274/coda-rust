@@ -245,7 +245,7 @@ pub fn CitationPreview(
                             Icon { name: IconName::X }
                         }
                     }
-                    span { class: "citation-preview-body", {children} }
+                    span { id: "{preview_id}-body", class: "citation-preview-body", {children} }
                     if on_expand.is_some() || original.is_some() {
                         span { class: "citation-preview-actions",
                             if let (Some(handler), Some(words)) = (on_expand, expand_label) {
@@ -330,6 +330,7 @@ fn PreviewSurface(
             onmounted: move |event| {
                 let surface = event.data();
                 let mut watch = watch;
+                let id = id.clone();
                 spawn(async move {
                     while let Ok(message) = watch.recv::<[f64; 3]>().await {
                         match Heard::read(message) {
@@ -340,6 +341,9 @@ fn PreviewSurface(
                                 };
                                 let side = (*placement.peek()).map(|at| at.below);
                                 placement.set(Some(place(at, own.width(), (width, height), side)));
+                                if side.is_none() {
+                                    open_at_passage(&format!("{id}-body"));
+                                }
                             }
                             Some(Heard::Escape(inside)) => {
                                 on_escape.call(inside);
@@ -408,8 +412,17 @@ pub fn SourceReading(
     children: Element,
 ) -> Element {
     let mut closing = use_signal(|| false);
+    let body = use_hook(|| format!("source-pane-{}", PREVIEWS.fetch_add(1, Ordering::Relaxed)));
     let returns = use_context_provider(|| SourceReturn(Signal::new(None)));
     let open = source.is_some();
+    // Each source the pane shows opens at its first passage.
+    let shown = source.as_ref().map(|pane| pane.eyebrow.clone());
+    let pane_body = body.clone();
+    use_effect(use_reactive!(|shown| {
+        if shown.is_some() {
+            open_at_passage(&pane_body);
+        }
+    }));
     let mut dismiss = move || {
         if closing() {
             return;
@@ -475,7 +488,7 @@ pub fn SourceReading(
                                 Icon { name: IconName::X }
                             }
                         }
-                        div { class: "source-pane-body", {pane.content} }
+                        div { id: "{body}", class: "source-pane-body", {pane.content} }
                     }
                 }
             }
@@ -499,41 +512,29 @@ pub struct SourcePane {
     pub close: String,
 }
 
-/// Moves the reading surface around a source's words to its first marked passage: the nearest
-/// scrolling container inside its dialog or preview, never the page beneath. `{id}` is the words'
-/// element id.
+/// Opens a reading surface's own scrolling body at the first passage marked in it, once the
+/// surface has its size: only that body moves, never the page beneath. `{body}` is the body's id.
 const SCROLL_TO_PASSAGE: &str = r#"
-const words = document.getElementById("{id}");
-const passage = words?.querySelector("mark");
-let around = words?.parentElement;
-while (passage && around && !around.matches("dialog, .citation-preview")) {
-  if (/(auto|scroll)/.test(getComputedStyle(around).overflowY) && around.scrollHeight > around.clientHeight) {
-    around.scrollTop += passage.getBoundingClientRect().top - around.getBoundingClientRect().top;
-    break;
-  }
-  around = around.parentElement;
-}
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  const body = document.getElementById("{body}");
+  const passage = body?.querySelector(".source-text mark");
+  if (passage) body.scrollTop += passage.getBoundingClientRect().top - body.getBoundingClientRect().top;
+}));
 "#;
 
-static SOURCE_TEXTS: AtomicUsize = AtomicUsize::new(0);
+/// Opens the scrolling body with id `body` at its first marked passage.
+fn open_at_passage(body: &str) {
+    document::eval(&SCROLL_TO_PASSAGE.replace("{body}", body));
+}
 
 /// A source's own words with the passages cited from it marked, after the React app's source
-/// document: passages that overlap read as one mark, and the surface it is read in opens at the
-/// first. `passages` are byte ranges of `text`; one that isn't a range of it is left unmarked.
+/// document: its line breaks kept, long words wrapping, and passages that overlap read as one
+/// mark. The preview and the pane it is read in open at the first. `passages` are byte ranges of
+/// `text`; one that isn't a range of it is left unmarked.
 #[component]
 pub fn SourceText(text: String, #[props(default)] passages: Vec<(usize, usize)>) -> Element {
-    let id = use_hook(|| {
-        format!(
-            "source-text-{}",
-            SOURCE_TEXTS.fetch_add(1, Ordering::Relaxed)
-        )
-    });
-    let script = SCROLL_TO_PASSAGE.replace("{id}", &id);
-    use_effect(move || {
-        document::eval(&script);
-    });
     rsx! {
-        span { id, class: "source-text",
+        span { class: "source-text",
             for (index, (words, cited)) in marked(&text, &passages).into_iter().enumerate() {
                 if cited {
                     mark { key: "{index}", "{words}" }
