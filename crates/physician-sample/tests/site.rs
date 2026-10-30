@@ -215,7 +215,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     // pauses, confirms beside the composer, and an edit clears the mark.
     let notice = r#"document.querySelector('.composer-context [role=status]')?.textContent ?? ''"#;
     let buttons = browser
-        .eval("[...document.querySelectorAll('.composer-toolbar button')].map(b => [...b.childNodes].filter(n => n.nodeType === 3 || (n.nodeType === 1 && !n.matches('[aria-hidden=true]'))).map(n => n.textContent).join('').trim())")
+        .eval("[...document.querySelectorAll('.composer-toolbar button')].map(b => b.textContent.trim())")
         .await;
     assert_eq!(
         buttons.pointer("/result/result/value"),
@@ -250,7 +250,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
             Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
             box.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => {{
-                const send = [...document.querySelectorAll('.composer-toolbar button')].find(b => [...b.childNodes].filter(n => n.nodeType === 3 || (n.nodeType === 1 && !n.matches('[aria-hidden=true]'))).map(n => n.textContent).join('').trim() === 'Send');
+                const send = [...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send');
                 send.click();
                 resolve(true);
             }}, 100);
@@ -980,7 +980,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     )
     .await;
     tab.eval(
-        "[...document.querySelectorAll('.composer-toolbar button')].find(b => [...b.childNodes].filter(n => n.nodeType === 3 || (n.nodeType === 1 && !n.matches('[aria-hidden=true]'))).map(n => n.textContent).join('').trim() === 'Send').click()",
+        "[...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send').click()",
     )
     .await;
     let answered = tab.held_request("POST").await;

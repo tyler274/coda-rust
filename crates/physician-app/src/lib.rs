@@ -39,8 +39,7 @@ use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Dialog, DraftConflict, EmptyLine, Icon, IconName,
-    IconTile, KeyHint, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill,
-    StatusLine, Tone,
+    IconTile, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill, StatusLine, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -3463,7 +3462,7 @@ fn PatientSurface(
                                 }
                             }),
                             Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
-                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send", KeyHint { key_label: "↵" } }
+                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
                         }
                         if recovery_unavailable {
                             p { class: "quiet-line composer-recovery", role: "status", "{RECOVERY_UNAVAILABLE}" }
