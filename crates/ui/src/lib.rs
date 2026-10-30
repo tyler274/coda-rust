@@ -139,12 +139,51 @@ pub fn TryAgain(
     }
 }
 
-/// What is loading, drawn as its shape (Material's skeleton): a bar in the text's own measure with
-/// a slow sheen passing over it. Decoration only; the host's words stay with assistive technology.
+/// The shape of what is loading.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum PlaceholderShape {
+    /// A line of words.
+    #[default]
+    Line,
+    /// List items: a mark and a name.
+    Items,
+    /// Rows: a name, then words.
+    Rows,
+    /// Reading: a title, then prose.
+    Reading,
+}
+
+/// What is loading, drawn as its shape (Material's skeleton): bars in the text's own measure with
+/// a slow sheen passing over them. Decoration only; the host's words stay with assistive
+/// technology.
 #[component]
-pub fn Placeholder() -> Element {
-    rsx! {
-        span { class: "placeholder", aria_hidden: "true", span { class: "placeholder-bar" } }
+pub fn Placeholder(#[props(default)] shape: PlaceholderShape) -> Element {
+    let bar = |kind: &str| rsx! { span { class: "placeholder-bar {kind}" } };
+    match shape {
+        PlaceholderShape::Line => rsx! {
+            span { class: "placeholder is-line", aria_hidden: "true", {bar("")} }
+        },
+        PlaceholderShape::Items => rsx! {
+            span { class: "placeholder is-items", aria_hidden: "true",
+                for index in 0..3 {
+                    span { key: "{index}", class: "placeholder-item", {bar("is-mark")} {bar("")} }
+                }
+            }
+        },
+        PlaceholderShape::Rows => rsx! {
+            span { class: "placeholder is-rows", aria_hidden: "true",
+                for index in 0..3 {
+                    span { key: "{index}", class: "placeholder-row",
+                        {bar("is-title")} {bar("")} {bar("is-short")}
+                    }
+                }
+            }
+        },
+        PlaceholderShape::Reading => rsx! {
+            span { class: "placeholder is-reading", aria_hidden: "true",
+                {bar("is-title")} {bar("")} {bar("")} {bar("")} {bar("is-short")}
+            }
+        },
     }
 }
 

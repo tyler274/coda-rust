@@ -11,10 +11,10 @@ use ui::{
     ComparisonBars, Composer, ContextChip, ConversationViewport, DateSeparator, Dialog, Disclosure,
     FeedbackRating, FooterActions, Icon, IconName, LaterContext, ListRow, LiveDot, MeasurementTile,
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup, SectionHeader,
-    SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading, SourcesButton, Sparkline,
-    StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip, Tone, TopBar,
-    TrendChart, UndoNotice, Value, WorkingMark,
+    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup,
+    SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
+    ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
 };
 
 fn main() {
@@ -114,7 +114,7 @@ fn Gallery() -> Element {
                 Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
                     OverlayDemo {}
                 }
-                Section { title: "Working and loading", note: "The working mark while work runs, the live dot, the placeholder sheen while content loads, and notices for reads and commands.",
+                Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
                 }
                 Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark.",
@@ -648,7 +648,12 @@ fn LoadingDemo() -> Element {
             span { class: "gallery-label", WorkingMark {} "Preparing the visit" }
             span { class: "gallery-label", LiveDot {} "New" }
         }
-        div { class: "gallery-placeholder", Placeholder {} Placeholder {} }
+        div { class: "gallery-placeholder",
+            Placeholder {}
+            Placeholder { shape: PlaceholderShape::Items }
+            Placeholder { shape: PlaceholderShape::Rows }
+            Placeholder { shape: PlaceholderShape::Reading }
+        }
         StatusLine { message: "Reading records…", pending: true }
         StatusLine { message: "Couldn’t refresh. Showing what was read at 9:41.", retry: "Try again", on_retry: move |_| {} }
         StatusLine { message: "Couldn’t confirm it was saved.", retry: "Check again", on_retry: move |_| {} }

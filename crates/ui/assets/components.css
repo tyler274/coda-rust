@@ -37,9 +37,18 @@
 .status-line > p { margin: 0; overflow-wrap: anywhere; }
 .pending-status { animation: pending-status-reveal var(--motion-control) var(--ease-out) var(--pending-status-delay) both; }
 @keyframes pending-status-reveal { from { opacity: 0; visibility: hidden; } to { opacity: 1; visibility: visible; } }
-/* Placeholder (Material's skeleton): what is loading, drawn as its shape in the text's own measure. */
+/* Placeholder (Material's skeleton): what is loading, drawn as its shape (a line, list items, rows or reading) in the
+   text's own measure. */
 .placeholder { display: grid; gap: .6em; width: 100%; min-width: 0; }
 .placeholder-bar { display: block; width: 100%; height: .8em; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--surface-highest) 0 40%, var(--surface-high) 50%, var(--surface-highest) 60% 100%) 100% 0 / 250% 100%; animation: placeholder-sheen calc(var(--motion-working) * 1.5) var(--ease-in-out) infinite; }
+.placeholder-bar.is-title { width: 40%; height: 1em; }
+.placeholder-bar.is-short { width: 62%; }
+.placeholder-bar.is-mark { flex: none; width: 1.6em; height: 1.6em; border-radius: 50%; }
+.placeholder.is-items, .placeholder.is-rows { gap: 0; }
+.placeholder-item { display: flex; align-items: center; gap: var(--space-3); padding-block: var(--space-2); }
+.placeholder-row { display: grid; gap: .5em; padding-block: var(--space-3); border-top: var(--hairline) solid var(--outline-variant); }
+.placeholder-row:first-child { border-top: 0; }
+.placeholder.is-reading > .is-title { margin-block-end: .4em; }
 @keyframes placeholder-sheen { to { background-position: 0 0; } }
 /* Tones: a state's container and what reads on it. */
 .tone-neutral { --tone-container: var(--surface-high); --tone-on: var(--body); }
