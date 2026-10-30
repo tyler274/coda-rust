@@ -453,7 +453,10 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .series-wash { fill: var(--data-wash); stroke: none; }
 .series-usual { fill: none; stroke: var(--data-quiet); stroke-width: 1.5; stroke-dasharray: 3 3; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .series-chart.is-running .series-stroke { stroke-width: 2.2; }
-.series-end-word { position: absolute; bottom: calc(100% + 4px); left: 50%; translate: -50% 0; color: var(--body); font-weight: var(--weight-strong); white-space: nowrap; }
+.series-chart.is-running .series-plot { container-type: inline-size; }
+/* The end's word stands centred over its dot, shifted only as far as keeps it inside the plot, clear of the value axis. */
+.series-end-word { position: absolute; bottom: calc(100% + 4px); left: 50%; color: var(--body); font-weight: var(--weight-strong); white-space: nowrap;
+  translate: clamp(calc(var(--place) * -100cqw), -50%, calc((1 - var(--place)) * 100cqw - 100%)) 0; }
 .series-chart.is-running .series-axis { position: relative; display: block; min-height: 1lh; }
 .series-axis-word { position: absolute; padding-inline-start: var(--space-1); }
 /* A pinned mark's target: the bar with a little room above it, or a fingertip round a point. Empty plot clears. */

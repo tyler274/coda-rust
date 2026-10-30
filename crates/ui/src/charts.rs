@@ -385,7 +385,7 @@ pub fn RunningChart(
                     path { class: "series-stroke", d: "{monotone_path(&total_at)}" }
                 }
                 if let Some((x, y)) = end {
-                    span { class: "series-dot", aria_hidden: "true", style: "left: {x}%; top: {y}%",
+                    span { class: "series-dot", aria_hidden: "true", style: "left: {x}%; top: {y}%; --place: {x / 100.0}",
                         if !end_word.is_empty() {
                             span { class: "series-end-word", "{end_word}" }
                         }
