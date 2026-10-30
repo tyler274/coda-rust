@@ -619,14 +619,16 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .feedback-rating .control[aria-pressed="true"] { color: var(--primary); background: var(--primary-container); }
 .toggle-chip { border-radius: var(--radius-pill); font-weight: var(--weight-regular); white-space: normal; text-align: left; }
 .toggle-chip[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-container); }
-/* The one undo notice: a surface at the overlay's depth, words then Undo, floating at the foot
+/* The toast: a surface at the overlay's depth, its icon, words and action, floating at the foot
    of the window so it never moves what is being read. It settles back the way it came, shorter than it arrived. */
-.undo-notice { position: fixed; z-index: 10; inset-inline: 0; bottom: max(var(--space-6), env(safe-area-inset-bottom)); display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3);
+.toast { position: fixed; z-index: 10; inset-inline: 0; bottom: max(var(--space-6), env(safe-area-inset-bottom)); display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3);
   box-sizing: border-box; width: fit-content; max-width: calc(100% - 2 * var(--page-gutter)); min-height: var(--target); margin: 0 auto;
   padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-radius: var(--radius-lg); background: var(--surface-lowest); box-shadow: var(--elevation-4);
   color: var(--body); font: var(--type-body-md); transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
-@starting-style { .undo-notice { opacity: 0; transform: translateY(var(--rise)); } }
-.undo-notice.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
+@starting-style { .toast { opacity: 0; transform: translateY(var(--rise)); } }
+.toast.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
+.toast:not(:has(> .control)) { padding-inline-end: var(--space-4); }
+.toast > .icon { color: var(--primary); }
 /* Overlays: the browser's own popover, in the top layer at the overlay's depth, beside the control that opens it. It
    opens under the control from its leading edge and flips above or across where there isn't room; without anchoring it
    stands centred. It arrives on the arrival spring from the corner nearest the control and settles back shorter. */

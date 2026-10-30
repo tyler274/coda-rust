@@ -27,8 +27,7 @@ use ui::{
     RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
     SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
     SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, TextField,
-    ToggleChip, Tone, Tooltip, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence,
-    use_live_rows,
+    Toast, ToggleChip, Tone, Tooltip, TopBar, Value, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -134,7 +133,7 @@ fn Gallery() -> Element {
                 Section { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
                     ViewportDemo {}
                 }
-                Section { title: "Feedback and undo", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. Undo floats at the window's foot and pauses while pointed at.",
+                Section { title: "Feedback and toasts", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. A toast says what just happened at the window's foot, with what can follow, such as Undo; one stands at a time, and it pauses while pointed at.",
                     FeedbackDemo {}
                 }
                 Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
@@ -1454,8 +1453,9 @@ fn FeedbackDemo() -> Element {
     let mut asking = use_signal(|| false);
     let mut reasons = use_signal(Vec::<usize>::new);
     let mut sending = use_signal(|| false);
-    let mut undo = use_signal(|| None::<u32>);
-    let mut archived = use_signal(|| 0u32);
+    // The one toast standing, keyed by its count: an archive's, which can be undone, or a copy's.
+    let mut toast = use_signal(|| None::<(u32, bool)>);
+    let mut shown = use_signal(|| 0u32);
     let mut restored = use_signal(|| false);
     rsx! {
         Message { author: Author::Assistant, by: "Coda",
@@ -1483,24 +1483,33 @@ fn FeedbackDemo() -> Element {
             Button {
                 onclick: move |_| {
                     restored.set(false);
-                    archived.set(archived() + 1);
-                    undo.set(Some(archived()));
+                    shown.set(shown() + 1);
+                    toast.set(Some((shown(), true)));
                 },
                 "Archive conversation"
+            }
+            Button {
+                onclick: move |_| {
+                    shown.set(shown() + 1);
+                    toast.set(Some((shown(), false)));
+                },
+                Icon { name: IconName::Copy }
+                "Copy reply"
             }
             if restored() {
                 span { class: "gallery-note", "Restored." }
             }
         }
-        if let Some(key) = undo() {
-            UndoNotice {
+        if let Some((key, archive)) = toast() {
+            Toast {
                 key: "{key}",
-                words: "Conversation archived.",
-                undo_label: "Undo",
-                on_undo: move |_| restored.set(true),
+                icon: (!archive).then_some(IconName::Check),
+                words: if archive { "Conversation archived." } else { "Reply copied." },
+                action: archive.then(|| "Undo".to_owned()),
+                on_action: move |_| restored.set(true),
                 on_gone: move |_| {
-                    if undo() == Some(key) {
-                        undo.set(None);
+                    if toast().map(|(standing, _)| standing) == Some(key) {
+                        toast.set(None);
                     }
                 },
             }

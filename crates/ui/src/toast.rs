@@ -1,24 +1,26 @@
-//! The one undo notice: what just happened and its undo action,
-//! floating at one layer over the page so it never moves what is being read.
+//! The toast: what just happened, floating at one layer over the page so it never moves what is
+//! being read.
 
 use std::time::Duration;
 
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, EXIT_MS};
+use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName};
 
-/// How long Undo stays, counted while the person is not pointing at or focused on it.
-pub const UNDO_MS: u64 = 6_000;
+/// How long a toast stays, counted while the person is not pointing at or focused on it.
+pub const TOAST_MS: u64 = 6_000;
 
-/// What just happened, and its undo action. Its time pauses while it is pointed at or focused; with
-/// `ends_in_ms` it ends exactly then instead, and nothing holds it longer. It leaves the same way
-/// whether its time ran out or the action was pressed, then reports `on_gone`. The host keys it by
-/// what it undoes, so a newer one replaces it.
+/// What just happened, at the foot of the window: its icon, its words, and, named by `action`, what
+/// can follow from it, such as Undo, heard as `on_action`. Its time pauses while it is pointed at or
+/// focused; with `ends_in_ms` it ends exactly then instead, and nothing holds it longer. It leaves
+/// the same way whether its time ran out or the action was pressed, then reports `on_gone`. One
+/// stands at a time: the host keys it by what it reports, so a newer one replaces it.
 #[component]
-pub fn UndoNotice(
+pub fn Toast(
     words: String,
-    undo_label: String,
-    on_undo: EventHandler<MouseEvent>,
+    icon: Option<IconName>,
+    action: Option<String>,
+    on_action: Option<EventHandler<MouseEvent>>,
     on_gone: EventHandler,
     #[props(default)] ends_in_ms: Option<u64>,
 ) -> Element {
@@ -47,7 +49,7 @@ pub fn UndoNotice(
             return;
         }
         spawn(async move {
-            futures_timer::Delay::new(Duration::from_millis(ends_in_ms.unwrap_or(UNDO_MS))).await;
+            futures_timer::Delay::new(Duration::from_millis(ends_in_ms.unwrap_or(TOAST_MS))).await;
             if *clock.peek() == started {
                 leave();
             }
@@ -55,7 +57,7 @@ pub fn UndoNotice(
     });
     rsx! {
         div {
-            class: if leaving() { "undo-notice is-leaving" } else { "undo-notice" },
+            class: if leaving() { "toast is-leaving" } else { "toast" },
             role: "status",
             aria_live: "polite",
             "inert": leaving().then_some("true"),
@@ -63,16 +65,21 @@ pub fn UndoNotice(
             onpointerleave: move |_| pointed.set(false),
             onfocusin: move |_| focused.set(true),
             onfocusout: move |_| focused.set(false),
+            if let Some(name) = icon {
+                Icon { name }
+            }
             span { "{words}" }
-            Button {
-                variant: ButtonVariant::Secondary,
-                compact: true,
-                disabled: leaving(),
-                onclick: move |event| {
-                    on_undo.call(event);
-                    leave();
-                },
-                "{undo_label}"
+            if let (Some(label), Some(on_action)) = (action, on_action) {
+                Button {
+                    variant: ButtonVariant::Secondary,
+                    compact: true,
+                    disabled: leaving(),
+                    onclick: move |event| {
+                        on_action.call(event);
+                        leave();
+                    },
+                    "{label}"
+                }
             }
         }
     }

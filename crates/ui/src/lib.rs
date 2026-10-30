@@ -21,7 +21,7 @@ mod motion;
 mod overlays;
 mod prose;
 mod sources;
-mod undo;
+mod toast;
 pub use cards::{Card, Quote, StepList};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
@@ -41,7 +41,7 @@ pub use overlays::{
 };
 pub use prose::{Prose, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
-pub use undo::{UNDO_MS, UndoNotice};
+pub use toast::{TOAST_MS, Toast};
 
 /// How long a surface takes to settle away before it is removed: `--motion-control` in
 /// `tokens.css`, which owns it. Removal waits on a timer rather than the animation's end because
