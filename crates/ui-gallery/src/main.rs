@@ -17,20 +17,21 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Answer, ApprovalCard, ArtifactCard, Author, Avatar, AvatarSize, Button,
-    ButtonVariant, Card, Change, ChartHeader, CitationChip, CitationPreview, CodeBlock, Command,
-    CommandPalette, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
-    ConversationViewport, CopyButton, CopyWords, Count, DateSeparator, Dialog, Diff, DiffLine,
-    DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions,
-    Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem,
-    MenuPalette, MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
-    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
-    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
-    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
-    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList,
-    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value,
-    VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    ActionRow, Answer, ApprovalCard, ArtifactCard, AttachButton, Attachment, AttachmentState,
+    Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
+    CitationChip, CitationPreview, CodeBlock, Command, CommandPalette, Comparison, ComparisonBars,
+    Composer, ContextChip, ContextMenu, ConversationViewport, CopyButton, CopyWords, Count,
+    DateSeparator, Dialog, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine,
+    EmptyState, FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot,
+    MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Message, MessageActions,
+    MessageEditor, MessageState, MessageStatus, NavigationControl, NavigationRow, Notice,
+    PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, Popover, ProposedChange, Prose,
+    ProsePart, Quote, RangeChoice, Rating, RowFrame, RowGroup, RunningChart, SearchField,
+    SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails,
+    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepState, Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast,
+    ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -130,9 +131,10 @@ fn Gallery() -> Element {
                 Section { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
                     ComposerStatesDemo {}
                 }
-                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again.",
+                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer.",
                     ThreadStatesDemo {}
                     DeliveryDemo {}
+                    AttachmentsDemo {}
                 }
                 Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
                     ProseDemo {}
@@ -2248,6 +2250,129 @@ fn DeliveryDemo() -> Element {
                 Icon { name: IconName::Refresh }
                 "Show again"
             }
+        }
+    }
+}
+
+/// A strip of rhythm, standing in for a photo the person sent.
+#[cfg(feature = "web")]
+const STRIP: &str = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23f7efe9'/><path d='M0 16h64M0 32h64M0 48h64M16 0v64M32 0v64M48 0v64' stroke='%23ecd3c6' stroke-width='.6'/><path d='M0 38h12l3-6 3 6h4l3-24 4 34 3-10h8l4-6 4 6h16' fill='none' stroke='%23a3341f' stroke-width='1.6' stroke-linejoin='round'/></svg>";
+
+/// One file in the demo composer, as it uploads.
+#[cfg(feature = "web")]
+#[derive(Clone, PartialEq)]
+struct Added {
+    key: u32,
+    name: String,
+    detail: String,
+    state: AttachmentState,
+    progress: f64,
+}
+
+#[cfg(feature = "web")]
+fn size(bytes: u64) -> String {
+    match bytes {
+        0..1_000 => format!("{bytes} B"),
+        1_000..1_000_000 => format!("{} KB", bytes / 1_000),
+        _ => format!("{:.1} MB", bytes as f64 / 1_000_000.0),
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn AttachmentsDemo() -> Element {
+    let mut added = use_signal(|| {
+        vec![
+            Added {
+                key: 0,
+                name: "Echo report.pdf".into(),
+                detail: "PDF · 1.2 MB".into(),
+                state: AttachmentState::Uploading,
+                progress: 0.0,
+            },
+            Added {
+                key: 1,
+                name: "Holter export.zip".into(),
+                detail: "Over the 25 MB limit".into(),
+                state: AttachmentState::Failed,
+                progress: 0.0,
+            },
+        ]
+    });
+    let mut next = use_signal(|| 2u32);
+    let mut draft = use_signal(String::new);
+    let mut opened = use_signal(|| None::<String>);
+    // Fills a file's foot a step at a time, then leaves it ready.
+    let upload = move |key: u32| {
+        spawn(async move {
+            for step in 1..=10 {
+                futures_timer::Delay::new(Duration::from_millis(260)).await;
+                let mut files = added.write();
+                let Some(file) = files.iter_mut().find(|file| file.key == key) else {
+                    return;
+                };
+                file.progress = f64::from(step) / 10.0;
+                if step == 10 {
+                    file.state = AttachmentState::Ready;
+                }
+            }
+        });
+    };
+    use_hook(move || upload(0));
+    let take = move |files: Vec<dioxus::html::FileData>| {
+        for file in files {
+            let key = next();
+            next.set(key + 1);
+            added.write().push(Added {
+                key,
+                name: file.name(),
+                detail: size(file.size()),
+                state: AttachmentState::Uploading,
+                progress: 0.0,
+            });
+            upload(key);
+        }
+    };
+    rsx! {
+        div { class: "gallery-thread",
+            Message { author: Author::Person, by: "You",
+                Attachments {
+                    Attachment { name: "Rhythm strip, this morning", image: STRIP, onclick: move |_| opened.set(Some("Rhythm strip, this morning".into())) }
+                    Attachment { name: "Discharge summary.pdf", detail: "PDF · 240 KB", onclick: move |_| opened.set(Some("Discharge summary.pdf".into())) }
+                }
+                p { "Can you read these and tell me if anything changed?" }
+            }
+            if let Some(name) = opened() {
+                p { class: "gallery-note", "Opened {name}." }
+            }
+        }
+        Composer {
+            label: "Message",
+            placeholder: "Write a message",
+            value: draft(),
+            on_input: move |text| draft.set(text),
+            on_submit: move |_| {},
+            on_files: take,
+            drop_label: "Drop files to attach",
+            context: rsx! {
+                if !added().is_empty() {
+                    Attachments {
+                        for file in added() {
+                            Attachment {
+                                key: "{file.key}",
+                                name: file.name.clone(),
+                                detail: file.detail.clone(),
+                                state: file.state,
+                                progress: file.progress,
+                                remove_label: format!("Remove {}", file.name),
+                                on_remove: move |_| added.write().retain(|kept| kept.key != file.key),
+                            }
+                        }
+                    }
+                }
+            },
+            AttachButton { label: "Attach files", multiple: true, on_files: take }
+            Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: added().iter().any(|file| file.state == AttachmentState::Uploading), "Send" }
         }
     }
 }

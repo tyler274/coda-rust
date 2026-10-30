@@ -231,6 +231,10 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
   background: transparent; color: var(--ink); font: var(--type-body-lg); }
 .composer-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2);
   min-height: var(--control-height); }
+/* Files dragged over the composer: a dashed action outline over the whole field, saying what dropping does. */
+.composer { position: relative; }
+.composer-drop { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--space-3); border: var(--stroke) dashed var(--primary); border-radius: inherit;
+  background: color-mix(in srgb, var(--primary-container) 88%, transparent); color: var(--on-primary-container); font: var(--type-label-lg); text-align: center; pointer-events: none; }
 /* Inline: the words and the actions share one row, the actions at the words' last line;
    what the person brought in still sits above both. */
 .composer.is-inline { --composer-inset: var(--space-1); grid-template-columns: minmax(0, 1fr) auto; align-items: end;
@@ -669,6 +673,48 @@ del > .diff-sign, .diff-removed { color: var(--error); }
   .message-turn:is(:hover, :focus-within) > .message-actions, .message-actions:has([data-active="true"], [aria-busy="true"]) { opacity: 1; }
 }
 .version-switch { display: inline-flex; align-items: center; }
+/* Attachments: a file as a tile on its hairline, its mark on the data tint, its name, and what it is beneath; an image
+   as its own square picture. Uploading, it turns or fills its foot; when it didn't upload, it is outlined in red. Its
+   remove sits at its corner, and a tile that opens takes the state layer and the focus ring whole. In the composer they
+   scroll across in one row; in the person's bubble they wrap at its edge. Each arrives on the arrival motion. */
+.attachments { display: flex; flex-wrap: wrap; gap: var(--space-2); min-width: 0; }
+.composer > .attachments { flex-wrap: nowrap; overflow-x: auto; padding: var(--space-1); scrollbar-width: none; }
+.message-person > .attachments { justify-content: flex-end; margin-bottom: var(--space-2); }
+.message-person > .attachments > .attachment:not(.is-image) { flex: 1 1 9rem; max-width: 14rem; }
+.attachment { position: relative; display: flex; align-items: center; gap: var(--space-2); box-sizing: border-box; flex: none; width: 14rem; max-width: 100%; min-height: 56px;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2); overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md);
+  background: var(--surface-lowest); color: var(--ink); transition: opacity var(--motion-arrive) var(--ease-out), scale var(--motion-arrive) var(--ease-out); }
+@starting-style { .attachment { opacity: 0; scale: .94; } }
+.attachment:has(.attachment-remove):not(.is-image) { padding-inline-end: calc(var(--space-6) + var(--space-2)); }
+.attachment.is-image { width: 64px; height: 64px; min-height: 0; padding: 0; }
+.attachment-image { display: block; width: 100%; height: 100%; object-fit: cover; }
+.attachment.is-image:not(.is-failed, .is-uploading) .attachment-image { transition: opacity var(--motion-arrive) var(--ease-out); }
+.attachment.is-uploading .attachment-image, .attachment.is-failed .attachment-image { opacity: .45; }
+.attachment-image-mark { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink); }
+.attachment-mark { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--data-container); color: var(--on-data-container); }
+.attachment.is-failed { border-color: var(--error); }
+.attachment.is-failed :is(.attachment-mark, .attachment-image-mark) { color: var(--error); }
+.attachment.is-failed .attachment-mark { background: var(--error-container); }
+.attachment-text { display: grid; min-width: 0; }
+.attachment-name, .attachment-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.attachment-name { font: var(--type-label-lg); }
+.attachment-detail { color: var(--muted); font: var(--type-body-sm); }
+.attachment.is-failed .attachment-detail { color: var(--error); }
+.attachment-open { position: absolute; inset: 0; padding: 0; border: 0; border-radius: inherit; background: currentColor; opacity: 0; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { .attachment-open:hover { opacity: var(--state-hover); } }
+.attachment-open:active { opacity: var(--state-pressed); }
+.attachment-open:focus-visible { outline: 0; animation: none; }
+.attachment:has(.attachment-open:focus-visible) { overflow: visible; outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.attachment-progress { position: absolute; inset: auto 0 0; height: 3px; background: var(--outline-variant); }
+.attachment-progress::before { content: ""; display: block; width: var(--progress); height: 100%; background: var(--primary); transition: width var(--motion-control) var(--ease-out); }
+.attachment-remove { position: absolute; top: var(--space-1); inset-inline-end: var(--space-1); display: grid; place-items: center; width: 22px; height: 22px; padding: 0;
+  border: 0; border-radius: var(--radius-pill); background: var(--ink); color: var(--surface-lowest); cursor: pointer; }
+.attachment-remove::after { content: ""; position: absolute; inset: -9px; }
+.attachment-remove > .icon { width: 14px; height: 14px; }
+.attachment-remove:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: 2px; }
+.attach-button { cursor: pointer; }
+.attach-button:has(input:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 /* A message on its way: quieter while sending; outlined, not filled, while it waits its turn; on a red outline when it
    didn't go, its status in red beneath. Its status is one quiet line at the bubble's edge, its ways on beside it. */
 .message-person.is-sending { opacity: .62; }

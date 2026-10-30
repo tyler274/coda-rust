@@ -8,9 +8,11 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::dioxus_core::AttributeValue;
+use dioxus::html::FileData;
 use dioxus::prelude::*;
 
 mod agent;
+mod attachments;
 mod cards;
 mod charts;
 mod code;
@@ -28,6 +30,7 @@ pub use agent::{
     Answer, ApprovalCard, ArtifactCard, StepState, Task, TaskList, TaskState, TaskWords, WorkStep,
     WorkTrace,
 };
+pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
 pub use cards::{Card, Quote};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
@@ -787,7 +790,9 @@ pub fn SearchField(
 /// The composer: the one raised text field, holding the words and, under
 /// them, a toolbar of the host's context and actions; a host's submit control sends. `inline`
 /// puts the actions beside the words instead, at their last line.
-/// The words grow with what is written, up to seven lines. Keys stay the host's.
+/// The words grow with what is written, up to seven lines. Keys stay the host's. With `on_files`,
+/// files dragged over it are taken: the field says `drop_label` while they are over it, and the
+/// files dropped go to `on_files`.
 #[component]
 pub fn Composer(
     /// The words' accessible name.
@@ -813,12 +818,52 @@ pub fn Composer(
     /// failed.
     #[props(default)]
     notices: Option<Element>,
+    on_files: Option<EventHandler<Vec<FileData>>>,
+    /// What the field says while files are dragged over it.
+    #[props(default)]
+    drop_label: String,
     children: Element,
 ) -> Element {
     let held = value.clone();
+    // How many of the field's own elements a drag is over: entering a child leaves its parent.
+    let mut over = use_signal(|| 0u32);
+    let mut class = String::from(if inline {
+        "composer field is-inline"
+    } else {
+        "composer field"
+    });
+    if over() > 0 {
+        class.push_str(" is-dropping");
+    }
     rsx! {
         form {
-            class: if inline { "composer field is-inline" } else { "composer field" },
+            class,
+            ondragenter: move |event| {
+                if on_files.is_some() {
+                    event.prevent_default();
+                    over += 1;
+                }
+            },
+            ondragover: move |event| {
+                if on_files.is_some() {
+                    event.prevent_default();
+                }
+            },
+            ondragleave: move |_| {
+                if on_files.is_some() {
+                    over.set(over().saturating_sub(1));
+                }
+            },
+            ondrop: move |event| {
+                if let Some(take) = on_files {
+                    event.prevent_default();
+                    over.set(0);
+                    let files = event.data_transfer().files();
+                    if !files.is_empty() {
+                        take.call(files);
+                    }
+                }
+            },
             onsubmit: move |event| {
                 event.prevent_default();
                 let typed = event.get_first("draft").and_then(|value| match value {
@@ -854,6 +899,9 @@ pub fn Composer(
                 {children}
             }
             {notices}
+            if over() > 0 && !drop_label.is_empty() {
+                div { class: "composer-drop", aria_hidden: "true", "{drop_label}" }
+            }
         }
     }
 }
