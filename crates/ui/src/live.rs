@@ -45,6 +45,8 @@ struct Shown<T> {
 /// answered: a list drawn from several reads moves each source's rows only once that source had
 /// answered when the list was last shown, so a source's first answer simply shows, and a read that
 /// has not answered holds back no other source's rows.
+/// `ready` is kept and asked again at the next render, so it captures this render's readiness by
+/// value rather than reading a signal then.
 pub fn use_live_rows<T: Clone + 'static>(
     rows: Vec<T>,
     key_of: impl Fn(&T) -> String,
