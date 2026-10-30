@@ -65,8 +65,10 @@ and open decisions. Recommendations may question the approach, but preferences
 and speculative risks are not requirements.
 
 Check each acceptance criterion against its evidence. A criterion without an
-inspectable artifact, or with one from a revision other than the target, is a
-proof gap to report; a claim that a check passed is not an artifact.
+inspectable artifact, or with one from an earlier revision that later changes
+could affect, is a proof gap to report. Evidence deliberately run at an earlier
+revision, such as the failure before a fix, is not. A claim that a check passed
+is not an artifact.
 
 Lead with the judgment, inspected targets, material findings, and proof limits.
 Allow a clean result without a finding quota. Mechanical checks support judgment;
