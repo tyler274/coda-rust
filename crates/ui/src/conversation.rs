@@ -1,6 +1,6 @@
 //! The conversation's frame: the day it is on, what the person brought into it, a way to begin,
-//! and what can be done with a message once it is there. A receipt in the thread is a `ListRow` in
-//! a `RowGroup`; who the conversation is with is the `TopBar`'s title.
+//! speech as it is taken down, and what can be done with a message once it is there. A receipt in
+//! the thread is a `ListRow` in a `RowGroup`; who the conversation is with is the `TopBar`'s title.
 
 use std::rc::Rc;
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -8,7 +8,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use dioxus::html::geometry::PixelsVector2D;
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName};
+use crate::{Button, ButtonVariant, Icon, IconName, WorkingMark};
 
 /// How near the end counts as at it: within this, new replies are followed.
 const FOLLOW_PX: f64 = 48.0;
@@ -287,6 +287,64 @@ pub fn MessageEditor(
                     Button { compact: true, onclick: move |_| on_cancel.call(()), "{cancel_label}" }
                     Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: empty, "{save_label}" }
                 }
+            }
+        }
+    }
+}
+
+/// How many recent levels dictation draws.
+const DICTATION_BARS: usize = 40;
+
+/// Speech being taken down in a `Composer`'s place: what is happening in `label`'s words, such as
+/// "Listening" or "Transcribing", the voice's recent loudness from the host's microphone as bars,
+/// newest at the end, each `levels` value from 0 to 1, and how long it has run. Cancel drops what
+/// was said; Done ends listening. While `transcribing` the bars hold still under the working mark
+/// and only Cancel remains.
+#[component]
+pub fn Dictation(
+    label: String,
+    levels: Vec<f32>,
+    elapsed: String,
+    #[props(default)] transcribing: bool,
+    cancel_label: String,
+    done_label: String,
+    on_cancel: EventHandler,
+    on_done: EventHandler,
+) -> Element {
+    let recent = &levels[levels.len().saturating_sub(DICTATION_BARS)..];
+    let bars: Vec<f32> = std::iter::repeat_n(0.0, DICTATION_BARS - recent.len())
+        .chain(recent.iter().map(|level| level.clamp(0.0, 1.0)))
+        .collect();
+    rsx! {
+        div { class: if transcribing { "dictation is-transcribing" } else { "dictation" },
+            Button {
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                icon_only: true,
+                aria_label: "{cancel_label}",
+                onclick: move |_| on_cancel.call(()),
+                Icon { name: IconName::X }
+            }
+            div { class: "dictation-wave", aria_hidden: "true",
+                for (index, level) in bars.into_iter().enumerate() {
+                    span { key: "{index}", style: "--level: {level}" }
+                }
+            }
+            span { class: "dictation-status", role: "status",
+                if transcribing {
+                    WorkingMark {}
+                }
+                span { class: "dictation-label", "{label}" }
+                span { class: "dictation-elapsed", "{elapsed}" }
+            }
+            Button {
+                variant: ButtonVariant::Primary,
+                compact: true,
+                icon_only: true,
+                aria_label: "{done_label}",
+                disabled: transcribing,
+                onclick: move |_| on_done.call(()),
+                Icon { name: IconName::Check }
             }
         }
     }

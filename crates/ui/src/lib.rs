@@ -38,8 +38,8 @@ pub use charts::{
 };
 pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords};
 pub use conversation::{
-    ContextChip, ConversationViewport, DateSeparator, MessageActions, MessageEditor, MessageStatus,
-    Suggestion, VersionSwitch,
+    ContextChip, ConversationViewport, DateSeparator, Dictation, MessageActions, MessageEditor,
+    MessageStatus, Suggestion, VersionSwitch,
 };
 pub use documents::{
     FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, TopBar,
@@ -792,7 +792,8 @@ pub fn SearchField(
 /// puts the actions beside the words instead, at their last line.
 /// The words grow with what is written, up to seven lines. Keys stay the host's. With `on_files`,
 /// files dragged over it are taken: the field says `drop_label` while they are over it, and the
-/// files dropped go to `on_files`.
+/// files dropped go to `on_files`. While the person speaks, a `Dictation` given as `dictation`
+/// stands in the words' place; the words wait, kept, until it is gone.
 #[component]
 pub fn Composer(
     /// The words' accessible name.
@@ -822,6 +823,7 @@ pub fn Composer(
     /// What the field says while files are dragged over it.
     #[props(default)]
     drop_label: String,
+    #[props(default)] dictation: Option<Element>,
     children: Element,
 ) -> Element {
     let held = value.clone();
@@ -834,6 +836,9 @@ pub fn Composer(
     });
     if over() > 0 {
         class.push_str(" is-dropping");
+    }
+    if dictation.is_some() {
+        class.push_str(" is-dictating");
     }
     rsx! {
         form {
@@ -873,6 +878,7 @@ pub fn Composer(
                 on_submit.call(submitted_text(typed.as_deref(), &held));
             },
             {context}
+            {dictation}
             textarea {
                 class: "composer-input",
                 name: "draft",

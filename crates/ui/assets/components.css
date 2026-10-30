@@ -235,6 +235,16 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 .composer { position: relative; }
 .composer-drop { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--space-3); border: var(--stroke) dashed var(--primary); border-radius: inherit;
   background: color-mix(in srgb, var(--primary-container) 88%, transparent); color: var(--on-primary-container); font: var(--type-label-lg); text-align: center; pointer-events: none; }
+/* Dictation in the words' place: Cancel, the voice as bars in the ink, newest at the end, what is happening and for how
+   long, then Done. Transcribing, the bars hold still and quiet under the working mark. */
+.composer.is-dictating > :is(.composer-input, .composer-toolbar:not(:has(> *))) { display: none; }
+.dictation { display: flex; align-items: center; gap: var(--space-2); min-width: 0; min-height: var(--target); padding: 0 var(--space-1); }
+.dictation-wave { display: flex; flex: 1 1 auto; align-items: center; justify-content: space-between; gap: 2px; min-width: 0; height: 32px; overflow: hidden; }
+.dictation-wave > span { flex: 1 1 0; min-width: 2px; max-width: 4px; height: max(3px, calc(var(--level) * 100%)); border-radius: var(--radius-pill); background: var(--ink);
+  transition: height 90ms linear; }
+.dictation.is-transcribing .dictation-wave > span { background: var(--muted); opacity: .5; }
+.dictation-status { display: flex; flex: none; align-items: center; gap: var(--space-2); color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.dictation-label { color: var(--body); }
 /* Inline: the words and the actions share one row, the actions at the words' last line;
    what the person brought in still sits above both. */
 .composer.is-inline { --composer-inset: var(--space-1); grid-template-columns: minmax(0, 1fr) auto; align-items: end;

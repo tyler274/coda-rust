@@ -21,12 +21,12 @@ use ui::{
     Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
     CitationChip, CitationPreview, CodeBlock, Command, CommandPalette, Comparison, ComparisonBars,
     Composer, ContextChip, ContextMenu, ConversationViewport, CopyButton, CopyWords, Count,
-    DateSeparator, Dialog, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine,
-    EmptyState, FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot,
-    MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Message, MessageActions,
-    MessageEditor, MessageState, MessageStatus, NavigationControl, NavigationRow, Notice,
-    PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, Popover, ProposedChange, Prose,
-    ProsePart, Quote, RangeChoice, Rating, RowFrame, RowGroup, RunningChart, SearchField,
+    DateSeparator, Dialog, Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict,
+    EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow,
+    LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Message,
+    MessageActions, MessageEditor, MessageState, MessageStatus, NavigationControl, NavigationRow,
+    Notice, PageTitle, Paper, PaperSection, Placeholder, PlaceholderShape, Popover, ProposedChange,
+    Prose, ProsePart, Quote, RangeChoice, Rating, RowFrame, RowGroup, RunningChart, SearchField,
     SectionHeader, SelectionRow, SeriesChart, SeriesPoint, SeriesShape, SettingRow, SourceDetails,
     SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
     StepState, Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast,
@@ -131,10 +131,11 @@ fn Gallery() -> Element {
                 Section { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
                     ComposerStatesDemo {}
                 }
-                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer.",
+                Section { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer. Speaking, the composer listens in the words' place, the voice drawn as it comes; Done transcribes into the words, Cancel drops it.",
                     ThreadStatesDemo {}
                     DeliveryDemo {}
                     AttachmentsDemo {}
+                    DictationDemo {}
                 }
                 Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
                     ProseDemo {}
@@ -2373,6 +2374,87 @@ fn AttachmentsDemo() -> Element {
             },
             AttachButton { label: "Attach files", multiple: true, on_files: take }
             Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: added().iter().any(|file| file.state == AttachmentState::Uploading), "Send" }
+        }
+    }
+}
+
+/// What the scripted dictation transcribes to.
+#[cfg(feature = "web")]
+const SPOKEN: &str = "Ask her cardiologist whether to recheck the potassium this week.";
+
+#[cfg(feature = "web")]
+#[component]
+fn DictationDemo() -> Element {
+    let mut draft = use_signal(String::new);
+    // Each listening is a run; its levels, tenths of a second, and whether it is transcribing.
+    let mut listening = use_signal(|| None::<u32>);
+    let mut levels = use_signal(Vec::<f32>::new);
+    let mut tenths = use_signal(|| 0u32);
+    let mut transcribing = use_signal(|| false);
+    let start = move |_| {
+        let run = listening().map_or(0, |run| run + 1);
+        listening.set(Some(run));
+        levels.set(Vec::new());
+        tenths.set(0);
+        transcribing.set(false);
+        spawn(async move {
+            // A voice's loudness, scripted: syllables rising and falling, with pauses between words.
+            let mut seed = 7u32;
+            loop {
+                futures_timer::Delay::new(Duration::from_millis(100)).await;
+                if listening() != Some(run) || transcribing() {
+                    return;
+                }
+                seed = seed.wrapping_mul(1_103_515_245).wrapping_add(12_345);
+                let tick = tenths() + 1;
+                let noise = (seed >> 16) as f32 / 65_535.0;
+                let syllable = ((tick as f32) * 1.7).sin().abs();
+                let pause = if tick % 11 < 2 { 0.08 } else { 1.0 };
+                levels
+                    .write()
+                    .push((0.15 + 0.75 * syllable * noise.sqrt()) * pause);
+                tenths.set(tick);
+            }
+        });
+    };
+    let done = move |_| {
+        transcribing.set(true);
+        spawn(async move {
+            futures_timer::Delay::new(Duration::from_millis(1100)).await;
+            if transcribing() {
+                draft.set(SPOKEN.to_owned());
+                transcribing.set(false);
+                listening.set(None);
+            }
+        });
+    };
+    let seconds = tenths() / 10;
+    rsx! {
+        Composer {
+            label: "Message",
+            placeholder: "Write a message, or speak",
+            value: draft(),
+            on_input: move |text| draft.set(text),
+            on_submit: move |_| {},
+            dictation: listening().is_some().then(|| rsx! {
+                Dictation {
+                    label: if transcribing() { "Transcribing" } else { "Listening" },
+                    levels: levels(),
+                    elapsed: format!("{}:{:02}", seconds / 60, seconds % 60),
+                    transcribing: transcribing(),
+                    cancel_label: "Cancel dictation",
+                    done_label: "Done",
+                    on_cancel: move |_| {
+                        transcribing.set(false);
+                        listening.set(None);
+                    },
+                    on_done: done,
+                }
+            }),
+            if listening().is_none() {
+                Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Dictate", onclick: start, Icon { name: IconName::Microphone } }
+                Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: draft().trim().is_empty(), "Send" }
+            }
         }
     }
 }
