@@ -44,9 +44,15 @@ sources, open decisions, and meaningful completion. Use only the structure
 needed; a small change may take a few sentences.
 
 Define observable success and appropriate evidence across the affected
-workflow. Keep implementation, tests, deployed behavior, and domain
-judgment distinct. Exploratory work should name the question and the
-decision its evidence will support.
+workflow. State acceptance as numbered criteria (AC1, AC2, ...) so the
+implementation, PR, and review can show each one's proof. Each criterion
+names the observable result, where it is observed, and the evidence that
+would show it: a focused test, a feature of the [verify skill](../../../verification/README.md#verify-skills)
+that covers the affected code, a model check, a screenshot, deployed
+behavior, or domain judgment. Say when no existing proof covers it.
+Keep implementation, tests, deployed behavior, and domain judgment distinct.
+Exploratory work should name the question and the decision its evidence
+will support.
 
 Check that someone outside the conversation can understand the purpose,
 find the owners, distinguish requirements from suggestions, and assess

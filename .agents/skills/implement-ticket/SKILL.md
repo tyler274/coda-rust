@@ -17,19 +17,29 @@ evidence rather than inventing ticket contents or a separate integration.
 
 Read the ticket, discussion, governing specs, dependencies, and current code.
 Establish what already works, what remains, and what would prove completion.
+Restate acceptance as numbered criteria (AC1, AC2, ...), drafting them when the
+work has none and confirming consequential ones with the user. Choose each
+criterion's evidence: the [verify skill](../../../verification/README.md#verify-skills) feature that covers the affected
+code, a focused test, or the observation to capture. A defect's evidence includes
+the failure before the fix.
 Reconcile material contradictions; use
 [write-linear-ticket](../write-linear-ticket/SKILL.md) when scope needs shaping.
-Explain the plan, responsible owners, affected workflows, and verification.
+Explain the plan, responsible owners, affected workflows, criteria, and evidence.
 
 ## Implement, verify, and review
 
 Implement the coherent outcome at its owners. Exercise affected consumers,
-side effects, and saved results using the repository's verification practices.
-Investigate failures before retrying. Keep controlled tests, running-product
-behavior, deployed qualification, and domain judgment distinct.
+side effects, and saved results through the chosen evidence. Investigate failures
+before retrying. Keep controlled tests, running-product behavior, deployed
+qualification, and domain judgment distinct.
+
+Keep each criterion's evidence as artifacts a reader can inspect: the command
+with its exit status and output, response bodies, logs, and screenshots you have
+looked at, each recorded with the revision it ran against. Re-run evidence that a
+later correction makes stale. A criterion without evidence stays listed as a gap.
 
 Use [local-review](../local-review/SKILL.md) with the original intent, exact
-change, and inspected evidence. Reconcile its findings, correct accepted defects,
+change, criteria, and their evidence. Reconcile its findings, correct accepted defects,
 and verify the result through that skill's correction workflow. Work through
 that feedback locally before PR handoff, following the shared defaults for early
 collaboration. Missing proof
@@ -38,8 +48,9 @@ remains visible rather than reducing the ticket's acceptance criteria.
 ## Prepare the handoff
 
 Use [write-pr](../write-pr/SKILL.md) to explain the final change, linking the
-ticket and relevant sources. Carry local review dispositions, verification,
-open decisions, and remaining acceptance work into the handoff. Refresh the
+ticket and relevant sources. Carry each criterion with its evidence and result,
+local review dispositions, open decisions, and remaining acceptance work into the
+handoff. Refresh the
 explanation after material changes.
 
 Use [review-pr](../review-pr/SKILL.md) for a requested PR review or its

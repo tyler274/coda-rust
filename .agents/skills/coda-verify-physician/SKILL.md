@@ -15,6 +15,18 @@ Google credentials or a model key: the worker answers with the fixed text `Noted
 Every command runs inside the nix dev shell from the worktree root. If direnv is not
 active, prefix with `nix develop --command`.
 
+## When a change needs this
+
+Run the matching [feature](features/README.md) when a change touches:
+
+- `crates/physician-sample/src/live.rs` (chat snapshots, events and `resume_durable`) or
+  `crates/physician-sample/src/bin/physician-worker.rs`.
+- `crates/physician-bus` (cross-instance fan-out and resync).
+- `crates/local-product/src/runtime.rs` (durable chat runs and their failed attempts).
+- The conversation renderer in `crates/physician-app/src/lib.rs` or `src/shell.rs`.
+- `scripts/physician-scale-stack.py`, this skill's driver, or the `fanout`, `try_again`,
+  `worker` and `scale` tests in `crates/physician-sample/tests`.
+
 ## Launch
 
 1. Build the three binaries and the page. Use a private target directory when other work

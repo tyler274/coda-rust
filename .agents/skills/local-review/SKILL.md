@@ -22,7 +22,8 @@ Read the relevant conversation, governing guidance, and current owners. Supply:
   changes, and relevant untracked artifacts. Freeze or fingerprint the target
   so concurrent edits cannot silently change what was reviewed.
 - Affected workflows and consumers, dependencies between pieces, prior findings
-  and dispositions, and inspected verification with its limits.
+  and dispositions, and inspected verification with its limits: each acceptance
+  criterion with its evidence artifacts and the revision they ran against.
 
 Give enough context for independent judgment without prescribing a verdict or
 limiting investigation to known concerns. Keep unrelated private material and
@@ -62,6 +63,10 @@ Consider whether a proposed repair harms valid behavior or adds complexity.
 Distinguish defects, preexisting issues, uncertain concerns, optional improvements,
 and open decisions. Recommendations may question the approach, but preferences
 and speculative risks are not requirements.
+
+Check each acceptance criterion against its evidence. A criterion without an
+inspectable artifact, or with one from a revision other than the target, is a
+proof gap to report; a claim that a check passed is not an artifact.
 
 Lead with the judgment, inspected targets, material findings, and proof limits.
 Allow a clean result without a finding quota. Mechanical checks support judgment;
