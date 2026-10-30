@@ -1,5 +1,5 @@
-/* Duet's screen composition on the shared roles (crates/ui tokens): the canvas, white reading surfaces on a hairline,
-   restrained green and no gradient, after the October 21 design review. These rules apply only inside the Duet app. */
+/* Duet's screen composition: where its pieces sit. Its design is the shared library's `theme-duet` (crates/ui). These
+   rules apply only inside the Duet app. */
 html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surface); color: var(--ink); }
 .duet {
   height: 100%;
@@ -10,21 +10,6 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surfac
   flex-direction: column;
   color: var(--ink);
   background: var(--surface);
-  /* The shared type scale, as the October 21 mockups map it: prose and the conversation read at body large. */
-  font: var(--type-body-lg);
-  /* Controls after the October 21 design review: each action a full-width bar, and quiet actions in green text. */
-  --control-width: 100%;
-  --control-min-height: 50px;
-  --control-radius: var(--radius-lg);
-  --control-quiet-color: var(--primary);
-  --control-quiet-padding-inline: 0;
-  /* Links read in green, as the review's text links do, at the touch target's height. */
-  --navigation-color: var(--primary);
-  --navigation-hover-color: var(--primary);
-  --navigation-min-height: var(--target);
-  /* Cards stand on a hairline rather than a shadow, as the review's reading surfaces do. */
-  --card-elevation: none;
-  --card-outline: var(--hairline) solid var(--outline-variant);
 }
 .duet-page {
   position: relative;
@@ -66,9 +51,8 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surfac
   margin: 0 0 12px;
   padding: 16px;
 }
-/* The thread after the October 21 design review: messages a clear step apart, the person's bubble tailed toward them. */
+/* The thread after the October 21 design review: messages a clear step apart. */
 .duet-thread { display: flex; flex-direction: column; gap: 24px; }
-.duet .message-person { border-bottom-right-radius: 5px; }
 .thread-card { margin-top: 12px; padding-top: 8px; border-top: var(--hairline) solid var(--outline-variant); }
 button.thread-open {
   display: block;
@@ -114,27 +98,7 @@ button.thread-open > p.thread-card::after {
 }
 .source-name { font-weight: var(--weight-strong); }
 .source-detail { color: var(--muted); text-align: right; }
-.duet .tabs {
-  position: sticky;
-  bottom: 0;
-  z-index: 2;
-  margin-top: auto;
-  display: flex;
-  gap: 8px;
-  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
-  background: var(--surface-lowest);
-  border-top: var(--hairline) solid var(--outline-variant);
-  box-shadow: none;
-}
-.duet .tabs button {
-  flex: 1;
-  min-height: 44px;
-  border: 0;
-  border-radius: 12px;
-  background: transparent;
-  color: var(--muted);
-}
-.duet .tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }
+.duet .tabs { z-index: 2; margin-top: auto; }
 /* The composer stands over the page's bottom gutter too, so nothing in the thread shows beneath it. */
 .duet-composer-wrap {
   position: sticky;

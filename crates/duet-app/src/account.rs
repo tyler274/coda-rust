@@ -383,7 +383,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
             if cfg!(target_arch = "wasm32") { p { role: "status", "Browser sign-in, drafts and operation retry identities are memory-only. Keep this tab open while any write is uncertain. After a reload, sign in and use ‘Recover or resolve a previous operation’ to read current server state before a new approval; do not assume the previous operation succeeded or recreate it as a retry." } }
             Button { variant: ButtonVariant::Quiet, compact: true, onclick: sign_out, "Sign out" }
         } else {
-            main { class: "duet",
+            main { class: "duet theme-duet",
                 h1 { "Duet" }
                 p { "Sign in to your Duet account. A practice invitation is not required." }
                 if !message().is_empty() { p { role: "alert", "{message}" } }

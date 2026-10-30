@@ -22,7 +22,7 @@
 .title-with-count { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
 .title-with-count > :is(h1, h2, h3, strong) { min-width: 0; }
 .empty { margin: 0; color: var(--body); font: var(--type-body-lg); }
-.tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
+.tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter) calc(var(--space-2) + env(safe-area-inset-bottom)); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
 .tabs button { flex: 1; min-height: var(--target); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--muted); font: var(--type-label-md); }
 .tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }
 @media (prefers-reduced-motion: reduce) {
@@ -251,6 +251,23 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
 .tabs.has-icons button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 52px; font: var(--type-label-sm); }
 .tabs.has-icons .icon { width: 24px; height: 24px; }
+/* Duet's theme, after the October 21 design review: prose and the conversation at body large, each action a full-width
+   bar, quiet actions and links in green at the touch target's height, cards on a hairline rather than a shadow, and the
+   person's bubble tailed toward them. A host sets it on its root. */
+.theme-duet {
+  font: var(--type-body-lg);
+  --control-width: 100%;
+  --control-min-height: 50px;
+  --control-radius: var(--radius-lg);
+  --control-quiet-color: var(--primary);
+  --control-quiet-padding-inline: 0;
+  --navigation-color: var(--primary);
+  --navigation-hover-color: var(--primary);
+  --navigation-min-height: var(--target);
+  --card-elevation: none;
+  --card-outline: var(--hairline) solid var(--outline-variant);
+}
+.theme-duet .message-person { border-end-end-radius: 5px; }
 @media (forced-colors: active) {
   .field:focus-within { outline: var(--focus-ring-width) solid Highlight; }
   .dialog { outline: var(--hairline) solid CanvasText; }
