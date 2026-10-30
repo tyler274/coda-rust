@@ -75,7 +75,7 @@ doppler_token_versions = {
 migration_environment = {
   physician = {
     CODA_HOSTED_PROFILE        = "staging-preview"
-    PHYSICIAN_STAGING_ACCOUNTS = "dev@codahealth.ai|Dev|admin,tyler@codahealth.ai|Tyler|admin,physician@codahealth.test|Staging Physician|admin"
+    PHYSICIAN_STAGING_ACCOUNTS = "dev@codahealth.ai|Dev|admin,tyler@codahealth.ai|Tyler|admin,physician@codahealth.test|Staging Physician|admin,ops@codahealth.ai|Ops|admin,eli@codahealth.ai|Eli|admin"
   }
 }
 runtime_environment = {

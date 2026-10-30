@@ -114,8 +114,10 @@ P1/D1 journeys are outside that result, so this is not complete hosted acceptanc
 
 `physician-migrate` ensures the accounts listed in `PHYSICIAN_STAGING_ACCOUNTS`
 (`email|Display Name|admin` or `…|physician`, comma-separated) exist in
-`roger-synthetic-practice` with `physician_id = staging-physician`, the panel the
-server seeds with the five synthetic workspaces on startup. The list and
+`roger-synthetic-practice`. Each email gets its own physician id. On startup
+the server registers the five synthetic workspaces and places every active
+admin in that practice on their panel, including the preview identity
+`staging-physician`. The list and
 `CODA_HOSTED_PROFILE=staging-preview` come from `migration_environment` in
 [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars); any
 other profile refuses the list. A rerun never reactivates or edits an existing
