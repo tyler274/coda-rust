@@ -89,6 +89,7 @@ const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a n
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
 const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
 const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
+const SHOW_SESSION_PROMPT: &str = "document.getElementById('session-prompt')?.showModal()";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
 /// send is missing or fails, and never returns the code.
@@ -1498,12 +1499,17 @@ fn PhysicianShell(
             }
         }
         if expired() {
-            // Covers and hides the page; nothing underneath changes.
-            div {
+            // Covers and hides the page; nothing underneath changes. A modal opened last, it
+            // stands over any dialog left open, which stays as it was. Only signing in or out
+            // closes it.
+            dialog {
+                id: "session-prompt",
                 class: "session-prompt",
-                role: "dialog",
-                aria_modal: "true",
                 aria_label: "Sign in to continue",
+                "closedby": "none",
+                onmounted: move |_| {
+                    document::eval(SHOW_SESSION_PROMPT);
+                },
                 SignInScreen {
                     client,
                     session,
