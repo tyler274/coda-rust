@@ -1,204 +1,225 @@
 #!/usr/bin/env node
-// Check a journey chart, an XState machine, and compile it to Verus.
+// Check a journey's model and compile it to Verus.
 //
-//   node verification/statechart.mjs check CHART.mjs [JOURNEYS.md]
-//   node verification/statechart.mjs compare AGREED.mjs CODE.mjs
-//   node verification/statechart.mjs verus CHART.mjs --module NAME [--check]
+//   node verification/statechart.mjs check MODEL.mjs
+//   node verification/statechart.mjs verus MODEL.mjs --module NAME [--dir OUT] [--check]
+//   node verification/statechart.mjs walks MODEL.mjs [--only REGEX | --paths JSON]
 //
-// XState's own graph search finds every reachable state; the chart's meta.never rules
-// are checked on each, and journeys replay on the machine itself. `verus` writes the same
-// behavior as a Verus model for the chart's proof. `compare` sets a chart of what the code
-// does beside the agreed chart, as PStack's from-chart --against does, and prints every
-// difference for Dev to settle: the code is wrong, or the chart needs a correction. Charts are flat parallel regions whose
-// guards are stateIn, not, and or or: what Sketch shows and Verus can state. load()
-// refuses anything else, so both commands read exactly the behavior XState runs.
+// A model (see model.mjs) holds the journey: everyone who acts in it, each one indivisible step in
+// their code. `check` walks every reachable state, holds the model's `never` rules and `invariant`
+// facts in each, finds each `reach` outcome, a list of states the model must pass through in
+// order, and makes each control's change to show the rule it names can break. `verus` writes the same steps, rules and facts as a Verus model; the proof shows the facts
+// hold at the start, survive every step and imply the rules, so it covers every state, not only the
+// ones searched. `walks` prints, as JSON, walks from the start that between them take every case of
+// every event (or those --only names), each step with the model's state after it, so a test can
+// drive the code along them and compare; with --paths, a list of event lists, the walk through each,
+// such as the bug paths to replay against the code.
 import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { pathToFileURL } from "node:url";
-import { and, createActor, getNextSnapshot, not, or, stateIn } from "xstate";
-import { getShortestPaths } from "@xstate/graph";
-
-const CHECKS = { stateIn: stateIn({}).check, not: not(() => true).check, and: and([]).check, or: or([]).check };
-
-// The keys a chart may use at each level; any other key (always, after, entry, exit,
-// invoke, context, history...) is behavior Verus would not see.
-const ALLOWED = {
-  root: ["id", "type", "states", "meta", "description", "schemas"],
-  region: ["initial", "states", "meta", "description"],
-  state: ["on", "meta", "description", "tags"],
-};
 
 async function load(file) {
   const text = fs.readFileSync(file, "utf8");
   const { machine } = await import(pathToFileURL(path.resolve(file)).href);
-  if (!machine) throw new Error(`${file} exports no machine`);
-  const root = machine.root;
-  const refuse = (where, why) => { throw new Error(`${where}: ${why}; charts are flat parallel regions with stateIn, not, and or or guards`); };
-  const only = (node, level, where) => {
-    for (const key of Object.keys(node.config)) if (!ALLOWED[level].includes(key)) refuse(where, `"${key}" is not supported`);
-  };
-  only(root, "root", root.id);
-  if (root.type !== "parallel") refuse(root.id, "the machine must be type: 'parallel', even with one region");
-  const regions = Object.values(root.states).map((r) => {
-    const caption = r.key;
-    only(r, "region", caption);
-    if (r.type !== "compound") refuse(caption, "a region holds one state at a time; draw parallel behavior as more regions");
-    for (const s of Object.values(r.states)) {
-      if (s.type !== "atomic") refuse(`${caption} / ${s.key}`, "a state has states of its own; draw them as another region");
-      only(s, "state", `${caption} / ${s.key}`);
-    }
-    const start = r.initial;
-    if (start.actions.length || start.target.length !== 1 || start.target[0].parent !== r) refuse(caption, "initial must name one of the region's states, with no actions");
-    return { node: r, caption, states: Object.keys(r.states), initial: start.target[0].key };
-  });
-  const regionOf = (caption) => regions.find((r) => r.caption === caption);
-  // A guard as data: { in: [region, state] }, { not: g }, { and: [g] } or { or: [g] }.
-  const guard = (g, where) => {
-    if (g === undefined) return undefined;
-    if (typeof g === "string") g = machine.implementations.guards[g];
-    else if (g.type && !g.check) g = machine.implementations.guards[g.type];
-    if (g?.check === CHECKS.stateIn && g.stateValue && typeof g.stateValue === "object") {
-      const pairs = Object.entries(g.stateValue).map(([region, state]) => {
-        if (typeof state !== "string" || !regionOf(region)?.states.includes(state)) refuse(where, `stateIn names ${region}: ${JSON.stringify(state)}, which the chart does not have`);
-        return { in: [region, state] };
-      });
-      return pairs.length === 1 ? pairs[0] : { and: pairs };
-    }
-    if (g?.check === CHECKS.not) return { not: guard(g.guards[0], where) };
-    if (g?.check === CHECKS.and) return { and: g.guards.map((x) => guard(x, where)) };
-    if (g?.check === CHECKS.or) return { or: g.guards.map((x) => guard(x, where)) };
-    refuse(where, "a guard is not stateIn({ region: state }), not, and or or");
-  };
-  // Each state's transitions, in the order XState tries them.
-  for (const r of regions)
-    r.moves = Object.fromEntries(r.states.map((from) => {
-      const moves = [];
-      for (const [event, list] of r.node.states[from].transitions) {
-        const where = `${r.caption} / ${from} / ${event}`;
-        if (event.includes("*")) refuse(where, "wildcard events are not supported");
-        for (const t of list) {
-          if (t.actions.length) refuse(where, "a transition has actions");
-          if (t.target && (t.target.length !== 1 || t.target[0].parent !== r.node)) refuse(where, "a transition leaves its region");
-          moves.push({ event, to: t.target?.[0].key ?? from, guard: guard(t.guard, where) });
-        }
-      }
-      return [from, moves];
-    }));
-  const meta = root.meta ?? {};
-  // A rule names, per region, the state or states that must never hold together.
-  const rules = (meta.never ?? []).map((rule) => {
-    const states = Object.fromEntries(Object.entries(rule.states).map(([region, list]) => {
-      list = [list].flat();
-      for (const state of list)
-        if (!regionOf(region)?.states.includes(state)) refuse(`rule ${rule.name}`, `${region}: ${state} is not in the chart`);
-      return [region, list];
-    }));
-    return { ...rule, states };
-  });
-  return { text, machine, regions, events: root.events, rules, meta };
+  if (!machine?.regions || !machine?.events) throw new Error(`${file} exports no model; build it with verification/model.mjs`);
+  const regions = Object.entries(machine.regions).map(([caption, states]) => ({ caption, states, initial: states[0] }));
+  const events = Object.keys(machine.events);
+  return { text, machine, regions, events, rules: machine.never, facts: machine.invariant, reach: machine.reach };
 }
 
-// Where a snapshot is: one state caption per region.
-const where = (chart, snapshot) => chart.regions.map((r) => snapshot.value[r.caption]);
-const words = (chart, at) => at.map((s, i) => `${chart.regions[i].caption}: ${s}`).join("; ");
-const breaks = (chart, rule, at) => Object.entries(rule.states).every(([region, states]) =>
-  states.includes(at[chart.regions.findIndex((r) => r.caption === region)]));
+// The same model with one control's change made to a copy of its events.
+function changed(chart, control) {
+  const events = structuredClone(chart.machine.events);
+  control.change(events);
+  return { ...chart, machine: { ...chart.machine, events } };
+}
+
+const words = (chart, v) => chart.regions.map((r, i) => `${r.caption}: ${r.states[v[i]]}`).join("; ");
+
+// Every reachable state. On an event, the first case whose guard holds applies; the event happens
+// when that case moves some region from where it is. A state is an array of state indexes, one per
+// region, kept as bytes and named by one exact number.
+// With `stop`, the search ends at the first state that meets it, and `stopped` names that state.
+function explore(chart, only = () => true, stop) {
+  const regions = chart.regions;
+  const index = new Map(regions.map((r, i) => [r.caption, i]));
+  const states = regions.map((r) => new Map(r.states.map((s, j) => [s, j])));
+  const radix = regions.map((r) => r.states.length);
+  if (radix.reduce((a, b) => a * b, 1) > Number.MAX_SAFE_INTEGER) throw new Error("the model has more states than one number can name");
+  if (radix.some((n) => n > 255)) throw new Error("a region has more than 255 states");
+  const encode = (v) => { let k = 0; for (let i = regions.length - 1; i >= 0; i--) k = k * radix[i] + v[i]; return k; };
+  const compile = (g) => {
+    if (!g) return () => true;
+    if (g.in) { const i = index.get(g.in[0]), j = states[i].get(g.in[1]); return (v) => v[i] === j; }
+    if (g.not) { const f = compile(g.not); return (v) => !f(v); }
+    const fs = (g.and ?? g.or).map(compile);
+    return g.and ? (v) => fs.every((f) => f(v)) : (v) => fs.some((f) => f(v));
+  };
+  const cases = chart.events.map((event) => chart.machine.events[event].cases.map((c) => ({
+    when: compile(c.when),
+    set: Object.entries(c.set).map(([caption, effect]) => {
+      const i = index.get(caption);
+      return [i, regions[i].states.map((from) => { const to = typeof effect === "string" ? effect : effect[from]; return to === undefined ? -1 : states[i].get(to); })];
+    }),
+  })));
+  // The case an event takes, or -1 when it can't happen.
+  const which = (v, e) => {
+    for (let k = 0; k < cases[e].length; k++) {
+      const c = cases[e][k];
+      if (!c.when(v)) continue;
+      return c.set.some(([i, to]) => to[v[i]] >= 0) ? k : -1;
+    }
+    return -1;
+  };
+  const step = (v, e) => {
+    const k = which(v, e);
+    if (k < 0) return null;
+    const next = Array.from(v);
+    for (const [i, to] of cases[e][k].set) if (to[v[i]] >= 0) next[i] = to[v[i]];
+    return next;
+  };
+  const allowed = chart.events.map((event) => only(event));
+  // Many maps, since one map holds at most 2^24 entries.
+  const width = regions.length, CHUNK = 1 << 20;
+  const chunks = [], found = Array.from({ length: 256 }, () => new Map()), parent = [], via = [];
+  let count = 0, stopped = -1;
+  const lookup = (k) => found[k % 256].get(k);
+  const vector = (n) => chunks[Math.floor(n / CHUNK)].subarray((n % CHUNK) * width, (n % CHUNK + 1) * width);
+  const add = (v, k, from, e) => {
+    if (count % CHUNK === 0) chunks.push(new Uint8Array(CHUNK * width));
+    chunks[chunks.length - 1].set(v, (count % CHUNK) * width);
+    if (stopped < 0 && stop?.(v)) stopped = count;
+    found[k % 256].set(k, count++); parent.push(from); via.push(e);
+  };
+  const start = regions.map((r, i) => states[i].get(r.initial));
+  add(start, encode(start), -1, -1);
+  const next = (n) => {
+    const v = vector(n), out = [];
+    for (let e = 0; e < chart.events.length; e++) {
+      if (!allowed[e]) continue;
+      const after = step(v, e);
+      if (!after) continue;
+      const k = encode(after);
+      let m = lookup(k);
+      if (m === undefined) { m = count; add(after, k, n, e); }
+      out.push([e, m]);
+    }
+    return out;
+  };
+  for (let n = 0; n < count && stopped < 0; n++) {
+    next(n);
+    if (process.env.EXPLORE_PROGRESS && n % 500000 === 0 && n) console.error(`${n} explored, ${count} found`);
+  }
+  const path = (n) => { const steps = []; for (; n > 0; n = parent[n]) steps.unshift({ event: chart.events[via[n]], to: n }); return steps; };
+  const holds = (g) => compile(g);
+  const matches = (map) => {
+    const tests = Object.entries(map).map(([region, list]) => { const i = index.get(region); const ok = new Set([list].flat().map((s) => states[i].get(s))); return (v) => ok.has(v[i]); });
+    return (v) => tests.every((f) => f(v));
+  };
+  return { count, stopped, vector, next, path, matches, holds, step, which: (n, e) => which(vector(n), e) };
+}
 
 function check(chart) {
-  const paths = getShortestPaths(chart.machine, { events: chart.events.map((type) => ({ type })) });
+  const graph = explore(chart);
+  const show = (steps) => steps.forEach((step, i) => console.log(`  ${i + 1}. ${step.event} → ${words(chart, graph.vector(step.to))}`));
   let failed = false;
   for (const rule of chart.rules) {
-    const broken = paths.filter((p) => breaks(chart, rule, where(chart, p.state)))
-      .sort((a, b) => a.steps.length - b.steps.length)[0];
-    if (!broken) continue;
+    const breaks = graph.matches(rule.states);
+    let broken = -1;
+    for (let n = 0; n < graph.count && broken < 0; n++) if (breaks(graph.vector(n))) broken = n;
+    if (broken < 0) continue;
     failed = true;
     console.log(`BROKEN ${rule.name}: ${rule.sentence}`);
-    broken.steps.forEach((step, i) => console.log(`  ${i + 1}. ${i ? step.event.type : "Start"} → ${words(chart, where(chart, step.state))}`));
+    show(graph.path(broken));
   }
-  console.log(failed ? "" : `Every rule holds in all ${paths.length} reachable states. Data, progress and implementation remain separate.`);
-  return !failed;
-}
-
-// The code chart may add regions and events of its own; the comparison sees it through
-// the agreed chart's regions. A step that leaves those regions unchanged is not compared.
-function compare(agreed, code) {
-  const missing = agreed.regions.filter((r) => !code.regions.some((c) => c.caption === r.caption));
-  if (missing.length) throw new Error(`the code chart has no region ${missing.map((r) => r.caption).join(", ")}`);
-  const seen = (snapshot) => agreed.regions.map((r) => snapshot.value[r.caption]);
-  const reach = (chart) => {
-    const paths = getShortestPaths(chart.machine, { events: chart.events.map((type) => ({ type })) });
-    const states = new Set(), edges = new Set();
-    for (const p of paths) {
-      const at = seen(p.state).join(" | ");
-      states.add(at);
-      for (const type of chart.events) {
-        const to = seen(getNextSnapshot(chart.machine, p.state, { type })).join(" | ");
-        if (to !== at) edges.add(`${at}  --${type}-->  ${to}`);
+  for (const fact of chart.facts) {
+    const holds = graph.holds(fact.holds);
+    let wrong = -1;
+    for (let n = 0; n < graph.count && wrong < 0; n++) if (!holds(graph.vector(n))) wrong = n;
+    if (wrong < 0) continue;
+    failed = true;
+    console.log(`FALSE ${fact.name}`);
+    show(graph.path(wrong));
+  }
+  console.log(failed ? `${graph.count} reachable states.` : `Every rule and fact holds in all ${graph.count} reachable states. Data, progress and implementation remain separate.`);
+  // Each outcome: a walk through its states in order, found breadth-first over (state, progress).
+  let missed = 0;
+  for (const outcome of chart.reach) {
+    const marks = outcome.through.map(graph.matches);
+    const advance = (n, j) => { const v = graph.vector(n); while (j < marks.length && marks[j](v)) j++; return j; };
+    const size = marks.length + 1;
+    const seen = new Set([advance(0, 0)]), queue = [...seen];
+    let done = queue[0] === marks.length;
+    for (let q = 0; q < queue.length && !done; q++) {
+      const n = Math.floor(queue[q] / size), j = queue[q] % size;
+      for (const [, m] of graph.next(n)) {
+        const id = m * size + advance(m, j);
+        if (seen.has(id)) continue;
+        seen.add(id);
+        queue.push(id);
+        if (id % size === marks.length) { done = true; break; }
       }
     }
-    return { paths, states, edges, start: seen(createActor(chart.machine).getSnapshot()).join(" | ") };
-  };
-  const a = reach(agreed), c = reach(code);
-  const minus = (x, y) => [...x].filter((v) => !y.has(v)).sort();
-  const rows = [
-    ["start state differs", a.start === c.start ? [] : [`agreed: ${a.start}`, `code:   ${c.start}`]],
-    ["states the agreed chart reaches and the code does not", minus(a.states, c.states)],
-    ["states the code reaches and the agreed chart does not", minus(c.states, a.states)],
-    ["steps only in the agreed chart", minus(a.edges, c.edges)],
-    ["steps only in the code", minus(c.edges, a.edges)],
-  ].filter(([, xs]) => xs.length);
-  console.log(`Regions, in order: ${agreed.regions.map((r) => r.caption).join(" | ")}`);
-  for (const [title, xs] of rows) console.log(`\n${title}:\n${xs.map((x) => `  ${x}`).join("\n")}`);
-  let broken = 0;
-  for (const rule of agreed.rules) {
-    const path = c.paths.filter((p) => breaks(agreed, rule, seen(p.state))).sort((x, y) => x.steps.length - y.steps.length)[0];
-    if (!path) continue;
-    broken++;
-    console.log(`\nThe code breaks ${rule.name}: ${rule.sentence}`);
-    path.steps.forEach((step, i) => console.log(`  ${i + 1}. ${i ? step.event.type : "Start"} → ${words(code, where(code, step.state))}`));
+    if (!done) { missed++; console.log(`UNREACHED ${outcome.name}`); }
   }
-  const differences = rows.reduce((n, [, xs]) => n + xs.length, 0) + broken;
-  console.log(differences ? `\n${differences} difference(s)` : "same");
-  return differences === 0;
+  if (chart.reach.length && !missed) console.log(`${chart.reach.length} outcomes: the model reaches each.`);
+  // Each control: its change must break a rule that says its sentence.
+  let held = 0;
+  for (const control of chart.machine.controls) {
+    const broken = changed(chart, control);
+    const marks = chart.rules.filter((rule) => rule.sentence === control.sentence).map((rule) => graph.matches(rule.states));
+    const search = explore(broken, undefined, (v) => marks.some((breaks) => breaks(v)));
+    if (search.stopped >= 0) continue;
+    held++;
+    console.log(`UNBROKEN "${control.sentence}" still holds when ${control.breaks}`);
+  }
+  if (chart.machine.controls.length && !held) console.log(`${chart.machine.controls.length} controls: each rule breaks when its control's change is made.`);
+  return !failed && !missed && !held;
 }
 
-// Journeys: "## Name", an optional "From: Name", then "1. event → State; State".
-function journeys(chart, text) {
-  const list = [];
-  for (const line of text.split("\n")) {
-    const heading = /^## (.+)$/.exec(line);
-    if (heading) { list.push({ name: heading[1].trim(), steps: [] }); continue; }
-    const from = /^From: (.+)$/.exec(line);
-    if (from && list.length) { list.at(-1).from = from[1].trim(); continue; }
-    const step = /^\d+\. (.+?) → (.+)$/.exec(line);
-    if (step && list.length) list.at(-1).steps.push({ event: step[1].trim(), expect: step[2].split(";").map((s) => s.trim()) });
-  }
-  const events = (name) => {
-    const j = list.find((x) => x.name === name);
-    if (!j) throw new Error(`no journey named ${name}`);
-    return [...(j.from ? events(j.from) : []), ...j.steps.map((s) => s.event)];
-  };
-  let failed = false;
-  for (const j of list) {
-    const actor = createActor(chart.machine).start();
-    for (const event of j.from ? events(j.from) : []) actor.send({ type: event });
-    const stuck = j.steps.find((step) => {
-      if (!actor.getSnapshot().can({ type: step.event })) return true;
-      actor.send({ type: step.event });
-      const at = where(chart, actor.getSnapshot());
-      return !step.expect.every((caption) => at.includes(caption));
-    });
-    if (stuck) {
-      failed = true;
-      console.log(`STUCK ${j.name}: "${stuck.event}" does not reach ${stuck.expect.join("; ")} (at ${words(chart, where(chart, actor.getSnapshot()))})`);
+// Walks that take every case of every allowed event: for each, the shortest way to a state where
+// it applies, then the event; walks that another walk begins with are left out.
+function walks(chart, only) {
+  const graph = explore(chart, only);
+  const names = (v) => Object.fromEntries(chart.regions.map((r, i) => [r.caption, r.states[v[i]]]));
+  const targets = new Map();
+  for (let n = 0; n < graph.count; n++)
+    for (let e = 0; e < chart.events.length; e++) {
+      if (!only(chart.events[e])) continue;
+      const k = graph.which(n, e);
+      if (k >= 0 && !targets.has(`${e}:${k}`)) targets.set(`${e}:${k}`, [n, e]);
     }
-  }
-  console.log(failed ? "" : `${list.length} journeys: each reaches its outcome.`);
-  return !failed;
+  const list = [...targets.values()].map(([n, e]) => {
+    const steps = graph.path(n).map((s) => ({ event: s.event, state: names(graph.vector(s.to)) }));
+    const [, m] = graph.next(n).find(([x]) => x === e);
+    return [...steps, { event: chart.events[e], state: names(graph.vector(m)) }];
+  }).sort((a, b) => b.length - a.length);
+  const key = (w) => w.map((s) => s.event).join("\n") + "\n";
+  const kept = [];
+  for (const w of list) if (!kept.some((k) => key(k).startsWith(key(w)))) kept.push(w);
+  return { start: names(graph.vector(0)), cases: targets.size, walks: kept.reverse() };
 }
 
-// Rust names from the chart's words, as the earlier Verus models named them.
+// The one walk through `events` in order, each step with the model's state after it.
+function walkThrough(chart, paths) {
+  const graph = explore(chart, undefined, () => true);
+  const names = (v) => Object.fromEntries(chart.regions.map((r, i) => [r.caption, r.states[v[i]]]));
+  const walk = (events) => {
+    let v = graph.vector(0);
+    return events.map((event, n) => {
+      const e = chart.events.indexOf(event);
+      if (e < 0) throw new Error(`no event "${event}"`);
+      const after = graph.step(v, e);
+      if (!after) throw new Error(`step ${n + 1}, "${event}", can't happen there`);
+      v = after;
+      return { event, state: names(v) };
+    });
+  };
+  return { start: names(graph.vector(0)), cases: 0, walks: paths.map(walk) };
+}
+
+// Rust names from the model's words.
 function namer() {
   const taken = new Set();
   return (words, prefix, snake = false) => {
@@ -222,47 +243,73 @@ function verus(chart, module) {
     return { ...r, field: name(r.caption, "region_", true), type: name(r.caption, "Region"),
       variants: new Map(r.states.map((s) => [s, local(s, "State")])) };
   });
+  const byCaption = new Map(regions.map((r) => [r.caption, r]));
   const at = (r, state, v = "s") => `${v}.${r.field} == ${r.type}::${r.variants.get(state)}`;
-  const region = (caption) => regions.find((r) => r.caption === caption) ?? (() => { throw new Error(`no region ${caption}`); })();
   const guard = (g) => g === undefined ? "true"
-    : g.in ? at(region(g.in[0]), g.in[1])
+    : g.in ? at(byCaption.get(g.in[0]), g.in[1])
       : g.not ? `!(${guard(g.not)})` : g.and ? all(g.and.map(guard)) : any(g.or.map(guard));
+  // An event: its first case that holds, moving some region from where it is.
   const events = chart.events.map((label) => {
-    // In each region, the first enabled transition from the current state is taken.
-    const moves = regions.map((r) => r.states.flatMap((from) =>
-      r.moves[from].filter((m) => m.event === label).map((m, i, list) => ({
-        when: all([at(r, from), ...list.slice(0, i).map((p) => `!(${guard(p.guard)})`), guard(m.guard)]),
-        to: m.to,
-      }))));
-    const constraint = regions.map((r, ri) => moves[ri].length
-      ? any([...moves[ri].map((m) => `${m.when} && ${at(r, m.to, "t")}`), `!(${any(moves[ri].map((m) => m.when))}) && t.${r.field} == s.${r.field}`])
-      : `t.${r.field} == s.${r.field}`);
-    return { label, function: name(label, "event_", true), enabled: any(moves.flat().map((m) => m.when)), constraint };
+    const cases = chart.machine.events[label].cases;
+    const options = cases.map((c) => {
+      const effects = new Map(Object.entries(c.set).map(([caption, effect]) => {
+        const r = byCaption.get(caption);
+        return [caption, typeof effect === "string" ? r.states.map((from) => [from, effect]) : Object.entries(effect)];
+      }));
+      // The case happens when it moves some region from where it is.
+      const moves = [...effects].some(([caption, pairs]) => pairs.length === byCaption.get(caption).states.length) ? "true"
+        : any([...effects].map(([caption, pairs]) => any(pairs.map(([from]) => at(byCaption.get(caption), from)))));
+      // The next state: each region the case sets, from where it is; every other region stays.
+      const value = (r, state) => `${r.type}::${r.variants.get(state)}`;
+      const fields = [...effects].map(([caption, pairs]) => {
+        const r = byCaption.get(caption);
+        if (pairs.length === r.states.length && new Set(pairs.map(([, to]) => to)).size === 1) return `${r.field}: ${value(r, pairs[0][1])}`;
+        const arms = pairs.map(([from, to]) => `${value(r, from)} => ${value(r, to)}`);
+        if (pairs.length < r.states.length) arms.push(`_ => s.${r.field}`);
+        return `${r.field}: match s.${r.field} { ${arms.join(", ")} }`;
+      });
+      return { when: guard(c.when), then: `(${moves})\n        && t == (State { ${fields.join(",\n            ")}, ..s })` };
+    });
+    // The first case that holds decides, as an if-else chain over the cases' own functions.
+    const fn = name(label, "event_", true);
+    const named = options.map((o, i) => ({ ...o, when_fn: `${fn}_when_${i + 1}`, case_fn: `${fn}_case_${i + 1}`, passed_fn: `${fn}_passes_${i + 1}` }));
+    const body = named.map((o, i) => `${i ? " else " : ""}if ${o.when_fn}(s) {\n        ${o.case_fn}(s, t)\n    }`).join("") + " else {\n        false\n    }";
+    return { label, function: fn, cases: named, body };
   });
   const rules = chart.rules.map((rule) => ({ ...rule, function: name(rule.name, "rule_", true) }));
+  const facts = chart.facts.map((fact) => ({ ...fact, function: name(fact.name, "fact_", true) }));
   const spec = (fn, params, body) => `pub open spec fn ${fn}(${params}) -> bool {\n    ${body}\n}`;
   const hash = (text) => createHash("sha256").update(text).digest("hex");
   const source = [
-    "// @generated by verification/statechart.mjs; edit the chart, not this file.",
-    `// Chart SHA256: ${hash(chart.text)}`,
+    "// @generated by verification/statechart.mjs; edit the model, not this file.",
+    `// Model SHA256: ${hash(chart.text)}`,
     "// Abstract finite-state behavior only; implementation and progress need separate proof.",
     "use vstd::prelude::*;", "verus! {",
     ...regions.flatMap((r) => [`// Region: ${r.caption}`, `pub enum ${r.type} {`, ...r.states.map((s) => `    ${r.variants.get(s)}, // ${s}`), "}"]),
     "pub struct State {", ...regions.map((r) => `    pub ${r.field}: ${r.type},`), "}",
     spec("init", "s: State", all(regions.map((r) => at(r, r.initial)))),
-    ...events.flatMap((e) => [`// Event: ${e.label}`, spec(e.function, "s: State, t: State", [e.enabled, ...e.constraint].map((c) => `(${c})`).join("\n    && "))]),
+    ...events.flatMap((e) => [`// Event: ${e.label}`,
+      // Case i applies when no earlier case holds (passes) and its own `when` does.
+      ...e.cases.flatMap((c, i) => [spec(c.when_fn, "s: State", c.when), spec(c.case_fn, "s: State, t: State", c.then),
+        spec(c.passed_fn, "s: State", i ? `${e.cases[i - 1].passed_fn}(s) && !${e.cases[i - 1].when_fn}(s)` : "true")]),
+      spec(e.function, "s: State, t: State", e.body)]),
     spec("next", "s: State, t: State", any(events.map((e) => `${e.function}(s, t)`))),
     spec("step", "s: State, t: State", "next(s, t) || s == t"),
     ...rules.flatMap((r) => [`// ${r.name}: ${r.sentence}`,
-      spec(r.function, "s: State", `!(${all(Object.entries(r.states).map(([rg, sts]) => any(sts.map((st) => at(region(rg), st)))))})`)]),
+      spec(r.function, "s: State", `!(${all(Object.entries(r.states).map(([rg, sts]) => any([sts].flat().map((st) => at(byCaption.get(rg), st)))))})`)]),
     spec("safety", "s: State", all(rules.map((r) => `${r.function}(s)`))),
+    ...facts.flatMap((f) => [`// ${f.name}`, spec(f.function, "s: State", guard(f.holds))]),
+    spec("facts", "s: State", all(facts.map((f) => `${f.function}(s)`))),
     "}", "",
   ].join("\n");
   const steps = [
-    "// @generated by verification/statechart.mjs; edit the chart, not this file.",
-    `// One preservation obligation per event. Strengthen inductive() in ${module}_proof.rs.`,
+    "// @generated by verification/statechart.mjs; edit the model, not this file.",
+    `// One preservation obligation per case of each event. Strengthen the model's facts when one fails.`,
     "use crate::chart::*;", "use crate::inductive;", "use vstd::prelude::*;", "verus! {",
-    ...events.map((e) => `pub proof fn preserves_${e.function}(s: State, t: State)\n    requires inductive(s), ensures ${e.function}(s, t) ==> inductive(t),\n{}`),
+    ...events.flatMap((e) => [
+      ...e.cases.map((c) => `pub proof fn preserves_${c.case_fn}(s: State, t: State)\n    requires inductive(s), ${c.passed_fn}(s), ${c.when_fn}(s), ${c.case_fn}(s, t),\n    ensures inductive(t),\n{}`),
+      `pub proof fn preserves_${e.function}(s: State, t: State)\n    requires inductive(s), ensures ${e.function}(s, t) ==> inductive(t),\n{\n    if ${e.function}(s, t) {\n        ${
+        e.cases.map((c, i) => `${i ? " else " : ""}if ${c.when_fn}(s) {\n            preserves_${c.case_fn}(s, t);\n        }`).join("")}\n    }\n}`]),
     "pub proof fn every_event_preserves_inductive(s: State, t: State)",
     "    requires inductive(s), ensures step(s, t) ==> inductive(t),",
     "{", ...events.map((e) => `    preserves_${e.function}(s, t);`), "}", "}", "",
@@ -270,8 +317,8 @@ function verus(chart, module) {
   return { source, steps };
 }
 
-const PROOF = (module) => `// Editable proof. Generated behavior stays in ${module}.rs.
-// Strengthen inductive() when safety alone is not inductive; do not weaken safety.
+const PROOF = (module) => `// Editable proof. Generated behavior, rules and facts stay in ${module}.rs.
+// Strengthen the model's facts when they are not inductive; do not weaken safety.
 // No production code, temporal progress, or fairness is established here.
 #[path = "${module}.rs"]
 mod chart;
@@ -280,7 +327,7 @@ mod steps;
 use chart::*;
 use vstd::prelude::*;
 verus! {
-pub open spec fn inductive(s: State) -> bool { safety(s) }
+pub open spec fn inductive(s: State) -> bool { facts(s) && safety(s) }
 
 pub proof fn initial_is_inductive(s: State)
     requires init(s), ensures inductive(s),
@@ -302,7 +349,7 @@ function writeVerus(chart, module, dir, checkOnly) {
   const files = [[path.join(dir, `${module}.rs`), source], [path.join(dir, `${module}_steps.rs`), steps]];
   if (checkOnly) {
     for (const [file, text] of files)
-      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== text) throw new Error(`chart and generated model differ: ${file}`);
+      if (!fs.existsSync(file) || fs.readFileSync(file, "utf8") !== text) throw new Error(`model and generated Verus differ: ${file}`);
     console.log(`Current: ${files[0][0]}`);
     return;
   }
@@ -316,23 +363,32 @@ function writeVerus(chart, module, dir, checkOnly) {
   console.log(`Generated ${files.map(([f]) => f).join(" and ")}; proof ${proof}`);
 }
 
-const [command, file, ...rest] = process.argv.slice(2);
-const flag = (name) => { const i = rest.indexOf(name); return i < 0 ? undefined : rest[i + 1]; };
-try {
-  if (command === "check" && file) {
-    const chart = await load(file);
-    const ok = check(chart);
-    const journeyFile = rest.find((a) => !a.startsWith("--"));
-    process.exitCode = ok && (!journeyFile || journeys(chart, fs.readFileSync(journeyFile, "utf8"))) ? 0 : 1;
-  } else if (command === "compare" && file && rest[0]) {
-    process.exitCode = compare(await load(file), await load(rest[0])) ? 0 : 1;
-  } else if (command === "verus" && file && /^[A-Za-z]\w*$/.test(flag("--module") ?? "")) {
-    writeVerus(await load(file), flag("--module"), flag("--dir") ?? path.join(path.dirname(file), "verus"), rest.includes("--check"));
-  } else {
-    console.error("Usage: node verification/statechart.mjs check CHART.mjs [JOURNEYS.md]\n       node verification/statechart.mjs compare AGREED.mjs CODE.mjs\n       node verification/statechart.mjs verus CHART.mjs --module NAME [--dir OUT] [--check]");
-    process.exitCode = 2;
+const run = async (command, file, rest) => {
+  const flag = (name) => { const i = rest.indexOf(name); return i < 0 ? undefined : rest[i + 1]; };
+  if (command === "check" && file) return check(await load(file)) ? 0 : 1;
+  if (command === "walks" && file && flag("--paths")) {
+    process.stdout.write(JSON.stringify(walkThrough(await load(file), JSON.parse(flag("--paths")))));
+    return 0;
   }
-} catch (error) {
-  console.error(error.message);
-  process.exitCode = 1;
+  if (command === "walks" && file) {
+    const pattern = flag("--only") && new RegExp(flag("--only"));
+    process.stdout.write(JSON.stringify(walks(await load(file), (event) => !pattern || pattern.test(event))));
+    return 0;
+  }
+  if (command === "verus" && file && /^[A-Za-z]\w*$/.test(flag("--module") ?? "")) {
+    writeVerus(await load(file), flag("--module"), flag("--dir") ?? path.join(path.dirname(file), "verus"), rest.includes("--check"));
+    return 0;
+  }
+  console.error("Usage: node verification/statechart.mjs check MODEL.mjs\n       node verification/statechart.mjs verus MODEL.mjs --module NAME [--dir OUT] [--check]\n       node verification/statechart.mjs walks MODEL.mjs [--only REGEX | --paths JSON]");
+  return 2;
+};
+
+if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  const [command, file, ...rest] = process.argv.slice(2);
+  try {
+    process.exitCode = await run(command, file, rest);
+  } catch (error) {
+    console.error(error.message);
+    process.exitCode = 1;
+  }
 }

@@ -39,7 +39,7 @@ transaction boundaries or publication, nor complete refinement of the design mod
 
 Distinguish an unsatisfied obligation, a reachable model violation and a runtime
 bug. `node verification/statechart.mjs check` prints the shortest path to a broken
-chart rule, so it can explain finite-state violations but cannot extract arbitrary Verus traces.
+model rule, so it can explain finite-state violations but cannot extract arbitrary Verus traces.
 Strengthen induction when an unreachable state breaks preservation; never weaken
 agreed safety merely to obtain a pass.
 

@@ -1,5 +1,5 @@
-// Editable proof starter. Generated behavior stays in sign_in.rs.
-// Strengthen inductive() when safety alone is not inductive; do not weaken safety.
+// Editable proof. Generated behavior, rules and facts stay in sign_in.rs.
+// Strengthen the model's facts when they are not inductive; do not weaken safety.
 // No production code, temporal progress, or fairness is established here.
 #[path = "sign_in.rs"]
 mod chart;
@@ -8,18 +8,10 @@ mod steps;
 use chart::*;
 use vstd::prelude::*;
 verus! {
-// The tab that is signing in has navigated away from any patient link it held, and is not
-// yet signed in: a sign-in from another tab moves it on. A linked patient is only where
-// the workspace opens while the tab shows that workspace or the prompt over it; every way
-// out of those screens opens Today.
+// The model's facts (generated with it) and its rules hold at the start, survive every step, and
+// so hold in every state the model can reach.
 pub open spec fn inductive(s: State) -> bool {
-    safety(s)
-    && (s.region_this_tab_shows == RegionThisTabShows::StateSigningYouIn
-        ==> s.region_a_patient_link_this_tab_holds == RegionAPatientLinkThisTabHolds::StateNoPatientLink
-            && s.region_your_session != RegionYourSession::StateSignedIn)
-    && (s.region_where_the_workspace_opens == RegionWhereTheWorkspaceOpens::StateTheLinkedPatient
-        ==> s.region_this_tab_shows == RegionThisTabShows::StateYourWorkspace
-            || s.region_this_tab_shows == RegionThisTabShows::StateSignInPromptOverYourWork)
+    facts(s) && safety(s)
 }
 
 pub proof fn initial_is_inductive(s: State)

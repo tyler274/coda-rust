@@ -7,7 +7,7 @@ The shipping physician client is the React site in `submodules/coda-agents/web`.
 The <a href="/intent/physician%2Emd">physician spec</a> owns product intent, and the
 [Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d16847168e)
 tracks the work against it; each
-journey's chart and Verus proof live under <a href="/verification/README%2Emd">verification</a>,
+journey's model and Verus proof live under <a href="/verification/README%2Emd">verification</a>,
 starting with <a href="/verification/physician/sign-in/README%2Emd">sign-in</a>. Verification
 keeps design artifacts separate from runtime and clinical qualification. The
 original repository links below are comparison evidence, not a competing

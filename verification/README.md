@@ -1,9 +1,8 @@
 # Coda product verification
 
-> **Charts are rebuilt one journey at a time from the [intent specs](../intent/README.md)**, under
+> **Journey models are built one at a time from the [intent specs](../intent/README.md)**, under
 > `physician/`, `duet/` and `connected-care/`, starting with
-> [physician sign-in](physician/sign-in/README.md). The older whole-app graphs were removed on
-> 2026-10-29; the specs govern every journey not yet charted.
+> [physician sign-in](physician/sign-in/README.md). The specs govern every journey not yet modeled.
 
 Coda ports [PStack](#provenance) to Verus and connects agreed product journeys to
 Rust owners and running-app evidence. The five general skills establish or repair
@@ -13,12 +12,15 @@ the full workflow.
 
 ## Principles
 
-1. **Start from the intent specs.** They hold Dev's decisions. Once Dev agrees a
-   journey's chart, its folder is that journey's spec and the product spec links to it. One chart answers one journey question, in what the reader sees.
-   Design the complete journey before choosing proof cases. The chart is the product's contract and the
-   harness serves it; never encode how the harness works in the chart. Existing code and historical failures can
-   challenge it; missing code cannot limit it. A checked draft is still a draft.
-2. **Keep one owner.** Journey, charts and formal specification express one behavior.
+1. **Start from the intent specs.** They hold the product decisions. Once a
+   journey's model is agreed, its folder is that journey's spec and the product spec links to it.
+   One model answers one journey question. Its rules are the agreed sentences, about what the
+   reader sees. Design the complete journey before choosing proof cases. The model is the
+   design: it also holds what the rules depend on, such as a stored value, a request in flight
+   or another tab, and lets what we don't control happen in any order. Code carries the model
+   out and is judged against it, never the reverse. The agent harness stays out of it. Existing code and historical failures can challenge the model;
+   missing code cannot limit it. A checked draft is still a draft.
+2. **Keep one owner.** Journey, model and formal specification express one behavior.
    One feature recipe connects their proofs, actual code and app checks. Reuse real
    state owners and harnesses; avoid copied implementations and parallel ledgers.
 3. **Match evidence to the claim.** Verus is the formal verifier. Distinguish design
@@ -46,7 +48,7 @@ When intent changes, update journey, diagrams, proofs and app expectations toget
 When implementation changes, investigate conformance against unchanged intent.
 Routine layout or copy edits do not require new formal machinery.
 
-## Keep the diagram and model in lockstep
+## Keep the model, the proof and the code in step
 
 Map meaningful states to predicates, edges to guarded transitions and effects, and
 cross-capability promises to composition obligations. Check both directions:
@@ -57,32 +59,40 @@ collections, preserve every accepted batch member, derive history from its owner
 and separate safety from conditional progress. A capability overview plus selected
 proofs is not full coverage.
 
-Each journey's chart is an XState machine. Guards built from `stateIn`, `not`, `and`
-and `or` encode what an event needs; `meta.never` encodes actual forbidden
-combinations. [statechart.mjs](statechart.mjs) `check` reaches every state with
-XState's graph search and prints the shortest path to any broken rule; a completed
-search covers only the finite chart's rules. `verus` writes the same behavior as a
-Verus model. An inductive Verus obligation can fail without a reachable chart
-violation. Rules and proofs say what never happens; each chart's `journeys.md`,
-replayed on the machine by `check`, shows its useful outcomes are reachable, and
-fails when a change strands one. The same file opens in Stately Sketch for review.
+Each journey's model is plain data built with [model.mjs](model.mjs): regions that each hold one
+state, and events whose ordered cases read like the code's own steps, guarded with `is`, `not`,
+`all` and `any`. Whatever one actor can do (a tab, a device) is generated from one design, so the
+search tries every order. `never` holds the agreed rules, `invariant` the facts that explain why
+they hold, `reach` the outcomes the spec walks through, and `controls` one plausible bug per rule
+sentence. [statechart.mjs](statechart.mjs) `check` reaches every state, prints the shortest path to
+any broken rule or false fact, finds a path to each outcome, and makes each control's change to
+show its rule can break; a completed search covers only the finite model. `verus` writes the same
+cases as a Verus model; the proof shows the facts and rules hold at the start and survive every
+case of every event, so they hold in every state, whatever the search covered. `walks` covers every
+case of every event in a few short walks, which the journey's browser test plays in the product;
+`walks --paths` gives the walk through each bug path, which the journey's bug-path test replays.
+
+Each event's `code` note says where the code carries that step out. The code follows the model:
+where it differs, write a test that fails on the code, then change the code. A difference the
+model can't settle is a design question for the person you are working with. When the code a
+model's notes point to changes, re-read it against the model and run the journey's browser walks.
 
 ## Connect the harness through events
 
-The harness stays out of the chart and meets it only at declared events (Dev
-2026-10-26). An agent's event is the harness's output, and each tool it admits is
-one such event: the product host checks that event's `needs` before the effect
+The agent harness stays out of the model and meets it only at declared events. An agent's
+event is the harness's output, and each tool it admits is one such event: the product host checks that event's `needs` before the effect
 commits, and the model decides when to use it. Retries, timeouts, cadence, memory
 and prompts stay in the harness, whose guarantees the
-[harness spec](../intent/harness.md) states. The runtime records chart events where
-each fact's owner changes it, so a recorded run can be replayed on the chart. The
-harness has no chart of its own; it is just the harness.
+[harness spec](../intent/harness.md) states. The runtime records model events where
+each fact's owner changes it, so a recorded run can be replayed on the model. The
+harness has no model of its own; it is just the harness. An app's own session and request
+handling is not the harness: when a rule depends on it, it belongs in the model.
 
-Do not force every promise into finite states. A promise about records (identity,
-revisions, collections, atomic batches) is written beside its chart in
-`data-promises.md`, naming the Rust owner that must prove it, and stays marked
-unproven until that proof exists. Progress needs explicit assumptions.
-Charts without safety rules establish transition correspondence only. Keep generated
+Do not force every promise into finite states. A promise that rests on records the
+model can't hold (identity, revisions, collections, atomic batches) is listed in the
+journey's README under its rules, naming the test or proof that holds it, or saying
+none does yet. Progress needs explicit assumptions.
+Models without safety rules establish transition correspondence only. Keep generated
 behavior separate from editable proofs; `statechart.mjs verus --check` detects generated drift. Review
 manual data refinements and implementation connections separately.
 
@@ -90,16 +100,16 @@ manual data refinements and implementation connections separately.
 
 | Folder | Spec |
 | --- | --- |
-| [physician/sign-in](physician/sign-in/README.md) | How a physician signs in: the spec in words, chart, journeys, data promises and Verus proof. |
+| [physician/sign-in](physician/sign-in/README.md) | How a physician signs in: the spec in words, its rules, model and Verus proof. |
 
 ## How the skills fit
 
 | Skill | Use |
 | --- | --- |
-| [coda-statechart](../.agents/skills/coda-statechart/SKILL.md) | Draw one journey from the intent specs as an XState machine, check it and prove it with Verus, and show Dev in Stately Sketch. |
+| [coda-statechart](../.agents/skills/coda-statechart/SKILL.md) | Design one journey as a model from the intent specs; check it, prove it with Verus, and hold the code to it through its browser walks. |
 | [coda-create-formal-verification](../.agents/skills/coda-create-formal-verification/SKILL.md) | Encode design in Verus and establish real Rust proof connections. |
 | [coda-create-verification](../.agents/skills/coda-create-verification/SKILL.md) | Create launch, doctor, drive, evidence and cleanup instructions. |
-| [coda-maintain-formal-verification](../.agents/skills/coda-maintain-formal-verification/SKILL.md) | Reconcile diagram, data model, proof and code drift. |
+| [coda-maintain-formal-verification](../.agents/skills/coda-maintain-formal-verification/SKILL.md) | Reconcile model, proof, record promises and code drift. |
 | [coda-maintain-verification](../.agents/skills/coda-maintain-verification/SKILL.md) | Reconcile feature coverage through source inspection and live driving. |
 
 The creators extend the same `.agents/skills/coda-verify-<app>/` recipe. These
@@ -124,9 +134,9 @@ toolchain [verus.json](verus.json) names:
 ```sh
 python3 verification/install-verus.py
 python3 verification/check.py formal --spec path/to/the/feature-proof.rs
-npm install --prefix verification
-node verification/statechart.mjs check path/to/the/journey.mjs path/to/journeys.md
-node verification/statechart.mjs compare path/to/the/journey.mjs path/to/code.mjs
+node verification/statechart.mjs check path/to/the/journey.mjs
+node verification/statechart.mjs verus path/to/the/journey.mjs --module NAME --check
+node verification/statechart.mjs walks path/to/the/journey.mjs [--only REGEX | --paths JSON]
 ```
 
 There is no default proof for an unspecified feature. The extra toolchain does not
@@ -139,7 +149,8 @@ selects another new directory. Logs survive scratch cleanup.
 
 ## Provenance
 
-The baseline is [PStack at eb4db2b](https://github.com/cursor/plugins/tree/eb4db2b55b2b7dec3d9282754cddf0a56bf4ff10/pstack).
+The baseline is [PStack at eb4db2b](https://github.com/cursor/plugins/tree/eb4db2b55b2b7dec3d9282754cddf0a56bf4ff10/pstack),
+with the stable one-model [statechart skill at 519d36a](https://github.com/cursor/plugins/blob/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills/statechart/SKILL.md).
 The [MIT license](PSTACK-LICENSE) retains Lauren Tan's attribution. Each general
 skill links its pinned upstream source. Compare affected upstream instructions or
 scripts before extending the port; retain useful behavior and explain adaptations.
@@ -149,14 +160,16 @@ scripts before extending the port; retain useful behavior and explain adaptation
 | App interview, launch/doctor/drive/evidence/cleanup, feature maps and dogfooding | Actual Rust harnesses, explicit visual readback, Coda naming and shared intent links. |
 | Source inspection, live maintenance, triage and retained evidence | Task-scoped authority and one owner for shared harness repairs. |
 | Consequential formal properties, atomicity mapping, negative controls and source revisions | Verus, design before code, explicit refinement boundaries and dependency-aware mutations. |
-| Chart semantics, guards and user-facing traces | XState machines and its graph search instead of PStack's Mermaid parser; Verus generation with editable induction proofs. |
-| Per-journey charts labeled as the screen, one never-rule per agreed sentence and replaying bugs against code (re-adopted on 2026-10-29 after the whole-app graphs drifted from them) | Charts are XState machines that cite intent spec IDs, checked with XState's graph search and reviewed in Stately Sketch; every chart also gets a Verus proof. |
-| Top-level parallel regions only | Top-level parallel regions with flat states, as Verus can state them; events declared with cause and intent in `meta.events`. |
+| One model checked against the reader's rules, a chart drawn from it in the reader's words, and each bug path replayed against code | Plain per-event cases and their own explicit-state search instead of TLA+ and TLC; Verus proves the model's facts inductive and safe; covering walks, played in the browser, hold the code to the model, and each bug path stays in a browser test that failed on the code. |
+| A check never seen to fail proves nothing; never weaken a property | Each rule sentence has a control, a plausible bug `check` must see break it; a rule the model can't say gets a region that only records what it names. |
+| Per-journey models labeled as the screen, one never-rule per agreed sentence | Models are reviewed as their cases and rules; every model also gets a Verus proof. |
+| Top-level parallel regions only | Top-level parallel regions with flat states, as Verus can state them; events declared with cause, intent and code. |
 
-Finite-chart search is not arbitrary Verus counterexample extraction, temporal model
+Finite-model search is not arbitrary Verus counterexample extraction, temporal model
 checking or reverse translation of arbitrary code. [statechart.mjs](statechart.mjs)
-refuses charts outside the supported boundary. No TLC or PDD preview kit is installed.
-[Lauren's statechart post](https://x.com/poteto/status/2112736749281759566), the
+refuses models outside the supported boundary. No TLC or PDD preview kit is installed.
+Lauren's statechart posts ([first](https://x.com/poteto/status/2112736749281759566),
+[stable](https://x.com/poteto/status/2115880102601101414)), the
 [GitHub Next PDD announcement](https://x.com/GitHubNext/status/2112936525457740139)
 and [Alex's explanation](https://x.com/alexlavaee/status/2112938102591553636) inform
 this intent-to-specification-to-implementation workflow, without prescribing Coda's

@@ -11,13 +11,18 @@ Follow the [shared principles](../../../verification/README.md#principles) and
 
 ## Formalize the agreement
 
-1. Read the agreed journey, statecharts, promises and decision sources. Identify
-   a consequential coherent scope, its neighboring owners and omitted behavior.
-   Use [statechart design](../coda-statechart/SKILL.md) for unsettled product meaning.
-2. Translate states, transitions, guards, effects and interactions. Generate the
-   chart's model with `node verification/statechart.mjs verus`; connect
-   extra data and progress properties to named diagram promises. Review
-   [correspondence](../../../verification/README.md#keep-the-diagram-and-model-in-lockstep)
+1. Read the agreed journey, its model, promises and decision sources. Choose the
+   promise where a break harms the person most and tests rarely reach the case that
+   breaks it, not the one easiest to prove; name its neighboring owners and omitted
+   behavior. Use [the journey model](../coda-statechart/SKILL.md) for unsettled
+   product meaning.
+2. Let the question choose the check. Whether steps can happen in a bad order is a
+   question for the journey's model: put the code's own steps in it, as
+   [coda-statechart](../coda-statechart/SKILL.md) step 3 says, search it, and prove
+   it with `node verification/statechart.mjs verus`. Whether code behaves for every
+   input is a question for Verus on the real Rust owner, below. Connect extra data
+   and progress properties to named promises. Review
+   [correspondence](../../../verification/README.md#keep-the-model-the-proof-and-the-code-in-step)
    in both directions. A green selected subset does not formalize the whole journey.
 3. Prove initialization and preservation across every modeled transition. Keep
    stale/invalid arrivals in the transition system so their rejection is proved.
@@ -49,8 +54,9 @@ Keep product intent at its owner. Both this skill and
 
 ## Exercise the recipe
 
-Run its instructions as the next agent would. Break a relevant modeled guarantee,
-confirm the intended obligation fails, restore and confirm the pass. Verify the
+Run its instructions as the next agent would. Model the code as it was before a
+real fix, or break a step the way a plausible change would, confirm the intended
+rule and obligation fail at the step you expect, restore and confirm the pass. Verify the
 changed producer too: an unchecked callee's postcondition can mask a mutation.
 Syntax errors and unrelated failures are not successful negative controls.
 
@@ -61,4 +67,4 @@ separately, including omissions and defects. A design-only run leaves app steps
 unqualified. Maintain later drift with
 [coda-maintain-formal-verification](../coda-maintain-formal-verification/SKILL.md).
 
-Adapted from [PStack create-formal-verification-skill](https://github.com/cursor/plugins/blob/eb4db2b55b2b7dec3d9282754cddf0a56bf4ff10/pstack/skills/create-formal-verification-skill/SKILL.md).
+Adapted from [PStack create-formal-verification-skill](https://github.com/cursor/plugins/blob/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills/create-formal-verification-skill/SKILL.md).
