@@ -27,7 +27,8 @@ use ui::{
     RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
     SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
     SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, TextField,
-    ToggleChip, Tone, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
+    ToggleChip, Tone, Tooltip, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence,
+    use_live_rows,
 };
 
 fn main() {
@@ -139,7 +140,7 @@ fn Gallery() -> Element {
                 Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
                     OverlayDemo {}
                 }
-                Section { title: "Menus and popovers", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath.",
+                Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
                 }
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
@@ -1557,13 +1558,15 @@ fn MenuDemo() -> Element {
     ];
     rsx! {
         div { class: "gallery-row",
-            Button {
-                variant: ButtonVariant::Quiet,
-                icon_only: true,
-                opens: "gallery-reply-menu",
-                aria_label: "More actions",
-                aria_haspopup: "menu",
-                Icon { name: IconName::More }
+            Tooltip { text: "More actions",
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    icon_only: true,
+                    opens: "gallery-reply-menu",
+                    aria_label: "More actions",
+                    aria_haspopup: "menu",
+                    Icon { name: IconName::More }
+                }
             }
             Menu { id: "gallery-reply-menu", label: "Reply actions",
                 MenuPalette { label: "Rate this reply",
@@ -1616,6 +1619,18 @@ fn MenuDemo() -> Element {
                 Button { compact: true, autofocus: true, onclick: move |_| chosen.set(Some("Link copied")),
                     Icon { name: IconName::Link }
                     "Copy link"
+                }
+            }
+        }
+        div { class: "gallery-row gallery-menu-tools",
+            for (name, icon, key) in [
+                ("Add files", IconName::Plus, None),
+                ("Dictate", IconName::Microphone, None),
+                ("Search", IconName::Search, Some(("⌘K", "Meta+K"))),
+                ("New conversation", IconName::Message, Some(("⇧⌘O", "Shift+Meta+O"))),
+            ] {
+                Tooltip { key: "{name}", text: name, shortcut: key.map(|(shown, _)| shown.to_owned()),
+                    Button { variant: ButtonVariant::Quiet, icon_only: true, aria_label: name, aria_keyshortcuts: key.map(|(_, heard)| heard), Icon { name: icon } }
                 }
             }
         }

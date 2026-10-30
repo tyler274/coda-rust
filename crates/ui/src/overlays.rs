@@ -306,6 +306,73 @@ if (host && !host.dataset.contextMenu) {
 }
 "#;
 
+/// What a control does, named over it once the pointer rests on it, with the key that does the
+/// same where there is a keyboard. Keyboard focus shows it at once, and once one has shown, the
+/// next shows at once too; touch never shows it. It stands above the control, below where there
+/// isn't room, and leaves on Escape, a press, or the pointer or focus leaving. Its words echo the
+/// control's own accessible name, which is what assistive technology hears, so it stays hidden
+/// from it.
+#[component]
+pub fn Tooltip(text: String, shortcut: Option<String>, children: Element) -> Element {
+    let anchor = use_hook(|| format!("--tip-{}", TIPS.fetch_add(1, Ordering::Relaxed)));
+    rsx! {
+        span {
+            class: "tooltip-host",
+            style: "anchor-name: {anchor}",
+            onmounted: |_| {
+                document::eval(TOOLTIPS);
+            },
+            {children}
+            span { class: "tooltip", "popover": "manual", aria_hidden: "true", style: "position-anchor: {anchor}",
+                "{text}"
+                if let Some(key) = shortcut {
+                    kbd { "{key}" }
+                }
+            }
+        }
+    }
+}
+
+static TIPS: AtomicUsize = AtomicUsize::new(0);
+
+/// Installs, once per page, every tooltip's showing and leaving. A rest of half a second shows one;
+/// within a moment of another leaving, the next shows at once.
+const TOOLTIPS: &str = r#"
+if (!window.codaTooltips) {
+  window.codaTooltips = true;
+  let timer, shown, warmUntil = 0;
+  const tipOf = (host) => host?.querySelector(":scope > .tooltip");
+  const hide = () => {
+    clearTimeout(timer);
+    if (shown?.matches(":popover-open")) { shown.hidePopover(); warmUntil = performance.now() + 400; }
+    shown = undefined;
+  };
+  const show = (host, now) => {
+    clearTimeout(timer);
+    const tip = tipOf(host);
+    if (!tip || tip === shown) return;
+    const open = () => { hide(); if (tip.isConnected) { tip.showPopover(); shown = tip; } };
+    now || performance.now() < warmUntil ? open() : (timer = setTimeout(open, 500));
+  };
+  document.addEventListener("pointerover", (event) => {
+    if (event.pointerType !== "mouse") return;
+    const host = event.target.closest?.(".tooltip-host");
+    if (host && !host.contains(event.relatedTarget)) show(host, false);
+  });
+  document.addEventListener("pointerout", (event) => {
+    const host = event.target.closest?.(".tooltip-host");
+    if (host && !host.contains(event.relatedTarget)) hide();
+  });
+  document.addEventListener("focusin", (event) => {
+    const host = event.target.closest?.(".tooltip-host");
+    if (host && event.target.matches(":focus-visible")) show(host, true);
+  });
+  document.addEventListener("focusout", hide);
+  document.addEventListener("pointerdown", hide, true);
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape") hide(); }, true);
+}
+"#;
+
 /// Installs, once per page, every menu's keys, its focus on opening and its closing on a choice.
 /// The listeners sit on the document, so a menu added later needs nothing more.
 const MENU_KEYS: &str = r#"
