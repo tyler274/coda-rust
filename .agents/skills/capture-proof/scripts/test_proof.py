@@ -2,6 +2,7 @@
 
 import json
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -164,16 +165,32 @@ class ProofTests(unittest.TestCase):
         self.assertNotIn(session, self.proof("render").stdout)
         self.assertIn("Coda token", self.proof("check", code=1).stderr)
         self.proof("supersede", "1", "--reason", "printed the session")
-        for name, text in [("printed.log", f"{session}\n"),
-                           ("url.log", "GET https://user:hunter22@host/x"),
-                           ("query.log", "GET /events?token=abcdefgh12345678")]:
+        self.reset_bundle()
+        for name, text, kind in [("printed.log", f"{session}\n", "Coda token"),
+                                 ("url.log", "GET https://user:hunter22@host/x", "URL credentials"),
+                                 ("query.log", "GET /events?token=abcdefgh12345678",
+                                  "URL credential parameter")]:
             with self.subTest(name=name):
                 path = Path(self.tmp.name) / name
                 path.write_text(text)
                 self.proof("add", "--claim", "AC1", "--revision", "HEAD", str(path))
-                self.assertIn("refused", self.proof("check", code=1).stderr)
-                ids = [str(e["id"]) for e in self.manifest()["entries"] if not e.get("superseded")]
-                self.proof("supersede", *ids, "--reason", "leaked")
+                refused = self.proof("check", code=1).stderr
+                self.assertIn(f"refused: 01-{name}:1: possible {kind}", refused)
+                self.reset_bundle()
+
+    def test_private_keys_are_redacted_whole(self):
+        body = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASC" * 3
+        pem = f"-----BEGIN PRIVATE KEY-----\n{body}\n-----END PRIVATE KEY-----"
+        self.proof("run", "--claim", "AC1", "--", "env", f"PRIVATE_KEY={pem}", "true")
+        self.assertEqual(self.manifest()["entries"][0]["command"], ["env", "PRIVATE_KEY=<redacted>", "true"])
+        self.proof("check")
+        self.reset_bundle()
+        self.proof("run", "--claim", "AC1", "--", "printf", "%s\n", pem)
+        self.assertNotIn(body, self.proof("render").stdout)
+        self.assertIn("possible private key", self.proof("check", code=1).stderr)
+
+    def reset_bundle(self):
+        shutil.rmtree(self.bundle, ignore_errors=True)
 
     def test_imported_artifacts_keep_their_stated_revision(self):
         result = Path(self.tmp.name) / "response.json"
