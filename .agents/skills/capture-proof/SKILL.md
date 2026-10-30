@@ -21,8 +21,8 @@ checkout, inside the dev shell when the command needs it:
 
 ```bash
 P=.agents/skills/capture-proof/scripts/proof.py
-$P run --claim AC1 --label "before the fix" --expect-fail --expect 'panicked at .*try_again' \
-  -- cargo test -p physician-sample --test try_again
+$P run --claim AC1 --label "before the fix" --expect-fail --expect 'right: "rejected"' \
+  -- cargo test -p physician-sample --test try_again -- second_resume_is_rejected
 $P run --claim AC1 --label "after the fix" -- cargo test -p physician-sample --test try_again
 $P run --claim AC2 --expect 'failed\|5\|5' -- psql "$URL" -At -c "select ..."
 $P add --claim AC3 --revision HEAD --label "Try again, site A" "$RUN/couldnt-finish-try-again/site-a-failed.png"
@@ -30,8 +30,9 @@ $P add --claim AC3 --revision HEAD --label "scale stack run" "$RUN/couldnt-finis
 $P screenshot --claim AC4 --url http://127.0.0.1:8080/ --label "empty state"
 $P gap --claim AC5 --reason "needs hosted staging; not run"
 $P status
-$P supersede 1 --reason "re-run after the fix"
+$P keep 1 --reason "deliberately before the fix"
 $P keep 4 5 --reason "later commit changed only docs"
+$P supersede 7 --reason "AC5 since proven on staging"
 ```
 
 - `run` passes the command's output through and exits nonzero when the entry is not
@@ -39,9 +40,9 @@ $P keep 4 5 --reason "later commit changed only docs"
   output. `--expect` matters where success is not the exit status, such as a
   `rejected` answer with HTTP 200.
 - For a defect a test can show, write the test first and record it failing before
-  you write the fix. `--expect-fail` needs `--expect` naming the failure the defect
-  gives, such as the assertion or panic, so a test that does not compile does not
-  count.
+  you write the fix. Select that test, and give `--expect-fail` an `--expect` naming
+  the assertion the defect breaks, so a build error or an unrelated setup panic does
+  not count. The entry predates the fix on purpose: `keep` it rather than re-run it.
 - Prefer the feature's [verify skill](../../../verification/README.md#verify-skills).
   Add its evidence folder or the specific files its recipe names rather than
   capturing the same behavior again. `add` cannot see when an artifact was made:

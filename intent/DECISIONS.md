@@ -28,7 +28,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 - **P14. Declining invites.** Whether a patient can decline future invites from a practice.
 - **P15. Account deletion copy.** The confirmation wording when a connected patient deletes their account.
 
-**With the UI program** (judged against PRINCIPLES.md U1–U9)
+**UI** (judged against PRINCIPLES.md U1–U9)
 
 - **UI1. Duet's Today.** The order and density of insights, appointments, Plans, Check-ins, the doctor's plan, For my doctor and measurements, and whether another overview adds anything.
 - **UI2. Entry and return.** Where the controls that move between Today and chat sit.
@@ -36,7 +36,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 - **UI4. Uncertain appointment dates.** How they look. Duet judges when a reminder about one is useful.
 - **UI5. Connected care controls.** Where the patient sees their connection status and leaves a practice.
 - **UI6. Deleting a physician conversation.** Whether Delete sits beside Archive.
-- **UI7. The Updates log.** Whether the full log keeps its own page beyond Today's collapsed line, and how it looks, decided from a mockup during the port.
+- **UI7. The Updates log.** Whether the full log keeps its own page beyond Today's collapsed line, and how it looks.
 - **UI8. Duet's companion.** Whether the companion stays, whether the chat header shows its name, and whether its one-time relationship moments are wanted. If it stays, its name stays on the face and the chat stays Duet.
 
 **After the MVP**
