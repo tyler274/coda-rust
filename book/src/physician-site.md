@@ -7,7 +7,7 @@ The shipping physician client is the React site in `submodules/coda-agents/web`.
 The <a href="/intent/physician%2Emd">physician spec</a> owns product intent, and the
 [Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d16847168e)
 tracks the work against it; each
-journey's TLA+ model lives under <a href="/verification/README%2Emd">verification</a>,
+feature's TLA+ model lives under <a href="/verification/README%2Emd">verification</a>,
 starting with <a href="/verification/physician/sign-in/README%2Emd">sign-in</a>. Verification
 keeps design artifacts separate from runtime and clinical qualification. The
 original repository links below are comparison evidence, not a competing
@@ -48,7 +48,7 @@ Use the [implementation coverage](#product-direction-and-proof) to find those ga
 
 | Check | What it can establish | Boundary |
 | --- | --- | --- |
-| Journey model checked by TLC | Every state the modeled steps reach keeps the agreed rules. | Covers only the finite model; does not execute the app, its Rust owners or a clinical model. |
+| Feature model checked by TLC | Every state the modeled steps reach keeps the agreed rules. | Covers only the finite model; does not execute the app, its Rust owners or a clinical model. |
 | `cargo test -p physician-sample --test site` | The exercised Chromium journeys render and behave correctly against their test setup. | Does not qualify every graph state or hosted dependency. |
 | <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">Local physician scale recipe</a> | Real site/worker binaries, Postgres, Valkey and Pub/Sub emulator support the exercised cross-instance chat and recovery journeys. | Fixed provider, proof sign-in and emulator delivery; not real model quality, mail delivery or hosted push authentication. |
 | [Staging qualification](gcp.md#rust-staging-bootstrap-and-deployment-gate) | The recorded checks against the deployed revision and its actual dependencies. | Requires explicit readback of the journey, identity, effects and recovery; successful deployment alone is insufficient. |

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Replays paths through a journey's TLA+ model, for its browser test to play against the real page.
+// Replays paths through a feature's TLA+ model, for its browser test to play against the real page.
 //   node verification/replay.mjs SPEC.tla PATHS
 //
 // PATHS is JSON, a list of paths, each a list of events such as "open Coda in tab A". The spec
