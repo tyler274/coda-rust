@@ -549,13 +549,18 @@ pub fn CommandPalette(
                                 div { id: "{id}-group-{number}", class: "command-group-label", "{group}" }
                             }
                             for (index, at) in members {
-                                CommandRow {
+                                OptionRow {
                                     key: "{index}",
                                     id: "{id}-{index}",
-                                    command: commands[index].clone(),
+                                    label: commands[index].label.clone(),
+                                    detail: commands[index].detail.clone(),
+                                    icon: commands[index].icon,
                                     active: current == Some(index),
                                     on_point: move |_| active.set(at),
                                     on_choose: move |_| choose(index),
+                                    if let Some(key) = commands[index].shortcut.clone() {
+                                        KeyHint { key_label: key }
+                                    }
                                 }
                             }
                         }
@@ -571,38 +576,48 @@ pub fn CommandPalette(
 
 static PALETTES: AtomicUsize = AtomicUsize::new(0);
 
+/// One row of a list found by typing: its icon, its words with a quieter `detail` beside them, and
+/// whatever the host sets at its end. The row under the keys or the pointer is `active`; pointing
+/// at one moves there. One that is `disabled` is shown, but can't be reached or chosen.
 #[component]
-fn CommandRow(
+pub(crate) fn OptionRow(
     id: String,
-    command: Command,
+    label: String,
+    detail: Option<String>,
+    icon: Option<IconName>,
     active: bool,
+    #[props(default)] disabled: bool,
     on_point: EventHandler,
     on_choose: EventHandler,
+    children: Element,
 ) -> Element {
     rsx! {
         div {
             id,
-            class: "command-row",
+            class: "option-row",
             role: "option",
             aria_selected: if active { "true" } else { "false" },
+            aria_disabled: disabled.then_some("true"),
             onpointermove: move |_| {
-                if !active {
+                if !active && !disabled {
                     on_point.call(());
                 }
             },
-            onclick: move |_| on_choose.call(()),
-            if let Some(name) = command.icon {
+            onclick: move |_| {
+                if !disabled {
+                    on_choose.call(());
+                }
+            },
+            if let Some(name) = icon {
                 Icon { name }
             }
-            span { class: "command-row-label",
-                span { "{command.label}" }
-                if let Some(detail) = command.detail {
+            span { class: "option-row-label",
+                span { "{label}" }
+                if let Some(detail) = detail {
                     small { "{detail}" }
                 }
             }
-            if let Some(key) = command.shortcut {
-                KeyHint { key_label: key }
-            }
+            {children}
         }
     }
 }

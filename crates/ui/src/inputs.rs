@@ -7,6 +7,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
+use crate::overlays::OptionRow;
 use crate::{Icon, IconName, Spinner};
 
 static FIELDS: AtomicUsize = AtomicUsize::new(0);
@@ -436,37 +437,18 @@ pub fn Combobox(
                 onmousedown: move |event| event.prevent_default(),
                 div { id: "{list}", role: "listbox", aria_label: "{label}",
                     for (index, option) in options.iter().enumerate() {
-                        div {
+                        OptionRow {
                             key: "{index}",
                             id: "{id}-{index}",
-                            class: "command-row",
-                            role: "option",
-                            aria_selected: if current == Some(index) { "true" } else { "false" },
-                            aria_disabled: option.disabled.then_some("true"),
-                            onpointermove: {
-                                let disabled = option.disabled;
-                                move |_| {
-                                    if !disabled && current != Some(index) {
-                                        active.set(Some(index));
-                                    }
-                                }
-                            },
-                            onclick: {
-                                let disabled = option.disabled;
-                                move |_| {
-                                    if !disabled {
-                                        choose(index);
-                                    }
-                                }
-                            },
-                            span { class: "command-row-label",
-                                span { "{option.label}" }
-                                if let Some(detail) = &option.detail {
-                                    small { "{detail}" }
-                                }
-                            }
+                            label: option.label.clone(),
+                            detail: option.detail.clone(),
+                            icon: option.icon,
+                            active: current == Some(index),
+                            disabled: option.disabled,
+                            on_point: move |_| active.set(Some(index)),
+                            on_choose: move |_| choose(index),
                             if selected == Some(index) {
-                                Icon { name: IconName::Check }
+                                span { class: "option-chosen", Icon { name: IconName::Check } }
                             }
                         }
                     }

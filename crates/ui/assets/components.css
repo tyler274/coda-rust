@@ -895,11 +895,11 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 /* A combobox's list hangs from its field, at the field's width, flipping above where there isn't room. */
 .combobox-popup { width: anchor-size(width); max-height: min(18rem, 50dvh); padding: var(--space-1); position-area: block-end span-inline-end;
   position-try-fallbacks: flip-block; scroll-padding: var(--space-1); }
-.combobox-popup .command-row > .icon { flex: none; color: var(--primary); }
-.combobox-popup .command-row[aria-disabled="true"] { cursor: default; opacity: .46; }
-.combobox-popup .command-row[aria-disabled="true"]::before { opacity: 0; }
-.combobox-popup .command-row-label { flex-wrap: wrap; gap: 0 var(--space-2); }
-.combobox-popup .command-row-label > span { flex: 0 1 auto; }
+.option-chosen { display: flex; flex: none; color: var(--primary); }
+.option-row[aria-disabled="true"] { cursor: default; opacity: .46; }
+.option-row[aria-disabled="true"]::before { opacity: 0; }
+.combobox-popup .option-row-label { flex-wrap: wrap; gap: 0 var(--space-2); }
+.combobox-popup .option-row-label > span { flex: 0 1 auto; }
 .combobox-popup .combobox-empty { margin: 0; padding: var(--space-3); color: var(--muted); font: var(--type-body-md); }
 /* A menu: choices on rows at the control height, the target height under a finger. The choice under the pointer or
    the keys is one, holding focus; it carries the state layer, which stands for its focus ring. */
@@ -967,18 +967,18 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .command-palette-list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-2); scroll-padding: var(--space-2); }
 .command-palette-list:empty { display: none; }
 .command-group-label { padding: var(--space-3) var(--space-3) var(--space-1); color: var(--muted); font: var(--type-label-sm); }
-.command-row { position: relative; display: flex; align-items: center; gap: var(--space-3); min-height: var(--control-height); padding: var(--space-1) var(--space-3);
+.option-row { position: relative; display: flex; align-items: center; gap: var(--space-3); min-height: var(--control-height); padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-sm); color: var(--ink); font: var(--type-body-md); cursor: pointer; }
-.command-row > .icon { color: var(--muted); }
-.command-row-label { display: flex; flex: 1; align-items: baseline; gap: var(--space-2); min-width: 0; }
-.command-row-label > span { flex: none; }
-.command-row-label small { overflow: hidden; color: var(--muted); font: var(--type-body-sm); text-overflow: ellipsis; white-space: nowrap; }
-.command-row > .key-hint { color: var(--muted); opacity: 1; }
-.command-row::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; }
-.command-row[aria-selected="true"]::before { opacity: var(--state-hover); }
-@media (pointer: coarse) { .command-row { min-height: var(--target); } }
+.option-row > .icon { color: var(--muted); }
+.option-row-label { display: flex; flex: 1; align-items: baseline; gap: var(--space-2); min-width: 0; }
+.option-row-label > span { flex: none; }
+.option-row-label small { overflow: hidden; color: var(--muted); font: var(--type-body-sm); text-overflow: ellipsis; white-space: nowrap; }
+.option-row > .key-hint { color: var(--muted); opacity: 1; }
+.option-row::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; }
+.option-row[aria-selected="true"]::before { opacity: var(--state-hover); }
+@media (pointer: coarse) { .option-row { min-height: var(--target); } }
 .command-palette-empty { margin: 0; padding: var(--space-6) var(--space-5); color: var(--muted); font: var(--type-body-md); text-align: center; }
-@media (forced-colors: active) { .command-row[aria-selected="true"] { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
+@media (forced-colors: active) { .option-row[aria-selected="true"] { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
 /* Reading a cited source. The preview sits at the overlay's
    depth beside its citation, on the side with more room, and never covers it; the component places it. */
 .anchored-popover { display: inline; }
