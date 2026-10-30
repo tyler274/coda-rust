@@ -23,8 +23,8 @@ mod sources;
 mod undo;
 pub use cards::{Card, LaterContext, Quote, StepList};
 pub use charts::{
-    ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, SeriesChart,
-    SeriesPoint, SeriesShape, Sparkline, Value,
+    ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
+    SeriesChart, SeriesPoint, SeriesShape, Sparkline, Value,
 };
 pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Suggestion};
 pub use documents::{

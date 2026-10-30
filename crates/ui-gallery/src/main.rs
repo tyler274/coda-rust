@@ -13,10 +13,10 @@ use ui::{
     FooterActions, Icon, IconName, KeyHint, LaterContext, ListRow, LiveDot, MeasurementTile,
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
     Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
-    RowFrame, RowGroup, SearchField, SectionHeader, SelectionRow, SeriesChart, SeriesPoint,
-    SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton,
-    Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField, ToggleChip,
-    Tone, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
+    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
+    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
+    ToggleChip, Tone, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -94,6 +94,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Series readout", note: "Over its chart, a series says what its figure is, the figure, and the span it covers, each on one line so the chart never moves. Pinning a mark turns the readout to that bucket, its words in the accent. The span is a row of pills; the chosen one's fill slides to the next. Back and forward page the span, quiet where there is nowhere to go.",
                     ReadoutDemo {}
+                }
+                Section { title: "Running total", note: "A day so far against its usual pace: the running total in the data colour, ending in a dot where the day so far ends, and the usual total as a quieter dashed curve over a soft wash across the whole day. Both rise smoothly and never double back. A tile draws the two curves alone.",
+                    RunningDemo {}
                 }
                 Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
                     HeadingsDemo {}
@@ -916,6 +919,52 @@ fn SeriesDemo() -> Element {
                 emphasized: Some((0, 29)),
                 selected: pinned_month(),
                 on_select: move |next| pinned_month.set(next),
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn RunningDemo() -> Element {
+    // The usual running total at each hour's start, and today's to 2 PM (SwiftUI's sample day).
+    let usual = [
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 150.0, 600.0, 1400.0, 2200.0, 2900.0, 3500.0, 4300.0, 5000.0,
+        5600.0, 6200.0, 6900.0, 7500.0, 8100.0, 8600.0, 8900.0, 9100.0, 9200.0, 9250.0, 9300.0,
+    ];
+    let today = [
+        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 80.0, 300.0, 900.0, 1800.0, 2700.0, 3300.0, 3900.0, 4600.0,
+        5100.0,
+    ];
+    let place = |values: &[f64]| -> Vec<(f64, f64)> {
+        values
+            .iter()
+            .enumerate()
+            .map(|(hour, value)| (hour as f64 / 24.0, *value))
+            .collect()
+    };
+    let marks: Vec<(f64, String)> = ["12 AM", "6 AM", "12 PM", "6 PM", ""]
+        .iter()
+        .enumerate()
+        .map(|(index, word)| (index as f64 / 4.0, (*word).to_owned()))
+        .collect();
+    rsx! {
+        div { class: "gallery-series",
+            p { class: "gallery-note", "Steps · today so far" }
+            RunningChart {
+                total: place(&today),
+                usual: place(&usual),
+                marks,
+                end_word: "today",
+                label: "Steps today, 5,100 by 2 PM, against a usual 5,600 by then",
+            }
+            div { class: "gallery-tile",
+                RunningChart {
+                    total: place(&today),
+                    usual: place(&usual),
+                    label: "Steps today, 5,100 so far",
+                    axes: false,
+                }
             }
         }
     }

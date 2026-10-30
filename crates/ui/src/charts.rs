@@ -131,16 +131,10 @@ pub fn SeriesChart(
     let domain = series_domain(shape, &points, reference);
     let words = |value: f64| tick_words.map_or_else(|| compact(value), |words| words.call(value));
     let ticks = if axes {
-        value_ticks(domain, 3, &words).unwrap_or_else(|| lone_tick(domain).into_iter().collect())
+        axis_ticks(domain, &words)
     } else {
         Vec::new()
     };
-    // The widest tick's words hold the axis open, so no label reaches back into the plot.
-    let widest = ticks
-        .iter()
-        .map(|&tick| words(tick))
-        .max_by_key(|text| text.chars().count())
-        .unwrap_or_default();
     let height = |value: f64| share((value - domain.0) / (domain.1 - domain.0));
     let centre = |index: usize| round((index as f64 + 0.5) / count.max(1) as f64 * 100.0);
     let latest = points.iter().rposition(|point| point.value.is_some());
@@ -312,14 +306,7 @@ pub fn SeriesChart(
                 }
             }
             if axes {
-                div { class: "series-ticks", aria_hidden: "true",
-                    span { class: "series-ticks-width", "{widest}" }
-                    for tick in ticks.iter() {
-                        span { key: "tick-{tick}", class: "series-tick", style: "bottom: {height(*tick)}%", "{words(*tick)}" }
-                    }
-                }
-            }
-            if axes {
+                ValueTicks { ticks: ticks.iter().map(|&tick| (height(tick), words(tick))).collect::<Vec<_>>() }
                 div { class: "series-axis", aria_hidden: "true",
                     for (index, point) in points.iter().enumerate() {
                         span { key: "axis-{index}", "{point.axis}" }
@@ -331,6 +318,123 @@ pub fn SeriesChart(
 }
 
 static SERIES: AtomicUsize = AtomicUsize::new(0);
+
+/// A running total across a span (a day) so far against its usual pace, after SwiftUI Duet's
+/// `HealthStatDayChart`: the total in the data colour, ending in a dot (named by `end_word`, if
+/// any) where the span so far ends; the usual total behind it as a quieter dashed curve over a
+/// soft wash, across the whole span; both smooth curves that never double back. Each point is
+/// `(place, total)`, its place across the span from 0 at the start to 1 at the end; `marks` stand
+/// across the span at their places with their words beneath. The host owns the places, the marks
+/// and every word; `label` says the chart in words. Without `axes`, a tile's two curves alone.
+#[component]
+pub fn RunningChart(
+    total: Vec<(f64, f64)>,
+    #[props(default)] usual: Vec<(f64, f64)>,
+    #[props(default)] marks: Vec<(f64, String)>,
+    #[props(default)] end_word: String,
+    label: String,
+    #[props(default)] tick_words: Option<Callback<f64, String>>,
+    #[props(default = true)] axes: bool,
+) -> Element {
+    let highest = total
+        .iter()
+        .chain(&usual)
+        .map(|&(_, value)| value)
+        .filter(|value| value.is_finite())
+        .fold(0.0, f64::max);
+    let domain = amount_domain(highest);
+    let words = |value: f64| tick_words.map_or_else(|| compact(value), |words| words.call(value));
+    let ticks = if axes {
+        axis_ticks(domain, &words)
+    } else {
+        Vec::new()
+    };
+    let height = |value: f64| share(value / domain.1);
+    let across = |place: f64| round(share(place));
+    let at = |points: &[(f64, f64)]| -> Vec<(f64, f64)> {
+        points
+            .iter()
+            .filter(|(place, value)| place.is_finite() && value.is_finite())
+            .map(|&(place, value)| (across(place), round(100.0 - height(value))))
+            .collect()
+    };
+    let total_at = at(&total);
+    let usual_at = at(&usual);
+    let usual_curve = monotone_path(&usual_at);
+    let wash = match (usual_at.first(), usual_at.last()) {
+        (Some(first), Some(last)) if usual_at.len() > 1 => {
+            format!("{usual_curve}L{} 100L{} 100Z", last.0, first.0)
+        }
+        _ => String::new(),
+    };
+    let end = total_at.last().copied();
+    rsx! {
+        figure { class: if axes { "series-chart is-running" } else { "series-chart is-running is-bare" },
+            div { class: "series-plot", role: "img", aria_label: "{label}",
+                for tick in ticks.iter() {
+                    span { key: "grid-{tick}", class: "series-gridline", aria_hidden: "true", style: "bottom: {height(*tick)}%" }
+                }
+                if axes {
+                    for (place, _) in marks.iter() {
+                        span { key: "mark-{place}", class: "series-mark", aria_hidden: "true", style: "left: {across(*place)}%" }
+                    }
+                }
+                svg { class: "series-line", view_box: "0 0 100 100", preserve_aspect_ratio: "none", "aria-hidden": "true",
+                    path { class: "series-wash", d: "{wash}" }
+                    path { class: "series-usual", d: "{usual_curve}" }
+                    path { class: "series-stroke", d: "{monotone_path(&total_at)}" }
+                }
+                if let Some((x, y)) = end {
+                    span { class: "series-dot", aria_hidden: "true", style: "left: {x}%; top: {y}%",
+                        if !end_word.is_empty() {
+                            span { class: "series-end-word", "{end_word}" }
+                        }
+                    }
+                }
+            }
+            if axes {
+                ValueTicks { ticks: ticks.iter().map(|&tick| (height(tick), words(tick))).collect::<Vec<_>>() }
+                div { class: "series-axis", aria_hidden: "true",
+                    for (place, word) in marks.iter() {
+                        if !word.is_empty() {
+                            span { key: "axis-{place}", class: "series-axis-word", style: "left: {across(*place)}%", "{word}" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// A chart's value axis on its trailing edge: each tick's words at its height (a percentage from
+/// the bottom), held open by the widest so no label reaches back into the plot.
+#[component]
+fn ValueTicks(ticks: Vec<(f64, String)>) -> Element {
+    let widest = ticks
+        .iter()
+        .map(|(_, words)| words.as_str())
+        .max_by_key(|words| words.chars().count())
+        .unwrap_or_default()
+        .to_string();
+    rsx! {
+        div { class: "series-ticks", aria_hidden: "true",
+            span { class: "series-ticks-width", "{widest}" }
+            for (height, words) in ticks.iter() {
+                span { key: "tick-{words}", class: "series-tick", style: "bottom: {height}%", "{words}" }
+            }
+        }
+    }
+}
+
+/// The ticks a value axis carries across `domain`: round steps, or one round tick for a flat span.
+fn axis_ticks(domain: (f64, f64), words: &impl Fn(f64) -> String) -> Vec<f64> {
+    value_ticks(domain, 3, words).unwrap_or_else(|| lone_tick(domain).into_iter().collect())
+}
+
+/// The values an amount spans: from zero to a tenth above the highest.
+fn amount_domain(highest: f64) -> (f64, f64) {
+    (0.0, (highest * 1.1).max(1.0))
+}
 
 /// The values a series' plot spans: bars from zero to a tenth above the highest; a line around
 /// its lowest and highest, with room above and below. The reference is always inside.
@@ -348,7 +452,7 @@ fn series_domain(shape: SeriesShape, points: &[SeriesPoint], reference: Option<f
         return (0.0, 1.0);
     }
     match shape {
-        SeriesShape::Bars => (0.0, (high * 1.1).max(1.0)),
+        SeriesShape::Bars => amount_domain(high),
         SeriesShape::Line => {
             let padding = ((high - low) * 0.25).max(high.abs() * 0.02).max(0.5);
             (low - padding, high + padding)
@@ -657,6 +761,53 @@ fn path(at: &[(f64, f64)]) -> String {
         .collect()
 }
 
+/// A smooth curve through points in order across, which never rises or falls between two points
+/// beyond them (Swift Charts' and d3's monotone interpolation): each point's slope is the
+/// gentler of its two sides', flat where they disagree or one is flat, drawn as cubic segments.
+fn monotone_path(at: &[(f64, f64)]) -> String {
+    if at.len() < 3 {
+        return if at.len() == 2 {
+            path(at)
+        } else {
+            String::new()
+        };
+    }
+    let secant = |index: usize| {
+        let ((x0, y0), (x1, y1)) = (at[index], at[index + 1]);
+        if x1 > x0 { (y1 - y0) / (x1 - x0) } else { 0.0 }
+    };
+    let last = at.len() - 1;
+    let mut slopes = vec![0.0; at.len()];
+    for index in 1..last {
+        let (before, after) = (secant(index - 1), secant(index));
+        let (left, right) = (at[index].0 - at[index - 1].0, at[index + 1].0 - at[index].0);
+        let weighted = if left + right > 0.0 {
+            (before * right + after * left) / (left + right)
+        } else {
+            0.0
+        };
+        if before * after > 0.0 {
+            slopes[index] =
+                before.signum() * 2.0 * before.abs().min(after.abs()).min(0.5 * weighted.abs());
+        }
+    }
+    slopes[0] = (3.0 * secant(0) - slopes[1]) / 2.0;
+    slopes[last] = (3.0 * secant(last - 1) - slopes[last - 1]) / 2.0;
+    let mut curve = format!("M{} {}", at[0].0, at[0].1);
+    for index in 0..last {
+        let ((x0, y0), (x1, y1)) = (at[index], at[index + 1]);
+        let third = (x1 - x0) / 3.0;
+        curve.push_str(&format!(
+            "C{} {} {} {} {x1} {y1}",
+            round(x0 + third),
+            round(y0 + third * slopes[index]),
+            round(x1 - third),
+            round(y1 - third * slopes[index + 1]),
+        ));
+    }
+    curve
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -773,5 +924,44 @@ mod tests {
         assert_eq!(lone_tick((5.5, 6.5)), Some(6.0));
         assert_eq!(lone_tick((58.5, 67.5)), Some(63.0));
         assert_eq!(lone_tick((1.0, 1.0)), None);
+    }
+
+    #[test]
+    fn a_running_curve_never_dips_below_a_flat_start_or_rises_past_its_points() {
+        // Flat overnight, a climb, then level again: every control point stays within its segment.
+        let at = [
+            (0.0, 100.0),
+            (25.0, 100.0),
+            (40.0, 60.0),
+            (60.0, 20.0),
+            (75.0, 5.0),
+            (100.0, 5.0),
+        ];
+        let curve = monotone_path(&at);
+        let numbers: Vec<f64> = curve
+            .split(|c: char| c.is_ascii_alphabetic())
+            .filter(|part| !part.is_empty())
+            .flat_map(|part| {
+                part.split(' ')
+                    .map(|n| n.parse::<f64>().unwrap())
+                    .collect::<Vec<_>>()
+            })
+            .collect();
+        let segments = numbers[2..].chunks(6);
+        assert_eq!(segments.len(), at.len() - 1);
+        for (index, segment) in segments.enumerate() {
+            let (low, high) = (
+                at[index].1.min(at[index + 1].1),
+                at[index].1.max(at[index + 1].1),
+            );
+            for y in [segment[1], segment[3], segment[5]] {
+                assert!(
+                    (low..=high).contains(&y),
+                    "segment {index}: {y} outside {low}..{high}"
+                );
+            }
+        }
+        assert_eq!(monotone_path(&at[..2]), "M0 100L25 100");
+        assert_eq!(monotone_path(&at[..1]), "");
     }
 }
