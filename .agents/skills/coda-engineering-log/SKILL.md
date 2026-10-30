@@ -48,10 +48,14 @@ material progress to its purpose and next useful step.
 
 ## Draft for the audience
 
-Use the developer's voice and the team's recent log style when available. Put an
-absolute date first, then bold repository labels and concise workstream bullets.
-Keep labels and body at the same font size; avoid Markdown headings. Include only
-repositories with meaningful work and group by the responsible repository.
+Use the developer's voice. Start with `YYYY-MM-DD Log (Name)`, substituting the
+report date in the requested timezone and the author's name. Use the requested
+author or the invoking developer; do not hardcode a person.
+
+Follow with bold repository labels and concise workstream bullets. Start each
+bullet with a bold workstream label and a colon. Keep the title, labels and body
+at the same font size; avoid Markdown headings. Include only repositories with
+meaningful work and group by the responsible repository.
 Use a shared-tooling label only for work without a repository owner.
 
 Usually one short paragraph per workstream is enough. Avoid nested lists, commit
@@ -59,8 +63,13 @@ inventories, generic achievements and repeating the same work across sections.
 If no substantive engineering activity is available, say so rather than recycling
 an older update.
 
-Keep coverage, cutoff and access notes outside the message, in chat. Limits that
-change a product claim belong in its workstream. Return the complete draft here;
-preparing a log does not create a Slack draft, post, update a tracker or vault,
-start another session, or create a schedule. Publication follows the user's
-approval requirements. Do not maintain a second work register.
+Return the complete draft in chat, starting with its dated title. Omit routine
+coverage preambles, cutoff paragraphs, source inventories, access footers and
+drafting-process explanations. Keep source-coverage details in task context.
+Limits that materially change a claim belong briefly in the affected workstream;
+if missing access prevents a useful draft, report the blocker plainly instead.
+Add questions after the draft only when intent or priorities need clarification.
+
+Preparing a log is read-only: do not take over sessions, delegate, change code or
+trackers, or save a separate report. Return the draft for review; publication
+requires the user's approval. Do not maintain a second work register.
