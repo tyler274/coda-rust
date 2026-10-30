@@ -373,6 +373,246 @@ if (!window.codaTooltips) {
 }
 "#;
 
+/// One command in a `CommandPalette`.
+#[derive(Clone, PartialEq, Debug, Default)]
+pub struct Command {
+    /// The heading it is listed under; a group stands where its first command does, and an empty
+    /// one has no heading.
+    pub group: String,
+    /// What it does, in the words matched against what is typed.
+    pub label: String,
+    /// Its icon.
+    pub icon: Option<IconName>,
+    /// A quieter line after its words, matched too.
+    pub detail: Option<String>,
+    /// The key that does the same, shown where there is a keyboard.
+    pub shortcut: Option<String>,
+}
+
+/// The commands, found by typing: a modal over the page, toward its top, its field taking focus
+/// and every command listed under its group. Each word typed narrows the list to the commands
+/// whose words or detail contain it, and the first one left is the active one. The arrow
+/// keys or the pointer move the active command, and Enter or a press chooses it: the host hears
+/// its index in `commands`, and the palette closes. Escape or a press beside it closes it too; it
+/// settles out before the host hears `on_close`. `empty` is said when nothing matches.
+#[component]
+pub fn CommandPalette(
+    /// Its name and its field's.
+    label: String,
+    #[props(default)] placeholder: String,
+    commands: Vec<Command>,
+    empty: String,
+    on_choose: EventHandler<usize>,
+    on_close: EventHandler,
+) -> Element {
+    let id = use_hook(|| format!("palette-{}", PALETTES.fetch_add(1, Ordering::Relaxed)));
+    let mut query = use_signal(String::new);
+    let mut active = use_signal(|| 0usize);
+    let mut closing = use_signal(|| false);
+    let opening = id.clone();
+    // As a dialog does: it opens modally, its exit motion ends by closing it, and the host hears
+    // the close once.
+    use_effect(move || {
+        let mut opened = document::eval(&format!(
+            "const d = document.getElementById('{opening}');
+            if (d && !d.open) {{
+              d.addEventListener('animationend', (e) => {{
+                if (e.target === d && e.animationName === 'dialog-exit') d.close();
+              }});
+              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
+              d.showModal();
+              d.querySelector('input')?.focus({{ preventScroll: true }});
+            }}"
+        ));
+        spawn(async move {
+            if opened.recv::<bool>().await.is_ok() {
+                on_close.call(());
+            }
+        });
+    });
+    let mut dismiss = move || closing.set(true);
+    let rows = matching(&commands, &query());
+    let current = rows
+        .get(active().min(rows.len().saturating_sub(1)))
+        .copied();
+    let mut choose = move |index: usize| {
+        if !closing() {
+            on_choose.call(index);
+            dismiss();
+        }
+    };
+    let list = format!("{id}-list");
+    // Each group's commands, with each one's place in the list the keys move through.
+    let mut groups: Vec<(&str, Vec<(usize, usize)>)> = Vec::new();
+    for (at, &index) in rows.iter().enumerate() {
+        let group = commands[index].group.as_str();
+        match groups.last_mut() {
+            Some((last, members)) if *last == group => members.push((index, at)),
+            _ => groups.push((group, vec![(index, at)])),
+        }
+    }
+    let moving = id.clone();
+    let keyed = rows.clone();
+    rsx! {
+        dialog {
+            id: "{id}",
+            class: if closing() { "dialog command-palette is-closing" } else { "dialog command-palette" },
+            aria_label: "{label}",
+            onkeydown: move |event| {
+                if event.key() == Key::Escape {
+                    event.stop_propagation();
+                }
+            },
+            oncancel: move |event| {
+                event.prevent_default();
+                dismiss();
+            },
+            onclick: move |_| dismiss(),
+            div { class: "command-palette-body", onclick: move |event| event.stop_propagation(),
+                div { class: "search-field field command-palette-search",
+                    Icon { name: IconName::Search }
+                    input {
+                        r#type: "text",
+                        role: "combobox",
+                        aria_label: "{label}",
+                        aria_expanded: "true",
+                        aria_controls: "{list}",
+                        aria_autocomplete: "list",
+                        aria_activedescendant: current.map(|index| format!("{id}-{index}")),
+                        autocomplete: "off",
+                        spellcheck: "false",
+                        placeholder: "{placeholder}",
+                        value: "{query}",
+                        oninput: move |event| {
+                            query.set(event.value());
+                            active.set(0);
+                        },
+                        onkeydown: move |event| {
+                            let rows = &keyed;
+                            let count = rows.len();
+                            let now = active().min(count.saturating_sub(1));
+                            let next = match event.key() {
+                                Key::ArrowDown if count > 0 => (now + 1) % count,
+                                Key::ArrowUp if count > 0 => (now + count - 1) % count,
+                                Key::Enter => {
+                                    event.prevent_default();
+                                    if let Some(&index) = rows.get(now) {
+                                        choose(index);
+                                    }
+                                    return;
+                                }
+                                _ => return,
+                            };
+                            event.prevent_default();
+                            active.set(next);
+                            document::eval(&format!(
+                                "document.getElementById('{moving}-{}')?.scrollIntoView({{ block: 'nearest' }})",
+                                rows[next]
+                            ));
+                        },
+                    }
+                }
+                div { id: "{list}", class: "command-palette-list", role: "listbox", aria_label: "{label}",
+                    for (number, (group, members)) in groups.into_iter().enumerate() {
+                        div {
+                            key: "{group}-{number}",
+                            role: "group",
+                            aria_labelledby: (!group.is_empty()).then(|| format!("{id}-group-{number}")),
+                            if !group.is_empty() {
+                                div { id: "{id}-group-{number}", class: "command-group-label", "{group}" }
+                            }
+                            for (index, at) in members {
+                                CommandRow {
+                                    key: "{index}",
+                                    id: "{id}-{index}",
+                                    command: commands[index].clone(),
+                                    active: current == Some(index),
+                                    on_point: move |_| active.set(at),
+                                    on_choose: move |_| choose(index),
+                                }
+                            }
+                        }
+                    }
+                }
+                if rows.is_empty() {
+                    p { class: "command-palette-empty", role: "status", "{empty}" }
+                }
+            }
+        }
+    }
+}
+
+static PALETTES: AtomicUsize = AtomicUsize::new(0);
+
+#[component]
+fn CommandRow(
+    id: String,
+    command: Command,
+    active: bool,
+    on_point: EventHandler,
+    on_choose: EventHandler,
+) -> Element {
+    rsx! {
+        div {
+            id,
+            class: "command-row",
+            role: "option",
+            aria_selected: if active { "true" } else { "false" },
+            onpointermove: move |_| {
+                if !active {
+                    on_point.call(());
+                }
+            },
+            onclick: move |_| on_choose.call(()),
+            if let Some(name) = command.icon {
+                Icon { name }
+            }
+            span { class: "command-row-label",
+                span { "{command.label}" }
+                if let Some(detail) = command.detail {
+                    small { "{detail}" }
+                }
+            }
+            if let Some(key) = command.shortcut {
+                KeyHint { key_label: key }
+            }
+        }
+    }
+}
+
+/// The commands whose words or detail hold every word of `query`, ignoring case, each group
+/// together where its first match stands.
+fn matching(commands: &[Command], query: &str) -> Vec<usize> {
+    let words: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
+    let found: Vec<usize> = (0..commands.len())
+        .filter(|&index| {
+            let command = &commands[index];
+            let text = format!(
+                "{} {}",
+                command.label,
+                command.detail.as_deref().unwrap_or_default()
+            )
+            .to_lowercase();
+            words.iter().all(|word| text.contains(word.as_str()))
+        })
+        .collect();
+    let mut groups: Vec<&str> = Vec::new();
+    for &index in &found {
+        if !groups.contains(&commands[index].group.as_str()) {
+            groups.push(&commands[index].group);
+        }
+    }
+    groups
+        .into_iter()
+        .flat_map(|group| {
+            found
+                .iter()
+                .copied()
+                .filter(move |&index| commands[index].group == group)
+        })
+        .collect()
+}
+
 /// Installs, once per page, every menu's keys, its focus on opening and its closing on a choice.
 /// The listeners sit on the document, so a menu added later needs nothing more.
 const MENU_KEYS: &str = r#"
@@ -421,3 +661,29 @@ if (!window.codaMenuKeys) {
   });
 }
 "#;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn every_word_narrows_the_commands_and_groups_stay_together() {
+        let command = |group: &str, label: &str, detail: Option<&str>| Command {
+            group: group.into(),
+            label: label.into(),
+            detail: detail.map(Into::into),
+            ..Command::default()
+        };
+        let commands = [
+            command("Conversation", "Copy last reply", None),
+            command("Settings", "Theme", Some("Switch to dark")),
+            command("Conversation", "Share", None),
+            command("Settings", "Open settings", None),
+        ];
+        assert_eq!(matching(&commands, ""), [0, 2, 1, 3]);
+        assert_eq!(matching(&commands, "  DARK "), [1]);
+        assert_eq!(matching(&commands, "settings"), [3]);
+        assert_eq!(matching(&commands, "co re"), [0]);
+        assert!(matching(&commands, "copy dark").is_empty());
+    }
+}

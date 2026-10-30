@@ -702,6 +702,27 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 @supports (position-area: block-start) {
   .tooltip { inset: auto; margin: var(--space-1) 0; position-area: block-start; position-try-fallbacks: flip-block; }
 }
+/* The command palette: a dialog toward the top of the window, its field a line across its head and its commands
+   beneath, scrolling on their own. The active command carries the state layer. */
+.command-palette { --dialog-width: 36rem; --dialog-margin: max(var(--space-6), 12dvh); }
+.command-palette-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; max-height: min(30rem, var(--dialog-max-height)); }
+.command-palette-search, .command-palette-search:focus-within { min-height: 3.5rem; padding: 0 var(--space-5); border: 0; border-bottom: var(--hairline) solid var(--outline-variant);
+  border-radius: 0; background: transparent; box-shadow: none; }
+.command-palette-list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-2); scroll-padding: var(--space-2); }
+.command-palette-list:empty { display: none; }
+.command-group-label { padding: var(--space-3) var(--space-3) var(--space-1); color: var(--muted); font: var(--type-label-sm); }
+.command-row { position: relative; display: flex; align-items: center; gap: var(--space-3); min-height: var(--control-height); padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm); color: var(--ink); font: var(--type-body-md); cursor: pointer; }
+.command-row > .icon { color: var(--muted); }
+.command-row-label { display: flex; flex: 1; align-items: baseline; gap: var(--space-2); min-width: 0; }
+.command-row-label > span { flex: none; }
+.command-row-label small { overflow: hidden; color: var(--muted); font: var(--type-body-sm); text-overflow: ellipsis; white-space: nowrap; }
+.command-row > .key-hint { color: var(--muted); opacity: 1; }
+.command-row::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; }
+.command-row[aria-selected="true"]::before { opacity: var(--state-hover); }
+@media (pointer: coarse) { .command-row { min-height: var(--target); } }
+.command-palette-empty { margin: 0; padding: var(--space-6) var(--space-5); color: var(--muted); font: var(--type-body-md); text-align: center; }
+@media (forced-colors: active) { .command-row[aria-selected="true"] { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
 /* Reading a cited source. The preview sits at the overlay's
    depth beside its citation, on the side with more room, and never covers it; the component places it. */
 .anchored-popover { display: inline; }

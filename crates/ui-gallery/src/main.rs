@@ -18,10 +18,10 @@ use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
     ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, ChartHeader, CitationChip,
-    CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
-    ConversationViewport, Count, DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine,
-    EmptyState, FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot,
-    MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Message,
+    CitationPreview, Command, CommandPalette, Comparison, ComparisonBars, Composer, ContextChip,
+    ContextMenu, ConversationViewport, Count, DateSeparator, Dialog, Disclosure, DraftConflict,
+    EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow,
+    LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette, MenuSection, Message,
     NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
     PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
     RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
@@ -142,6 +142,9 @@ fn Gallery() -> Element {
                 }
                 Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
+                }
+                Section { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
+                    PaletteDemo {}
                 }
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
@@ -1655,6 +1658,113 @@ fn MenuDemo() -> Element {
         }
         if let Some(words) = chosen() {
             p { class: "gallery-note", "{words}." }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn PaletteDemo() -> Element {
+    let mut open = use_signal(|| false);
+    let mut ran = use_signal(|| None::<String>);
+    use_hook(move || {
+        let mut keys = document::eval(
+            "document.addEventListener('keydown', (event) => {
+              if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); dioxus.send(true); }
+            });",
+        );
+        spawn(async move {
+            while keys.recv::<bool>().await.is_ok() {
+                open.set(true);
+            }
+        });
+    });
+    let command =
+        |group: &str, label: &str, icon: IconName, detail: Option<&str>, shortcut: Option<&str>| {
+            Command {
+                group: group.into(),
+                label: label.into(),
+                icon: Some(icon),
+                detail: detail.map(Into::into),
+                shortcut: shortcut.map(Into::into),
+            }
+        };
+    let commands = vec![
+        command(
+            "Suggested",
+            "New conversation",
+            IconName::Message,
+            None,
+            Some("⇧⌘O"),
+        ),
+        command(
+            "Suggested",
+            "Search conversations",
+            IconName::Search,
+            None,
+            Some("⌘F"),
+        ),
+        command(
+            "This conversation",
+            "Copy last reply",
+            IconName::Copy,
+            None,
+            Some("⇧⌘C"),
+        ),
+        command(
+            "This conversation",
+            "Try again",
+            IconName::Refresh,
+            Some("Ask for a new reply"),
+            None,
+        ),
+        command(
+            "This conversation",
+            "Share",
+            IconName::Share,
+            Some("Anyone with the link"),
+            None,
+        ),
+        command(
+            "This conversation",
+            "Archive",
+            IconName::Archive,
+            None,
+            None,
+        ),
+        command(
+            "Settings",
+            "Dark appearance",
+            IconName::Moon,
+            Some("Follow the system otherwise"),
+            None,
+        ),
+        command("Settings", "Settings", IconName::Settings, None, Some("⌘,")),
+    ];
+    let names: Vec<String> = commands
+        .iter()
+        .map(|command| command.label.clone())
+        .collect();
+    rsx! {
+        div { class: "gallery-row",
+            Button { onclick: move |_| open.set(true),
+                Icon { name: IconName::Search }
+                "Search commands"
+                KeyHint { key_label: "⌘K" }
+            }
+            if let Some(name) = ran() {
+                span { class: "gallery-note", "Ran {name}." }
+            }
+        }
+        if open() {
+            CommandPalette {
+                label: "Commands",
+                placeholder: "Type a command",
+                commands,
+                empty: "No commands match.",
+                on_choose: move |index: usize| ran.set(Some(names[index].clone())),
+                on_close: move |_| open.set(false),
+            }
         }
     }
 }
