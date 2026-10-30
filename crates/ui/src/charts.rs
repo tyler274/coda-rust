@@ -131,10 +131,16 @@ pub fn SeriesChart(
     let domain = series_domain(shape, &points, reference);
     let words = |value: f64| tick_words.map_or_else(|| compact(value), |words| words.call(value));
     let ticks = if axes {
-        value_ticks(domain, 3, &words).unwrap_or_default()
+        value_ticks(domain, 3, &words).unwrap_or_else(|| lone_tick(domain).into_iter().collect())
     } else {
         Vec::new()
     };
+    // The widest tick's words hold the axis open, so no label reaches back into the plot.
+    let widest = ticks
+        .iter()
+        .map(|&tick| words(tick))
+        .max_by_key(|text| text.chars().count())
+        .unwrap_or_default();
     let height = |value: f64| share((value - domain.0) / (domain.1 - domain.0));
     let centre = |index: usize| round((index as f64 + 0.5) / count.max(1) as f64 * 100.0);
     let latest = points.iter().rposition(|point| point.value.is_some());
@@ -153,7 +159,8 @@ pub fn SeriesChart(
         None => "is-full",
     };
     let narrow = count <= 7 && axes;
-    let segments = line_segments(&points);
+    let segments = runs(&points, |point| point.value.is_some());
+    let spreads = runs(&points, |point| point.low.is_some() && point.high.is_some());
     let mut class = String::from("series-chart");
     class.push_str(match shape {
         SeriesShape::Bars => " is-bars",
@@ -224,12 +231,16 @@ pub fn SeriesChart(
                             view_box: "0 0 100 100",
                             preserve_aspect_ratio: "none",
                             "aria-hidden": "true",
+                            for (index, spread) in spreads.iter().enumerate() {
+                                if spread.len() > 1 {
+                                    path { key: "band-{index}", class: "series-band", d: "{band_path(&points, spread, &centre, &height)}" }
+                                }
+                            }
                             for (index, segment) in segments.iter().enumerate() {
-                                g { key: "segment-{index}",
-                                    if let Some(band) = band_path(&points, segment, &centre, &height) {
-                                        path { class: "series-band", d: "{band}" }
-                                    }
-                                    path { class: "series-stroke", d: "{line_path(&points, segment, &centre, &height)}" }
+                                path {
+                                    key: "line-{index}",
+                                    class: "series-stroke",
+                                    d: "{line_path(&points, segment, &centre, &height)}",
                                 }
                             }
                         }
@@ -297,10 +308,11 @@ pub fn SeriesChart(
                     }
                 }
             }
-            if !ticks.is_empty() {
+            if axes {
                 div { class: "series-ticks", aria_hidden: "true",
+                    span { class: "series-ticks-width", "{widest}" }
                     for tick in ticks.iter() {
-                        span { key: "tick-{tick}", style: "bottom: {height(*tick)}%", "{words(*tick)}" }
+                        span { key: "tick-{tick}", class: "series-tick", style: "bottom: {height(*tick)}%", "{words(*tick)}" }
                     }
                 }
             }
@@ -388,6 +400,25 @@ fn value_ticks(
     None
 }
 
+/// One round tick inside `domain` when no step leaves two that read differently, as a flat
+/// series has: the domain's middle at the coarsest power of ten that stays inside it.
+fn lone_tick(domain: (f64, f64)) -> Option<f64> {
+    let span = domain.1 - domain.0;
+    if !(span > 0.0 && span.is_finite()) {
+        return None;
+    }
+    let middle = (domain.0 + domain.1) / 2.0;
+    let mut step = 10f64.powf(span.log10().floor());
+    for _ in 0..12 {
+        let tick = (middle / step).round() * step;
+        if (domain.0..=domain.1).contains(&tick) {
+            return Some((tick * 1e9).round() / 1e9);
+        }
+        step /= 10.0;
+    }
+    None
+}
+
 /// A number as an axis says it: whole below a thousand, then in thousands or millions with at
 /// most one decimal, `10K`, `7.5K`, `1.2M`.
 fn compact(value: f64) -> String {
@@ -404,12 +435,13 @@ fn compact(value: f64) -> String {
     }
 }
 
-/// The runs of buckets a line connects: it breaks wherever a bucket recorded nothing.
-fn line_segments(points: &[SeriesPoint]) -> Vec<Vec<usize>> {
+/// The runs of consecutive buckets that `keep` holds: what a line connects, breaking wherever a
+/// bucket recorded nothing, and what a spread spans, breaking wherever a bucket lacks either bound.
+fn runs(points: &[SeriesPoint], keep: impl Fn(&SeriesPoint) -> bool) -> Vec<Vec<usize>> {
     let mut segments: Vec<Vec<usize>> = Vec::new();
     let mut current = Vec::new();
     for (index, point) in points.iter().enumerate() {
-        if point.value.is_some() {
+        if keep(point) {
             current.push(index);
         } else if !current.is_empty() {
             segments.push(std::mem::take(&mut current));
@@ -442,30 +474,26 @@ fn line_path(
     path(&at)
 }
 
-/// The spread behind a line, low to high across a run, where its buckets carry one.
+/// The spread behind a line, low to high across a run of buckets that carry both.
 fn band_path(
     points: &[SeriesPoint],
-    segment: &[usize],
+    spread: &[usize],
     x: &impl Fn(usize) -> f64,
     y: &impl Fn(f64) -> f64,
-) -> Option<String> {
-    if segment.len() < 2
-        || !segment
+) -> String {
+    let edge =
+        |index: usize, bound: Option<f64>| (x(index), round(100.0 - y(bound.unwrap_or_default())));
+    let mut at: Vec<(f64, f64)> = spread
+        .iter()
+        .map(|&index| edge(index, points[index].high))
+        .collect();
+    at.extend(
+        spread
             .iter()
-            .any(|&index| points[index].low.is_some() || points[index].high.is_some())
-    {
-        return None;
-    }
-    let edge = |index: usize, high: bool| {
-        let point = &points[index];
-        let value = if high { point.high } else { point.low }
-            .or(point.value)
-            .unwrap_or_default();
-        (x(index), round(100.0 - y(value)))
-    };
-    let mut at: Vec<(f64, f64)> = segment.iter().map(|&index| edge(index, true)).collect();
-    at.extend(segment.iter().rev().map(|&index| edge(index, false)));
-    Some(format!("{}Z", path(&at)))
+            .rev()
+            .map(|&index| edge(index, points[index].low)),
+    );
+    format!("{}Z", path(&at))
 }
 
 /// A measurement in a tile: what it is, its value, where and when it was read, and its recent
@@ -629,6 +657,38 @@ mod tests {
                 ..SeriesPoint::default()
             })
             .collect();
-        assert_eq!(line_segments(&points), vec![vec![0, 1], vec![3]]);
+        assert_eq!(
+            runs(&points, |point| point.value.is_some()),
+            vec![vec![0, 1], vec![3]]
+        );
+    }
+
+    #[test]
+    fn a_spread_spans_only_buckets_with_both_bounds() {
+        let point = |value: f64, low: Option<f64>, high: Option<f64>| SeriesPoint {
+            value: Some(value),
+            low,
+            high,
+            ..SeriesPoint::default()
+        };
+        let points = [
+            point(5.0, Some(4.0), Some(6.0)),
+            point(5.0, Some(4.0), Some(7.0)),
+            point(5.0, None, None),
+            point(5.0, Some(4.0), None),
+        ];
+        assert_eq!(
+            runs(&points, |point| point.low.is_some() && point.high.is_some()),
+            vec![vec![0, 1]]
+        );
+    }
+
+    #[test]
+    fn a_flat_series_keeps_one_round_tick() {
+        let hours = |value: f64| format!("{}", value.round());
+        assert_eq!(value_ticks((5.5, 6.5), 3, &hours), None);
+        assert_eq!(lone_tick((5.5, 6.5)), Some(6.0));
+        assert_eq!(lone_tick((58.5, 67.5)), Some(63.0));
+        assert_eq!(lone_tick((1.0, 1.0)), None);
     }
 }

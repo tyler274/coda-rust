@@ -815,16 +815,42 @@ const WEEK: [&str; 7] = [
 fn SeriesDemo() -> Element {
     let steps = [6200.0, 8400.0, 7100.0, 9800.0, 5400.0, 10200.0, 4300.0];
     let resting = [
-        Some(62.0),
-        Some(64.0),
-        Some(61.0),
-        None,
+        Some(68.0),
+        Some(72.0),
         Some(66.0),
-        Some(60.0),
-        Some(62.0),
+        None,
+        Some(74.0),
+        Some(70.0),
+        Some(69.0),
+    ];
+    // Each day's lowest and highest around its average; Wednesday kept only its average.
+    let spread = [
+        Some((54.0, 88.0)),
+        Some((55.0, 96.0)),
+        Some((53.0, 84.0)),
+        None,
+        None,
+        Some((52.0, 101.0)),
+        Some((54.0, 90.0)),
     ];
     let mut pinned_steps = use_signal(|| None::<usize>);
     let mut pinned_rest = use_signal(|| None::<usize>);
+    let mut pinned_month = use_signal(|| None::<usize>);
+    let month_points: Vec<SeriesPoint> = (0..30)
+        .map(|date| {
+            let steps = 5200.0 + ((date * 37 % 11) as f64) * 520.0;
+            SeriesPoint {
+                value: Some(steps),
+                axis: if date % 7 == 0 {
+                    format!("Oct {}", date + 1)
+                } else {
+                    String::new()
+                },
+                words: format!("October {}, {} steps", date + 1, steps as u32),
+                ..SeriesPoint::default()
+            }
+        })
+        .collect();
     let day = |index: usize| {
         WEEK[index]
             .chars()
@@ -847,9 +873,11 @@ fn SeriesDemo() -> Element {
         .enumerate()
         .map(|(index, value)| SeriesPoint {
             value: *value,
+            low: spread[index].map(|(low, _)| low),
+            high: spread[index].map(|(_, high)| high),
             axis: day(index),
             words: value.map_or_else(String::new, |bpm| {
-                format!("{}, {bpm} beats per minute", WEEK[index])
+                format!("{}, averaging {bpm} beats per minute", WEEK[index])
             }),
             ..SeriesPoint::default()
         })
@@ -870,13 +898,21 @@ fn SeriesDemo() -> Element {
                 selected: pinned_steps(),
                 on_select: move |next| pinned_steps.set(next),
             }
-            p { class: "gallery-note", "{readout(pinned_rest(), &rest_points, \"Resting heart rate · this week\")}" }
+            p { class: "gallery-note", "{readout(pinned_rest(), &rest_points, \"Heart rate · this week, each day's range\")}" }
             SeriesChart {
                 shape: SeriesShape::Line,
                 points: rest_points.clone(),
-                label: "Resting heart rate each day this week, 60 to 66 beats per minute, nothing on Tuesday",
+                label: "Heart rate each day this week, averaging 66 to 74 beats per minute, nothing on Tuesday",
                 selected: pinned_rest(),
                 on_select: move |next| pinned_rest.set(next),
+            }
+            p { class: "gallery-note", "{readout(pinned_month(), &month_points, \"Steps · October\")}" }
+            SeriesChart {
+                points: month_points.clone(),
+                label: "Steps each day in October, from 5,200 to 10,400",
+                emphasized: Some((0, 29)),
+                selected: pinned_month(),
+                on_select: move |next| pinned_month.set(next),
             }
         }
     }

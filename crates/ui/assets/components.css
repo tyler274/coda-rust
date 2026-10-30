@@ -426,7 +426,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .series-chart { --series-height: 132px; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--space-2);
   margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
 .series-chart.is-bare { --series-height: 56px; grid-template-columns: minmax(0, 1fr); }
-.series-plot { position: relative; height: var(--series-height); }
+.series-plot { position: relative; grid-area: 1 / 1; height: var(--series-height); }
 .series-gridline { position: absolute; inset-inline: 0; height: 0; border-top: var(--hairline) solid var(--outline-variant); }
 .series-bar { position: absolute; bottom: 0; width: calc(100% / var(--series-count) * .6); translate: -50% 0; border-radius: 3px;
   background: var(--data); transform-origin: bottom; animation: series-grow var(--spring-step) both;
@@ -448,12 +448,17 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   background: repeating-linear-gradient(90deg, var(--data-reference) 0 4px, transparent 4px 7px); }
 .series-reference-word { position: absolute; bottom: calc(100% + 2px); left: 0; color: var(--data-reference); font: var(--type-label-sm); }
 /* A pinned mark's target: the bar with a little room above it, or a fingertip round a point. Empty plot clears. */
-.series-target { position: absolute; bottom: 0; width: max(24px, calc(100% / var(--series-count) * .84)); translate: -50% 0;
+/* A target never leaves its own column, so the bucket nearest a tap is the one it pins. */
+.series-target { --series-column: calc(100% / var(--series-count)); position: absolute; bottom: 0;
+  width: min(var(--series-column), max(24px, calc(var(--series-column) * .84))); translate: -50% 0;
   padding: 0; border: 0; border-radius: var(--radius-sm); background: transparent; cursor: pointer; }
-.series-chart.is-line .series-target { bottom: auto; width: 48px; height: 48px; translate: -50% -50%; border-radius: 50%; }
-.series-ticks { position: relative; height: var(--series-height); }
-.series-ticks > span { position: absolute; right: 0; translate: 0 50%; white-space: nowrap; }
-.series-axis { display: grid; grid-template-columns: repeat(var(--series-count), minmax(0, 1fr)); padding-top: var(--space-1); text-align: center; white-space: nowrap; }
+.series-chart.is-line .series-target { bottom: auto; width: min(var(--series-column), 48px); height: 48px; translate: -50% -50%; border-radius: 50%; }
+.series-ticks { position: relative; grid-area: 1 / 2; height: var(--series-height); }
+.series-ticks-width { display: block; height: 0; overflow: hidden; visibility: hidden; white-space: nowrap; }
+.series-tick { position: absolute; right: 0; translate: 0 50%; white-space: nowrap; }
+.series-axis { grid-area: 2 / 1; display: grid; grid-template-columns: repeat(var(--series-count), minmax(0, 1fr)); padding-top: var(--space-1); text-align: center; white-space: nowrap; }
+/* A week's letters stand centred under their days; beyond a week, each word starts at its bucket. */
+.series-chart:not(.is-narrow) .series-axis { text-align: start; }
 @keyframes series-grow { from { transform: scaleY(0); } }
 .measurement-tile { box-sizing: border-box; display: grid; gap: var(--space-1); align-content: start; min-width: 0; width: 100%; padding: var(--space-4) var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--data-container); color: var(--ink); text-align: left; }
 .measurement-tile-label { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-data-container); font: var(--type-label-md); }
