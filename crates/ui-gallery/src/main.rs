@@ -2266,6 +2266,7 @@ struct Added {
     key: u32,
     name: String,
     detail: String,
+    image: Option<&'static str>,
     state: AttachmentState,
     progress: f64,
 }
@@ -2288,6 +2289,7 @@ fn AttachmentsDemo() -> Element {
                 key: 0,
                 name: "Echo report.pdf".into(),
                 detail: "PDF · 1.2 MB".into(),
+                image: None,
                 state: AttachmentState::Uploading,
                 progress: 0.0,
             },
@@ -2295,12 +2297,21 @@ fn AttachmentsDemo() -> Element {
                 key: 1,
                 name: "Holter export.zip".into(),
                 detail: "Over the 25 MB limit".into(),
+                image: None,
+                state: AttachmentState::Failed,
+                progress: 0.0,
+            },
+            Added {
+                key: 2,
+                name: "Rhythm strip.png".into(),
+                detail: "Couldn't read this image".into(),
+                image: Some(STRIP),
                 state: AttachmentState::Failed,
                 progress: 0.0,
             },
         ]
     });
-    let mut next = use_signal(|| 2u32);
+    let mut next = use_signal(|| 3u32);
     let mut draft = use_signal(String::new);
     let mut opened = use_signal(|| None::<String>);
     // Fills a file's foot a step at a time, then leaves it ready.
@@ -2328,6 +2339,7 @@ fn AttachmentsDemo() -> Element {
                 key,
                 name: file.name(),
                 detail: size(file.size()),
+                image: None,
                 state: AttachmentState::Uploading,
                 progress: 0.0,
             });
@@ -2363,6 +2375,7 @@ fn AttachmentsDemo() -> Element {
                                 key: "{file.key}",
                                 name: file.name.clone(),
                                 detail: file.detail.clone(),
+                                image: file.image.map(str::to_owned),
                                 state: file.state,
                                 progress: file.progress,
                                 remove_label: format!("Remove {}", file.name),

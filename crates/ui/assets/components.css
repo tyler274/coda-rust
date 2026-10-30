@@ -233,8 +233,9 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
   min-height: var(--control-height); }
 /* Files dragged over the composer: a dashed action outline over the whole field, saying what dropping does. */
 .composer { position: relative; }
-.composer-drop { position: absolute; inset: 0; display: grid; place-items: center; padding: var(--space-3); border: var(--stroke) dashed var(--primary); border-radius: inherit;
+.composer-drop { position: absolute; inset: 0; display: none; place-items: center; padding: var(--space-3); border: var(--stroke) dashed var(--primary); border-radius: inherit;
   background: color-mix(in srgb, var(--primary-container) 88%, transparent); color: var(--on-primary-container); font: var(--type-label-lg); text-align: center; pointer-events: none; }
+.composer[data-dropping] > .composer-drop { display: grid; }
 /* Dictation in the words' place: Cancel, the voice as bars in the ink, newest at the end, what is happening and for how
    long, then Done. Transcribing, the bars hold still and quiet under the working mark. */
 .composer.is-dictating > :is(.composer-input, .composer-toolbar:not(:has(> *))) { display: none; }
@@ -666,8 +667,8 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 /* Feedback: the rating pair, and reasons as toggle chips. Among a message's actions, the pair shows with the row. */
 .feedback-rating { display: inline-flex; gap: var(--space-hair); transition: opacity var(--motion-control) var(--ease-out); }
 @media (hover: hover) {
-  :not(.message-actions) > .feedback-rating { opacity: 0; pointer-events: none; }
-  :is(.message:hover, .message:focus-within) :not(.message-actions) > .feedback-rating, :not(.message-actions) > .feedback-rating:is(:focus-within, [data-active="true"]) { opacity: 1; pointer-events: auto; }
+  .feedback-rating:not(.message-actions > *) { opacity: 0; pointer-events: none; }
+  :is(.message:hover, .message:focus-within) .feedback-rating:not(.message-actions > *), .feedback-rating:not(.message-actions > *):is(:focus-within, [data-active="true"]) { opacity: 1; pointer-events: auto; }
 }
 /* A message's actions: quiet icon controls in a row close under it, at the bubble's edge after the person's words. On
    pointer devices they show while the message or the row is hovered or focused, or while an action is busy. A version
@@ -684,7 +685,7 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 }
 .version-switch { display: inline-flex; align-items: center; }
 /* Attachments: a file as a tile on its hairline, its mark on the data tint, its name, and what it is beneath; an image
-   as its own square picture. Uploading, it turns or fills its foot; when it didn't upload, it is outlined in red. Its
+   as its own square picture. Uploading, it turns or fills its foot; when it didn't upload, a tile outlined in red. Its
    remove sits at its corner, and a tile that opens takes the state layer and the focus ring whole. In the composer they
    scroll across in one row; in the person's bubble they wrap at its edge. Each arrives on the arrival motion. */
 .attachments { display: flex; flex-wrap: wrap; gap: var(--space-2); min-width: 0; }
@@ -697,14 +698,12 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 @starting-style { .attachment { opacity: 0; scale: .94; } }
 .attachment:has(.attachment-remove):not(.is-image) { padding-inline-end: calc(var(--space-6) + var(--space-2)); }
 .attachment.is-image { width: 64px; height: 64px; min-height: 0; padding: 0; }
-.attachment-image { display: block; width: 100%; height: 100%; object-fit: cover; }
-.attachment.is-image:not(.is-failed, .is-uploading) .attachment-image { transition: opacity var(--motion-arrive) var(--ease-out); }
-.attachment.is-uploading .attachment-image, .attachment.is-failed .attachment-image { opacity: .45; }
+.attachment-image { display: block; width: 100%; height: 100%; object-fit: cover; transition: opacity var(--motion-arrive) var(--ease-out); }
+.attachment.is-uploading .attachment-image { opacity: .45; }
 .attachment-image-mark { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink); }
 .attachment-mark { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--data-container); color: var(--on-data-container); }
 .attachment.is-failed { border-color: var(--error); }
-.attachment.is-failed :is(.attachment-mark, .attachment-image-mark) { color: var(--error); }
-.attachment.is-failed .attachment-mark { background: var(--error-container); }
+.attachment.is-failed .attachment-mark { background: var(--error-container); color: var(--error); }
 .attachment-text { display: grid; min-width: 0; }
 .attachment-name, .attachment-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .attachment-name { font: var(--type-label-lg); }

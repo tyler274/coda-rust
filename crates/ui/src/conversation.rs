@@ -169,16 +169,12 @@ pub fn VersionSwitch(
         )
     });
     let shown = at.min(count.saturating_sub(1));
+    // Once an arrow that holds focus has stopped going anywhere, focus moves to the other.
     let switch = id.clone();
-    let go = move |to: usize, end: bool, other: &'static str| {
-        let id = switch.clone();
-        move |_| {
-            on_change.call(to);
-            if end {
-                document::eval(&format!("document.getElementById('{id}-{other}')?.focus()"));
-            }
-        }
-    };
+    use_effect(use_reactive!(|shown, count| {
+        let _ = (shown, count);
+        document::eval(&HAND_OFF.replace("{id}", &switch));
+    }));
     rsx! {
         div { class: "version-switch", role: "group", aria_label: "{label}",
             Button {
@@ -188,7 +184,7 @@ pub fn VersionSwitch(
                 icon_only: true,
                 aria_label: "{previous_label}",
                 disabled: shown == 0,
-                onclick: go(shown.saturating_sub(1), shown <= 1, "next"),
+                onclick: move |_| on_change.call(shown.saturating_sub(1)),
                 Icon { name: IconName::ChevronLeft }
             }
             span { class: "version-switch-place", aria_hidden: "true", "{shown + 1} / {count}" }
@@ -199,7 +195,7 @@ pub fn VersionSwitch(
                 icon_only: true,
                 aria_label: "{next_label}",
                 disabled: shown + 1 >= count,
-                onclick: go(shown + 1, shown + 2 >= count, "previous"),
+                onclick: move |_| on_change.call(shown + 1),
                 Icon { name: IconName::ChevronRight }
             }
         }
@@ -207,6 +203,14 @@ pub fn VersionSwitch(
 }
 
 static SWITCHES: AtomicUsize = AtomicUsize::new(0);
+
+/// Moves focus off an arrow of the switch `{id}` that has just been disabled.
+const HAND_OFF: &str = "
+const previous = document.getElementById('{id}-previous'), next = document.getElementById('{id}-next');
+const held = document.activeElement;
+if (held === previous && previous.disabled) next.focus();
+if (held === next && next.disabled) previous.focus();
+";
 
 /// What has become of a message on its way, given as its `Message`'s `status`: its icon, its
 /// words, such as "Not sent" or "Sends after this reply", and the host's ways on, such as Try again

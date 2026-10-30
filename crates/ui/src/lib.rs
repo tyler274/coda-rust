@@ -792,7 +792,7 @@ pub fn SearchField(
 /// puts the actions beside the words instead, at their last line.
 /// The words grow with what is written, up to seven lines. Keys stay the host's. With `on_files`,
 /// files dragged over it are taken: the field says `drop_label` while they are over it, and the
-/// files dropped go to `on_files`. While the person speaks, a `Dictation` given as `dictation`
+/// files dropped go to `on_files`. Words dragged in drop into the field as they always do. While the person speaks, a `Dictation` given as `dictation`
 /// stands in the words' place; the words wait, kept, until it is gone.
 #[component]
 pub fn Composer(
@@ -827,42 +827,28 @@ pub fn Composer(
     children: Element,
 ) -> Element {
     let held = value.clone();
-    // How many of the field's own elements a drag is over: entering a child leaves its parent.
-    let mut over = use_signal(|| 0u32);
+    let id = use_hook(|| format!("composer-{}", COMPOSERS.fetch_add(1, Ordering::Relaxed)));
+    let takes_files = on_files.is_some();
+    let dropping = id.clone();
+    use_effect(use_reactive!(|takes_files| {
+        if takes_files {
+            document::eval(&FILE_DRAGS.replace("{id}", &dropping));
+        }
+    }));
     let mut class = String::from(if inline {
         "composer field is-inline"
     } else {
         "composer field"
     });
-    if over() > 0 {
-        class.push_str(" is-dropping");
-    }
     if dictation.is_some() {
         class.push_str(" is-dictating");
     }
     rsx! {
         form {
+            id,
             class,
-            ondragenter: move |event| {
-                if on_files.is_some() {
-                    event.prevent_default();
-                    over += 1;
-                }
-            },
-            ondragover: move |event| {
-                if on_files.is_some() {
-                    event.prevent_default();
-                }
-            },
-            ondragleave: move |_| {
-                if on_files.is_some() {
-                    over.set(over().saturating_sub(1));
-                }
-            },
             ondrop: move |event| {
                 if let Some(take) = on_files {
-                    event.prevent_default();
-                    over.set(0);
                     let files = event.data_transfer().files();
                     if !files.is_empty() {
                         take.call(files);
@@ -905,12 +891,30 @@ pub fn Composer(
                 {children}
             }
             {notices}
-            if over() > 0 && !drop_label.is_empty() {
+            if takes_files {
                 div { class: "composer-drop", aria_hidden: "true", "{drop_label}" }
             }
         }
     }
 }
+
+static COMPOSERS: AtomicUsize = AtomicUsize::new(0);
+
+/// Takes only drags that carry files over the composer `{id}`, which only the browser's own list of
+/// what a drag holds can tell while it moves. Counted, because entering a child leaves its parent.
+const FILE_DRAGS: &str = "
+const form = document.getElementById('{id}');
+if (form && !form.dataset.takesFiles) {
+  form.dataset.takesFiles = 'true';
+  let over = 0;
+  const files = (event) => form.querySelector(':scope > .composer-drop') && [...(event.dataTransfer?.types ?? [])].includes('Files');
+  const settle = () => { over = 0; delete form.dataset.dropping; };
+  form.addEventListener('dragenter', (event) => { if (files(event)) { event.preventDefault(); over += 1; form.dataset.dropping = 'true'; } });
+  form.addEventListener('dragover', (event) => { if (files(event)) event.preventDefault(); });
+  form.addEventListener('dragleave', (event) => { if (files(event) && --over <= 0) settle(); });
+  form.addEventListener('drop', (event) => { if (files(event)) { event.preventDefault(); settle(); } });
+}
+";
 
 /// The words a send uses. The field wins when it has something in it: on Android the controlled
 /// value can drop keystrokes while the person still sees them.

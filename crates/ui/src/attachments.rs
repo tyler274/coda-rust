@@ -22,9 +22,9 @@ pub enum AttachmentState {
 
 /// One file the person added: its picture, from `image`, when it is an image, otherwise its mark,
 /// its `name` and a quieter `detail`, such as its kind and size. Uploading, it turns, or fills its
-/// foot as far as the host's `progress` (from 0 to 1) says; when it didn't upload, its mark is the
-/// alert and its outline red, its detail saying why. With `onclick` the whole tile opens it; with
-/// `on_remove` a small control at its corner removes it.
+/// foot as far as the host's `progress` (from 0 to 1) says; when it didn't upload, an image too
+/// stands as a tile, its mark the alert and its outline red, its detail saying why. With `onclick`
+/// the whole tile opens it; with `on_remove` a small control at its corner removes it.
 #[component]
 pub fn Attachment(
     name: String,
@@ -36,6 +36,7 @@ pub fn Attachment(
     #[props(default)] remove_label: String,
     on_remove: Option<EventHandler<MouseEvent>>,
 ) -> Element {
+    let image = image.filter(|_| state != AttachmentState::Failed);
     let mut class = String::from("attachment");
     if image.is_some() {
         class.push_str(" is-image");
@@ -55,8 +56,11 @@ pub fn Attachment(
         div { class, aria_busy: (state == AttachmentState::Uploading).then_some("true"),
             if let Some(src) = image {
                 img { class: "attachment-image", src, alt: "{name}" }
-                if state != AttachmentState::Ready {
+                if state == AttachmentState::Uploading && progress.is_none() {
                     span { class: "attachment-image-mark", {mark} }
+                }
+                if let Some(detail) = detail {
+                    span { class: "sr-only", "{detail}" }
                 }
             } else {
                 span { class: "attachment-mark", {mark} }
