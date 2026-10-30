@@ -9,7 +9,7 @@ use std::time::Duration;
 use dioxus::html::geometry::PixelsRect;
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName};
+use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName, opens};
 
 static PREVIEWS: AtomicUsize = AtomicUsize::new(0);
 
@@ -117,7 +117,7 @@ struct SourceReturn(Signal<Option<Rc<MountedData>>>);
 /// stays while the pointer or focus is on either; Escape or Close dismisses it. Choosing it opens
 /// the source beside the reader when the host gives `on_expand`, and otherwise toggles the
 /// preview, as on touch. The preview's actions open the pane and the original record, each shown
-/// with its words.
+/// with its words; an original whose address can't open as a link is not offered.
 #[component]
 pub fn CitationPreview(
     index: usize,
@@ -145,6 +145,7 @@ pub fn CitationPreview(
     new_tab_hint: Option<String>,
     children: Element,
 ) -> Element {
+    let original = original.filter(|url| opens(url));
     let id = use_hook(|| PREVIEWS.fetch_add(1, Ordering::Relaxed));
     let mut open = use_signal(|| false);
     let mut hovering = use_signal(|| false);

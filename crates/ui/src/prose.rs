@@ -9,6 +9,8 @@
 use dioxus::prelude::*;
 use pulldown_cmark::{Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
+use crate::opens;
+
 /// Where an inline piece stands in the words while they are parsed: the object replacement
 /// character, which the words themselves never keep. Each piece is known by where its marker
 /// stands in the source, so words that decode to the same character never stand for one.
@@ -263,20 +265,6 @@ fn heading(level: HeadingLevel) -> u8 {
         HeadingLevel::H4 => 4,
         HeadingLevel::H5 => 5,
         HeadingLevel::H6 => 6,
-    }
-}
-
-/// Whether a link opens from prose: a web, mail or phone address, or a place on the same page.
-fn opens(url: &str) -> bool {
-    let url = url.trim();
-    match url.split_once(':') {
-        Some((scheme, _)) if !scheme.contains(['/', '?', '#']) => {
-            matches!(
-                scheme.to_ascii_lowercase().as_str(),
-                "http" | "https" | "mailto" | "tel"
-            )
-        }
-        _ => !url.is_empty(),
     }
 }
 

@@ -1198,6 +1198,21 @@ fn host_attributes(class: &mut String, attributes: Vec<Attribute>) -> Vec<Attrib
     rest
 }
 
+/// Whether an address the host gives may open as a link: a web, mail or phone address, or a place
+/// on the same page. Any other scheme, `javascript:` among them, never becomes a link.
+pub(crate) fn opens(url: &str) -> bool {
+    let url = url.trim();
+    match url.split_once(':') {
+        Some((scheme, _)) if !scheme.contains(['/', '?', '#']) => {
+            matches!(
+                scheme.to_ascii_lowercase().as_str(),
+                "http" | "https" | "mailto" | "tel"
+            )
+        }
+        _ => !url.is_empty(),
+    }
+}
+
 /// Actions that sit together: one row, one gap, one centre line, wrapping where the width runs out.
 /// A host places the row; it never sets the row's own layout.
 #[component]
@@ -1237,6 +1252,31 @@ pub fn TabBar(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn only_web_mail_phone_and_same_page_addresses_open() {
+        for url in [
+            "https://example.org/a",
+            "HTTP://example.org",
+            "mailto:a@b.org",
+            "tel:+15550100",
+            "#notes",
+            "/records/1",
+            "page?x=a:b",
+        ] {
+            assert!(opens(url), "{url}");
+        }
+        for url in [
+            "javascript:alert(1)",
+            " JavaScript:alert(1)",
+            "data:text/html,x",
+            "vbscript:x",
+            "file:///etc/passwd",
+            "",
+        ] {
+            assert!(!opens(url), "{url}");
+        }
+    }
 
     #[test]
     fn a_send_uses_the_words_the_person_sees() {
