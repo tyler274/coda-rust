@@ -49,5 +49,5 @@ Check it from the repository root:
 The session the browser stores is the one owner of whether you are signed in, and the browser also counts its sign-outs. A tab follows them a moment late: news from another tab only says that something changed, so news can arrive late or out of order, and a tab that catches up after a sign-out still forgets where you were. The model lets other tabs, Coda's answers and expiry happen in any order. Signing out is one step for the browser: the tab forgets the stored session, counts the sign-out, tells the other tabs and asks Coda to end the session without waiting. TLC checks the rules in every state the model reaches; it doesn't reach the Rust itself. The code follows the model, and the browser walks hold it there: two tabs of one browser play TLC's walks, the shortest walk to each kind of step and random walks between them, and each bug path found so far, against the real page and server, and after each step must look as the model says:
 
 ```bash
-CHROMIUM=<path to Chromium> cargo test -p physician-sample --test auth_browser -- --ignored --test-threads=1
+CHROMIUM=<path to Chromium> cargo test -p physician-sample --test sign_in_model -- --ignored --test-threads=1
 ```

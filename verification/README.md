@@ -38,7 +38,9 @@ TLC takes every step of the walks a journey's browser test plays.
 and for random walks for the orders between them, or for the walk through each listed bug path,
 and prints them as JSON. The browser test does what each event names in the real page and, after
 every step, compares the page with the model's state. Each bug path TLC or review found stays in
-the journey's bug-path test, which failed on the code before its fix.
+the journey's bug-path test, which failed on the code before its fix. A journey's model tests live
+in their own test file, named for the journey such as `sign_in_model.rs`, and run locally: CI
+doesn't run TLC.
 
 ## Commands
 

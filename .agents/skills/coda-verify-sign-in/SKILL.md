@@ -36,11 +36,11 @@ in about two minutes, more than a chart can show, so a chart comes only with a r
 Then, from the repository root:
 
 ```sh
-CHROMIUM=<path to Chromium> cargo test -p physician-sample --test auth_browser -- --ignored --test-threads=1
+CHROMIUM=<path to Chromium> cargo test -p physician-sample --test sign_in_model -- --ignored --test-threads=1
 ```
 
 It plays, in two tabs of one browser against the real page and sample server, the shortest walk
-to each kind of step `COVER` in `auth_browser.rs` tells apart, 100 random 12-step walks, and the
+to each kind of step `COVER` in `sign_in_model.rs` tells apart, 100 random 12-step walks, and the
 bug paths in `BUG_PATHS`, and compares both tabs with the model after every step.
 
 ## Bounds and assumptions
