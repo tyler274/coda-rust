@@ -567,14 +567,17 @@ if (sheet && body) {
   // Where a flick at this speed (px/s) would come to rest, at UIScrollView's normal deceleration.
   const projection = 0.998 / (1 - 0.998) / 1000;
   const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let drag = null, settling = 0;
+  let drag = null, settling = 0, shown = 0;
   const show = (y) => {
     const height = sheet.offsetHeight || 1;
+    shown = y;
     sheet.style.transform = `translateY(${y}px)`;
     sheet.style.setProperty('--sheet-shown', String(Math.min(1, Math.max(0, 1 - y / height))));
   };
-  const rest = () => { sheet.style.removeProperty('transform'); sheet.style.removeProperty('--sheet-shown'); delete sheet.dataset.dragging; };
+  const rest = () => { shown = 0; sheet.style.removeProperty('transform'); sheet.style.removeProperty('--sheet-shown'); delete sheet.dataset.dragging; };
   const band = (y, height) => y >= 0 ? y : -(1 - 1 / (-y * 0.55 / height + 1)) * height;
+  // Where the hand would be for a sheet already shown at `y`, so taking hold of it never moves it.
+  const unband = (y, height) => y >= 0 ? y : -height * (1 / (1 + y / height) - 1) / 0.55;
   const settle = (from, to, speed, done) => {
     cancelAnimationFrame(settling);
     if (still()) { show(to); done(); return; }
@@ -593,7 +596,7 @@ if (sheet && body) {
   sheet.addEventListener('pointerdown', (event) => {
     if (event.button !== 0 || !sheet.open || sheet.classList.contains('is-closing') || typing(event.target)) return;
     const fromContent = body.contains(event.target) && !event.target.closest('.dialog-header');
-    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, fromContent, active: false, offset: 0, samples: [] };
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, fromContent, active: false, from: 0, offset: 0, samples: [[event.timeStamp, event.clientY]] };
   });
   sheet.addEventListener('pointermove', (event) => {
     if (!drag || event.pointerId !== drag.id) return;
@@ -602,13 +605,14 @@ if (sheet && body) {
       if (Math.abs(dy) < 6 || Math.abs(dy) < Math.abs(dx)) return;
       if (drag.fromContent && (body.scrollTop > 0 || dy < 0)) { drag = null; return; }
       drag.active = true;
-      drag.y = event.clientY;
+      // Taken mid-spring, it is held where it is; the movement that started the drag still counts.
       cancelAnimationFrame(settling);
+      drag.from = unband(shown, sheet.offsetHeight || 1);
       sheet.dataset.dragging = '';
       sheet.setPointerCapture(event.pointerId);
     }
     const height = sheet.offsetHeight || 1;
-    drag.offset = band(event.clientY - drag.y, height);
+    drag.offset = band(drag.from + event.clientY - drag.y, height);
     drag.samples.push([event.timeStamp, event.clientY]);
     while (drag.samples.length > 2 && event.timeStamp - drag.samples[0][0] > 100) drag.samples.shift();
     show(drag.offset);
@@ -623,8 +627,10 @@ if (sheet && body) {
     const swallow = (click) => { click.preventDefault(); click.stopPropagation(); };
     sheet.addEventListener('click', swallow, { capture: true, once: true });
     setTimeout(() => sheet.removeEventListener('click', swallow, { capture: true }), 0);
-    const [first, last] = [ended.samples[0], ended.samples[ended.samples.length - 1]];
-    const speed = first && last && last[0] > first[0] ? (last[1] - first[1]) / ((last[0] - first[0]) / 1000) : 0;
+    // The speed at release, over its last 100ms: a hand held still before letting go has none.
+    const recent = [...ended.samples, [event.timeStamp, event.clientY]].filter(([t]) => event.timeStamp - t <= 100);
+    const [first, last] = [recent[0], recent[recent.length - 1]];
+    const speed = recent.length > 1 && last[0] > first[0] ? (last[1] - first[1]) / ((last[0] - first[0]) / 1000) : 0;
     const height = sheet.offsetHeight || 1;
     const goes = event.type === 'pointerup' && ended.offset > 0 && ended.offset + speed * projection > height / 2;
     if (goes) {
