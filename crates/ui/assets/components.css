@@ -352,9 +352,11 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
 .tabs.has-icons button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 52px; font: var(--type-label-sm); }
 .tabs.has-icons .icon { width: 24px; height: 24px; }
-/* Prose: body large, a step between paragraphs, headings on the title roles, and
-   tables that scroll on their own. Only the Markdown's own elements take prose styles, never a host's inline piece. */
+/* Prose: body large, a step between paragraphs, headings on the title roles, code set apart in its frame, and tables
+   that scroll on their own. Only the Markdown's own elements take prose styles, never a host's inline piece. While words
+   stream in, each new word fades in. */
 .prose { width: 100%; min-width: 0; color: var(--body); font: var(--type-body-lg); overflow-wrap: anywhere; }
+.prose .code-block { margin: var(--space-3) 0; }
 .prose > :first-child { margin-top: 0; }
 .prose > :last-child { margin-bottom: 0; }
 .prose p:where([data-prose]) { margin: 0 0 var(--space-3); color: inherit; font: inherit; text-wrap: pretty; }
@@ -369,15 +371,35 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose a:where([data-prose]) { color: inherit; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; }
 .prose blockquote:where([data-prose]) { margin: var(--space-3) 0; padding: 0 0 0 var(--space-3); border-left: var(--stroke) solid var(--outline); color: var(--muted); }
 .prose code:where([data-prose]) { padding: 0 var(--space-1); border-radius: var(--radius-sm); background: var(--surface-low); font: var(--type-code); }
-.prose pre:where([data-prose]), .prose th:where([data-prose]) { background: var(--surface-low); }
-.prose pre:where([data-prose]) { overflow-x: auto; margin: var(--space-3) 0; padding: var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); }
-.prose pre:where([data-prose]) code { padding: 0; background: transparent; font: var(--type-code); }
+.prose th:where([data-prose]) { background: var(--surface-low); }
+.prose-word { animation: prose-word var(--motion-arrive) var(--ease-out); }
+@keyframes prose-word { from { opacity: 0; } }
 .prose hr:where([data-prose]) { margin: var(--space-5) 0; border: 0; border-top: var(--hairline) solid var(--outline-variant); }
 .prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; overflow-x: auto; }
 .prose table:where([data-prose]) { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
 .prose :is(th, td):where([data-prose]) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
 .prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
 .prose-image { color: var(--muted); font: var(--type-body-sm); font-style: italic; }
+/* Code: one frame on the low surface, its heading a quiet line of what it is beside its control, its lines in the
+   monospace, kept as written and scrolled across. A change's added lines lie on green after a plus, its removed lines
+   on red after a minus, each the width of the longest line. */
+.code-block { min-width: 0; overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-low);
+  color: var(--ink); font: var(--type-body-md); }
+.code-block-heading { display: flex; align-items: center; gap: var(--space-2); min-height: var(--control-height); padding: 0 var(--space-1) 0 var(--space-3);
+  border-bottom: var(--hairline) solid var(--outline-variant); color: var(--muted); font: var(--type-body-sm); }
+.code-block-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.code-block-body { margin: 0; padding: var(--space-3); overflow-x: auto; font: var(--type-code); tab-size: 4; }
+.code-block-body > code { font: inherit; }
+.diff .code-block-heading { padding-inline-end: var(--space-3); }
+.diff .code-block-body { padding-inline: 0; }
+.diff .code-block-body > code { display: inline-grid; min-width: 100%; }
+.diff-line { padding-inline-end: var(--space-3); color: inherit; text-decoration: none; }
+ins.diff-line { background: color-mix(in srgb, var(--primary-container) 75%, transparent); }
+del.diff-line { background: color-mix(in srgb, var(--error-container) 75%, transparent); }
+.diff-sign { display: inline-block; width: 3ch; color: var(--muted); text-align: center; user-select: none; }
+ins > .diff-sign, .diff-added { color: var(--primary); }
+del > .diff-sign, .diff-removed { color: var(--error); }
+.diff-counts { display: flex; gap: var(--space-2); margin-inline-start: auto; font-variant-numeric: tabular-nums; }
 /* Duet's theme: prose and the conversation at body large, each action a full-width
    bar, quiet actions and links in green at the touch target's height, cards on a hairline rather than a shadow, and the
    person's bubble tailed toward them. A host sets it on its root. */
@@ -667,7 +689,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .work-step-mark > .icon { width: 14px; height: 14px; }
 .work-step-text { display: flex; flex: 0 1 auto; flex-wrap: wrap; align-items: baseline; gap: 0 var(--space-2); min-width: 0; }
 .work-step-label { color: var(--body); }
-.work-step.is-running .work-step-label { background: linear-gradient(90deg, var(--muted) 30%, var(--ink) 50%, var(--muted) 70%) 0 0 / 300% 100%;
+:is(.work-step.is-running .work-step-label, .artifact.is-working .artifact-title) { background: linear-gradient(90deg, var(--muted) 30%, var(--ink) 50%, var(--muted) 70%) 0 0 / 300% 100%;
   -webkit-background-clip: text; background-clip: text; color: transparent; animation: work-shimmer 2s linear infinite; }
 @keyframes work-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
 .work-step.is-failed .work-step-mark { background: var(--error-container); color: var(--error); }
@@ -676,7 +698,9 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .work-step-body { padding: 0 0 var(--space-3) calc(24px + var(--space-2)); color: var(--body); font: var(--type-body-sm); }
 .work-step-body > :first-child { margin-top: 0; }
 .work-step-body > :last-child { margin-bottom: 0; }
-@media (prefers-reduced-motion: reduce) { .work-step.is-running .work-step-label { animation: none; background: none; color: var(--ink); } }
+@media (prefers-reduced-motion: reduce) {
+  :is(.work-step.is-running .work-step-label, .artifact.is-working .artifact-title) { animation: none; background: none; color: var(--ink); }
+}
 /* An approval: a card at the resting card's depth on the action's outline while it waits, its content set in, the
    answers at its trailing foot. Answered, its outline goes quiet and the answer takes the actions' place. */
 .approval { display: grid; gap: var(--space-3); min-width: 0; padding: var(--space-4); border: var(--hairline) solid var(--primary-outline); border-radius: var(--radius-lg);
@@ -692,6 +716,16 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   transition: opacity var(--motion-arrive) var(--ease-out); }
 @starting-style { .approval-answer { opacity: 0; } }
 .approval-answer > .icon { color: var(--primary); }
+/* Something an agent made: a card at rest on its outline, its icon on a tinted tile, its title and detail beside it and
+   the way in at its end, with the opening of it beneath, fading out. While it is still being made its title shimmers. */
+.artifact { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
+.artifact-mark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--data-container); color: var(--on-data-container); }
+.artifact-text { display: grid; gap: var(--space-hair); min-width: 0; }
+.artifact-title { margin: 0; color: var(--ink); font: var(--type-title-sm); overflow-wrap: anywhere; }
+.artifact-go { display: grid; color: var(--muted); }
+.artifact-preview { grid-column: 1 / -1; max-height: 7lh; overflow: hidden; padding: var(--space-3); border-radius: var(--radius-md); background: var(--surface-low);
+  color: var(--body); font: var(--type-body-sm); mask-image: linear-gradient(to bottom, #000 50%, transparent); }
+.artifact-preview > * { margin: 0 0 var(--space-2); }
 /* Overlays: the browser's own popover, in the top layer at the overlay's depth, beside the control that opens it. It
    opens under the control from its leading edge and flips above or across where there isn't room; without anchoring it
    stands centred. It arrives on the arrival spring from the corner nearest the control and settles back shorter. */

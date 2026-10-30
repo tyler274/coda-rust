@@ -13,6 +13,7 @@ use dioxus::prelude::*;
 mod agent;
 mod cards;
 mod charts;
+mod code;
 mod conversation;
 mod documents;
 mod feedback;
@@ -24,13 +25,15 @@ mod prose;
 mod sources;
 mod toast;
 pub use agent::{
-    Answer, ApprovalCard, StepState, Task, TaskList, TaskState, TaskWords, WorkStep, WorkTrace,
+    Answer, ApprovalCard, ArtifactCard, StepState, Task, TaskList, TaskState, TaskWords, WorkStep,
+    WorkTrace,
 };
 pub use cards::{Card, Quote};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
     SeriesChart, SeriesPoint, SeriesShape, Sparkline, Value,
 };
+pub use code::{Change, CodeBlock, CopyWords, Diff, DiffLine, DiffWords};
 pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Suggestion};
 pub use documents::{
     FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, TopBar,

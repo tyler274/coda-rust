@@ -17,10 +17,11 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Answer, ApprovalCard, Author, Avatar, AvatarSize, Button, ButtonVariant, Card,
-    ChartHeader, CitationChip, CitationPreview, Command, CommandPalette, Comparison,
-    ComparisonBars, Composer, ContextChip, ContextMenu, ConversationViewport, Count, DateSeparator,
-    Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
+    ActionRow, Answer, ApprovalCard, ArtifactCard, Author, Avatar, AvatarSize, Button,
+    ButtonVariant, Card, Change, ChartHeader, CitationChip, CitationPreview, CodeBlock, Command,
+    CommandPalette, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
+    ConversationViewport, CopyWords, Count, DateSeparator, Dialog, Diff, DiffLine, DiffWords,
+    Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating, FooterActions, Icon,
     IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette,
     MenuSection, Message, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
     Placeholder, PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice,
@@ -143,9 +144,11 @@ fn Gallery() -> Element {
                 Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
                 }
-                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Every state comes from the run.",
+                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy, and a change to it line by line. Every state comes from the run.",
                     AgentWorkDemo {}
                     ApprovalDemo {}
+                    ReplyDemo {}
+                    CodeDemo {}
                 }
                 Section { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
                     PaletteDemo {}
@@ -1947,6 +1950,106 @@ fn ApprovalDemo() -> Element {
                 },
                 Icon { name: IconName::Refresh }
                 "Ask again"
+            }
+        }
+    }
+}
+
+/// A scripted reply, streamed in a few words at a time, that ends in the letter it wrote.
+#[cfg(feature = "web")]
+const REPLY: &str = "Her potassium has risen from **4.9 to 5.4** since the spironolactone dose went to 25 mg on October 2, and there is no repeat level since.\n\nI drafted a letter to her cardiologist asking whether to recheck this week. The results came from this request:\n\n```http\nGET /Observation?patient=4471&code=2823-3&date=ge2026-09-01\n```";
+
+#[cfg(feature = "web")]
+fn copy_words() -> CopyWords {
+    CopyWords {
+        copy: "Copy".into(),
+        copied: "Copied".into(),
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ReplyDemo() -> Element {
+    // How much of the reply has arrived, in bytes.
+    let mut shown = use_signal(|| REPLY.len());
+    let mut runs = use_signal(|| 0u32);
+    let replay = move |_| {
+        let run = runs() + 1;
+        runs.set(run);
+        shown.set(0);
+        spawn(async move {
+            let ends: Vec<usize> = REPLY
+                .split_inclusive(char::is_whitespace)
+                .scan(0, |at, word| {
+                    *at += word.len();
+                    Some(*at)
+                })
+                .collect();
+            for end in ends.chunks(2).filter_map(|pair| pair.last().copied()) {
+                futures_timer::Delay::new(Duration::from_millis(90)).await;
+                if runs() != run {
+                    return;
+                }
+                shown.set(end);
+            }
+        });
+    };
+    let streaming = shown() < REPLY.len();
+    rsx! {
+        div { class: "gallery-agent",
+            Prose { streaming, copy: copy_words(), parts: vec![ProsePart::Words(REPLY[..shown()].to_owned())] }
+            ArtifactCard {
+                icon: IconName::File,
+                title: "Letter to her cardiologist",
+                detail: if streaming { "Writing" } else { "Letter · 1 page" },
+                working: streaming,
+                onclick: move |_| {},
+                preview: rsx! {
+                    p { "Dear colleague," }
+                    p { "Her potassium has risen from 4.9 to 5.4 mmol/L since the spironolactone dose went to 25 mg on October 2. Would you like a repeat level this week, or a change in the dose?" }
+                },
+            }
+            Button { compact: true, disabled: streaming, onclick: replay,
+                Icon { name: IconName::Refresh }
+                "Replay the reply"
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+fn line(change: Change, text: &str) -> DiffLine {
+    DiffLine {
+        change,
+        text: text.into(),
+    }
+}
+
+/// A result as a tool returned it.
+#[cfg(feature = "web")]
+const RESULT: &str = "{\n  \"code\": \"2823-3\",\n  \"display\": \"Potassium\",\n  \"value\": 5.4,\n  \"unit\": \"mmol/L\",\n  \"effective\": \"2026-10-28\"\n}";
+
+#[cfg(feature = "web")]
+#[component]
+fn CodeDemo() -> Element {
+    rsx! {
+        div { class: "gallery-agent",
+            CodeBlock {
+                label: "json",
+                copy: copy_words(),
+                code: RESULT,
+            }
+            Diff {
+                label: "care-plan.md",
+                words: DiffWords { added: "Added".into(), removed: "Removed".into() },
+                lines: vec![
+                    line(Change::Kept, "## Medications"),
+                    line(Change::Kept, "- Lisinopril 10 mg daily"),
+                    line(Change::Removed, "- Spironolactone 25 mg daily"),
+                    line(Change::Added, "- Spironolactone 12.5 mg daily, until potassium is rechecked"),
+                    line(Change::Added, "- Repeat basic metabolic panel within 1 week"),
+                    line(Change::Kept, "- Metoprolol succinate 50 mg daily"),
+                ],
             }
         }
     }

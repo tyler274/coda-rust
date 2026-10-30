@@ -4,12 +4,14 @@
 //! Raw HTML is dropped, an image shows only its description, and a link opens only on a web,
 //! mail or phone address. An inline piece stands outside the Markdown's emphasis, links and code
 //! around it, so it is never inside a link and keeps its state when the words around it change; a
-//! piece written inside raw HTML or a link's address is not drawn.
+//! piece written inside raw HTML or a link's address is not drawn. Code set apart stands as a
+//! `CodeBlock` under its language. While the words are still `streaming` in, each word fades in as
+//! it arrives.
 
 use dioxus::prelude::*;
-use pulldown_cmark::{Event, HeadingLevel, Options, Parser, Tag, TagEnd};
+use pulldown_cmark::{CodeBlockKind, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
 
-use crate::opens;
+use crate::{CodeBlock, CopyWords, opens};
 
 /// Where an inline piece stands in the words while they are parsed: the object replacement
 /// character, which the words themselves never keep. Each piece is known by where its marker
@@ -26,18 +28,36 @@ pub enum ProsePart {
 }
 
 /// Words to read, in Markdown, with the host's inline pieces among them. Markdown that runs across
-/// an inline piece reads as one: a paragraph stays one paragraph around its citations.
+/// an inline piece reads as one: a paragraph stays one paragraph around its citations. While
+/// `streaming`, the words are still arriving, and each new word fades in; `copy` names the control
+/// that copies each block of code.
 #[component]
-pub fn Prose(parts: Vec<ProsePart>) -> Element {
+pub fn Prose(
+    parts: Vec<ProsePart>,
+    #[props(default)] streaming: bool,
+    copy: Option<CopyWords>,
+) -> Element {
     let (source, inlines) = joined(&parts);
     let blocks = parse(&source, &markers(&source));
+    let drawing = Drawing {
+        inlines,
+        streaming,
+        copy,
+    };
     rsx! {
         div { class: "prose",
             for (index, node) in blocks.iter().enumerate() {
-                Fragment { key: "{key(index, node)}", {draw(node, &inlines)} }
+                Fragment { key: "{key(index, node)}", {draw(node, &drawing)} }
             }
         }
     }
+}
+
+/// What every node is drawn with.
+struct Drawing {
+    inlines: Vec<Element>,
+    streaming: bool,
+    copy: Option<CopyWords>,
 }
 
 /// The words as one Markdown source with a marker where each inline piece goes, and the pieces in
@@ -79,7 +99,8 @@ enum Kind {
     Paragraph,
     Heading(u8),
     Quote,
-    CodeBlock,
+    /// Code set apart, with its language when the fence names one.
+    CodeBlock(Option<String>),
     List(Option<u64>),
     Item,
     Table,
@@ -125,7 +146,10 @@ fn parse(source: &str, markers: &[usize]) -> Vec<Node> {
                     Tag::Paragraph => Kind::Paragraph,
                     Tag::Heading { level, .. } => Kind::Heading(heading(level)),
                     Tag::BlockQuote(_) => Kind::Quote,
-                    Tag::CodeBlock(_) => Kind::CodeBlock,
+                    Tag::CodeBlock(CodeBlockKind::Fenced(info)) => {
+                        Kind::CodeBlock(info.split_whitespace().next().map(str::to_owned))
+                    }
+                    Tag::CodeBlock(_) => Kind::CodeBlock(None),
                     Tag::List(start) => Kind::List(start),
                     Tag::Item => Kind::Item,
                     Tag::Table(_) => Kind::Table,
@@ -211,7 +235,7 @@ fn around_pieces(kind: Kind, children: Vec<Node>) -> Vec<Node> {
             | Kind::Strong
             | Kind::Strikethrough
             | Kind::Link(_)
-            | Kind::CodeBlock
+            | Kind::CodeBlock(_)
             | Kind::Image
     );
     if !wraps
@@ -230,7 +254,7 @@ fn around_pieces(kind: Kind, children: Vec<Node>) -> Vec<Node> {
                     nodes.push(Node::Block(kind.clone(), std::mem::take(&mut run)));
                 }
                 nodes.push(match kind {
-                    Kind::CodeBlock => Node::Block(Kind::Paragraph, vec![Node::Inline(piece)]),
+                    Kind::CodeBlock(_) => Node::Block(Kind::Paragraph, vec![Node::Inline(piece)]),
                     _ => Node::Inline(piece),
                 });
             }
@@ -277,17 +301,42 @@ fn key(index: usize, node: &Node) -> String {
     }
 }
 
-fn draw(node: &Node, inlines: &[Element]) -> Element {
+fn draw(node: &Node, drawing: &Drawing) -> Element {
     match node {
+        // Each word its own span, kept by where it stands, so only a word that arrives fades in.
+        Node::Text(text) if drawing.streaming => rsx! {
+            for (index, word) in text.split_inclusive(char::is_whitespace).enumerate() {
+                span { key: "{index}", class: "prose-word", "{word}" }
+            }
+        },
         Node::Text(text) => rsx! { "{text}" },
         Node::Code(code) => rsx! { code { "data-prose": "", "{code}" } },
-        Node::Inline(index) => inlines.get(*index).cloned().unwrap_or_else(|| rsx! {}),
+        Node::Inline(index) => drawing
+            .inlines
+            .get(*index)
+            .cloned()
+            .unwrap_or_else(|| rsx! {}),
         Node::Break => rsx! { br {} },
         Node::Rule => rsx! { hr { "data-prose": "" } },
+        Node::Block(Kind::CodeBlock(language), children) => rsx! {
+            CodeBlock {
+                code: described(children.clone())
+                    .iter()
+                    .map(|node| match node {
+                        Node::Text(text) => text.as_str(),
+                        _ => "",
+                    })
+                    .collect::<String>()
+                    .trim_end_matches('\n')
+                    .to_owned(),
+                label: language.clone(),
+                copy: drawing.copy.clone(),
+            }
+        },
         Node::Block(kind, children) => {
             let inner = rsx! {
                 for (index, child) in children.iter().enumerate() {
-                    Fragment { key: "{key(index, child)}", {draw(child, inlines)} }
+                    Fragment { key: "{key(index, child)}", {draw(child, drawing)} }
                 }
             };
             match kind {
@@ -299,7 +348,6 @@ fn draw(node: &Node, inlines: &[Element]) -> Element {
                 Kind::Heading(5) => rsx! { h5 { "data-prose": "", {inner} } },
                 Kind::Heading(_) => rsx! { h6 { "data-prose": "", {inner} } },
                 Kind::Quote => rsx! { blockquote { "data-prose": "", {inner} } },
-                Kind::CodeBlock => rsx! { pre { "data-prose": "", code { {inner} } } },
                 Kind::List(None) => rsx! { ul { "data-prose": "", {inner} } },
                 Kind::List(Some(start)) => {
                     rsx! { ol { "data-prose": "", start: "{start}", {inner} } }
@@ -317,7 +365,7 @@ fn draw(node: &Node, inlines: &[Element]) -> Element {
                 Kind::Strikethrough => rsx! { del { "data-prose": "", {inner} } },
                 Kind::Link(href) => rsx! { a { "data-prose": "", href: "{href}", {inner} } },
                 Kind::Image => rsx! { span { class: "prose-image", {inner} } },
-                Kind::Unlinked | Kind::Plain => inner,
+                Kind::Unlinked | Kind::Plain | Kind::CodeBlock(_) => inner,
             }
         }
     }
@@ -451,10 +499,21 @@ mod tests {
                         Node::Block(Kind::Strong, vec![text(" dose")]),
                     ]
                 ),
-                Node::Block(Kind::CodeBlock, vec![text("lisinopril")]),
+                Node::Block(Kind::CodeBlock(None), vec![text("lisinopril")]),
                 Node::Block(Kind::Paragraph, vec![Node::Inline(2)]),
-                Node::Block(Kind::CodeBlock, vec![text("\n")]),
+                Node::Block(Kind::CodeBlock(None), vec![text("\n")]),
             ]
+        );
+    }
+
+    #[test]
+    fn a_fenced_block_keeps_its_language() {
+        assert_eq!(
+            parse("```rust title\nfn main() {}\n```", &[]),
+            vec![Node::Block(
+                Kind::CodeBlock(Some("rust".into())),
+                vec![text("fn main() {}\n")]
+            )]
         );
     }
 

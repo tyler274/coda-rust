@@ -1,7 +1,8 @@
 //! Agent work: what an agent is doing and has done, shown as it happens. Its steps (thinking,
-//! reading, searching, running a tool) stand under one line that says what it did, and the plan
-//! it works through checks off as it goes, and what it asks before acting waits for the person's
-//! answer. Every state here is the host's, from the agent's own run; nothing invents progress.
+//! reading, searching, running a tool) stand under one line that says what it did, the plan it
+//! works through checks off as it goes, what it asks before acting waits for the person's answer,
+//! and what it makes stands as a card that opens it. Every state here is the host's, from the
+//! agent's own run; nothing invents progress.
 
 use std::cell::RefCell;
 use std::rc::Rc;
@@ -323,3 +324,51 @@ pub fn ApprovalCard(
 }
 
 static APPROVALS: AtomicUsize = AtomicUsize::new(0);
+
+/// Something an agent made, such as a document, a letter or a table, as a card in the thread: its
+/// icon, its title and a quieter `detail`, such as what kind of thing it is, and with `preview` the
+/// opening of it, fading at the card's foot. While the agent is still `working` on it, its title
+/// shimmers and the working mark stands where the way in would. With `onclick` the whole card opens
+/// it, so the card holds no other controls and its preview takes no input.
+#[component]
+pub fn ArtifactCard(
+    icon: IconName,
+    title: String,
+    detail: Option<String>,
+    #[props(default)] working: bool,
+    #[props(default)] preview: Option<Element>,
+    onclick: Option<EventHandler<MouseEvent>>,
+) -> Element {
+    let mut class = String::from("card card-object artifact");
+    if onclick.is_some() {
+        class.push_str(" is-openable");
+    }
+    if working {
+        class.push_str(" is-working");
+    }
+    rsx! {
+        article { class, aria_busy: working.then_some("true"),
+            span { class: "artifact-mark", Icon { name: icon } }
+            div { class: "artifact-text",
+                h3 { class: "artifact-title",
+                    if let Some(open) = onclick {
+                        button { class: "card-open", r#type: "button", onclick: move |event| open.call(event), "{title}" }
+                    } else {
+                        "{title}"
+                    }
+                }
+                if let Some(detail) = detail {
+                    p { class: "card-detail", "{detail}" }
+                }
+            }
+            if working {
+                WorkingMark {}
+            } else if onclick.is_some() {
+                span { class: "artifact-go", aria_hidden: "true", Icon { name: IconName::ChevronRight } }
+            }
+            if let Some(preview) = preview {
+                div { class: "artifact-preview", "inert": "true", {preview} }
+            }
+        }
+    }
+}
