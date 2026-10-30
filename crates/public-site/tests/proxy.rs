@@ -31,10 +31,14 @@ async fn upstream(app: Router) -> (String, tokio::task::JoinHandle<()>) {
 }
 fn site(origin: &str) -> Router {
     router_with_options(
-        prerender(&Config::default()),
+        prerender(&Config {
+            physician_sign_in: true,
+            ..Config::default()
+        }),
         RuntimeConfig {
-            physician_proxy: ProxyConfig::new(origin, "http://127.0.0.1:8791", None, false, false)
-                .unwrap(),
+            physician_proxy: Some(
+                ProxyConfig::new(origin, "http://127.0.0.1:8791", None, false, false).unwrap(),
+            ),
             ..Default::default()
         },
         [],

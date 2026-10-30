@@ -83,7 +83,7 @@ jobs:
             const checklist = `## Maintainer response\n` +
               `- [ ] Triage security impact promptly: review upstream notes, public advisories, and bundled Go/dependency fixes. A release without an advisory is not proof of safety.\n` +
               `- [ ] If affected, prioritize the upgrade according to severity; record applicability, urgency, and the owner here. Do not wait for CI to break.\n` +
-              `- [ ] Update VERSION, URL, and SHA256 in crates/workspace-tools/src/doppler.rs and the matching public-site Dockerfile pin together. Verify the exact release asset digest; never trust a moving download endpoint. Nix reads the Rust pin.\n` +
+              `- [ ] Update VERSION, URL, and SHA256 in crates/workspace-tools/src/doppler.rs together. Verify the exact release asset digest; never trust a moving download endpoint. Nix reads the Rust pin.\n` +
               `- [ ] Run workspace-tools Doppler tests, install the verified CLI and check its version, build .#doppler-cli, and run the image/CI checks.\n` +
               `- [ ] Merge a reviewed PR, verify staging, and coordinate any separately authorized production rollout. Close with PR/deployment evidence or a documented not-affected decision.\n` +
               `\nThis watch never upgrades, merges, or deploys automatically. It covers GitHub stable releases and public repository advisories, not private disclosures or all transitive vulnerabilities.`;

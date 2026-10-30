@@ -13,7 +13,4 @@ release_sha    = "3609430a18194fd489bf39d39337b53cdd5fbfbd"
 # Fixed /physician upstream, not the marketing origin or the POST /auth/sign-in API.
 # Before release: operator bootstraps self-signJwt and applies physician's
 # authoritative IAP allowlist. CI reads this file; it does not provision that IAM.
-physician_app_url            = "https://physician-836508863523.us-east1.run.app"
-physician_proxy_enabled      = true
-doppler_token_secret_id      = "public-site-stg-doppler-token"
-doppler_token_secret_version = "2"
+physician_app_url = "https://physician-836508863523.us-east1.run.app"

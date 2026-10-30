@@ -5,7 +5,7 @@ description: "Verify the physician site's hosted-shape chat journeys on a dispos
 
 # Verify the physician scale stack
 
-Follow the [shared principles](../../../verification/README.md#principles). The design
+See [Coda verification](../../../verification/README.md). The design
 lives in [book/src/physician-site.md#scaling-across-instances](../../../book/src/physician-site.md)
 and [book/src/gcp.md](../../../book/src/gcp.md); the feature map is
 [features/README.md](features/README.md). This recipe drives the real Rust binaries over

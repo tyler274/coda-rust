@@ -5,8 +5,8 @@
 # prepares prerequisites that infra/gcp/public-site deliberately does not own:
 # APIs, the dedicated staging state bucket, private Artifact Registry
 # repositories (site images, a Docker Hub pull-through cache and a digest copy of
-# the distroless runtime base), the Doppler token secret, a CI deployer service
-# account with resource-scoped roles, GitHub Workload Identity Federation, and
+# the distroless runtime base), a CI deployer service account with
+# resource-scoped roles, GitHub Workload Identity Federation, and
 # (optionally) a time-bound grant for a human first apply. It refuses to continue
 # if any of those repositories (or the legacy coda-agents repository, when
 # readable) grants allUsers or allAuthenticatedUsers.
@@ -22,10 +22,7 @@
 #   bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh --check-group   # Workspace admin
 #
 # Flags:
-#   --print                     Print the commands without calling gcloud or Doppler.
-#   --skip-doppler-token        Create the secret but do not add a version (no Doppler login).
-#   --rotate-doppler-token      Add a new token version even if one is enabled; bump
-#                               doppler_token_secret_version in env/staging.tfvars after.
+#   --print                     Print the commands without calling gcloud.
 #   --temporary-deployer-grant  OPTIONAL. Grant DEPLOYER_USER the first-apply roles,
 #                               each expiring after GRANT_HOURS (IAM condition).
 #   --physician-proxy           OPTIONAL approved staging /physician proxy: create a
@@ -69,12 +66,6 @@ MIGRATE_IMAGE="${MIGRATE_IMAGE:-public-site}"
 MIGRATE_DIGEST="${MIGRATE_DIGEST:-sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140}"
 MIGRATE_TAG="${MIGRATE_TAG:-b18760ef98a82e68aef29ac7a20bc48796794bf9}"
 
-SECRET_ID="${SECRET_ID:-public-site-stg-doppler-token}"
-# Fixed on purpose: this secret must only ever hold a read-only stg token.
-# (The nix shell exports DOPPLER_CONFIG=dev, so do not reuse that name.)
-readonly TOKEN_DOPPLER_PROJECT="coda-rust"
-readonly TOKEN_DOPPLER_CONFIG="stg"
-TOKEN_NAME="${TOKEN_NAME:-public-site-staging-runtime}"
 
 CI_SA_ID="${CI_SA_ID:-public-site-ci-deployer}"
 CI_SA="${CI_SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com"
@@ -101,21 +92,16 @@ APIS=(
   iap.googleapis.com
   artifactregistry.googleapis.com
   storage.googleapis.com
-  secretmanager.googleapis.com
 )
 
 # --- Flags --------------------------------------------------------------------
 PRINT=0
-SKIP_TOKEN=0
-ROTATE_TOKEN=0
 TEMP_GRANT=0
 PHYSICIAN_PROXY=0
 CHECK_GROUP=0
 for arg in "$@"; do
   case "$arg" in
     --print | --dry-run) PRINT=1 ;;
-    --skip-doppler-token) SKIP_TOKEN=1 ;;
-    --rotate-doppler-token) ROTATE_TOKEN=1 ;;
     --temporary-deployer-grant) TEMP_GRANT=1 ;;
     --check-group) CHECK_GROUP=1 ;;
     --physician-proxy) PHYSICIAN_PROXY=1 ;;
@@ -218,7 +204,7 @@ if [[ $PRINT -eq 0 ]]; then
     exit 1
   fi
 else
-  note "--print: no gcloud or Doppler calls are made; every create step is shown."
+  note "--print: no gcloud calls are made; every create step is shown."
 fi
 
 # --- 1. APIs ------------------------------------------------------------------
@@ -321,44 +307,7 @@ else
     --member="serviceAccount:${RUN_AGENT}" --role=roles/artifactregistry.reader --condition=None
 fi
 
-# --- 4. Doppler token secret --------------------------------------------------
-step "Create Secret Manager secret ${SECRET_ID} (user-managed, ${REGION})"
-if missing "${G[@]}" secrets describe "$SECRET_ID"; then
-  run "${G[@]}" secrets create "$SECRET_ID" \
-    --replication-policy=user-managed --locations="$REGION" \
-    --labels=app=public-site,env=staging
-else
-  note "exists"
-fi
-
-step "Add a read-only Doppler ${TOKEN_DOPPLER_PROJECT}/${TOKEN_DOPPLER_CONFIG} service token as a version"
-enabled_version=""
-if [[ $PRINT -eq 0 && $SKIP_TOKEN -eq 0 && $ROTATE_TOKEN -eq 0 ]]; then
-  enabled_version="$("${G[@]}" secrets versions list "$SECRET_ID" \
-    --filter='state=ENABLED' --format='value(name)' --limit=1 2>/dev/null || true)"
-fi
-if [[ $SKIP_TOKEN -eq 1 ]]; then
-  note "skipped (--skip-doppler-token)"
-elif [[ -n "$enabled_version" ]]; then
-  note "enabled version ${enabled_version} already exists; pass --rotate-doppler-token to add another"
-else
-  # Doppler --plain ends with a newline, which is invalid in the runtime's
-  # Authorization header. Strip line endings before Secret Manager; the token
-  # is never echoed, assigned to a variable, or written to disk.
-  printf '+ doppler configs tokens create %q --project %q --config %q --access read --plain \\\n' \
-    "$TOKEN_NAME" "$TOKEN_DOPPLER_PROJECT" "$TOKEN_DOPPLER_CONFIG"
-  printf '    | tr -d "\\r\\n" | gcloud --project=%q secrets versions add %q --data-file=-\n' "$PROJECT_ID" "$SECRET_ID"
-  if [[ $PRINT -eq 0 ]]; then
-    command -v doppler >/dev/null || { echo "doppler not on PATH; use nix develop" >&2; exit 1; }
-    doppler configs tokens create "$TOKEN_NAME" \
-      --project "$TOKEN_DOPPLER_PROJECT" --config "$TOKEN_DOPPLER_CONFIG" --access read --plain \
-      | tr -d '\r\n' \
-      | "${G[@]}" secrets versions add "$SECRET_ID" --data-file=- --format='value(name)'
-  fi
-  note "Pin doppler_token_secret_version in env/staging.tfvars to the version printed above."
-fi
-
-# --- 5. CI deployer service account (no keys) ----------------------------------
+# --- 4. CI deployer service account (no keys) ----------------------------------
 step "Create CI deployer service account ${CI_SA}"
 if missing "${G[@]}" iam service-accounts describe "$CI_SA"; then
   run "${G[@]}" iam service-accounts create "$CI_SA_ID" \
@@ -390,10 +339,6 @@ if [[ $PRINT -eq 1 ]] || legacy_ci_writer; then
 else
   note "no CI writer grant found on ${LEGACY_REPOSITORY} (or its policy is unreadable)"
 fi
-# The root manages the runtime SA's accessor binding on this secret
-# (get/setIamPolicy). No narrower predefined role carries setIamPolicy.
-run "${G[@]}" secrets add-iam-policy-binding "$SECRET_ID" \
-  --member="serviceAccount:${CI_SA}" --role=roles/secretmanager.admin --condition=None
 # Read-only Cloud Run access at project level: the provider polls location-
 # scoped Cloud Run operations, which a service-level grant does not cover.
 run "${G[@]}" projects add-iam-policy-binding "$PROJECT_ID" \
@@ -457,7 +402,7 @@ if [[ $PHYSICIAN_PROXY -eq 1 ]]; then
   note "The coda-rust-staging operator must apply physician_proxy_invokers through its authoritative physician IAP binding."
 fi
 
-# --- 6. GitHub Actions Workload Identity Federation ---------------------------
+# --- 5. GitHub Actions Workload Identity Federation ---------------------------
 WIF_CONDITION="assertion.repository == '${WIF_REPOSITORY}' && assertion.repository_id == '${WIF_REPOSITORY_ID}' && assertion.repository_owner_id == '${WIF_OWNER_ID}' && assertion.ref == '${WIF_REF}' && assertion.environment == '${WIF_ENVIRONMENT}'"
 WIF_MAPPING="google.subject=assertion.sub,attribute.repository=assertion.repository,attribute.repository_id=assertion.repository_id,attribute.repository_owner_id=assertion.repository_owner_id,attribute.ref=assertion.ref,attribute.environment=assertion.environment"
 POOL_NAME="projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WIF_POOL}"
@@ -493,7 +438,7 @@ run "${G[@]}" iam service-accounts add-iam-policy-binding "$CI_SA" \
 note "Workflow auth: workload_identity_provider=${POOL_NAME}/providers/${WIF_PROVIDER}"
 note "             service_account=${CI_SA} (job must use environment: ${WIF_ENVIRONMENT} on ${WIF_REF})"
 
-# --- 7. Base images into the private repositories, by digest -------------------
+# --- 6. Base images into the private repositories, by digest -------------------
 # A carbon copy (imagetools create with one source and --prefer-index=false)
 # keeps the manifest bytes, so the destination digest equals the source digest;
 # the describe-by-digest check below proves it. `crane copy SRC DST` is an
@@ -520,7 +465,7 @@ step "Check the Docker Hub cache serves library/rust@${RUST_DIGEST:0:19}..."
 # are cached on the first build that pulls them.
 run docker buildx imagetools inspect "${RUST_REMOTE}@${RUST_DIGEST}"
 
-# --- 8. Move the already-pushed site image into the site repository ------------
+# --- 7. Move the already-pushed site image into the site repository ------------
 step "Copy ${LEGACY_SOURCE} into ${SITE_REPOSITORY}"
 if [[ $PRINT -eq 1 ]] || ! docker_digest_exists "${SITE_DEST}@${MIGRATE_DIGEST}"; then
   run docker buildx imagetools create --prefer-index=false \
@@ -530,8 +475,6 @@ else
 fi
 run "${G[@]}" artifacts docker images describe "${SITE_DEST}@${MIGRATE_DIGEST}" \
   --format='value(image_summary.digest)'
-note "After this succeeds (post-bootstrap, by a Doppler stg writer):"
-note "  doppler secrets set PUBLIC_SITE_DEPLOY_IMAGE=${SITE_DEST}@${MIGRATE_DIGEST} --project coda-rust --config stg"
 note "env/staging.tfvars already references that digest in ${SITE_REPOSITORY}."
 
 step "Re-check that no repository is public"
@@ -540,7 +483,7 @@ for repo in "$SITE_REPOSITORY" "$DOCKERHUB_REPOSITORY" "$BASE_REPOSITORY"; do
 done
 assert_repo_private "$LEGACY_REPOSITORY" optional
 
-# --- 9. OPTIONAL: time-bound human first-apply grant ---------------------------
+# --- 8. OPTIONAL: time-bound human first-apply grant ---------------------------
 if [[ $TEMP_GRANT -eq 1 ]]; then
   if [[ $PRINT -eq 1 ]]; then
     EXPIRY="<now+${GRANT_HOURS}h, RFC 3339 UTC>"
@@ -560,9 +503,6 @@ if [[ $TEMP_GRANT -eq 1 ]]; then
     run "${G[@]}" projects add-iam-policy-binding "$PROJECT_ID" \
       --member="$M" --role="$role" --condition="$COND"
   done
-  # Add the token version and manage the accessor binding on the one secret.
-  run "${G[@]}" secrets add-iam-policy-binding "$SECRET_ID" \
-    --member="$M" --role=roles/secretmanager.admin --condition="$COND"
   # Read/write/lock the staging state objects.
   run "${G[@]}" storage buckets add-iam-policy-binding "gs://${STATE_BUCKET}" \
     --member="$M" --role=roles/storage.objectAdmin --condition="$COND"

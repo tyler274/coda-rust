@@ -1,9 +1,8 @@
 //! Stateless public serving boundary. Every body/encoding is prepared at startup.
 use crate::{
-    Config, PageTable,
+    PageTable,
     access::{AccessGate, secret_matches},
     assets::AssetTable,
-    prerender,
     representation::{HTML_CACHE, IMMUTABLE_CACHE, Representation},
     runtime::RuntimeConfig,
 };
@@ -52,22 +51,7 @@ struct SiteState {
     ready: Readiness,
     runtime: RuntimeConfig,
     gate: AccessGate,
-    physician_proxy: crate::proxy::PhysicianProxy,
     permits: Arc<Semaphore>,
-}
-
-pub fn router(config: Config) -> Router {
-    router_with_pages(prerender(&config))
-}
-
-/// Compatibility entry point still honors environment staging protection.
-pub fn router_with_pages(pages: PageTable) -> Router {
-    router_with_options(
-        pages,
-        RuntimeConfig::from_env().expect("invalid public-site runtime configuration"),
-        [],
-        Readiness::ready(),
-    )
 }
 
 /// Explicit settings and generated asset injection for embedding/tests/motion.
@@ -119,12 +103,11 @@ fn router_with_gate(
         .expect("site origin")
         .origin()
         .ascii_serialization();
+    // The original's app/robots.ts as Next serializes it: allow all, with host and sitemap.
     let robots = if runtime.staging {
         "User-agent: *\nDisallow: /\n".to_owned()
     } else {
-        format!(
-            "User-agent: *\nAllow: /\nDisallow: /scheduling/dev\nSitemap: {origin}/sitemap.xml\n"
-        )
+        format!("User-Agent: *\nAllow: /\n\nHost: {origin}\nSitemap: {origin}/sitemap.xml\n")
     };
     let health = serde_json::to_vec(&serde_json::json!({"ok": true, "app": "coda-health-public", "env": runtime.environment, "release_sha": runtime.release_sha})).unwrap();
     let state = Arc::new(SiteState {
@@ -139,21 +122,25 @@ fn router_with_gate(
         robots: Representation::new(robots, "text/plain; charset=utf-8"),
         health: Representation::new(health, "application/json"),
         gate,
-        physician_proxy: crate::proxy::PhysicianProxy::new(runtime.physician_proxy.clone()),
         permits: Arc::new(Semaphore::new(runtime.max_concurrency)),
         runtime,
         ready,
     });
-    let physician = Router::new()
-        .route("/physician", axum::routing::any(serve_physician))
-        .route("/physician/", axum::routing::any(serve_physician))
-        .route("/physician/{*path}", axum::routing::any(serve_physician))
-        .layer(RequestBodyLimitLayer::new(crate::proxy::REQUEST_LIMIT));
-    Router::new()
+    let mut app = Router::new()
         .fallback(serve)
-        .layer(RequestBodyLimitLayer::new(16 * 1024))
-        .merge(physician)
-        .with_state(state.clone())
+        .layer(RequestBodyLimitLayer::new(16 * 1024));
+    // Without a physician upstream there is no mount: /physician/ is an ordinary 404.
+    if let Some(config) = state.runtime.physician_proxy.clone() {
+        app = app.merge(
+            Router::new()
+                .route("/physician", axum::routing::any(serve_physician))
+                .route("/physician/", axum::routing::any(serve_physician))
+                .route("/physician/{*path}", axum::routing::any(serve_physician))
+                .layer(RequestBodyLimitLayer::new(crate::proxy::REQUEST_LIMIT))
+                .with_state(crate::proxy::PhysicianProxy::new(config)),
+        );
+    }
+    app.with_state(state.clone())
         // Outermost middleware gates even health, assets, rejected methods and
         // body-limit failures, and forcibly removes every public cache policy.
         .layer(middleware::from_fn_with_state(state, boundary))
@@ -168,13 +155,17 @@ fn xml_escape(value: &str) -> String {
         .replace('\'', "&apos;")
 }
 
-async fn serve_physician(State(state): State<Arc<SiteState>>, request: Request) -> Response {
-    state.physician_proxy.serve(request).await
+async fn serve_physician(
+    State(proxy): State<crate::proxy::PhysicianProxy>,
+    request: Request,
+) -> Response {
+    proxy.serve(request).await
 }
 
 async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: Next) -> Response {
-    let physician =
-        request.uri().path() == "/physician" || request.uri().path().starts_with("/physician/");
+    let physician = state.runtime.physician_proxy.is_some()
+        && (request.uri().path() == "/physician"
+            || request.uri().path().starts_with("/physician/"));
     // This is the single deadline for response headers. Physician requests can
     // include a Cloud Run cold start and mail delivery; the static-page budget
     // must not cut off their acknowledgement. Streaming bodies stay unbounded.
@@ -212,6 +203,10 @@ async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: N
     response
         .headers_mut()
         .insert("x-content-type-options", "nosniff".parse().unwrap());
+    response.headers_mut().insert(
+        header::STRICT_TRANSPORT_SECURITY,
+        crate::site::STRICT_TRANSPORT_SECURITY.parse().unwrap(),
+    );
     if state.runtime.staging {
         let headers = response.headers_mut();
         headers.insert("x-robots-tag", "noindex, nofollow".parse().unwrap());
@@ -537,9 +532,10 @@ mod tests {
         });
         let mut runtime = staged();
         runtime.request_timeout = std::time::Duration::from_millis(100);
-        runtime.physician_proxy =
+        runtime.physician_proxy = Some(
             crate::proxy::ProxyConfig::new(&origin, "http://127.0.0.1:8791", None, false, false)
-                .unwrap();
+                .unwrap(),
+        );
         let app = router_with_options(pages(), runtime, [], Readiness::ready());
         for path in ["/physician", "/physician/", "/physician/api/messages"] {
             assert_eq!(
@@ -712,7 +708,6 @@ mod tests {
             health: Representation::new("", "text/plain"),
             ready: Readiness::ready(),
             gate: crate::access::tests::cached_gate(),
-            physician_proxy: crate::proxy::PhysicianProxy::new(runtime.physician_proxy.clone()),
             permits: Arc::new(Semaphore::new(1)),
             runtime,
         });

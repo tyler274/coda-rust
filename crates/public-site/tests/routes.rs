@@ -4,6 +4,7 @@ use axum::{
 };
 use public_site::{
     Config, Route, prerender,
+    proxy::ProxyConfig,
     runtime::RuntimeConfig,
     server::{Readiness, router_with_options},
 };
@@ -17,13 +18,25 @@ async fn staging_sign_in_reaches_the_physician_service() {
         .find(|line| line.starts_with("physician_app_url"))
         .and_then(|line| line.split('"').nth(1))
         .expect("staging must configure physician_app_url");
-    let config = Config::default();
-    let app = router_with_options(
-        prerender(&config),
-        RuntimeConfig::default(),
-        [],
-        Readiness::ready(),
-    );
+    // As the binary does: the configured upstream mounts /physician/ and offers Sign in.
+    let runtime = RuntimeConfig {
+        physician_proxy: Some(
+            ProxyConfig::new(
+                destination,
+                "https://staging.codahealth.ai",
+                None,
+                true,
+                false,
+            )
+            .unwrap(),
+        ),
+        ..RuntimeConfig::default()
+    };
+    let config = Config {
+        physician_sign_in: runtime.physician_proxy.is_some(),
+        ..Config::default()
+    };
+    let app = router_with_options(prerender(&config), runtime, [], Readiness::ready());
     let response = app
         .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
         .await
@@ -129,6 +142,21 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
         locations(&sitemap),
         locations(include_str!("fixtures/served/sitemap.xml"))
     );
+    let response = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri("/robots.txt")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(
+        to_bytes(response.into_body(), usize::MAX).await.unwrap(),
+        include_str!("fixtures/served/robots.txt").as_bytes(),
+        "robots.txt is what production serves"
+    );
     for path in [
         "/physicians",
         "/api/physician-waitlist",
@@ -161,7 +189,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
 /// Status and redirect target for every probe, as production served them (including
 /// Next's trailing-slash rule); see tests/fixtures/served/responses.json.
 #[tokio::test]
-async fn urls_resolve_and_redirect_as_production_serves_them() {
+async fn urls_resolve_redirect_and_set_hsts_as_production_serves_them() {
     let app = router_with_options(
         prerender(&Config::default()),
         RuntimeConfig::default(),
@@ -187,6 +215,14 @@ async fn urls_resolve_and_redirect_as_production_serves_them() {
                 .get("location")
                 .map(|value| value.to_str().unwrap()),
             expected["location"].as_str(),
+            "{path}"
+        );
+        assert_eq!(
+            response
+                .headers()
+                .get("strict-transport-security")
+                .map(|value| value.to_str().unwrap()),
+            expected["strictTransportSecurity"].as_str(),
             "{path}"
         );
     }

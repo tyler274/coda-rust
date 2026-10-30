@@ -1,95 +1,97 @@
 ---
 name: review-pr
-description: Review existing GitHub PRs or coherent batches through an independent Codex or Claude CLI reviewer. Start fresh and resume that exact reviewer for follow-ups. Assess intent, related open work, the combined solution, and shared causes independently of the coding agent.
+description: Independently assess existing PRs or coherent batches against intent, related work, and evidence. Use for PR review and correction follow-ups; resume the same reviewer as the change evolves.
 ---
 
 # Review PR
 
-The coordinating chat owns scope, interpretation, and authorized corrections.
-An independent, read-only CLI reviewer assesses the change. General local-work
-validation remains separate.
+Use an independent CLI reviewer for an existing PR or coherent batch. Source
+access stays read-only; the reviewer owns publication and follow-up through the
+GitHub App. GitHub holds the shared discussion; local run artifacts retain reviewer execution
+and session identity. Follow the shared
+[development workflow](../../../AGENTS.md#development-workflow).
+Use [local-review](../local-review/SKILL.md) for unpublished local changes.
 
-## Establish scope
+## Establish the targets
 
-A request to review a PR invokes this workflow and authorizes its CLI reviewer.
-Use `$review-pr` in Codex or `/review-pr` in Claude Code; natural-language PR
-review requests also apply. Discussing or editing the skill does not launch it.
+Start a PR review on the user's request, and continue its authorized follow-ups.
+Implementation review uses `local-review`; it does not itself authorize a
+publishing PR review.
 
-**Review-only requests stop at the assessment.** Fixes require an explicit,
-still-active implementation instruction. Earlier coding work or a review's
-completion notification does not override a later instruction or promise to
-review first or wait for the user.
+Resolve the PRs, current revisions, bases, and existing review discussions. Group
+changes that implement one combined outcome or depend on the same contract;
+review unrelated outcomes separately. State the targets and grouping rationale.
 
-Resolve the requested PRs. Group changes that implement one combined outcome or
-depend on the same contract into one review; review independent changes
-separately, sequentially unless parallel runs were requested. State the selected
-targets and why they belong together. Use the current branch to find a PR only
-when the user refers to its PR.
+Supply sourced context through `--context-file`: intended outcome, each PR's role,
+dependencies, relevant user decisions, and prior findings and dispositions,
+including local review. Distinguish assumptions from decisions. The reviewer also
+retrieves requirements, source, and relevant surrounding PR discussions; the
+original coding conversation is useful context, not a mandatory dependency.
 
-Supply known context through `--context-file`: intended outcome, each PR's role,
-evidenced dependencies or landing order, and relevant user decisions and prior
-findings with sources. Label assumptions and keep the handoff neutral. The
-original coding agent and conversation are optional; the reviewer independently
-retrieves requirements, source, and relevant surrounding PR discussions.
+## Run the reviewer
 
-## Launch the independent reviewer
+Read [CLI execution](references/cli-execution.md) and use
+[run_review.py](scripts/run_review.py), passing every target with `--pr URL`.
+For Coda Health, pass the shared [reviewer-app.json](reviewer-app.json) with
+`--github-app-config`, using the invoking developer's own tools and Doppler access.
+Related PRs remain context unless selected as targets. Defaults are Codex
+`gpt-6-astra` at `xhigh`, or Claude `opus` with its default effort when selected.
+Honor the user's engine and model choices.
 
-Read [CLI execution](references/cli-execution.md), then use
-[scripts/run_review.py](scripts/run_review.py). Supply every review target with
-`--pr URL`; repeat the flag for a batch. PRs mentioned only as context are not
-included in the launcher's revision checks. State the engine, model, and targets:
+Start a fresh reviewer conversation, separate from the coding session. Resume
+that exact reviewer with `--resume-from` for corrections or clarification; use a
+fresh review for a changed target set or a deliberate new opinion. The launcher supplies
+[reviewer guidance](references/reviewer.md) each turn and checks target freshness.
+Use background completion delivery and inspect `run.json` and the full `review.md`.
+Read back verified publication links as well as the assessment. Failed, stale,
+access-unverified, or publication-unverified runs do not establish completion.
 
-- Default: Codex, `gpt-6-astra`, effort `xhigh`.
-- Claude: `--engine claude`, model `opus`, with Claude's default effort.
-- Honor explicit model and effort choices; do not silently substitute an engine.
+## Reconcile and correct
 
-The first review starts a fresh, non-interactive CLI conversation, separate from
-the coding session. For follow-ups, use `--resume-from /path/to/prior/run.json`
-to resume that exact reviewer with the same target set. Use a new conversation
-for an explicitly requested fresh opinion or changed target set. Do not use the
-coding session, a native subagent, `--last`, or `--continue` as a substitute.
+Judge the whole report against intent and source evidence. Accept findings, reject
+them with reasons, or identify an open decision. Before corrections, explain the
+shared cause, responsible owner, affected paths, coherent repair, and necessary
+proof. Continue accepted fixes within the implementation task; a review-only task
+returns the assessment.
 
-The launcher supplies [reviewer guidance](references/reviewer.md) on every turn.
-Use the host's background execution and completion delivery described in the
-execution reference.
-Investigate launch failures; do not bypass restrictions or silently restart fresh.
+Verify the corrected workflow and resume the same reviewer with dispositions and
+new evidence. Focus on corrections, unresolved findings, and affected contracts;
+broaden when new evidence warrants it. Repeated symptoms of one cause call for
+revisiting the owner. Stop when the outcome and its appropriate proof are complete,
+stating unresolved concerns and any final changes left unreviewed.
 
-## Reconcile before correcting
+## Publish and maintain the GitHub discussion
 
-Read `run.json` and the complete `review.md`. A completed process is not a
-favorable verdict; failed, stale, or freshness-unverified results cannot establish
-current readiness. Present the useful result in chat.
+A PR review request authorizes the reviewer to publish its own assessment, inline
+findings, and follow-up replies on the selected PRs through the reviewer GitHub
+App, without per-comment approval. This standing exception does not cover author
+responses, unrelated messages, PR-description edits, thread resolution, or merges.
+Review-only requests include this publication and leave code unchanged.
 
-Judge the whole report against intent and source evidence. Accept findings or
-reject them with reasons, and identify unresolved decisions and evidence gaps.
-Preserve material structural concerns as well as local defects.
+The reviewer prepares and publishes its own exact assessment in the same turn
+through the supplied tools. The coordinator returns the verified links and any
+reasoned disagreement separately; it does not rewrite or post the reviewer's
+assessment. Use the App identity only, with no personal-account fallback.
 
-Before authorized edits, briefly explain the intended behavior, shared causes,
-responsible owner, affected paths, coherent correction, and necessary proof.
-Trace relevant writers, readers, and lifecycle transitions so the correction
-covers the contract beyond the reported example. Remove obsolete patches where
-appropriate. Independent defects can stay local; preserve successful behavior
-and unrelated work. Check the governing requirements and decisions: within
-authorized scope, restore agreed behavior and resolve routine technical choices
-yourself. If those sources leave a material behavior or architecture choice open,
-ask the user with options and a recommendation before implementing it; continue
-independent fixes. A review finding alone does not settle that choice.
-This reconciliation is a few sentences in the existing chat, not a new report
-or approval ceremony.
+Prepare one coherent review per PR with the inspected revision, conclusion,
+material findings, human decisions, and evidence limits. Use verified diff
+locations for inline findings and the body for cross-cutting concerns. Default
+to COMMENT; the reviewer may choose APPROVE or REQUEST_CHANGES when warranted.
+A review disposition never grants merge authority.
 
-Implement that correction and verify the affected workflow. If a later finding
-exposes the same contract through another path, revisit the owner and coverage
-before adding a patch. Back-and-forth may clarify or challenge a finding without
-requiring a code change.
+The existing publisher binds a draft to its run and reviewed revision, checks
+the target before writing, and verifies the saved identity, content, and location.
+Report a retained draft or failed publication honestly. Reconcile uncertain writes
+before retrying; resume the same reviewer after the cause is resolved. The
+[execution reference](references/cli-execution.md) owns these mechanics and receipts.
 
-Resume the reviewer for a concrete clarification, changed code, or new evidence,
-carrying sourced dispositions and verification. Focus follow-ups on the correction,
-unresolved findings, and affected contracts and consumers in the cumulative change.
-Broaden investigation when new evidence warrants it; do not repeat unchanged broad
-reviews to obtain a clean verdict. Finish when the requested outcome and appropriate
-proof are complete; state unresolved concerns and final changes left unreviewed.
+The author or coordinating agent prepares responses in the existing threads with
+correction commits and proof, reasoned disagreement, or the remaining decision.
+Author responses retain their own approval requirement. Resume the reviewer to
+assess corrections and publish its dispositions in that discussion. Keep new
+findings distinct; resolve threads only after verification and authorization.
+A clean verdict or merge alone does not settle a finding or prove deployment.
 
-A review does not authorize publication, commits, pushes, merges, deployment, or
-scheduling. External communication requires approval of the exact content and
-destination. Use `improve-review-pr` when the user requests a retrospective or
-guidance update; it does not run automatically.
+Use [write-pr](../write-pr/SKILL.md) to refresh the explanation after material
+changes, and [improve-review-pr](../improve-review-pr/SKILL.md) when observed
+feedback warrants examining the workflow itself.

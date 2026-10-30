@@ -632,7 +632,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     tab.wait_for_text("Mary Louis", Duration::from_secs(20))
         .await;
     let bearer = tab
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await
         .pointer("/result/result/value")
         .and_then(|value| value.as_str())
@@ -845,7 +845,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         .await;
     assert_eq!(removed.recovery_keys().await.len(), 1);
     let removed_bearer = removed
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await
         .pointer("/result/result/value")
         .and_then(|value| value.as_str())
@@ -903,7 +903,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     tab.wait_for_text("Mary Louis", Duration::from_secs(20))
         .await;
     let bearer = tab
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await
         .pointer("/result/result/value")
         .and_then(|value| value.as_str())
@@ -1257,19 +1257,22 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
 fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) -> axum::Router {
     let runtime = public_site::runtime::RuntimeConfig {
         environment: "local".into(),
-        physician_proxy: public_site::proxy::ProxyConfig::new(
-            &format!("http://{upstream}"),
-            &format!("http://{public}"),
-            None,
-            false,
-            false,
-        )
-        .unwrap(),
+        physician_proxy: Some(
+            public_site::proxy::ProxyConfig::new(
+                &format!("http://{upstream}"),
+                &format!("http://{public}"),
+                None,
+                false,
+                false,
+            )
+            .unwrap(),
+        ),
         ..Default::default()
     };
     public_site::server::router_with_options(
         public_site::prerender(&public_site::Config {
             listen_addr: public,
+            physician_sign_in: true,
         }),
         runtime,
         [],
@@ -1383,7 +1386,14 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     browser
         .wait_for_text("Staging Physician", Duration::from_secs(10))
         .await;
-    // A newly mailed link must be redeemed even when a browser session exists.
+    // A newly mailed link signs in once, after sign-out. (Opened while you are
+    // signed in, your own link keeps your session; sign_in_model covers that.)
+    browser
+        .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
+        .await;
+    browser
+        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .await;
     reqwest::Client::new()
         .post(format!("http://{address}/physician/auth/sign-in"))
         .header("Origin", format!("http://{address}"))
@@ -1515,7 +1525,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         "Mary Louis is not on Dr. Clinic Admin's panel yet and must not appear on Today:\n{today_dom}"
     );
 
-    // Reload through the real proxy: sessionStorage must restore the bearer
+    // Reload through the real proxy: localStorage must restore the bearer
     // session rather than rely on the prior in-memory client.
     browser.call("Page.reload", serde_json::json!({})).await;
     tokio::time::sleep(Duration::from_millis(250)).await;
@@ -1523,7 +1533,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
         .await;
     let session = browser
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await;
     let token = session
         .pointer("/result/result/value")
@@ -1626,7 +1636,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .wait_for_text("Sign in to Coda", Duration::from_secs(10))
         .await;
     let stored = browser
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await;
     assert_eq!(
         stored.pointer("/result/result/value"),
@@ -1649,14 +1659,14 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
         .await;
 
-    // 7. Deactivating the physician account terminates SSE through the proxy and returns the browser to SignInScreen.
+    // 7. Deactivating the physician account terminates SSE through the proxy, signs the browser out and says why.
     assert!(store.deactivate("admin@clinic-a.test").await);
     let revoked_dom = browser
-        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .wait_for_text("No access to this practice", Duration::from_secs(10))
         .await;
     assert!(
-        revoked_dom.contains("Work email") && !revoked_dom.contains("Mary Louis"),
-        "revoking session/account must terminate SSE and return to SignInScreen:\n{revoked_dom}"
+        revoked_dom.contains("Use a different email") && !revoked_dom.contains("Mary Louis"),
+        "removing access must terminate SSE and show No access:\n{revoked_dom}"
     );
 
     proxy.abort();

@@ -43,6 +43,15 @@ impl Session {
         *self.0.write().expect("session lock") = None;
     }
 
+    /// Ends `session` locally if it is still the one held; a newer session
+    /// set meanwhile stays.
+    pub fn clear_if(&self, session: &str) {
+        let mut held = self.0.write().expect("session lock");
+        if held.as_deref() == Some(session) {
+            *held = None;
+        }
+    }
+
     /// Whether a session is held.
     pub fn is_some(&self) -> bool {
         self.0.read().expect("session lock").is_some()
@@ -101,8 +110,17 @@ impl PhysicianClient {
         path: &str,
         body: &impl serde::Serialize,
     ) -> Result<T, http::HttpError> {
+        self.post_as(self.bearer(), path, body).await
+    }
+
+    async fn post_as<T: serde::de::DeserializeOwned>(
+        &self,
+        bearer: Option<String>,
+        path: &str,
+        body: &impl serde::Serialize,
+    ) -> Result<T, http::HttpError> {
         let mut request = self.http.post(format!("{}{path}", self.base)).json(body);
-        if let Some(bearer) = self.bearer() {
+        if let Some(bearer) = bearer {
             request = request.header(reqwest::header::AUTHORIZATION, bearer);
         }
         let response = request
@@ -173,11 +191,17 @@ impl PhysicianClient {
         Ok(verified)
     }
 
-    /// Ends the held session on the server and drops it locally.
-    pub async fn sign_out(&self) -> Result<(), http::HttpError> {
-        let result: Result<serde_json::Value, http::HttpError> =
-            self.post("/auth/sign-out", &serde_json::json!({})).await;
-        self.session.clear();
+    /// Ends `session` on the server, and drops it locally if it is still the
+    /// one held; a newer session set meanwhile stays.
+    pub async fn sign_out(&self, session: &str) -> Result<(), http::HttpError> {
+        let result: Result<serde_json::Value, http::HttpError> = self
+            .post_as(
+                Some(format!("Bearer {session}")),
+                "/auth/sign-out",
+                &serde_json::json!({}),
+            )
+            .await;
+        self.session.clear_if(session);
         result.map(|_| ())
     }
 
@@ -626,6 +650,17 @@ mod tests {
         assert_eq!(pinned.base(), "http://example.test");
     }
 
+    #[test]
+    fn ending_an_old_session_keeps_the_one_that_replaced_it() {
+        let session = Session::new();
+        session.set("old".into());
+        session.set("new".into());
+        session.clear_if("old");
+        assert_eq!(session.get().as_deref(), Some("new"));
+        session.clear_if("new");
+        assert_eq!(session.get(), None);
+    }
+
     #[tokio::test]
     async fn reads_a_reply_draft_with_its_revision_run() {
         let app = axum::Router::new().route(
@@ -743,7 +778,8 @@ mod tests {
         assert_eq!(today.rows.len(), 0);
 
         // Sign out: the session ends locally and reads stop presenting it.
-        client.sign_out().await.unwrap();
+        let held = client.session().get().expect("signed in");
+        client.sign_out(&held).await.unwrap();
         assert!(matches!(
             client.today().await,
             Err(http::HttpError::Status { status: 401, .. })

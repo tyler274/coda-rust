@@ -24,7 +24,7 @@ keep the gap visible and update the responsible owner as the work lands.
 | Invitations, consent and practice connections | [Accounts and practice connection](front-door.md) |
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
 | Shared execution and product boundaries | [Operating invariants](agent-contracts.md), [crate map](crate-map.md) |
-| Statecharts, design decisions and formal proof | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
+| Feature models, design decisions and their checks | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
 | Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |
 
@@ -63,7 +63,6 @@ or porting a behavior. Do not recreate a chapter for every historical heading.
 
 - [Original Duet documentation](https://github.com/Coda-Health/coda-app/tree/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs): behavior, clinical catalogs and licenses, privacy, historical iOS/TestFlight release packets, scenario and insight research.
 - [Original physician documentation](https://github.com/Coda-Health/coda-agents/tree/5674d0f13895214e0a633fc81176107f2e28f79d/docs): architecture, runtime protocol, physician experience, care-team operations and readiness.
-- [October 21 Rust design review](https://linear.app/coda-health/document/duet-rust-review-input-for-tylers-design-pass-a6562ebd1c45): dated observations, not a current implementation inventory or acceptance contract.
 - <a href="/submodules/coda-gym/README%2Emd">Coda Gym</a> and <a href="/submodules/Coda-Computer-Use/README%2Emd">computer use</a> retain their own task packages, source evidence and operating instructions; neither has a Rust product crate here.
 
 Fixtures, generated API contracts, published legal text and active verification

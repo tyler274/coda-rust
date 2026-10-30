@@ -1,0 +1,5 @@
+# Remote state for public-site production only. A dedicated bucket in
+# coda-health-prod (created by scripts/production-admin-bootstrap.sh), so the
+# production CI deployer needs no access to the shared production state bucket.
+bucket = "coda-health-prod-public-site-tofu-state-us-east1"
+prefix = "public-site/production"
