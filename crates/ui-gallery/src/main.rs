@@ -14,8 +14,9 @@ use ui::{
     Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
     Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, Rating, RowGroup,
     SearchField, SectionHeader, SelectionRow, SettingRow, SourceDetails, SourcePane, SourceReading,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
-    ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark, WorkingPresence,
+    SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag,
+    TextField, ToggleChip, Tone, TopBar, TrendChart, UndoNotice, Value, WorkingMark,
+    WorkingPresence,
 };
 
 fn main() {
@@ -124,7 +125,7 @@ fn Gallery() -> Element {
                 Section { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
                     EmptyDemo {}
                 }
-                Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark.",
+                Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark; one whose source can't be shown is muted and says so. A source opens at the passage it was cited for, marked.",
                     CitationDemo {}
                 }
                 Section { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
@@ -757,14 +758,14 @@ const CITED: [Cited; 2] = [
         title: "Discharge summary",
         metadata: ["Hospital course", "April 18", "Final"],
         passage: "Admitted with decompensated heart failure; diuresed 6 kg.",
-        content: "Discharged on furosemide 40 mg daily with follow-up in cardiology clinic within two weeks.",
+        content: "Hospital course. Presented to the emergency department with three days of worsening dyspnea, orthopnea and leg swelling. Chest radiograph showed pulmonary vascular congestion and small bilateral effusions. BNP was elevated on arrival. Admitted with decompensated heart failure; diuresed 6 kg. Renal function stayed stable through diuresis. Echocardiogram showed an ejection fraction of 35 percent. Discharged on furosemide 40 mg daily with follow-up in cardiology clinic within two weeks.",
     },
     Cited {
         index: 2,
         title: "Cardiology note",
         metadata: ["Assessment", "October 2", "Signed"],
         passage: "NYHA II–III, mild congestion on exam.",
-        content: "Continue spironolactone 25 mg daily. Repeat potassium in one week.",
+        content: "Assessment. NYHA II–III, mild congestion on exam. Continue spironolactone 25 mg daily. Repeat potassium in one week.",
     },
 ];
 
@@ -776,7 +777,17 @@ fn CitedDetails(cited: Cited) -> Element {
             metadata: cited.metadata.iter().map(|value| value.to_string()).collect::<Vec<_>>(),
             passages: vec![cited.passage.to_owned()],
             passages_label: "Quoted source passages",
-            p { class: "gallery-copy", "{cited.content}" }
+            p { class: "gallery-copy",
+                SourceText {
+                    text: cited.content,
+                    passages: cited
+                        .content
+                        .find(cited.passage)
+                        .map(|start| (start, start + cited.passage.len()))
+                        .into_iter()
+                        .collect::<Vec<_>>(),
+                }
+            }
         }
     }
 }
@@ -822,7 +833,7 @@ fn CitationDemo() -> Element {
                             CitedDetails { cited: CITED[1] }
                         }
                         " Genetic testing was not yet back."
-                        CitationChip { index: 3, label: "Source 3: unavailable" }
+                        CitationChip { index: 3, label: "Source 3 unavailable", unavailable: "unavailable" }
                     }
                 }
             }

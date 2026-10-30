@@ -499,6 +499,87 @@ pub struct SourcePane {
     pub close: String,
 }
 
+/// Moves the reading surface around a source's words to its first marked passage: the nearest
+/// scrolling container inside its dialog or preview, never the page beneath. `{id}` is the words'
+/// element id.
+const SCROLL_TO_PASSAGE: &str = r#"
+const words = document.getElementById("{id}");
+const passage = words?.querySelector("mark");
+let around = words?.parentElement;
+while (passage && around && !around.matches("dialog, .citation-preview")) {
+  if (/(auto|scroll)/.test(getComputedStyle(around).overflowY) && around.scrollHeight > around.clientHeight) {
+    around.scrollTop += passage.getBoundingClientRect().top - around.getBoundingClientRect().top;
+    break;
+  }
+  around = around.parentElement;
+}
+"#;
+
+static SOURCE_TEXTS: AtomicUsize = AtomicUsize::new(0);
+
+/// A source's own words with the passages cited from it marked, after the React app's source
+/// document: passages that overlap read as one mark, and the surface it is read in opens at the
+/// first. `passages` are byte ranges of `text`; one that isn't a range of it is left unmarked.
+#[component]
+pub fn SourceText(text: String, #[props(default)] passages: Vec<(usize, usize)>) -> Element {
+    let id = use_hook(|| {
+        format!(
+            "source-text-{}",
+            SOURCE_TEXTS.fetch_add(1, Ordering::Relaxed)
+        )
+    });
+    let script = SCROLL_TO_PASSAGE.replace("{id}", &id);
+    use_effect(move || {
+        document::eval(&script);
+    });
+    rsx! {
+        span { id, class: "source-text",
+            for (index, (words, cited)) in marked(&text, &passages).into_iter().enumerate() {
+                if cited {
+                    mark { key: "{index}", "{words}" }
+                } else {
+                    Fragment { key: "{index}", "{words}" }
+                }
+            }
+        }
+    }
+}
+
+/// The words in runs, each cited or not, with overlapping and touching passages merged.
+fn marked(text: &str, passages: &[(usize, usize)]) -> Vec<(String, bool)> {
+    let mut ranges: Vec<(usize, usize)> = passages
+        .iter()
+        .copied()
+        .filter(|(start, end)| {
+            start < end
+                && *end <= text.len()
+                && text.is_char_boundary(*start)
+                && text.is_char_boundary(*end)
+        })
+        .collect();
+    ranges.sort();
+    let mut merged: Vec<(usize, usize)> = Vec::new();
+    for (start, end) in ranges {
+        match merged.last_mut() {
+            Some(last) if start <= last.1 => last.1 = last.1.max(end),
+            _ => merged.push((start, end)),
+        }
+    }
+    let mut runs = Vec::new();
+    let mut at = 0;
+    for (start, end) in merged {
+        if start > at {
+            runs.push((text[at..start].to_owned(), false));
+        }
+        runs.push((text[start..end].to_owned(), true));
+        at = end;
+    }
+    if at < text.len() {
+        runs.push((text[at..].to_owned(), false));
+    }
+    runs
+}
+
 #[cfg(test)]
 mod tests {
     use dioxus::html::geometry::PixelsSize;
@@ -541,5 +622,20 @@ mod tests {
         assert_eq!(Heard::read([1.0, 0.0, 0.0]), Some(Heard::Escape(false)));
         assert_eq!(Heard::read([2.0, 0.0, 0.0]), Some(Heard::Away));
         assert_eq!(Heard::read([9.0, 0.0, 0.0]), None);
+    }
+
+    #[test]
+    fn cited_passages_merge_and_a_range_outside_the_words_stays_unmarked() {
+        let words = "Potassium 5.4 mmol/L. Recheck in one week.";
+        assert_eq!(
+            marked(words, &[(10, 20), (14, 21), (200, 210), (5, 5)]),
+            vec![
+                ("Potassium ".to_owned(), false),
+                ("5.4 mmol/L.".to_owned(), true),
+                (" Recheck in one week.".to_owned(), false),
+            ]
+        );
+        // A range that splits a character is not a range of the words.
+        assert_eq!(marked("é", &[(1, 2)]), vec![("é".to_owned(), false)]);
     }
 }

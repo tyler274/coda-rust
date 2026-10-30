@@ -273,6 +273,11 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 @media (hover: hover) { button.source-trigger:hover { border-color: var(--primary); } }
 .citation-chip { min-width: 1.5em; min-height: 1.5em; margin-inline: var(--space-hair); padding: var(--space-hair) var(--space-1);
   vertical-align: baseline; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* A citation whose source can't be shown: muted, its words after its number. */
+.citation-chip-unavailable { gap: var(--space-hair); border-color: var(--outline); background: var(--surface-low); color: var(--muted); }
+.citation-unavailable-label { font: inherit; font-weight: var(--weight-regular); }
+/* A source's own words, a cited passage marked as its citation is while open. */
+.source-text mark { color: inherit; background: var(--highlight); border-radius: .15em; }
 .sources-button { gap: var(--space-1); min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3) var(--space-1) var(--space-2);
   font: var(--type-body-sm); }
 .sources-count { font: var(--type-label-md); font-variant-numeric: tabular-nums; }

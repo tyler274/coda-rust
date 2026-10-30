@@ -29,7 +29,7 @@ pub use documents::{
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use prose::{Prose, ProsePart};
-pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading};
+pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
 pub use undo::{UNDO_MS, UndoNotice};
 
 /// How long a surface takes to settle away before it is removed: `--motion-control` in
@@ -1024,13 +1024,23 @@ pub fn Dialog(
 
 /// A citation in prose, after the React app's citation chip: its number in a small pill. It opens
 /// its source when the host can; otherwise it stays a mark. `label` names the source for
-/// assistive technology.
+/// assistive technology. A citation whose source can't be shown is muted, with `unavailable`'s
+/// words after its number.
 #[component]
 pub fn CitationChip(
     index: usize,
     label: String,
     onclick: Option<EventHandler<MouseEvent>>,
+    #[props(default)] unavailable: String,
 ) -> Element {
+    if !unavailable.is_empty() {
+        return rsx! {
+            span { class: "source-trigger citation-chip citation-chip-unavailable", aria_label: "{label}",
+                "[{index}]"
+                span { class: "citation-unavailable-label", "{unavailable}" }
+            }
+        };
+    }
     match onclick {
         Some(open) => rsx! {
             button {
