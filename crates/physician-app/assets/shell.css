@@ -57,7 +57,8 @@ button, input { font: inherit; }
 @media (prefers-color-scheme: dark) { :is(.coda-logo, .sign-in-logo) { filter: brightness(0) invert(.96); } }
 button.sidebar-expand { display: none; }
 .glass-app.has-collapsed-sidebar button.sidebar-expand { display: inline-flex; }
-.sidebar-primary { display: grid; gap: var(--space-hair); margin-top: var(--space-4); }
+.sidebar-primary { --selection-fill: var(--surface-lowest); --selection-shadow: var(--elevation-1); --selection-radius: var(--radius-pill);
+  display: grid; gap: var(--space-hair); margin-top: var(--space-4); }
 .sidebar-nav-item {
   display: flex;
   align-items: center;
@@ -74,10 +75,8 @@ button.sidebar-expand { display: none; }
 }
 .sidebar-nav-item > .icon { color: var(--muted); }
 .sidebar-nav-item[aria-current="page"] {
-  background: var(--surface-lowest);
   color: var(--ink);
   font-weight: var(--weight-strong);
-  box-shadow: var(--elevation-1);
 }
 .sidebar-nav-item[aria-current="page"] > .icon { color: var(--ink); }
 .sidebar-nav-item strong { font-weight: inherit; }

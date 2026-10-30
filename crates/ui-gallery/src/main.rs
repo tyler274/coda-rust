@@ -51,7 +51,7 @@ fn Gallery() -> Element {
         document::eval(SLOW_MOTION);
     });
     rsx! {
-        style { "{ui::STYLESHEET}{GALLERY_STYLES}" }
+        ui::Stylesheet { app: GALLERY_STYLES }
         div { class: "gallery",
             header { class: "gallery-header",
                 div {
@@ -122,7 +122,7 @@ fn Gallery() -> Element {
                 Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
                 }
-                Section { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together.",
+                Section { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. With a keyboard, all of it simply arrives.",
                     LiveDemo {}
                 }
                 Section { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
@@ -719,6 +719,7 @@ const LIVE: [(&str, &str); 5] = [
 #[component]
 fn LiveDemo() -> Element {
     let mut shown = use_signal(|| vec![0usize, 1, 2]);
+    let mut selected = use_signal(|| Some(0usize));
     let live = use_live_rows(shown(), |index| index.to_string(), |_| true);
     let on_exited = live.on_exited;
     rsx! {
@@ -727,7 +728,7 @@ fn LiveDemo() -> Element {
                 h3 { class: "section-title", "Needs you" }
                 Count { value: shown().len(), words: "to review" }
             }
-            RowGroup {
+            RowGroup { id: live.list, class: "selection-host",
                 for entry in live.listed {
                     RowFrame {
                         key: "{entry.key}",
@@ -737,7 +738,13 @@ fn LiveDemo() -> Element {
                             let key = entry.key.clone();
                             move |_| on_exited.call(key.clone())
                         },
-                        ListRow { icon: IconName::File, title: LIVE[entry.row].0, detail: LIVE[entry.row].1, onclick: move |_| {} }
+                        ListRow {
+                            icon: IconName::File,
+                            title: LIVE[entry.row].0,
+                            detail: LIVE[entry.row].1,
+                            aria_current: (selected() == Some(entry.row)).then_some("true"),
+                            onclick: move |_| selected.set(Some(entry.row)),
+                        }
                     }
                 }
             }
@@ -760,6 +767,16 @@ fn LiveDemo() -> Element {
                         shown.write().remove(at);
                     },
                     "Remove a row"
+                }
+                Button {
+                    disabled: shown().len() < 2,
+                    onclick: move |_| {
+                        let last = shown.write().pop();
+                        if let Some(last) = last {
+                            shown.write().insert(0, last);
+                        }
+                    },
+                    "Move the last to the top"
                 }
             }
         }

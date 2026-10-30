@@ -108,7 +108,7 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let needs_join = false;
     let active_bearer = joined_session().unwrap_or_else(|| bearer.clone());
     rsx! {
-        style { "{ui::STYLESHEET}{DUET_STYLES}" }
+        ui::Stylesheet { app: DUET_STYLES }
         main { class: "duet theme-duet",
             div { class: "duet-page",
                 if needs_join {

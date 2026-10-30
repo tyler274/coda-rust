@@ -32,6 +32,9 @@ pub struct LiveRows<T: 'static> {
     pub listed: Vec<ListedRow<T>>,
     /// Report that a leaving row's frame has collapsed, by its key.
     pub on_exited: Callback<String>,
+    /// The id for the element whose children are the rows' frames: carrying it, the list slides
+    /// each row it reorders from where it stood.
+    pub list: String,
 }
 
 struct Shown<T> {
@@ -59,6 +62,7 @@ pub fn use_live_rows<T: Clone + 'static>(
             exited: HashSet::new(),
         }))
     });
+    let list = use_hook(|| format!("live-list-{}", LISTS.fetch_add(1, Ordering::Relaxed)));
     let mut exits = use_signal(|| 0u64);
     // A row's exit renders the list again, so the row it reports is let go.
     let _ = exits();
@@ -111,8 +115,54 @@ pub fn use_live_rows<T: Clone + 'static>(
         shown.borrow_mut().exited.insert(key);
         exits += 1;
     });
-    LiveRows { listed, on_exited }
+    let keys: Vec<String> = listed.iter().map(|entry| entry.key.clone()).collect();
+    let reordered = list.clone();
+    use_effect(use_reactive!(|keys| {
+        let reorder = document::eval(&REORDER.replace("{id}", &reordered));
+        let _ = reorder.send(keys);
+    }));
+    LiveRows {
+        listed,
+        on_exited,
+        list,
+    }
 }
+
+/// A list the server reorders, after the React app's `useReorderMotion`: each row it keeps slides
+/// from where it stood to where it now stands, and the list's selection fill travels with its
+/// row. A row that rises past others is lifted while it moves, so it passes over them rather than
+/// through them. Rows that only join or leave move nothing here; their own frames open and close.
+/// The list's frames are its children, in the order of the keys sent. `{id}` is the list's id.
+const REORDER: &str = r#"
+const keys = await dioxus.recv();
+const list = document.getElementById("{id}");
+if (list !== null) {
+  const frames = [...list.children].filter((child) => child.classList.contains("row-frame"));
+  const tops = new Map(keys.map((key, index) => [key, frames[index]?.offsetTop ?? 0]));
+  const before = list.codaShownRows ?? { keys: [], tops: new Map() };
+  list.codaShownRows = { keys, tops };
+  const motion = window.codaMotion;
+  const kept = keys.filter((key) => before.tops.has(key));
+  if (motion !== undefined && kept.join("\n") !== before.keys.filter((key) => tops.has(key)).join("\n")) {
+    const selected = motion.currentItem(list);
+    keys.forEach((key, index) => {
+      const from = before.tops.get(key);
+      const to = tops.get(key);
+      const frame = frames[index];
+      if (from === undefined || frame === undefined || from === to) return;
+      const shift = [{ translate: `0 ${from - to}px` }, {}];
+      const moving = motion.animate(frame, shift, "step", "emphasized");
+      if (moving !== undefined && from > to) {
+        frame.classList.add("is-lifted");
+        moving.finished.catch(() => undefined).then(() => frame.classList.remove("is-lifted"));
+      }
+      if (selected !== null && frame.contains(selected)) motion.animate(list, shift, "step", "emphasized", "::after");
+    });
+  }
+}
+"#;
+
+static LISTS: AtomicUsize = AtomicUsize::new(0);
 
 /// Reports once a frame's collapse has finished, or at once with none to run: under reduced
 /// motion. A collapse cancelled by the row coming back reports nothing. `{id}` is the frame's id.

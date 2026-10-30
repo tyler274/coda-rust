@@ -60,7 +60,7 @@ pub fn forget_mode(path: &Path) {
 pub fn ModeShell(physician_url: String, duet_url: String, duet_bearer: String) -> Element {
     let mut mode = use_signal(initial_mode);
     rsx! {
-        style { "{ui::STYLESHEET}" }
+        ui::Stylesheet {}
         match mode() {
             None => rsx! {
                 main { class: "mode-chooser", aria_label: "Choose a mode",

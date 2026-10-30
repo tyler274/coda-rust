@@ -377,7 +377,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         .flatten()
         .map(|identity| identity.owner);
     rsx! {
-        style { "{ui::STYLESHEET}" }
+        ui::Stylesheet {}
         if let Some(current) = active() {
             AccountRoutes { key: "{current.fence.generation()}", base_url, bearer: current.bearer, retention: retention.clone(), fence: current.fence }
             if cfg!(target_arch = "wasm32") { p { role: "status", "Browser sign-in, drafts and operation retry identities are memory-only. Keep this tab open while any write is uncertain. After a reload, sign in and use ‘Recover or resolve a previous operation’ to read current server state before a new approval; do not assume the previous operation succeeded or recreate it as a retry." } }

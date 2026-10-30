@@ -17,6 +17,7 @@ mod documents;
 mod feedback;
 mod icons;
 mod live;
+mod motion;
 mod prose;
 mod sources;
 mod undo;
@@ -30,6 +31,7 @@ pub use documents::{
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
+pub use motion::Stylesheet;
 pub use prose::{Prose, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
 pub use undo::{UNDO_MS, UndoNotice};
@@ -39,8 +41,8 @@ pub use undo::{UNDO_MS, UndoNotice};
 /// reduced motion turns the animation off.
 pub(crate) const EXIT_MS: u64 = 140;
 
-/// The `STYLESHEET` constant.
-pub const STYLESHEET: &str = concat!(
+/// The crate's tokens and components, drawn by `Stylesheet`.
+const STYLESHEET: &str = concat!(
     include_str!("../assets/tokens.css"),
     include_str!("../assets/components.css"),
 );
@@ -1153,8 +1155,13 @@ pub fn ListRow(
 
 /// A group of rows on one white surface, a hairline between them. Its children are `li` rows.
 #[component]
-pub fn RowGroup(children: Element) -> Element {
-    rsx! { ul { class: "row-list row-group", {children} } }
+pub fn RowGroup(
+    #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
+    children: Element,
+) -> Element {
+    let mut class = String::from("row-list row-group");
+    let rest = host_attributes(&mut class, attributes);
+    rsx! { ul { class: "{class}", ..rest, {children} } }
 }
 
 /// A section's title, with the one action that belongs to the whole section beside it.
@@ -1209,7 +1216,7 @@ pub fn TabBar(
 ) -> Element {
     let with_icons = icons.len() == labels.len();
     rsx! {
-        nav { class: if with_icons { "tabs has-icons" } else { "tabs" }, aria_label: "{label}",
+        nav { class: if with_icons { "tabs has-icons selection-host" } else { "tabs selection-host" }, aria_label: "{label}",
             for (index, label) in labels.iter().enumerate() {
                 button {
                     key: "{label}",

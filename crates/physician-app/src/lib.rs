@@ -611,7 +611,7 @@ pub fn PhysicianRoot(
     });
     if !signed_in() {
         rsx! {
-            style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+            ui::Stylesheet { app: SHELL_STYLES }
             SignInScreen {
                 client,
                 link: pending_sign_in(),
@@ -1315,7 +1315,7 @@ fn PhysicianShell(
         }
     );
     rsx! {
-        style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+        ui::Stylesheet { app: SHELL_STYLES }
         if app_collapsed() {
             button {
                 class: "coda-restore",
@@ -1438,11 +1438,11 @@ fn PhysicianShell(
                             Icon { name: IconName::SidebarExpand }
                         }
                     }
-                    nav { class: "sidebar-primary", aria_label: "Primary",
+                    nav { class: "sidebar-primary selection-host", aria_label: "Primary",
                         NavigationRow {
                             class: "sidebar-nav-item",
                             aria_label: "Open Today",
-                            aria_current: if place() == Place::Today { "page" } else { "" },
+                            aria_current: (place() == Place::Today).then_some("page"),
                             onclick: move |_| {
                                 place.set(Place::Today);
                             },
@@ -1455,7 +1455,7 @@ fn PhysicianShell(
                         }
                         NavigationRow {
                             class: "sidebar-nav-item",
-                            aria_current: if place() == Place::Updates { "page" } else { "" },
+                            aria_current: (place() == Place::Updates).then_some("page"),
                             onclick: move |_| place.set(Place::Updates),
                             Icon { name: IconName::Message }
                             strong { class: "item-text", "Updates" }

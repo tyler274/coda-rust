@@ -53,7 +53,27 @@
 .control.empty-state-secondary { --control-quiet-color: var(--muted); font: var(--type-label-md); }
 .tabs { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-2) var(--page-gutter) calc(var(--space-2) + env(safe-area-inset-bottom)); background: var(--surface-lowest); border-top: var(--hairline) solid var(--outline-variant); }
 .tabs button { flex: 1; min-height: var(--target); border: 0; border-radius: var(--radius-md); background: transparent; color: var(--muted); font: var(--type-label-md); }
-.tabs button[aria-current="page"] { background: var(--primary-container); color: var(--on-primary-container); }
+.tabs { --selection-fill: var(--primary-container); }
+.tabs button[aria-current="page"] { color: var(--on-primary-container); }
+/* A selection host's current item carries one fill, anchored to it so it follows the item through any layout change at
+   once; only when the selection moves does the fill travel there (motion.rs). A host sets the fill, its shadow and
+   its shape. Its own position wins: the fill needs only a containing block. */
+.selection-host { --selection-fill: var(--surface-high); --selection-shadow: none; --selection-radius: var(--radius-md); }
+@supports (anchor-name: --selection) {
+  :where(.selection-host) { position: relative; }
+  .selection-host { isolation: isolate; anchor-scope: --selection; }
+  .selection-host [aria-current]:not([aria-current="false"]) { anchor-name: --selection; }
+  .selection-host:has([aria-current]:not([aria-current="false"]))::after { content: ""; position: absolute; z-index: -1;
+    position-anchor: --selection; top: anchor(top); left: anchor(left); width: anchor-size(width); height: anchor-size(height);
+    border-radius: var(--selection-radius); background: var(--selection-fill); box-shadow: var(--selection-shadow); pointer-events: none; }
+}
+@supports not (anchor-name: --selection) {
+  .selection-host [aria-current]:not([aria-current="false"]) { background: var(--selection-fill); box-shadow: var(--selection-shadow); }
+}
+/* A row rising past others as its list reorders is lifted over them while it moves: an opaque surface a level up, on the
+   selection fill if it is the current one. */
+.is-lifted { position: relative; z-index: 1; background: var(--surface-lowest); box-shadow: var(--elevation-3); }
+.is-lifted:has([aria-current]:not([aria-current="false"])) { background: var(--selection-fill, var(--surface-lowest)); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
@@ -281,6 +301,14 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
 @media (prefers-reduced-motion: reduce) {
   .dialog.is-closing { animation: dialog-exit 1ms both !important; }
 }
+/* Driven by keyboard, motion is immediate too: what transitions simply arrives, and what enters runs at no length rather
+   than not at all, so taking up a pointer again never replays it. An exit whose end closes its surface takes a
+   millisecond. A busy mark keeps turning and a focus ring still grows: they are feedback, not change. */
+:root[data-interaction="keyboard"] *, :root[data-interaction="keyboard"] *::before, :root[data-interaction="keyboard"] *::after, :root[data-interaction="keyboard"] ::backdrop { transition: none !important; }
+:root[data-interaction="keyboard"] :is(.count, .comparison-bar, .sparkline svg, .trend-chart svg, .chart-point, .chart-dot,
+  .citation-preview, .source-reading-pane) { animation-duration: 0s !important; animation-delay: 0s !important; }
+:root[data-interaction="keyboard"] :is(.dialog.is-closing, .source-reading-layout.is-source-closing .source-reading-pane),
+:root[data-interaction="keyboard"] .dialog.is-closing::backdrop { animation-duration: 1ms !important; }
 /* Sources, after the React app's source triggers: a citation is a small numbered pill in the prose and the Sources
    control a compact pill under the message, both in the primary container. */
 .source-trigger { display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
