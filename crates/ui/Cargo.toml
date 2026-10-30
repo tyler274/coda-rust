@@ -10,5 +10,8 @@ dioxus = { version = "0.7.10", default-features = false, features = ["macro", "h
 futures-timer = "3"
 pulldown-cmark = { version = "0.13", default-features = false }
 
+[dev-dependencies]
+dioxus-ssr = "0.7.10"
+
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 futures-timer = { version = "3", features = ["wasm-bindgen"] }

@@ -102,11 +102,11 @@ pub fn EmptyState(
     icon: IconName,
     title: String,
     #[props(default)] detail: String,
-    /// The way on's words; with `on_action`, it is offered.
+    /// The way on's words; with `on_action`, it is offered, as it is only with both.
     #[props(default)]
     action: String,
     on_action: Option<EventHandler>,
-    /// The quieter way out's words; with `on_secondary`, it is offered.
+    /// The quieter way out's words; with `on_secondary`, it is offered, as it is only with both.
     #[props(default)]
     secondary: String,
     on_secondary: Option<EventHandler>,
@@ -118,7 +118,7 @@ pub fn EmptyState(
             if !detail.is_empty() {
                 p { class: "empty-state-detail", "{detail}" }
             }
-            if let Some(handler) = on_action {
+            if let Some(handler) = offered(&action, on_action) {
                 Button {
                     variant: ButtonVariant::Quiet,
                     class: "empty-state-action",
@@ -126,7 +126,7 @@ pub fn EmptyState(
                     "{action}"
                 }
             }
-            if let Some(handler) = on_secondary {
+            if let Some(handler) = offered(&secondary, on_secondary) {
                 Button {
                     variant: ButtonVariant::Quiet,
                     class: "empty-state-secondary",
@@ -147,7 +147,7 @@ pub fn StatusLine(
     message: String,
     #[props(default)] alert: bool,
     #[props(default)] pending: bool,
-    /// The retry's words; with `on_retry`, the line offers it.
+    /// The retry's words; with `on_retry`, the line offers it, as it does only with both.
     #[props(default)]
     retry: String,
     on_retry: Option<EventHandler>,
@@ -165,11 +165,16 @@ pub fn StatusLine(
             } else {
                 p { "{message}" }
             }
-            if let Some(handler) = on_retry {
+            if let Some(handler) = offered(&retry, on_retry) {
                 TryAgain { label: retry, on_retry: handler }
             }
         }
     }
+}
+
+/// An action is offered only with both its words and its handler, so no control goes unnamed.
+fn offered(words: &str, handler: Option<EventHandler>) -> Option<EventHandler> {
+    handler.filter(|_| !words.trim().is_empty())
 }
 
 /// The one recovery action after a failure: one verb, one shape, one size, under the line that
@@ -994,7 +999,7 @@ pub fn TabBar(
 
 #[cfg(test)]
 mod tests {
-    use super::submitted_text;
+    use super::*;
 
     #[test]
     fn a_send_uses_the_words_the_person_sees() {
@@ -1002,5 +1007,21 @@ mod tests {
         assert_eq!(submitted_text(Some("Hello"), ""), "Hello");
         assert_eq!(submitted_text(Some("  "), draft), draft);
         assert_eq!(submitted_text(None, draft), draft);
+    }
+
+    #[test]
+    fn a_way_on_without_its_words_is_not_drawn() {
+        fn app() -> Element {
+            rsx! {
+                EmptyState { icon: IconName::File, title: "Gone", on_action: move |_| {}, on_secondary: move |_| {} }
+                StatusLine { message: "Couldn’t refresh.", on_retry: move |_| {} }
+                EmptyState { icon: IconName::File, title: "Gone", action: "Try again", on_action: move |_| {} }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert_eq!(html.matches("<button").count(), 1, "{html}");
+        assert!(html.contains("Try again"));
     }
 }
