@@ -5,6 +5,7 @@
 //! agent's own run; nothing invents progress.
 
 use std::cell::RefCell;
+use std::collections::HashMap;
 use std::rc::Rc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
@@ -103,10 +104,17 @@ pub fn WorkTrace(
 ) -> Element {
     let id = use_hook(|| format!("work-trace-{}", TRACES.fetch_add(1, Ordering::Relaxed)));
     // The person's own choice holds until the work starts or ends; then the steps follow the work.
+    // Folding away when the work ends brings focus inside the steps back to the line.
     let mut chosen = use_signal(|| None::<bool>);
+    let region = id.clone();
     use_effect(use_reactive!(|working| {
-        let _ = working;
         chosen.set(None);
+        if !working {
+            document::eval(&format!(
+                "const region = document.getElementById('{region}');
+                 if (region && region.contains(document.activeElement)) document.getElementById('{region}-line')?.focus();"
+            ));
+        }
     }));
     let open = chosen().unwrap_or(working);
     rsx! {
@@ -115,6 +123,7 @@ pub fn WorkTrace(
             "data-state": if open { "open" } else { "closed" },
             aria_busy: working.then_some("true"),
             button {
+                id: "{id}-line",
                 class: "work-trace-line",
                 r#type: "button",
                 aria_expanded: "{open}",
@@ -198,38 +207,17 @@ pub fn TaskList(
     #[props(default)] numbered: bool,
     #[props(default)] words: TaskWords,
 ) -> Element {
-    // Where each task stood when last shown, and whether it finished while shown: only a task that
-    // became done here draws its check, and it keeps that mark while it stays done.
-    let seen = use_hook(|| Rc::new(RefCell::new(Vec::<(TaskState, bool)>::new())));
-    let drawn: Vec<bool> = {
-        let mut seen = seen.borrow_mut();
-        let first = seen.is_empty();
-        let drawn: Vec<bool> = tasks
-            .iter()
-            .enumerate()
-            .map(|(index, task)| match (seen.get(index), task.state) {
-                (_, state) if state != TaskState::Done => false,
-                (Some(&(TaskState::Done, drawn)), _) => drawn,
-                (Some(_), _) => true,
-                (None, _) => !first,
-            })
-            .collect();
-        *seen = tasks
-            .iter()
-            .map(|task| task.state)
-            .zip(drawn.iter().copied())
-            .collect();
-        drawn
-    };
+    let seen = use_hook(|| Rc::new(RefCell::new(HashMap::new())));
+    let marks = finished(&mut seen.borrow_mut(), &tasks);
     rsx! {
         ol { class: "task-list",
-            for (index, task) in tasks.into_iter().enumerate() {
+            for (index, (task, (key, drawn))) in tasks.into_iter().zip(marks).enumerate() {
                 li {
-                    key: "{index}",
+                    key: "{key}",
                     class: match task.state {
                         TaskState::Pending => "task",
                         TaskState::Active => "task is-active",
-                        TaskState::Done if drawn[index] => "task is-done is-new",
+                        TaskState::Done if drawn => "task is-done is-new",
                         TaskState::Done => "task is-done",
                         TaskState::Skipped => "task is-skipped",
                     },
@@ -256,6 +244,35 @@ pub fn TaskList(
             }
         }
     }
+}
+
+/// Each task's key and whether its check draws in, given where each stood when last shown, which
+/// it then updates. A task is known by its words, and by which of the tasks with those words it
+/// is. Only a task that became done while shown draws its check, and it keeps that mark while it
+/// stays done; a task not shown before arrives as it stands.
+fn finished(seen: &mut HashMap<String, (TaskState, bool)>, tasks: &[Task]) -> Vec<(String, bool)> {
+    let mut counts = HashMap::new();
+    let marks: Vec<(String, bool)> = tasks
+        .iter()
+        .map(|task| {
+            let count = counts.entry(task.label.as_str()).or_insert(0);
+            *count += 1;
+            let key = format!("{}#{count}", task.label);
+            let drawn = match (seen.get(&key), task.state) {
+                (_, state) if state != TaskState::Done => false,
+                (Some(&(TaskState::Done, drawn)), _) => drawn,
+                (Some(_), _) => true,
+                (None, _) => false,
+            };
+            (key, drawn)
+        })
+        .collect();
+    *seen = marks
+        .iter()
+        .zip(tasks)
+        .map(|((key, drawn), task)| (key.clone(), (task.state, *drawn)))
+        .collect();
+    marks
 }
 
 /// The person's answer to what an agent asked.
@@ -370,5 +387,49 @@ pub fn ArtifactCard(
                 div { class: "artifact-preview", "inert": "true", {preview} }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn task(label: &str, state: TaskState) -> Task {
+        Task {
+            label: label.into(),
+            state,
+        }
+    }
+
+    fn drawn(seen: &mut HashMap<String, (TaskState, bool)>, tasks: &[Task]) -> Vec<bool> {
+        finished(seen, tasks)
+            .into_iter()
+            .map(|(_, drawn)| drawn)
+            .collect()
+    }
+
+    #[test]
+    fn only_a_task_that_finishes_while_shown_draws_its_check() {
+        let mut seen = HashMap::new();
+        let first = [
+            task("Find", TaskState::Done),
+            task("Gather", TaskState::Active),
+        ];
+        assert_eq!(drawn(&mut seen, &first), [false, false]);
+        // Gather finishes; a task already done arrives at the end; both stay as they are after.
+        let next = [
+            task("Find", TaskState::Done),
+            task("Gather", TaskState::Done),
+            task("Ask", TaskState::Done),
+        ];
+        assert_eq!(drawn(&mut seen, &next), [false, true, false]);
+        assert_eq!(drawn(&mut seen, &next), [false, true, false]);
+        // Moved into another's place, a done task is still the one it was.
+        let moved = [
+            task("Ask", TaskState::Done),
+            task("Find", TaskState::Done),
+            task("Gather", TaskState::Done),
+        ];
+        assert_eq!(drawn(&mut seen, &moved), [false, false, true]);
     }
 }
