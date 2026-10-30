@@ -567,15 +567,16 @@ if (sheet && body) {
   // Where a flick at this speed (px/s) would come to rest, at UIScrollView's normal deceleration.
   const projection = 0.998 / (1 - 0.998) / 1000;
   const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let drag = null, settling = 0, shown = 0;
+  let drag = null, settling = 0;
   const show = (y) => {
     const height = sheet.offsetHeight || 1;
-    shown = y;
     sheet.style.transform = `translateY(${y}px)`;
     sheet.style.setProperty('--sheet-shown', String(Math.min(1, Math.max(0, 1 - y / height))));
   };
-  const rest = () => { shown = 0; sheet.style.removeProperty('transform'); sheet.style.removeProperty('--sheet-shown'); delete sheet.dataset.dragging; };
+  const rest = () => { sheet.style.removeProperty('transform'); sheet.style.removeProperty('--sheet-shown'); delete sheet.dataset.dragging; };
   const band = (y, height) => y >= 0 ? y : -(1 - 1 / (-y * 0.55 / height + 1)) * height;
+  // Where the sheet is drawn now, whether its entry or a spring is moving it.
+  const drawn = () => { const t = getComputedStyle(sheet).transform; return t === 'none' ? 0 : new DOMMatrix(t).m42; };
   // Where the hand would be for a sheet already shown at `y`, so taking hold of it never moves it.
   const unband = (y, height) => y >= 0 ? y : -height * (1 / (1 + y / height) - 1) / 0.55;
   const settle = (from, to, speed, done) => {
@@ -605,9 +606,9 @@ if (sheet && body) {
       if (Math.abs(dy) < 6 || Math.abs(dy) < Math.abs(dx)) return;
       if (drag.fromContent && (body.scrollTop > 0 || dy < 0)) { drag = null; return; }
       drag.active = true;
-      // Taken mid-spring, it is held where it is; the movement that started the drag still counts.
+      // Taken mid-motion, it is held where it is; the movement that started the drag still counts.
       cancelAnimationFrame(settling);
-      drag.from = unband(shown, sheet.offsetHeight || 1);
+      drag.from = unband(drawn(), sheet.offsetHeight || 1);
       sheet.dataset.dragging = '';
       sheet.setPointerCapture(event.pointerId);
     }
