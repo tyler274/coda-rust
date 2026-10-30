@@ -905,7 +905,7 @@ del > .diff-sign, .diff-removed { color: var(--error); }
    the keys is one, holding focus; it carries the state layer, which stands for its focus ring. */
 .menu:focus { outline: 0; }
 .menu { width: max-content; min-width: 13rem; max-width: min(21rem, calc(100vw - 2 * var(--space-3))); padding: var(--space-1); border-radius: var(--radius-md); }
-.menu-section + .menu-section, .menu-palette + * { margin-top: var(--space-1); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
+.menu-section + .menu-section { margin-top: var(--space-1); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
 .menu-section-label { padding: var(--space-2) var(--space-3) var(--space-1); color: var(--muted); font: var(--type-label-sm); }
 .menu-item { position: relative; display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%; min-height: var(--control-height);
   padding: var(--space-1) var(--space-3); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--ink); font: var(--type-body-md);
@@ -917,18 +917,14 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .menu-item-check { display: contents; color: var(--primary); }
 .menu-item.is-danger, .menu-item.is-danger > .icon { color: var(--error); }
 .menu-item[aria-disabled="true"] { cursor: default; opacity: .46; }
-.menu-palette { display: flex; justify-content: space-between; gap: var(--space-1); padding: var(--space-1); }
-.menu-choice { position: relative; display: grid; place-items: center; width: var(--target); height: var(--target); padding: 0; border: 0; border-radius: var(--radius-pill);
-  background: transparent; color: var(--body); font-size: 20px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.menu-choice[aria-checked="true"] { background: var(--primary-container); color: var(--on-primary-container); }
-:is(.menu-item, .menu-choice)::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none;
+.menu-item::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none;
   transition: opacity var(--motion-press) linear; }
-@media (hover: hover) { :is(.menu-item, .menu-choice):hover:not([aria-disabled="true"])::before { opacity: var(--state-hover); } }
-:is(.menu-item, .menu-choice):focus-visible::before { opacity: var(--state-hover); }
-:is(.menu-item, .menu-choice):active:not([aria-disabled="true"])::before { opacity: var(--state-pressed); }
-:is(.menu-item, .menu-choice):focus-visible { outline: 0; animation: none; }
+@media (hover: hover) { .menu-item:hover:not([aria-disabled="true"])::before { opacity: var(--state-hover); } }
+.menu-item:focus-visible::before { opacity: var(--state-hover); }
+.menu-item:active:not([aria-disabled="true"])::before { opacity: var(--state-pressed); }
+.menu-item:focus-visible { outline: 0; animation: none; }
 @media (pointer: coarse) { .menu-item { min-height: var(--target); } }
-@media (forced-colors: active) { :is(.menu-item, .menu-choice):is(:hover, :focus-visible) { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
+@media (forced-colors: active) { .menu-item:is(:hover, :focus-visible) { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
 /* A menu opened at a point stands where its script puts it. */
 .popover.is-at-point { position-area: none; inset: auto; margin: 0; }
 /* A context menu's content shrinks a touch while held; lifted, its copy stands in its place over the blurred page, the

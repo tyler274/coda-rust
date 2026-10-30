@@ -23,16 +23,15 @@ use ui::{
     Comparison, ComparisonBars, Composer, ContextChip, ContextMenu, ConversationViewport,
     CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog, Dictation, Diff,
     DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
-    FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice,
-    MenuItem, MenuPalette, MenuSection, Message, MessageActions, MessageEditor, MessageState,
-    MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup,
-    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select,
-    SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SourceDetails, SourcePane,
-    SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState,
-    Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone,
-    Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
-    use_live_rows,
+    FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuItem,
+    MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
+    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
+    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup, Rating,
+    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart,
+    SeriesPoint, SeriesShape, SettingRow, Slider, SourceDetails, SourcePane, SourceReading,
+    SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar,
+    Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar,
+    Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -150,7 +149,7 @@ fn Gallery() -> Element {
                 Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
                     OverlayDemo {}
                 }
-                Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
+                Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
                 }
                 Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy, and a change to it line by line. Every state comes from the run.",
@@ -1580,7 +1579,6 @@ fn FeedbackDemo() -> Element {
 #[cfg(feature = "web")]
 #[component]
 fn MenuDemo() -> Element {
-    let mut rating = use_signal(|| None::<bool>);
     let mut model = use_signal(|| 0usize);
     let mut sources = use_signal(|| true);
     let mut chosen = use_signal(|| None::<&'static str>);
@@ -1602,14 +1600,6 @@ fn MenuDemo() -> Element {
                 }
             }
             Menu { id: "gallery-reply-menu", label: "Reply actions",
-                MenuPalette { label: "Rate this reply",
-                    MenuChoice { label: "Good reply", icon: IconName::ThumbUp, chosen: rating() == Some(true),
-                        onclick: move |_| rating.set(if rating() == Some(true) { None } else { Some(true) }) }
-                    MenuChoice { label: "Bad reply", icon: IconName::ThumbDown, chosen: rating() == Some(false),
-                        onclick: move |_| rating.set(if rating() == Some(false) { None } else { Some(false) }) }
-                    MenuChoice { label: "Save", icon: IconName::Heart, onclick: move |_| chosen.set(Some("Saved")) }
-                    MenuChoice { label: "Flag", icon: IconName::Flag, onclick: move |_| chosen.set(Some("Flagged")) }
-                }
                 MenuSection {
                     MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copied")), "Copy" }
                     MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Editing")), "Edit" }

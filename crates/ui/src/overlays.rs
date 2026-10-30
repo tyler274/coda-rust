@@ -24,8 +24,7 @@ pub fn Popover(id: String, label: String, children: Element) -> Element {
 /// this `id` and whose `aria_haspopup` is `menu`. It opens and closes as a `Popover` does, with
 /// focus on its first choice when opened from the keys. The arrow keys, Home and End move through the choices, a letter
 /// moves to the next that begins with it, and pointing at one moves there too. Choosing one, or
-/// Tab, closes it. Its choices are `MenuItem`s, grouped by `MenuSection`s, with a `MenuPalette`
-/// leading where a row of icons serves.
+/// Tab, closes it. Its choices are `MenuItem`s, grouped by `MenuSection`s.
 #[component]
 pub fn Menu(id: String, label: String, children: Element) -> Element {
     rsx! {
@@ -108,36 +107,6 @@ pub fn MenuItem(
             if checked == Some(true) {
                 span { class: "menu-item-check", Icon { name: IconName::Check } }
             }
-        }
-    }
-}
-
-/// A row of icon choices leading a menu, such as a reply's thumbs, named together by `label`.
-#[component]
-pub fn MenuPalette(label: String, children: Element) -> Element {
-    rsx! {
-        div { class: "menu-palette", role: "group", aria_label: label, {children} }
-    }
-}
-
-/// One icon in a menu's palette, named by `label`; `chosen` draws it in the accent.
-#[component]
-pub fn MenuChoice(
-    label: String,
-    icon: IconName,
-    #[props(default)] chosen: bool,
-    onclick: EventHandler<MouseEvent>,
-) -> Element {
-    rsx! {
-        button {
-            class: "menu-choice",
-            r#type: "button",
-            role: "menuitemcheckbox",
-            tabindex: "-1",
-            aria_label: label,
-            aria_checked: if chosen { "true" } else { "false" },
-            onclick: move |event| onclick.call(event),
-            Icon { name: icon }
         }
     }
 }
@@ -675,16 +644,11 @@ if (!window.codaMenuKeys) {
     if (event.key === "Tab") { menu.hidePopover(); return; }
     const all = choices(menu);
     const now = all.indexOf(document.activeElement);
-    const inPalette = !!document.activeElement?.closest(".menu-palette");
     let next = { ArrowDown: now + 1, ArrowUp: now < 0 ? all.length - 1 : now - 1, Home: 0, End: all.length - 1 }[event.key];
-    if (inPalette && (event.key === "ArrowRight" || event.key === "ArrowLeft")) next = now + (event.key === "ArrowRight" ? 1 : -1);
-    // Down from the palette goes to the first row beneath it.
-    const below = all.findIndex((choice) => !choice.closest(".menu-palette"));
-    if (inPalette && event.key === "ArrowDown" && below >= 0) next = below;
     if (next === undefined && event.key.length === 1 && event.key !== " ") {
       const letter = event.key.toLocaleLowerCase();
       const after = [...all.slice(now + 1), ...all.slice(0, now + 1)];
-      const found = after.find((choice) => (choice.getAttribute("aria-label") ?? choice.textContent).trim().toLocaleLowerCase().startsWith(letter));
+      const found = after.find((choice) => choice.textContent.trim().toLocaleLowerCase().startsWith(letter));
       if (found) next = all.indexOf(found);
     }
     if (next === undefined) return;
