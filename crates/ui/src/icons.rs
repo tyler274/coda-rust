@@ -60,9 +60,8 @@ pub enum IconName {
 }
 
 impl IconName {
-    /// Every icon the React app draws, for the parity test.
-    #[cfg(test)]
-    pub const ALL: [IconName; 37] = [
+    /// Every icon in the set: the React app's, then Duet's own.
+    pub const ALL: [IconName; 47] = [
         IconName::Alert,
         IconName::Archive,
         IconName::ArrowLeft,
@@ -100,11 +99,20 @@ impl IconName {
         IconName::User,
         IconName::Users,
         IconName::X,
+        IconName::ArrowUp,
+        IconName::Book,
+        IconName::Clock,
+        IconName::File,
+        IconName::Heart,
+        IconName::Moon,
+        IconName::Settings,
+        IconName::Share,
+        IconName::Steps,
+        IconName::Sun,
     ];
 
     /// The React app's name for this icon, or the mockups' for Duet's own.
-    #[cfg(test)]
-    pub fn react_name(self) -> &'static str {
+    pub fn name(self) -> &'static str {
         match self {
             IconName::Alert => "alert",
             IconName::Archive => "archive",
@@ -487,16 +495,15 @@ mod tests {
             Err(error) => panic!("{}: {error}", path.display()),
         };
         let names = react_names(&source);
-        assert_eq!(names.len(), IconName::ALL.len());
+        let react: Vec<IconName> = IconName::ALL
+            .into_iter()
+            .filter(|icon| names.contains(&icon.name()))
+            .collect();
+        assert_eq!(react.len(), names.len(), "an icon React draws is missing");
         let mut rendered_paths = 0;
         let mut rendered_rects = 0;
         let mut rendered_circles = 0;
-        for icon in IconName::ALL {
-            assert!(
-                names.contains(&icon.react_name()),
-                "missing {}",
-                icon.react_name()
-            );
+        for icon in react.iter().copied() {
             let drawn: Vec<&str> = marks(icon)
                 .iter()
                 .filter_map(|mark| match mark {
@@ -511,21 +518,19 @@ mod tests {
                     }
                 })
                 .collect();
-            assert_eq!(drawn.as_slice(), icon_paths(icon), "{}", icon.react_name());
+            assert_eq!(drawn.as_slice(), icon_paths(icon), "{}", icon.name());
             rendered_paths += drawn.len();
             for path in icon_paths(icon) {
                 assert!(
                     source.contains(&format!("d=\"{path}\"")),
                     "{} dropped {path}",
-                    icon.react_name()
+                    icon.name()
                 );
             }
         }
         for path in quoted(&source, "d=\"") {
             assert!(
-                IconName::ALL
-                    .iter()
-                    .any(|icon| icon_paths(*icon).contains(&path)),
+                react.iter().any(|icon| icon_paths(*icon).contains(&path)),
                 "path from React is not in the catalog: {path}"
             );
         }

@@ -79,6 +79,9 @@ fn Gallery() -> Element {
                 Section { title: "Colour", note: "Roles in pairs, a fill and what reads on it. Hosts read roles, never tones; dark mode swaps the tones beneath.",
                     ColourDemo {}
                 }
+                Section { title: "Icons", note: "One stroke set in the text's colour: the React app's icons, then Duet's own from the October 21 mockups.",
+                    IconDemo {}
+                }
                 Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. An observation opens as a whole; saved work's footer leads back to the conversation it came from.",
                     CardDemo {}
                 }
@@ -221,6 +224,18 @@ fn ColourDemo() -> Element {
                     strong { "{fill}" }
                     span { "on {on}" }
                 }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn IconDemo() -> Element {
+    rsx! {
+        ul { class: "gallery-icons",
+            for icon in IconName::ALL {
+                li { Icon { name: icon } span { "{icon.name()}" } }
             }
         }
     }
