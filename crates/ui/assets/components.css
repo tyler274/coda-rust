@@ -310,7 +310,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
    than not at all, so taking up a pointer again never replays it. An exit whose end closes its surface takes a
    millisecond. A busy mark keeps turning and a focus ring still grows: they are feedback, not change. */
 :root[data-interaction="keyboard"] *, :root[data-interaction="keyboard"] *::before, :root[data-interaction="keyboard"] *::after, :root[data-interaction="keyboard"] ::backdrop { transition: none !important; }
-:root[data-interaction="keyboard"] :is(.count, .comparison-bar, .sparkline svg, .chart-point, .series-bar, .series-line, .series-dot,
+:root[data-interaction="keyboard"] :is(.task.is-new .task-mark, .task.is-new .task-mark path, .count, .comparison-bar, .sparkline svg, .chart-point, .series-bar, .series-line, .series-dot,
   .citation-preview, .source-reading-pane) { animation-duration: 0s !important; animation-delay: 0s !important; }
 :root[data-interaction="keyboard"] :is(.dialog.is-closing, .source-reading-layout.is-source-closing .source-reading-pane),
 :root[data-interaction="keyboard"] .dialog.is-closing::backdrop { animation-duration: 1ms !important; }
@@ -532,9 +532,26 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
     focus-ring-settle calc(var(--motion-focus) * .75) var(--ease-emphasized) calc(var(--motion-focus) * .25); }
 .is-tinted .card-footer { padding-top: 0; border-top: 0; }
-.step-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--outline-variant); }
-.step-list li { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--outline-variant); color: var(--ink); font: var(--type-body-md); }
-.step-number { flex: none; min-width: 2ch; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+/* A task list: tasks one line apart on hairlines, each led by its mark. A number or an open ring waits; the active task's
+   ring turns in the action green; a finished one is a filled green check, drawn in when it finishes while shown, its
+   words gone to muted; one passed over is a dash, its words struck. */
+.task-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--outline-variant); }
+.task { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--outline-variant); color: var(--ink); font: var(--type-body-md); }
+.task-mark { display: inline-grid; flex: none; place-items: center; align-self: center; min-width: 2ch; height: 20px; color: var(--muted); }
+.task-number { font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.task-ring { box-sizing: border-box; width: 16px; height: 16px; border: 1.5px solid var(--outline); border-radius: var(--radius-pill); }
+.task-dash { width: 10px; border-top: 1.5px solid var(--muted); }
+.task.is-active .task-mark { color: var(--primary); }
+.task.is-active .task-mark > .icon { width: 18px; height: 18px; }
+.task.is-active .task-label { font-weight: var(--weight-strong); }
+.task.is-done .task-mark { width: 18px; min-width: 0; height: 18px; border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary); }
+.task.is-done .task-mark > .icon { width: 12px; height: 12px; stroke-width: 3; }
+.task.is-done.is-new .task-mark { animation: task-done var(--spring-arrive) both; }
+.task.is-done.is-new .task-mark path { stroke-dasharray: 24; animation: task-check var(--motion-arrive) var(--ease-out) var(--motion-press) both; }
+@keyframes task-done { from { scale: .4; opacity: 0; } }
+@keyframes task-check { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+.task.is-done .task-label { color: var(--muted); transition: color var(--motion-arrive) var(--ease-out); }
+.task.is-skipped .task-label { color: var(--muted); text-decoration: line-through; text-decoration-thickness: var(--hairline); }
 .quote { margin: 0; color: var(--ink); font: var(--type-body-lg); quotes: "\201C" "\201D"; }
 .quote::before { content: open-quote; }
 .quote::after { content: close-quote; }

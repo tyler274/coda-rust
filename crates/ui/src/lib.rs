@@ -23,8 +23,8 @@ mod overlays;
 mod prose;
 mod sources;
 mod toast;
-pub use agent::{StepState, WorkStep, WorkTrace};
-pub use cards::{Card, Quote, StepList};
+pub use agent::{StepState, Task, TaskList, TaskState, TaskWords, WorkStep, WorkTrace};
+pub use cards::{Card, Quote};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
     SeriesChart, SeriesPoint, SeriesShape, Sparkline, Value,

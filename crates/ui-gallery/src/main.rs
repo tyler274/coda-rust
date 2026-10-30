@@ -26,9 +26,9 @@ use ui::{
     PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
     RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
     SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, StepState, Suggestion, TabBar,
-    TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, WorkStep, WorkTrace, WorkingMark,
-    WorkingPresence, use_live_rows,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList,
+    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, WorkStep,
+    WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -143,7 +143,7 @@ fn Gallery() -> Element {
                 Section { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A palette of icons can lead the choices. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
                     MenuDemo {}
                 }
-                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Every state comes from the run.",
+                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Every state comes from the run.",
                     AgentWorkDemo {}
                 }
                 Section { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
@@ -312,8 +312,9 @@ fn CardDemo() -> Element {
                 footer: "Saved in chat · October 21",
                 footer_icon: IconName::Message,
                 on_footer: move |_| {},
-                StepList {
-                    steps: vec![
+                TaskList {
+                    numbered: true,
+                    tasks: vec![
                         "Put my phone away at 10:30 pm.".into(),
                         "Keep my usual wake-up time.".into(),
                         "Try this through Sunday.".into(),
@@ -1292,7 +1293,7 @@ fn ThemeDemo() -> Element {
             Message { author: Author::Person, by: "You", p { "Can we keep it simple this week?" } }
             Message { author: Author::Assistant, by: "Duet", p { "Yes: phone away at 10:30, and the same wake-up time." } }
             Card { overline: "Your saved plan", title: "Evening wind-down", footer: "Saved in chat · October 21",
-                StepList { steps: vec!["Put my phone away at 10:30 pm.".into(), "Keep my usual wake-up time.".into()] }
+                TaskList { numbered: true, tasks: vec!["Put my phone away at 10:30 pm.".into(), "Keep my usual wake-up time.".into()] }
             }
             NavigationControl { "Open original" }
             Button { variant: ButtonVariant::Primary, "Save plan" }
@@ -1806,6 +1807,15 @@ const RUN: [(IconName, &str, &str, &str); 4] = [
     ),
 ];
 
+/// The run's plan: a task finishes with each step after the first, and the last is passed over.
+#[cfg(feature = "web")]
+const PLAN: [&str; 4] = [
+    "Find her baseline potassium",
+    "Gather results since the dose change",
+    "Check the dose in the cardiology note",
+    "Ask the outside records",
+];
+
 #[cfg(feature = "web")]
 #[component]
 fn AgentWorkDemo() -> Element {
@@ -1845,6 +1855,18 @@ fn AgentWorkDemo() -> Element {
                         }),
                     }
                 }
+            }
+            TaskList {
+                words: TaskWords { active: "In progress".into(), done: "Done".into(), skipped: "Skipped".into() },
+                tasks: PLAN.iter().enumerate().map(|(index, label)| Task {
+                    label: (*label).into(),
+                    state: match index.cmp(&reached()) {
+                        _ if !working && index == PLAN.len() - 1 => TaskState::Skipped,
+                        std::cmp::Ordering::Less => TaskState::Done,
+                        std::cmp::Ordering::Equal => TaskState::Active,
+                        std::cmp::Ordering::Greater => TaskState::Pending,
+                    },
+                }).collect::<Vec<_>>(),
             }
             Button { compact: true, disabled: working, onclick: replay,
                 Icon { name: IconName::Refresh }

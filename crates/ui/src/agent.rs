@@ -1,12 +1,15 @@
 //! Agent work: what an agent is doing and has done, shown as it happens. Its steps (thinking,
-//! reading, searching, running a tool) stand under one line that says what it did. Every state
-//! here is the host's, from the agent's own run; nothing invents progress.
+//! reading, searching, running a tool) stand under one line that says what it did, and the plan
+//! it works through checks off as it goes. Every state here is the host's, from the agent's own
+//! run; nothing invents progress.
 
+use std::cell::RefCell;
+use std::rc::Rc;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName, WorkingMark};
+use crate::{Icon, IconName, Spinner, WorkingMark};
 
 /// Where one step of an agent's work stands.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -139,3 +142,117 @@ pub fn WorkTrace(
 }
 
 static TRACES: AtomicUsize = AtomicUsize::new(0);
+
+/// Where one task of a plan stands.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum TaskState {
+    /// Not begun.
+    #[default]
+    Pending,
+    /// The one under way.
+    Active,
+    /// Finished.
+    Done,
+    /// Passed over.
+    Skipped,
+}
+
+/// One task in a `TaskList`: its words and where it stands.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct Task {
+    /// What the task is.
+    pub label: String,
+    /// Where it stands.
+    pub state: TaskState,
+}
+
+impl From<&str> for Task {
+    fn from(label: &str) -> Self {
+        Task {
+            label: label.to_owned(),
+            state: TaskState::Pending,
+        }
+    }
+}
+
+/// What assistive technology hears before a task that is under way, done or passed over; a task
+/// waiting is heard by its words alone.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct TaskWords {
+    /// Before the task under way.
+    pub active: String,
+    /// Before a finished task.
+    pub done: String,
+    /// Before a task passed over.
+    pub skipped: String,
+}
+
+/// Tasks in order, one line apart: a saved plan's steps, `numbered`, or a plan an agent works
+/// through. A task waiting shows its number, or an open ring; the one under way turns, and is the
+/// list's current step; a finished one is checked, its words gone quieter; one passed over is
+/// struck through. A check draws in when a task finishes while shown, and is simply there before.
+#[component]
+pub fn TaskList(
+    tasks: Vec<Task>,
+    #[props(default)] numbered: bool,
+    #[props(default)] words: TaskWords,
+) -> Element {
+    // Where each task stood when last shown, and whether it finished while shown: only a task that
+    // became done here draws its check, and it keeps that mark while it stays done.
+    let seen = use_hook(|| Rc::new(RefCell::new(Vec::<(TaskState, bool)>::new())));
+    let drawn: Vec<bool> = {
+        let mut seen = seen.borrow_mut();
+        let first = seen.is_empty();
+        let drawn: Vec<bool> = tasks
+            .iter()
+            .enumerate()
+            .map(|(index, task)| match (seen.get(index), task.state) {
+                (_, state) if state != TaskState::Done => false,
+                (Some(&(TaskState::Done, drawn)), _) => drawn,
+                (Some(_), _) => true,
+                (None, _) => !first,
+            })
+            .collect();
+        *seen = tasks
+            .iter()
+            .map(|task| task.state)
+            .zip(drawn.iter().copied())
+            .collect();
+        drawn
+    };
+    rsx! {
+        ol { class: "task-list",
+            for (index, task) in tasks.into_iter().enumerate() {
+                li {
+                    key: "{index}",
+                    class: match task.state {
+                        TaskState::Pending => "task",
+                        TaskState::Active => "task is-active",
+                        TaskState::Done if drawn[index] => "task is-done is-new",
+                        TaskState::Done => "task is-done",
+                        TaskState::Skipped => "task is-skipped",
+                    },
+                    aria_current: (task.state == TaskState::Active).then_some("step"),
+                    span { class: "task-mark", aria_hidden: "true",
+                        match task.state {
+                            TaskState::Pending if numbered => rsx! { span { class: "task-number", {format!("{:02}", index + 1)} } },
+                            TaskState::Pending => rsx! { span { class: "task-ring" } },
+                            TaskState::Active => rsx! { Spinner {} },
+                            TaskState::Done => rsx! { Icon { name: IconName::Check } },
+                            TaskState::Skipped => rsx! { span { class: "task-dash" } },
+                        }
+                    }
+                    span { class: "task-label",
+                        match task.state {
+                            TaskState::Active if !words.active.is_empty() => rsx! { span { class: "sr-only", "{words.active}: " } },
+                            TaskState::Done if !words.done.is_empty() => rsx! { span { class: "sr-only", "{words.done}: " } },
+                            TaskState::Skipped if !words.skipped.is_empty() => rsx! { span { class: "sr-only", "{words.skipped}: " } },
+                            _ => rsx! {},
+                        }
+                        "{task.label}"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -80,21 +80,6 @@ pub fn Card(
     }
 }
 
-/// The steps of a piece of saved work, numbered in order, one line apart.
-#[component]
-pub fn StepList(steps: Vec<String>) -> Element {
-    rsx! {
-        ol { class: "step-list",
-            for (index, step) in steps.into_iter().enumerate() {
-                li { key: "{index}",
-                    span { class: "step-number", aria_hidden: "true", {format!("{:02}", index + 1)} }
-                    span { "{step}" }
-                }
-            }
-        }
-    }
-}
-
 /// Words quoted from a record, in the record's own words.
 #[component]
 pub fn Quote(text: String) -> Element {
