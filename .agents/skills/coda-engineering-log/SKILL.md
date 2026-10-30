@@ -22,6 +22,14 @@ when a session's working directory belongs elsewhere. Read
 [session sources](references/session-sources.md) when discovering or parsing
 history; no particular editor, connector, vault or personal directory is required.
 
+When Slack is available, scan
+[#engineering-notifications](https://coda-health.slack.com/archives/C0CDPTHERB6)
+for the requested day and repositories. Reconcile relevant PR, deployment and
+Linear activity with the developer's sessions to catch omitted work, then follow
+the linked GitHub and Linear records to verify current status. Deduplicate
+notifications and attribute colleagues' work separately from the author's
+contributions. Sessions remain the source for intent and unmerged work.
+
 Cover substantive activity during the day, including sessions started earlier
 and work completed or archived that day. Read conversational text first and
 inspect tool evidence for consequential claims. Keep a compact source/workstream
