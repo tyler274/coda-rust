@@ -26,12 +26,12 @@ use ui::{
     IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuChoice, MenuItem, MenuPalette,
     MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
     NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
-    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup, RangeChoice,
-    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SeriesChart, SeriesPoint,
-    SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton,
-    Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList, TaskState,
-    TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep,
-    WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup, Rating,
+    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, SeriesChart,
+    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
+    SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar, Task, TaskList,
+    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value,
+    VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -198,7 +198,7 @@ fn Gallery() -> Element {
                         StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
                     }
                 }
-                Section { title: "Inputs", note: "A choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
+                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A hint stands under a field, and what is wrong takes its place with the field outlined in red.",
                     InputsDemo {}
                 }
                 Section { title: "Fields and tabs", note: "The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
@@ -1067,9 +1067,9 @@ fn ReadoutDemo() -> Element {
     };
     rsx! {
         div { class: "gallery-readout",
-            RangeChoice {
+            Segmented {
                 label: "Time range",
-                options: vec![("W".into(), "Week".into()), ("M".into(), "Month".into())],
+                options: vec![("W", "Week").into(), ("M", "Month").into()],
                 selected: span(),
                 on_select: move |next| {
                     span.set(next);
@@ -2486,9 +2486,23 @@ fn InputsDemo() -> Element {
     let mut on = use_signal(|| true);
     let mut email = use_signal(|| "dana@northside".to_owned());
     let mut phone = use_signal(String::new);
+    let mut span = use_signal(|| 1usize);
+    let mut look = use_signal(|| 0usize);
     let chosen = sharing().iter().filter(|on| **on).count();
     rsx! {
         div { class: "gallery-inputs",
+            Segmented {
+                label: "Span",
+                options: vec!["Day".into(), "Week".into(), "Month".into(), "Year".into()],
+                selected: span(),
+                on_select: move |index| span.set(index),
+            }
+            Segmented {
+                label: "Appearance",
+                options: vec![(IconName::Settings, "Auto").into(), (IconName::Sun, "Light").into(), (IconName::Moon, "Dark").into()],
+                selected: look(),
+                on_select: move |index| look.set(index),
+            }
             div { class: "row-list",
                 Checkbox {
                     label: "Everything since September",

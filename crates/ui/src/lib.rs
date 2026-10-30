@@ -34,8 +34,8 @@ pub use agent::{
 pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
 pub use cards::{Card, Quote};
 pub use charts::{
-    ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
-    SeriesChart, SeriesPoint, SeriesShape, Sparkline, Value,
+    ChartHeader, Comparison, ComparisonBars, MeasurementTile, RunningChart, SeriesChart,
+    SeriesPoint, SeriesShape, Sparkline, Value,
 };
 pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords};
 pub use conversation::{
@@ -47,7 +47,7 @@ pub use documents::{
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
-pub use inputs::{Checkbox, Choice, RadioGroup, TextField};
+pub use inputs::{Checkbox, Choice, RadioGroup, Segment, Segmented, TextField};
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
 pub use overlays::{

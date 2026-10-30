@@ -182,3 +182,80 @@ pub fn RadioGroup(
         }
     }
 }
+
+/// One of the choices in a `Segmented`: its short word, what it is spoken as when that word alone
+/// would not say it, and an optional icon before it.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct Segment {
+    /// Its short word.
+    pub label: String,
+    /// The word it is spoken as, when the short one wouldn't do.
+    pub spoken: Option<String>,
+    /// Before its word.
+    pub icon: Option<IconName>,
+}
+
+impl From<&str> for Segment {
+    fn from(label: &str) -> Self {
+        Segment {
+            label: label.to_owned(),
+            ..Segment::default()
+        }
+    }
+}
+
+impl From<(&str, &str)> for Segment {
+    fn from((label, spoken): (&str, &str)) -> Self {
+        Segment {
+            label: label.to_owned(),
+            spoken: Some(spoken.to_owned()),
+            icon: None,
+        }
+    }
+}
+
+impl From<(IconName, &str)> for Segment {
+    fn from((icon, label): (IconName, &str)) -> Self {
+        Segment {
+            label: label.to_owned(),
+            spoken: None,
+            icon: Some(icon),
+        }
+    }
+}
+
+/// One of a few short choices side by side, always one chosen, as a row of equal pills: the chosen
+/// one in the accent's words on its soft fill, which slides to the next one chosen. `label` names
+/// the choice; the arrow keys move through it.
+#[component]
+pub fn Segmented(
+    label: String,
+    options: Vec<Segment>,
+    selected: usize,
+    on_select: EventHandler<usize>,
+) -> Element {
+    let id = use_hook(field_id);
+    rsx! {
+        div { class: "segmented selection-host", role: "radiogroup", aria_label: "{label}",
+            for (index, option) in options.into_iter().enumerate() {
+                label {
+                    key: "{index}",
+                    class: "segmented-option",
+                    aria_current: (index == selected).then_some("true"),
+                    input {
+                        class: "sr-only",
+                        r#type: "radio",
+                        name: "{id}",
+                        aria_label: option.spoken,
+                        checked: index == selected,
+                        onchange: move |_| on_select.call(index),
+                    }
+                    if let Some(name) = option.icon {
+                        Icon { name }
+                    }
+                    "{option.label}"
+                }
+            }
+        }
+    }
+}

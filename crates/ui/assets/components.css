@@ -529,17 +529,20 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .chart-header-label.is-pinned { color: var(--primary); }
 .chart-header-caption { color: var(--muted); font: var(--type-body-sm); }
 .chart-paging { display: flex; flex: none; }
-/* The span a series shows: equal pills on the resting fill, the chosen one's words in the accent on its soft fill.
-   Each pill is reached across the full target height. */
-.range-choice { --selection-fill: var(--primary-container); --selection-radius: var(--radius-pill); isolation: isolate;
+/* A few short choices: equal neutral pills, the chosen one's words in the accent on its soft fill. Each pill is reached
+   across the full target height, and carries the ring of the choice inside it. An arrow key moves focus between native
+   radios without WebKit counting it as keyboard focus, so the ring also follows the keyboard mode. */
+.segmented { --selection-fill: var(--primary-container); --selection-radius: var(--radius-pill); isolation: isolate;
   display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: var(--space-1); padding-block: calc((var(--target) - var(--control-height)) / 2); }
-.range-choice-option { position: relative; min-height: var(--control-height); padding: 0 var(--space-3); border: 0; border-radius: var(--radius-pill);
-  background: transparent; color: var(--body); font: var(--type-label-md); cursor: pointer;
-  transition: color var(--motion-control) var(--ease-out); }
-.range-choice-option::before { content: ""; position: absolute; inset: calc((var(--control-height) - var(--target)) / 2) 0; }
+.segmented-option { position: relative; display: flex; align-items: center; justify-content: center; gap: var(--space-1); box-sizing: border-box; min-width: 0; min-height: var(--control-height);
+  padding: 0 var(--space-3); border-radius: var(--radius-pill); color: var(--body); font: var(--type-label-md); cursor: pointer; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out); }
+.segmented-option > .icon { flex: none; width: 16px; height: 16px; }
+.segmented-option::before { content: ""; position: absolute; inset: calc((var(--control-height) - var(--target)) / 2) 0; }
 /* The resting fill lies beneath the chosen one's, so the chosen fill travels over the pills it passes. */
-.range-choice-option::after { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--control-resting); }
-.range-choice-option[aria-current]:not([aria-current="false"]) { color: var(--primary); }
+.segmented-option::after { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--surface-low); }
+.segmented-option[aria-current]:not([aria-current="false"]) { color: var(--primary); }
+:is(.segmented-option:has(input:focus-visible), :root[data-interaction="keyboard"] .segmented-option:has(input:focus)) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 @keyframes series-grow { from { transform: scaleY(0); } }
 .measurement-tile { box-sizing: border-box; display: grid; gap: var(--space-1); align-content: start; min-width: 0; width: 100%; padding: var(--space-4) var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--data-container); color: var(--ink); text-align: left; }
 .measurement-tile-label { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-data-container); font: var(--type-label-md); }
@@ -652,7 +655,7 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .selection-row input[type="checkbox"]:indeterminate::after { width: 10px; height: 2px; border-radius: var(--radius-pill); clip-path: inset(0); mask: none; }
 .selection-row input[type="radio"]::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--on-primary); scale: 0; transition: scale var(--spring-send); }
 .selection-row input[type="radio"]:checked::after { scale: 1; }
-.selection-row input:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+:is(.selection-row input:focus-visible, :root[data-interaction="keyboard"] .selection-row input:focus) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 :is(.selection-row, .setting-row):has(input:disabled) { opacity: .46; cursor: default; }
 .switch:disabled { cursor: default; }
 .radio-group { display: grid; min-width: 0; margin: 0; padding: 0; border: 0; }
