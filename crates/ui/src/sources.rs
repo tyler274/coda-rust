@@ -293,6 +293,9 @@ fn PreviewSurface(
     children: Element,
 ) -> Element {
     let mut placement = use_signal(|| None::<Placement>);
+    // The preview's body is its passages' surface once the preview is placed and its height held.
+    let PassageSurface(mut surface_body) =
+        use_context_provider(|| PassageSurface(Signal::new(None)));
     let watch = use_hook(|| {
         document::eval(
             &WATCH_PAGE
@@ -342,7 +345,7 @@ fn PreviewSurface(
                                 let side = (*placement.peek()).map(|at| at.below);
                                 placement.set(Some(place(at, own.width(), (width, height), side)));
                                 if side.is_none() {
-                                    open_at_passage(&format!("{id}-body"));
+                                    surface_body.set(Some(format!("{id}-body")));
                                 }
                             }
                             Some(Heard::Escape(inside)) => {
@@ -415,14 +418,6 @@ pub fn SourceReading(
     let body = use_hook(|| format!("source-pane-{}", PREVIEWS.fetch_add(1, Ordering::Relaxed)));
     let returns = use_context_provider(|| SourceReturn(Signal::new(None)));
     let open = source.is_some();
-    // Each source the pane shows opens at its first passage.
-    let shown = source.as_ref().map(|pane| pane.eyebrow.clone());
-    let pane_body = body.clone();
-    use_effect(use_reactive!(|shown| {
-        if shown.is_some() {
-            open_at_passage(&pane_body);
-        }
-    }));
     let mut dismiss = move || {
         if closing() {
             return;
@@ -488,13 +483,21 @@ pub fn SourceReading(
                                 Icon { name: IconName::X }
                             }
                         }
-                        div { id: "{body}", class: "source-pane-body", {pane.content} }
+                        PaneBody { id: body.clone(), {pane.content} }
                     }
                 }
             }
             }
         }
     }
+}
+
+/// The pane's scrolling body, the surface its source's passages are read in.
+#[component]
+fn PaneBody(id: String, children: Element) -> Element {
+    let body = id.clone();
+    use_context_provider(move || PassageSurface(Signal::new(Some(body))));
+    rsx! { div { id: "{id}", class: "source-pane-body", {children} } }
 }
 
 /// The source a `SourceReading` shows: which source, its title, and what it says.
@@ -522,17 +525,27 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
 }));
 "#;
 
-/// Opens the scrolling body with id `body` at its first marked passage.
-fn open_at_passage(body: &str) {
-    document::eval(&SCROLL_TO_PASSAGE.replace("{body}", body));
-}
+/// The reading surface a source's words are read in: the id of its own scrolling body, once the
+/// surface is laid out (a preview once it is placed, a pane at once).
+#[derive(Clone, Copy)]
+struct PassageSurface(Signal<Option<String>>);
 
 /// A source's own words with the passages cited from it marked, after the React app's source
 /// document: its line breaks kept, long words wrapping, and passages that overlap read as one
-/// mark. The preview and the pane it is read in open at the first. `passages` are byte ranges of
+/// mark. The preview or pane it is read in opens at the first once laid out, and again whenever
+/// the words or their passages change, never on other renders. `passages` are byte ranges of
 /// `text`; one that isn't a range of it is left unmarked.
 #[component]
 pub fn SourceText(text: String, #[props(default)] passages: Vec<(usize, usize)>) -> Element {
+    let surface = try_use_context::<PassageSurface>();
+    use_effect(use_reactive!(|text, passages| {
+        let _ = (&text, &passages);
+        if let Some(PassageSurface(body)) = surface
+            && let Some(body) = body()
+        {
+            document::eval(&SCROLL_TO_PASSAGE.replace("{body}", &body));
+        }
+    }));
     rsx! {
         span { class: "source-text",
             for (index, (words, cited)) in marked(&text, &passages).into_iter().enumerate() {

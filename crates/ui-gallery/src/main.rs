@@ -772,6 +772,17 @@ const CITED: [Cited; 2] = [
 #[cfg(feature = "web")]
 #[component]
 fn CitedDetails(cited: Cited) -> Element {
+    // A source's words arrive a moment after it opens, as a read does; its placeholder holds their place.
+    let mut read = use_signal(|| false);
+    use_hook(|| {
+        spawn(async move {
+            futures_timer::Delay::new(Duration::from_millis(600)).await;
+            read.set(true);
+        })
+    });
+    if !read() {
+        return rsx! { Placeholder { shape: PlaceholderShape::Reading } };
+    }
     rsx! {
         SourceDetails {
             metadata: cited.metadata.iter().map(|value| value.to_string()).collect::<Vec<_>>(),
