@@ -247,30 +247,34 @@ pub fn TaskList(
 }
 
 /// Each task's key and whether its check draws in, given where each stood when last shown, which
-/// it then updates. A task is known by its words, and by which of the tasks with those words it
-/// is. Only a task that became done while shown draws its check, and it keeps that mark while it
-/// stays done; a task not shown before arrives as it stands.
+/// it then updates. A task is known by its words; tasks that share their words can't be told
+/// apart, so theirs never draw. Only a task that became done while shown draws its check, and it
+/// keeps that mark while it stays done; a task not shown before arrives as it stands.
 fn finished(seen: &mut HashMap<String, (TaskState, bool)>, tasks: &[Task]) -> Vec<(String, bool)> {
     let mut counts = HashMap::new();
+    for task in tasks {
+        *counts.entry(task.label.as_str()).or_insert(0) += 1;
+    }
+    let mut placed = HashMap::new();
     let marks: Vec<(String, bool)> = tasks
         .iter()
         .map(|task| {
-            let count = counts.entry(task.label.as_str()).or_insert(0);
-            *count += 1;
-            let key = format!("{}#{count}", task.label);
-            let drawn = match (seen.get(&key), task.state) {
-                (_, state) if state != TaskState::Done => false,
+            let place = placed.entry(task.label.as_str()).or_insert(0);
+            *place += 1;
+            let drawn = match (seen.get(&task.label), task.state) {
+                (_, state) if state != TaskState::Done || counts[task.label.as_str()] > 1 => false,
                 (Some(&(TaskState::Done, drawn)), _) => drawn,
                 (Some(_), _) => true,
                 (None, _) => false,
             };
-            (key, drawn)
+            (format!("{}#{place}", task.label), drawn)
         })
         .collect();
     *seen = marks
         .iter()
         .zip(tasks)
-        .map(|((key, drawn), task)| (key.clone(), (task.state, *drawn)))
+        .filter(|(_, task)| counts[task.label.as_str()] == 1)
+        .map(|((_, drawn), task)| (task.label.clone(), (task.state, *drawn)))
         .collect();
     marks
 }
@@ -431,5 +435,32 @@ mod tests {
             task("Gather", TaskState::Done),
         ];
         assert_eq!(drawn(&mut seen, &moved), [false, false, true]);
+    }
+
+    #[test]
+    fn tasks_that_share_their_words_never_draw() {
+        let mut seen = HashMap::new();
+        let both = [
+            task("Check", TaskState::Active),
+            task("Check", TaskState::Done),
+        ];
+        assert_eq!(drawn(&mut seen, &both), [false, false]);
+        // The active one leaves: the one left was done all along.
+        assert_eq!(drawn(&mut seen, &[task("Check", TaskState::Done)]), [false]);
+        let again = [
+            task("Check", TaskState::Done),
+            task("Check", TaskState::Active),
+        ];
+        assert_eq!(drawn(&mut seen, &again), [false, false]);
+        assert_eq!(
+            drawn(
+                &mut seen,
+                &[
+                    task("Check", TaskState::Done),
+                    task("Check", TaskState::Done)
+                ]
+            ),
+            [false, false]
+        );
     }
 }
