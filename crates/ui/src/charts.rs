@@ -664,37 +664,6 @@ pub fn ChartHeader(
     }
 }
 
-/// The span a series shows, as a row of equal pills: the chosen
-/// one in the accent's words on its soft fill, which slides to the next one chosen. Each option is
-/// its short word and the word it is spoken as; `label` names the choice.
-#[component]
-pub fn RangeChoice(
-    label: String,
-    options: Vec<(String, String)>,
-    selected: usize,
-    on_select: EventHandler<usize>,
-) -> Element {
-    rsx! {
-        div { class: "range-choice selection-host", role: "group", aria_label: "{label}",
-            for (index, (short, spoken)) in options.iter().enumerate() {
-                button {
-                    key: "{short}",
-                    class: "range-choice-option",
-                    r#type: "button",
-                    aria_label: "{spoken}",
-                    aria_current: (index == selected).then_some("true"),
-                    onclick: move |_| {
-                        if index != selected {
-                            on_select.call(index);
-                        }
-                    },
-                    "{short}"
-                }
-            }
-        }
-    }
-}
-
 /// A measurement in a tile: what it is, its value, where and when it was read, and its recent
 /// shape. A tile that opens the measurement is one button.
 #[component]

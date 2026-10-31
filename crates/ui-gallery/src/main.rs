@@ -1,5 +1,15 @@
-//! Every shared `ui` component, rendered by the crate itself with its own stylesheet, so its
-//! look and motion can be seen and replayed apart from either app. The conversation is scripted.
+//! Every `ui` family, rendered with the library's own stylesheet so each component's look, states
+//! and motion can be seen and replayed on its own. Its examples are fictional and scripted.
+//!
+//! ```sh
+//! cargo build -p ui-gallery --target wasm32-unknown-unknown --features web
+//! wasm-bindgen --target web --out-dir target/ui-gallery-web target/wasm32-unknown-unknown/debug/ui-gallery.wasm
+//! cp crates/ui-gallery/web/index.html target/ui-gallery-web/
+//! ```
+//!
+//! Then serve `target/ui-gallery-web` with any static file server. **Slow motion** plays every
+//! animation at quarter speed, and **Replay entries** remounts the sections so their entry motion
+//! runs again.
 
 #[cfg(feature = "web")]
 use dioxus::prelude::*;
@@ -7,16 +17,22 @@ use dioxus::prelude::*;
 use std::time::Duration;
 #[cfg(feature = "web")]
 use ui::{
-    ActionRow, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, ChartHeader, CitationChip,
-    CitationPreview, Comparison, ComparisonBars, Composer, ContextChip, ConversationViewport,
-    Count, DateSeparator, Dialog, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
-    FooterActions, Icon, IconName, KeyHint, LaterContext, ListRow, LiveDot, MeasurementTile,
-    Message, NavigationControl, NavigationRow, Notice, Overline, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, ProposedChange, Prose, ProsePart, Quote, RangeChoice, Rating,
-    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, SelectionRow, SeriesChart,
-    SeriesPoint, SeriesShape, SettingRow, SourceDetails, SourcePane, SourceReading, SourceText,
-    SourcesButton, Sparkline, StatePill, StatusLine, StepList, Suggestion, TabBar, Tag, TextField,
-    ToggleChip, Tone, TopBar, UndoNotice, Value, WorkingMark, WorkingPresence, use_live_rows,
+    ActionRow, Answer, ApprovalCard, ArtifactCard, AttachButton, Attachment, AttachmentState,
+    Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
+    Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Column, Combobox, Command,
+    CommandPalette, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
+    ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
+    Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState,
+    FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile,
+    Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor, MessageState,
+    MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
+    Placeholder, PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose, ProsePart, Quote,
+    RadioGroup, Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented,
+    Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceDetails,
+    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState, TaskWords,
+    TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace,
+    WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -57,7 +73,7 @@ fn Gallery() -> Element {
                 div {
                     h1 { class: "page-title", "crates/ui" }
                     p { class: "gallery-lede",
-                        "Each piece below is the shared component and stylesheet both apps use. Entry motion replays when a section remounts."
+                        "Every family in the library, with its states. Entry motion replays when a section remounts."
                     }
                 }
                 ActionRow {
@@ -83,91 +99,131 @@ fn Gallery() -> Element {
                 Section { title: "Icons", note: "One stroke set in the text's colour, each icon named for what it shows.",
                     IconDemo {}
                 }
+                Section { title: "Buttons and navigation",
+                    Part { title: "Buttons", note: "One shape in three variants, with the shared hover, press, focus and touch target.",
+                        ButtonDemo {}
+                    }
+                    Part { title: "Tabs", note: "The app's sections, the current one marked; with icons, as a phone's tab bar does.",
+                        TabsDemo {}
+                    }
+                }
+                Section { title: "Inputs", note: "A few short choices stand side by side, the fill sliding to the one chosen. A longer choice is a real box or ring: the check draws across, the dot springs out, and a box over a list shows when only some of it is chosen. A list opens the platform's own picker; a long one is found by typing, the list narrowing as the words come. An amount moves along a track and says itself; a date or a time opens the platform's own picker. A hint stands under a field, and what is wrong takes its place with the field outlined in red. The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
+                    InputsDemo {}
+                }
+                Section { title: "Rows",
+                    Part { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
+                        RowsDemo {}
+                    }
+                    Part { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. With a keyboard, all of it simply arrives.",
+                        LiveDemo {}
+                    }
+                    Part { title: "Tables", note: "Things of one kind read across their columns, figures lined up on the trailing edge, in a frame that scrolls on its own where it doesn't fit. A heading asks for a sort and the host answers with the rows in that order. A row can open as a whole.",
+                        TableDemo {}
+                    }
+                    Part { title: "Disclosure", note: "Rows open and close on a height transition; the chevron turns.",
+                        Disclosure { title: "What Duet used", default_open: true,
+                            p { class: "gallery-copy", "Sleep note from Tuesday, and seven nights of sleep from Apple Health." }
+                        }
+                        Disclosure { title: "Basis and limitations", detail: true,
+                            p { class: "gallery-copy", "Coverage is seven of the last ten nights." }
+                        }
+                    }
+                }
                 Section { title: "Cards", note: "A card holds one object and names it: an observation and its evidence, saved work, an original record with the person's later context. One can open as a whole, or lead on from its footer.",
                     CardDemo {}
                 }
-                Section { title: "Measurements and charts", note: "Data draws in its own chart green, yellower than the action's, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
-                    ChartDemo {}
+                Section { title: "Pages",
+                    Part { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
+                        HeadingsDemo {}
+                    }
+                    Part { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices and settings as rows, and actions pinned to the foot.",
+                        PagesDemo {}
+                    }
+                    Part { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so.",
+                        ReviewDemo {}
+                    }
                 }
-                Section { title: "Series", note: "A series across its buckets: amounts as bars from zero, levels as a line on their own range. The latest is drawn full and the rest quieter, a bucket still filling between them; a dashed line in the action green marks what it is compared with. Tap a mark to pin it, again or on empty plot to let go; the arrow keys move it. The page says what is pinned.",
-                    SeriesDemo {}
-                }
-                Section { title: "Series readout", note: "Over its chart, a series says what its figure is, the figure, and the span it covers, each on one line so the chart never moves. Pinning a mark turns the readout to that bucket, its words in the accent. The span is a row of pills; the chosen one's fill slides to the next. Back and forward page the span, quiet where there is nowhere to go.",
-                    ReadoutDemo {}
-                }
-                Section { title: "Running total", note: "A day so far against its usual pace: the running total in the data colour, ending in a dot where the day so far ends, and the usual total as a quieter dashed curve over a soft wash across the whole day. Both rise smoothly and never double back. A tile draws the two curves alone.",
-                    RunningDemo {}
-                }
-                Section { title: "Screen headings", note: "A screen's title, what it belongs to above it, and its state or source beneath. A record leads with its icon; a screen with no top bar keeps its actions above the title.",
-                    HeadingsDemo {}
-                }
-                Section { title: "Reviewing a proposed update", note: "Section by section: what changed, the proposed words, what was saved before, and the sources each rests on. A section left as it was says so.",
-                    ReviewDemo {}
-                }
-                Section { title: "Pages and forms", note: "A pushed screen's bar, what actually happened said once, a document page, choices and settings as rows, and actions pinned to the foot.",
-                    PagesDemo {}
-                }
-                Section { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads to a thing, and what the person brought in, held above the words.",
-                    FrameDemo {}
-                }
-                Section { title: "Conversation", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
-                    ConversationDemo {}
-                }
-                Section { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
-                    ComposerStatesDemo {}
+                Section { title: "Charts",
+                    Part { title: "Measurements and charts", note: "Data draws in its own chart green, yellower than the action's, and colour never says whether a value is normal. Bars grow on the step spring; lines draw in, then their latest point.",
+                        ChartDemo {}
+                    }
+                    Part { title: "Series", note: "A series across its buckets: amounts as bars from zero, levels as a line on their own range. The latest is drawn full and the rest quieter, a bucket still filling between them; a dashed line in the action green marks what it is compared with. Tap a mark to pin it, again or on empty plot to let go; the arrow keys move it. The page says what is pinned.",
+                        SeriesDemo {}
+                    }
+                    Part { title: "Series readout", note: "Over its chart, a series says what its figure is, the figure, and the span it covers, each on one line so the chart never moves. Pinning a mark turns the readout to that bucket, its words in the accent. The span is a row of pills; the chosen one's fill slides to the next. Back and forward page the span, quiet where there is nowhere to go.",
+                        ReadoutDemo {}
+                    }
+                    Part { title: "Running total", note: "A day so far against its usual pace: the running total in the data colour, ending in a dot where the day so far ends, and the usual total as a quieter dashed curve over a soft wash across the whole day. Both rise smoothly and never double back. A tile draws the two curves alone.",
+                        RunningDemo {}
+                    }
                 }
                 Section { title: "Prose", note: "An answer's words as Markdown: headings on the title roles, lists, emphasis, quotes, code and tables that scroll on their own, with citations where they were written.",
                     ProseDemo {}
                 }
-                Section { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
-                    ViewportDemo {}
+                Section { title: "Conversation",
+                    Part { title: "Conversation frame", note: "Who the conversation is with, the day, a way to begin, a receipt that leads to a thing, and what the person brought in, held above the words.",
+                        FrameDemo {}
+                    }
+                    Part { title: "The thread", note: "Scripted. Send rises on the send spring; the typing mark holds the reply's place; the reply arrives on the arrival spring.",
+                        ConversationDemo {}
+                    }
+                    Part { title: "Composer states", note: "What is happening leads the toolbar: work running, beside its verb, or the draft's state. The actions keep the far edge, a key hint beside the words where there is a keyboard. A draft saved elsewhere opens under the toolbar with the saved words as written.",
+                        ComposerStatesDemo {}
+                    }
+                    Part { title: "Conversation states", note: "What can be done with a message: under a reply, copy, ask again, rate, and move between its versions; under the person's words, copy and edit. On pointer devices the row shows while the message is hovered or focused; under the latest reply it always shows. Edited in place, the question keeps its earlier version. On its way a message stands quieter, waiting its turn it is outlined, and when it didn't go it says so in red with a way to try again. Files the person adds stand as tiles, an image as its picture; in the composer each uploads, filling its foot, or says why it didn't. Choose files with the plus, or drop them on the composer. Speaking, the composer listens in the words' place, the voice drawn as it comes; Done transcribes into the words, Cancel drops it.",
+                        ThreadStatesDemo {}
+                        DeliveryDemo {}
+                        AttachmentsDemo {}
+                        DictationDemo {}
+                    }
+                    Part { title: "Following a conversation", note: "At the end, each new reply is followed; scrolled back, the reading stays put and Jump to new response appears. What the person sends always brings them to the end.",
+                        ViewportDemo {}
+                    }
                 }
-                Section { title: "Feedback and undo", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. Undo floats at the window's foot and pauses while pointed at.",
-                    FeedbackDemo {}
-                }
-                Section { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
-                    OverlayDemo {}
-                }
-                Section { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
-                    LoadingDemo {}
-                }
-                Section { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. With a keyboard, all of it simply arrives.",
-                    LiveDemo {}
-                }
-                Section { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
-                    EmptyDemo {}
+                Section { title: "Agent work", note: "What an agent is doing, as it happens: one line for the turn, its steps beneath while it works, each step's words shimmering while it runs. Done, the steps fold under the line, which says what was done; a step with more opens to show it, such as the reasoning or a tool's result. Its plan checks off as it goes, each check drawing in. Before it acts it asks: answered, the card keeps the question and says the answer, and what came of it is reported apart. Its words fade in as they stream, and what it makes stands as a card that opens it, its title shimmering while it is made. Code stands in its own frame, to copy, and a change to it line by line. Every state comes from the run.",
+                    AgentWorkDemo {}
+                    ApprovalDemo {}
+                    ReplyDemo {}
+                    CodeDemo {}
                 }
                 Section { title: "Citations and sources", note: "Pointing at a citation previews its source beside it; choosing it opens the source beside the reader, or over it with Back where there isn't room. A citation without a source stays a mark; one whose source can't be shown is muted and says so. A source opens at the passage it was cited for, marked.",
                     CitationDemo {}
                 }
-                Section { title: "Rows and sections", note: "Related rows group once, a hairline between them, rather than a card around each. A row leads with an icon, a number or a person's avatar, in three sizes. A section's one action sits beside its title.",
-                    RowsDemo {}
+                Section { title: "Overlays",
+                    Part { title: "Sheets and dialogs", note: "A sheet rises on the step spring and can open over another; a dialog rises the same way. Escape, the scrim or Close dismisses the top one. Drag a sheet down by its header, or by its content from the top: past half its height or flicked, it goes; otherwise it springs back.",
+                        OverlayDemo {}
+                    }
+                    Part { title: "Menus, popovers and tooltips", note: "A menu or popover opens beside its control, under it from its leading edge, flipping where there isn't room, and arrives from that corner on the arrival spring. The arrow keys, a letter or the pointer move through a menu's choices; choosing one, Escape or a press elsewhere closes it, focus back on the control. A message's menu also opens at a right-click, from the menu key, or, held on touch, lifts the message over the blurred page with its menu beneath. A tooltip names an icon's control once the pointer rests on it, at once from the keys, and never on touch.",
+                        MenuDemo {}
+                    }
+                    Part { title: "Command palette", note: "Every command, found by typing: each word narrows the list, groups keep together, and the first left is active. The arrow keys or the pointer move it; Enter or a press runs it. Press ⌘K, or Ctrl K, anywhere in the gallery.",
+                        PaletteDemo {}
+                    }
                 }
-                Section { title: "Buttons and navigation", note: "One shape in three variants, with the shared hover, press, focus and touch target.",
-                    ButtonDemo {}
+                Section { title: "Status",
+                    Part { title: "Feedback and toasts", note: "The rating pair shows while its response is hovered or focused, and always on touch; reasons are toggle chips. A toast says what just happened at the window's foot, with what can follow, such as Undo; one stands at a time, and it pauses while pointed at.",
+                        FeedbackDemo {}
+                    }
+                    Part { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
+                        LoadingDemo {}
+                    }
+                    Part { title: "Progress", note: "Scripted. How far something has got, in the host's words. Not knowing how far, the bar moves and claims no amount. Bare, it stands where something else says what it is, such as a file's tile or a table's cell.",
+                        ProgressDemo {}
+                    }
+                    Part { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
+                        EmptyDemo {}
+                    }
+                    Part { title: "State pills", note: "What a state chip's colour says.",
+                        div { class: "gallery-row",
+                            StatePill { "Neutral" }
+                            StatePill { tone: Tone::Primary, icon: IconName::Check, "Saved" }
+                            StatePill { tone: Tone::Warning, icon: IconName::Flag, "Needs you" }
+                            StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
+                        }
+                    }
                 }
                 Section { title: "Duet's theme", note: "The same pieces under theme-duet: prose at body large, each action a full-width bar, quiet actions and links in green, cards on a hairline, and the person's bubble tailed toward them.",
                     ThemeDemo {}
-                }
-                Section { title: "Disclosure", note: "Rows open and close on a height transition; the chevron turns.",
-                    Disclosure { title: "What Duet used", default_open: true,
-                        p { class: "gallery-copy", "Sleep note from Tuesday, and seven nights of sleep from Apple Health." }
-                    }
-                    Disclosure { title: "Basis and limitations", detail: true,
-                        p { class: "gallery-copy", "Coverage is seven of the last ten nights." }
-                    }
-                }
-                Section { title: "State pills", note: "What a state chip's colour says.",
-                    div { class: "gallery-row",
-                        StatePill { "Neutral" }
-                        StatePill { tone: Tone::Primary, icon: IconName::Check, "Saved" }
-                        StatePill { tone: Tone::Warning, icon: IconName::Flag, "Needs you" }
-                        StatePill { tone: Tone::Error, icon: IconName::Alert, "Couldn’t finish" }
-                    }
-                }
-                Section { title: "Fields and tabs", note: "The text field carries focus on its outline. The search field leads with its mark, which darkens while it has focus, and clears itself without losing focus. A labelled field names what it holds; with several lines, it grows with what is written.",
-                    FieldsDemo {}
-                    TabsDemo {}
                 }
             }
         }
@@ -197,7 +253,7 @@ const TYPE_ROLES: [(&str, &str, &str); 14] = [
     ("value-lg", "Value large", "6 hr 18 min"),
     ("value-md", "Value medium", "4,280"),
     ("code", "Code", "PHYSICIAN_APP_URL"),
-    ("label-sm", "Overline", "What Duet noticed"),
+    ("label-sm", "Overline", "Original record"),
 ];
 
 #[cfg(feature = "web")]
@@ -209,7 +265,7 @@ fn TypeDemo() -> Element {
                 div { class: "gallery-specimen",
                     dt { class: "gallery-note", "{name} · --type-{role}" }
                     if name == "Overline" {
-                        dd { Overline { text: sample } }
+                        dd { class: "overline", "{sample}" }
                     } else {
                         dd { style: "font: var(--type-{role})", "{sample}" }
                     }
@@ -291,8 +347,9 @@ fn CardDemo() -> Element {
                 footer: "Saved in chat · October 21",
                 footer_icon: IconName::Message,
                 on_footer: move |_| {},
-                StepList {
-                    steps: vec![
+                TaskList {
+                    numbered: true,
+                    tasks: vec![
                         "Put my phone away at 10:30 pm.".into(),
                         "Keep my usual wake-up time.".into(),
                         "Try this through Sunday.".into(),
@@ -304,7 +361,9 @@ fn CardDemo() -> Element {
                 title: "Visit note",
                 detail: "Northside Clinic · October 15",
                 Quote { text: "Walks twice a week." }
-                LaterContext { overline: "Your later context", text: "I now walk four mornings a week.", added: "Added October 21" }
+                Card { tinted: true, overline: "Your later context", footer: "Added October 21",
+                    Quote { text: "I now walk four mornings a week." }
+                }
             }
         }
     }
@@ -376,10 +435,25 @@ fn ChartDemo() -> Element {
 
 #[cfg(feature = "web")]
 #[component]
-fn Section(title: String, note: String, children: Element) -> Element {
+fn Section(title: String, #[props(default)] note: String, children: Element) -> Element {
     rsx! {
         section { class: "gallery-section card",
             h2 { class: "gallery-title", "{title}" }
+            if !note.is_empty() {
+                p { class: "gallery-note", "{note}" }
+            }
+            div { class: "gallery-stage", {children} }
+        }
+    }
+}
+
+/// One piece of a family, under its own name and note.
+#[cfg(feature = "web")]
+#[component]
+fn Part(title: String, note: String, children: Element) -> Element {
+    rsx! {
+        div { class: "gallery-part",
+            h3 { class: "gallery-part-title", "{title}" }
             p { class: "gallery-note", "{note}" }
             div { class: "gallery-stage", {children} }
         }
@@ -485,30 +559,6 @@ fn ConversationDemo() -> Element {
 
 #[cfg(feature = "web")]
 #[component]
-fn FieldsDemo() -> Element {
-    let mut title = use_signal(|| "Questions for my visit".to_string());
-    let mut discuss = use_signal(|| {
-        "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work."
-            .to_string()
-    });
-    let mut search = use_signal(|| "Delgado".to_string());
-    rsx! {
-        div { class: "gallery-fields",
-            SearchField {
-                label: "Search your panel",
-                placeholder: "Name, DOB or phone",
-                clear_label: "Clear search",
-                value: search(),
-                on_input: move |words| search.set(words),
-            }
-            TextField { label: "Title", value: title(), on_input: move |words| title.set(words) }
-            TextField { label: "What I want to discuss", multiline: true, value: discuss(), on_input: move |words| discuss.set(words) }
-        }
-    }
-}
-
-#[cfg(feature = "web")]
-#[component]
 fn ReviewDemo() -> Element {
     rsx! {
         div { class: "gallery-phone",
@@ -576,8 +626,8 @@ fn PagesDemo() -> Element {
             div { class: "gallery-phone-thread",
                 Notice { tone: Tone::Primary, icon: IconName::Check, title: "Page saved", detail: "This update has not been shared." }
                 div { class: "gallery-row",
-                    Tag { text: "Updated" }
-                    Tag { text: "Through Oct 21" }
+                    StatePill { "Updated" }
+                    StatePill { "Through Oct 21" }
                 }
                 Paper { title: "For my doctor", detail: "Your continuing page · saved October 21",
                     PaperSection { heading: "What I want to discuss",
@@ -588,8 +638,8 @@ fn PagesDemo() -> Element {
                     }
                 }
                 ul { class: "row-list",
-                    li { SelectionRow { title: "Recorded sleep", detail: "Apple Health · October 14–21", checked: sleep(), on_change: move |on| sleep.set(on) } }
-                    li { SelectionRow { title: "Visit note", detail: "Northside Clinic · October 15", checked: visit(), on_change: move |on| visit.set(on) } }
+                    li { Checkbox { label: "Recorded sleep", detail: "Apple Health · October 14–21", checked: sleep(), on_change: move |on| sleep.set(on) } }
+                    li { Checkbox { label: "Visit note", detail: "Northside Clinic · October 15", checked: visit(), on_change: move |on| visit.set(on) } }
                     li { SettingRow { title: "Remind me", detail: "Daily · 10:30 pm", on: reminder(), on_change: move |on| reminder.set(on) } }
                 }
                 Notice { tone: Tone::Error, icon: IconName::Alert, title: "Your changes weren’t saved", detail: "Your draft is still here.",
@@ -734,7 +784,7 @@ const LIVE: [(&str, &str); 5] = [
         "Patient message · Today, 7:42 AM",
     ),
     ("Echo report signed", "Cardiology · Yesterday"),
-    ("Visit tomorrow, 9:30 AM", "Follow-up · Dr. Osei"),
+    ("Visit tomorrow, 9:30 AM", "Follow-up · Primary care"),
     ("Prior authorization approved", "Insurance · Monday"),
 ];
 
@@ -1028,9 +1078,9 @@ fn ReadoutDemo() -> Element {
     };
     rsx! {
         div { class: "gallery-readout",
-            RangeChoice {
+            Segmented {
                 label: "Time range",
-                options: vec![("W".into(), "Week".into()), ("M".into(), "Month".into())],
+                options: vec![("W", "Week").into(), ("M", "Month").into()],
                 selected: span(),
                 on_select: move |next| {
                     span.set(next);
@@ -1100,6 +1150,107 @@ fn LoadingDemo() -> Element {
         StatusLine { message: "Reading records…", pending: true }
         StatusLine { message: "Couldn’t refresh. Showing what was read at 9:41.", retry: "Try again", on_retry: move |_| {} }
         StatusLine { message: "Couldn’t confirm it was saved.", retry: "Check again", on_retry: move |_| {} }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ProgressDemo() -> Element {
+    const NOTES: u32 = 12;
+    let mut read = use_signal(|| 5);
+    let mut importing = use_signal(|| false);
+    let import = move |_| {
+        spawn(async move {
+            importing.set(true);
+            for step in 0..=NOTES {
+                read.set(step);
+                futures_timer::Delay::new(Duration::from_millis(260)).await;
+            }
+            importing.set(false);
+        });
+    };
+    rsx! {
+        div { class: "gallery-stack",
+            ProgressBar {
+                label: "Importing notes",
+                value: f64::from(read()) / f64::from(NOTES),
+                reading: "{read()} of {NOTES} notes",
+            }
+            ProgressBar { label: "Reading the chart" }
+            div { class: "gallery-row",
+                Button { compact: true, disabled: importing(), onclick: import, "Import again" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+// What each clinic's week came to: name, visits, minutes waited, the share of charts imported.
+const CLINICS: [(&str, u32, u32, f64); 4] = [
+    ("North clinic", 142, 12, 1.0),
+    ("Riverside", 96, 21, 0.72),
+    ("Eastgate", 118, 8, 0.4),
+    ("Harbor", 64, 16, 0.15),
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn TableDemo() -> Element {
+    let mut sorted = use_signal(|| (1, SortOrder::Descending));
+    let mut chosen = use_signal(|| None::<&'static str>);
+    let (column, order) = sorted();
+    let mut clinics = CLINICS.to_vec();
+    clinics.sort_by(|a, b| match column {
+        0 => a.0.cmp(b.0),
+        1 => a.1.cmp(&b.1),
+        _ => a.2.cmp(&b.2),
+    });
+    if order == SortOrder::Descending {
+        clinics.reverse();
+    }
+    let rows = clinics
+        .into_iter()
+        .map(|(name, visits, waited, imported)| TableRow {
+            key: name.into(),
+            cells: vec![
+                rsx! { "{name}" },
+                rsx! { "{visits}" },
+                rsx! { "{waited} min" },
+                rsx! {
+                    ProgressBar {
+                        label: "Charts imported at {name}",
+                        value: imported,
+                        bare: true,
+                    }
+                },
+            ],
+            onclick: Some(EventHandler::new(move |_| chosen.set(Some(name)))),
+        })
+        .collect();
+    rsx! {
+        div { class: "gallery-stack",
+            Table {
+                label: "Clinics this week",
+                columns: vec![
+                    Column { sortable: true, .."Clinic".into() },
+                    Column { numeric: true, sortable: true, .."Visits".into() },
+                    Column { numeric: true, sortable: true, .."Waited".into() },
+                    "Charts imported".into(),
+                ],
+                rows,
+                sorted: sorted(),
+                on_sort: move |next| {
+                    let flipped = match order {
+                        SortOrder::Ascending => SortOrder::Descending,
+                        SortOrder::Descending => SortOrder::Ascending,
+                    };
+                    sorted.set((next, if next == column { flipped } else { SortOrder::Ascending }));
+                },
+            }
+            if let Some(name) = chosen() {
+                p { class: "gallery-note", "Chose {name}." }
+            }
+        }
     }
 }
 
@@ -1269,7 +1420,7 @@ fn ThemeDemo() -> Element {
             Message { author: Author::Person, by: "You", p { "Can we keep it simple this week?" } }
             Message { author: Author::Assistant, by: "Duet", p { "Yes: phone away at 10:30, and the same wake-up time." } }
             Card { overline: "Your saved plan", title: "Evening wind-down", footer: "Saved in chat · October 21",
-                StepList { steps: vec!["Put my phone away at 10:30 pm.".into(), "Keep my usual wake-up time.".into()] }
+                TaskList { numbered: true, tasks: vec!["Put my phone away at 10:30 pm.".into(), "Keep my usual wake-up time.".into()] }
             }
             NavigationControl { "Open original" }
             Button { variant: ButtonVariant::Primary, "Save plan" }
@@ -1434,12 +1585,13 @@ fn FeedbackDemo() -> Element {
     let mut asking = use_signal(|| false);
     let mut reasons = use_signal(Vec::<usize>::new);
     let mut sending = use_signal(|| false);
-    let mut undo = use_signal(|| None::<u32>);
-    let mut archived = use_signal(|| 0u32);
+    // The one toast standing, keyed by its count: an archive's, which can be undone, or a copy's.
+    let mut toast = use_signal(|| None::<(u32, bool)>);
+    let mut shown = use_signal(|| 0u32);
     let mut restored = use_signal(|| false);
     rsx! {
         Message { author: Author::Assistant, by: "Coda",
-            p { "Her potassium was 5.4 on Tuesday, up from 4.9 in September." }
+            p { "{COPIED_REPLY}" }
             FeedbackRating {
                 selected: rating(),
                 label: "Rate this response",
@@ -1463,24 +1615,37 @@ fn FeedbackDemo() -> Element {
             Button {
                 onclick: move |_| {
                     restored.set(false);
-                    archived.set(archived() + 1);
-                    undo.set(Some(archived()));
+                    shown.set(shown() + 1);
+                    toast.set(Some((shown(), true)));
                 },
                 "Archive conversation"
+            }
+            Button {
+                onclick: move |_| {
+                    spawn(async move {
+                        if ui::copy_text(COPIED_REPLY.to_owned()).await {
+                            shown.set(shown() + 1);
+                            toast.set(Some((shown(), false)));
+                        }
+                    });
+                },
+                Icon { name: IconName::Copy }
+                "Copy reply"
             }
             if restored() {
                 span { class: "gallery-note", "Restored." }
             }
         }
-        if let Some(key) = undo() {
-            UndoNotice {
+        if let Some((key, archive)) = toast() {
+            Toast {
                 key: "{key}",
-                words: "Conversation archived.",
-                undo_label: "Undo",
-                on_undo: move |_| restored.set(true),
+                icon: (!archive).then_some(IconName::Check),
+                words: if archive { "Conversation archived." } else { "Reply copied." },
+                action: archive.then(|| "Undo".to_owned()),
+                on_action: move |_| restored.set(true),
                 on_gone: move |_| {
-                    if undo() == Some(key) {
-                        undo.set(None);
+                    if toast().map(|(standing, _)| standing) == Some(key) {
+                        toast.set(None);
                     }
                 },
             }
@@ -1522,6 +1687,1090 @@ fn FeedbackDemo() -> Element {
                         "Send feedback"
                     }
                 }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn MenuDemo() -> Element {
+    let mut model = use_signal(|| 0usize);
+    let mut sources = use_signal(|| true);
+    let mut chosen = use_signal(|| None::<&'static str>);
+    let models = [
+        ("Most capable", "For the hardest questions"),
+        ("Balanced", "Fast and thorough"),
+        ("Fastest", "For quick answers"),
+    ];
+    rsx! {
+        div { class: "gallery-row",
+            Tooltip { text: "More actions",
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    icon_only: true,
+                    opens: "gallery-reply-menu",
+                    aria_label: "More actions",
+                    aria_haspopup: "menu",
+                    Icon { name: IconName::More }
+                }
+            }
+            Menu { id: "gallery-reply-menu", label: "Reply actions",
+                MenuSection {
+                    MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copy")), "Copy" }
+                    MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Edit")), "Edit" }
+                    MenuItem { icon: IconName::Refresh, onclick: move |_| chosen.set(Some("Try again")), "Try again" }
+                    MenuItem { icon: IconName::Share, disabled: true, onclick: move |_| {}, "Share" }
+                }
+                MenuSection {
+                    MenuItem { icon: IconName::Trash, danger: true, onclick: move |_| chosen.set(Some("Delete")), "Delete" }
+                }
+            }
+            Button {
+                variant: ButtonVariant::Secondary,
+                compact: true,
+                opens: "gallery-model-menu",
+                aria_haspopup: "menu",
+                "{models[model()].0}"
+                Icon { name: IconName::ChevronDown }
+            }
+            Menu { id: "gallery-model-menu", label: "Model",
+                MenuSection { label: "Model",
+                    for (index, (name, detail)) in models.into_iter().enumerate() {
+                        MenuItem { key: "{name}", detail, checked: model() == index, radio: true,
+                            onclick: move |_| model.set(index), "{name}" }
+                    }
+                }
+                MenuSection {
+                    MenuItem { icon: IconName::Book, checked: sources(), onclick: move |_| sources.set(!sources()), "Show sources" }
+                }
+            }
+            Button {
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                opens: "gallery-popover",
+                Icon { name: IconName::Users }
+                "Who can see this"
+            }
+            Popover { id: "gallery-popover", label: "Who can see this",
+                h3 { "Only you" }
+                p { "This conversation is private. Sharing it makes a copy anyone with the link can read." }
+                Button { compact: true, autofocus: true, onclick: move |_| chosen.set(Some("Copy link")),
+                    Icon { name: IconName::Link }
+                    "Copy link"
+                }
+            }
+        }
+        div { class: "gallery-row gallery-menu-tools",
+            for (name, icon, key) in [
+                ("Add files", IconName::Plus, None),
+                ("Dictate", IconName::Microphone, None),
+                ("Search", IconName::Search, Some(("⌘K", "Meta+K"))),
+                ("New conversation", IconName::Message, Some(("⇧⌘O", "Shift+Meta+O"))),
+            ] {
+                Tooltip { key: "{name}", text: name, shortcut: key.map(|(shown, _)| shown.to_owned()),
+                    Button { variant: ButtonVariant::Quiet, icon_only: true, aria_label: name, aria_keyshortcuts: key.map(|(_, heard)| heard), Icon { name: icon } }
+                }
+            }
+        }
+        div { class: "gallery-thread gallery-menu-thread",
+            ContextMenu { menu: "gallery-own-menu", tabindex: "0",
+                Message { author: Author::Person, by: "You", "Why was my sleep shorter this week?" }
+            }
+            ContextMenu { menu: "gallery-reply-menu", tabindex: "0",
+                Message { author: Author::Assistant, by: "Coda",
+                    p { "You averaged 6.1 hours, about 40 minutes under your usual. Most of the gap is on the three nights you went to bed after midnight." }
+                }
+            }
+            Menu { id: "gallery-own-menu", label: "Message actions",
+                MenuSection {
+                    MenuItem { icon: IconName::Copy, shortcut: "⌘C", onclick: move |_| chosen.set(Some("Copy")), "Copy" }
+                    MenuItem { icon: IconName::Pencil, onclick: move |_| chosen.set(Some("Edit")), "Edit" }
+                }
+                MenuSection {
+                    MenuItem { icon: IconName::Trash, danger: true, onclick: move |_| chosen.set(Some("Delete")), "Delete" }
+                }
+            }
+        }
+        if let Some(words) = chosen() {
+            p { class: "gallery-note", "Chose {words}." }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn PaletteDemo() -> Element {
+    let mut open = use_signal(|| false);
+    let mut ran = use_signal(|| None::<String>);
+    use_hook(move || {
+        let mut keys = document::eval(
+            "document.addEventListener('keydown', (event) => {
+              if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); dioxus.send(true); }
+            });",
+        );
+        spawn(async move {
+            while keys.recv::<bool>().await.is_ok() {
+                open.set(true);
+            }
+        });
+    });
+    let command =
+        |group: &str, label: &str, icon: IconName, detail: Option<&str>, shortcut: Option<&str>| {
+            Command {
+                group: group.into(),
+                label: label.into(),
+                icon: Some(icon),
+                detail: detail.map(Into::into),
+                shortcut: shortcut.map(Into::into),
+            }
+        };
+    let commands = vec![
+        command(
+            "Suggested",
+            "New conversation",
+            IconName::Message,
+            None,
+            Some("⇧⌘O"),
+        ),
+        command(
+            "Suggested",
+            "Search conversations",
+            IconName::Search,
+            None,
+            Some("⌘F"),
+        ),
+        command(
+            "This conversation",
+            "Copy last reply",
+            IconName::Copy,
+            None,
+            Some("⇧⌘C"),
+        ),
+        command(
+            "This conversation",
+            "Try again",
+            IconName::Refresh,
+            Some("Ask for a new reply"),
+            None,
+        ),
+        command(
+            "This conversation",
+            "Share",
+            IconName::Share,
+            Some("Anyone with the link"),
+            None,
+        ),
+        command(
+            "This conversation",
+            "Archive",
+            IconName::Archive,
+            None,
+            None,
+        ),
+        command(
+            "Settings",
+            "Dark appearance",
+            IconName::Moon,
+            Some("Follow the system otherwise"),
+            None,
+        ),
+        command("Settings", "Settings", IconName::Settings, None, Some("⌘,")),
+    ];
+    let names: Vec<String> = commands
+        .iter()
+        .map(|command| command.label.clone())
+        .collect();
+    rsx! {
+        div { class: "gallery-row",
+            Button { onclick: move |_| open.set(true),
+                Icon { name: IconName::Search }
+                "Search commands"
+                KeyHint { key_label: "⌘K" }
+            }
+            if let Some(name) = ran() {
+                span { class: "gallery-note", "Chose {name}." }
+            }
+        }
+        if open() {
+            CommandPalette {
+                label: "Commands",
+                placeholder: "Type a command",
+                commands,
+                empty: "No commands match.",
+                on_choose: move |index: usize| ran.set(Some(names[index].clone())),
+                on_close: move |_| open.set(false),
+            }
+        }
+    }
+}
+
+/// A scripted run: each step runs, then is done, and the trace folds once the last is.
+#[cfg(feature = "web")]
+const RUN: [(IconName, &str, &str, &str); 4] = [
+    (IconName::Sparkle, "Thinking", "Thought for 4s", ""),
+    (
+        IconName::File,
+        "Reading the discharge summary",
+        "Read the discharge summary",
+        "2 pages",
+    ),
+    (
+        IconName::Search,
+        "Searching for potassium results",
+        "Searched for potassium results",
+        "6 found",
+    ),
+    (
+        IconName::File,
+        "Reading the cardiology note",
+        "Read the cardiology note",
+        "October 2",
+    ),
+];
+
+/// The run's plan: a task finishes with each step after the first, and the last is passed over.
+#[cfg(feature = "web")]
+const PLAN: [&str; 4] = [
+    "Find her baseline potassium",
+    "Gather results since the dose change",
+    "Check the dose in the cardiology note",
+    "Ask the outside records",
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn AgentWorkDemo() -> Element {
+    // How far the run has come: steps before it are done, the one at it runs.
+    let mut reached = use_signal(|| RUN.len());
+    let mut runs = use_signal(|| 0u32);
+    let replay = move |_| {
+        let run = runs() + 1;
+        runs.set(run);
+        reached.set(0);
+        spawn(async move {
+            for at in 1..=RUN.len() {
+                futures_timer::Delay::new(Duration::from_millis(1400)).await;
+                if runs() != run {
+                    return;
+                }
+                reached.set(at);
+            }
+        });
+    };
+    let working = reached() < RUN.len();
+    rsx! {
+        div { class: "gallery-agent",
+            WorkTrace {
+                label: if working { RUN[reached()].1 } else { "Read 2 notes and searched the record" },
+                working,
+                detail: (!working).then(|| "14s".to_owned()),
+                for (index, (icon, running, done, detail)) in RUN.into_iter().enumerate().take(reached() + 1).take(RUN.len()) {
+                    WorkStep {
+                        key: "{index}",
+                        icon,
+                        label: if index < reached() { done } else { running },
+                        state: if index < reached() { StepState::Done } else { StepState::Running },
+                        detail: (index < reached() && !detail.is_empty()).then(|| detail.to_owned()),
+                        body: (index == 0).then(|| rsx! {
+                            p { "The question is whether her potassium is still rising after the spironolactone dose went up. I need the discharge summary for the baseline, the recent results, and the cardiology note for the dose." }
+                        }),
+                    }
+                }
+            }
+            TaskList {
+                words: TaskWords { active: "In progress".into(), done: "Done".into(), skipped: "Skipped".into() },
+                tasks: PLAN.iter().enumerate().map(|(index, label)| Task {
+                    label: (*label).into(),
+                    state: match index.cmp(&reached()) {
+                        _ if !working && index == PLAN.len() - 1 => TaskState::Skipped,
+                        std::cmp::Ordering::Less => TaskState::Done,
+                        std::cmp::Ordering::Equal => TaskState::Active,
+                        std::cmp::Ordering::Greater => TaskState::Pending,
+                    },
+                }).collect::<Vec<_>>(),
+            }
+            Button { compact: true, disabled: working, onclick: replay,
+                Icon { name: IconName::Refresh }
+                "Replay the run"
+            }
+            WorkTrace { label: "Checked 3 sources, one didn't answer", detail: "9s",
+                WorkStep { icon: IconName::File, label: "Read the visit note", state: StepState::Done, detail: "Northside Clinic" }
+                WorkStep { icon: IconName::ExternalLink, label: "Couldn't reach the outside records", state: StepState::Failed, detail: "The connection timed out",
+                    body: rsx! { p { "Asked the regional exchange for results since September; no answer after 8 seconds." } },
+                }
+                WorkStep { icon: IconName::Search, label: "Stopped searching older notes", state: StepState::Stopped, detail: "You stopped it" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ApprovalDemo() -> Element {
+    let mut answer = use_signal(|| None::<Answer>);
+    let mut busy = use_signal(|| false);
+    // What came of the answer, reported apart from it: None until sending starts.
+    let mut sent = use_signal(|| None::<bool>);
+    let mut removal = use_signal(|| None::<Answer>);
+    let mut give = move |given: Answer| {
+        busy.set(true);
+        spawn(async move {
+            futures_timer::Delay::new(Duration::from_millis(700)).await;
+            busy.set(false);
+            answer.set(Some(given));
+            if given == Answer::Approved {
+                sent.set(Some(false));
+                futures_timer::Delay::new(Duration::from_millis(1600)).await;
+                sent.set(Some(true));
+            }
+        });
+    };
+    rsx! {
+        div { class: "gallery-agent",
+            ApprovalCard {
+                title: "Send this summary to her cardiologist?",
+                detail: "Through the practice's secure messages",
+                approve_label: "Send",
+                decline_label: "Not now",
+                busy: busy(),
+                answer: answer(),
+                answered: if answer() == Some(Answer::Approved) { "You approved sending it." } else { "You said not now." },
+                on_approve: move |_| give(Answer::Approved),
+                on_decline: move |_| give(Answer::Declined),
+                Quote { text: "Potassium rose from 4.9 to 5.4 since the spironolactone dose went to 25 mg on October 2. No repeat level since. Worth a recheck this week?" }
+            }
+            if let Some(done) = sent() {
+                WorkTrace { label: if done { "Sent the summary" } else { "Sending the summary" }, working: !done,
+                    WorkStep { icon: IconName::Message,
+                        label: if done { "Sent to her cardiologist" } else { "Sending to her cardiologist" },
+                        state: if done { StepState::Done } else { StepState::Running },
+                        detail: done.then(|| "Secure messages".to_owned()),
+                    }
+                }
+            }
+            ApprovalCard {
+                title: "Remove the old care plan?",
+                detail: "Replaced by the plan saved October 21",
+                approve_label: "Remove",
+                decline_label: "Keep it",
+                danger: true,
+                answer: removal(),
+                answered: if removal() == Some(Answer::Approved) { "You approved removing it." } else { "You kept it." },
+                on_approve: move |_| removal.set(Some(Answer::Approved)),
+                on_decline: move |_| removal.set(Some(Answer::Declined)),
+            }
+            Button { compact: true, variant: ButtonVariant::Quiet,
+                onclick: move |_| {
+                    answer.set(None);
+                    sent.set(None);
+                    removal.set(None);
+                },
+                Icon { name: IconName::Refresh }
+                "Ask again"
+            }
+        }
+    }
+}
+
+/// A scripted reply, streamed in a few words at a time, that ends in the letter it wrote.
+#[cfg(feature = "web")]
+const REPLY: &str = "Her potassium has risen from **4.9 to 5.4** since the spironolactone dose went to 25 mg on October 2, and there is no repeat level since.\n\nI drafted a letter to her cardiologist asking whether to recheck this week. The results came from this request:\n\n```http\nGET /Observation?patient=4471&code=2823-3&date=ge2026-09-01\n```";
+
+#[cfg(feature = "web")]
+fn copy_words() -> CopyWords {
+    CopyWords {
+        copy: "Copy".into(),
+        copied: "Copied".into(),
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ReplyDemo() -> Element {
+    // How much of the reply has arrived, in bytes.
+    let mut shown = use_signal(|| REPLY.len());
+    let mut runs = use_signal(|| 0u32);
+    let replay = move |_| {
+        let run = runs() + 1;
+        runs.set(run);
+        shown.set(0);
+        spawn(async move {
+            let ends: Vec<usize> = REPLY
+                .split_inclusive(char::is_whitespace)
+                .scan(0, |at, word| {
+                    *at += word.len();
+                    Some(*at)
+                })
+                .collect();
+            for end in ends.chunks(2).filter_map(|pair| pair.last().copied()) {
+                futures_timer::Delay::new(Duration::from_millis(90)).await;
+                if runs() != run {
+                    return;
+                }
+                shown.set(end);
+            }
+        });
+    };
+    let streaming = shown() < REPLY.len();
+    rsx! {
+        div { class: "gallery-agent",
+            Prose { streaming, copy: copy_words(), parts: vec![ProsePart::Words(REPLY[..shown()].to_owned())] }
+            ArtifactCard {
+                icon: IconName::File,
+                title: "Letter to her cardiologist",
+                detail: if streaming { "Writing" } else { "Letter · 1 page" },
+                working: streaming,
+                onclick: move |_| {},
+                preview: rsx! {
+                    p { "Dear colleague," }
+                    p { "Her potassium has risen from 4.9 to 5.4 mmol/L since the spironolactone dose went to 25 mg on October 2. Would you like a repeat level this week, or a change in the dose?" }
+                },
+            }
+            Button { compact: true, disabled: streaming, onclick: replay,
+                Icon { name: IconName::Refresh }
+                "Replay the reply"
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+fn line(change: Change, text: &str) -> DiffLine {
+    DiffLine {
+        change,
+        text: text.into(),
+    }
+}
+
+/// A result as a tool returned it.
+#[cfg(feature = "web")]
+const RESULT: &str = "{\n  \"code\": \"2823-3\",\n  \"display\": \"Potassium\",\n  \"value\": 5.4,\n  \"unit\": \"mmol/L\",\n  \"effective\": \"2026-10-28\"\n}";
+
+#[cfg(feature = "web")]
+#[component]
+fn CodeDemo() -> Element {
+    rsx! {
+        div { class: "gallery-agent",
+            CodeBlock {
+                label: "json",
+                copy: copy_words(),
+                code: RESULT,
+            }
+            Diff {
+                label: "care-plan.md",
+                words: DiffWords { added: "Added".into(), removed: "Removed".into() },
+                lines: vec![
+                    line(Change::Kept, "## Medications"),
+                    line(Change::Kept, "- Lisinopril 10 mg daily"),
+                    line(Change::Removed, "- Spironolactone 25 mg daily"),
+                    line(Change::Added, "- Spironolactone 12.5 mg daily, until potassium is rechecked"),
+                    line(Change::Added, "- Repeat basic metabolic panel within 1 week"),
+                    line(Change::Kept, "- Metoprolol succinate 50 mg daily"),
+                ],
+            }
+        }
+    }
+}
+
+/// A reply asked three times, in the order it was asked.
+#[cfg(feature = "web")]
+const VERSIONS: [&str; 3] = [
+    "Her potassium was 5.4 on Tuesday, up from 4.9 in September.",
+    "Potassium rose from 4.9 in September to 5.4 on Tuesday, since the spironolactone dose went up.",
+    "5.4 mmol/L on Tuesday; it was 4.9 in September. No repeat level since.",
+];
+
+/// The reply to the question once it is edited.
+#[cfg(feature = "web")]
+const EDITED_REPLY: &str = "Her last potassium was 5.4 mmol/L, on Tuesday's basic metabolic panel.";
+
+#[cfg(feature = "web")]
+#[component]
+fn ThreadStatesDemo() -> Element {
+    let mut version = use_signal(|| VERSIONS.len() - 1);
+    let mut rating = use_signal(|| None::<Rating>);
+    // The question as asked and as edited, which of them is shown, and the edit under way.
+    let mut questions = use_signal(|| vec!["What was her last potassium?".to_owned()]);
+    let mut asked = use_signal(|| 0usize);
+    let mut draft = use_signal(|| None::<String>);
+    let mut replying = use_signal(|| false);
+    let question = questions()[asked()].clone();
+    let reply = if asked() == 0 {
+        VERSIONS[version()]
+    } else {
+        EDITED_REPLY
+    };
+    rsx! {
+        div { class: "gallery-thread",
+            if let Some(words) = draft() {
+                MessageEditor {
+                    label: "Edit your message",
+                    value: words,
+                    on_input: move |text| draft.set(Some(text)),
+                    on_save: move |text: String| {
+                        questions.write().push(text);
+                        asked.set(questions.len() - 1);
+                        draft.set(None);
+                        replying.set(true);
+                        spawn(async move {
+                            futures_timer::Delay::new(Duration::from_millis(1200)).await;
+                            replying.set(false);
+                        });
+                    },
+                    on_cancel: move |_| draft.set(None),
+                    save_label: "Save and ask",
+                    cancel_label: "Cancel",
+                    note: "Coda answers the edited question; the first answer stays one version back.",
+                }
+            } else {
+                Message { author: Author::Person, by: "You",
+                    actions: rsx! {
+                        MessageActions { label: "Your message",
+                            CopyButton { text: question.clone(), words: copy_words() }
+                            Button {
+                                variant: ButtonVariant::Quiet,
+                                compact: true,
+                                icon_only: true,
+                                aria_label: "Edit",
+                                disabled: replying(),
+                                onclick: {
+                                    let question = question.clone();
+                                    move |_| draft.set(Some(question.clone()))
+                                },
+                                Icon { name: IconName::Pencil }
+                            }
+                            if questions().len() > 1 {
+                                VersionSwitch {
+                                    at: asked(),
+                                    count: questions().len(),
+                                    label: format!("Question {} of {}", asked() + 1, questions().len()),
+                                    previous_label: "Previous question",
+                                    next_label: "Next question",
+                                    on_change: move |at| asked.set(at),
+                                }
+                            }
+                        }
+                    },
+                    p { "{question}" }
+                }
+            }
+            if replying() {
+                Message { author: Author::Assistant,
+                    span { class: "sr-only", role: "status", "Coda is responding" }
+                    WorkingMark {}
+                }
+            } else if draft().is_none() {
+                Message { author: Author::Assistant, by: "Coda",
+                    actions: rsx! {
+                        MessageActions { label: "Response", shown: true,
+                            CopyButton { text: reply, words: copy_words() }
+                            Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Ask again", Icon { name: IconName::Refresh } }
+                            FeedbackRating {
+                                selected: rating(),
+                                label: "Rate this response",
+                                up_label: "Good response",
+                                down_label: "Poor response",
+                                on_rate: move |choice| rating.set(Some(choice)),
+                            }
+                            if asked() == 0 {
+                                VersionSwitch {
+                                    at: version(),
+                                    count: VERSIONS.len(),
+                                    label: format!("Response {} of {}", version() + 1, VERSIONS.len()),
+                                    previous_label: "Previous response",
+                                    next_label: "Next response",
+                                    on_change: move |at| version.set(at),
+                                }
+                            }
+                        }
+                    },
+                    p { "{reply}" }
+                }
+            }
+        }
+    }
+}
+
+/// Where a message stands in the delivery demo.
+#[cfg(feature = "web")]
+#[derive(Clone, Copy, PartialEq)]
+enum Delivery {
+    Failed,
+    Sending,
+    Sent,
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn DeliveryDemo() -> Element {
+    let mut delivery = use_signal(|| Delivery::Failed);
+    let mut queued = use_signal(|| true);
+    rsx! {
+        div { class: "gallery-thread",
+            Message { author: Author::Person, by: "You", p { "Summarize her last visit." } }
+            Message { author: Author::Assistant,
+                span { class: "sr-only", role: "status", "Coda is responding" }
+                WorkingMark {}
+            }
+            if queued() {
+                Message { author: Author::Person, by: "You", state: MessageState::Queued,
+                    status: rsx! {
+                        MessageStatus { words: "Sends after Coda's reply", icon: IconName::Clock,
+                            Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| queued.set(false), "Cancel" }
+                        }
+                    },
+                    p { "And when was her last ECG?" }
+                }
+            }
+            Message { author: Author::Person, by: "You",
+                state: match delivery() {
+                    Delivery::Failed => MessageState::Failed,
+                    Delivery::Sending => MessageState::Sending,
+                    Delivery::Sent => MessageState::Sent,
+                },
+                status: match delivery() {
+                    Delivery::Failed => Some(rsx! {
+                        MessageStatus { words: "Not sent. No connection.", icon: IconName::Alert, alert: true,
+                            Button {
+                                variant: ButtonVariant::Quiet,
+                                compact: true,
+                                onclick: move |_| {
+                                    delivery.set(Delivery::Sending);
+                                    spawn(async move {
+                                        futures_timer::Delay::new(Duration::from_millis(1200)).await;
+                                        delivery.set(Delivery::Sent);
+                                    });
+                                },
+                                "Try again"
+                            }
+                        }
+                    }),
+                    Delivery::Sending => Some(rsx! { MessageStatus { words: "Sending" } }),
+                    Delivery::Sent => None,
+                },
+                p { "Also check her magnesium." }
+            }
+            Button {
+                variant: ButtonVariant::Quiet,
+                compact: true,
+                onclick: move |_| {
+                    delivery.set(Delivery::Failed);
+                    queued.set(true);
+                },
+                Icon { name: IconName::Refresh }
+                "Show again"
+            }
+        }
+    }
+}
+
+/// A strip of rhythm, standing in for a photo the person sent.
+#[cfg(feature = "web")]
+const STRIP: &str = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='%23f7efe9'/><path d='M0 16h64M0 32h64M0 48h64M16 0v64M32 0v64M48 0v64' stroke='%23ecd3c6' stroke-width='.6'/><path d='M0 38h12l3-6 3 6h4l3-24 4 34 3-10h8l4-6 4 6h16' fill='none' stroke='%23a3341f' stroke-width='1.6' stroke-linejoin='round'/></svg>";
+
+/// One file in the demo composer, as it uploads.
+#[cfg(feature = "web")]
+#[derive(Clone, PartialEq)]
+struct Added {
+    key: u32,
+    name: String,
+    detail: String,
+    image: Option<&'static str>,
+    state: AttachmentState,
+    progress: f64,
+}
+
+#[cfg(feature = "web")]
+fn size(bytes: u64) -> String {
+    match bytes {
+        0..1_000 => format!("{bytes} B"),
+        1_000..1_000_000 => format!("{} KB", bytes / 1_000),
+        _ => format!("{:.1} MB", bytes as f64 / 1_000_000.0),
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn AttachmentsDemo() -> Element {
+    let mut added = use_signal(|| {
+        vec![
+            Added {
+                key: 0,
+                name: "Echo report.pdf".into(),
+                detail: "PDF · 1.2 MB".into(),
+                image: None,
+                state: AttachmentState::Uploading,
+                progress: 0.0,
+            },
+            Added {
+                key: 1,
+                name: "Holter export.zip".into(),
+                detail: "Over the 25 MB limit".into(),
+                image: None,
+                state: AttachmentState::Failed,
+                progress: 0.0,
+            },
+            Added {
+                key: 2,
+                name: "Rhythm strip.png".into(),
+                detail: "Couldn't read this image".into(),
+                image: Some(STRIP),
+                state: AttachmentState::Failed,
+                progress: 0.0,
+            },
+        ]
+    });
+    let mut next = use_signal(|| 3u32);
+    let mut draft = use_signal(String::new);
+    let mut opened = use_signal(|| None::<String>);
+    // Fills a file's foot a step at a time, then leaves it ready.
+    let upload = move |key: u32| {
+        spawn(async move {
+            for step in 1..=10 {
+                futures_timer::Delay::new(Duration::from_millis(260)).await;
+                let mut files = added.write();
+                let Some(file) = files.iter_mut().find(|file| file.key == key) else {
+                    return;
+                };
+                file.progress = f64::from(step) / 10.0;
+                if step == 10 {
+                    file.state = AttachmentState::Ready;
+                }
+            }
+        });
+    };
+    use_hook(move || upload(0));
+    let take = move |files: Vec<dioxus::html::FileData>| {
+        for file in files {
+            let key = next();
+            next.set(key + 1);
+            added.write().push(Added {
+                key,
+                name: file.name(),
+                detail: size(file.size()),
+                image: None,
+                state: AttachmentState::Uploading,
+                progress: 0.0,
+            });
+            upload(key);
+        }
+    };
+    rsx! {
+        div { class: "gallery-thread",
+            Message { author: Author::Person, by: "You",
+                Attachments {
+                    Attachment { name: "Rhythm strip, this morning", image: STRIP, onclick: move |_| opened.set(Some("Rhythm strip, this morning".into())) }
+                    Attachment { name: "Discharge summary.pdf", detail: "PDF · 240 KB", onclick: move |_| opened.set(Some("Discharge summary.pdf".into())) }
+                }
+                p { "Can you read these and tell me if anything changed?" }
+            }
+            if let Some(name) = opened() {
+                p { class: "gallery-note", "Chose {name}." }
+            }
+        }
+        Composer {
+            label: "Message",
+            placeholder: "Write a message",
+            value: draft(),
+            on_input: move |text| draft.set(text),
+            on_submit: move |_| {},
+            on_files: take,
+            drop_label: "Drop files to attach",
+            context: rsx! {
+                if !added().is_empty() {
+                    Attachments {
+                        for file in added() {
+                            Attachment {
+                                key: "{file.key}",
+                                name: file.name.clone(),
+                                detail: file.detail.clone(),
+                                image: file.image.map(str::to_owned),
+                                state: file.state,
+                                progress: file.progress,
+                                remove_label: format!("Remove {}", file.name),
+                                on_remove: move |_| added.write().retain(|kept| kept.key != file.key),
+                            }
+                        }
+                    }
+                }
+            },
+            AttachButton { label: "Attach files", multiple: true, on_files: take }
+            Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: added().iter().any(|file| file.state == AttachmentState::Uploading), "Send" }
+        }
+    }
+}
+
+/// What the scripted dictation transcribes to.
+#[cfg(feature = "web")]
+const SPOKEN: &str = "Ask her cardiologist whether to recheck the potassium this week.";
+
+#[cfg(feature = "web")]
+#[component]
+fn DictationDemo() -> Element {
+    let mut draft = use_signal(String::new);
+    // Each listening is a run; its levels, tenths of a second, and whether it is transcribing.
+    let mut listening = use_signal(|| None::<u32>);
+    let mut levels = use_signal(Vec::<f32>::new);
+    let mut tenths = use_signal(|| 0u32);
+    let mut transcribing = use_signal(|| false);
+    let start = move |_| {
+        let run = listening().map_or(0, |run| run + 1);
+        listening.set(Some(run));
+        levels.set(Vec::new());
+        tenths.set(0);
+        transcribing.set(false);
+        spawn(async move {
+            // A voice's loudness, scripted: syllables rising and falling, with pauses between words.
+            let mut seed = 7u32;
+            loop {
+                futures_timer::Delay::new(Duration::from_millis(100)).await;
+                if listening() != Some(run) || transcribing() {
+                    return;
+                }
+                seed = seed.wrapping_mul(1_103_515_245).wrapping_add(12_345);
+                let tick = tenths() + 1;
+                let noise = (seed >> 16) as f32 / 65_535.0;
+                let syllable = ((tick as f32) * 1.7).sin().abs();
+                let pause = if tick % 11 < 2 { 0.08 } else { 1.0 };
+                levels
+                    .write()
+                    .push((0.15 + 0.75 * syllable * noise.sqrt()) * pause);
+                tenths.set(tick);
+            }
+        });
+    };
+    let done = move |_| {
+        transcribing.set(true);
+        spawn(async move {
+            futures_timer::Delay::new(Duration::from_millis(1100)).await;
+            if transcribing() {
+                draft.set(SPOKEN.to_owned());
+                transcribing.set(false);
+                listening.set(None);
+            }
+        });
+    };
+    let seconds = tenths() / 10;
+    rsx! {
+        Composer {
+            label: "Message",
+            placeholder: "Write a message, or speak",
+            value: draft(),
+            on_input: move |text| draft.set(text),
+            on_submit: move |_| {},
+            dictation: listening().is_some().then(|| rsx! {
+                Dictation {
+                    label: if transcribing() { "Transcribing" } else { "Listening" },
+                    levels: levels(),
+                    elapsed: format!("{}:{:02}", seconds / 60, seconds % 60),
+                    transcribing: transcribing(),
+                    cancel_label: "Cancel dictation",
+                    done_label: "Done",
+                    on_cancel: move |_| {
+                        transcribing.set(false);
+                        listening.set(None);
+                    },
+                    on_done: done,
+                }
+            }),
+            if listening().is_none() {
+                Button { variant: ButtonVariant::Quiet, compact: true, icon_only: true, aria_label: "Dictate", onclick: start, Icon { name: IconName::Microphone } }
+                Button { variant: ButtonVariant::Primary, compact: true, submit: true, disabled: draft().trim().is_empty(), "Send" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+const COPIED_REPLY: &str = "Her potassium was 5.4 on Tuesday, up from 4.9 in September.";
+
+#[cfg(feature = "web")]
+const VISIT_TYPES: [&str; 4] = ["Follow-up", "New patient", "Annual physical", "Telehealth"];
+
+#[cfg(feature = "web")]
+const MEDICATIONS: [(&str, &str); 8] = [
+    ("Lisinopril", "Tablet, 10 mg"),
+    ("Losartan", "Tablet, 50 mg"),
+    ("Metoprolol succinate", "Tablet, 50 mg"),
+    ("Metformin", "Tablet, 500 mg"),
+    ("Spironolactone", "Tablet, 25 mg"),
+    ("Atorvastatin", "Tablet, 40 mg"),
+    ("Apixaban", "Tablet, 5 mg"),
+    ("Furosemide", "Tablet, 40 mg"),
+];
+
+/// Where each medication matching the words stands in the list.
+#[cfg(feature = "web")]
+fn matching_medications(words: &str) -> Vec<usize> {
+    let words = words.trim().to_lowercase();
+    (0..MEDICATIONS.len())
+        .filter(|index| MEDICATIONS[*index].0.to_lowercase().contains(&words))
+        .collect()
+}
+
+#[cfg(feature = "web")]
+const RESULTS: [&str; 3] = ["Labs", "Imaging", "Visit notes"];
+
+#[cfg(feature = "web")]
+#[component]
+fn InputsDemo() -> Element {
+    let mut sharing = use_signal(|| [true, false, true]);
+    let mut reach = use_signal(|| Some(0usize));
+    let mut on = use_signal(|| true);
+    let mut email = use_signal(|| "dana@northside".to_owned());
+    let mut phone = use_signal(String::new);
+    let mut span = use_signal(|| 1usize);
+    let mut look = use_signal(|| 0usize);
+    let mut search = use_signal(|| "Delgado".to_string());
+    let mut discuss = use_signal(|| {
+        "I’d like to understand why I’m so tired in the afternoon. It’s getting in the way of work."
+            .to_string()
+    });
+    let mut pain = use_signal(|| 4.0);
+    let mut day = use_signal(|| "2026-09-10".to_owned());
+    let mut time = use_signal(String::new);
+    let mut visit = use_signal(|| None::<usize>);
+    let mut medicine = use_signal(String::new);
+    let mut chosen_medicine = use_signal(|| None::<usize>);
+    let mut found = use_signal(|| matching_medications(""));
+    let mut searching = use_signal(|| false);
+    let chosen = sharing().iter().filter(|on| **on).count();
+    rsx! {
+        div { class: "gallery-inputs",
+            Segmented {
+                label: "Span",
+                options: vec![
+                    "Day".into(),
+                    "Week".into(),
+                    "Month".into(),
+                    Choice { disabled: true, .."Year".into() },
+                ],
+                selected: span(),
+                on_select: move |index| span.set(index),
+            }
+            Segmented {
+                label: "Appearance",
+                options: vec![(IconName::Settings, "Auto").into(), (IconName::Sun, "Light").into(), (IconName::Moon, "Dark").into()],
+                selected: look(),
+                on_select: move |index| look.set(index),
+            }
+            div { class: "row-list",
+                Checkbox {
+                    label: "Everything since September",
+                    detail: format!("{chosen} of {} kinds of record", RESULTS.len()),
+                    checked: chosen == RESULTS.len(),
+                    mixed: chosen > 0 && chosen < RESULTS.len(),
+                    on_change: move |all: bool| sharing.set([all; 3]),
+                }
+                for (index, label) in RESULTS.into_iter().enumerate() {
+                    Checkbox {
+                        key: "{label}",
+                        label,
+                        checked: sharing()[index],
+                        on_change: move |on: bool| sharing.write()[index] = on,
+                    }
+                }
+                Checkbox { label: "Billing records", detail: "Not shared with this clinic", checked: false, disabled: true, on_change: move |_| {} }
+            }
+            RadioGroup {
+                label: "How should we reach her?",
+                selected: reach(),
+                on_select: move |index| reach.set(Some(index)),
+                options: vec![
+                    ("By text", "Fastest, for anything routine").into(),
+                    ("By phone", "For results that need a conversation").into(),
+                    Choice { disabled: true, ..("By letter", "No address on file").into() },
+                ],
+            }
+            div { class: "row-list",
+                SettingRow { title: "Share with her care team", detail: "Clinicians at Northside Clinic", on: on(), on_change: move |value| on.set(value) }
+                SettingRow { title: "Share with research", detail: "Set by the practice", on: false, disabled: true, on_change: move |_| {} }
+            }
+            Select {
+                label: "Visit type",
+                placeholder: "Choose a visit type",
+                options: VISIT_TYPES.map(Choice::from).to_vec(),
+                selected: visit(),
+                on_select: move |index| visit.set(Some(index)),
+            }
+            Combobox {
+                label: "Medication",
+                placeholder: "Search medications",
+                query: medicine(),
+                options: found().iter().map(|index| {
+                    let (name, form) = MEDICATIONS[*index];
+                    Choice { disabled: name == "Apixaban", ..(name, form).into() }
+                }).collect::<Vec<_>>(),
+                selected: found().iter().position(|index| chosen_medicine() == Some(*index)),
+                loading: searching(),
+                empty: "No medication by that name.",
+                hint: "Search by name.",
+                on_query: move |words: String| {
+                    medicine.set(words.clone());
+                    chosen_medicine.set(None);
+                    searching.set(true);
+                    spawn(async move {
+                        futures_timer::Delay::new(Duration::from_millis(240)).await;
+                        if medicine() == words {
+                            found.set(matching_medications(&words));
+                            searching.set(false);
+                        }
+                    });
+                },
+                on_choose: move |at: usize| {
+                    let index = found()[at];
+                    chosen_medicine.set(Some(index));
+                    medicine.set(MEDICATIONS[index].0.to_owned());
+                },
+            }
+            SearchField {
+                label: "Search your panel",
+                placeholder: "Name, DOB or phone",
+                clear_label: "Clear search",
+                value: search(),
+                on_input: move |words| search.set(words),
+            }
+            Slider {
+                label: "Pain today",
+                value: pain(),
+                min: 0.0,
+                max: 10.0,
+                reading: format!("{} of 10", pain()),
+                hint: "0 is none, 10 the worst you can imagine.",
+                on_change: move |amount| pain.set(amount),
+            }
+            div { class: "gallery-when",
+                DateField {
+                    label: "Follow-up",
+                    value: day(),
+                    min: "2026-08-27",
+                    on_change: move |when| day.set(when),
+                }
+                DateField {
+                    label: "Time",
+                    kind: DateKind::Time,
+                    value: time(),
+                    on_change: move |when| time.set(when),
+                }
+            }
+            TextField {
+                label: "What I want to discuss",
+                multiline: true,
+                value: discuss(),
+                on_input: move |words| discuss.set(words),
+            }
+            TextField {
+                label: "Mobile number",
+                value: phone(),
+                on_input: move |words| phone.set(words),
+                hint: "For reminders only.",
+            }
+            TextField {
+                label: "Email",
+                value: email(),
+                on_input: move |words| email.set(words),
+                error: (!email().contains('.')).then(|| "That address looks incomplete.".to_owned()),
             }
         }
     }

@@ -4,7 +4,7 @@
 
 use dioxus::prelude::*;
 
-use crate::{Disclosure, Icon, IconName, Tone};
+use crate::{Disclosure, Icon, IconName, StatePill, Tone};
 
 /// The bar atop a pushed screen: an optional way back on the leading edge, the title centred with
 /// an optional mark (who a conversation is with), and the screen's one action on the trailing edge.
@@ -62,33 +62,13 @@ pub fn PaperSection(heading: String, children: Element) -> Element {
     }
 }
 
-/// One choice in a list of choices: a checkbox and what choosing it includes.
-#[component]
-pub fn SelectionRow(
-    title: String,
-    #[props(default)] detail: Option<String>,
-    checked: bool,
-    on_change: EventHandler<bool>,
-) -> Element {
-    rsx! {
-        label { class: "selection-row",
-            input { r#type: "checkbox", checked, onchange: move |event| on_change.call(event.checked()) }
-            span { class: "list-row-text",
-                strong { "{title}" }
-                if let Some(detail) = detail {
-                    small { "{detail}" }
-                }
-            }
-        }
-    }
-}
-
 /// One setting that is on or off: what it does, and a switch.
 #[component]
 pub fn SettingRow(
     title: String,
     #[props(default)] detail: Option<String>,
     on: bool,
+    #[props(default)] disabled: bool,
     on_change: EventHandler<bool>,
 ) -> Element {
     rsx! {
@@ -99,7 +79,7 @@ pub fn SettingRow(
                     small { "{detail}" }
                 }
             }
-            input { class: "switch", r#type: "checkbox", role: "switch", checked: on, onchange: move |event| on_change.call(event.checked()) }
+            input { class: "switch", r#type: "checkbox", role: "switch", checked: on, disabled, onchange: move |event| on_change.call(event.checked()) }
         }
     }
 }
@@ -154,7 +134,7 @@ pub fn ProposedChange(
         section { class: if is_unchanged { "proposed-change is-unchanged" } else { "proposed-change" },
             header { class: "proposed-change-heading",
                 if let Some(text) = tag.filter(|_| !is_unchanged) {
-                    Tag { text }
+                    StatePill { "{text}" }
                 }
                 h3 { "{title}" }
                 if let Some(state) = unchanged {
@@ -172,12 +152,6 @@ pub fn ProposedChange(
             }
         }
     }
-}
-
-/// A small label on content: what period it covers, or that it changed.
-#[component]
-pub fn Tag(text: String) -> Element {
-    rsx! { span { class: "tag", "{text}" } }
 }
 
 /// The screen's actions, pinned to its foot, with an optional note on what they do and don't do.

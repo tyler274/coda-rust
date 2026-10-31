@@ -132,7 +132,7 @@
 }
 /* Buttons: the one filled action, a white one on a
    hairline, and text alone. A host places a control through its own class; it never restyles one. A surface may set the
-   control's component tokens (width, height, shape, quiet colour) once at its root, as Duet does. */
+   control's component tokens (width, height, shape, quiet colour) once at its root. */
 .control { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); width: var(--control-width, fit-content); min-width: var(--target); min-height: var(--control-min-height, var(--control-height)); padding: var(--space-1) var(--space-4); border: var(--hairline) solid transparent; border-radius: var(--control-radius, var(--radius-pill)); cursor: pointer; font: var(--type-label-lg); text-decoration: none; white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out), opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
 .control-primary { border-color: var(--primary); background: var(--primary); color: var(--on-primary); box-shadow: var(--elevation-1); }
 .control-secondary { border-color: var(--outline-variant); background: var(--surface-lowest); color: var(--ink); box-shadow: var(--elevation-1); }
@@ -171,7 +171,7 @@
   :is(.control, .navigation-control)::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--target)); height: max(100%, var(--target)); transform: translate(-50%, -50%); }
 }
 /* Focus ring: one ring for everything a person can reach, following its corners; it grows in, then settles. */
-:is(button, a, input, textarea, select, summary):focus-visible {
+:is(button, a, input, textarea, select, summary, .table-frame):focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
   animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
@@ -208,6 +208,40 @@
 .text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
 :where(input, textarea).text-field-input { padding: var(--space-3); }
 textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
+/* A combobox stands at a text field's height. */
+.search-field.combobox > input { min-height: 0; padding-block: var(--space-3); }
+/* A select is the platform's own, in the field's look, with the library's chevron. */
+.select { position: relative; min-width: 0; }
+.select > select { appearance: none; display: block; width: 100%; padding: var(--space-3) calc(var(--space-3) + 28px) var(--space-3) var(--space-3); cursor: pointer; }
+.select > select.is-placeholder { color: var(--muted); }
+.select > select:disabled { cursor: default; opacity: .46; }
+.select > .icon { position: absolute; top: 50%; inset-inline-end: var(--space-3); translate: 0 -50%; color: var(--muted); pointer-events: none; }
+/* What a field reads, level with its label: a slider's amount. */
+.field-heading { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.field-reading { color: var(--muted); font: var(--type-body-md); font-variant-numeric: tabular-nums; }
+/* A date or time is the platform's own, in the field's look, its picker mark as quiet as a select's chevron. */
+.date-field { box-sizing: border-box; padding-block: 0; height: calc(var(--space-3) * 2 + 1lh + 2 * var(--hairline)); display: grid; align-items: center; }
+.date-field::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .62; }
+.date-field:disabled { opacity: .46; }
+/* A slider: the platform's control on a filled track, a ringed thumb that stands out on any surface, a target's height to take hold of. */
+.slider { --thumb: 22px; appearance: none; display: block; width: 100%; height: var(--target); margin: 0; background: transparent; cursor: pointer; touch-action: pan-y; }
+.slider::-webkit-slider-runnable-track { height: 6px; border-radius: var(--radius-pill); background: linear-gradient(to right, var(--primary) var(--filled), var(--surface-highest) var(--filled)); }
+.slider::-moz-range-track { height: 6px; border-radius: var(--radius-pill); background: linear-gradient(to right, var(--primary) var(--filled), var(--surface-highest) var(--filled)); }
+.slider::-webkit-slider-thumb { appearance: none; width: var(--thumb); height: var(--thumb); margin-top: calc((6px - var(--thumb)) / 2); box-sizing: border-box; border: 3px solid var(--surface-lowest); border-radius: 50%; background: var(--primary);
+  box-shadow: var(--elevation-2); transition: scale var(--motion-control) var(--ease-out); }
+.slider::-moz-range-thumb { box-sizing: border-box; width: var(--thumb); height: var(--thumb); border: 3px solid var(--surface-lowest); border-radius: 50%; background: var(--primary); box-shadow: var(--elevation-2); transition: scale var(--motion-control) var(--ease-out); }
+.slider:active::-webkit-slider-thumb { scale: 1.12; }
+.slider:active::-moz-range-thumb { scale: 1.12; }
+.slider:focus { outline: 0; }
+.slider:focus-visible::-webkit-slider-thumb, :root[data-interaction="keyboard"] .slider:focus::-webkit-slider-thumb { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.slider:focus-visible::-moz-range-thumb, :root[data-interaction="keyboard"] .slider:focus::-moz-range-thumb { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.slider:disabled { cursor: default; opacity: .46; }
+/* Beneath a field, a quiet hint, or what is wrong in red, with the field's outline red too. */
+.field-note { display: flex; align-items: center; gap: var(--space-1); margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.field-note > .icon { flex: none; width: 16px; height: 16px; }
+.field-note.is-error { color: var(--error); }
+.field[aria-invalid="true"], .field:has([aria-invalid="true"]) { --field-outline: var(--error); }
+.field[aria-invalid="true"]:focus-within, .field:has([aria-invalid="true"]):focus-within { border-color: var(--error); box-shadow: inset 0 0 0 var(--hairline) var(--error); }
 /* A thread's messages: the person's words in a
    light bubble at the far edge, the assistant's as plain prose. A message rises in as it appears, the person's on the
    send spring from below, a reply on the arrival spring. */
@@ -231,6 +265,21 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
   background: transparent; color: var(--ink); font: var(--type-body-lg); }
 .composer-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--space-2);
   min-height: var(--control-height); }
+/* Files dragged over the composer: a dashed action outline over the whole field, saying what dropping does. */
+.composer { position: relative; }
+.composer-drop { position: absolute; inset: 0; display: none; place-items: center; padding: var(--space-3); border: var(--stroke) dashed var(--primary); border-radius: inherit;
+  background: color-mix(in srgb, var(--primary-container) 88%, transparent); color: var(--on-primary-container); font: var(--type-label-lg); text-align: center; pointer-events: none; }
+.composer[data-dropping] > .composer-drop { display: grid; }
+/* Dictation in the words' place: Cancel, the voice as bars in the ink, newest at the end, what is happening and for how
+   long, then Done. Transcribing, the bars hold still and quiet under the working mark. */
+.composer.is-dictating > :is(.composer-input, .composer-toolbar:not(:has(> *))) { display: none; }
+.dictation { display: flex; align-items: center; gap: var(--space-2); min-width: 0; min-height: var(--target); padding: 0 var(--space-1); }
+.dictation-wave { display: flex; flex: 1 1 auto; align-items: center; justify-content: space-between; gap: 2px; min-width: 0; height: 32px; overflow: hidden; }
+.dictation-wave > span { flex: 1 1 0; min-width: 2px; max-width: 4px; height: max(3px, calc(var(--level) * 100%)); border-radius: var(--radius-pill); background: var(--ink);
+  transition: height 90ms linear; }
+.dictation.is-transcribing .dictation-wave > span { background: var(--muted); opacity: .5; }
+.dictation-status { display: flex; flex: none; align-items: center; gap: var(--space-2); color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.dictation-label { color: var(--body); }
 /* Inline: the words and the actions share one row, the actions at the words' last line;
    what the person brought in still sits above both. */
 .composer.is-inline { --composer-inset: var(--space-1); grid-template-columns: minmax(0, 1fr) auto; align-items: end;
@@ -310,7 +359,7 @@ textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none
    than not at all, so taking up a pointer again never replays it. An exit whose end closes its surface takes a
    millisecond. A busy mark keeps turning and a focus ring still grows: they are feedback, not change. */
 :root[data-interaction="keyboard"] *, :root[data-interaction="keyboard"] *::before, :root[data-interaction="keyboard"] *::after, :root[data-interaction="keyboard"] ::backdrop { transition: none !important; }
-:root[data-interaction="keyboard"] :is(.count, .comparison-bar, .sparkline svg, .chart-point, .series-bar, .series-line, .series-dot,
+:root[data-interaction="keyboard"] :is(.task.is-new .task-mark, .task.is-new .task-mark path, .count, .comparison-bar, .sparkline svg, .chart-point, .series-bar, .series-line, .series-dot,
   .citation-preview, .source-reading-pane) { animation-duration: 0s !important; animation-delay: 0s !important; }
 :root[data-interaction="keyboard"] :is(.dialog.is-closing, .source-reading-layout.is-source-closing .source-reading-pane),
 :root[data-interaction="keyboard"] .dialog.is-closing::backdrop { animation-duration: 1ms !important; }
@@ -352,9 +401,11 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .section-action { min-height: var(--target); margin-block: calc(-1 * var(--space-3)); padding: 0 0 0 var(--space-3); border: 0; background: transparent; color: var(--primary); font: var(--type-body-sm); cursor: pointer; }
 .tabs.has-icons button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); min-height: 52px; font: var(--type-label-sm); }
 .tabs.has-icons .icon { width: 24px; height: 24px; }
-/* Prose: body large, a step between paragraphs, headings on the title roles, and
-   tables that scroll on their own. Only the Markdown's own elements take prose styles, never a host's inline piece. */
+/* Prose: body large, a step between paragraphs, headings on the title roles, code set apart in its frame, and tables
+   that scroll on their own. Only the Markdown's own elements take prose styles, never a host's inline piece. While words
+   stream in, each new word fades in. */
 .prose { width: 100%; min-width: 0; color: var(--body); font: var(--type-body-lg); overflow-wrap: anywhere; }
+.prose .code-block { margin: var(--space-3) 0; }
 .prose > :first-child { margin-top: 0; }
 .prose > :last-child { margin-bottom: 0; }
 .prose p:where([data-prose]) { margin: 0 0 var(--space-3); color: inherit; font: inherit; text-wrap: pretty; }
@@ -369,15 +420,66 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose a:where([data-prose]) { color: inherit; text-decoration-thickness: var(--hairline); text-underline-offset: .2em; }
 .prose blockquote:where([data-prose]) { margin: var(--space-3) 0; padding: 0 0 0 var(--space-3); border-left: var(--stroke) solid var(--outline); color: var(--muted); }
 .prose code:where([data-prose]) { padding: 0 var(--space-1); border-radius: var(--radius-sm); background: var(--surface-low); font: var(--type-code); }
-.prose pre:where([data-prose]), .prose th:where([data-prose]) { background: var(--surface-low); }
-.prose pre:where([data-prose]) { overflow-x: auto; margin: var(--space-3) 0; padding: var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); }
-.prose pre:where([data-prose]) code { padding: 0; background: transparent; font: var(--type-code); }
+.prose th:where([data-prose]) { background: var(--surface-low); }
+.prose-word { animation: prose-word var(--motion-arrive) var(--ease-out); }
+@keyframes prose-word { from { opacity: 0; } }
 .prose hr:where([data-prose]) { margin: var(--space-5) 0; border: 0; border-top: var(--hairline) solid var(--outline-variant); }
 .prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; overflow-x: auto; }
 .prose table:where([data-prose]) { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
 .prose :is(th, td):where([data-prose]) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
 .prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
+/* A table: things of one kind read across, in a frame that scrolls on its own; its head on the low surface, a hairline
+   between rows, and figures on the trailing edge. A heading that sorts takes the whole of its cell, its chevron held in
+   place so the sort moves nothing, on the leading side over figures so the words stay above them. A row that opens does
+   so as a whole. */
+.table-frame { min-width: 0; overflow-x: auto; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-lowest); }
+.table { width: 100%; min-width: 28em; border-collapse: collapse; color: var(--body); font: var(--type-body-md); }
+.table :is(th, td) { padding: var(--space-2) var(--space-3); text-align: start; }
+.table thead th { position: relative; background: var(--surface-low); color: var(--muted); font: var(--type-label-md); white-space: nowrap; }
+.table thead th[aria-sort] { color: var(--ink); }
+.table tbody th { color: var(--ink); font: var(--type-label-lg); }
+.table tbody tr { position: relative; border-top: var(--hairline) solid var(--outline-variant); }
+.table .is-numeric { text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.table .progress { min-width: 6em; }
+.table-sort { display: flex; align-items: center; gap: var(--space-1); width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.is-numeric > .table-sort { flex-direction: row-reverse; }
+.table-sort::after { content: ""; position: absolute; inset: 0; }
+.table-sort > .icon { width: 14px; height: 14px; opacity: 0; transition: rotate var(--motion-control) var(--ease-out); }
+[aria-sort] > .table-sort > .icon { opacity: 1; }
+[aria-sort="ascending"] > .table-sort > .icon { rotate: 180deg; }
+@media (hover: hover) {
+  .table-sort:hover { color: var(--ink); }
+  th:not([aria-sort]) > .table-sort:hover > .icon { opacity: .5; }
+  .table-open:hover::after { opacity: var(--state-hover); }
+}
+.table-sort:focus-visible { outline: 0; animation: none; }
+.table-sort:focus-visible::after { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: calc(-1 * var(--focus-ring-width)); }
+.table-open { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.table-open::after { content: ""; position: absolute; inset: 0; background: currentColor; opacity: 0; transition: opacity var(--motion-press) linear; }
+.table-open:active::after { opacity: var(--state-pressed); }
+.table-open:focus-visible { outline: 0; animation: none; }
+.table tbody tr:has(.table-open:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: calc(-1 * var(--focus-ring-width)); }
 .prose-image { color: var(--muted); font: var(--type-body-sm); font-style: italic; }
+/* Code: one frame on the low surface, its heading a quiet line of what it is beside its control, its lines in the
+   monospace, kept as written and scrolled across. A change's added lines lie on green after a plus, its removed lines
+   on red after a minus, each the width of the longest line. */
+.code-block { min-width: 0; overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-low);
+  color: var(--ink); font: var(--type-body-md); }
+.code-block-heading { display: flex; align-items: center; gap: var(--space-2); min-height: var(--control-height); padding: 0 var(--space-1) 0 var(--space-3);
+  border-bottom: var(--hairline) solid var(--outline-variant); color: var(--muted); font: var(--type-body-sm); }
+.code-block-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.code-block-body { margin: 0; padding: var(--space-3); overflow-x: auto; font: var(--type-code); tab-size: 4; }
+.code-block-body > code { font: inherit; }
+.diff .code-block-heading { padding-inline-end: var(--space-3); }
+.diff .code-block-body { padding-inline: 0; }
+.diff .code-block-body > code { display: inline-grid; min-width: 100%; }
+.diff-line { padding-inline-end: var(--space-3); color: inherit; text-decoration: none; }
+ins.diff-line { background: color-mix(in srgb, var(--primary-container) 75%, transparent); }
+del.diff-line { background: color-mix(in srgb, var(--error-container) 75%, transparent); }
+.diff-sign { display: inline-block; width: 3ch; color: var(--muted); text-align: center; user-select: none; }
+ins > .diff-sign, .diff-added { color: var(--primary); }
+del > .diff-sign, .diff-removed { color: var(--error); }
+.diff-counts { display: flex; gap: var(--space-2); margin-inline-start: auto; font-variant-numeric: tabular-nums; }
 /* Duet's theme: prose and the conversation at body large, each action a full-width
    bar, quiet actions and links in green at the touch target's height, cards on a hairline rather than a shadow, and the
    person's bubble tailed toward them. A host sets it on its root. */
@@ -403,7 +505,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   .card-object:has(.card-open:focus-visible) { outline-color: Highlight; }
   .control { border-color: ButtonText; }
   :is(.state-pill, .avatar) { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
-  :is(button, a, input, textarea, select, summary):focus-visible { outline-color: Highlight; }
+  :is(button, a, input, textarea, select, summary, .table-frame):focus-visible { outline-color: Highlight; }
 }
 /* Measurements and charts. A value's units read in body text beside its figures. */
 .value { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .3em; color: var(--ink); font: var(--type-value-md); letter-spacing: var(--title-tracking); font-variant-numeric: tabular-nums; }
@@ -486,17 +588,21 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .chart-header-label.is-pinned { color: var(--primary); }
 .chart-header-caption { color: var(--muted); font: var(--type-body-sm); }
 .chart-paging { display: flex; flex: none; }
-/* The span a series shows: equal pills on the resting fill, the chosen one's words in the accent on its soft fill.
-   Each pill is reached across the full target height. */
-.range-choice { --selection-fill: var(--primary-container); --selection-radius: var(--radius-pill); isolation: isolate;
+/* A few short choices: equal neutral pills, the chosen one's words in the accent on its soft fill. Each pill is reached
+   across the full target height, and carries the ring of the choice inside it. An arrow key moves focus between native
+   radios without WebKit counting it as keyboard focus, so the ring also follows the keyboard mode. */
+.segmented { --selection-fill: var(--primary-container); --selection-radius: var(--radius-pill); isolation: isolate;
   display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: var(--space-1); padding-block: calc((var(--target) - var(--control-height)) / 2); }
-.range-choice-option { position: relative; min-height: var(--control-height); padding: 0 var(--space-3); border: 0; border-radius: var(--radius-pill);
-  background: transparent; color: var(--body); font: var(--type-label-md); cursor: pointer;
-  transition: color var(--motion-control) var(--ease-out); }
-.range-choice-option::before { content: ""; position: absolute; inset: calc((var(--control-height) - var(--target)) / 2) 0; }
+.segmented-option { position: relative; display: flex; align-items: center; justify-content: center; gap: var(--space-1); box-sizing: border-box; min-width: 0; min-height: var(--control-height);
+  padding: 0 var(--space-3); border-radius: var(--radius-pill); color: var(--body); font: var(--type-label-md); cursor: pointer; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out); }
+.segmented-option > .icon { flex: none; width: 16px; height: 16px; }
+.segmented-option:has(input:disabled) { cursor: default; opacity: .46; }
+.segmented-option::before { content: ""; position: absolute; inset: calc((var(--control-height) - var(--target)) / 2) 0; }
 /* The resting fill lies beneath the chosen one's, so the chosen fill travels over the pills it passes. */
-.range-choice-option::after { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--control-resting); }
-.range-choice-option[aria-current]:not([aria-current="false"]) { color: var(--primary); }
+.segmented-option::after { content: ""; position: absolute; inset: 0; z-index: -2; border-radius: inherit; background: var(--surface-low); }
+.segmented-option[aria-current]:not([aria-current="false"]) { color: var(--primary); }
+:is(.segmented-option:has(input:focus-visible), :root[data-interaction="keyboard"] .segmented-option:has(input:focus)) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
 @keyframes series-grow { from { transform: scaleY(0); } }
 .measurement-tile { box-sizing: border-box; display: grid; gap: var(--space-1); align-content: start; min-width: 0; width: 100%; padding: var(--space-4) var(--space-3); border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--data-container); color: var(--ink); text-align: left; }
 .measurement-tile-label { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--on-data-container); font: var(--type-label-md); }
@@ -532,14 +638,29 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
     focus-ring-settle calc(var(--motion-focus) * .75) var(--ease-emphasized) calc(var(--motion-focus) * .25); }
 .is-tinted .card-footer { padding-top: 0; border-top: 0; }
-.step-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--outline-variant); }
-.step-list li { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--outline-variant); color: var(--ink); font: var(--type-body-md); }
-.step-number { flex: none; min-width: 2ch; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+/* A task list: tasks one line apart on hairlines, each led by its mark. A number or an open ring waits; the active task's
+   ring turns in the action green; a finished one is a filled green check, drawn in when it finishes while shown, its
+   words gone to muted; one passed over is a dash, its words struck. */
+.task-list { display: grid; margin: 0; padding: 0; list-style: none; border-top: var(--hairline) solid var(--outline-variant); }
+.task { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-3) 0; border-bottom: var(--hairline) solid var(--outline-variant); color: var(--ink); font: var(--type-body-md); }
+.task-mark { display: inline-grid; flex: none; place-items: center; align-self: center; min-width: 2ch; height: 20px; color: var(--muted); }
+.task-number { font: var(--type-body-sm); font-variant-numeric: tabular-nums; }
+.task-ring { box-sizing: border-box; width: 16px; height: 16px; border: 1.5px solid var(--outline); border-radius: var(--radius-pill); }
+.task-dash { width: 10px; border-top: 1.5px solid var(--muted); }
+.task.is-active .task-mark { color: var(--primary); }
+.task.is-active .task-mark > .icon { width: 18px; height: 18px; }
+.task.is-active .task-label { font-weight: var(--weight-strong); }
+.task.is-done .task-mark { width: 18px; min-width: 0; height: 18px; border-radius: var(--radius-pill); background: var(--primary); color: var(--on-primary); }
+.task.is-done .task-mark > .icon { width: 12px; height: 12px; stroke-width: 3; }
+.task.is-done.is-new .task-mark { animation: task-done var(--spring-arrive) both; }
+.task.is-done.is-new .task-mark path { stroke-dasharray: 24; animation: task-check var(--motion-arrive) var(--ease-out) var(--motion-press) both; }
+@keyframes task-done { from { scale: .4; opacity: 0; } }
+@keyframes task-check { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+.task.is-done .task-label { color: var(--muted); transition: color var(--motion-arrive) var(--ease-out); }
+.task.is-skipped .task-label { color: var(--muted); text-decoration: line-through; text-decoration-thickness: var(--hairline); }
 .quote { margin: 0; color: var(--ink); font: var(--type-body-lg); quotes: "\201C" "\201D"; }
 .quote::before { content: open-quote; }
 .quote::after { content: close-quote; }
-.later-context { display: grid; gap: var(--space-2); padding: var(--space-4); border-inline-start: var(--stroke) solid var(--outline); border-radius: 0 var(--radius-md) var(--radius-md) 0; background: var(--data-container); }
-.later-context .quote { font: var(--type-body-md); }
 /* The conversation's frame. */
 .date-separator { margin: 0; color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); text-align: center; }
 .context-chip { display: flex; align-items: center; gap: var(--space-2); margin: calc(-1 * var(--composer-inset, var(--space-2))) calc(-1 * var(--composer-inset, var(--space-2))) 0; padding: var(--space-2) var(--space-1) var(--space-2) var(--space-3);
@@ -578,7 +699,27 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .proposed-change-sources { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); }
 .proposed-change-sources .navigation-control { min-height: 0; font: var(--type-body-sm); }
 .selection-row, .setting-row { display: flex; align-items: center; gap: var(--space-3); min-height: var(--target); padding: var(--space-row) 0; cursor: pointer; }
-.selection-row input { flex: none; width: 22px; height: 22px; margin: 0; accent-color: var(--primary); }
+/* A box or a ring on the outline, filled with the action once chosen: the check draws across, the dot springs out, and a
+   mixed box holds a bar. A disabled row stands back and takes no press. */
+.selection-row input { appearance: none; display: grid; place-items: center; flex: none; box-sizing: border-box; width: 22px; height: 22px; margin: 0;
+  border: var(--stroke) solid var(--outline); background: var(--surface-lowest); cursor: inherit;
+  transition: background-color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out); }
+.selection-row input[type="checkbox"] { border-radius: var(--radius-sm); }
+.selection-row input[type="radio"] { border-radius: 50%; }
+@media (hover: hover) { .selection-row:hover input:not(:disabled) { border-color: var(--primary); } }
+.selection-row input:is(:checked, :indeterminate) { border-color: var(--primary); background: var(--primary); }
+.selection-row input[type="checkbox"]::after { content: ""; width: 14px; height: 14px; background: var(--on-primary); clip-path: inset(0 100% 0 0);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M2 7.5 5.5 11 12 3.5' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: clip-path var(--motion-arrive) var(--ease-out); }
+.selection-row input[type="checkbox"]:checked::after { clip-path: inset(0); }
+.selection-row input[type="checkbox"]:indeterminate::after { width: 10px; height: 2px; border-radius: var(--radius-pill); clip-path: inset(0); mask: none; }
+.selection-row input[type="radio"]::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--on-primary); scale: 0; transition: scale var(--spring-send); }
+.selection-row input[type="radio"]:checked::after { scale: 1; }
+:is(.selection-row input:focus-visible, :root[data-interaction="keyboard"] .selection-row input:focus) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+:is(.selection-row, .setting-row):has(input:disabled) { opacity: .46; cursor: default; }
+.switch:disabled { cursor: default; }
+.radio-group { display: grid; min-width: 0; margin: 0; padding: 0; border: 0; }
+.radio-group > legend { padding: 0 0 var(--space-1); color: var(--ink); font: var(--type-label-lg); }
 .row-list > li + li > :is(.selection-row, .setting-row) { border-top: 0; }
 .switch { flex: none; appearance: none; position: relative; width: 51px; height: 31px; margin: 0; border-radius: var(--radius-pill); background: var(--surface-highest);
   cursor: pointer; transition: background-color var(--motion-control) var(--ease-out); }
@@ -592,8 +733,6 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .notice-text { display: grid; gap: var(--space-hair); min-width: 0; font: var(--type-body-sm); }
 .notice-text strong { font: var(--type-title-sm); }
 .notice-text > .control { justify-self: start; margin-top: var(--space-2); }
-.tag { display: inline-flex; align-items: center; padding: var(--space-hair) var(--space-2); border: var(--hairline) solid var(--outline); border-radius: var(--radius-sm);
-  color: var(--muted); font: var(--type-label-sm); font-weight: var(--weight-regular); }
 .footer-actions { --control-width: 100%; display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-5) max(var(--space-5), env(safe-area-inset-bottom)); border-top: var(--hairline) solid var(--outline-variant);
   background: var(--surface-lowest); }
 .footer-note { margin: 0; color: var(--muted); font: var(--type-body-sm); text-align: center; }
@@ -614,23 +753,268 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .jump-to-latest { position: absolute; right: var(--space-row); bottom: var(--space-row); box-shadow: var(--elevation-3);
   transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
 @starting-style { .jump-to-latest { opacity: 0; transform: translateY(var(--rise)) scale(.98); } }
-/* Feedback: the rating pair, and reasons as toggle chips. */
+/* Feedback: the rating pair, and reasons as toggle chips. Among a message's actions, the pair shows with the row. */
 .feedback-rating { display: inline-flex; gap: var(--space-hair); transition: opacity var(--motion-control) var(--ease-out); }
 @media (hover: hover) {
-  .feedback-rating { opacity: 0; pointer-events: none; }
-  :is(.message:hover, .message:focus-within) .feedback-rating, .feedback-rating:is(:focus-within, [data-active="true"]) { opacity: 1; pointer-events: auto; }
+  .feedback-rating:not(.message-actions > *) { opacity: 0; pointer-events: none; }
+  :is(.message:hover, .message:focus-within) .feedback-rating:not(.message-actions > *), .feedback-rating:not(.message-actions > *):is(:focus-within, [data-active="true"]) { opacity: 1; pointer-events: auto; }
 }
+/* A message's actions: quiet icon controls in a row close under it, at the bubble's edge after the person's words. On
+   pointer devices they show while the message or the row is hovered or focused, or while an action is busy. A version
+   switch says where it is between its arrows. */
+.message-turn { display: grid; gap: var(--space-1); min-width: 0; }
+.message-turn.is-person { justify-items: end; }
+.message-turn.is-person > .message-person { margin-inline-start: 0; }
+.message-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-hair); min-height: var(--control-height);
+  transition: opacity var(--motion-control) var(--ease-out); }
+.message-turn > .message-actions { margin-inline: calc(-1 * var(--space-2)); }
+@media (hover: hover) {
+  .message-actions:not(.is-shown) { opacity: 0; }
+  .message-turn:is(:hover, :focus-within) > .message-actions, .message-actions:has([data-active="true"], [aria-busy="true"]) { opacity: 1; }
+}
+.version-switch { display: inline-flex; align-items: center; }
+/* Attachments: a file as a tile on its hairline, its mark on the data tint, its name, and what it is beneath; an image
+   as its own square picture. Uploading, it turns or fills its foot; when it didn't upload, a tile outlined in red. Its
+   remove sits at its corner, and a tile that opens takes the state layer and the focus ring whole. In the composer they
+   scroll across in one row; in the person's bubble they wrap at its edge. Each arrives on the arrival motion. */
+.attachments { display: flex; flex-wrap: wrap; gap: var(--space-2); min-width: 0; }
+.composer > .attachments { flex-wrap: nowrap; overflow-x: auto; padding: var(--space-1); scrollbar-width: none; }
+.message-person > .attachments { justify-content: flex-end; margin-bottom: var(--space-2); }
+.message-person > .attachments > .attachment:not(.is-image) { flex: 1 1 9rem; max-width: 14rem; }
+.attachment { position: relative; display: flex; align-items: center; gap: var(--space-2); box-sizing: border-box; flex: none; width: 14rem; max-width: 100%; min-height: 56px;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-2); overflow: hidden; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md);
+  background: var(--surface-lowest); color: var(--ink); transition: opacity var(--motion-arrive) var(--ease-out), scale var(--motion-arrive) var(--ease-out); }
+@starting-style { .attachment { opacity: 0; scale: .94; } }
+.attachment:has(.attachment-remove):not(.is-image) { padding-inline-end: calc(var(--space-6) + var(--space-2)); }
+.attachment.is-image { width: 64px; height: 64px; min-height: 0; padding: 0; }
+.attachment-image { display: block; width: 100%; height: 100%; object-fit: cover; transition: opacity var(--motion-arrive) var(--ease-out); }
+.attachment.is-uploading .attachment-image { opacity: .45; }
+.attachment-image-mark { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink); }
+.attachment-mark { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--data-container); color: var(--on-data-container); }
+.attachment.is-failed { border-color: var(--error); }
+.attachment.is-failed .attachment-mark { background: var(--error-container); color: var(--error); }
+.attachment-text { display: grid; min-width: 0; }
+.attachment-name, .attachment-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.attachment-name { font: var(--type-label-lg); }
+.attachment-detail { color: var(--muted); font: var(--type-body-sm); }
+.attachment.is-failed .attachment-detail { color: var(--error); }
+.attachment-open { position: absolute; inset: 0; padding: 0; border: 0; border-radius: inherit; background: currentColor; opacity: 0; cursor: pointer;
+  -webkit-tap-highlight-color: transparent; transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { .attachment-open:hover { opacity: var(--state-hover); } }
+.attachment-open:active { opacity: var(--state-pressed); }
+.attachment-open:focus-visible { outline: 0; animation: none; }
+.attachment:has(.attachment-open:focus-visible) { overflow: visible; outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+.attachment > .progress { position: absolute; inset: auto 0 0; height: 3px; border-radius: 0; }
+.attachment-remove { position: absolute; top: var(--space-1); inset-inline-end: var(--space-1); display: grid; place-items: center; width: 22px; height: 22px; padding: 0;
+  border: 0; border-radius: var(--radius-pill); background: var(--ink); color: var(--surface-lowest); cursor: pointer; }
+.attachment-remove::after { content: ""; position: absolute; inset: -9px; }
+.attachment-remove > .icon { width: 14px; height: 14px; }
+.attachment-remove:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: 2px; }
+.attach-button { cursor: pointer; }
+.attach-button:has(input:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+/* How far something has got: a track filling from its start as far as the host says. Not knowing how far, a short length
+   travels along it, claiming no amount; without motion the whole track stands tinted instead. */
+.progress-labelled { display: grid; gap: var(--space-2); min-width: 0; color: var(--ink); font: var(--type-label-lg); }
+.progress { height: 4px; overflow: hidden; border-radius: var(--radius-pill); background: var(--outline-variant); }
+.progress::before { content: ""; display: block; width: var(--progress); height: 100%; border-radius: inherit; background: var(--primary); transition: width var(--motion-control) var(--ease-out); }
+.progress.is-unknown::before { width: 38%; animation: progress-unknown var(--motion-working) var(--ease-in-out) infinite; }
+@keyframes progress-unknown { from { translate: -100% 0; } to { translate: 265% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .progress.is-unknown::before { width: 100%; opacity: .4; }
+}
+/* A message on its way: quieter while sending; outlined, not filled, while it waits its turn; on a red outline when it
+   didn't go, its status in red beneath. Its status is one quiet line at the bubble's edge, its ways on beside it. */
+.message-person.is-sending { opacity: .62; }
+.message-person.is-queued { border: var(--hairline) dashed var(--outline); background: transparent; color: var(--body); }
+.message-person.is-failed { box-shadow: inset 0 0 0 var(--hairline) var(--error); }
+.message-status { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0 var(--space-2); min-height: var(--control-height);
+  color: var(--muted); font: var(--type-body-sm); }
+.message-turn:not(.is-person) > .message-status { justify-content: flex-start; }
+.message-status > .icon { width: 16px; height: 16px; }
+.message-status.is-alert { color: var(--error); }
+.message-status > .control { margin-inline: calc(-1 * var(--space-1)) 0; }
+/* The person's words being edited where they stood: the field at the bubble's edge, as wide as a bubble may be, the
+   words on body large growing with them, and under them a note on what saving does, then Cancel and Save. */
+.message-editor { display: grid; gap: var(--space-2); box-sizing: border-box; width: min(100%, 36rem); margin-inline-start: auto; padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg); }
+.message-editor-input { display: block; box-sizing: border-box; width: 100%; min-height: 2lh; max-height: 12lh; margin: 0; padding: 0; border: 0; resize: none;
+  field-sizing: content; background: transparent; color: var(--ink); font: var(--type-body-lg); }
+.message-editor-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
+.message-editor-note { flex: 1 1 14rem; margin: 0; color: var(--muted); font: var(--type-body-sm); }
+.message-editor-actions { display: flex; gap: var(--space-2); margin-inline-start: auto; }
+.version-switch-place { min-width: 5ch; color: var(--muted); font: var(--type-body-sm); font-variant-numeric: tabular-nums; text-align: center; }
 .feedback-rating .control[aria-pressed="true"] { color: var(--primary); background: var(--primary-container); }
 .toggle-chip { border-radius: var(--radius-pill); font-weight: var(--weight-regular); white-space: normal; text-align: left; }
 .toggle-chip[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-container); }
-/* The one undo notice: a surface at the overlay's depth, words then Undo, floating at the foot
+/* The toast: a surface at the overlay's depth, its icon, words and action, floating at the foot
    of the window so it never moves what is being read. It settles back the way it came, shorter than it arrived. */
-.undo-notice { position: fixed; z-index: 10; inset-inline: 0; bottom: max(var(--space-6), env(safe-area-inset-bottom)); display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3);
+.toast { position: fixed; z-index: 10; inset-inline: 0; bottom: max(var(--space-6), env(safe-area-inset-bottom)); display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3);
   box-sizing: border-box; width: fit-content; max-width: calc(100% - 2 * var(--page-gutter)); min-height: var(--target); margin: 0 auto;
   padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-radius: var(--radius-lg); background: var(--surface-lowest); box-shadow: var(--elevation-4);
   color: var(--body); font: var(--type-body-md); transition: opacity var(--motion-arrive) var(--ease-out), transform var(--motion-arrive) var(--ease-out); }
-@starting-style { .undo-notice { opacity: 0; transform: translateY(var(--rise)); } }
-.undo-notice.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
+@starting-style { .toast { opacity: 0; transform: translateY(var(--rise)); } }
+.toast.is-leaving { opacity: 0; transform: translateY(var(--rise)); transition: opacity var(--motion-control) var(--ease-exit), transform var(--motion-control) var(--ease-exit); }
+.toast:not(:has(> .control)) { padding-inline-end: var(--space-4); }
+.toast > .icon { color: var(--primary); }
+/* Agent work: one quiet line for the turn's work, its steps in a column beneath, each mark on a hairline that joins
+   them. A running step's words shimmer, ink passing through muted, and a step that opens shows its body indented under
+   its words. The steps open and fold as a disclosure does. */
+.work-trace { min-width: 0; color: var(--muted); font: var(--type-body-sm); }
+.work-trace-line, .work-step-line { position: relative; display: flex; align-items: center; gap: var(--space-2); box-sizing: border-box; width: 100%; min-height: var(--control-height);
+  padding: var(--space-1) 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: start; }
+:is(button.work-trace-line, button.work-step-line) { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+@media (hover: hover) { :is(button.work-trace-line, button.work-step-line):hover { color: var(--ink); } }
+.work-trace-label { min-width: 0; color: var(--body); }
+.work-trace-detail, .work-step-detail { color: var(--muted); }
+:is(.work-trace-line, .work-step-line) > .icon { flex: none; color: var(--muted); transition: transform var(--motion-arrive) var(--ease-out); }
+.work-trace[data-state="open"] > .work-trace-line > .icon, .work-step[data-state="open"] > .work-step-line > .icon { transform: rotate(180deg); }
+.work-trace.is-working .work-trace-label { color: var(--ink); }
+.work-steps { margin: 0; padding: 0 0 var(--space-2); list-style: none; }
+.work-step { position: relative; min-width: 0; }
+.work-step:not(:last-child)::before { content: ""; position: absolute; top: calc(var(--control-height) - var(--space-2)); bottom: calc(-1 * var(--space-1)); left: 11px;
+  border-left: var(--hairline) solid var(--outline-variant); }
+.work-step-mark { display: grid; place-items: center; flex: none; width: 24px; height: 24px; border-radius: var(--radius-pill); background: var(--surface-low); color: var(--muted); }
+.work-step-mark > .icon { width: 14px; height: 14px; }
+.work-step-text { display: flex; flex: 0 1 auto; flex-wrap: wrap; align-items: baseline; gap: 0 var(--space-2); min-width: 0; }
+.work-step-label { color: var(--body); }
+:is(.work-step.is-running .work-step-label, .artifact.is-working .artifact-title) { background: linear-gradient(90deg, var(--muted) 30%, var(--ink) 50%, var(--muted) 70%) 0 0 / 300% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent; animation: work-shimmer 2s linear infinite; }
+@keyframes work-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+.work-step.is-failed .work-step-mark { background: var(--error-container); color: var(--error); }
+.work-step.is-failed .work-step-label { color: var(--error); }
+.work-step.is-stopped .work-step-label { color: var(--muted); }
+.work-step-body { padding: 0 0 var(--space-3) calc(24px + var(--space-2)); color: var(--body); font: var(--type-body-sm); }
+.work-step-body > :first-child { margin-top: 0; }
+.work-step-body > :last-child { margin-bottom: 0; }
+@media (prefers-reduced-motion: reduce) {
+  :is(.work-step.is-running .work-step-label, .artifact.is-working .artifact-title) { animation: none; background: none; color: var(--ink); }
+}
+/* An approval: a card at the resting card's depth on the action's outline while it waits, its content set in, the
+   answers at its trailing foot. Answered, its outline goes quiet and the answer takes the actions' place. */
+.approval { display: grid; gap: var(--space-3); min-width: 0; padding: var(--space-4); border: var(--hairline) solid var(--primary-outline); border-radius: var(--radius-lg);
+  background: var(--surface-lowest); box-shadow: var(--elevation-2); transition: border-color var(--motion-arrive) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
+.approval.is-answered { border-color: var(--outline-variant); box-shadow: none; }
+.approval-heading { display: grid; gap: var(--space-hair); }
+.approval-heading strong { color: var(--ink); font: var(--type-title-sm); }
+.approval-heading span { color: var(--muted); font: var(--type-body-sm); }
+.approval-content { min-width: 0; color: var(--body); font: var(--type-body-md); }
+.approval-content:empty { display: none; }
+.approval-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-2); }
+.approval-answer { display: flex; align-items: center; gap: var(--space-2); margin: 0; color: var(--muted); font: var(--type-body-sm);
+  transition: opacity var(--motion-arrive) var(--ease-out); }
+@starting-style { .approval-answer { opacity: 0; } }
+.approval-answer > .icon { color: var(--primary); }
+/* Something an agent made: a card at rest on its outline, its icon on a tinted tile, its title and detail beside it and
+   the way in at its end, with the opening of it beneath, fading out. While it is still being made its title shimmers. */
+.artifact { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); }
+.artifact-mark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--data-container); color: var(--on-data-container); }
+.artifact-text { display: grid; gap: var(--space-hair); min-width: 0; }
+.artifact-title { margin: 0; color: var(--ink); font: var(--type-title-sm); overflow-wrap: anywhere; }
+.artifact-go { display: grid; color: var(--muted); }
+.artifact-preview { grid-column: 1 / -1; max-height: 7lh; overflow: hidden; padding: var(--space-3); border-radius: var(--radius-md); background: var(--surface-low);
+  color: var(--body); font: var(--type-body-sm); mask-image: linear-gradient(to bottom, #000 50%, transparent); }
+.artifact-preview > * { margin: 0 0 var(--space-2); }
+/* Overlays: the browser's own popover, in the top layer at the overlay's depth, beside the control that opens it. It
+   opens under the control from its leading edge and flips above or across where there isn't room; without anchoring it
+   stands centred. It arrives on the arrival spring from the corner nearest the control and settles back shorter. */
+.popover { box-sizing: border-box; width: min(var(--popover-width), calc(100vw - 2 * var(--space-3)));
+  max-height: min(var(--popover-max-height), calc(100dvh - 2 * var(--space-3))); padding: var(--space-4); overflow: auto; overscroll-behavior: contain;
+  border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-lg); background: var(--surface-lowest); color: var(--body);
+  box-shadow: var(--elevation-4); font: var(--type-body-md); opacity: 0; scale: .96; transform-origin: top left;
+  transition: opacity var(--motion-control) var(--ease-exit), scale var(--motion-control) var(--ease-exit),
+    overlay var(--motion-control) allow-discrete, display var(--motion-control) allow-discrete; }
+.popover:popover-open { opacity: 1; scale: 1; transition: opacity var(--motion-arrive) var(--ease-out), scale var(--spring-arrive),
+  overlay var(--motion-arrive) allow-discrete, display var(--motion-arrive) allow-discrete; }
+@starting-style { .popover:popover-open { opacity: 0; scale: .96; } }
+@supports (position-area: block-end) {
+  .popover { inset: auto; margin: var(--space-1) 0; position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline; }
+}
+.popover :is(h2, h3) { margin: 0 0 var(--space-2); color: var(--ink); font: var(--type-title-sm); }
+.popover p { margin: 0 0 var(--space-3); }
+/* A combobox's list hangs from its field, at the field's width, flipping above where there isn't room. */
+.combobox-popup { width: anchor-size(width); max-height: min(18rem, 50dvh); padding: var(--space-1); position-area: block-end span-inline-end;
+  position-try-fallbacks: flip-block; scroll-padding: var(--space-1); }
+.option-chosen { display: flex; flex: none; color: var(--primary); }
+.option-row[aria-disabled="true"] { cursor: default; opacity: .46; }
+.option-row[aria-disabled="true"]::before { opacity: 0; }
+.combobox-popup .option-row-label { flex-wrap: wrap; gap: 0 var(--space-2); }
+.combobox-popup .option-row-label > span { flex: 0 1 auto; }
+.combobox-popup .combobox-empty { margin: 0; padding: var(--space-3); color: var(--muted); font: var(--type-body-md); }
+/* A menu: choices on rows at the control height, the target height under a finger. The choice under the pointer or
+   the keys is one, holding focus; it carries the state layer, which stands for its focus ring. */
+.menu:focus { outline: 0; }
+.menu { width: max-content; min-width: 13rem; max-width: min(21rem, calc(100vw - 2 * var(--space-3))); padding: var(--space-1); border-radius: var(--radius-md); }
+.menu-section + .menu-section { margin-top: var(--space-1); padding-top: var(--space-1); border-top: var(--hairline) solid var(--outline-variant); }
+.menu-section-label { padding: var(--space-2) var(--space-3) var(--space-1); color: var(--muted); font: var(--type-label-sm); }
+.menu-item { position: relative; display: flex; align-items: center; gap: var(--space-3); box-sizing: border-box; width: 100%; min-height: var(--control-height);
+  padding: var(--space-1) var(--space-3); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--ink); font: var(--type-body-md);
+  text-align: start; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.menu-item > .icon { color: var(--muted); }
+.menu-item-label { display: grid; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.menu-item-label small { color: var(--muted); font: var(--type-body-sm); }
+.menu-item > .key-hint { margin-inline-start: var(--space-4); color: var(--muted); opacity: 1; }
+.menu-item-check { display: contents; color: var(--primary); }
+.menu-item.is-danger, .menu-item.is-danger > .icon { color: var(--error); }
+.menu-item[aria-disabled="true"] { cursor: default; opacity: .46; }
+.menu-item::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none;
+  transition: opacity var(--motion-press) linear; }
+@media (hover: hover) { .menu-item:hover:not([aria-disabled="true"])::before { opacity: var(--state-hover); } }
+.menu-item:focus-visible::before { opacity: var(--state-hover); }
+.menu-item:active:not([aria-disabled="true"])::before { opacity: var(--state-pressed); }
+.menu-item:focus-visible { outline: 0; animation: none; }
+@media (pointer: coarse) { .menu-item { min-height: var(--target); } }
+@media (forced-colors: active) { .menu-item:is(:hover, :focus-visible) { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
+/* A menu opened at a point stands where its script puts it. */
+.popover.is-at-point { position-area: none; inset: auto; margin: 0; }
+/* A context menu's content shrinks a touch while held; lifted, its copy stands in its place over the blurred page, the
+   original hidden beneath. The copy's foot fades where it is cut short. A tap anywhere on the page closes the menu. */
+.context-menu-host { -webkit-touch-callout: none; }
+.context-menu-host > * { transition: scale var(--motion-step) var(--ease-out); }
+.context-menu-host[data-pressing] { user-select: none; -webkit-user-select: none; }
+.context-menu-host[data-pressing] > * { scale: .97; }
+.context-menu-host[data-lifted] > * { visibility: hidden; }
+.context-lift { position: fixed; inset: 0; width: auto; height: auto; max-width: none; max-height: none; margin: 0; padding: 0; overflow: visible;
+  border: 0; background: transparent; }
+.context-lift::before { content: ""; position: fixed; inset: 0; background: color-mix(in srgb, var(--surface) 40%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); transition: opacity var(--motion-arrive) var(--ease-out); }
+@starting-style { .context-lift:popover-open::before { opacity: 0; } }
+.context-lift.is-settling::before { opacity: 0; transition: opacity var(--motion-control) var(--ease-exit); }
+.context-lift-preview { position: fixed; overflow: hidden; pointer-events: none; filter: drop-shadow(0 12px 28px rgb(var(--ref-shadow) / .18)); }
+.context-lift-preview > * { margin: 0; }
+.context-lift-preview.is-clipped { mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); }
+/* A tooltip: a small inverted label above its control, fading in on the press timing and out shorter. */
+.tooltip-host { display: inline-flex; }
+.tooltip { box-sizing: border-box; max-width: min(16rem, calc(100vw - 2 * var(--space-3))); margin: 0; padding: var(--space-1) var(--space-2); overflow: visible;
+  border: 0; border-radius: var(--radius-sm); background: var(--ink); color: var(--surface-lowest); font: var(--type-body-sm);
+  opacity: 0; transition: opacity var(--motion-control) var(--ease-exit), overlay var(--motion-control) allow-discrete, display var(--motion-control) allow-discrete; }
+.tooltip:popover-open { opacity: 1; transition: opacity var(--motion-press) var(--ease-out), overlay var(--motion-press) allow-discrete, display var(--motion-press) allow-discrete; }
+@starting-style { .tooltip:popover-open { opacity: 0; } }
+.tooltip kbd { margin-inline-start: var(--space-2); font: inherit; opacity: .64; }
+@supports (position-area: block-start) {
+  .tooltip { inset: auto; margin: var(--space-1) 0; position-area: block-start; position-try-fallbacks: flip-block; }
+}
+/* The command palette: a dialog toward the top of the window, its field a line across its head and its commands
+   beneath, scrolling on their own. The active command carries the state layer. */
+.command-palette { --dialog-width: 36rem; --dialog-margin: max(var(--space-6), 12dvh); }
+.command-palette-body { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-height: 0; max-height: min(30rem, var(--dialog-max-height)); }
+.command-palette-search, .command-palette-search:focus-within { min-height: 3.5rem; padding: 0 var(--space-5); border: 0; border-bottom: var(--hairline) solid var(--outline-variant);
+  border-radius: 0; background: transparent; box-shadow: none; }
+.command-palette-list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-2); scroll-padding: var(--space-2); }
+.command-palette-list:empty { display: none; }
+.command-group-label { padding: var(--space-3) var(--space-3) var(--space-1); color: var(--muted); font: var(--type-label-sm); }
+.option-row { position: relative; display: flex; align-items: center; gap: var(--space-3); min-height: var(--control-height); padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm); color: var(--ink); font: var(--type-body-md); cursor: pointer; }
+.option-row > .icon { color: var(--muted); }
+.option-row-label { display: flex; flex: 1; align-items: baseline; gap: var(--space-2); min-width: 0; }
+.option-row-label > span { flex: none; }
+.option-row-label small { overflow: hidden; color: var(--muted); font: var(--type-body-sm); text-overflow: ellipsis; white-space: nowrap; }
+.option-row > .key-hint { color: var(--muted); opacity: 1; }
+.option-row::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: currentColor; opacity: 0; pointer-events: none; }
+.option-row[aria-selected="true"]::before { opacity: var(--state-hover); }
+@media (pointer: coarse) { .option-row { min-height: var(--target); } }
+.command-palette-empty { margin: 0; padding: var(--space-6) var(--space-5); color: var(--muted); font: var(--type-body-md); text-align: center; }
+@media (forced-colors: active) { .option-row[aria-selected="true"] { outline: var(--focus-ring-width) solid Highlight; outline-offset: calc(-1 * var(--focus-ring-width)); } }
 /* Reading a cited source. The preview sits at the overlay's
    depth beside its citation, on the side with more room, and never covers it; the component places it. */
 .anchored-popover { display: inline; }

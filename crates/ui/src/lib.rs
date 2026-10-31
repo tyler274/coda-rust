@@ -1,43 +1,66 @@
-//! The one source of truth for the design of the Duet and physician Dioxus apps: the tokens (colour,
-//! type, space, shape and motion), the icons, and each component's look, motion, gestures, states and
-//! accessibility. It holds no product rules. Each app decides when a component shows, what pressing
-//! it does, what its server guarantees, every word it says, and how its screens are laid out.
-//! Book: `book/src/ui-surface-map.md`.
+//! Coda's design, as a catalog of AI-native component families any surface can compose: the
+//! tokens (colour, type, space, shape and motion), the icons, and each component's look, motion,
+//! gestures, states and accessibility. It holds no product rules. The surface that places a
+//! component decides when it shows, what pressing it does, what its server guarantees, every word
+//! it says, and how the screen is laid out. `crates/ui-gallery` renders every family.
 #![deny(missing_docs)]
 
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::dioxus_core::AttributeValue;
+use dioxus::html::FileData;
 use dioxus::prelude::*;
 
+mod agent;
+mod attachments;
 mod cards;
 mod charts;
+mod code;
 mod conversation;
 mod documents;
 mod feedback;
 mod icons;
+mod inputs;
 mod live;
 mod motion;
+mod overlays;
 mod prose;
 mod sources;
-mod undo;
-pub use cards::{Card, LaterContext, Quote, StepList};
-pub use charts::{
-    ChartHeader, Comparison, ComparisonBars, MeasurementTile, RangeChoice, RunningChart,
-    SeriesChart, SeriesPoint, SeriesShape, Sparkline, Value,
+mod tables;
+mod toast;
+pub use agent::{
+    Answer, ApprovalCard, ArtifactCard, StepState, Task, TaskList, TaskState, TaskWords, WorkStep,
+    WorkTrace,
 };
-pub use conversation::{ContextChip, ConversationViewport, DateSeparator, Suggestion};
+pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
+pub use cards::{Card, Quote};
+pub use charts::{
+    ChartHeader, Comparison, ComparisonBars, MeasurementTile, RunningChart, SeriesChart,
+    SeriesPoint, SeriesShape, Sparkline, Value,
+};
+pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords, copy_text};
+pub use conversation::{
+    ContextChip, ConversationViewport, DateSeparator, Dictation, MessageActions, MessageEditor,
+    MessageStatus, Suggestion, VersionSwitch,
+};
 pub use documents::{
-    FooterActions, Notice, Paper, PaperSection, ProposedChange, SelectionRow, SettingRow, Tag,
-    TopBar,
+    FooterActions, Notice, Paper, PaperSection, ProposedChange, SettingRow, TopBar,
 };
 pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
+pub use inputs::{
+    Checkbox, Choice, Combobox, DateField, DateKind, RadioGroup, Segmented, Select, Slider,
+    TextField,
+};
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;
+pub use overlays::{
+    Command, CommandPalette, ContextMenu, Menu, MenuItem, MenuSection, Popover, Tooltip,
+};
 pub use prose::{Prose, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
-pub use undo::{UNDO_MS, UndoNotice};
+pub use tables::{Column, SortOrder, Table, TableRow};
+pub use toast::{TOAST_MS, Toast};
 
 /// How long a surface takes to settle away before it is removed: `--motion-control` in
 /// `tokens.css`, which owns it. Removal waits on a timer rather than the animation's end because
@@ -88,9 +111,9 @@ pub fn PageTitle(
     }
 }
 
-/// What a card holds, named above its title in small capitals: "What Duet noticed", "Original record".
+/// What a card holds, named above its title in small capitals: "Original record".
 #[component]
-pub fn Overline(text: String) -> Element {
+fn Overline(text: String) -> Element {
     rsx! { p { class: "overline", "{text}" } }
 }
 
@@ -289,9 +312,9 @@ pub fn LiveDot() -> Element {
     rsx! { span { class: "live-dot", aria_hidden: "true" } }
 }
 
-/// The one working mark: three live dots lighting in turn,
-/// shown only while work actually runs. Duet's typing indicator is this mark in a reply's place.
-/// The words beside it, or the host's status, say what runs.
+/// The one working mark: three live dots lighting in turn, shown only while work actually runs; in
+/// a reply's place, it says a reply is coming. The words beside it, or the host's status, say what
+/// runs.
 #[component]
 pub fn WorkingMark() -> Element {
     rsx! {
@@ -413,6 +436,54 @@ pub fn Spinner() -> Element {
     }
 }
 
+/// How far something has got, which only the host knows: `value` runs from 0 to 1, and without one,
+/// or when it isn't a number, the bar moves without claiming an amount. `label` names it and
+/// `reading` says how far in the host's words, such as "3 of 12 notes"; both stand above the bar,
+/// and are only spoken when it is `bare`, for a place that already says what it is.
+#[component]
+pub fn ProgressBar(
+    label: String,
+    value: Option<f64>,
+    reading: Option<String>,
+    #[props(default)] bare: bool,
+) -> Element {
+    let filled = filled_percent(value);
+    let bar = rsx! {
+        div {
+            class: if filled.is_some() { "progress" } else { "progress is-unknown" },
+            role: "progressbar",
+            aria_label: "{label}",
+            aria_valuemin: "0",
+            aria_valuemax: "100",
+            aria_valuenow: filled.map(|percent| percent.to_string()),
+            aria_valuetext: reading.clone(),
+            style: filled.map(|percent| format!("--progress: {percent}%")),
+        }
+    };
+    if bare {
+        return bar;
+    }
+    rsx! {
+        div { class: "progress-labelled",
+            div { class: "field-heading", aria_hidden: "true",
+                span { "{label}" }
+                if let Some(reading) = reading {
+                    span { class: "field-reading", "{reading}" }
+                }
+            }
+            {bar}
+        }
+    }
+}
+
+/// How much of a bar is filled: never all of it before the work is all done, and no amount at all
+/// from a value that isn't a number, as a share of nothing isn't.
+fn filled_percent(value: Option<f64>) -> Option<f64> {
+    value
+        .filter(|done| done.is_finite())
+        .map(|done| (done.clamp(0.0, 1.0) * 100.0).floor())
+}
+
 /// How large an avatar is drawn.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum AvatarSize {
@@ -491,6 +562,9 @@ pub fn Button(
     /// Submits its form instead of acting on its own.
     #[props(default)]
     submit: bool,
+    /// The id of the `Popover` or `Menu` it opens and closes, which stands beside it.
+    #[props(default)]
+    opens: Option<String>,
     onclick: Option<EventHandler<MouseEvent>>,
     /// The press, before it takes focus: a control that leaves focus where it is prevents it here.
     onmousedown: Option<EventHandler<MouseEvent>>,
@@ -520,6 +594,7 @@ pub fn Button(
             disabled: disabled || busy,
             aria_busy: if busy { "true" },
             aria_label: pending,
+            popovertarget: opens,
             onclick: move |event| {
                 if let Some(handler) = &onclick {
                     handler.call(event);
@@ -541,7 +616,7 @@ pub fn Button(
 
 /// In-place navigation: a quiet link, separate from
 /// commands, that opens another place or goes back. It reads in body text and underlines on hover;
-/// a surface may colour it once at its root (`--navigation-color`), as Duet does.
+/// a surface may colour it once at its root (`--navigation-color`).
 #[component]
 pub fn NavigationControl(
     #[props(default)] disabled: bool,
@@ -597,19 +672,39 @@ pub fn NavigationRow(
 pub enum Author {
     /// The person using the app: their words stand in a bubble at the far edge.
     Person,
-    /// Coda or Duet: its words read as plain prose.
+    /// The assistant: its words read as plain prose.
     Assistant,
+}
+
+/// Where the person's message stands on its way.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum MessageState {
+    /// Delivered.
+    #[default]
+    Sent,
+    /// On its way.
+    Sending,
+    /// Waiting its turn, such as until the reply under way is done.
+    Queued,
+    /// Didn't go.
+    Failed,
 }
 
 /// One message in a thread:
 /// the person's words in a light bubble at the far edge, the assistant's as plain prose. Who
-/// wrote it stays with assistive technology. A message rises in as it appears.
+/// wrote it stays with assistive technology. A message rises in as it appears. On its way it
+/// stands a little quieter; waiting its turn, its bubble is outlined, not filled; when it didn't
+/// go, its outline is red. Its `status`, a `MessageStatus`, and its `actions`, a `MessageActions`
+/// row, stand close under it, at the bubble's edge for the person's words.
 #[component]
 pub fn Message(
     author: Author,
     /// Who wrote it, for assistive technology.
     #[props(default)]
     by: String,
+    #[props(default)] state: MessageState,
+    #[props(default)] status: Option<Element>,
+    #[props(default)] actions: Option<Element>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
@@ -617,47 +712,29 @@ pub fn Message(
         Author::Person => "message message-person",
         Author::Assistant => "message message-assistant",
     });
+    class.push_str(match state {
+        MessageState::Sent => "",
+        MessageState::Sending => " is-sending",
+        MessageState::Queued => " is-queued",
+        MessageState::Failed => " is-failed",
+    });
     let rest = host_attributes(&mut class, attributes);
-    rsx! {
+    let message = rsx! {
         article { class: "{class}", ..rest,
             if !by.is_empty() {
                 span { class: "sr-only", "{by}" }
             }
             {children}
         }
+    };
+    if status.is_none() && actions.is_none() {
+        return message;
     }
-}
-
-/// A field with its label above it: one line, or with
-/// `multiline` words that grow with what is written. The host owns its value and hears each
-/// change.
-#[component]
-pub fn TextField(
-    label: String,
-    value: String,
-    on_input: EventHandler<String>,
-    #[props(default)] multiline: bool,
-    #[props(default)] placeholder: String,
-) -> Element {
     rsx! {
-        label { class: "text-field",
-            span { class: "text-field-label", "{label}" }
-            if multiline {
-                textarea {
-                    class: "field text-field-input",
-                    rows: "3",
-                    placeholder: "{placeholder}",
-                    value: "{value}",
-                    oninput: move |event| on_input.call(event.value()),
-                }
-            } else {
-                input {
-                    class: "field text-field-input",
-                    placeholder: "{placeholder}",
-                    value: "{value}",
-                    oninput: move |event| on_input.call(event.value()),
-                }
-            }
+        div { class: if author == Author::Person { "message-turn is-person" } else { "message-turn" },
+            {message}
+            {status}
+            {actions}
         }
     }
 }
@@ -733,7 +810,10 @@ pub fn SearchField(
 /// The composer: the one raised text field, holding the words and, under
 /// them, a toolbar of the host's context and actions; a host's submit control sends. `inline`
 /// puts the actions beside the words instead, at their last line.
-/// The words grow with what is written, up to seven lines. Keys stay the host's.
+/// The words grow with what is written, up to seven lines. Keys stay the host's. With `on_files`,
+/// files dragged over it are taken: the field says `drop_label` while they are over it, and the
+/// files dropped go to `on_files`. Words dragged in drop into the field as they always do. While the person speaks, a `Dictation` given as `dictation`
+/// stands in the words' place; the words wait, kept, until it is gone.
 #[component]
 pub fn Composer(
     /// The words' accessible name.
@@ -759,12 +839,42 @@ pub fn Composer(
     /// failed.
     #[props(default)]
     notices: Option<Element>,
+    on_files: Option<EventHandler<Vec<FileData>>>,
+    /// What the field says while files are dragged over it.
+    #[props(default)]
+    drop_label: String,
+    #[props(default)] dictation: Option<Element>,
     children: Element,
 ) -> Element {
     let held = value.clone();
+    let id = use_hook(|| format!("composer-{}", COMPOSERS.fetch_add(1, Ordering::Relaxed)));
+    let takes_files = on_files.is_some();
+    let dropping = id.clone();
+    use_effect(use_reactive!(|takes_files| {
+        if takes_files {
+            document::eval(&FILE_DRAGS.replace("{id}", &dropping));
+        }
+    }));
+    let mut class = String::from(if inline {
+        "composer field is-inline"
+    } else {
+        "composer field"
+    });
+    if dictation.is_some() {
+        class.push_str(" is-dictating");
+    }
     rsx! {
         form {
-            class: if inline { "composer field is-inline" } else { "composer field" },
+            id,
+            class,
+            ondrop: move |event| {
+                if let Some(take) = on_files {
+                    let files = event.data_transfer().files();
+                    if !files.is_empty() {
+                        take.call(files);
+                    }
+                }
+            },
             onsubmit: move |event| {
                 event.prevent_default();
                 let typed = event.get_first("draft").and_then(|value| match value {
@@ -774,6 +884,7 @@ pub fn Composer(
                 on_submit.call(submitted_text(typed.as_deref(), &held));
             },
             {context}
+            {dictation}
             textarea {
                 class: "composer-input",
                 name: "draft",
@@ -800,9 +911,30 @@ pub fn Composer(
                 {children}
             }
             {notices}
+            if takes_files {
+                div { class: "composer-drop", aria_hidden: "true", "{drop_label}" }
+            }
         }
     }
 }
+
+static COMPOSERS: AtomicUsize = AtomicUsize::new(0);
+
+/// Takes only drags that carry files over the composer `{id}`, which only the browser's own list of
+/// what a drag holds can tell while it moves. Counted, because entering a child leaves its parent.
+const FILE_DRAGS: &str = "
+const form = document.getElementById('{id}');
+if (form && !form.dataset.takesFiles) {
+  form.dataset.takesFiles = 'true';
+  let over = 0;
+  const files = (event) => form.querySelector(':scope > .composer-drop') && [...(event.dataTransfer?.types ?? [])].includes('Files');
+  const settle = () => { over = 0; delete form.dataset.dropping; };
+  form.addEventListener('dragenter', (event) => { if (files(event)) { event.preventDefault(); over += 1; form.dataset.dropping = 'true'; } });
+  form.addEventListener('dragover', (event) => { if (files(event)) event.preventDefault(); });
+  form.addEventListener('dragleave', (event) => { if (files(event) && --over <= 0) settle(); });
+  form.addEventListener('drop', (event) => { if (files(event)) { event.preventDefault(); settle(); } });
+}
+";
 
 /// The words a send uses. The field wins when it has something in it: on Android the controlled
 /// value can drop keystrokes while the person still sees them.
@@ -958,6 +1090,31 @@ if (sheet && body) {
 }
 ";
 
+/// The life of a modal dialog `id` the browser owns: it opens modally once mounted, with focus on
+/// what its content marks `autofocus`, else the first match of `focus`; its exit motion
+/// (`dialog-exit`, on `.is-closing`) ends by closing it; and whatever closed it, `on_close` hears
+/// it once.
+pub(crate) fn use_modal(id: String, focus: &'static str, on_close: EventHandler) {
+    use_effect(move || {
+        let mut opened = document::eval(&format!(
+            "const d = document.getElementById('{id}');
+            if (d && !d.open) {{
+              d.addEventListener('animationend', (e) => {{
+                if (e.target === d && e.animationName === 'dialog-exit') d.close();
+              }});
+              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
+              d.showModal();
+              (d.querySelector('[autofocus]') ?? d.querySelector('{focus}'))?.focus({{ preventScroll: true }});
+            }}"
+        ));
+        spawn(async move {
+            if opened.recv::<bool>().await.is_ok() {
+                on_close.call(());
+            }
+        });
+    });
+}
+
 /// A modal dialog: it opens over the
 /// scrim with focus inside it, its title heading the content with Close beside it. Escape, the
 /// scrim and its close button (named by `close_label`) dismiss it; it settles out before the host
@@ -986,29 +1143,12 @@ pub fn Dialog(
         class.push_str(" is-closing");
     }
     let rest = host_attributes(&mut class, attributes);
-    let opening = id.clone();
-    // The browser owns the dialog's life: it opens modally here, the exit motion ends by closing
-    // it, and whatever closed it, the host hears it once.
+    use_modal(id.clone(), "h2", on_close);
+    let dragging = id.clone();
     use_effect(move || {
-        let mut opened = document::eval(&format!(
-            "const d = document.getElementById('{opening}');
-            if (d && !d.open) {{
-              d.addEventListener('animationend', (e) => {{
-                if (e.target === d && e.animationName === 'dialog-exit') d.close();
-              }});
-              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
-              d.showModal();
-              (d.querySelector('[autofocus]') ?? d.querySelector('h2')).focus({{ preventScroll: true }});
-            }}"
-        ));
         if sheet {
-            document::eval(&SHEET_DRAG.replace("{dialog}", &opening));
+            document::eval(&SHEET_DRAG.replace("{dialog}", &dragging));
         }
-        spawn(async move {
-            if opened.recv::<bool>().await.is_ok() {
-                on_close.call(());
-            }
-        });
     });
     let mut dismiss = move || {
         if !closing() {
@@ -1252,6 +1392,17 @@ pub fn TabBar(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_bar_is_full_only_when_the_work_is_and_claims_nothing_from_no_number() {
+        assert_eq!(filled_percent(Some(0.996)), Some(99.0));
+        assert_eq!(filled_percent(Some(1.0)), Some(100.0));
+        assert_eq!(filled_percent(Some(1.4)), Some(100.0));
+        assert_eq!(filled_percent(Some(-0.2)), Some(0.0));
+        assert_eq!(filled_percent(Some(f64::NAN)), None);
+        assert_eq!(filled_percent(Some(f64::INFINITY)), None);
+        assert_eq!(filled_percent(None), None);
+    }
 
     #[test]
     fn only_web_mail_phone_and_same_page_addresses_open() {

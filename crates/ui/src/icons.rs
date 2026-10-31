@@ -1,4 +1,4 @@
-//! The shared icons, for the physician app and Duet alike, drawn on one 24-unit grid at one stroke.
+//! The shared icons, drawn on one 24-unit grid at one stroke.
 
 use dioxus::prelude::*;
 
@@ -58,11 +58,14 @@ pub enum IconName {
     Share,
     Steps,
     Sun,
+    More,
+    Pencil,
+    Trash,
 }
 
 impl IconName {
     /// Every icon in the set.
-    pub const ALL: [IconName; 49] = [
+    pub const ALL: [IconName; 52] = [
         IconName::Alert,
         IconName::Archive,
         IconName::ArrowLeft,
@@ -112,6 +115,9 @@ impl IconName {
         IconName::Share,
         IconName::Steps,
         IconName::Sun,
+        IconName::More,
+        IconName::Pencil,
+        IconName::Trash,
     ];
 
     /// This icon's name in lowercase words joined by hyphens, such as `arrow-left`.
@@ -166,6 +172,9 @@ impl IconName {
             IconName::Share => "share",
             IconName::Steps => "steps",
             IconName::Sun => "sun",
+            IconName::More => "more",
+            IconName::Pencil => "pencil",
+            IconName::Trash => "trash",
         }
     }
 }
@@ -335,6 +344,20 @@ fn marks(name: IconName) -> &'static [Mark] {
         IconName::Sun => &[Mark::Path(
             "M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M5.6 18.4 7 17m10-10 1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
         )],
+        IconName::More => &[
+            Mark::Circle("5", "12", "1"),
+            Mark::Circle("12", "12", "1"),
+            Mark::Circle("19", "12", "1"),
+        ],
+        IconName::Pencil => &[
+            Mark::Path("M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"),
+            Mark::Path("m14.5 5.5 3 3"),
+        ],
+        IconName::Trash => &[
+            Mark::Path("M4 7h16M9 7V4h6v3"),
+            Mark::Path("M6 7l1 13h10l1-13"),
+            Mark::Path("M10 11v5M14 11v5"),
+        ],
     }
 }
 

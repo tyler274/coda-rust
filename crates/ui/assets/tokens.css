@@ -14,7 +14,6 @@
   --ref-chart-green: #1f7a52;
   --ref-amber-30: #6b4408;
   --ref-amber-40: #946115;
-  --ref-amber-80: #ddc38d;
   --ref-amber-95: #fbf0db;
   --ref-red-30: #7a2b20;
   --ref-red-40: #9a3e31;
@@ -46,7 +45,6 @@
   --ref-green-80: #89d2c3;
   --ref-green-92: #d3eee9;
   --ref-chart-green-dark: #2e9e6b;
-  --ref-amber-20: #3d290b;
   --ref-amber-dark-container: #392c18;
   --ref-amber-85: #dfbf90;
   --ref-amber-93: #f5e9d6;
@@ -65,7 +63,6 @@
   --warning: var(--ref-amber-40);
   --warning-container: var(--ref-amber-95);
   --on-warning-container: var(--ref-amber-30);
-  --warning-outline: var(--ref-amber-80);
   --error: var(--ref-red-40);
   --on-error: var(--ref-neutral-100);
   --error-container: var(--ref-red-95);
@@ -90,8 +87,6 @@
   --data-wash: color-mix(in srgb, var(--data) 10%, transparent);
   --data-scrub: color-mix(in srgb, var(--data) 55%, transparent);
   --data-reference: var(--primary);
-  /* A choice at rest: the green container in light, a raised surface in dark. */
-  --control-resting: var(--primary-container);
   /* Text on any surface: names and titles, running words, and details. */
   --ink: var(--ref-neutral-15);
   --body: var(--ref-neutral-25);
@@ -110,7 +105,6 @@
   --scrim: rgb(var(--ref-shadow) / .32);
   /* States: an overlay of the element's own text colour, never a second colour per component. */
   --state-hover: .08;
-  --state-focus: .12;
   --state-pressed: .12;
   /* Elevation: five levels, each a contact shadow and a soft ambient one:
      a resting control 1, a resting card 2, a floating control or a hovered card 3, a popover 4, a dialog 5. */
@@ -128,10 +122,10 @@
   --sans: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   /* Type roles: one type scale at Coda's sizes. A role is a whole setting, weight, size and line;
      every host names one and composes none of its own. Colour stays the host's: ink heads, body words, muted details.
-     Headline medium: a page's own title (Today, a patient's page). Title large: dialog and reader titles. Title medium: a card's or section's title. Title small: a row's or list's name.
+     Headline medium: a page's own title. Title large: dialog and reader titles. Title medium: a card's or section's title. Title small: a row's or list's name.
      Body large: prose to read. Body medium: interface words and a row's text. Body small: times and supporting details.
      Label large: every control. Label medium: state pills and small headings. Label small: a tab bar's labels under their icons.
-     Overline: label small in capitals, naming what a card holds ("What Duet noticed", "Original record").
+     Overline: label small in capitals, naming what a card holds ("Original record").
      Value: a measurement's figure, its unit in body text beside it; large on its own page, medium in a tile or card. */
   --weight-regular: 400;
   --weight-strong: 600;
@@ -155,13 +149,12 @@
   --type-code: .9em/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
   /* A reading dialog reads at the page's one content width; it widens only while a source reads beside it. */
   --reader-dialog-inline-size: calc(var(--measure) + 2 * var(--page-gutter));
-  --reader-source-inline-size: max(84vi, var(--reader-dialog-inline-size));
-  /* A reader's pinned row below its top inset: one-line title, patient, bottom inset and edge. */
+  /* A reader's pinned row below its top inset: one-line title, subject, bottom inset and edge. */
   --source-reading-ratio: minmax(0, 3fr) minmax(0, 2fr);
   --page-gutter: clamp(16px, 1.5vw, 24px);
   /* A page's one content width: about 105 characters of content text, however wide the window. */
   --measure: 50rem;
-  /* The page's side column (Today's schedule, a patient's briefings), beside the measure where it fits. */
+  /* The page's side column, beside the measure where it fits. */
   --side-column-width: 19rem;
   /* A side panel collapsed to its rail: its tile, with room around it. */
   --side-rail-width: calc(var(--tile-size) + 2 * var(--space-3));
@@ -187,9 +180,7 @@
   --target: 44px;
   /* Marks beside words follow the words' size, so an icon or ring set in a label is a label's size. */
   --icon-size: 1.15em;
-  --icon-hero: 36px;
   --tile-size: 32px;
-  --dot: 7px;
   --avatar-sm: 30px;
   --avatar-md: 36px;
   --avatar-lg: 42px;
@@ -197,16 +188,11 @@
   /* Frames the shell and its overlays stand in. Overlays are fixed, so their percentages are the window's. */
   --sidebar-width: 244px;
   --sidebar-rail-width: 56px;
-  --drawer-width: min(19rem, calc(100% - var(--target)));
   --dialog-width: 40rem;
   --dialog-margin: max(var(--space-6), 7dvh);
   --dialog-max-height: calc(100dvh - 2 * var(--dialog-margin));
   --popover-width: 22.5rem;
   --popover-max-height: 26rem;
-  --orb-size: 64px;
-  --orb-gutter: var(--page-gutter);
-  /* The orb and the gap before what stands beside or above it (its now line, its preview). */
-  --orb-reach: calc(var(--orb-size) + var(--space-3));
   /* A column narrower than 40rem is compact: rows stack their parts, headers wrap. Container queries state it in rem
      (a query cannot read a token); only the shell asks the window, at 56.25rem, where the sidebar becomes a drawer. */
   --control-height: 36px;
@@ -268,7 +254,6 @@
     --warning: var(--ref-amber-85);
     --warning-container: var(--ref-amber-dark-container);
     --on-warning-container: var(--ref-amber-93);
-    --warning-outline: var(--ref-amber-40);
     --error: var(--ref-red-75);
     --on-error: var(--ref-red-20);
     --error-container: var(--ref-red-dark-container);
@@ -282,7 +267,6 @@
     --surface-lowest: var(--ref-night-11);
     --surface-low: var(--ref-night-14);
     --surface-high: var(--ref-night-17);
-    --control-resting: var(--surface-high);
     --surface-highest: var(--ref-night-23);
     --outline: rgb(243 244 246 / .22);
     --outline-variant: rgb(243 244 246 / .12);
