@@ -19,20 +19,20 @@ use std::time::Duration;
 use ui::{
     ActionRow, Answer, ApprovalCard, ArtifactCard, AttachButton, Attachment, AttachmentState,
     Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
-    Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Combobox, Command, CommandPalette,
-    Comparison, ComparisonBars, Composer, ContextChip, ContextMenu, ConversationViewport,
-    CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog, Dictation, Diff,
-    DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState, FeedbackRating,
-    FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuItem,
-    MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
-    NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
-    PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose, ProsePart, Quote, RadioGroup,
-    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select,
-    SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SourceDetails, SourcePane,
-    SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState,
-    Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone,
-    Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
-    use_live_rows,
+    Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Column, Combobox, Command,
+    CommandPalette, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
+    ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
+    Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState,
+    FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile,
+    Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor, MessageState,
+    MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
+    Placeholder, PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose, ProsePart, Quote,
+    RadioGroup, Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented,
+    Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceDetails,
+    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
+    StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState, TaskWords,
+    TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace,
+    WorkingMark, WorkingPresence, use_live_rows,
 };
 
 fn main() {
@@ -116,6 +116,9 @@ fn Gallery() -> Element {
                     }
                     Part { title: "Live lists", note: "A row that joins a list already shown opens and settles from just below; a row the list drops stays in its place as it collapses, then goes. A count fades into its new value, number and words together. A row the list moves up rises over the others, lifted; the selection is one fill that slides to the row chosen and travels with it. With a keyboard, all of it simply arrives.",
                         LiveDemo {}
+                    }
+                    Part { title: "Tables", note: "Things of one kind read across their columns, figures lined up on the trailing edge, in a frame that scrolls on its own where it doesn't fit. A heading asks for a sort and the host answers with the rows in that order. A row can open as a whole.",
+                        TableDemo {}
                     }
                     Part { title: "Disclosure", note: "Rows open and close on a height transition; the chevron turns.",
                         Disclosure { title: "What Duet used", default_open: true,
@@ -1176,6 +1179,76 @@ fn ProgressDemo() -> Element {
             ProgressBar { label: "Reading the chart" }
             div { class: "gallery-row",
                 Button { compact: true, disabled: importing(), onclick: import, "Import again" }
+            }
+        }
+    }
+}
+
+#[cfg(feature = "web")]
+// What each clinic's week came to: name, visits, minutes waited, the share of charts imported.
+const CLINICS: [(&str, u32, u32, f64); 4] = [
+    ("North clinic", 142, 12, 1.0),
+    ("Riverside", 96, 21, 0.72),
+    ("Eastgate", 118, 8, 0.4),
+    ("Harbor", 64, 16, 0.15),
+];
+
+#[cfg(feature = "web")]
+#[component]
+fn TableDemo() -> Element {
+    let mut sorted = use_signal(|| (1, SortOrder::Descending));
+    let mut chosen = use_signal(|| None::<&'static str>);
+    let (column, order) = sorted();
+    let mut clinics = CLINICS.to_vec();
+    clinics.sort_by(|a, b| match column {
+        0 => a.0.cmp(b.0),
+        1 => a.1.cmp(&b.1),
+        _ => a.2.cmp(&b.2),
+    });
+    if order == SortOrder::Descending {
+        clinics.reverse();
+    }
+    let rows = clinics
+        .into_iter()
+        .map(|(name, visits, waited, imported)| TableRow {
+            key: name.into(),
+            cells: vec![
+                rsx! { "{name}" },
+                rsx! { "{visits}" },
+                rsx! { "{waited} min" },
+                rsx! {
+                    ProgressBar {
+                        label: "Charts imported at {name}",
+                        value: imported,
+                        bare: true,
+                    }
+                },
+            ],
+            onclick: Some(EventHandler::new(move |_| chosen.set(Some(name)))),
+        })
+        .collect();
+    rsx! {
+        div { class: "gallery-stack",
+            Table {
+                label: "Clinics this week",
+                columns: vec![
+                    Column { sortable: true, .."Clinic".into() },
+                    Column { numeric: true, sortable: true, .."Visits".into() },
+                    Column { numeric: true, sortable: true, .."Waited".into() },
+                    "Charts imported".into(),
+                ],
+                rows,
+                sorted: sorted(),
+                on_sort: move |next| {
+                    let flipped = match order {
+                        SortOrder::Ascending => SortOrder::Descending,
+                        SortOrder::Descending => SortOrder::Ascending,
+                    };
+                    sorted.set((next, if next == column { flipped } else { SortOrder::Ascending }));
+                },
+            }
+            if let Some(name) = chosen() {
+                p { class: "gallery-note", "Chose {name}." }
             }
         }
     }

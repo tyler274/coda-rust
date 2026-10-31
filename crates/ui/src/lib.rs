@@ -26,6 +26,7 @@ mod motion;
 mod overlays;
 mod prose;
 mod sources;
+mod tables;
 mod toast;
 pub use agent::{
     Answer, ApprovalCard, ArtifactCard, StepState, Task, TaskList, TaskState, TaskWords, WorkStep,
@@ -58,6 +59,7 @@ pub use overlays::{
 };
 pub use prose::{Prose, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
+pub use tables::{Column, SortOrder, Table, TableRow};
 pub use toast::{TOAST_MS, Toast};
 
 /// How long a surface takes to settle away before it is removed: `--motion-control` in

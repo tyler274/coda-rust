@@ -428,6 +428,37 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose table:where([data-prose]) { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
 .prose :is(th, td):where([data-prose]) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
 .prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
+/* A table: things of one kind read across, in a frame that scrolls on its own; its head on the low surface, a hairline
+   between rows, and figures on the trailing edge. A heading that sorts takes the whole of its cell, its chevron held in
+   place so the sort moves nothing, on the leading side over figures so the words stay above them. A row that opens does
+   so as a whole. */
+.table-frame { min-width: 0; overflow-x: auto; border: var(--hairline) solid var(--outline-variant); border-radius: var(--radius-md); background: var(--surface-lowest); }
+.table { width: 100%; min-width: 28em; border-collapse: collapse; color: var(--body); font: var(--type-body-md); }
+.table :is(th, td) { padding: var(--space-2) var(--space-3); text-align: start; }
+.table thead th { position: relative; background: var(--surface-low); color: var(--muted); font: var(--type-label-md); white-space: nowrap; }
+.table thead th[aria-sort] { color: var(--ink); }
+.table tbody th { color: var(--ink); font: var(--type-label-lg); }
+.table tbody tr { position: relative; border-top: var(--hairline) solid var(--outline-variant); }
+.table .is-numeric { text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.table .progress { min-width: 6em; }
+.table-sort { display: flex; align-items: center; gap: var(--space-1); width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; }
+.is-numeric > .table-sort { flex-direction: row-reverse; }
+.table-sort::after { content: ""; position: absolute; inset: 0; }
+.table-sort > .icon { width: 14px; height: 14px; opacity: 0; transition: rotate var(--motion-control) var(--ease-out); }
+[aria-sort] > .table-sort > .icon { opacity: 1; }
+[aria-sort="ascending"] > .table-sort > .icon { rotate: 180deg; }
+@media (hover: hover) {
+  .table-sort:hover { color: var(--ink); }
+  th:not([aria-sort]) > .table-sort:hover > .icon { opacity: .5; }
+  .table-open:hover::after { opacity: var(--state-hover); }
+}
+.table-sort:focus-visible { outline: 0; animation: none; }
+.table-sort:focus-visible::after { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: calc(-1 * var(--focus-ring-width)); }
+.table-open { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.table-open::after { content: ""; position: absolute; inset: 0; background: currentColor; opacity: 0; transition: opacity var(--motion-press) linear; }
+.table-open:active::after { opacity: var(--state-pressed); }
+.table-open:focus-visible { outline: 0; animation: none; }
+.table tbody tr:has(.table-open:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: calc(-1 * var(--focus-ring-width)); }
 .prose-image { color: var(--muted); font: var(--type-body-sm); font-style: italic; }
 /* Code: one frame on the low surface, its heading a quiet line of what it is beside its control, its lines in the
    monospace, kept as written and scrolled across. A change's added lines lie on green after a plus, its removed lines
