@@ -1,0 +1,23 @@
+[Unit]
+Description=Coda shared Slack gateway
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+User=coda-gateway
+Group=coda-gateway
+WorkingDirectory=/opt/coda-agent-gateway
+ExecStart=/opt/coda-agent-gateway/.venv/bin/python /opt/coda-agent-gateway/slack_gateway.py --config /opt/coda-agent-gateway/gateway-config.json --iap-host @PRIVATE_IP@ --state-dir /var/lib/coda-agent-gateway --connect-latest
+Restart=always
+RestartSec=10
+UMask=0077
+Environment=PYTHONUNBUFFERED=1
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/coda-agent-gateway
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
