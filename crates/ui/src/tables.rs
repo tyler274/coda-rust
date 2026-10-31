@@ -45,9 +45,9 @@ pub struct TableRow {
     pub onclick: Option<EventHandler<MouseEvent>>,
 }
 
-/// A table named by `label`, scrolling across on its own where it doesn't fit. `sorted` says which
-/// column the rows are in the order of and which way; `on_sort` gets the column whose heading was
-/// chosen.
+/// A table named by `label`, scrolling across on its own where it doesn't fit, a stop for the keys
+/// so they can scroll it too. `sorted` says which column the rows are in the order of and which
+/// way; `on_sort` gets the column whose heading was chosen.
 #[component]
 pub fn Table(
     label: String,
@@ -58,7 +58,7 @@ pub fn Table(
 ) -> Element {
     let cell_class = |column: &Column| column.numeric.then_some("is-numeric");
     rsx! {
-        div { class: "table-frame",
+        div { class: "table-frame", role: "region", aria_label: "{label}", tabindex: "0",
             table { class: "table", aria_label: "{label}",
                 thead {
                     tr {

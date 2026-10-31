@@ -1399,8 +1399,8 @@ mod tests {
         assert_eq!(filled_percent(Some(1.0)), Some(100.0));
         assert_eq!(filled_percent(Some(1.4)), Some(100.0));
         assert_eq!(filled_percent(Some(-0.2)), Some(0.0));
-        assert_eq!(filled_percent(Some(0.0 / 0.0)), None);
-        assert_eq!(filled_percent(Some(1.0 / 0.0)), None);
+        assert_eq!(filled_percent(Some(f64::NAN)), None);
+        assert_eq!(filled_percent(Some(f64::INFINITY)), None);
         assert_eq!(filled_percent(None), None);
     }
 
