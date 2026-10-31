@@ -1,5 +1,5 @@
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   color: var(--ink);
   background: var(--surface);
   font-family: var(--sans);
@@ -241,41 +241,40 @@
     --spring-step: var(--motion-step) var(--ease-out);
   }
 }
-/* Dark: the same roles on the native dark neutrals. The canvas is black; cards, dialogs and panels step up through the
+/* Light is the default. Dark, on `data-theme="dark"`: the same roles on the native dark neutrals. The canvas is black; cards, dialogs and panels step up through the
    charcoal layers, so each level still reads above the one it stands on. */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ref-shadow: 0 0 0;
-    --primary: var(--ref-green-80);
-    --on-primary: var(--ref-green-20);
-    --primary-container: var(--ref-green-dark-container);
-    --on-primary-container: var(--ref-green-92);
-    --data: var(--ref-chart-green-dark);
-    --warning: var(--ref-amber-85);
-    --warning-container: var(--ref-amber-dark-container);
-    --on-warning-container: var(--ref-amber-93);
-    --error: var(--ref-red-75);
-    --on-error: var(--ref-red-20);
-    --error-container: var(--ref-red-dark-container);
-    --on-error-container: var(--ref-red-92);
-    --error-outline: var(--ref-red-40);
-    --tertiary: var(--ref-teal-80);
-    --ink: var(--ref-night-96);
-    --body: var(--ref-night-89);
-    --muted: var(--ref-night-66);
-    --surface: var(--ref-night-0);
-    --surface-lowest: var(--ref-night-11);
-    --surface-low: var(--ref-night-14);
-    --surface-high: var(--ref-night-17);
-    --surface-highest: var(--ref-night-23);
-    --outline: rgb(243 244 246 / .22);
-    --outline-variant: rgb(243 244 246 / .12);
-    --highlight: var(--ref-green-dark-highlight);
-    --scrim: rgb(0 0 0 / .6);
-    --elevation-1: 0 1px 2px rgb(var(--ref-shadow) / .5);
-    --elevation-2: 0 1px 2px rgb(var(--ref-shadow) / .4), 0 4px 14px rgb(var(--ref-shadow) / .4);
-    --elevation-3: 0 2px 4px rgb(var(--ref-shadow) / .4), 0 10px 28px rgb(var(--ref-shadow) / .5);
-    --elevation-4: 0 4px 8px rgb(var(--ref-shadow) / .4), 0 18px 44px rgb(var(--ref-shadow) / .55);
-    --elevation-5: 0 8px 16px rgb(var(--ref-shadow) / .45), 0 26px 72px rgb(var(--ref-shadow) / .6);
-  }
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ref-shadow: 0 0 0;
+  --primary: var(--ref-green-80);
+  --on-primary: var(--ref-green-20);
+  --primary-container: var(--ref-green-dark-container);
+  --on-primary-container: var(--ref-green-92);
+  --data: var(--ref-chart-green-dark);
+  --warning: var(--ref-amber-85);
+  --warning-container: var(--ref-amber-dark-container);
+  --on-warning-container: var(--ref-amber-93);
+  --error: var(--ref-red-75);
+  --on-error: var(--ref-red-20);
+  --error-container: var(--ref-red-dark-container);
+  --on-error-container: var(--ref-red-92);
+  --error-outline: var(--ref-red-40);
+  --tertiary: var(--ref-teal-80);
+  --ink: var(--ref-night-96);
+  --body: var(--ref-night-89);
+  --muted: var(--ref-night-66);
+  --surface: var(--ref-night-0);
+  --surface-lowest: var(--ref-night-11);
+  --surface-low: var(--ref-night-14);
+  --surface-high: var(--ref-night-17);
+  --surface-highest: var(--ref-night-23);
+  --outline: rgb(243 244 246 / .22);
+  --outline-variant: rgb(243 244 246 / .12);
+  --highlight: var(--ref-green-dark-highlight);
+  --scrim: rgb(0 0 0 / .6);
+  --elevation-1: 0 1px 2px rgb(var(--ref-shadow) / .5);
+  --elevation-2: 0 1px 2px rgb(var(--ref-shadow) / .4), 0 4px 14px rgb(var(--ref-shadow) / .4);
+  --elevation-3: 0 2px 4px rgb(var(--ref-shadow) / .4), 0 10px 28px rgb(var(--ref-shadow) / .5);
+  --elevation-4: 0 4px 8px rgb(var(--ref-shadow) / .4), 0 18px 44px rgb(var(--ref-shadow) / .55);
+  --elevation-5: 0 8px 16px rgb(var(--ref-shadow) / .45), 0 26px 72px rgb(var(--ref-shadow) / .6);
 }
