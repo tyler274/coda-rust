@@ -6,7 +6,7 @@
 use dioxus::html::FileData;
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName, Spinner};
+use crate::{Icon, IconName, ProgressBar, Spinner};
 
 /// Where an attachment stands.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -51,7 +51,6 @@ pub fn Attachment(
         AttachmentState::Uploading if progress.is_none() => rsx! { Spinner {} },
         _ => rsx! { Icon { name: IconName::File } },
     };
-    let filled = progress.map(|done| (done.clamp(0.0, 1.0) * 100.0).round());
     rsx! {
         div { class, aria_busy: (state == AttachmentState::Uploading).then_some("true"),
             if let Some(src) = image {
@@ -74,16 +73,8 @@ pub fn Attachment(
             if let Some(open) = onclick {
                 button { class: "attachment-open", r#type: "button", aria_label: "{name}", onclick: move |event| open.call(event) }
             }
-            if let (Some(percent), AttachmentState::Uploading) = (filled, state) {
-                span {
-                    class: "attachment-progress",
-                    role: "progressbar",
-                    aria_label: "{name}",
-                    aria_valuemin: "0",
-                    aria_valuemax: "100",
-                    aria_valuenow: "{percent}",
-                    style: "--progress: {percent}%",
-                }
+            if state == AttachmentState::Uploading && progress.is_some() {
+                ProgressBar { label: name.clone(), value: progress, bare: true }
             }
             if let Some(remove) = on_remove.filter(|_| !remove_label.is_empty()) {
                 button {

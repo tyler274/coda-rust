@@ -773,8 +773,7 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .attachment-open:active { opacity: var(--state-pressed); }
 .attachment-open:focus-visible { outline: 0; animation: none; }
 .attachment:has(.attachment-open:focus-visible) { overflow: visible; outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
-.attachment-progress { position: absolute; inset: auto 0 0; height: 3px; background: var(--outline-variant); }
-.attachment-progress::before { content: ""; display: block; width: var(--progress); height: 100%; background: var(--primary); transition: width var(--motion-control) var(--ease-out); }
+.attachment > .progress { position: absolute; inset: auto 0 0; height: 3px; border-radius: 0; }
 .attachment-remove { position: absolute; top: var(--space-1); inset-inline-end: var(--space-1); display: grid; place-items: center; width: 22px; height: 22px; padding: 0;
   border: 0; border-radius: var(--radius-pill); background: var(--ink); color: var(--surface-lowest); cursor: pointer; }
 .attachment-remove::after { content: ""; position: absolute; inset: -9px; }
@@ -782,6 +781,16 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 .attachment-remove:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: 2px; }
 .attach-button { cursor: pointer; }
 .attach-button:has(input:focus-visible) { outline: var(--focus-ring-width) solid var(--focus-ring-color); outline-offset: var(--focus-ring-offset); }
+/* How far something has got: a track filling from its start as far as the host says. Not knowing how far, a short length
+   travels along it, claiming no amount; without motion the whole track stands tinted instead. */
+.progress-labelled { display: grid; gap: var(--space-2); min-width: 0; color: var(--ink); font: var(--type-label-lg); }
+.progress { height: 4px; overflow: hidden; border-radius: var(--radius-pill); background: var(--outline-variant); }
+.progress::before { content: ""; display: block; width: var(--progress); height: 100%; border-radius: inherit; background: var(--primary); transition: width var(--motion-control) var(--ease-out); }
+.progress.is-unknown::before { width: 38%; animation: progress-unknown var(--motion-working) var(--ease-in-out) infinite; }
+@keyframes progress-unknown { from { translate: -100% 0; } to { translate: 265% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .progress.is-unknown::before { width: 100%; opacity: .4; }
+}
 /* A message on its way: quieter while sending; outlined, not filled, while it waits its turn; on a red outline when it
    didn't go, its status in red beneath. Its status is one quiet line at the bubble's edge, its ways on beside it. */
 .message-person.is-sending { opacity: .62; }

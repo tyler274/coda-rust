@@ -26,12 +26,13 @@ use ui::{
     FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile, Menu, MenuItem,
     MenuSection, Message, MessageActions, MessageEditor, MessageState, MessageStatus,
     NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection, Placeholder,
-    PlaceholderShape, Popover, ProposedChange, Prose, ProsePart, Quote, RadioGroup, Rating,
-    RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select, SeriesChart,
-    SeriesPoint, SeriesShape, SettingRow, Slider, SourceDetails, SourcePane, SourceReading,
-    SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState, Suggestion, TabBar,
-    Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar,
-    Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose, ProsePart, Quote, RadioGroup,
+    Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented, Select,
+    SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SourceDetails, SourcePane,
+    SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine, StepState,
+    Suggestion, TabBar, Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone,
+    Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
+    use_live_rows,
 };
 
 fn main() {
@@ -202,6 +203,9 @@ fn Gallery() -> Element {
                     }
                     Part { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                         LoadingDemo {}
+                    }
+                    Part { title: "Progress", note: "Scripted. How far something has got, in the host's words. Not knowing how far, the bar moves and claims no amount. Bare, it stands where something else says what it is, such as a file's tile or a table's cell.",
+                        ProgressDemo {}
                     }
                     Part { title: "Empty", note: "An empty section is one plain line. An empty or caught-up place has its mark, one line, what to know, and up to two quiet ways on: the second is the way out when the first may never succeed.",
                         EmptyDemo {}
@@ -1143,6 +1147,37 @@ fn LoadingDemo() -> Element {
         StatusLine { message: "Reading records…", pending: true }
         StatusLine { message: "Couldn’t refresh. Showing what was read at 9:41.", retry: "Try again", on_retry: move |_| {} }
         StatusLine { message: "Couldn’t confirm it was saved.", retry: "Check again", on_retry: move |_| {} }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn ProgressDemo() -> Element {
+    const NOTES: u32 = 12;
+    let mut read = use_signal(|| 5);
+    let mut importing = use_signal(|| false);
+    let import = move |_| {
+        spawn(async move {
+            importing.set(true);
+            for step in 0..=NOTES {
+                read.set(step);
+                futures_timer::Delay::new(Duration::from_millis(260)).await;
+            }
+            importing.set(false);
+        });
+    };
+    rsx! {
+        div { class: "gallery-stack",
+            ProgressBar {
+                label: "Importing notes",
+                value: f64::from(read()) / f64::from(NOTES),
+                reading: "{read()} of {NOTES} notes",
+            }
+            ProgressBar { label: "Reading the chart" }
+            div { class: "gallery-row",
+                Button { compact: true, disabled: importing(), onclick: import, "Import again" }
+            }
+        }
     }
 }
 

@@ -434,6 +434,54 @@ pub fn Spinner() -> Element {
     }
 }
 
+/// How far something has got, which only the host knows: `value` runs from 0 to 1, and without one,
+/// or when it isn't a number, the bar moves without claiming an amount. `label` names it and
+/// `reading` says how far in the host's words, such as "3 of 12 notes"; both stand above the bar,
+/// and are only spoken when it is `bare`, for a place that already says what it is.
+#[component]
+pub fn ProgressBar(
+    label: String,
+    value: Option<f64>,
+    reading: Option<String>,
+    #[props(default)] bare: bool,
+) -> Element {
+    let filled = filled_percent(value);
+    let bar = rsx! {
+        div {
+            class: if filled.is_some() { "progress" } else { "progress is-unknown" },
+            role: "progressbar",
+            aria_label: "{label}",
+            aria_valuemin: "0",
+            aria_valuemax: "100",
+            aria_valuenow: filled.map(|percent| percent.to_string()),
+            aria_valuetext: reading.clone(),
+            style: filled.map(|percent| format!("--progress: {percent}%")),
+        }
+    };
+    if bare {
+        return bar;
+    }
+    rsx! {
+        div { class: "progress-labelled",
+            div { class: "field-heading", aria_hidden: "true",
+                span { "{label}" }
+                if let Some(reading) = reading {
+                    span { class: "field-reading", "{reading}" }
+                }
+            }
+            {bar}
+        }
+    }
+}
+
+/// How much of a bar is filled: never all of it before the work is all done, and no amount at all
+/// from a value that isn't a number, as a share of nothing isn't.
+fn filled_percent(value: Option<f64>) -> Option<f64> {
+    value
+        .filter(|done| done.is_finite())
+        .map(|done| (done.clamp(0.0, 1.0) * 100.0).floor())
+}
+
 /// How large an avatar is drawn.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub enum AvatarSize {
@@ -1342,6 +1390,17 @@ pub fn TabBar(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_bar_is_full_only_when_the_work_is_and_claims_nothing_from_no_number() {
+        assert_eq!(filled_percent(Some(0.996)), Some(99.0));
+        assert_eq!(filled_percent(Some(1.0)), Some(100.0));
+        assert_eq!(filled_percent(Some(1.4)), Some(100.0));
+        assert_eq!(filled_percent(Some(-0.2)), Some(0.0));
+        assert_eq!(filled_percent(Some(0.0 / 0.0)), None);
+        assert_eq!(filled_percent(Some(1.0 / 0.0)), None);
+        assert_eq!(filled_percent(None), None);
+    }
 
     #[test]
     fn only_web_mail_phone_and_same_page_addresses_open() {
