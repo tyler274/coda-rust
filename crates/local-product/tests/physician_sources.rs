@@ -1,4 +1,4 @@
-use local_product::physician_sources::{SourceRevision, exact_read};
+use local_product::physician_sources::{ReadablePart, RecordDate, SourceRevision, exact_read};
 use serde_json::json;
 #[test]
 fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_content() {
@@ -7,8 +7,17 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
         workspace: "one".into(),
         candidate_id: "original-id".into(),
         revision: "revision-7".into(),
+        record_type: "DocumentReference".into(),
+        dates: vec![RecordDate {
+            name: "date".into(),
+            value: "2026-08".into(),
+        }],
         content: content.into(),
         sha256: local_product::sha256_hex(content.as_bytes()),
+        readable_parts: vec![ReadablePart {
+            label: "attachment".into(),
+            text: "Potassium 4.1 mmol/L".into(),
+        }],
         provenance: json!({"source_id":"native-1"}),
     };
     let read = exact_read(
@@ -20,6 +29,12 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
     .unwrap();
     assert_eq!(read["results"][0]["content"], content);
     assert_eq!(read["results"][0]["revision"], "revision-7");
+    assert_eq!(read["results"][0]["record_type"], "DocumentReference");
+    assert_eq!(read["results"][0]["dates"][0]["value"], "2026-08");
+    assert_eq!(
+        read["results"][0]["readable_parts"][0]["text"],
+        "Potassium 4.1 mmol/L"
+    );
     let denied = exact_read(
         std::slice::from_ref(&source),
         "two",

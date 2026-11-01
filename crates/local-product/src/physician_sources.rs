@@ -1,8 +1,31 @@
-//! Retained physician source snapshots. Imports must come from the physician
-//! source owner, never projection prose or a provider. This reader neither
-//! discovers new records nor claims that a snapshot is a complete chart.
+//! The record every patient source hands Coda, whatever its format. Each source
+//! has its own adapter; past the adapter a record is one of these. Imports must
+//! come from a source adapter, never projection prose or a provider. This
+//! reader neither discovers new records nor claims that a snapshot is a
+//! complete chart.
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
+
+/// One date on a record, as the source wrote it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RecordDate {
+    /// The source's own name for this date.
+    pub name: String,
+    /// The value as the source gave it, at the source's precision.
+    pub value: String,
+}
+
+/// Text inside a record that its exact representation doesn't show plainly,
+/// such as an encoded attachment.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ReadablePart {
+    /// The source's own name for this part.
+    pub label: String,
+    /// The part's text.
+    pub text: String,
+}
 
 /// One immutable accepted source revision from the physician source owner.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -14,10 +37,16 @@ pub struct SourceRevision {
     pub candidate_id: String,
     /// Source owner's immutable revision identity.
     pub revision: String,
+    /// The source's own name for this kind of record.
+    pub record_type: String,
+    /// The record's dates, in the source's words.
+    pub dates: Vec<RecordDate>,
     /// Exact source-native retained UTF-8 representation.
     pub content: String,
     /// SHA-256 of retained content bytes, verified on import and read.
     pub sha256: String,
+    /// The record's readable text, beside its exact representation.
+    pub readable_parts: Vec<ReadablePart>,
     /// Source-owned provenance, including native record identity.
     pub provenance: Value,
 }
@@ -27,6 +56,7 @@ impl SourceRevision {
         if self.workspace.is_empty()
             || self.candidate_id.is_empty()
             || self.revision.is_empty()
+            || self.record_type.is_empty()
             || crate::sha256_hex(self.content.as_bytes()) != self.sha256
             || self.provenance.is_null()
         {
@@ -57,7 +87,9 @@ pub fn exact_read(
             Some(source) => {
                 source.validate()?;
                 json!({"reference": reference, "outcome": "available", "revision": source.revision,
+                    "record_type": source.record_type, "dates": source.dates,
                     "read_representation": "native_record", "content": source.content,
+                    "readable_parts": source.readable_parts,
                     "sha256": source.sha256, "provenance": source.provenance})
             }
             None => {
@@ -349,8 +381,11 @@ mod tests {
             workspace: "patient".into(),
             candidate_id: "lab".into(),
             revision: revision.into(),
+            record_type: "Observation".into(),
+            dates: vec![],
             content: content.into(),
             sha256: crate::sha256_hex(content.as_bytes()),
+            readable_parts: vec![],
             provenance: json!({"native_record": "lab"}),
         }
     }

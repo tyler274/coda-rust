@@ -1,4 +1,5 @@
-//! Versioned patient source observations: a stand-in source owner.
+//! Versioned patient source observations: what every source adapter's records
+//! become inside Coda.
 //!
 //! Each patient workspace has one version row and an append-only list of
 //! source observations. Recording a new or corrected revision, or withdrawing
@@ -9,15 +10,16 @@
 //! commit) take that row's shared lock in their own transaction, so ingestion
 //! either landed before them and is seen, or waits for them to commit.
 //!
+//! Beside the records, each source's last pull says how current they are.
+//!
 //! The retained snapshot file is still the only import path here; projection
-//! prose and model output never become sources. This is not production
-//! ingestion.
+//! prose and model output never become sources.
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder,
     QuerySelect, Set, TransactionTrait, sea_query::OnConflict,
 };
 
-use super::entities::{source, source_version};
+use super::entities::{source, source_pull, source_version};
 use super::{Store, error};
 use crate::physician_sources::SourceRevision;
 
@@ -29,6 +31,17 @@ pub struct Observation {
     /// The newest revision of each source that is not withdrawn, ordered by
     /// candidate ID.
     pub sources: Vec<SourceRevision>,
+}
+
+/// When one source last delivered a workspace's records.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SourcePull {
+    /// The source's stable identifier.
+    pub source_id: String,
+    /// The source's name as a physician sees it.
+    pub source_label: String,
+    /// The practice clock's Unix second when the pull finished.
+    pub pulled_at: i64,
 }
 
 fn version_of(value: i64) -> Result<u64, DbErr> {
@@ -140,6 +153,48 @@ impl Store {
             self.record_source(source).await?;
         }
         Ok(())
+    }
+
+    /// Records that a source finished delivering a workspace's records,
+    /// replacing that source's earlier pull.
+    pub async fn record_pull(&self, workspace: &str, pull: &SourcePull) -> Result<(), DbErr> {
+        source_pull::Entity::insert(source_pull::ActiveModel {
+            workspace: Set(workspace.into()),
+            source_id: Set(pull.source_id.clone()),
+            source_label: Set(pull.source_label.clone()),
+            pulled_at: Set(pull.pulled_at),
+        })
+        .on_conflict(
+            OnConflict::columns([
+                source_pull::Column::Workspace,
+                source_pull::Column::SourceId,
+            ])
+            .update_columns([
+                source_pull::Column::SourceLabel,
+                source_pull::Column::PulledAt,
+            ])
+            .to_owned(),
+        )
+        .exec_without_returning(&self.db)
+        .await?;
+        Ok(())
+    }
+
+    /// Each source's last pull for a workspace, ordered by source.
+    pub async fn source_pulls(&self, workspace: &str) -> Result<Vec<SourcePull>, DbErr> {
+        let rows = source_pull::Entity::find()
+            .filter(source_pull::Column::Workspace.eq(workspace))
+            .order_by_asc(source_pull::Column::SourceId)
+            .all(&self.db)
+            .await?;
+        Ok(rows
+            .into_iter()
+            .map(|row| SourcePull {
+                source_id: row.source_id,
+                source_label: row.source_label,
+                pulled_at: row.pulled_at,
+            })
+            .collect())
     }
 
     /// Unlocked read of a workspace's current observation.

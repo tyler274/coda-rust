@@ -2,8 +2,9 @@
 //! finishes: the versioned source store, per-attempt pins, refreshes recorded
 //! on the attempt, and ingestion serialized against publication.
 use super::*;
-use crate::physician_sources::{SourceRevision, exact_read};
+use crate::physician_sources::{ReadablePart, RecordDate, SourceRevision, exact_read};
 use crate::runtime::reply::{FINISH_TOOL, RevisionCommit, RevisionInput};
+use crate::runtime::sources::SourcePull;
 use harness::execution::{Call, Item, Record, Request, Response, Usage};
 
 struct Allow;
@@ -43,8 +44,11 @@ fn source(scope: &Scope, id: &str, revision: &str, content: &str) -> SourceRevis
         workspace: scope.workspace.clone(),
         candidate_id: id.into(),
         revision: revision.into(),
+        record_type: "Observation".into(),
+        dates: vec![],
         content: content.into(),
         sha256: crate::sha256_hex(content.as_bytes()),
+        readable_parts: vec![],
         provenance: serde_json::json!({"native_record": id}),
     }
 }
@@ -136,6 +140,56 @@ async fn accepted_claim(store: &Store, scope: &Scope, key: &str) -> reply::Revis
         .await
         .unwrap()
         .unwrap()
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_record_comes_back_with_its_type_dates_and_readable_parts() {
+    let (store, scope) = setup().await;
+    let mut note = source(&scope, "note", "r1", r#"{"data":"U2VlbiBpbiBjbGluaWM="}"#);
+    note.record_type = "DocumentReference".into();
+    note.dates = vec![RecordDate {
+        name: "date".into(),
+        value: "2026-08".into(),
+    }];
+    note.readable_parts = vec![ReadablePart {
+        label: "attachment".into(),
+        text: "Seen in clinic".into(),
+    }];
+    store.record_source(&note).await.unwrap();
+    let read = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(read.sources, [note.clone()]);
+
+    let mut changed = note;
+    changed.record_type = "Observation".into();
+    assert!(store.record_source(&changed).await.is_err());
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_later_pull_replaces_only_that_sources_last_pull() {
+    let (store, scope) = setup().await;
+    let pull = |source_id: &str, pulled_at| SourcePull {
+        source_id: source_id.into(),
+        source_label: source_id.to_uppercase(),
+        pulled_at,
+    };
+    store
+        .record_pull(&scope.workspace, &pull("ehr", 100))
+        .await
+        .unwrap();
+    store
+        .record_pull(&scope.workspace, &pull("mail", 200))
+        .await
+        .unwrap();
+    store
+        .record_pull(&scope.workspace, &pull("ehr", 300))
+        .await
+        .unwrap();
+    assert_eq!(
+        store.source_pulls(&scope.workspace).await.unwrap(),
+        [pull("ehr", 300), pull("mail", 200)]
+    );
 }
 
 #[tokio::test]

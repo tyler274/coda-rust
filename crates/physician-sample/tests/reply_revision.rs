@@ -32,8 +32,11 @@ fn source(id: &str, revision: &str, content: &str) -> SourceRevision {
         workspace: physician_sample::WORKSPACE_IDS[0].into(),
         candidate_id: id.into(),
         revision: revision.into(),
+        record_type: "Observation".into(),
+        dates: vec![],
         sha256: local_product::sha256_hex(content.as_bytes()),
         content: content.into(),
+        readable_parts: vec![],
         provenance: json!({"synthetic": true, "native_record": id}),
     }
 }

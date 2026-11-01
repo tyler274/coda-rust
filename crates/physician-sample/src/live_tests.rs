@@ -46,8 +46,11 @@ async fn reply_http_reads_exact_source_commits_and_survives_owner_restart() {
         workspace: workspace.into(),
         candidate_id: "source-one".into(),
         revision: "immutable-7".into(),
+        record_type: "Observation".into(),
+        dates: vec![],
         content: "Potassium 4.1 mmol/L".into(),
         sha256: local_product::sha256_hex(b"Potassium 4.1 mmol/L"),
+        readable_parts: vec![],
         provenance: json!({"native_record":"lab-7"}),
     };
     let binding = local_product::ModelBinding {
@@ -246,8 +249,11 @@ async fn inline_revision_reads_a_source_that_arrives_before_it_finishes() {
         workspace: workspace.into(),
         candidate_id: id.into(),
         revision: "immutable-1".into(),
+        record_type: "Observation".into(),
+        dates: vec![],
         content: content.into(),
         sha256: local_product::sha256_hex(content.as_bytes()),
+        readable_parts: vec![],
         provenance: json!({"synthetic": true}),
     };
     let original = source("lab-old", "Potassium 4.1 mmol/L");
